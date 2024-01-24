@@ -1,0 +1,159 @@
+{
+	"account_id" : "",
+	"account_type" : [Real Estate Practitioner, Bank, Property Developer],
+	"logo" : url,
+	"first_name" : "",
+	"last_name" : "",
+	"middle_name" : "",
+	"mobile_number" : "",
+	"address" : "",
+	"street" : "",
+	"province" : "",
+	"city" : "",
+	"tin" : "",
+	"access" : [leads_db, properties_db],
+	"registration_date" : epoch,
+	"max_post" : 15,
+	"max_users" : 3,
+	"display_ads" : 0
+	"featured_ads" : 0
+}
+
+{
+	"user_id" : "",
+	"account_id" : "",
+	"username" : "",
+	"password" : "",
+	"email" : "",
+	"name" : "",
+	"permissions" : [subscriptions, invoice, reports],
+	"two_factor_authentication" : true,
+	"two_factor_authentication_aps" : [google],
+	"status" : [active, banned]
+	"date_added" : epoch
+}
+
+{
+	"account_subscription_id" : "",
+	"account_id" : "",
+	"subscription_id" : "",
+	"subscription_details" : {
+		"type" : "limited_time",
+		"details" : "",
+		"script" : {
+			"max_post" => 30, 
+			"display_ads" => 1,
+			"property_database" => true, 
+			"prospect_database" => true
+		}
+	},
+	"subscription_date" : epoch,
+	"subscription_start_date" : epoch,
+	"subscription_end_date" : epoch,
+	"status" : [active, end]
+}
+
+{
+	"subscription_id" : "",
+	"type" : [permanent, limited_time],
+	"details" : "",
+	"script" : {"max_post" => 30, "display_ads" => 1,"property_database" => true, "prospect_database" => true},
+	"duration" : 30,
+	"cost": 1500,
+	"visibility" : [show, hide],
+	"status" : [active, end]
+	"date_added" : epoch,
+	"date_end" : epoch
+}
+
+{
+	"display_ad_id" : "",
+	"account_id" : "",
+	"posting_id" : "",
+	"start_date" : epoch,
+	"end_date" : epoch,
+	"status" : [active, end]
+}
+
+{
+	"display_ad_impresion_id" : "",
+	"display_ad_id" : "",
+	"impression_date" : epoch,
+}
+
+{
+	"display_ad_click_id" : "",
+	"display_ad_id" : "",
+	"click_date" : epoch,
+}
+
+{
+	"featured_ad_id" : "",
+	"account_id" : "",
+	"posting_id" : "",
+	"start_date" : epoch,
+	"end_date" : epoch,
+	"status" : [active, end]
+}
+
+{
+	"feature_ad_impresion_id" : "",
+	"featured_ad_id" : "",
+	"impression_date" : epoch,
+}
+
+{
+	"feature_ad_click_id" : "",
+	"feature_ad_id" : "",
+	"click_date" : epoch,
+}
+
+{
+	"invoice_id" : "",
+	"subscription_id" : "",
+	"account_id" : "",
+	"payment_gateway" : [GCash, Credit Card, PayPal, PayMaya],
+	"payment_gateway_fee" : 10,
+	"invoice_amount" : 1500,
+	"invoice_date" : epoch,
+}
+
+{
+	"property_id" : "",
+	"posting_type" : [development, property],
+	"property_type" : "",
+	"category" : "",
+	"condition" : "",
+	"offer" : "",
+	"tags" : "",
+	"forclosure" : 0,
+	"availability" : [available, sold],
+	"status" : [active, sold],
+	"date_added" : epoch,
+	"date_modify" : epoch,
+	"status_date" : epoch,
+}
+
+{
+	"property_impression_id" : "",
+	"property_id" : "",
+	"impression_date" : epoch,
+}
+
+{
+	"property_click_id" : "",
+	"property_id" : "",
+	"click_date" : epoch,
+}
+
+{
+	"handshake_id": 0,
+	"requestor_account_id": 0,
+	"requestor_details": {"name":"", "mobile_number":"", "email":""},
+	"requestee_account_id": 0,
+	"listing_id: 0,
+	"handshake_status": [pending, accepted, denied],
+	"handshake_status_date": epoch,
+	"requested_date": epoch
+}
+

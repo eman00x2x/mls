@@ -1,0 +1,57 @@
+<?php
+
+use Pecee\SimpleRouter\SimpleRouter as Router;
+
+Router::enableMultiRouteRendering(false);
+
+/** DASHBOARD ROUTES */
+
+Router::get('/', 'DashboardController@index', ['as' => 'dashboard']);
+
+/** ACCOUNTS ROUTES */
+Router::get('/account', 'AccountsController@index', ['as' => 'accounts']);
+Router::get('/account', 'AccountsController@view', ['as' => 'accountView']);
+
+Router::post('/account/{id}/saveUpdate', 'AccountsController@saveUpdate', ['as' => 'accountsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
+Router::post('/account/uploadPhoto', 'AccountsController@uploadPhoto', ['as' => 'accountsUploadPhoto']);
+
+/** USERS ROUTES */
+Router::get('/account/users', 'UsersController@index', ['as' => 'users']);
+Router::get('/account/user/new', 'UsersController@new', ['as' => 'userAdd']);
+Router::get('/account/user/{id}/changePassword', 'UsersController@changePassword', ['as' => 'changePassword'])->where([ 'id' => '[0-9]+' ]);
+Router::get('/account/{id}/user/{user_id}/edit', 'UsersController@edit', ['as' => 'userEdit'])->where([ 'id' => '[0-9]+', 'user_id' => '[0-9]+' ]);
+Router::get('/account/{id}/user/{user_id}/delete', 'UsersController@delete', ['as' => 'userDelete'])->where([ 'id' => '[0-9]+', 'user_id' => '[0-9]+' ]);
+
+Router::post('/account/{id}/user/saveNew', 'UsersController@saveNew', ['as' => 'usersSaveNew'])->where([ 'id' => '[0-9]+' ]);
+Router::post('/account/{id}/user/{user_id}/edit/saveUpdate', 'UsersController@saveUpdate', ['as' => 'usersSaveUpdate'])->where([ 'id' => '[0-9]+', 'user_id' => '[0-9]+' ]);
+
+/** USERS ALIAS ROUTES */
+Router::get('/user/{id}/edit', 'UsersController@userEdit', ['as' => 'userAliasEdit'])->where([ 'id' => '[0-9]+' ]);
+
+/** PROPERTY LISTINGS ROUTES */
+Router::get('/listings', 'ListingsController@listingIndex', ['as' => 'listings']);
+Router::get('/listings/new', 'ListingsController@addListing', ['as' => 'listingsAdd']);
+Router::get('/listings/{id}', 'ListingsController@view', ['as' => 'listingsView'])->where([ 'id' => '[0-9]+' ]);
+Router::get('/listings/{id}/edit', 'ListingsController@editListing', ['as' => 'listingsEdit'])->where([ 'id' => '[0-9]+' ]);
+Router::get('/listings/{id}/delete', 'ListingsController@delete', ['as' => 'listingsDelete'])->where([ 'id' => '[0-9]+' ]);
+
+Router::post('/listings/{id}/uploadImages', 'ListingsController@uploadImages', ['as' => 'listingsEdit'])->where([ 'id' => '[0-9]+' ]);
+Router::post('/listings/new/saveNew', 'ListingsController@saveNew', ['as' => 'listingsSaveNew'])->where([ 'id' => '[0-9]+' ]);
+Router::post('/listings/{id}/edit/saveUpdate', 'ListingsController@saveUpdate', ['as' => 'listingsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
+
+/** PROPERTY IMAGES ROUTES */
+Router::get('/listingImages/{id}/delete', 'ListingImagesController@delete', ['as' => 'ListingImagesDelete'])->where([ 'id' => '[\w\-]+' ]);
+
+/** MLS ROUTES */
+Router::get('/mls', 'PropertiesController@index', ['as' => 'mls']);
+
+/** ACCOUNT SUBSCRIPTIONS ROUTES */
+Router::get('/subscriptions', 'SubscriptionsController@index', ['as' => 'subscriptions']);
+Router::post('/subscriptions/saveNew', 'SubscriptionsController@saveNew', ['as' => 'accountSubscriptionSaveNew']);
+
+/** Premiums ROUTES */
+Router::get('/premiums', 'PremiumsController@index', ['as' => 'premiums']);
+
+/** INVOICE ROUTES */
+Router::get('/invoices', 'InvoicesController@index', ['as' => 'deleteInvoice']);
+Router::get('/invoices/{id}/delete', 'InvoicesController@delete', ['as' => 'deleteInvoice'])->where([ 'id' => '[0-9]+' ]);

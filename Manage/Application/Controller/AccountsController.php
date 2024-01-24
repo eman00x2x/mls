@@ -1,0 +1,48 @@
+<?php
+
+namespace Manage\Application\Controller;
+
+class AccountsController extends \Admin\Application\Controller\AccountsController {
+	
+	private $account_id;
+	
+	function __construct() {
+        parent::__construct();
+        $this->setTempalteBasePath(ROOT."Manage");
+		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->account_id = $_SESSION['account_id'];
+	}
+	
+	function index() {
+
+        if(!isset($_SESSION['permissions']['account']['access'])) {
+            $this->getLibrary("Factory")->setMsg("You do not have enough permissions to access the account details","error");
+			response()->redirect(url("DashboardController@index"));
+        }
+
+        $this->doc->setTitle("My Accounts");
+        $this->doc->addScript(CDN."js/photo-uploader.js");
+
+        if((!isset($_SESSION['permissions']['users']['access']))) {
+            $this->doc->addScriptDeclaration("
+                $(document).ready(function() {
+                    $('input').removeClass('form-control');
+                    $('input').addClass('form-control-plaintext');
+                    $('input').attr('readonly', true);
+                });
+            ");
+        }
+
+        $account = $this->getModel("Account");
+		$account->column['account_id'] = $this->account_id;
+		$data = $account->getById();
+
+        $data['privileges'] = $_SESSION['privileges'];
+
+		$this->setTemplate("accounts/account.php");
+		return $this->getTemplate($data,$account);
+
+	}
+	
+	
+}
