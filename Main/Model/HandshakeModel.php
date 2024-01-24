@@ -22,7 +22,6 @@ class HandshakeModel extends \Main\Model {
 			return $this->stripQuotes($line);
 		}else {return false;}
 
-		
 	}
 
 	function getByRequestorAccountId() {
