@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 18, 2024 at 12:00 PM
+-- Generation Time: Jan 25, 2024 at 02:22 PM
 -- Server version: 5.7.31
 -- PHP Version: 7.4.9
 
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `mls_accounts` (
 --
 
 INSERT INTO `mls_accounts` (`account_id`, `account_type`, `logo`, `company_name`, `real_estate_license_number`, `firstname`, `lastname`, `address`, `street`, `city`, `province`, `mobile_number`, `email`, `tin`, `uploads`, `preferences`, `privileges`, `status`, `registration_date`) VALUES
-(1, 'Administrator', 'http://cdn.mls/images/accounts/62242481312762779081451953250792944729165370785647_24b7913aeeb499a52d2098ee2e04d916.jpg', 'EmanPOÑ', '', 'Eman', 'Olivas', '  ', '55 Justice R jabson St Bambang', 'Pasig City', 'National Capital Region', '09175223499', 'eman00x2xx@gmail.com', '666-666-6663', '', '', '{\"max_post\":\"15\",\"max_users\":\"1\",\"display_ads\":\"0\",\"featured_ads\":\"0\"}', 'active', 1697967993),
+(1, 'Administrator', 'http://cdn.mls/images/accounts/62242481312762779081451953250792944729165370785647_24b7913aeeb499a52d2098ee2e04d916.jpg', 'EmanPOÑ', '', 'Eman', 'Olivas', '  ', '55 Justice R jabson St Bambang', 'Pasig City', 'National Capital Region', '09175223499', 'eman00x2xx@gmail.com', '666-666-6663', '', '', '{\"max_post\":\"15\",\"max_users\":\"1\",\"display_ads\":\"0\",\"featured_ads\":\"0\",\"handshake_limit\":\"1\"}', 'active', 1697967993),
 (2, 'Customer Service', 'http://cdn.mls/images/accounts/86188504160272786667972870548559707088642623386385_633a5d29473ee3664a3c92bbb2de8a9c.png', 'MLS', '', 'Eman', 'Olivas', '  ', '', '', '', '', 'test@test.com', 'testt', '', '', '{\"max_post\":\"15\",\"max_users\":\"1\",\"display_ads\":\"0\",\"featured_ads\":\"0\"}', 'active', 1697967993);
 
 -- --------------------------------------------------------
@@ -87,6 +87,32 @@ INSERT INTO `mls_account_subscriptions` (`account_subscription_id`, `account_id`
 (23, 2, 5, 1698675960, 1698675960, 1701267960),
 (24, 1, 4, 1698680074, 1698680074, 0),
 (29, 1, 7, 1699200000, 2023, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mls_handshakes`
+--
+
+DROP TABLE IF EXISTS `mls_handshakes`;
+CREATE TABLE IF NOT EXISTS `mls_handshakes` (
+  `handshake_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `requestor_account_id` bigint(20) NOT NULL,
+  `requestor_details` text,
+  `requestee_account_id` bigint(20) NOT NULL,
+  `listing_id` bigint(20) NOT NULL,
+  `handshake_status` varchar(10) DEFAULT 'pending',
+  `handshake_status_date` int(12) NOT NULL,
+  `requested_date` int(12) NOT NULL,
+  PRIMARY KEY (`handshake_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `mls_handshakes`
+--
+
+INSERT INTO `mls_handshakes` (`handshake_id`, `requestor_account_id`, `requestor_details`, `requestee_account_id`, `listing_id`, `handshake_status`, `handshake_status_date`, `requested_date`) VALUES
+(7, 1, '{\n    \"account_id\": 1,\n    \"logo\": \"http:\\/\\/cdn.mls\\/images\\/accounts\\/62242481312762779081451953250792944729165370785647_24b7913aeeb499a52d2098ee2e04d916.jpg\",\n    \"company_name\": \"EmanPO&Ntilde;\",\n    \"real_estate_license_number\": \"\",\n    \"firstname\": \"Eman\",\n    \"lastname\": \"Olivas\",\n    \"address\": \"\",\n    \"street\": \"55 Justice R jabson St Bambang\",\n    \"city\": \"Pasig City\",\n    \"province\": \"National Capital Region\",\n    \"mobile_number\": \"09175223499\",\n    \"email\": \"eman00x2xx@gmail.com\",\n    \"tin\": \"666-666-6663\",\n    \"status\": \"active\",\n    \"registration_date\": 1697967993\n}', 1, 3, 'pending', 1706189388, 1706189388);
 
 -- --------------------------------------------------------
 
@@ -170,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `mls_listings` (
 INSERT INTO `mls_listings` (`listing_id`, `account_id`, `offer`, `type`, `foreclosed`, `name`, `title`, `tags`, `long_desc`, `category`, `address`, `suburb`, `city`, `price`, `reservation`, `monthly_downpayment`, `monthly_amortization`, `floor_area`, `lot_area`, `unit_area`, `bedroom`, `bathroom`, `parking`, `thumb_img`, `video`, `amenities`, `date_added`, `last_modified`, `status`, `display`) VALUES
 (1, 1, 'for sale', 'Residential', 0, 'samplesss', 'samplesss', '[\"New\"]', '<p>sample esar&nbsp;</p>', 'Condominium', '{\"barangay\":\"Narvacan\",\"municipality\":\"Santo Tomas\",\"province\":\"La Union\",\"region\":\"Region I\"}', 'Bambang', 'Bambang, Taguig City', 16000000, '100000.00', '600000.00', '80000.00', 233, 2589, 233, 4, 2, 2, 'http://cdn.mls//images/listings/11198547510152319200485562170839579336964453374430_a6b9e989adc2567145f6316f0244f93d.jpg', NULL, 'Lap Pool,Bowling Room,Basket Ball Court,Game rooms,Day care centers,Lobby,Club House,Function Halls,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1698849808, 1699021543, 1, 1),
 (2, 1, 'for sale', 'Residential', 0, 'test', 'test', '[\"New\",\"Pre Owned\"]', '<p>test</p>', 'Residential Lot', '{\"barangay\":\"Sipac-Almacen\",\"municipality\":\"Navotas City\",\"province\":\"Metro Manila\",\"region\":\"NCR\"}', NULL, NULL, 1500000, '20000.00', '56000.00', '85000.00', 0, 0, 0, 0, 0, 0, 'http://cdn.mls//images/listings/89504320885208719173718599824310942476380330570978_99a1d90c21c717bd52509c713ccf0ce0.jpg', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1699018530, 1699021786, 1, 1),
-(3, 1, 'for sale', 'Residential', 0, 'test', 'test', '[\"New\",\"Pre Owned\"]', '<p>test</p>', 'Residential Lot', '{\"barangay\":\"Balugohin\",\"municipality\":\"Atimonan\",\"province\":\"Quezon\"}', NULL, NULL, 1500000, '20000.00', '56000.00', '85000.00', 0, 0, 0, 0, 0, 0, 'http://cdn.mls//images/listings/68827441742920438809240668712508286601766686054997_660911534b2c944e10218a1bbc06c574.jpg', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1699019091, 1699200000, 1, 1),
+(3, 1, 'for sale', 'Residential', 0, 'modern-2-storey-5-bedrooms-alabang-400-village-muntinlupa-city', 'Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City', '[\"New\",\"Pre Owned\"]', '<p>MODERN 2 STOREY HOUSE</p>\r\n<p>Lot area: 412 sq.m</p>\r\n<p>Floor area: 300 sq.m</p>\r\n<p>5 bedrooms with toilet and bath</p>\r\n<p>-walk in closet in bedrooms upstairs</p>\r\n<p>- ensuite in all bedrooms</p>\r\n<p>- bathtub in master&rsquo;s bedroom</p>\r\n<p>- airconditioning in 4 rooms and living area</p>\r\n<p>- hot and cold water system</p>\r\n<p>25m frontage</p>\r\n<p>Built 2010</p>\r\n<p>3 elevated under cover garage</p>\r\n<p>High ceiling</p>\r\n<p>Open plan concept</p>\r\n<p>Balcony at rear</p>\r\n<p>Pantry room</p>\r\n<p>Big garden</p>\r\n<p>SP: 35 M gross</p>\r\n<p>Clean title</p>\r\n<p>RFS: family migrating to Australia</p>', 'House and Lot', '{\"barangay\":\"New Alabang Village\",\"municipality\":\"Muntinlupa City\",\"province\":\"Metro Manila\",\"region\":\"NCR\"}', NULL, NULL, 1500000, '20000.00', '56000.00', '85000.00', 300, 412, 0, 5, 5, 2, 'http://cdn.mls//images/listings/68827441742920438809240668712508286601766686054997_660911534b2c944e10218a1bbc06c574.jpg', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1699019091, 1706180698, 1, 1),
 (4, 1, 'for sale', 'Residential', 0, 'test', 'test', '[\"New\",\"Pre Owned\"]', '<p>test</p>', 'Residential Lot', '{\"barangay\":\"Lower Sulitan\",\"municipality\":\"Naga\",\"province\":\"Zamboanga Sibugay\",\"region\":\"Region IX\"}', NULL, NULL, 1500000, '20000.00', '56000.00', '85000.00', 0, 0, 0, 0, 0, 0, 'http://cdn.mls//images/listings/67187533368375691204002056630890668920781534295904_3983ad8569c207b88a2d32012f800aaf.jpg', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1699019712, 1699021566, 1, 1);
 
 -- --------------------------------------------------------
