@@ -172,6 +172,11 @@ $html[] = "<div class='page-body'>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 
+										$html[] = "<div class='btn-list'>";
+											$html[] = "<span class='btn btn-md btn-primary'>Request Handshake</span>";
+											$html[] = "<span class='btn btn-md btn-primary'>Compare</span>";
+										$html[] = "</div>";
+
 									$html[] = "</div>";
 								$html[] = "</div>";
 								
