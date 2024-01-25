@@ -107,6 +107,9 @@ input {
 	background-color: #FFF;
 }
 
+.avatar-xxl { --tblr-avatar-size: 10rem; }
+.avatar-xxxl { --tblr-avatar-size: 13rem; }
+
 .cursor-alias {cursor: alias;}
 .cursor-all-scroll {cursor: all-scroll;}
 .cursor-auto {cursor: auto;}

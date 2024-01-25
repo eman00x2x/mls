@@ -5,7 +5,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 
 		$html[] = "<div class='row g-2 '>";
 			$html[] = "<div class='col'>";
-				$html[] = "<div class='page-pretitle'></div>";
+				$html[] = "<div class='page-pretitle'>Multi-Listing Services System</div>";
 				$html[] = "<h1 class='page-title'><i class='ti ti-building-estate me-2'></i> MLS System</h1>";
 			$html[] = "</div>";
 
@@ -151,6 +151,34 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 
 					if($data['listings']) { $c=$model->page['starting_number'];
+
+						for($i=0; $i<count($data['listings']); $i++) { $c++;
+							$html[] = "<div class='listing-wrap my-2'>";
+								$html[] = "<div class='row'>";
+									$html[] = "<div class='col-3'>";
+										$html[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div>";
+									$html[] = "</div>";
+									$html[] = "<div class='col-8'>";
+										$html[] = "<h2 class='p-0'>".$data['listings'][$i]['title']."<small class='d-block fw-normal'>".ucwords($data['listings'][$i]['offer'])." ".$data['listings'][$i]['category']." in ".$data['listings'][$i]['address']['municipality'].", ".$data['listings'][$i]['address']['province']."</small></h2>";
+
+										$html[] = "<div class='mb-3'>";
+											$html[] = "<div class='d-flex'>";
+												$html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Floor Area</label>".number_format($data['listings'][$i]['floor_area'],0)." sqm</span>";
+												$html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Lot Area</label>".number_format($data['listings'][$i]['lot_area'],0)." sqm</span>";
+												$html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Unit Area</label>".number_format($data['listings'][$i]['unit_area'],0)." sqm</span>";
+												$html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Bedroom</label>".$data['listings'][$i]['bedroom']."</span>";
+												$html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Bathroom</label>".$data['listings'][$i]['bathroom']."</span>";
+												$html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Car Garage</label>".$data['listings'][$i]['parking']."</span>";
+											$html[] = "</div>";
+										$html[] = "</div>";
+
+									$html[] = "</div>";
+								$html[] = "</div>";
+								
+							$html[] = "</div>";
+						}
+
+
 						$html[] = "<div class='table-responsive'>";
 							
 							$html[] = "<table class='table table-hover table-outline'>";

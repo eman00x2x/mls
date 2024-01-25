@@ -5,7 +5,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 
 		$html[] = "<div class='row g-2 '>";
 			$html[] = "<div class='col'>";
-				$html[] = "<div class='page-pretitle'></div>";
+				$html[] = "<div class='page-pretitle'>Multi-Listing Services System</div>";
 				$html[] = "<h1 class='page-title'><i class='ti ti-building-estate me-2'></i> MLS System</h1>";
 			$html[] = "</div>";
 
@@ -14,7 +14,6 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 					$html[] = "<div class='btn-list'>";
 						
 						$html[] = "<a class='ajax btn btn-dark' href=''><i class='ti ti-user-plus me-2'></i> Handshaked</a>";
-						$html[] = "<span class='btn btn-dark filter-btn' href=''><i class='ti ti-filter me-2'></i> Filter Result</span>";
 						
 					$html[] = "</div>";
 				$html[] = "</div>";
@@ -36,9 +35,9 @@ $html[] = "<div class='page-body'>";
             $html[] = "<div class='col-md-3 col-12'>";
                 $html[] = "<div class='box-container mb-3'>";
                     $html[] = "<h3 class=''>Broker Details</h3>";
-                    $html[] = "<div class='avatar avatar-lg' style='background-image: url(".$data['account']['logo'].")'></div>";
+                    $html[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$data['account']['logo'].")'></div>";
 
-                    $html[] = "<table class='table'>";
+                    $html[] = "<table class='table table-sm mt-3'>";
                     $html[] = "<tr>";
                         $html[] = "<td>Name</td>";
                         $html[] = "<td>".$data['account']['firstname']." ".$data['account']['lastname']."</td>";
@@ -49,12 +48,11 @@ $html[] = "<div class='page-body'>";
                     $html[] = "</tr>";
                     $html[] = "</table>";
 
-
                     $status[1] = "Available";
                     $status[2] = "Sold";
 
                     $html[] = "<h3 class='mt-3 mb-0'>Posting Details</h3>";
-                    $html[] = "<table class='table'>";
+                    $html[] = "<table class='table table-sm mt-2'>";
                     $html[] = "<tr>";
                         $html[] = "<td>Status</td>";
                         $html[] = "<td>".$status[$data['listing']['status']]."</td>";
