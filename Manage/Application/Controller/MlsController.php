@@ -17,6 +17,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
         $this->doc->setTitle("MLS System");
 
+
 		$filters[] = " status = 1 ";
 
 		if(isset($_REQUEST['search'])) {
@@ -89,9 +90,55 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		return parent::view($id);
 	}
 
-    function handshakes() {
+    function requestHandshake($listing_id) {
 
-        
+		$listing = $this->getModel("Listing");
+		$listing->column['listing_id'] = $listing_id;
+		$data = $listing->getById();
+		
+		if($data) {
+
+			$account = $this->getModel("Account");
+			$account->column['account_id'] = $data['account_id'];
+			$data['account'] = $account->getById();
+
+			if(isset($_REQUEST['confirm'])) {
+
+				$account->column['account_id'] = $_SESSION['account_id'];
+				$requestor = $account->getById();
+
+				unset($requestor['account_type']);
+				unset($requestor['uploads']);
+				unset($requestor['preferences']);
+				unset($requestor['privileges']);
+
+				$handshake = $this->getModel("Handshake");
+				$handshake->saveNew(array(
+					"requestor_account_id" => $_SESSION['account_id'],
+					"requestor_details" => json_encode($requestor, JSON_PRETTY_PRINT),
+					"requestee_account_id" => $data['account_id'],
+					"listing_id" => $data['listing_id'],
+					"handshake_status" => "pending",
+					"handshake_status_date" => DATE_NOW,
+					"requested_date" => DATE_NOW
+				));
+
+				$this->getLibrary("Factory")->setMsg("Handshake Requested!","success");
+				return json_encode(
+					array(
+						"status" => 1,
+						"message" => getMsg()
+					)
+				);
+
+			}
+
+		}else {
+			$this->getLibrary("Factory")->setMsg("Property listing not found.","warning");
+		}
+
+		$this->setTemplate("mls/requestHandshake.php");
+		return $this->getTemplate($data);
 
     }
 	

@@ -45,6 +45,7 @@ Router::get('/listingImages/{id}/delete', 'ListingImagesController@delete', ['as
 /** MLS ROUTES */
 Router::get('/mls', 'MlsController@MLSIndex', ['as' => 'mls']);
 Router::get('/mls/{id}', 'MlsController@view', ['as' => 'viewListing'])->where([ 'id' => '[\w\-]+' ]);
+Router::get('/mls/{listing_id}/requestHandshake', 'MlsController@requestHandshake', ['as' => 'requestHandshake'])->where([ 'listing_id' => '[\w\-]+' ]);
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get('/subscriptions', 'SubscriptionsController@index', ['as' => 'subscriptions']);

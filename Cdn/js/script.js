@@ -49,10 +49,29 @@ $(document).on('click','.btn-save', function(e) {
 	return false;
 });
 
-$(document).on('click','.btn-delete', function(e) {
+$(document).on('click','.btn-delete, .btn-requestHandshake', function(e) {
 	url = $(this).data('url');
 	$.get(url, function (data, status) { 
 		$('.offcanvas').html(data);
+	});
+});
+
+$(document).on('click', '.btn-handshake-confirm', function (e) { 
+	url = $(this).data('url');
+	row = $(this).data('row');
+
+	$('.request-response').html("<img src='" + CDN + "images/loader.gif' /> request in progress... ");
+	$('.response-body').hide();
+
+	$.get(url, function (data, status) {
+		response = JSON.parse(data);
+
+		if (response.status == 1) {
+			$('.' + row).remove();
+			bootstrap.Offcanvas.getInstance($('.offcanvas')).hide();
+		}
+
+		$('.request-response').html(response.message);
 	});
 });
 

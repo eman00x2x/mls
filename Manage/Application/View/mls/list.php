@@ -153,27 +153,27 @@ $html[] = "<div class='page-body'>";
 					if($data['listings']) { $c=$model->page['starting_number'];
 
 						for($i=0; $i<count($data['listings']); $i++) { $c++;
-							$html[] = "<div class='listing-wrap my-2'>";
+							$html[] = "<div class='row_listings_".$data['listings'][$i]['listing_id']." listing-wrap my-2'>";
 								$html[] = "<div class='row'>";
 									$html[] = "<div class='col-3'>";
 										$html[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div>";
 									$html[] = "</div>";
 									$html[] = "<div class='col-8'>";
-										$html[] = "<h2 class='p-0'>".$data['listings'][$i]['title']."<small class='d-block fw-normal'>".ucwords($data['listings'][$i]['offer'])." ".$data['listings'][$i]['category']." in ".$data['listings'][$i]['address']['municipality'].", ".$data['listings'][$i]['address']['province']."</small></h2>";
+										$html[] = "<h3 class='p-0'>".$data['listings'][$i]['title']."<small class='d-block fw-normal'>".ucwords($data['listings'][$i]['offer'])." ".$data['listings'][$i]['category']." in ".$data['listings'][$i]['address']['municipality'].", ".$data['listings'][$i]['address']['province']."</small></h3>";
 
 										$html[] = "<div class='mb-3'>";
 											$html[] = "<div class='d-flex'>";
-												$html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Floor Area</label>".number_format($data['listings'][$i]['floor_area'],0)." sqm</span>";
-												$html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Lot Area</label>".number_format($data['listings'][$i]['lot_area'],0)." sqm</span>";
-												$html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Unit Area</label>".number_format($data['listings'][$i]['unit_area'],0)." sqm</span>";
-												$html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Bedroom</label>".$data['listings'][$i]['bedroom']."</span>";
-												$html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Bathroom</label>".$data['listings'][$i]['bathroom']."</span>";
-												$html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Car Garage</label>".$data['listings'][$i]['parking']."</span>";
+												$html[] = "<span class='d-block border me-2 p-2 text-center fw-bold fs-20'><label class='text-start d-block text-muted small fs-10 fw-normal'>Price</label>&#8369;".number_format($data['listings'][$i]['price'],0)."</span>";
+												if($data['listings'][$i]['floor_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Floor Area</label>".number_format($data['listings'][$i]['floor_area'],0)." sqm</span>"; }
+												if($data['listings'][$i]['lot_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Lot Area</label>".number_format($data['listings'][$i]['lot_area'],0)." sqm</span>"; }
+												if($data['listings'][$i]['bedroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bedroom</label>".$data['listings'][$i]['bedroom']."</span>"; }
+												if($data['listings'][$i]['bathroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bathroom</label>".$data['listings'][$i]['bathroom']."</span>"; }
+												if($data['listings'][$i]['parking'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Car Garage</label>".$data['listings'][$i]['parking']."</span>"; }
 											$html[] = "</div>";
 										$html[] = "</div>";
 
 										$html[] = "<div class='btn-list'>";
-											$html[] = "<span class='btn btn-md btn-primary'>Request Handshake</span>";
+											$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listings'][$i]['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listings'][$i]['listing_id']])."'>Request Handshake</span>";
 											$html[] = "<span class='btn btn-md btn-primary'>Compare</span>";
 										$html[] = "</div>";
 
@@ -183,70 +183,8 @@ $html[] = "<div class='page-body'>";
 							$html[] = "</div>";
 						}
 
-
-						$html[] = "<div class='table-responsive'>";
-							
-							$html[] = "<table class='table table-hover table-outline'>";
-							$html[] = "<thead>";
-								$html[] = "<tr>";
-									$html[] = "<th class='text-center w-1'>#</th>";
-									$html[] = "<th class='w-1'></th>";
-									$html[] = "<th>Title</th>";
-									$html[] = "<th>Type</th>";
-									$html[] = "<th>Category</th>";
-									$html[] = "<th>Address</th>";
-									$html[] = "<th class='text-end'>Price</th>";
-									$html[] = "<th>Status</th>";
-									$html[] = "<th class='text-center'><i class='icon-settings'></i></th>";
-								$html[] = "</tr>";
-							$html[] = "</thead>";
-							
-							$html[] = "<tbody>";
-							for($i=0; $i<count($data['listings']); $i++) { $c++;
-
-								$availability = array(
-									1 => "<span class='text-success '>Available</span>",
-									2 => "<span class='text-danger'>Sold</span>",
-									3 => "<span class='text-muted'>Sold</span>"
-								);
-
-								$address = $data['listings'][$i]['address'];
-								unset($address['region']);
-								
-								$html[] = "<tr class='row_listings_".$data['listings'][$i]['listing_id']."'>";
-									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-									$html[] = "<td class='align-middle'><div class='avatar' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div></td>";
-									$html[] = "<td class='align-middle'><a href='".url("MlsController@view",["id" => $data['listings'][$i]['listing_id']])."'>".$data['listings'][$i]['title']."</a></td>";
-									$html[] = "<td class='align-middle'><a href='".url("MlsController@view",["id" => $data['listings'][$i]['listing_id']])."'>".$data['listings'][$i]['type']."</a></td>";
-									$html[] = "<td class='align-middle'><a href='".url("MlsController@view",["id" => $data['listings'][$i]['listing_id']])."'>".$data['listings'][$i]['category']."</a></td>";
-									$html[] = "<td class='align-middle'><a href='".url("MlsController@view",["id" => $data['listings'][$i]['listing_id']])."'>".(implode(" ",$address))."</a></td>";
-									$html[] = "<td class='align-middle text-end'><a href='".url("MlsController@view",["id" => $data['listings'][$i]['listing_id']])."'>".convertMillions($data['listings'][$i]['price'])."</a></td>";
-									$html[] = "<td class='align-middle'>".($availability[$data['listings'][$i]['status']])."</td>";
-									
-									$html[] = "<td class='text-center'>";
-									
-										$html[] = "<div class='item-action dropdown'>";
-										
-											$html[] = "<span class='btn btn-outline-primary btn-md' data-bs-toggle='dropdown'><i class='ti ti-dots-vertical'></i></span>";
-											
-											$html[] = "<div class='dropdown-menu dropdown-menu-right'>";
-												$html[] = "<a class='ajax dropdown-item' href='".url("MlsController@handshake",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-edit me-2'></i> Request Handshake</a>";
-											$html[] = "</div>";
-											
-										$html[] = "</div>";
-									
-									$html[] = "</td>";
-									
-								$html[] = "</tr>";
-								
-							}
-							$html[] = "</tbody>";
-							$html[] = "</table>";
-							
-						$html[] = "</div>";
-						
 					}else {
-						$html[] = "<p class='mt-3'>You do not have property listing.</p>";
+						$html[] = "<p class='mt-3'>Does not have listing yet.</p>";
 					}
 					
 				$html[] = "</div>";
