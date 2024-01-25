@@ -26,6 +26,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$filters[] = " listing_id NOT IN(".$handshakeListings['listing_ids'].")";
 		}
 
+		$filters[] = " account_id != ".$_SESSION['account_id'];
 		$filters[] = " status = 1 ";
 
 		if(isset($_REQUEST['search'])) {
@@ -94,7 +95,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	}
 
-	function handshakeIndex() {
+	function handshakedIndex() {
 
 		$this->doc->setTitle("MLS System");
 
@@ -105,7 +106,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		$listing = $this->getModel("Listing");
 		$listing->addresses = $this->getModel("Address");
-		$listing->join(" l JOIN #__handshakes h ON h.listing_id = l.listing_id");
+		$listing->join(" JOIN #__handshakes h ON h.listing_id = #__listings.listing_id");
 		$listing->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" last_modified DESC ");
 		
 		$listing->page['limit'] = 20;

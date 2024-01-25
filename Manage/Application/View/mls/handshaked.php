@@ -62,8 +62,29 @@ $html[] = "<div class='page-body'>";
 								$html[] = "</div>";
 
 								$html[] = "<div class='btn-list'>";
-									$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listings'][$i]['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listings'][$i]['listing_id']])."'>Request Handshake</span>";
-									$html[] = "<span class='btn btn-md btn-primary'>Compare</span>";
+									
+                                    if($data['listings'][$i]['requestor_account_id'] == $_SESSION['account_id']) {
+                                        switch($data['listings'][$i]['handshake_status']) {
+                                            case 'pending':
+                                                $html[] = "<span class='btn btn-secondary '>".ucwords($data['listings'][$i]['handshake_status'])."</span>";
+                                                break;
+                                            case 'active':
+                                                $html[] = "<span class='btn btn-secondary '>Active since: ".date("F d, Y",$data['listings'][$i]['handshake_status_date'])."</span>";
+                                                break;
+                                        }
+                                    }
+
+                                    if($data['listings'][$i]['requestee_account_id'] == $_SESSION['account_id']) {
+                                        switch($data['listings'][$i]['handshake_status']) {
+                                            case 'pending':
+                                                $html[] = "<span class='btn btn-success '><i class='ti ti-check me-2'></i> Accept Request</span>";
+                                                break;
+                                            case 'active':
+                                                $html[] = "<span class='btn btn-secondary '>Active since: ".date("F d, Y",$data['listings'][$i]['handshake_status_date'])."</span>";
+                                                break;
+                                        }
+                                    }
+
 								$html[] = "</div>";
 
 							$html[] = "</div>";

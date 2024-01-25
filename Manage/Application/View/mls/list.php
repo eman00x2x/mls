@@ -13,7 +13,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 				$html[] = "<div class='d-none d-sm-inline'>";
 					$html[] = "<div class='btn-list'>";
 						
-						$html[] = "<a class='ajax btn btn-dark' href=''><i class='ti ti-user-plus me-2'></i> Handshaked</a>";
+						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@handshakedIndex")."'><i class='ti ti-user-plus me-2'></i> Handshaked</a>";
 						$html[] = "<span class='btn btn-dark filter-btn' href=''><i class='ti ti-filter me-2'></i> Filter Result</span>";
 						
 					$html[] = "</div>";
