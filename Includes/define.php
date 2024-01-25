@@ -77,7 +77,8 @@ define("ACCOUNT_PRIVILEGES",[
     "max_post" => 15,
     "max_users" => 1,
     "display_ads" => 0,
-    "featured_ads" => 0
+    "featured_ads" => 0,
+    "handshake_limit" => 1
 ]);
 
 define("PREMIUM_SCRIPTS",[

@@ -12,7 +12,7 @@ class HandshakeModel extends \Main\Model {
 
 	function getByRequesteeAccountId() {
 
-		$query = "SELECT * FROM #__users WHERE requestee_account_id = '".$this->column['requestee_account_id']."' ".$this->and;
+		$query = "SELECT * FROM #__handshakes WHERE requestee_account_id = '".$this->column['requestee_account_id']."' ".$this->and;
 		$result = $this->DBO->query($query);
 
 		$this->initiateFields($result);
@@ -26,7 +26,7 @@ class HandshakeModel extends \Main\Model {
 
 	function getByRequestorAccountId() {
 
-		$query = "SELECT * FROM #__users WHERE requestor_account_id = '".$this->column['requestor_account_id']."' ".$this->and;
+		$query = "SELECT ".($this->select != "" ? $this->select : "*")." FROM #__handshakes WHERE requestor_account_id = '".$this->column['requestor_account_id']."' ".$this->and;
 		$result = $this->DBO->query($query);
 
 		$this->initiateFields($result);

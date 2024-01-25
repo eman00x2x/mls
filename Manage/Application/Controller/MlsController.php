@@ -17,6 +17,14 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
         $this->doc->setTitle("MLS System");
 
+		$handshake = $this->getModel("Handshake");
+		$handshake->column['requestor_account_id'] = $_SESSION['account_id'];
+		$handshake->select("GROUP_CONCAT(listing_id) as listing_ids")->and(" handshake_status IN('pending','active')");
+		$handshakeListings = $handshake->getByRequestorAccountId();
+		
+		if($handshakeListings['listing_ids'] != "") {
+			$filters[] = " listing_id NOT IN(".$handshakeListings['listing_ids'].")";
+		}
 
 		$filters[] = " status = 1 ";
 
@@ -86,55 +94,108 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	}
 
+	function handshakeIndex() {
+
+		$this->doc->setTitle("MLS System");
+
+		if(isset($_REQUEST['search'])) {
+			$filters[] = " (title LIKE '%".$_REQUEST['search']."%')";
+			$uri['search'] = $_REQUEST['search'];
+		}
+
+		$listing = $this->getModel("Listing");
+		$listing->addresses = $this->getModel("Address");
+		$listing->join(" l JOIN #__handshakes h ON h.listing_id = l.listing_id");
+		$listing->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" last_modified DESC ");
+		
+		$listing->page['limit'] = 20;
+		$listing->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+		$listing->page['target'] = url("MlsController@index");
+		$listing->page['uri'] = (isset($uri) ? $uri : []);
+		
+		$data['listings'] = $listing->getList();
+
+		if($data['listings']) {
+
+			$account = $this->getModel("Account");
+
+			for($i=0; $i<count($data['listings']); $i++) {
+				
+				$account->column['account_id'] = $data['listings'][$i]['account_id'];
+				$data['listings'][$i]['account'] = $account->getById();
+
+				unset($data['listings'][$i]['account_id']);
+
+			}
+
+		}
+
+		$this->setTemplate("mls/handshaked.php");
+		return $this->getTemplate($data,$listing);
+
+	}
+
 	function viewListing($id) {
 		return parent::view($id);
 	}
 
     function requestHandshake($listing_id) {
 
-		$listing = $this->getModel("Listing");
-		$listing->column['listing_id'] = $listing_id;
-		$data = $listing->getById();
-		
-		if($data) {
+		$handshake = $this->getModel("Handshake");
+		$handshake->column['requestor_account_id'] = $_SESSION['account_id'];
+		$handshake->select("COUNT(listing_id) AS total_handshakes");
+		$handshakeListings = $handshake->getByRequestorAccountId();
 
-			$account = $this->getModel("Account");
-			$account->column['account_id'] = $data['account_id'];
-			$data['account'] = $account->getById();
+		if($handshakeListings['total_handshakes'] >= $_SESSION['privileges']['handshake_limit']) {
+			$this->getLibrary("Factory")->setMsg("You have reached the limit of handshake request.","warning");
+			$data = false;
+		}else {
 
-			if(isset($_REQUEST['confirm'])) {
+			$listing = $this->getModel("Listing");
+			$listing->column['listing_id'] = $listing_id;
+			$data = $listing->getById();
+			
+			if($data) {
 
-				$account->column['account_id'] = $_SESSION['account_id'];
-				$requestor = $account->getById();
+				$account = $this->getModel("Account");
+				$account->column['account_id'] = $data['account_id'];
+				$data['account'] = $account->getById();
 
-				unset($requestor['account_type']);
-				unset($requestor['uploads']);
-				unset($requestor['preferences']);
-				unset($requestor['privileges']);
+				if(isset($_REQUEST['confirm'])) {
 
-				$handshake = $this->getModel("Handshake");
-				$handshake->saveNew(array(
-					"requestor_account_id" => $_SESSION['account_id'],
-					"requestor_details" => json_encode($requestor, JSON_PRETTY_PRINT),
-					"requestee_account_id" => $data['account_id'],
-					"listing_id" => $data['listing_id'],
-					"handshake_status" => "pending",
-					"handshake_status_date" => DATE_NOW,
-					"requested_date" => DATE_NOW
-				));
+					$account->column['account_id'] = $_SESSION['account_id'];
+					$requestor = $account->getById();
 
-				$this->getLibrary("Factory")->setMsg("Handshake Requested!","success");
-				return json_encode(
-					array(
-						"status" => 1,
-						"message" => getMsg()
-					)
-				);
+					unset($requestor['account_type']);
+					unset($requestor['uploads']);
+					unset($requestor['preferences']);
+					unset($requestor['privileges']);
 
+					$handshake = $this->getModel("Handshake");
+					$handshake->saveNew(array(
+						"requestor_account_id" => $_SESSION['account_id'],
+						"requestor_details" => json_encode($requestor, JSON_PRETTY_PRINT),
+						"requestee_account_id" => $data['account_id'],
+						"listing_id" => $data['listing_id'],
+						"handshake_status" => "pending",
+						"handshake_status_date" => DATE_NOW,
+						"requested_date" => DATE_NOW
+					));
+
+					$this->getLibrary("Factory")->setMsg("Handshake Requested!","success");
+					return json_encode(
+						array(
+							"status" => 1,
+							"message" => getMsg()
+						)
+					);
+
+				}
+
+			}else {
+				$this->getLibrary("Factory")->setMsg("Property listing not found.","warning");
 			}
 
-		}else {
-			$this->getLibrary("Factory")->setMsg("Property listing not found.","warning");
 		}
 
 		$this->setTemplate("mls/requestHandshake.php");
