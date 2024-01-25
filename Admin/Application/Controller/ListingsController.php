@@ -111,6 +111,32 @@ class ListingsController extends \Main\Controller {
 		$this->setTemplate("listings/add.php");
 		return $this->getTemplate($data, $listing);
 	}
+
+	function view($listing_id) {
+		
+		$this->doc->setTitle("View Property Listing");
+		
+		$listing = $this->getModel("Listing");
+		$listing->column['listing_id'] = $listing_id;
+		
+		$data['listing'] = $listing->getById();
+
+		$account = $this->getModel("Account");
+		$account->column['account_id'] = $data['listing']['account_id'];
+		$data['account'] = $account->getById();
+		
+		$listingImage = $this->getModel("ListingImage");
+		$listingImage->column['listing_id'] = $listing_id;
+		$data['listing']['images'] = $listingImage->getByListingId();
+
+		if($data) {
+			$this->setTemplate("listings/view.php");
+			return $this->getTemplate($data,$listing);
+		}
+
+		$this->response(404);
+		
+	}
 	
 	function saveNew() {
 		

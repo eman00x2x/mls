@@ -1,8 +1,8 @@
 <?php
 
-use Pecee\Http\Request as Request;
-
 namespace Main;
+
+use Pecee\Http\Request as Request;
 
 class Controller {
 

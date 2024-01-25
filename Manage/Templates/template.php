@@ -47,7 +47,7 @@
                 				</li>
 
 								<li class="nav-item <?php echo (url()->contains("/mls")) ? "active" : ""; ?>">
-									<a class="nav-link" href="<?php echo url("PropertiesController@index"); ?>">
+									<a class="nav-link" href="<?php echo url("MlsController@MLSIndex"); ?>">
 										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-building-estate'></i></span>
 										<span class="nav-link-title">MLS</span>
 									</a>

@@ -137,9 +137,9 @@ class Table {
 
 		if($this->DBO->numRows($result) > 0) {
 
-			$query = "SELECT ".($this->select != "" ? $this->select : "*").", COUNT(*) as rows FROM #__".$this->table." ".$this->join." ".$this->where." ".$this->and." ".$this->orderby;
+			$query = "SELECT ".($this->select != "" ? $this->select : "*").", COUNT(".$this->primary_key.") AS total_row FROM #__".$this->table." ".$this->join." ".$this->where." ".$this->and." ".$this->orderby;
 			$line = $this->DBO->queryUniqueValue($query);
-			$this->rows = $line['rows'];
+			$this->rows = $line['total_row'];
 
 			while($line = $this->DBO->FetchAssoc($result)) {
 				$this->results[] = $this->stripQuotes($line);

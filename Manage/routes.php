@@ -43,7 +43,8 @@ Router::post('/listings/{id}/edit/saveUpdate', 'ListingsController@saveUpdate', 
 Router::get('/listingImages/{id}/delete', 'ListingImagesController@delete', ['as' => 'ListingImagesDelete'])->where([ 'id' => '[\w\-]+' ]);
 
 /** MLS ROUTES */
-Router::get('/mls', 'PropertiesController@index', ['as' => 'mls']);
+Router::get('/mls', 'MlsController@MLSIndex', ['as' => 'mls']);
+Router::get('/mls/{id}', 'MlsController@view', ['as' => 'viewListing'])->where([ 'id' => '[\w\-]+' ]);
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get('/subscriptions', 'SubscriptionsController@index', ['as' => 'subscriptions']);
