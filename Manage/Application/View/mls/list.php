@@ -153,7 +153,7 @@ $html[] = "<div class='page-body'>";
 					if($data['listings']) { $c=$model->page['starting_number'];
 
 						for($i=0; $i<count($data['listings']); $i++) { $c++;
-							$html[] = "<div class='row_listings_".$data['listings'][$i]['listing_id']." listing-wrap my-2'>";
+							$html[] = "<div class='row_listings_".$data['listings'][$i]['listing_id']." listing-wrap my-2 pb-2 border-bottom'>";
 								$html[] = "<div class='row'>";
 									$html[] = "<div class='col-3'>";
 										$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data['listings'][$i]['listing_id']])."'>";
