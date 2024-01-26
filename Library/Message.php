@@ -50,7 +50,7 @@ class Message {
 			break;
 
 			case 'info':
-				$mes = "Information";
+				$mes = "";
 				$class = $this->info;
 				$icon = "ti ti-bell";
 			break;

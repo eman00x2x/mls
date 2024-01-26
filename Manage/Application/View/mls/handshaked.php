@@ -6,14 +6,13 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 		$html[] = "<div class='row g-2 '>";
 			$html[] = "<div class='col'>";
 				$html[] = "<div class='page-pretitle'>Multi-Listing Services System</div>";
-				$html[] = "<h1 class='page-title'><i class='ti ti-building-estate me-2'></i> MLS System</h1>";
+				$html[] = "<h1 class='page-title'><i class='ti ti-building-estate me-2'></i> Handshakes</h1>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='d-none d-sm-inline'>";
 					$html[] = "<div class='btn-list'>";
 						
-						$html[] = "<a class='ajax btn btn-dark' href=''><i class='ti ti-user-plus me-2'></i> Handshaked</a>";
 						$html[] = "<span class='btn btn-dark filter-btn' href=''><i class='ti ti-filter me-2'></i> Filter Result</span>";
 						
 					$html[] = "</div>";
@@ -66,13 +65,13 @@ $html[] = "<div class='page-body'>";
                                     if($data[$i]['requestor_account_id'] == $_SESSION['account_id']) {
                                         switch($data[$i]['handshake_status']) {
                                             case 'pending':
-                                                $html[] = "<span class='btn btn-secondary '>".ucwords($data[$i]['handshake_status'])."</span>";
-												$html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data[$i]['listing_id']])."'><i class='ti ti-x me-2'></i> Cancel Handshake</span>";
+                                                $html[] = "<span class='btn btn-secondary '><i class='ti ti-hourglass-empty me-2'></i> ".ucwords($data[$i]['handshake_status'])."</span>";
+												$html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data[$i]['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
                                                 break;
                                             case 'active':
                                                 $html[] = "<span class='btn btn-light '>Active since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
-												$html[] = "<span class='btn btn-success btn-done-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@doneHandshake", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-check me-2'></i> Done Handshake</span>";
-												$html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data[$i]['listing_id']])."'><i class='ti ti-x me-2'></i> Cancel Handshake</span>";
+												$html[] = "<span class='btn btn-success btn-done-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@doneHandshake", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-discount-check-filled me-2'></i> Done Handshake</span>";
+												$html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data[$i]['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
                                                 break;
 											case 'done':
                                                 $html[] = "<span class='btn btn-light '>Done since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
@@ -86,8 +85,8 @@ $html[] = "<div class='page-body'>";
                                     if($data[$i]['requestee_account_id'] == $_SESSION['account_id']) {
                                         switch($data[$i]['handshake_status']) {
                                             case 'pending':
-                                                $html[] = "<span class='btn btn-success btn-accept-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@acceptRequest", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-check me-2'></i> Accept Request</span>";
-                                                $html[] = "<span class='btn btn-danger btn-denied-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@deniedRequest", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-x me-2'></i> Denied</span>";
+                                                $html[] = "<span class='btn btn-success btn-accept-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@acceptRequest", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-circle-check me-2'></i> Accept Request</span>";
+                                                $html[] = "<span class='btn btn-danger btn-denied-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@deniedRequest", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-ban me-2'></i> Denied</span>";
                                                 break;
                                             case 'active':
                                                 $html[] = "<span class='btn btn-light '>Active since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";

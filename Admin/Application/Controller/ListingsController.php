@@ -129,6 +129,11 @@ class ListingsController extends \Main\Controller {
 		$listingImage->column['listing_id'] = $listing_id;
 		$data['listing']['images'] = $listingImage->getByListingId();
 
+		$handshake = $this->getModel("Handshake");
+		$handshake->column['requestor_account_id'] = $_SESSION['account_id'];
+		$handshake->and(" listing_id = ".$listing_id);
+		$data['handshake'] = $handshake->getByRequestorAccountId();
+
 		if($data) {
 			$this->setTemplate("listings/view.php");
 			return $this->getTemplate($data,$listing);

@@ -13,7 +13,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 				$html[] = "<div class='d-sm-block'>";
 					$html[] = "<div class='btn-list'>";
 						
-						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@handshakedIndex")."'><i class='ti ti-user-plus me-2'></i> Handshaked</a>";
+						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@handshakedIndex")."'><i class='ti ti-heart-handshake me-2'></i> Handshaked</a>";
 						$html[] = "<span class='btn btn-dark filter-btn' href=''><i class='ti ti-filter me-2'></i> Filter Result</span>";
 						
 					$html[] = "</div>";
@@ -175,8 +175,8 @@ $html[] = "<div class='page-body'>";
 										$html[] = "</div>";
 
 										$html[] = "<div class='btn-list'>";
-											$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listings'][$i]['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listings'][$i]['listing_id']])."'>Request Handshake</span>";
-											$html[] = "<span class='btn btn-md btn-primary'>Compare</span>";
+											$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listings'][$i]['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
+											$html[] = "<span class='btn btn-md btn-light'><i class='ti ti-layers-difference me-2'></i> Compare</span>";
 										$html[] = "</div>";
 
 									$html[] = "</div>";

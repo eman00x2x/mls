@@ -1,5 +1,17 @@
 <?php
 
+$buttons = function() use (&$data) {
+    
+    if($data['handshake']) {
+		$html[] = "<span class='btn btn-md btn-danger ms-1 btn-cancel-handshake row_listings_".$data['listing']['listing_id']."' data-row='row_listings_".$data['listing']['listing_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
+    }else {
+        $html[] = "<span class='btn btn-md btn-primary me-1 btn-requestHandshake row_listings_".$data['listing']['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
+    }  
+
+    return implode("",$html);
+
+};
+
 $html[] = "<div class='page-header d-print-none text-white'>";
 	$html[] = "<div class='container-xl'>";
 
@@ -13,7 +25,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 				$html[] = "<div class='d-none d-sm-inline'>";
 					$html[] = "<div class='btn-list'>";
 						
-						$html[] = "<a class='ajax btn btn-dark' href=''><i class='ti ti-user-plus me-2'></i> Handshaked</a>";
+						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@handshakedIndex")."'><i class='ti ti-heart-handshake me-2'></i> Handshaked</a>";
 						
 					$html[] = "</div>";
 				$html[] = "</div>";
@@ -63,10 +75,9 @@ $html[] = "<div class='page-body'>";
                     $html[] = "</tr>";
                     $html[] = "</table>";
 
-					$html[] = "<div class='text-center'>";
+					$html[] = "<div class='btn-wrap text-center d-none d-md-block'>";
 						$html[] = "<div class='btn-list'>";
-							$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listing']['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-check me-2'></i> Request Handshake</span>";
-							$html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-x me-2'></i> Cancel Handshake</span>";
+							$html[] = $buttons();
 						$html[] = "</div>";
 	                $html[] = "</div>";
 
@@ -116,4 +127,10 @@ $html[] = "<div class='page-body'>";
         $html[] = "</div>";
 
     $html[] = "</div>";
+$html[] = "</div>";
+
+$html[] = "<div class='btn-wrap fixed-bottom d-sm-block d-md-none'>";
+	$html[] = "<div class='text-center '>";
+		$html[] = $buttons();
+	$html[] = "</div>";
 $html[] = "</div>";

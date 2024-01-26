@@ -71,7 +71,7 @@ $(document).on('click', '.btn-handshake-confirm', function (e) {
 			bootstrap.Offcanvas.getInstance($('.offcanvas')).hide();
 		}
 
-		$('.request-response').html(response.message);
+		$('.request-response, .response').html(response.message);
 	});
 });
 

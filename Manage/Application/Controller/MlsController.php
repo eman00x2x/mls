@@ -136,6 +136,17 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 	}
 
 	function viewListing($id) {
+
+		$this->doc->addStyleDeclaration("
+
+			.btn-wrap {
+				border-top: 2px solid #e1e1e1;
+				padding: 15px 5px 25px 5px;
+				background-color: #FFF;
+			}
+
+		");
+
 		return parent::view($id);
 	}
 
@@ -271,7 +282,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$handshake->and(" requestor_account_id = ".$_SESSION['account_id']);
 			$handshake->deleteHandshake($listing_id,"listing_id");
 
-			$this->getLibrary("Factory")->setMsg("Handshake Cancel!","info");
+			$this->getLibrary("Factory")->setMsg("Handshake Canceled!","info");
 
 		}else {
 			$this->getLibrary("Factory")->setMsg("Listing not yet engage in handshake!","warning");

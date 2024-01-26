@@ -9,17 +9,21 @@ if($data) {
     $html[] = "<div class='offcanvas-body'>";
 		$html[] = "<div class='response-body'>";
             $html[] = "<table class='table'>";
-                $html[] = "<tr>";
+                /* $html[] = "<tr>";
                     $html[] = "<td class='align-top text-center'><span class='avatar avatar-md' style='background-image: url(".$data['account']['logo'].")'></span></td>";
                     $html[] = "<td class='align-top'>";
                         $html[] = "<span class='d-block fw-bold'>".$data['account']['firstname']." ".$data['account']['lastname']."</span>";
                         $html[] = "<span class='d-block'>".$data['account']['email']."</span>";
                         $html[] = "<span class='d-block'>Registered since: ".date("F d, Y",$data['account']['registration_date'])."</span>";
                     $html[] = "</td>";
-                $html[] = "</tr>";
+                $html[] = "</tr>"; */
                 $html[] = "<tr>";
                     $html[] = "<td colspan='2'>";
-                        $html[] = "<span class='d-block fw-bold'>Requesting Property Listing</span>";
+                        /* $html[] = "<span class='d-block fw-bold'>Requesting Property Listing</span>"; */
+
+                        $html[] = "<div class='my-2'>";
+                            $html[] = "<span class='avatar avatar-xxl' style='background-image: url(".$data['thumb_img'].")'></span>";
+                        $html[] = "</div>";
                         $html[] = "<span class='d-block mb-2'>".$data['title']."</span>";
 
                         $html[] = "<div class='d-flex flex-wrap'>";
