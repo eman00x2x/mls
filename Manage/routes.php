@@ -47,8 +47,10 @@ Router::get('/mls', 'MlsController@MLSIndex', ['as' => 'mls']);
 Router::get('/mls/handshaked', 'MlsController@handshakedIndex', ['as' => 'handshakedIndex']);
 Router::get('/mls/handshaked/{id}/acceptRequest', 'MlsController@acceptRequest', ['as' => 'acceptRequest'])->where([ 'id' => '[\w\-]+' ]);
 Router::get('/mls/handshaked/{id}/deniedRequest', 'MlsController@deniedRequest', ['as' => 'deniedRequest'])->where([ 'id' => '[\w\-]+' ]);
+Router::get('/mls/handshaked/{id}/doneHandshake', 'MlsController@doneHandshake', ['as' => 'doneHandshake'])->where([ 'id' => '[\w\-]+' ]);
+Router::get('/mls/handshaked/{listing_id}/cancelHandshake', 'MlsController@cancelHandshake', ['as' => 'cancelHandshake'])->where([ 'listing_id' => '[\w\-]+' ]);
 
-Router::get('/mls/{id}', 'MlsController@view', ['as' => 'viewListing'])->where([ 'id' => '[\w\-]+' ]);
+Router::get('/mls/{id}', 'MlsController@viewListing', ['as' => 'viewListing'])->where([ 'id' => '[\w\-]+' ]);
 Router::get('/mls/{listing_id}/requestHandshake', 'MlsController@requestHandshake', ['as' => 'requestHandshake'])->where([ 'listing_id' => '[\w\-]+' ]);
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */

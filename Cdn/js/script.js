@@ -75,6 +75,33 @@ $(document).on('click', '.btn-handshake-confirm', function (e) {
 	});
 });
 
+$(document).on('click', '.btn-accept-handshake', function (e) {
+	url = $(this).data('url');
+	
+	$('.response').html("<img src='" + CDN + "images/loader.gif' /> request in progress... ");
+	
+	$.get(url, function (data, status) {
+		response = JSON.parse(data);
+		$('.response').html(response.message);
+		$('.btn-accept-handshake').remove();
+		$('.btn-denied-handshake').remove();
+	});
+});
+
+$(document).on('click', '.btn-denied-handshake, .btn-done-handshake, .btn-cancel-handshake', function (e) {
+	url = $(this).data('url');
+	row = $(this).data('row');
+
+	$('.response').html("<img src='" + CDN + "images/loader.gif' /> request in progress... ");
+
+	$.get(url, function (data, status) {
+		response = JSON.parse(data);
+		$('.response').html(response.message);
+		$('.' + row).remove();
+	});
+});
+
+
 $(document).on('click','.btn-view', function(e) {
 	url = $(this).data('url');
 	id = $(this).data('id');

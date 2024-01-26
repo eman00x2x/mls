@@ -65,8 +65,8 @@ $html[] = "<div class='page-body'>";
 
 					$html[] = "<div class='text-center'>";
 						$html[] = "<div class='btn-list'>";
-							$html[] = "<span class='btn btn-sm btn-primary'>Request Handshake</span>";
-							$html[] = "<span class='btn btn-sm btn-danger'><i class='ti ti-x'></i> Cancel Request</span>";
+							$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listing']['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-check me-2'></i> Request Handshake</span>";
+							$html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-x me-2'></i> Cancel Handshake</span>";
 						$html[] = "</div>";
 	                $html[] = "</div>";
 

@@ -92,10 +92,6 @@ class HandshakeModel extends \Main\Model {
 
 			$v = $this->getValidator();
 
-			$v->validateGeneral($data['requestor_account_id']," Requestor Account Id not found!");
-			$v->validateGeneral($data['requestee_account_id']," Requestee Account Id not found!");
-			$v->validateGeneral($data['listing_id']," Listing ID not found!");
-
 			if($v->foundErrors()) {
 				return array(
 					"status" => 2,
@@ -103,6 +99,12 @@ class HandshakeModel extends \Main\Model {
 					"message" => "Please correct the following: ".$v->listErrors(', ')
 				);
 			}else {
+
+				if(isset($data['requestor_details'])) {
+					$data['requestor_details'] = json_encode($data['requestor_details'], JSON_PRETTY_PRINT);
+				}
+
+				$this->column['requestor_details'] = json_encode($this->column['requestor_details'], JSON_PRETTY_PRINT);
 
 				foreach($data as $key => $val) {
 					$this->column[$key] = $val;

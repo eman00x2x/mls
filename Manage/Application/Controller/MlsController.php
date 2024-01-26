@@ -26,7 +26,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$filters[] = " listing_id NOT IN(".$handshakeListings['listing_ids'].")";
 		}
 
-		$filters[] = " account_id != ".$_SESSION['account_id'];
+		#$filters[] = " account_id != ".$_SESSION['account_id'];
 		$filters[] = " status = 1 ";
 
 		if(isset($_REQUEST['search'])) {
@@ -107,7 +107,9 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$listing = $this->getModel("Listing");
 
 		$handshake = $this->getModel("Handshake");
-		$handshake->where(" requestor_account_id = ".$_SESSION['account_id']." OR requestee_account_id = ".$_SESSION['account_id'])->orderby(" FIELD(handshake_status,'pending','active','done','denied'), handshake_status_date DESC ");
+		$handshake->where(" requestor_account_id = ".$_SESSION['account_id']." OR requestee_account_id = ".$_SESSION['account_id'])
+		->and(" handshake_status IN('pending','active') ")
+		->orderby(" FIELD(handshake_status,'pending','active','done','denied'), handshake_status_date DESC ");
 		
 		$handshake->page['limit'] = 20;
 		$handshake->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
@@ -120,10 +122,13 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			for($i=0; $i<count($data); $i++) {
 				$listing->column['listing_id'] = $data[$i]['listing_id'];
 				$data[$i]['listing'] = $listing->getById();
+
+				if(!$data[$i]['listing']) {
+					$handshake->deleteHandshake($data[$i]['handshake_id']);
+					unset($data[$i]);
+				}
 			}
 		}
-
-		debug($data);
 
 		$this->setTemplate("mls/handshaked.php");
 		return $this->getTemplate($data,$listing);
@@ -138,7 +143,9 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		$handshake = $this->getModel("Handshake");
 		$handshake->column['requestor_account_id'] = $_SESSION['account_id'];
-		$handshake->select("COUNT(listing_id) AS total_handshakes");
+		$handshake->select("COUNT(listing_id) AS total_handshakes")
+		->and(" handshake_status IN('pending','active') ");
+		
 		$handshakeListings = $handshake->getByRequestorAccountId();
 
 		if($handshakeListings['total_handshakes'] >= $_SESSION['privileges']['handshake_limit']) {
@@ -220,11 +227,56 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		$handshake = $this->getModel("Handshake");
 		$handshake->save($id, array(
-			"handshake_status" => "active",
+			"handshake_status" => "denied",
 			"handshake_status_date" => DATE_NOW
 		));
 
-		$this->getLibrary("Factory")->setMsg("Handshake Accepted!","success");
+		$this->getLibrary("Factory")->setMsg("Handshake Denied!","info");
+		return json_encode(
+			array(
+				"status" => 1,
+				"message" => getMsg()
+			)
+		);
+
+	}
+
+	function doneHandshake($id) {
+
+		$handshake = $this->getModel("Handshake");
+		$handshake->save($id, array(
+			"handshake_status" => "done",
+			"handshake_status_date" => DATE_NOW
+		));
+
+		$this->getLibrary("Factory")->setMsg("Handshake Done!","info");
+		return json_encode(
+			array(
+				"status" => 1,
+				"message" => getMsg()
+			)
+		);
+
+	}
+
+	function cancelHandshake($listing_id) {
+
+		$handshake = $this->getModel("Handshake");
+		$handshake->column['requestor_account_id'] = $_SESSION['account_id'];
+		$handshake->and(" listing_id = $listing_id ");
+		$data = $handshake->getByRequestorAccountId();
+
+		if($data) {
+
+			$handshake->and(" requestor_account_id = ".$_SESSION['account_id']);
+			$handshake->deleteHandshake($listing_id,"listing_id");
+
+			$this->getLibrary("Factory")->setMsg("Handshake Cancel!","info");
+
+		}else {
+			$this->getLibrary("Factory")->setMsg("Listing not yet engage in handshake!","warning");
+		}
+
 		return json_encode(
 			array(
 				"status" => 1,

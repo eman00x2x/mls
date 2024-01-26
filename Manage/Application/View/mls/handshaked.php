@@ -42,22 +42,22 @@ $html[] = "<div class='page-body'>";
 			if($data) { $c=$model->page['starting_number'];
 
 				for($i=0; $i<count($data); $i++) { $c++;
-					$html[] = "<div class='row_listings_".$data[$i]['listing_id']." listing-wrap my-2'>";
+					$html[] = "<div class='row_listings_".$data[$i]['handshake_id']." listing-wrap my-2'>";
 						$html[] = "<div class='row'>";
 							$html[] = "<div class='col-12 col-md-3'>";
-								$html[] = "<div class='avatar avatar-xxxl mb-2' style='background-image: url(".$data[$i]['thumb_img'].")'></div>";
+								$html[] = "<div class='avatar avatar-xxxl mb-2' style='background-image: url(".$data[$i]['listing']['thumb_img'].")'></div>";
 							$html[] = "</div>";
 							$html[] = "<div class='col-12 col-md-9'>";
-								$html[] = "<h3 class='p-0'>".$data[$i]['title']."<small class='d-block fw-normal'>".ucwords($data[$i]['offer'])." ".$data[$i]['category']." in ".$data[$i]['address']['municipality'].", ".$data[$i]['address']['province']."</small></h3>";
+								$html[] = "<h3 class='p-0'>".$data[$i]['listing']['title']."<small class='d-block fw-normal'>".ucwords($data[$i]['listing']['offer'])." ".$data[$i]['listing']['category']." in ".$data[$i]['listing']['address']['municipality'].", ".$data[$i]['listing']['address']['province']."</small></h3>";
 
 								$html[] = "<div class='mb-3'>";
 									$html[] = "<div class='d-flex'>";
-										$html[] = "<span class='d-block border me-2 p-2 text-center fw-bold fs-20'><label class='text-start d-block text-muted small fs-10 fw-normal'>Price</label>&#8369;".number_format($data[$i]['price'],0)."</span>";
-										if($data[$i]['listing']['floor_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Floor Area</label>".number_format($data[$i]['floor_area'],0)." sqm</span>"; }
-										if($data[$i]['listing']['lot_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Lot Area</label>".number_format($data[$i]['lot_area'],0)." sqm</span>"; }
-										if($data[$i]['listing']['bedroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bedroom</label>".$data[$i]['bedroom']."</span>"; }
-										if($data[$i]['listing']['bathroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bathroom</label>".$data[$i]['bathroom']."</span>"; }
-										if($data[$i]['listing']['parking'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Car Garage</label>".$data[$i]['parking']."</span>"; }
+										$html[] = "<span class='d-block border me-2 p-2 text-center fw-bold fs-20'><label class='text-start d-block text-muted small fs-10 fw-normal'>Price</label>&#8369;".number_format($data[$i]['listing']['price'],0)."</span>";
+										if($data[$i]['listing']['floor_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Floor Area</label>".number_format($data[$i]['listing']['floor_area'],0)." sqm</span>"; }
+										if($data[$i]['listing']['lot_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Lot Area</label>".number_format($data[$i]['listing']['lot_area'],0)." sqm</span>"; }
+										if($data[$i]['listing']['bedroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bedroom</label>".$data[$i]['listing']['bedroom']."</span>"; }
+										if($data[$i]['listing']['bathroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bathroom</label>".$data[$i]['listing']['bathroom']."</span>"; }
+										if($data[$i]['listing']['parking'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Car Garage</label>".$data[$i]['listing']['parking']."</span>"; }
 									$html[] = "</div>";
 								$html[] = "</div>";
 
@@ -67,9 +67,18 @@ $html[] = "<div class='page-body'>";
                                         switch($data[$i]['handshake_status']) {
                                             case 'pending':
                                                 $html[] = "<span class='btn btn-secondary '>".ucwords($data[$i]['handshake_status'])."</span>";
+												$html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data[$i]['listing_id']])."'><i class='ti ti-x me-2'></i> Cancel Handshake</span>";
                                                 break;
                                             case 'active':
-                                                $html[] = "<span class='btn btn-secondary '>Active since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+                                                $html[] = "<span class='btn btn-light '>Active since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+												$html[] = "<span class='btn btn-success btn-done-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@doneHandshake", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-check me-2'></i> Done Handshake</span>";
+												$html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data[$i]['listing_id']])."'><i class='ti ti-x me-2'></i> Cancel Handshake</span>";
+                                                break;
+											case 'done':
+                                                $html[] = "<span class='btn btn-light '>Done since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+                                                break;
+											case 'denied':
+                                                $html[] = "<span class='btn btn-light '>Deined at: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
                                                 break;
                                         }
                                     }
@@ -77,11 +86,17 @@ $html[] = "<div class='page-body'>";
                                     if($data[$i]['requestee_account_id'] == $_SESSION['account_id']) {
                                         switch($data[$i]['handshake_status']) {
                                             case 'pending':
-                                                $html[] = "<span class='btn btn-success btn-accept' data-url='".url("MlsController@acceptRequest", ["id" => $data['']])."'><i class='ti ti-check me-2'></i> Accept Request</span>";
-                                                $html[] = "<span class='btn btn-danger btn-denied' data-url='".url("MlsController@acceptRequest", ["id" => $data['']])."'><i class='ti ti-x me-2'></i> Denied</span>";
+                                                $html[] = "<span class='btn btn-success btn-accept-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@acceptRequest", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-check me-2'></i> Accept Request</span>";
+                                                $html[] = "<span class='btn btn-danger btn-denied-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@deniedRequest", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-x me-2'></i> Denied</span>";
                                                 break;
                                             case 'active':
-                                                $html[] = "<span class='btn btn-secondary '>Active since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+                                                $html[] = "<span class='btn btn-light '>Active since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+                                                break;
+											case 'done':
+                                                $html[] = "<span class='btn btn-light '>Done since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+                                                break;
+											case 'denied':
+                                                $html[] = "<span class='btn btn-light '>Deined at: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
                                                 break;
                                         }
                                     }
