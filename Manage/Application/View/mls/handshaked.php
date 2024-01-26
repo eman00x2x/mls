@@ -39,48 +39,49 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<a href='".url("MlsController@index")."' class='clearFilter'>CLEAR FILTER</a>";
 			$html[] = "</div>";
 
-			if($data['listings']) { $c=$model->page['starting_number'];
+			if($data) { $c=$model->page['starting_number'];
 
-				for($i=0; $i<count($data['listings']); $i++) { $c++;
-					$html[] = "<div class='row_listings_".$data['listings'][$i]['listing_id']." listing-wrap my-2'>";
+				for($i=0; $i<count($data); $i++) { $c++;
+					$html[] = "<div class='row_listings_".$data[$i]['listing_id']." listing-wrap my-2'>";
 						$html[] = "<div class='row'>";
-							$html[] = "<div class='col-3'>";
-								$html[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div>";
+							$html[] = "<div class='col-12 col-md-3'>";
+								$html[] = "<div class='avatar avatar-xxxl mb-2' style='background-image: url(".$data[$i]['thumb_img'].")'></div>";
 							$html[] = "</div>";
-							$html[] = "<div class='col-8'>";
-								$html[] = "<h3 class='p-0'>".$data['listings'][$i]['title']."<small class='d-block fw-normal'>".ucwords($data['listings'][$i]['offer'])." ".$data['listings'][$i]['category']." in ".$data['listings'][$i]['address']['municipality'].", ".$data['listings'][$i]['address']['province']."</small></h3>";
+							$html[] = "<div class='col-12 col-md-9'>";
+								$html[] = "<h3 class='p-0'>".$data[$i]['title']."<small class='d-block fw-normal'>".ucwords($data[$i]['offer'])." ".$data[$i]['category']." in ".$data[$i]['address']['municipality'].", ".$data[$i]['address']['province']."</small></h3>";
 
 								$html[] = "<div class='mb-3'>";
 									$html[] = "<div class='d-flex'>";
-										$html[] = "<span class='d-block border me-2 p-2 text-center fw-bold fs-20'><label class='text-start d-block text-muted small fs-10 fw-normal'>Price</label>&#8369;".number_format($data['listings'][$i]['price'],0)."</span>";
-										if($data['listings'][$i]['floor_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Floor Area</label>".number_format($data['listings'][$i]['floor_area'],0)." sqm</span>"; }
-										if($data['listings'][$i]['lot_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Lot Area</label>".number_format($data['listings'][$i]['lot_area'],0)." sqm</span>"; }
-										if($data['listings'][$i]['bedroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bedroom</label>".$data['listings'][$i]['bedroom']."</span>"; }
-										if($data['listings'][$i]['bathroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bathroom</label>".$data['listings'][$i]['bathroom']."</span>"; }
-										if($data['listings'][$i]['parking'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Car Garage</label>".$data['listings'][$i]['parking']."</span>"; }
+										$html[] = "<span class='d-block border me-2 p-2 text-center fw-bold fs-20'><label class='text-start d-block text-muted small fs-10 fw-normal'>Price</label>&#8369;".number_format($data[$i]['price'],0)."</span>";
+										if($data[$i]['listing']['floor_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Floor Area</label>".number_format($data[$i]['floor_area'],0)." sqm</span>"; }
+										if($data[$i]['listing']['lot_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Lot Area</label>".number_format($data[$i]['lot_area'],0)." sqm</span>"; }
+										if($data[$i]['listing']['bedroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bedroom</label>".$data[$i]['bedroom']."</span>"; }
+										if($data[$i]['listing']['bathroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bathroom</label>".$data[$i]['bathroom']."</span>"; }
+										if($data[$i]['listing']['parking'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Car Garage</label>".$data[$i]['parking']."</span>"; }
 									$html[] = "</div>";
 								$html[] = "</div>";
 
 								$html[] = "<div class='btn-list'>";
 									
-                                    if($data['listings'][$i]['requestor_account_id'] == $_SESSION['account_id']) {
-                                        switch($data['listings'][$i]['handshake_status']) {
+                                    if($data[$i]['requestor_account_id'] == $_SESSION['account_id']) {
+                                        switch($data[$i]['handshake_status']) {
                                             case 'pending':
-                                                $html[] = "<span class='btn btn-secondary '>".ucwords($data['listings'][$i]['handshake_status'])."</span>";
+                                                $html[] = "<span class='btn btn-secondary '>".ucwords($data[$i]['handshake_status'])."</span>";
                                                 break;
                                             case 'active':
-                                                $html[] = "<span class='btn btn-secondary '>Active since: ".date("F d, Y",$data['listings'][$i]['handshake_status_date'])."</span>";
+                                                $html[] = "<span class='btn btn-secondary '>Active since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
                                                 break;
                                         }
                                     }
 
-                                    if($data['listings'][$i]['requestee_account_id'] == $_SESSION['account_id']) {
-                                        switch($data['listings'][$i]['handshake_status']) {
+                                    if($data[$i]['requestee_account_id'] == $_SESSION['account_id']) {
+                                        switch($data[$i]['handshake_status']) {
                                             case 'pending':
-                                                $html[] = "<span class='btn btn-success '><i class='ti ti-check me-2'></i> Accept Request</span>";
+                                                $html[] = "<span class='btn btn-success btn-accept' data-url='".url("MlsController@acceptRequest", ["id" => $data['']])."'><i class='ti ti-check me-2'></i> Accept Request</span>";
+                                                $html[] = "<span class='btn btn-danger btn-denied' data-url='".url("MlsController@acceptRequest", ["id" => $data['']])."'><i class='ti ti-x me-2'></i> Denied</span>";
                                                 break;
                                             case 'active':
-                                                $html[] = "<span class='btn btn-secondary '>Active since: ".date("F d, Y",$data['listings'][$i]['handshake_status_date'])."</span>";
+                                                $html[] = "<span class='btn btn-secondary '>Active since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
                                                 break;
                                         }
                                     }

@@ -45,6 +45,9 @@ Router::get('/listingImages/{id}/delete', 'ListingImagesController@delete', ['as
 /** MLS ROUTES */
 Router::get('/mls', 'MlsController@MLSIndex', ['as' => 'mls']);
 Router::get('/mls/handshaked', 'MlsController@handshakedIndex', ['as' => 'handshakedIndex']);
+Router::get('/mls/handshaked/{id}/acceptRequest', 'MlsController@acceptRequest', ['as' => 'acceptRequest'])->where([ 'id' => '[\w\-]+' ]);
+Router::get('/mls/handshaked/{id}/deniedRequest', 'MlsController@deniedRequest', ['as' => 'deniedRequest'])->where([ 'id' => '[\w\-]+' ]);
+
 Router::get('/mls/{id}', 'MlsController@view', ['as' => 'viewListing'])->where([ 'id' => '[\w\-]+' ]);
 Router::get('/mls/{listing_id}/requestHandshake', 'MlsController@requestHandshake', ['as' => 'requestHandshake'])->where([ 'listing_id' => '[\w\-]+' ]);
 

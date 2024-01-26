@@ -105,31 +105,25 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		}
 
 		$listing = $this->getModel("Listing");
-		$listing->addresses = $this->getModel("Address");
-		$listing->join(" JOIN #__handshakes h ON h.listing_id = #__listings.listing_id");
-		$listing->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" last_modified DESC ");
+
+		$handshake = $this->getModel("Handshake");
+		$handshake->where(" requestor_account_id = ".$_SESSION['account_id']." OR requestee_account_id = ".$_SESSION['account_id'])->orderby(" FIELD(handshake_status,'pending','active','done','denied'), handshake_status_date DESC ");
 		
-		$listing->page['limit'] = 20;
-		$listing->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$listing->page['target'] = url("MlsController@index");
-		$listing->page['uri'] = (isset($uri) ? $uri : []);
-		
-		$data['listings'] = $listing->getList();
+		$handshake->page['limit'] = 20;
+		$handshake->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+		$handshake->page['target'] = url("MlsController@index");
+		$handshake->page['uri'] = (isset($uri) ? $uri : []);
 
-		if($data['listings']) {
+		$data = $handshake->getList();
 
-			$account = $this->getModel("Account");
-
-			for($i=0; $i<count($data['listings']); $i++) {
-				
-				$account->column['account_id'] = $data['listings'][$i]['account_id'];
-				$data['listings'][$i]['account'] = $account->getById();
-
-				unset($data['listings'][$i]['account_id']);
-
+		if($data) {
+			for($i=0; $i<count($data); $i++) {
+				$listing->column['listing_id'] = $data[$i]['listing_id'];
+				$data[$i]['listing'] = $listing->getById();
 			}
-
 		}
+
+		debug($data);
 
 		$this->setTemplate("mls/handshaked.php");
 		return $this->getTemplate($data,$listing);
@@ -203,6 +197,42 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		return $this->getTemplate($data);
 
     }
+
+	function acceptRequest($id) {
+
+		$handshake = $this->getModel("Handshake");
+		$handshake->save($id, array(
+			"handshake_status" => "active",
+			"handshake_status_date" => DATE_NOW
+		));
+
+		$this->getLibrary("Factory")->setMsg("Handshake Accepted!","success");
+		return json_encode(
+			array(
+				"status" => 1,
+				"message" => getMsg()
+			)
+		);
+
+	}
+
+	function deniedRequest($id) {
+
+		$handshake = $this->getModel("Handshake");
+		$handshake->save($id, array(
+			"handshake_status" => "active",
+			"handshake_status_date" => DATE_NOW
+		));
+
+		$this->getLibrary("Factory")->setMsg("Handshake Accepted!","success");
+		return json_encode(
+			array(
+				"status" => 1,
+				"message" => getMsg()
+			)
+		);
+
+	}
 	
 	
 }

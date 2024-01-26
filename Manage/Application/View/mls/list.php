@@ -10,7 +10,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
-				$html[] = "<div class='d-none d-sm-inline'>";
+				$html[] = "<div class='d-sm-block'>";
 					$html[] = "<div class='btn-list'>";
 						
 						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@handshakedIndex")."'><i class='ti ti-user-plus me-2'></i> Handshaked</a>";
@@ -33,7 +33,7 @@ $html[] = "<div class='page-body'>";
 
 		$html[] = "<div class='row'>";
 
-			$html[] = "<div class='col-md-3 col-sm-4'>";
+			$html[] = "<div class='col-md-3 col-sm-4 d-none d-md-block'>";
 				$html[] = "<div class='box-container mb-3'>";
 					
 					$html[] = "<div class=''>";
