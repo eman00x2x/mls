@@ -37,7 +37,7 @@ $html[] = "<div class='page-body'>";
 			$html[] = "<div class='col-md-3 col-sm-4 d-none d-md-block'>";
 				$html[] = "<div class='box-container mb-3'>";
 					
-					$html[] = "<div class=''>";
+					$html[] = "<form id='filter-form'>";
 
 						$html[] = "<h3><i class='ti ti-filter me-2'></i> Filter Form</h3>";
 
@@ -63,82 +63,85 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<select class='form-control' name='offer' id='offer'>";
 									$offer_type = array("For Sale","For Rent");
 									foreach($offer_type as $key => $val) {
-										$html[] = "<option value='".strtolower($val)."'>$val</option>";
+										$sel = isset($model->page['uri']['offer']) && $model->page['uri']['offer'] ? "selected" : "";
+										$html[] = "<option value='".strtolower($val)."' $sel>$val</option>";
 									}
 								$html[] = "</select>";
 								$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
 							$html[] = "</div>";
 						$html[] = "</div>";
 
-						$html[] = "<div class='form-group mb-3'>";
-							$html[] = "<label class='form-label text-muted'>Property Type</label>";
-							$html[] = "<div class='input-icon mb-3'>";
-								$html[] = "<span class='input-icon-addon'><i class='ti ti-building-estate'></i></span>";
-								$html[] = "<select class='form-control' name='type' id='type'>";
-									$offer_type = array("Residential","Commercial");
-									foreach($offer_type as $key => $val) {
-										$html[] = "<option value='".$val."'>$val</option>";
-									}
-								$html[] = "</select>";
-								$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+						$html[] = "<div class='d-flex gap-2'>";
+							$html[] = "<div class='form-group'>";
+								$html[] = "<label class='form-label text-muted'>Property Type</label>";
+								$html[] = "<div class='input-icon mb-3'>";
+									$html[] = "<span class='input-icon-addon'><i class='ti ti-building-estate'></i></span>";
+									$html[] = "<select class='form-control' name='type' id='type'>";
+										$offer_type = array("Residential","Commercial");
+										foreach($offer_type as $key => $val) {
+											$sel = isset($model->page['uri']['type']) && $model->page['uri']['type'] ? "selected" : "";
+											$html[] = "<option value='".$val."' $sel>$val</option>";
+										}
+									$html[] = "</select>";
+									$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='form-group'>";
+								$html[] = "<label class='form-label text-muted'>Category</label>";
+								$html[] = "<div class='input-icon mb-3'>";
+									$html[] = "<span class='input-icon-addon'><i class='ti ti-building-store'></i></span>";
+									$html[] = $model->categorySelection(isset($model->page['uri']['category']) ? $model->page['uri']['category'] : null);
+									$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+								$html[] = "</div>";
 							$html[] = "</div>";
 						$html[] = "</div>";
 
 					    $html[] = "<div class='form-group mb-3'>";
-							$html[] = "<label class='form-label text-muted'>Category</label>";
-							$html[] = "<div class='input-icon mb-3'>";
-								$html[] = "<span class='input-icon-addon'><i class='ti ti-building-store'></i></span>";
-								$html[] = $model->categorySelection();
-								$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
-							$html[] = "</div>";
-						$html[] = "</div>";
+							$html[] = "<label class='form-label text-muted'><i class='ti ti-bed-flat'></i> Bedroom</label>";
 
-					    $html[] = "<div class='form-group mb-3'>";
-							$html[] = "<label class='form-label text-muted'>Bedroom</label>";
-							$html[] = "<div class='input-icon mb-3'>";
-								$html[] = "<span class='input-icon-addon'><i class='ti ti-bed-flat'></i></span>";
-								$html[] = "<select class='form-select' name='bedroom' id='bedroom'>";
-									$html[] = "<option value=''>N/A</option>";
-									$html[] = "<option value='Studio'>Studio</option>";
-									for($i=1; $i<11; $i++) {
-										$html[] = "<option value='$i'>$i Bedroom</option>";
-									}
-								$html[] = "</select>";
-								$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+							$html[] = "<div class='d-flex gap-2'>";
+								$html[] = "<input type='text' name='bedroom[from]' id='from_bedroom' value='".(isset($model->page['uri']['bedroom']) ? $model->page['uri']['bedroom']['from'] : null)."' placeholder='from' class='form-control' />";
+								$html[] = "<input type='text' name='bedroom[to]' id='to_bedroom' value='".(isset($model->page['uri']['bedroom']) ? $model->page['uri']['bedroom']['to'] : null)."' placeholder='to' class='form-control' />";
 							$html[] = "</div>";
+
 						$html[] = "</div>";
 
 						$html[] = "<div class='form-group mb-3'>";
-							$html[] = "<label class='form-label text-muted'>Bathroom</label>";
-							$html[] = "<div class='input-icon mb-3'>";
-								$html[] = "<span class='input-icon-addon'><i class='ti ti-bath'></i></span>";
-								$html[] = "<select class='form-select' name='bathroom' id='bathroom'>";
-									for($i=0; $i<11; $i++) {
-										$html[] = "<option value='$i'>".($i == 0 ? "No" : $i)." Bathroom</option>";
-									}
-								$html[] = "</select>";
-								$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+							$html[] = "<label class='form-label text-muted'><i class='ti ti-bath'></i> Bathroom</label>";
+
+							$html[] = "<div class='d-flex gap-2'>";
+								$html[] = "<input type='text' name='bathroom[from]' id='from_bathroom' value='' placeholder='from' class='form-control' />";
+								$html[] = "<input type='text' name='bathroom[to]' id='to_bathroom' value='' placeholder='to' class='form-control' />";
 							$html[] = "</div>";
+
 						$html[] = "</div>";
 
 						$html[] = "<div class='form-group mb-3'>";
-							$html[] = "<label class='form-label text-muted'>Car Garage</label>";
-							$html[] = "<div class='input-icon mb-3'>";
-								$html[] = "<span class='input-icon-addon'><i class='ti ti-car-garage'></i></span>";
-								$html[] = "<select class='form-select' name='parking' id='parking'>";
-									for($i=0; $i<11; $i++) {
-										$html[] = "<option value='$i'>".($i == 0 ? "No Garage" : $i." car slot")."</option>";
-									}
-								$html[] = "</select>";
-								$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+							$html[] = "<label class='form-label text-muted'><i class='ti ti-car-garage'></i> Car Garage</label>";
+
+							$html[] = "<div class='d-flex gap-2'>";
+								$html[] = "<input type='text' name='parking[from]' id='from_parking' value='' placeholder='from' class='form-control' />";
+								$html[] = "<input type='text' name='parking[to]' id='to_parking' value='' placeholder='to' class='form-control' />";
 							$html[] = "</div>";
+
+						$html[] = "</div>";
+
+						$html[] = "<div class='form-group mb-3'>";
+							$html[] = "<label class='form-label text-muted'><i class='ti ti-ruler'></i> Land Area</label>";
+
+							$html[] = "<div class='d-flex gap-2'>";
+								$html[] = "<input type='text' name='lot_area[from]' id='from_lot_area' value='' placeholder='from' class='form-control' />";
+								$html[] = "<input type='text' name='lot_area[to]' id='to_lot_area' value='' placeholder='to' class='form-control' />";
+							$html[] = "</div>";
+
 						$html[] = "</div>";
 
 						$html[] = "<div class='text-end'>";
-							$html[] = "<span class='btn btn-primary filter-result-btn'>View Result</span>";
+							$html[] = "<span class='btn btn-primary btn-filter-result'>View Result</span>";
 						$html[] = "</div>";
 
-					$html[] = "</div>";
+					$html[] = "</form>";
 
 				$html[] = "</div>";
 			$html[] = "</div>";
@@ -156,24 +159,24 @@ $html[] = "<div class='page-body'>";
 						for($i=0; $i<count($data['listings']); $i++) { $c++;
 							$html[] = "<div class='row_listings_".$data['listings'][$i]['listing_id']." listing-wrap my-2 pb-2 border-bottom'>";
 								$html[] = "<div class='row'>";
-									$html[] = "<div class='col-3'>";
+									$html[] = "<div class='col-md-3 col-12'>";
 										$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data['listings'][$i]['listing_id']])."' class='text-decoration-none'>";
-											$html[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div>";
+											$html[] = "<div class='avatar avatar-xxxl mb-2' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div>";
 										$html[] = "</a>";
 									$html[] = "</div>";
-									$html[] = "<div class='col-8'>";
+									$html[] = "<div class='col-md-8 col-12'>";
 										$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data['listings'][$i]['listing_id']])."' class='text-decoration-none'>";
 											$html[] = "<h3 class='p-0'>".$data['listings'][$i]['title']."<small class='d-block fw-normal'>".ucwords($data['listings'][$i]['offer'])." ".$data['listings'][$i]['category']." in ".$data['listings'][$i]['address']['municipality'].", ".$data['listings'][$i]['address']['province']."</small></h3>";
 										$html[] = "</a>";
 
 										$html[] = "<div class='mb-3'>";
-											$html[] = "<div class='d-flex'>";
-												$html[] = "<span class='d-block border me-2 p-2 text-center fw-bold fs-20'><label class='text-start d-block text-muted small fs-10 fw-normal'>Price</label>&#8369;".number_format($data['listings'][$i]['price'],0)."</span>";
-												if($data['listings'][$i]['floor_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Floor Area</label>".number_format($data['listings'][$i]['floor_area'],0)." sqm</span>"; }
-												if($data['listings'][$i]['lot_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Lot Area</label>".number_format($data['listings'][$i]['lot_area'],0)." sqm</span>"; }
-												if($data['listings'][$i]['bedroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bedroom</label>".$data['listings'][$i]['bedroom']."</span>"; }
-												if($data['listings'][$i]['bathroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bathroom</label>".$data['listings'][$i]['bathroom']."</span>"; }
-												if($data['listings'][$i]['parking'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Car Garage</label>".$data['listings'][$i]['parking']."</span>"; }
+											$html[] = "<div class='d-flex flex-wrap'>";
+												$html[] = "<span class='mb-2 d-block border me-2 p-2 text-center fw-bold fs-20'><label class='text-start d-block text-muted small fs-10 fw-normal'>Price</label>&#8369;".number_format($data['listings'][$i]['price'],0)."</span>";
+												if($data['listings'][$i]['floor_area'] > 0) { $html[] = "<span class='mb-2 d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Floor Area</label>".number_format($data['listings'][$i]['floor_area'],0)." sqm</span>"; }
+												if($data['listings'][$i]['lot_area'] > 0) { $html[] = "<span class='mb-2 d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Lot Area</label>".number_format($data['listings'][$i]['lot_area'],0)." sqm</span>"; }
+												if($data['listings'][$i]['bedroom'] > 0) { $html[] = "<span class='mb-2 d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bedroom</label>".$data['listings'][$i]['bedroom']."</span>"; }
+												if($data['listings'][$i]['bathroom'] > 0) { $html[] = "<span class='mb-2 d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bathroom</label>".$data['listings'][$i]['bathroom']."</span>"; }
+												if($data['listings'][$i]['parking'] > 0) { $html[] = "<span class='mb-2 d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Car Garage</label>".$data['listings'][$i]['parking']."</span>"; }
 											$html[] = "</div>";
 										$html[] = "</div>";
 

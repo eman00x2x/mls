@@ -11,11 +11,26 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
         $this->setTempalteBasePath(ROOT."Manage");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->account_id = $_SESSION['account_id'];
+
+		if(!isset($_SESSION['compare']['listings'])) {
+			$_SESSION['compare']['listings'] = [];
+		}
 	}
 	
 	function MLSIndex() {
 
         $this->doc->setTitle("MLS System");
+		$this->doc->addScriptDeclaration("
+			$(document).on('click','.btn-filter-result',function() {
+				var formData = $('#filter-form').serialize();
+				
+				window.location = '".url('MlsController@MLSIndex')."?filter=' + btoa(formData);
+			});
+		");
+
+		if(isset($_REQUEST['filter'])) {
+			parse_str(urldecode(base64_decode($_REQUEST['filter'])), $_REQUEST);
+		}
 
 		$handshake = $this->getModel("Handshake");
 		$handshake->column['requestor_account_id'] = $_SESSION['account_id'];
@@ -49,19 +64,22 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$uri['type'] = $_REQUEST['type'];
 		}
 
-		if(isset($_REQUEST['bedroom']) && $_REQUEST['bedroom'] != "") {
-			$filters[] = " (bedroom = '".$_REQUEST['bedroom']."')";
-			$uri['bedroom'] = $_REQUEST['bedroom'];
+		if(isset($_REQUEST['bedroom']) && $_REQUEST['bedroom']['from'] != "") {
+			$filters[] = " (bedroom >= '".$_REQUEST['bedroom']['from']."' AND bedroom <= '".$_REQUEST['bedroom']['to']."')";
+			$uri['bedroom']['from'] = $_REQUEST['bedroom']['from'];
+			$uri['bedroom']['to'] = $_REQUEST['bedroom']['to'];
 		}
 
-		if(isset($_REQUEST['bathroom']) && $_REQUEST['bathroom'] != "") {
-			$filters[] = " (bathroom = '".$_REQUEST['bathroom']."')";
-			$uri['bathroom'] = $_REQUEST['bathroom'];
+		if(isset($_REQUEST['bathroom']) && $_REQUEST['bathroom']['from'] != "") {
+			$filters[] = " (bathroom >= '".$_REQUEST['bathroom']['from']."' AND bathroom <= '".$_REQUEST['bathroom']['to']."')";
+			$uri['bathroom']['from'] = $_REQUEST['bathroom']['from'];
+			$uri['bathroom']['to'] = $_REQUEST['bathroom']['to'];
 		}
 
-		if(isset($_REQUEST['parking']) && $_REQUEST['parking'] != "") {
-			$filters[] = " (parking = '".$_REQUEST['parking']."')";
-			$uri['parking'] = $_REQUEST['parking'];
+		if(isset($_REQUEST['parking']) && $_REQUEST['parking']['from'] != "") {
+			$filters[] = " (parking >= '".$_REQUEST['parking']['from']."' AND parking <= '".$_REQUEST['parking']['to']."')";
+			$uri['parking']['from'] = $_REQUEST['parking']['from'];
+			$uri['parking']['to'] = $_REQUEST['parking']['to'];
 		}
 
 		$listing = $this->getModel("Listing");
@@ -72,7 +90,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$listing->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
 		$listing->page['target'] = url("MlsController@index");
 		$listing->page['uri'] = (isset($uri) ? $uri : []);
-		
+
 		$data['listings'] = $listing->getList();
 
 		if($data['listings']) {
@@ -344,14 +362,14 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		$data['listings'] = $_SESSION['compare']['listings'];
 		$data['count'] = count($_SESSION['compare']['listings']);
-
+		
 		$this->setTemplate("mls/comparePreview.php");
         return $this->getTemplate($data);
 	}
 
 	function compareListings() {
 		
-		$total = count($_SESSION['compare']['listings']);
+		$total = isset($_SESSION['compare']['listings']) ? count($_SESSION['compare']['listings']) : 0;
 		
 		if($total > 0) {
 			$ids = implode(",", array_keys($_SESSION['compare']['listings']));
