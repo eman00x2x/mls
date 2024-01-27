@@ -45,6 +45,8 @@ Router::get('/listingImages/{id}/delete', 'ListingImagesController@delete', ['as
 /** MLS ROUTES */
 Router::get('/mls', 'MlsController@MLSIndex', ['as' => 'mls']);
 Router::get('/mls/handshaked', 'MlsController@handshakedIndex', ['as' => 'handshakedIndex']);
+Router::get('/mls/compare', 'MlsController@compareListings', ['as' => 'compareListings']);
+Router::get('/mls/comparePreview', 'MlsController@comparePreview', ['as' => 'comparePreview']);
 Router::get('/mls/handshaked/{id}/acceptRequest', 'MlsController@acceptRequest', ['as' => 'acceptRequest'])->where([ 'id' => '[\w\-]+' ]);
 Router::get('/mls/handshaked/{id}/deniedRequest', 'MlsController@deniedRequest', ['as' => 'deniedRequest'])->where([ 'id' => '[\w\-]+' ]);
 Router::get('/mls/handshaked/{id}/doneHandshake', 'MlsController@doneHandshake', ['as' => 'doneHandshake'])->where([ 'id' => '[\w\-]+' ]);
@@ -52,6 +54,10 @@ Router::get('/mls/handshaked/{listing_id}/cancelHandshake', 'MlsController@cance
 
 Router::get('/mls/{id}', 'MlsController@viewListing', ['as' => 'viewListing'])->where([ 'id' => '[\w\-]+' ]);
 Router::get('/mls/{listing_id}/requestHandshake', 'MlsController@requestHandshake', ['as' => 'requestHandshake'])->where([ 'listing_id' => '[\w\-]+' ]);
+
+Router::post('/mls/compare/add', 'MlsController@addToCompare', ['as' => 'addToCompare']);
+Router::post('/mls/compare/remove', 'MlsController@removeFromCompare', ['as' => 'removeFromCompare']);
+
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get('/subscriptions', 'SubscriptionsController@index', ['as' => 'subscriptions']);

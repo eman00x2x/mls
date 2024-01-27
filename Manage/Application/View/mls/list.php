@@ -14,6 +14,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 					$html[] = "<div class='btn-list'>";
 						
 						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@handshakedIndex")."'><i class='ti ti-heart-handshake me-2'></i> Handshaked</a>";
+						$html[] = "<span class='btn btn-dark btn-compare-table' data-url='".url("MlsController@comparePreview")."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd'><i class='ti ti-layers-difference me-2'></i> Compare</span>";
 						$html[] = "<span class='btn btn-dark filter-btn' href=''><i class='ti ti-filter me-2'></i> Filter Result</span>";
 						
 					$html[] = "</div>";
@@ -156,12 +157,14 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<div class='row_listings_".$data['listings'][$i]['listing_id']." listing-wrap my-2 pb-2 border-bottom'>";
 								$html[] = "<div class='row'>";
 									$html[] = "<div class='col-3'>";
-										$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data['listings'][$i]['listing_id']])."'>";
+										$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data['listings'][$i]['listing_id']])."' class='text-decoration-none'>";
 											$html[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div>";
 										$html[] = "</a>";
 									$html[] = "</div>";
 									$html[] = "<div class='col-8'>";
-										$html[] = "<h3 class='p-0'>".$data['listings'][$i]['title']."<small class='d-block fw-normal'>".ucwords($data['listings'][$i]['offer'])." ".$data['listings'][$i]['category']." in ".$data['listings'][$i]['address']['municipality'].", ".$data['listings'][$i]['address']['province']."</small></h3>";
+										$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data['listings'][$i]['listing_id']])."' class='text-decoration-none'>";
+											$html[] = "<h3 class='p-0'>".$data['listings'][$i]['title']."<small class='d-block fw-normal'>".ucwords($data['listings'][$i]['offer'])." ".$data['listings'][$i]['category']." in ".$data['listings'][$i]['address']['municipality'].", ".$data['listings'][$i]['address']['province']."</small></h3>";
+										$html[] = "</a>";
 
 										$html[] = "<div class='mb-3'>";
 											$html[] = "<div class='d-flex'>";
@@ -176,7 +179,9 @@ $html[] = "<div class='page-body'>";
 
 										$html[] = "<div class='btn-list'>";
 											$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listings'][$i]['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
-											$html[] = "<span class='btn btn-md btn-light'><i class='ti ti-layers-difference me-2'></i> Compare</span>";
+											if(!in_array($data['listings'][$i]['listing_id'],array_keys($_SESSION['compare']['listings']))) {
+												$html[] = "<span class='btn btn-md btn-light btn-add-to-compare btn-add-to-compare_".$data['listings'][$i]['listing_id']."' data-url='".url("MlsController@addToCompare")."' data-id='".$data['listings'][$i]['listing_id']."'><i class='ti ti-layers-difference me-2'></i> Compare</span>";
+											}
 										$html[] = "</div>";
 
 									$html[] = "</div>";

@@ -49,7 +49,7 @@ $(document).on('click','.btn-save', function(e) {
 	return false;
 });
 
-$(document).on('click','.btn-delete, .btn-requestHandshake', function(e) {
+$(document).on('click','.btn-delete, .btn-requestHandshake, .btn-compare-table', function(e) {
 	url = $(this).data('url');
 	$.get(url, function (data, status) { 
 		$('.offcanvas').html(data);
@@ -170,12 +170,49 @@ $(document).on('change', '#select_option', function () {
 	}
 });
 
-
 $(document).on('click', '.avatar', function () { 
 	id = $(this).data('id');
 	if ($('.' + id).prop('checked') == true) {
 		$('.' + id).prop('checked', false);
 	} else { 
 		$('.' + id).prop('checked', true);
+	}
+});
+
+$(document).on('click', '.btn-add-to-compare', function () {
+	id = $(this).data('id');
+	url = $(this).data('url');
+
+	$('.btn-add-to-compare_' + id).html("<img src='" + CDN + "images/loader.gif' /> Modifying compare table... ");
+
+	$.post(url, {"listing_id" : id}, function (data,status) {
+		response = JSON.parse(data);
+		$('.response').html(response.message);
+		$('.btn-add-to-compare_' + id).remove();	
+	});
+});
+
+$(document).on('click', '.btn-remove-from-compare', function () {
+	id = $(this).data('id');
+	url = $(this).data('url');
+
+	$('.btn-remove-from-compare_' + id).html("<img src='" + CDN + "images/loader.gif' /> Modifying compare table... ");
+
+	$.post(url, { "listing_id": id }, function (data, status) {
+		response = JSON.parse(data);
+		$('.response').html(response.message);
+		$('.btn-remove-from-compare_' + id).remove();
+		$('.row_listings_'+id).remove();
+	});
+});
+
+$(document).on('click', '.col-filter', function (e) {
+	var element = $(this);
+	var id = element.attr('id');
+	
+	if (element.prop('checked') == true) {
+		$('table tr .' + id).show();
+	} else { 
+		$('table tr .' + id).hide();
 	}
 });

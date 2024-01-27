@@ -297,5 +297,78 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	}
 	
+	function addToCompare() {
+
+		parse_str(file_get_contents('php://input'), $_POST);
+
+		$total = count($_SESSION['compare']['listings']);
+
+		if($total >= 10) {
+			$this->getLibrary("Factory")->setMsg("Maximum count of listings has been reached! Cannot add more in compare table!","info");
+		}else {
+
+			$listing = $this->getModel("Listing");
+			$listing->column['listing_id'] = $_POST['listing_id'];
+			$data = $listing->getById();
+
+			$_SESSION['compare']['listings'][$_POST['listing_id']] = $data['title'];
+
+			$this->getLibrary("Factory")->setMsg("Listing added to compare table!","info");
+
+		}
+
+		return json_encode(
+			array(
+				"status" => 1,
+				"message" => getMsg()
+			)
+		);
+
+	}
+
+	function removeFromCompare() {
+		parse_str(file_get_contents('php://input'), $_POST);
+		unset($_SESSION['compare']['listings'][$_POST['listing_id']]);
+		
+		$this->getLibrary("Factory")->setMsg("Listing remove from compare table!","info");
+
+		return json_encode(
+			array(
+				"status" => 1,
+				"message" => getMsg()
+			)
+		);
+	}
+
+	function comparePreview() {
+
+		$data['listings'] = $_SESSION['compare']['listings'];
+		$data['count'] = count($_SESSION['compare']['listings']);
+
+		$this->setTemplate("mls/comparePreview.php");
+        return $this->getTemplate($data);
+	}
+
+	function compareListings() {
+		
+		$total = count($_SESSION['compare']['listings']);
+		
+		if($total > 0) {
+			$ids = implode(",", array_keys($_SESSION['compare']['listings']));
+
+			$listing = $this->getModel("Listing");
+
+			$listing->page['limit'] = 20;
+			$listing->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+			$listing->page['target'] = url("MlsController@index");
+			$listing->page['uri'] = (isset($uri) ? $uri : []);
+
+			$data = $listing->where(" listing_id IN($ids) ")->getList();
+		}else { $data = false; $listing = false; }
+
+		$this->setTemplate("mls/compare.php");
+		return $this->getTemplate($data,$listing);
+
+	}
 	
 }

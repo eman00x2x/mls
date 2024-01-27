@@ -6,7 +6,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 		$html[] = "<div class='row g-2 '>";
 			$html[] = "<div class='col'>";
 				$html[] = "<div class='page-pretitle'>Multi-Listing Services System</div>";
-				$html[] = "<h1 class='page-title'><i class='ti ti-building-estate me-2'></i> Handshakes</h1>";
+				$html[] = "<h1 class='page-title'><i class='ti ti-building-estate me-2'></i> MLS System - Handshakes</h1>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
@@ -44,10 +44,14 @@ $html[] = "<div class='page-body'>";
 					$html[] = "<div class='row_listings_".$data[$i]['handshake_id']." listing-wrap my-2'>";
 						$html[] = "<div class='row'>";
 							$html[] = "<div class='col-12 col-md-3'>";
-								$html[] = "<div class='avatar avatar-xxxl mb-2' style='background-image: url(".$data[$i]['listing']['thumb_img'].")'></div>";
+								$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-decoration-none'>";
+									$html[] = "<div class='avatar avatar-xxxl mb-2' style='background-image: url(".$data[$i]['listing']['thumb_img'].")'></div>";
+								$html[] = "</a>";
 							$html[] = "</div>";
 							$html[] = "<div class='col-12 col-md-9'>";
-								$html[] = "<h3 class='p-0'>".$data[$i]['listing']['title']."<small class='d-block fw-normal'>".ucwords($data[$i]['listing']['offer'])." ".$data[$i]['listing']['category']." in ".$data[$i]['listing']['address']['municipality'].", ".$data[$i]['listing']['address']['province']."</small></h3>";
+								$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-decoration-none'>";
+									$html[] = "<h3 class='p-0'>".$data[$i]['listing']['title']."<small class='d-block fw-normal'>".ucwords($data[$i]['listing']['offer'])." ".$data[$i]['listing']['category']." in ".$data[$i]['listing']['address']['municipality'].", ".$data[$i]['listing']['address']['province']."</small></h3>";
+								$html[] = "</a>";
 
 								$html[] = "<div class='mb-3'>";
 									$html[] = "<div class='d-flex'>";
