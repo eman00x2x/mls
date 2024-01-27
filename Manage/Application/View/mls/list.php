@@ -102,6 +102,7 @@ $html[] = "<div class='page-body'>";
 
 							$html[] = "<div class='d-flex gap-2'>";
 								$html[] = "<input type='text' name='bedroom[from]' id='from_bedroom' value='".(isset($model->page['uri']['bedroom']) ? $model->page['uri']['bedroom']['from'] : null)."' placeholder='from' class='form-control' />";
+								$html[] = "<div>-</div>";
 								$html[] = "<input type='text' name='bedroom[to]' id='to_bedroom' value='".(isset($model->page['uri']['bedroom']) ? $model->page['uri']['bedroom']['to'] : null)."' placeholder='to' class='form-control' />";
 							$html[] = "</div>";
 
@@ -111,8 +112,9 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<label class='form-label text-muted'><i class='ti ti-bath'></i> Bathroom</label>";
 
 							$html[] = "<div class='d-flex gap-2'>";
-								$html[] = "<input type='text' name='bathroom[from]' id='from_bathroom' value='' placeholder='from' class='form-control' />";
-								$html[] = "<input type='text' name='bathroom[to]' id='to_bathroom' value='' placeholder='to' class='form-control' />";
+								$html[] = "<input type='text' name='bathroom[from]' id='from_bathroom' value='".(isset($model->page['uri']['bathroom']) ? $model->page['uri']['bathroom']['from'] : null)."' placeholder='from' class='form-control' />";
+								$html[] = "<div>-</div>";
+								$html[] = "<input type='text' name='bathroom[to]' id='to_bathroom' value='".(isset($model->page['uri']['bathroom']) ? $model->page['uri']['bathroom']['from'] : null)."' placeholder='to' class='form-control' />";
 							$html[] = "</div>";
 
 						$html[] = "</div>";
@@ -121,8 +123,9 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<label class='form-label text-muted'><i class='ti ti-car-garage'></i> Car Garage</label>";
 
 							$html[] = "<div class='d-flex gap-2'>";
-								$html[] = "<input type='text' name='parking[from]' id='from_parking' value='' placeholder='from' class='form-control' />";
-								$html[] = "<input type='text' name='parking[to]' id='to_parking' value='' placeholder='to' class='form-control' />";
+								$html[] = "<input type='text' name='parking[from]' id='from_parking' value='".(isset($model->page['uri']['parking']) ? $model->page['uri']['parking']['from'] : null)."' placeholder='from' class='form-control' />";
+								$html[] = "<div>-</div>";
+								$html[] = "<input type='text' name='parking[to]' id='to_parking' value='".(isset($model->page['uri']['parking']) ? $model->page['uri']['parking']['from'] : null)."' placeholder='to' class='form-control' />";
 							$html[] = "</div>";
 
 						$html[] = "</div>";
@@ -131,8 +134,9 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<label class='form-label text-muted'><i class='ti ti-ruler'></i> Land Area</label>";
 
 							$html[] = "<div class='d-flex gap-2'>";
-								$html[] = "<input type='text' name='lot_area[from]' id='from_lot_area' value='' placeholder='from' class='form-control' />";
-								$html[] = "<input type='text' name='lot_area[to]' id='to_lot_area' value='' placeholder='to' class='form-control' />";
+								$html[] = "<input type='text' name='lot_area[from]' id='from_lot_area' value='".(isset($model->page['uri']['lot_area']) ? $model->page['uri']['lot_area']['from'] : null)."' placeholder='from' class='form-control' />";
+								$html[] = "<div>-</div>";
+								$html[] = "<input type='text' name='lot_area[to]' id='to_lot_area' value='".(isset($model->page['uri']['lot_area']) ? $model->page['uri']['lot_area']['from'] : null)."' placeholder='to' class='form-control' />";
 							$html[] = "</div>";
 
 						$html[] = "</div>";
