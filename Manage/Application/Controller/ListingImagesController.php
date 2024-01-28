@@ -2,7 +2,7 @@
 
 namespace Manage\Application\Controller;
 
-class ListingsImagesController extends \Admin\Application\Controller\ListingsImagesController {
+class ListingImagesController extends \Admin\Application\Controller\ListingImagesController {
 	
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Manage");

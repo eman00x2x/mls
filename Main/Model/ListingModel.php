@@ -18,7 +18,9 @@ class ListingModel extends \Main\Model {
 		$v->validateGeneral($data['category'],"category is blank.");
 		$v->validateGeneral($data['type'],"type is blank.");
 		$v->validateGeneral($data['offer'],"offer is blank.");
-		$v->validateGeneral($data['address'],"Address is blank.");
+		$v->validateGeneral($data['address']['region'],"Region is blank.");
+		$v->validateGeneral($data['address']['province'],"Province is blank.");
+		$v->validateGeneral($data['address']['municipality'],"Municipality is blank.");
 		$v->validateGeneral($data['tags'],"no selected tags.");
 
 		if($v->foundErrors()) {
@@ -57,7 +59,9 @@ class ListingModel extends \Main\Model {
 			$v->validateGeneral($data['category'],"category is blank.");
 			$v->validateGeneral($data['type'],"type is blank.");
 			$v->validateGeneral($data['offer'],"offer is blank.");
-			$v->validateGeneral($data['address'],"Address is blank.");
+			$v->validateGeneral($data['address']['region'],"Region is blank.");
+			$v->validateGeneral($data['address']['province'],"Province is blank.");
+			$v->validateGeneral($data['address']['municipality'],"Municipality is blank.");
 			$v->validateGeneral($data['tags'],"no selected tags.");
 
 			if($v->foundErrors()) {
@@ -174,11 +178,11 @@ class ListingModel extends \Main\Model {
 		return array(
 			"Warehouse" => array("Warehouse"),
 			"Building" => array("Retail","Offices","Serviced Office"),
-			"Land" => array("Beach Lot","Memorial","Residential Lot","Agricultural Lot","Island"),
-			"House" => array("Townhouse","House and Lot","Beach House"),
-			"Townhouse" => array("Townhouse"),
+			"Land" => array("Beach Lot","Farm Lot","Subdivision Lot","Agricultural Lot","Land Only","Island","Memorial"),
+			"House" => array("House and Lot","Beach House","Bungalow","Multiple Storey House","Cabin"),
+			"Townhouse" => array("Townhouse","Rowhouse","Duplex House"),
 			"Resorts" => array("Resorts"),
-			"Condominium" => array("Condominium","Studio Type","Loft Type","Penthouse","Condotel")
+			"Condominium" => array("Condominium","Studio Type","Loft Type","Penthouse","Condotel","Apartments")
 		);
 		
 	}

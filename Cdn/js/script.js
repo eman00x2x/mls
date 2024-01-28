@@ -202,7 +202,7 @@ $(document).on('click', '.btn-remove-from-compare', function () {
 		response = JSON.parse(data);
 		$('.response').html(response.message);
 		$('.btn-remove-from-compare_' + id).remove();
-		$('.row_listings_'+id).remove();
+		$('.compare_row_'+id).remove();
 	});
 });
 

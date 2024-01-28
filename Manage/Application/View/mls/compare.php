@@ -69,7 +69,7 @@ $html[] = "<div class='page-body'>";
 
 					for($i=0; $i<count($data); $i++) { $c++;
 
-						$html[] = "<tr class='row_listings_".$data[$i]['listing_id']."'>";
+						$html[] = "<tr class='compare_row_".$data[$i]['listing_id']."'>";
 							$html[] = "<td class='align-middle text-center col-avatar'><div class='avatar avatar-md' style='background-image: url(".$data[$i]['thumb_img'].")'></div></td>";
 							$html[] = "<td class='align-middle text-center col-foreclosed'>".($data[$i]['foreclosed'] == 0 ? "No" : "Yes")."</td>";
 							$html[] = "<td class='align-middle text-center col-offer'>".ucwords($data[$i]['offer'])."</td>";

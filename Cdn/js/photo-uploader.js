@@ -130,10 +130,10 @@ function removeImage(container,image_id,filename,application) {
 	$(container).remove();
 
 	switch(application) {
-		case 'listings': req = "listingImages"; break;
+		case 'listings': req = "/listingImages/"; break;
 	}
 
-	$.get("/listingImages/" + image_id + "/delete?filename=" + filename, function (data, status) {
+	$.get(req + image_id + "/delete?filename=" + filename, function (data, status) {
 		response = JSON.parse(data);
 		console.log(data);
 		$('.upload-response').html(response.message);
@@ -148,7 +148,7 @@ function createElements(response,application = "listings") {
 	html += "<div class='mt-2'>";
 		html += "<div class='btn-group'>";
 	html += "<span class='btn btn-md btn-outline-secondary btn-remove-image' title='Remove image' onclick=\"removeImage('." + response[i].id + "','image_" + response[i].id + "','" + response[i].filename + "','" + application + "')\"><i class='ti ti-trash'></i></span>";
-	html += "<span class='btn btn-md btn-outline-primary btn-set-thumb-image' title='Set image as thumbnail' onclick=\"setImageThumb('." + response[i].id + "','" + response[i].filename + "','" + application + "')\"> <i class='ti ti-click me-2'></i> Thumbnail</span>";
+	html += "<span class='btn btn-md btn-outline-primary btn-set-thumb-image' title='Set image as thumbnail' onclick=\"setImageThumb('." + response[i].id + "','" + response[i].filename + "')\"> <i class='ti ti-click me-2'></i> Thumbnail</span>";
 		html += "</div>";
 	html += "</div>";
 	return html;

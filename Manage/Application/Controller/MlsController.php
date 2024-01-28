@@ -26,7 +26,30 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 				
 				window.location = '".url('MlsController@MLSIndex')."?filter=' + btoa(formData);
 			});
-		");
+
+			$(document).on('click','.btn-filter-form',function() {
+				
+				$('.offcanvas-end').html('');
+				$('.offcanvas-end').addClass('filter-form-canvas');
+				var form = $('.filter-form').clone();
+				html = \"<div class='offcanvas-body'></div>\";
+				
+				$('.offcanvas-end').html(html);
+				$('.offcanvas-end .offcanvas-body').html(form);
+				$('.form-container').html('');
+
+				$('.offcanvas-end .offcanvas-header').append(\"<button type='button' class='btn-close text-reset' data-bs-dismiss='offcanvas' aria-label='Close'></button>\");
+
+			});
+
+			$(document).on('hide.bs.offcanvas', '.filter-form-canvas', function() {
+				var form = $('.filter-form-canvas .filter-form').clone();
+				$('.form-container').html(form);
+				$('.form-container .offcanvas-header .btn-close').remove();
+				$('.offcanvas-end').html('');
+			});
+
+		"); 
 
 		if(isset($_REQUEST['filter'])) {
 			parse_str(urldecode(base64_decode($_REQUEST['filter'])), $_REQUEST);
@@ -39,6 +62,26 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		
 		if($handshakeListings['listing_ids'] != "") {
 			$filters[] = " listing_id NOT IN(".$handshakeListings['listing_ids'].")";
+		}
+
+		if(isset($_REQUEST['address'])) {
+			if($_REQUEST['address']['region'] != "") {
+				$filters[] = " JSON_EXTRACT(address, \"$.region\") = '".$_REQUEST['address']['region']."'";
+			}
+			
+			if($_REQUEST['address']['municipality'] != "") {
+				$filters[] = " JSON_EXTRACT(address, \"$.municipality\") = '".$_REQUEST['address']['municipality']."'";
+			}
+
+			if($_REQUEST['address']['province'] != "") {
+				$filters[] = " JSON_EXTRACT(address, \"$.province\") = '".$_REQUEST['address']['province']."'";
+			}
+			
+			if($_REQUEST['address']['barangay'] != "") {
+				$filters[] = " JSON_EXTRACT(address, \"$.barangay\") = '".$_REQUEST['address']['barangay']."'";
+			}
+
+			$uri['address'] = $_REQUEST['address'];
 		}
 
 		#$filters[] = " account_id != ".$_SESSION['account_id'];
@@ -64,6 +107,11 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$uri['type'] = $_REQUEST['type'];
 		}
 
+		if(isset($_REQUEST['category'])) {
+			$filters[] = " (type LIKE '%".$_REQUEST['category']."%')";
+			$uri['category'] = $_REQUEST['category'];
+		}
+
 		if(isset($_REQUEST['bedroom']) && $_REQUEST['bedroom']['from'] != "") {
 			$filters[] = " (bedroom >= '".$_REQUEST['bedroom']['from']."' AND bedroom <= '".$_REQUEST['bedroom']['to']."')";
 			$uri['bedroom']['from'] = $_REQUEST['bedroom']['from'];
@@ -80,6 +128,12 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$filters[] = " (parking >= '".$_REQUEST['parking']['from']."' AND parking <= '".$_REQUEST['parking']['to']."')";
 			$uri['parking']['from'] = $_REQUEST['parking']['from'];
 			$uri['parking']['to'] = $_REQUEST['parking']['to'];
+		}
+
+		if(isset($_REQUEST['price']) && $_REQUEST['price']['from'] != "") {
+			$filters[] = " (price >= '".$_REQUEST['parking']['from']."' AND price <= '".$_REQUEST['parking']['to']."')";
+			$uri['price']['from'] = $_REQUEST['price']['from'];
+			$uri['price']['to'] = $_REQUEST['price']['to'];
 		}
 
 		$listing = $this->getModel("Listing");
@@ -329,7 +383,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$listing->column['listing_id'] = $_POST['listing_id'];
 			$data = $listing->getById();
 
-			$_SESSION['compare']['listings'][$_POST['listing_id']] = $data['title'];
+			$_SESSION['compare']['listings'][$_POST['listing_id']] = $data;
 
 			$this->getLibrary("Factory")->setMsg("Listing added to compare table!","info");
 

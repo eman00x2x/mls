@@ -13,8 +13,6 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 				$html[] = "<div class='d-none d-sm-inline'>";
 					$html[] = "<div class='btn-list'>";
 						
-						$html[] = "<span class='btn btn-dark filter-btn' href=''><i class='ti ti-filter me-2'></i> Filter Result</span>";
-						
 					$html[] = "</div>";
 				$html[] = "</div>";
 			$html[] = "</div>";
