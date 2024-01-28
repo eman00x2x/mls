@@ -59,7 +59,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 				$html[] = "<form id='form' action='' method='POST'>";
 					$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";
 					$html[] = "<input name='thumb_img' id='thumb_img' type='hidden' value='' />";
-					$html[] = "<input name='account_id' id='user_id' type='hidden' value='".$data['account_id']."' />";
+					$html[] = "<input name='account_id' id='account_id' type='hidden' value='".$data['account_id']."' />";
 					$html[] = "<input name='last_modified' id='last_modified' type='hidden' value='".DATE_NOW."' />";
 
 					$html[] = "<div class='card mb-3'>";

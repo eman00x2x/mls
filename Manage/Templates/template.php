@@ -17,7 +17,6 @@
 		</div>
 
 		<div class='offcanvas offcanvas-end' tabindex='-1' id='offcanvasEnd' aria-labelledby='offcanvasEndLabel' aria-modal='true' role='dialog'>
-			
 		</div>
 
 		<div class='page'>
@@ -50,6 +49,13 @@
 									<a class="nav-link" href="<?php echo url("MlsController@MLSIndex"); ?>">
 										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-building-estate'></i></span>
 										<span class="nav-link-title">MLS</span>
+									</a>
+                				</li>
+
+								<li class="nav-item <?php echo (url()->contains("/messages")) ? "active" : ""; ?>">
+									<a class="nav-link" href="<?php echo url("MessagesController@index"); ?>">
+										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-message'></i></span>
+										<span class="nav-link-title">Messages</span>
 									</a>
                 				</li>
 

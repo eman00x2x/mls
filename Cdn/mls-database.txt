@@ -157,3 +157,18 @@
 	"requested_date": epoch
 }
 
+{
+	"thread_id": 0,
+	"Subject": "subject",
+	"date_created": epoch,
+	"participants": {1,2,3}
+}
+
+{
+	"message_id": 1,
+	"thread_id": 0,
+	"user_id": 2,
+	"message": "test message",
+	"attachments": {"type":"file", "details":""},
+	"time_sent": epoch
+}

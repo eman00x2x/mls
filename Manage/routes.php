@@ -58,6 +58,8 @@ Router::get('/mls/{listing_id}/requestHandshake', 'MlsController@requestHandshak
 Router::post('/mls/compare/add', 'MlsController@addToCompare', ['as' => 'addToCompare']);
 Router::post('/mls/compare/remove', 'MlsController@removeFromCompare', ['as' => 'removeFromCompare']);
 
+/** MESSAGES ROUTES */
+Router::get('/messages', 'MessagesController@index', ['as' => 'messages']);
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get('/subscriptions', 'SubscriptionsController@index', ['as' => 'subscriptions']);
