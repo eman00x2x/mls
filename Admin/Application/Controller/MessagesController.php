@@ -100,44 +100,86 @@ class MessagesController extends \Main\Controller {
 	
 	function view($id) {
 
-		$this->doc->setTitle("Premium");
+		$this->doc->setTitle("Messages");
 
-		$premium = $this->getModel("Premium");
-		$premium->column['premium_id'] = $id;
+		$thread = $this->getModel("Thread");
+		$thread->column['thread_id'] = $id;
+		$data = $thread->getById();
 
-		if($data = $premium->getById()) {
-			$this->setTemplate("premiums/view.php");
-			return $this->getTemplate($data);
-		}
+		if($data) {
 
-		$this->response(404);
+			$message = $this->getModel("Message");
+			$message->orderBy(" created_at DESC ");
+			$data['messages'] = $message->getByThreadId($data['thread_id']);
 
-	}
-	
-	function add() {
-		$this->doc->setTitle("New Premium");
-
-		$this->setTemplate("premiums/add.php");
-		return $this->getTemplate();
-	}
-	
-	function edit($id) {
-
-		$this->doc->setTitle("Update Premium");
-
-		if($id) {
-
-			$premium = $this->getModel("Premium");
-			$premium->column['premium_id'] = $id;
-
-			if($data = $premium->getById()) {
-				$this->setTemplate("premiums/edit.php");
-				return $this->getTemplate($data);
+			if($data['messages']) {
+				$user = $this->getModel("User");
+				for($i=0; $i<count($data['messages']); $i++) {
+					$user->column['user_id'] = $data[$i]['user_id'];
+					$data['messages'][$i]['user'] = $user->getById();
+				}
 			}
-		
+
+			$this->setTemplate("messages/view.php");
+			return $this->getTemplate($data);
+
 		}
 
 		$this->response(404);
+
+	}
+
+	function showMessages($thread_id,$last_message_id) {
+
+		$message = $this->getModel("Message");
+		$message->and(" message_id > $last_message_id ");
+		$message->orderBy(" created_at DESC ");
+		$data['messages'] = $message->getByThreadId($thread_id);
+
+		if($data['messages']) {
+			$user = $this->getModel("User");
+			for($i=0; $i<count($data['messages']); $i++) {
+				$user->column['user_id'] = $data[$i]['user_id'];
+				$data['messages'][$i]['user'] = $user->getById();
+			}
+		}
+
+		$this->setTemplate("messages/showMessages.php");
+		return $this->getTemplate($data);
+
+	}
+
+	function saveNewMessage() {
+		parse_str(file_get_contents('php://input'), $_POST);
+		
+		$time = DATE_NOW;
+
+		$message = $this->getModel("Message");
+		$id = $message->saveNew(array(
+			"user_id" => $_SESSION['user_id'],
+			"thread_id" => $_POST['thread_id'],
+			"details" => json_encode(array(
+				"type" => "text",
+				"content" => $_POST['message']
+			)),
+			"created_at" => $time
+		));
+
+		return json_encode(array(
+			"status" => 1,
+			"type" => "success",
+			"id" => $id
+		));
+
+	}
+	
+	function saveNewThread($id) {
+		parse_str(file_get_contents('php://input'), $_POST);
+
+	}
+
+	function saveDeletedThread($id) {
+		parse_str(file_get_contents('php://input'), $_POST);
 
 	}
 	

@@ -79,7 +79,7 @@ class Table {
 
 	function groupBy($group_by) {
 		if($group_by == null ) { return $this; }
-		$this->groupby = " ORDER BY ".$group_by;
+		$this->groupby = " GROUP BY ".$group_by;
 		return $this;
 	}
 

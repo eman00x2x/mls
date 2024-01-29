@@ -10,6 +10,11 @@ class MessageModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getByThreadId($thread_id) {
+        $this->where(" thread_id = ".$thread_id);
+        return $this->getList();
+    }
+
 	function saveNew($data) {
 
 		$v = $this->getValidator();

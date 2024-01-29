@@ -60,6 +60,7 @@ Router::post('/mls/compare/remove', 'MlsController@removeFromCompare', ['as' => 
 
 /** MESSAGES ROUTES */
 Router::get('/messages', 'MessagesController@index', ['as' => 'messages']);
+Router::get('/messages/{id}', 'MessagesController@view', ['as' => 'messages'])->where([ 'id' => '[\w\-]+' ]);
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get('/subscriptions', 'SubscriptionsController@index', ['as' => 'subscriptions']);

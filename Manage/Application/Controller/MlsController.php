@@ -442,5 +442,19 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		return $this->getTemplate($data,$listing);
 
 	}
+
+	/* CRONJOB runs every day at 12am */
+	function expiredHandshakeRequest() {
+
+		/* Current time minus 30 days */
+		$time = strtotime("-30 days",DATE_NOW);
+
+		/* Handshake remains for 30 days only
+		Removing expired data permanently */
+
+		$handshake = $this->getModel("Handshake");
+		$handshake->query(" DELETE FROM #__handshake WHERE date_created <= $time ");
+
+	}
 	
 }
