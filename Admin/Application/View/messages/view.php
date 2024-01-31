@@ -32,8 +32,6 @@ $html[] = "<div class='page-body'>";
 			$html[] = "<div class='col-12'>";
 				$html[] = "<div class='card'>";
 
-					$html[] = "<input type='hidden' name='last_message_id' id='last_message_id' value='0' />";
-				
 					$html[] = "<div class='card-body scrollable' style='height: 35rem'>";
 						$html[] = "<div class='chat'>";
                         if($data['messages']) {
@@ -102,7 +100,10 @@ $html[] = "<div class='page-body'>";
 							$html[] = "</div>";
                         }
                         $html[] = "</div>";
+
                     $html[] = "</div>";
+
+					$html[] = "<input type='hidden' name='last_message_id' id='last_message_id' value='".$data['messages'][$i]['message_id']."' />";
 
 					$html[] = "<div class='card-footer'>";
 						$html[] = "<div class='input-group input-group-flat'>";

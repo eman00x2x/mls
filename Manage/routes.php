@@ -60,7 +60,9 @@ Router::post('/mls/compare/remove', 'MlsController@removeFromCompare', ['as' => 
 
 /** MESSAGES ROUTES */
 Router::get('/messages', 'MessagesController@index', ['as' => 'messages']);
-Router::get('/messages/{id}', 'MessagesController@view', ['as' => 'messages'])->where([ 'id' => '[\w\-]+' ]);
+Router::get('/messages/{id}', 'MessagesController@view', ['as' => 'viewMessages'])->where([ 'id' => '[\w\-]+' ]);
+Router::get('/messages/{id}/showMessages/{lastId}', 'MessagesController@showMessages', ['as' => 'showMessages'])->where([ 'id' => '[\w\-]+', 'lastId' => '[\w\-]+' ]);
+Router::get('/messages/{id}/removeMessage', 'MessagesController@saveDeletedThread', ['as' => 'saveDeletedThread'])->where([ 'id' => '[\w\-]+' ]);
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get('/subscriptions', 'SubscriptionsController@index', ['as' => 'subscriptions']);
