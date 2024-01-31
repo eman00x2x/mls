@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 25, 2024 at 02:22 PM
+-- Generation Time: Jan 31, 2024 at 02:52 PM
 -- Server version: 5.7.31
 -- PHP Version: 7.4.9
 
@@ -91,6 +91,22 @@ INSERT INTO `mls_account_subscriptions` (`account_subscription_id`, `account_id`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `mls_deleted_threads`
+--
+
+DROP TABLE IF EXISTS `mls_deleted_threads`;
+CREATE TABLE IF NOT EXISTS `mls_deleted_threads` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `thread_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `account_id` bigint(20) NOT NULL,
+  `deleted_at` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `mls_handshakes`
 --
 
@@ -105,14 +121,7 @@ CREATE TABLE IF NOT EXISTS `mls_handshakes` (
   `handshake_status_date` int(12) NOT NULL,
   `requested_date` int(12) NOT NULL,
   PRIMARY KEY (`handshake_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `mls_handshakes`
---
-
-INSERT INTO `mls_handshakes` (`handshake_id`, `requestor_account_id`, `requestor_details`, `requestee_account_id`, `listing_id`, `handshake_status`, `handshake_status_date`, `requested_date`) VALUES
-(7, 1, '{\n    \"account_id\": 1,\n    \"logo\": \"http:\\/\\/cdn.mls\\/images\\/accounts\\/62242481312762779081451953250792944729165370785647_24b7913aeeb499a52d2098ee2e04d916.jpg\",\n    \"company_name\": \"EmanPO&Ntilde;\",\n    \"real_estate_license_number\": \"\",\n    \"firstname\": \"Eman\",\n    \"lastname\": \"Olivas\",\n    \"address\": \"\",\n    \"street\": \"55 Justice R jabson St Bambang\",\n    \"city\": \"Pasig City\",\n    \"province\": \"National Capital Region\",\n    \"mobile_number\": \"09175223499\",\n    \"email\": \"eman00x2xx@gmail.com\",\n    \"tin\": \"666-666-6663\",\n    \"status\": \"active\",\n    \"registration_date\": 1697967993\n}', 1, 3, 'pending', 1706189388, 1706189388);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -194,10 +203,10 @@ CREATE TABLE IF NOT EXISTS `mls_listings` (
 --
 
 INSERT INTO `mls_listings` (`listing_id`, `account_id`, `offer`, `type`, `foreclosed`, `name`, `title`, `tags`, `long_desc`, `category`, `address`, `suburb`, `city`, `price`, `reservation`, `monthly_downpayment`, `monthly_amortization`, `floor_area`, `lot_area`, `unit_area`, `bedroom`, `bathroom`, `parking`, `thumb_img`, `video`, `amenities`, `date_added`, `last_modified`, `status`, `display`) VALUES
-(1, 1, 'for sale', 'Residential', 0, 'samplesss', 'samplesss', '[\"New\"]', '<p>sample esar&nbsp;</p>', 'Condominium', '{\"barangay\":\"Narvacan\",\"municipality\":\"Santo Tomas\",\"province\":\"La Union\",\"region\":\"Region I\"}', 'Bambang', 'Bambang, Taguig City', 16000000, '100000.00', '600000.00', '80000.00', 233, 2589, 233, 4, 2, 2, 'http://cdn.mls//images/listings/11198547510152319200485562170839579336964453374430_a6b9e989adc2567145f6316f0244f93d.jpg', NULL, 'Lap Pool,Bowling Room,Basket Ball Court,Game rooms,Day care centers,Lobby,Club House,Function Halls,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1698849808, 1699021543, 1, 1),
-(2, 1, 'for sale', 'Residential', 0, 'test', 'test', '[\"New\",\"Pre Owned\"]', '<p>test</p>', 'Residential Lot', '{\"barangay\":\"Sipac-Almacen\",\"municipality\":\"Navotas City\",\"province\":\"Metro Manila\",\"region\":\"NCR\"}', NULL, NULL, 1500000, '20000.00', '56000.00', '85000.00', 0, 0, 0, 0, 0, 0, 'http://cdn.mls//images/listings/89504320885208719173718599824310942476380330570978_99a1d90c21c717bd52509c713ccf0ce0.jpg', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1699018530, 1699021786, 1, 1),
-(3, 1, 'for sale', 'Residential', 0, 'modern-2-storey-5-bedrooms-alabang-400-village-muntinlupa-city', 'Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City', '[\"New\",\"Pre Owned\"]', '<p>MODERN 2 STOREY HOUSE</p>\r\n<p>Lot area: 412 sq.m</p>\r\n<p>Floor area: 300 sq.m</p>\r\n<p>5 bedrooms with toilet and bath</p>\r\n<p>-walk in closet in bedrooms upstairs</p>\r\n<p>- ensuite in all bedrooms</p>\r\n<p>- bathtub in master&rsquo;s bedroom</p>\r\n<p>- airconditioning in 4 rooms and living area</p>\r\n<p>- hot and cold water system</p>\r\n<p>25m frontage</p>\r\n<p>Built 2010</p>\r\n<p>3 elevated under cover garage</p>\r\n<p>High ceiling</p>\r\n<p>Open plan concept</p>\r\n<p>Balcony at rear</p>\r\n<p>Pantry room</p>\r\n<p>Big garden</p>\r\n<p>SP: 35 M gross</p>\r\n<p>Clean title</p>\r\n<p>RFS: family migrating to Australia</p>', 'House and Lot', '{\"barangay\":\"New Alabang Village\",\"municipality\":\"Muntinlupa City\",\"province\":\"Metro Manila\",\"region\":\"NCR\"}', NULL, NULL, 1500000, '20000.00', '56000.00', '85000.00', 300, 412, 0, 5, 5, 2, 'http://cdn.mls//images/listings/68827441742920438809240668712508286601766686054997_660911534b2c944e10218a1bbc06c574.jpg', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1699019091, 1706180698, 1, 1),
-(4, 1, 'for sale', 'Residential', 0, 'test', 'test', '[\"New\",\"Pre Owned\"]', '<p>test</p>', 'Residential Lot', '{\"barangay\":\"Lower Sulitan\",\"municipality\":\"Naga\",\"province\":\"Zamboanga Sibugay\",\"region\":\"Region IX\"}', NULL, NULL, 1500000, '20000.00', '56000.00', '85000.00', 0, 0, 0, 0, 0, 0, 'http://cdn.mls//images/listings/67187533368375691204002056630890668920781534295904_3983ad8569c207b88a2d32012f800aaf.jpg', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1699019712, 1699021566, 1, 1);
+(1, 1, 'for sale', 'Residential', 0, 'samplesss', 'samplesss', '[\"New\"]', '<p>sample esar&nbsp;</p>', 'Condominium', '{\"barangay\":\"\",\"municipality\":\"\",\"province\":\"Metro Manila\",\"region\":\"NCR\"}', 'Bambang', 'Bambang, Taguig City', 16000000, '100000.00', '600000.00', '80000.00', 233, 2589, 233, 4, 2, 2, 'http://cdn.mls//images/listings/18362362385124463689010255540495713831578558815919_0bd3dfef0e2e42824866367511e1ea81.webp', NULL, 'Lap Pool,Bowling Room,Basket Ball Court,Game rooms,Day care centers,Lobby,Club House,Function Halls,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1698849808, 1706418252, 1, 1),
+(2, 1, 'for sale', 'Residential', 0, 'test', 'test', '[\"New\",\"Pre Owned\"]', '<p>test</p>', 'House and Lot', '{\"barangay\":\"Sipac-Almacen\",\"municipality\":\"Navotas City\",\"province\":\"Metro Manila\",\"region\":\"NCR\"}', NULL, NULL, 1500000, '20000.00', '56000.00', '85000.00', 0, 0, 0, 0, 0, 0, 'http://cdn.mls//images/listings/20589086521943721573908927020568652944736005968973_0d2ddc51bced3a7da9c49208c52c1167.webp', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1699018530, 1706408975, 1, 1),
+(3, 1, 'for sale', 'Residential', 0, 'modern-2-storey-5-bedrooms-alabang-400-village-muntinlupa-city', 'Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City', '[\"New\",\"Pre Owned\"]', '<p>MODERN 2 STOREY HOUSE</p>\r\n<p>Lot area: 412 sq.m</p>\r\n<p>Floor area: 300 sq.m</p>\r\n<p>5 bedrooms with toilet and bath</p>\r\n<p>-walk in closet in bedrooms upstairs</p>\r\n<p>- ensuite in all bedrooms</p>\r\n<p>- bathtub in master&rsquo;s bedroom</p>\r\n<p>- airconditioning in 4 rooms and living area</p>\r\n<p>- hot and cold water system</p>\r\n<p>25m frontage</p>\r\n<p>Built 2010</p>\r\n<p>3 elevated under cover garage</p>\r\n<p>High ceiling</p>\r\n<p>Open plan concept</p>\r\n<p>Balcony at rear</p>\r\n<p>Pantry room</p>\r\n<p>Big garden</p>\r\n<p>SP: 35 M gross</p>\r\n<p>Clean title</p>\r\n<p>RFS: family migrating to Australia</p>', 'House and Lot', '{\"barangay\":\"New Alabang Village\",\"municipality\":\"Muntinlupa City\",\"province\":\"Metro Manila\",\"region\":\"NCR\"}', NULL, NULL, 1500000, '20000.00', '56000.00', '85000.00', 300, 412, 0, 5, 5, 2, 'http://cdn.mls//images/listings/34386680823233921755628498012360148501361322493813_7e12b9298c1869571ac20626b9bbb411.webp', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1699019091, 1706407201, 1, 1),
+(4, 1, 'for sale', 'Residential', 0, 'test', 'test', '[\"New\",\"Pre Owned\"]', '<p>test</p>', 'Subdivision Lot', '{\"barangay\":\"Lower Sulitan\",\"municipality\":\"Naga\",\"province\":\"Zamboanga Sibugay\",\"region\":\"Region IX\"}', NULL, NULL, 1500000, '20000.00', '56000.00', '85000.00', 0, 0, 0, 0, 0, 0, 'http://cdn.mls//images/listings/55141816083775074918346737185762835964551378384965_ae7a8e233176ecb7a64763d494530f5a.webp', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', 1699019712, 1706409221, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -229,18 +238,56 @@ CREATE TABLE IF NOT EXISTS `mls_listing_images` (
   `url` text,
   `img_sort` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`image_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `mls_listing_images`
 --
 
 INSERT INTO `mls_listing_images` (`image_id`, `listing_id`, `filename`, `url`, `img_sort`) VALUES
-(1, 1, '89638726282207993152966482394543957883278444361827_fa25195a6f9a28b5a697728da3d1476b.png', 'http://cdn.mls/images/listings/89638726282207993152966482394543957883278444361827_fa25195a6f9a28b5a697728da3d1476b.png', 0),
-(2, 1, '50898794223691518822257699814727232799669647373271_cf8550b5bd1b5750ce76c658e328cab7.png', 'http://cdn.mls/images/listings/50898794223691518822257699814727232799669647373271_cf8550b5bd1b5750ce76c658e328cab7.png', 0),
-(4, 4, '67187533368375691204002056630890668920781534295904_3983ad8569c207b88a2d32012f800aaf.jpg', 'http://cdn.mls/images/listings/67187533368375691204002056630890668920781534295904_3983ad8569c207b88a2d32012f800aaf.jpg', 0),
-(5, 3, '68827441742920438809240668712508286601766686054997_660911534b2c944e10218a1bbc06c574.jpg', 'http://cdn.mls/images/listings/68827441742920438809240668712508286601766686054997_660911534b2c944e10218a1bbc06c574.jpg', 0),
-(6, 2, '89504320885208719173718599824310942476380330570978_99a1d90c21c717bd52509c713ccf0ce0.jpg', 'http://cdn.mls/images/listings/89504320885208719173718599824310942476380330570978_99a1d90c21c717bd52509c713ccf0ce0.jpg', 0);
+(7, 3, '34386680823233921755628498012360148501361322493813_7e12b9298c1869571ac20626b9bbb411.webp', 'http://cdn.mls/images/listings/34386680823233921755628498012360148501361322493813_7e12b9298c1869571ac20626b9bbb411.webp', 0),
+(8, 2, '20589086521943721573908927020568652944736005968973_0d2ddc51bced3a7da9c49208c52c1167.webp', 'http://cdn.mls/images/listings/20589086521943721573908927020568652944736005968973_0d2ddc51bced3a7da9c49208c52c1167.webp', 0),
+(9, 4, '55141816083775074918346737185762835964551378384965_ae7a8e233176ecb7a64763d494530f5a.webp', 'http://cdn.mls/images/listings/55141816083775074918346737185762835964551378384965_ae7a8e233176ecb7a64763d494530f5a.webp', 0),
+(10, 1, '18362362385124463689010255540495713831578558815919_0bd3dfef0e2e42824866367511e1ea81.webp', 'http://cdn.mls/images/listings/18362362385124463689010255540495713831578558815919_0bd3dfef0e2e42824866367511e1ea81.webp', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mls_messages`
+--
+
+DROP TABLE IF EXISTS `mls_messages`;
+CREATE TABLE IF NOT EXISTS `mls_messages` (
+  `message_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `thread_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `message` text NOT NULL,
+  `attachments` text,
+  `created_at` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`message_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `mls_messages`
+--
+
+INSERT INTO `mls_messages` (`message_id`, `thread_id`, `user_id`, `message`, `attachments`, `created_at`) VALUES
+(1, 1, 1, 'test', NULL, 1706442338),
+(7, 1, 1, 'test Message today', NULL, 1706706778),
+(8, 1, 1, 'test again', NULL, 1706707118),
+(9, 1, 1, 'test test', NULL, 1706707129),
+(10, 1, 2, 'test test', NULL, 1706707129),
+(11, 1, 1, 'test test again', NULL, 1706707239),
+(12, 1, 1, '', NULL, 1706707330),
+(13, 1, 1, '', NULL, 1706707387),
+(14, 1, 1, 'test 1st', NULL, 1706707392),
+(15, 1, 1, '', NULL, 1706707456),
+(16, 1, 1, 'eaws', NULL, 1706707657),
+(117, 1, 1, 'eaws', NULL, 1706707657),
+(118, 1, 1, 'eawsasd', NULL, 1706707657),
+(119, 1, 1, 'eaws', NULL, 1706707657),
+(120, 1, 1, 'eaws', NULL, 1706707657),
+(121, 1, 1, 'eawsasd', NULL, 1706707657);
 
 -- --------------------------------------------------------
 
@@ -277,6 +324,30 @@ INSERT INTO `mls_premiums` (`premium_id`, `category`, `type`, `name`, `details`,
 (7, 'package', 'limited_time', 'Platinum Package', '+3 Max User, +90 Listing Posting, +4 Display Ads, +3 Featured Ads, Listings Database Access, 30 days duration', '{\"max_post\":\"90\",\"max_users\":\"3\",\"display_ads\":\"4\",\"featured_ads\":\"3\",\"properties_DB\":\"1\"}', '30 days', '1999.000', 1, 1698927038, 0),
 (8, 'package', 'limited_time', 'Diamond Package', '+4 Max User, +120 Listing Posting, +5 Display Ads, +4 Featured Ads, Listings Database Access, 30 days duration', '{\"max_post\":\"120\",\"max_users\":\"4\",\"display_ads\":\"5\",\"featured_ads\":\"4\",\"properties_DB\":\"1\"}', '30 days', '2499.000', 1, 1698927038, 0),
 (9, 'package', 'limited_time', 'Titanium Package', '+5 Max User, +155 Listing Posting, +6 Display Ads, +5 Featured Ads, Listings Database Access, 30 days duration', '{\"max_post\":\"155\",\"max_users\":\"5\",\"display_ads\":\"6\",\"featured_ads\":\"5\",\"properties_DB\":\"1\"}', '30 days', '2999.000', 0, 1698927038, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mls_threads`
+--
+
+DROP TABLE IF EXISTS `mls_threads`;
+CREATE TABLE IF NOT EXISTS `mls_threads` (
+  `thread_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `subject` text,
+  `participants` text COMMENT 'participants user_id in JSON format',
+  `accounts` text COMMENT 'collection of account_id of participants in JSON format',
+  `created_by` bigint(20) NOT NULL,
+  `created_at` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`thread_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `mls_threads`
+--
+
+INSERT INTO `mls_threads` (`thread_id`, `subject`, `participants`, `accounts`, `created_by`, `created_at`) VALUES
+(1, 'Regarding Condominium in Muntinlupa City', '[1,2]', '[1,2]', 2, 1706442338);
 
 -- --------------------------------------------------------
 

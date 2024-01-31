@@ -56,11 +56,10 @@ $html[] = "<div class='page-body'>";
 
 								$html[] = "<tr class='row_listings_".$data['threads'][$i]['thread_id']."'>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-									$html[] = "<td class='align-middle'><a href='".url("MessagesController@edit",["id" => $data['threads'][$i]['thread_id']])."'>".$data['threads'][$i]['subject']."</a></td>";
+									$html[] = "<td class='align-middle'><a href='".url("MessagesController@view",["thread_id" => $data['threads'][$i]['thread_id']])."'>".$data['threads'][$i]['subject']."</a></td>";
 									
                                     $html[] = "<td>";
                                         for($x=0; $x<count($data['threads'][$i]['participants']); $x++) {
-                                            
                                             if($data['threads'][$i]['participants'][$x]['account']['account_id'] != $_SESSION['account_id']) {
                                                 $html[] = "<div class='d-flex gap-2'>";
                                                 	$html[] = "<div class='btn border border-1 rounded-2'>";
@@ -77,7 +76,7 @@ $html[] = "<div class='page-body'>";
 									
 									$html[] = "<td class='text-center'>";
                                         $html[] = "<div class='btn-list'>";
-                                            $html[] = "<span class='btn btn-danger btn-delete ' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MessagesController@saveDeletedThread",["id" => $data['threads'][$i]['thread_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
+                                            $html[] = "<span class='btn btn-danger btn-delete ' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MessagesController@saveDeletedThread",["thread_id" => $data['threads'][$i]['thread_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
                                         $html[] = "</div>";
 									$html[] = "</td>";
 									
@@ -96,10 +95,6 @@ $html[] = "<div class='page-body'>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";
-
-		if(!empty($model)) {
-			$html[] = $model->pagination;
-		}
 
 	$html[] = "</div>";
 $html[] = "</div>";

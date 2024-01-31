@@ -60,9 +60,11 @@ Router::post('/mls/compare/remove', 'MlsController@removeFromCompare', ['as' => 
 
 /** MESSAGES ROUTES */
 Router::get('/messages', 'MessagesController@index', ['as' => 'messages']);
-Router::get('/messages/{id}', 'MessagesController@view', ['as' => 'viewMessages'])->where([ 'id' => '[\w\-]+' ]);
-Router::get('/messages/{id}/showMessages/{lastId}', 'MessagesController@showMessages', ['as' => 'showMessages'])->where([ 'id' => '[\w\-]+', 'lastId' => '[\w\-]+' ]);
-Router::get('/messages/{id}/removeMessage', 'MessagesController@saveDeletedThread', ['as' => 'saveDeletedThread'])->where([ 'id' => '[\w\-]+' ]);
+Router::get('/messages/{thread_id}', 'MessagesController@view', ['as' => 'viewMessages'])->where([ 'thread_id' => '[\w\-]+' ]);
+Router::get('/messages/{thread_id}/showMessages/{lastMessageId}', 'MessagesController@showMessages', ['as' => 'showMessages'])->where([ 'thread_id' => '[\w\-]+', 'lastMessageId' => '[\w\-]+' ]);
+Router::get('/messages/{thread_id}/removeMessage', 'MessagesController@saveDeletedThread', ['as' => 'saveDeletedThread'])->where([ 'thread_id' => '[\w\-]+' ]);
+
+Router::post('/messages/saveNewMessage', 'MessagesController@saveNewMessage', ['as' => 'saveNewMessage'])->where([ 'id' => '[\w\-]+' ]);
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get('/subscriptions', 'SubscriptionsController@index', ['as' => 'subscriptions']);

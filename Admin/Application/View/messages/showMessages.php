@@ -1,7 +1,5 @@
 <?php
 
-if($data['messages']) {
-	
 	for($i=0; $i<count($data['messages']); $i++) {
 		$html[] = "<div  class='chat-item'>";
 			
@@ -59,4 +57,3 @@ if($data['messages']) {
 
 	$html[] = "<input type='hidden' name='last_message_id' id='last_message_id' value='".$data['messages'][$i]['message_id']."' />";
 	
-}

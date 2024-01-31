@@ -19,9 +19,8 @@ class MessagesController extends \Main\Controller {
 		$thread = $this->getModel("DeletedThread");
 		$thread->select(" GROUP_CONCAT(thread_id) as thread_ids ");
 		$thread->column['account_id'] = $_SESSION['account_id'];
-		$data['deletedThreads'] = $thread->getById();
+		$data['deletedThreads'] = $thread->getByAccountId();
 		
-
 		if(isset($_REQUEST['search'])) {
 			$filters[] = " (subject LIKE '%".$_REQUEST['search']."%')";
 			$uri['search'] = $_REQUEST['search'];
@@ -33,7 +32,7 @@ class MessagesController extends \Main\Controller {
 
 		$clause[] = " JSON_CONTAINS(accounts, '".$_SESSION['account_id']."', '$')";
 		
-		if($data['deletedThreads']) {
+		if($data['deletedThreads']['thread_ids']) {
 			$clause[] = " thread_id NOT IN(".$data['deletedThreads']['thread_ids'].")";
 		}
 
@@ -116,54 +115,50 @@ class MessagesController extends \Main\Controller {
 
 			var idleTime = 0;
 			$(document).ready(function() {
-				$(window).bind('scroll', fetchMore);
-				var fetchMessages = setInterval(fetchMore, 10000);
+				var div = $('.card-body');
+				div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
+				div.bind('scroll', fetchMore);
+				setInterval(fetchMore, 10000);
 
-				var idleInterval = setInterval(function() {
-					idleTime = idleTime + 1;
-					clearInterval(fetchMessages);
-				}, 60000);
-
-				$(this).mousemove(function(e) {
-					if(idleTime > 0) {
-						fetchMessages = setInterval(fetchMore, 10000);
-					}
-
-					idleTime = 0;
-				});
-
-				$(this).keypress(function(e) {
-					if(idleTime > 0) {
-						fetchMessages = setInterval(fetchMore, 10000);
-					}
-
-					idleTime = 0;
-				});
-			});
-
-			$(document).on('click', '.btn-send-message', function() {
-				$.post('".url("MessagesController@saveNewMessage")."',function(data) {
-
-				});
 			});
 
 			fetchMore = function() {
-				var lastMessageId = $('#last_message_id').val();
-				var div = $('.chat');
+				
+				var div = $('.card-body');
 
-				if(div.scrollTop() >= div.clientHeight) {
-					$(window).unbind('scroll', fetchMore);
-					$.get('/messages/$id/showMessages/' + lastMessageId, { 'lastMesageId' : lastMesageId }, function(data) {
+				if(div.scrollTop() >= div[0].scrollHeight - div[0].clientHeight ) {
+					var lastMessageId = $('#last_message_id').val();
+					div.unbind('scroll', fetchMore);
+					$.get('/messages/$id/showMessages/' + lastMessageId, function(data) {
+						
 						if(data != '') {
 							$('#last_message_id').remove();
 							$('.chat-bubbles').append(data);
-							$(window).bind('scroll',fetchMore);
-							div.scrollTop(div.prop('scrollHeight'));
+							div.bind('scroll',fetchMore);
+							div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
 						}
 					});
 				}
 			}
-			
+
+			$(document).on('click', '.btn-send-message', function() {
+				postMessage();
+			});
+
+			/* function postMessage() {
+
+				var message = $('#message').val();
+				if(message != '') {
+					$.post('".url("MessagesController@saveNewMessage")."', { 
+						'thread_id':$id,
+						'message': message 
+					},function(data) {
+						eval('('+fetchMore+')()');
+						$('#message').val('');
+					});
+				}
+			}
+			 */
 		");
 
 		$thread = $this->getModel("Thread");
@@ -179,13 +174,13 @@ class MessagesController extends \Main\Controller {
 			if($data['messages']) {
 				$user = $this->getModel("User");
 				for($i=0; $i<count($data['messages']); $i++) {
-					$user->column['user_id'] = $data[$i]['user_id'];
+					$user->column['user_id'] = $data['messages'][$i]['user_id'];
 					$data['messages'][$i]['user'] = $user->getById();
 				}
 			}
 
 			$this->setTemplate("messages/view.php");
-			return $this->getTemplate($data);
+			return $this->getTemplate($data, $message);
 
 		}
 
@@ -193,12 +188,12 @@ class MessagesController extends \Main\Controller {
 
 	}
 
-	function showMessages($id,$last_message_id) {
+	function showMessages($thread_id,$lastMessageId) {
 
 		$message = $this->getModel("Message");
-		$message->and(" message_id > $last_message_id ");
+		$message->and(" message_id > $lastMessageId ");
 		$message->orderBy(" created_at DESC ");
-		$data['messages'] = $message->getByThreadId($id);
+		$data['messages'] = $message->getByThreadId($thread_id);
 
 		if($data['messages']) {
 			$user = $this->getModel("User");
@@ -206,10 +201,11 @@ class MessagesController extends \Main\Controller {
 				$user->column['user_id'] = $data[$i]['user_id'];
 				$data['messages'][$i]['user'] = $user->getById();
 			}
-		}
 
-		$this->setTemplate("messages/showMessages.php");
-		return $this->getTemplate($data);
+			$this->setTemplate("messages/showMessages.php");
+			return $this->getTemplate($data);
+
+		}
 
 	}
 
@@ -220,10 +216,8 @@ class MessagesController extends \Main\Controller {
 		$id = $message->saveNew(array(
 			"user_id" => $_SESSION['user_id'],
 			"thread_id" => $_POST['thread_id'],
-			"details" => json_encode(array(
-				"type" => "text",
-				"content" => $_POST['message']
-			)),
+			"message" => $_POST['message'],
+			"attachment" => null,
 			"created_at" => DATE_NOW
 		));
 

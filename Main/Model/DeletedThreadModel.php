@@ -10,6 +10,10 @@ class DeletedThreadModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getByAccountId() {
+		return $this->DBO->queryUniqueValue("SELECT ".($this->select != "" ? $this->select : "*")." FROM #__".$this->table." WHERE account_id = ".$this->column['account_id']);
+	}
+
 	function saveNew($data) {
 
 		$v = $this->getValidator();
