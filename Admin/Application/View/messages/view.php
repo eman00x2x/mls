@@ -51,7 +51,7 @@ $html[] = "<div class='row justify-content-center'>";
 																	$html[] = $data['messages'][$i]['user']['name'];
 																$html[] = "</div>";
 																$html[] = "<div class='col-auto chat-bubble-date'>";
-																	$html[] = date("F d, Y h:ia",$data['messages'][$i]['created_at']);
+																	$html[] = date("M d, Y h:ia",$data['messages'][$i]['created_at']);
 																$html[] = "</div>";
 															$html[] = "</div>";
 														$html[] = "</div>";
@@ -82,7 +82,7 @@ $html[] = "<div class='row justify-content-center'>";
 																	$html[] = $data['messages'][$i]['user']['name'];
 																$html[] = "</div>";
 																$html[] = "<div class='col-auto chat-bubble-date'>";
-																	$html[] = date("F d, Y h:ia",$data['messages'][$i]['created_at']);
+																	$html[] = date("M d, Y h:ia",$data['messages'][$i]['created_at']);
 																$html[] = "</div>";
 															$html[] = "</div>";
 														$html[] = "</div>";
@@ -104,7 +104,7 @@ $html[] = "<div class='row justify-content-center'>";
 
 					$html[] = "</div>";
 
-					$html[] = "<input type='hidden' id='last_message_id' value='".$data['messages'][($i-1)]['message_id']."' />";
+					$html[] = "<input type='hidden' class='last_message_id' value='".@$data['messages'][($i-1)]['message_id']."' />";
 
 					$html[] = "<div class='card-footer'>";
 						$html[] = "<div class='input-group input-group-flat'>";

@@ -107,7 +107,7 @@ class MessagesController extends \Main\Controller {
 
 	}
 	
-	function view($id) {
+	/* function view($id) {
 
 		$this->doc->setTitle("Messages");
 
@@ -117,35 +117,36 @@ class MessagesController extends \Main\Controller {
 			$(document).ready(function() {
 				var div = $('.card-body');
 				div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
+				
 				div.bind('scroll', fetchMore);
 				setInterval(fetchMore, 10000);
-
+				
 			});
 
 			fetchMore = function() {
 				
+				var lastMessageId = $('.last_message_id').val();
 				var div = $('.card-body');
 
-				if(div.scrollTop() >= div[0].scrollHeight - div[0].clientHeight ) {
-					var lastMessageId = $('#last_message_id').val();
+				if(div.scrollTop() + div.innerHeight() >= div[0].scrollHeight) {
+					
 					div.unbind('scroll', fetchMore);
 					$.get('/messages/$id/showMessages/' + lastMessageId, function(data) {
-						
 						if(data != '') {
-							$('#last_message_id').remove();
+							$('.last_message_id').remove();
 							$('.chat-bubbles').append(data);
-							div.bind('scroll',fetchMore);
 							div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
 						}
+						div.bind('scroll',fetchMore);
 					});
 				}
-			}
+			};
 
 			$(document).on('click', '.btn-send-message', function() {
 				postMessage();
 			});
 
-			/* function postMessage() {
+			function postMessage() {
 
 				var message = $('#message').val();
 				if(message != '') {
@@ -158,7 +159,7 @@ class MessagesController extends \Main\Controller {
 					});
 				}
 			}
-			 */
+			
 		");
 
 		$thread = $this->getModel("Thread");
@@ -168,8 +169,142 @@ class MessagesController extends \Main\Controller {
 		if($data) {
 
 			$message = $this->getModel("Message");
-			$message->orderBy(" created_at ASC ");
-			$data['messages'] = $message->getByThreadId($data['thread_id']);
+			$data['messages'] = $message->execute(" SELECT * 
+				FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread_id']." ORDER BY created_at DESC LIMIT 20) as sub 
+				ORDER BY created_at ASC
+			");
+
+			if($data['messages']) {
+				$user = $this->getModel("User");
+				for($i=0; $i<count($data['messages']); $i++) {
+					$user->column['user_id'] = $data['messages'][$i]['user_id'];
+					$data['messages'][$i]['user'] = $user->getById();
+				}
+			}
+
+			$this->setTemplate("messages/view.php");
+			return $this->getTemplate($data, $message);
+
+		}
+
+		$this->response(404);
+
+	} */
+
+	function view($id) {
+
+		$thread = $this->getModel("Thread");
+		$thread->column['thread_id'] = $id;
+		$data = $thread->getById();
+
+		$this->doc->setTitle("Messages");
+
+		$this->doc->addScriptDeclaration("
+
+			var wsUri = 'ws://localhost:9000/mls/Manage/chatWebSocket.php';
+
+			websocket = new WebSocket(wsUri);
+
+			websocket.onopen = function(ev) { // connection is open 
+				alert(' Server Open ');
+			}
+
+			// Message received from server
+			websocket.onmessage = function(ev) {
+
+				console.log('Server: '+ev.data);
+
+				var response 		= JSON.parse(ev.data); //PHP sends Json data
+				
+				var user_message 	= response.user_message;
+				var user_name 		= response.user_name;
+				var user_sent_time 	= response.user_sent_time;
+
+				/**
+				 *
+				 * append message here
+				 * 
+				 **/
+
+				html = \"<div class='row align-items-end justify-content-end'>\";
+					html += \"<div class='col col-lg-6'>\";
+						html += \"<div class='chat-bubble chat-bubble-me'>\";
+							
+							html += \"<div class='chat-bubble-title'>\";
+								html += \"<div class='row'>\";
+									html += \"<div class='col chat-bubble-author'>\";
+										html += user_name;
+									html += \"</div>\";
+									html += \"<div class='col-auto chat-bubble-date'>\";
+										html += user_sent_time;
+									html += \"</div>\";
+								html += \"</div>\";
+							html += \"</div>\";
+							html += \"<div class='chat-bubble-body'>\";
+								html += \"<p>\" + user_message + \"</p>\";
+							html += \"</div>\";
+						html += \"</div>\";
+					html += \"</div>\";
+					html += \"<div class='col-auto'>\";
+						html += \"<span class='avatar'></span>\";
+					html += \"</div>\";
+				html += \"</div>\";
+
+				$('.chat-bubbles').append(html);
+				
+			};
+
+			websocket.onerror	= function(ev){ console.log('Error Occurred - ' + ev.data)  }; 
+			websocket.onclose 	= function(ev){ console.log('Connection Closed'); };
+
+			$(document).ready(function() {
+				var div = $('.card-body');
+				div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
+			});
+
+			//Message send button
+			$(document).on('click', '.btn-send-message', function(){
+				send_message();
+			});
+
+			//User hits enter key 
+			$( document ).on( 'keydown', '#message', function( e ) {
+				if(e.which == 13){
+					send_message();
+				}
+			});
+
+			//Send message
+			function send_message(){
+				
+				var message = $('#message').val();
+				if(message != '') {
+					$.post('".url("MessagesController@saveNewMessage")."', {
+						'thread_id':$id,
+						'message': message 
+					},function(data) {
+
+						response = JSON.parse(data);
+						console.log(response);
+						console.log(JSON.stringify(response.data));
+
+						//convert and send data to server
+						websocket.send(JSON.stringify(response.data));
+						$('#message').val('');
+					});
+				}
+
+			}
+
+		");
+
+		if($data) {
+
+			$message = $this->getModel("Message");
+			$data['messages'] = $message->execute(" SELECT * 
+				FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread_id']." ORDER BY created_at DESC LIMIT 20) as sub 
+				ORDER BY created_at ASC
+			");
 
 			if($data['messages']) {
 				$user = $this->getModel("User");
@@ -198,7 +333,7 @@ class MessagesController extends \Main\Controller {
 		if($data['messages']) {
 			$user = $this->getModel("User");
 			for($i=0; $i<count($data['messages']); $i++) {
-				$user->column['user_id'] = $data[$i]['user_id'];
+				$user->column['user_id'] = $data['messages'][$i]['user_id'];
 				$data['messages'][$i]['user'] = $user->getById();
 			}
 
@@ -210,21 +345,34 @@ class MessagesController extends \Main\Controller {
 	}
 
 	function saveNewMessage() {
+
 		parse_str(file_get_contents('php://input'), $_POST);
 		
 		$message = $this->getModel("Message");
-		$id = $message->saveNew(array(
+
+		$data = array(
 			"user_id" => $_SESSION['user_id'],
 			"thread_id" => $_POST['thread_id'],
 			"message" => $_POST['message'],
 			"attachment" => null,
 			"created_at" => DATE_NOW
-		));
+		);
+
+		$id = $message->saveNew($data);
+
+		$user = $this->getModel("User");
+		$user->column['user_id'] = $_SESSION['user_id'];
+		$data['user'] = $user->getById();
+
+		$response['user_name'] = $data['user']['name'];
+		$response['user_message'] = $data['message'];
+		$response['user_sent_time'] = date("M d, Y h:ia",$data['created_at']);
 
 		return json_encode(array(
 			"status" => 1,
 			"type" => "success",
-			"id" => $id
+			"id" => $id,
+			"data" => $response
 		));
 
 	}
@@ -242,10 +390,7 @@ class MessagesController extends \Main\Controller {
 				$id = $message->saveNew(array(
 					"user_id" => $_SESSION['user_id'],
 					"thread_id" => $_POST['thread_id'],
-					"details" => json_encode(array(
-						"type" => "text",
-						"content" => $_POST['message']
-					)),
+					"message" => $_POST['message'],
 					"created_at" => DATE_NOW
 				));
 
@@ -267,5 +412,5 @@ class MessagesController extends \Main\Controller {
 		$this->response(404);
 		
 	}
-	
+
 }

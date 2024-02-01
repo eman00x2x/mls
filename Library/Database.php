@@ -20,7 +20,7 @@ namespace Library {
 			$this->selectDb($db);
 			register_shutdown_function(array(&$this, 'close'));
 
-			unset($this->db_host);
+			/* unset($this->db_host); */
 			unset($this->db_name);
 			unset($this->db_user);
 			unset($this->db_pass);

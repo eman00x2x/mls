@@ -54,6 +54,11 @@ class Table {
 		return $this;
 	}
 
+	function from($from) {
+		$this->from = $from;
+		return $this;
+	}
+
 	function join($join) {
 		$this->join = $join;
 		return $this;
@@ -198,6 +203,23 @@ class Table {
 			$query = "DELETE FROM #__".$this->table."";
 			$this->DBO->query($query);
 		}
+
+	}
+
+	function execute($query) {
+
+		$result = $this->DBO->query($query);
+
+		$this->initiateFields($result);
+
+		if($this->DBO->numRows($result) > 0) {
+
+			while($line = $this->DBO->FetchAssoc($result)) {
+				$this->results[] = $this->stripQuotes($line);
+			} 
+			
+			return $this->results;
+		}else {return false;}
 
 	}
 
