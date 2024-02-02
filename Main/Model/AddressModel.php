@@ -84,6 +84,11 @@ class AddressModel extends \Main\Model {
 					}
 				}
 
+				$('#address_barangay').val(current_value.barangay);
+				$('#address_municipality').val(current_value.municipality);
+				$('#address_province').val(current_value.province);
+				$('#address_region').val(current_value.region);
+
 			});
 
 			$(document).on('change','#region',function() {
@@ -147,10 +152,10 @@ class AddressModel extends \Main\Model {
 
 		$html[] = "<div class='address p-3 bg-muted-lt border mb-3 rounded'>";
 
-			$html[] = "<input type='hidden' name='address[barangay]' value='' />";
-			$html[] = "<input type='hidden' name='address[municipality]' value='' />";
-			$html[] = "<input type='hidden' name='address[province]' value='' />";
-			$html[] = "<input type='hidden' name='address[region]' value='' />";
+			$html[] = "<input type='hidden' id='address_barangay' name='address[barangay]' value='' />";
+			$html[] = "<input type='hidden' id='address_municipality' name='address[municipality]' value='' />";
+			$html[] = "<input type='hidden' id='address_province' name='address[province]' value='' />";
+			$html[] = "<input type='hidden' id='address_region' name='address[region]' value='' />";
 
 			$html[] = "<div class='mb-3'>";
 				$html[] = "<label class='form-label text-muted'>Region</label>";

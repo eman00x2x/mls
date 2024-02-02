@@ -82,6 +82,24 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 									$html[] = "<div class='row justify-content-center py-3'>";
 										$html[] = "<div class='col-md-8 col-lg-8 col-12'>";
 
+											$html[] = "<div class='d-flex gap-3 mb-5'>";
+												
+												$html[] = "<div class='border p-3'>";
+													$html[] = "<div class='form-check mb-0 cursor-pointer'>";
+														$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls' checked />";
+														$html[] = "<label class='form-check-label cursor-pointer' for='is_mls'>Post to MLS</label>";
+													$html[] = "</div>";
+												$html[] = "</div>";
+
+												$html[] = "<div class='border p-3'>";
+													$html[] = "<div class='form-check mb-0 cursor-pointer'>";
+														$html[] = "<input class='form-check-input cursor-pointer' name='is_website' type='checkbox' value='1' id='is_website' checked  />";
+														$html[] = "<label class='form-check-label cursor-pointer' for='is_website'>Post to Website</label>";
+													$html[] = "</div>";
+												$html[] = "</div>";
+
+											$html[] = "</div>";
+
 											
 											$html[] = "<div class='form-group mb-3'>";
 												$html[] = "<label class='form-label text-muted'>Title</label>";

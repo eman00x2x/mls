@@ -40,32 +40,37 @@ Router::post('/listings/new/saveNew', 'ListingsController@saveNew', ['as' => 'li
 Router::post('/listings/{id}/edit/saveUpdate', 'ListingsController@saveUpdate', ['as' => 'listingsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 
 /** PROPERTY IMAGES ROUTES */
-Router::get('/listingImages/{id}/delete', 'ListingImagesController@delete', ['as' => 'ListingImagesDelete'])->where([ 'id' => '[\w\-]+' ]);
+Router::get('/listingImages/{id}/delete', 'ListingImagesController@delete', ['as' => 'ListingImagesDelete'])->where([ 'id' => '[0-9]+' ]);
 
 /** MLS ROUTES */
 Router::get('/mls', 'MlsController@MLSIndex', ['as' => 'mls']);
 Router::get('/mls/handshaked', 'MlsController@handshakedIndex', ['as' => 'handshakedIndex']);
 Router::get('/mls/compare', 'MlsController@compareListings', ['as' => 'compareListings']);
 Router::get('/mls/comparePreview', 'MlsController@comparePreview', ['as' => 'comparePreview']);
-Router::get('/mls/handshaked/{id}/acceptRequest', 'MlsController@acceptRequest', ['as' => 'acceptRequest'])->where([ 'id' => '[\w\-]+' ]);
-Router::get('/mls/handshaked/{id}/deniedRequest', 'MlsController@deniedRequest', ['as' => 'deniedRequest'])->where([ 'id' => '[\w\-]+' ]);
-Router::get('/mls/handshaked/{id}/doneHandshake', 'MlsController@doneHandshake', ['as' => 'doneHandshake'])->where([ 'id' => '[\w\-]+' ]);
-Router::get('/mls/handshaked/{listing_id}/cancelHandshake', 'MlsController@cancelHandshake', ['as' => 'cancelHandshake'])->where([ 'listing_id' => '[\w\-]+' ]);
+Router::get('/mls/handshaked/{id}/acceptRequest', 'MlsController@acceptRequest', ['as' => 'acceptRequest'])->where([ 'id' => '[0-9]+' ]);
+Router::get('/mls/handshaked/{id}/deniedRequest', 'MlsController@deniedRequest', ['as' => 'deniedRequest'])->where([ 'id' => '[0-9]+' ]);
+Router::get('/mls/handshaked/{id}/doneHandshake', 'MlsController@doneHandshake', ['as' => 'doneHandshake'])->where([ 'id' => '[0-9]+' ]);
+Router::get('/mls/handshaked/{listing_id}/cancelHandshake', 'MlsController@cancelHandshake', ['as' => 'cancelHandshake'])->where([ 'listing_id' => '[0-9]+' ]);
 
-Router::get('/mls/{id}', 'MlsController@viewListing', ['as' => 'viewListing'])->where([ 'id' => '[\w\-]+' ]);
-Router::get('/mls/{listing_id}/requestHandshake', 'MlsController@requestHandshake', ['as' => 'requestHandshake'])->where([ 'listing_id' => '[\w\-]+' ]);
+Router::get('/mls/{id}', 'MlsController@viewListing', ['as' => 'viewListing'])->where([ 'id' => '[0-9]+' ]);
+Router::get('/mls/{listing_id}/requestHandshake', 'MlsController@requestHandshake', ['as' => 'requestHandshake'])->where([ 'listing_id' => '[0-9]+' ]);
 
 Router::post('/mls/compare/add', 'MlsController@addToCompare', ['as' => 'addToCompare']);
 Router::post('/mls/compare/remove', 'MlsController@removeFromCompare', ['as' => 'removeFromCompare']);
 
+/** LEADS ROUTES */
+Router::get('/leads', 'LeadsController@index', ['as' => 'leads']);
+Router::get('/leads/{id}', 'LeadsController@view', ['as' => 'leadView'])->where([ 'id' => '[0-9]+' ]);
+Router::get('/leads/{id}/delete', 'LeadsController@delete', ['as' => 'leadDelete'])->where([ 'id' => '[0-9]+' ]);
+
 /** MESSAGES ROUTES */
 Router::get('/messages', 'MessagesController@index', ['as' => 'messages']);
 Router::get('/messages/server', 'MessagesController@messageServer', ['as' => 'messageServer']);
-Router::get('/messages/{thread_id}', 'MessagesController@view', ['as' => 'viewMessages'])->where([ 'thread_id' => '[\w\-]+' ]);
-Router::get('/messages/{thread_id}/showMessages/{lastMessageId}', 'MessagesController@showMessages', ['as' => 'showMessages'])->where([ 'thread_id' => '[\w\-]+', 'lastMessageId' => '[\w\-]+' ]);
-Router::get('/messages/{thread_id}/removeMessage', 'MessagesController@saveDeletedThread', ['as' => 'saveDeletedThread'])->where([ 'thread_id' => '[\w\-]+' ]);
+Router::get('/messages/{thread_id}', 'MessagesController@view', ['as' => 'viewMessages'])->where([ 'thread_id' => '[0-9]+' ]);
+Router::get('/messages/{thread_id}/showMessages/{lastMessageId}', 'MessagesController@showMessages', ['as' => 'showMessages'])->where([ 'thread_id' => '[0-9]+', 'lastMessageId' => '[0-9]+' ]);
+Router::get('/messages/{thread_id}/removeMessage', 'MessagesController@saveDeletedThread', ['as' => 'saveDeletedThread'])->where([ 'thread_id' => '[0-9]+' ]);
 
-Router::post('/messages/saveNewMessage', 'MessagesController@saveNewMessage', ['as' => 'saveNewMessage'])->where([ 'id' => '[\w\-]+' ]);
+Router::post('/messages/saveNewMessage', 'MessagesController@saveNewMessage', ['as' => 'saveNewMessage']);
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get('/subscriptions', 'SubscriptionsController@index', ['as' => 'subscriptions']);

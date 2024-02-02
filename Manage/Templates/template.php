@@ -52,6 +52,13 @@
 									</a>
                 				</li>
 
+								<li class="nav-item <?php echo (url()->contains("/leads")) ? "active" : ""; ?>">
+									<a class="nav-link" href="<?php echo url("LeadsController@index"); ?>">
+										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-users'></i></span>
+										<span class="nav-link-title">Leads</span>
+									</a>
+                				</li>
+
 								<li class="nav-item <?php echo (url()->contains("/messages")) ? "active" : ""; ?>">
 									<a class="nav-link" href="<?php echo url("MessagesController@index"); ?>">
 										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-message'></i></span>

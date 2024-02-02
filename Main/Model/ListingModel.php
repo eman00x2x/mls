@@ -18,10 +18,13 @@ class ListingModel extends \Main\Model {
 		$v->validateGeneral($data['category'],"category is blank.");
 		$v->validateGeneral($data['type'],"type is blank.");
 		$v->validateGeneral($data['offer'],"offer is blank.");
-		$v->validateGeneral($data['address']['region'],"Region is blank.");
-		$v->validateGeneral($data['address']['province'],"Province is blank.");
-		$v->validateGeneral($data['address']['municipality'],"Municipality is blank.");
 		$v->validateGeneral($data['tags'],"no selected tags.");
+
+		$obj = json_decode($data['address'],true);
+
+		$v->validateGeneral($obj['region'],"Region is blank.");
+		$v->validateGeneral($obj['province'],"Province is blank.");
+		$v->validateGeneral($obj['municipality'],"Municipality is blank.");
 
 		if($v->foundErrors()) {
 			return array(
@@ -59,10 +62,13 @@ class ListingModel extends \Main\Model {
 			$v->validateGeneral($data['category'],"category is blank.");
 			$v->validateGeneral($data['type'],"type is blank.");
 			$v->validateGeneral($data['offer'],"offer is blank.");
-			$v->validateGeneral($data['address']['region'],"Region is blank.");
-			$v->validateGeneral($data['address']['province'],"Province is blank.");
-			$v->validateGeneral($data['address']['municipality'],"Municipality is blank.");
 			$v->validateGeneral($data['tags'],"no selected tags.");
+
+			$obj = json_decode($data['address'],true);
+
+			$v->validateGeneral($obj['region'],"Region is blank.");
+			$v->validateGeneral($obj['province'],"Province is blank.");
+			$v->validateGeneral($obj['municipality'],"Municipality is blank.");
 
 			if($v->foundErrors()) {
 				return array(
