@@ -57,10 +57,13 @@ class RegistrationController extends \Main\Controller {
 		$response =	$reference->getByLicenseId($_POST['prc_license_id']);
 
 		if($response['status'] == 1) {
-			$data = $response['data'];
-			
+
+			if($response['data']['reference_id'] == 0) {
+				$response['data']['prc_license_id'] = $_POST['prc_license_id'];
+			}
+				
 			$this->setTemplate("registration/register.php");
-			return $this->getTemplate($data);
+			return $this->getTemplate($response['data']);
 
 		}else {
 			$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
@@ -78,11 +81,12 @@ class RegistrationController extends \Main\Controller {
 
 		parse_str(file_get_contents('php://input'), $_POST);
 
-		debug($_POST);
+		$time = DATE_NOW;
 
 		$_POST['name'] = $_POST['firstname']." ".$_POST['lastname'];
-		$_POST['date_added'] = DATE_NOW;
-		$_POST['registration_date'] = DATE_NOW;
+		$_POST['date_added'] = $time;
+		$_POST['registration_date'] = $time;
+		$_POST['created_at'] = $time;
 		$_POST['privileges'] = json_encode(ACCOUNT_PRIVILEGES);
 		$_POST['permissions'] = json_encode(USER_PERMISSIONS);
 		$_POST['account_type'] = "Real Estate Practitioner";
@@ -95,6 +99,11 @@ class RegistrationController extends \Main\Controller {
 
 			$accounts = $this->getModel("Account");
 			$accountResponse = $accounts->saveNew($_POST);
+
+			if($_POST['reference_id'] == 0) {
+				$license = $this->getModel("LicenseReference");
+				$license->saveNew($_POST);
+			}
 
 			if($accountResponse['status'] == 1) {
 				$data['account_id'] = $accountResponse['id'];
