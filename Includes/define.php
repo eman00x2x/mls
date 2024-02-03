@@ -14,6 +14,8 @@ define("WEBDOMAIN","http://mls/");
 define("CDN","http://cdn.mls/");
 define("VRSN","v1.0");
 
+define("EMAIL_RESPONDER_ADDRESS","no-reply@mls.com");
+
 define("PREMIUM", false);
 
 define("USER_PERMISSIONS",[

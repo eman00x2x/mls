@@ -8,10 +8,18 @@ use IteratorAggregate;
 
 class InputItem implements ArrayAccess, IInputItem, IteratorAggregate
 {
-    public $index;
-    public $name;
+    public string $index;
+    public string $name;
+
+    /**
+     * @var mixed|null
+     */
     public $value;
 
+    /**
+     * @param string $index
+     * @param mixed $value
+     */
     public function __construct(string $index, $value = null)
     {
         $this->index = $index;
@@ -81,7 +89,8 @@ class InputItem implements ArrayAccess, IInputItem, IteratorAggregate
         return isset($this->value[$offset]);
     }
 
-    public function offsetGet($offset)
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset): ?self
     {
         if ($this->offsetExists($offset) === true) {
             return $this->value[$offset];

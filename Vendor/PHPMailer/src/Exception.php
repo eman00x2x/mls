@@ -19,7 +19,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-namespace Vendor\PHPMailer\PHPMailer;
+namespace PHPMailer\PHPMailer;
 
 /**
  * PHPMailer exception handler.

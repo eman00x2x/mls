@@ -1,54 +1,14 @@
 <?php
 
-namespace Application\Model;
+namespace Main\Model;
 
-class MailModel extends \Application\Model\Table\Mail {
+use PHPMailer\PHPMailer as Mailer;
 
-	function data($id) {
-		
-		$this->mail_id = $id;
-		
-		if($data = $this->getById()) {
-			
-			foreach($data as $key => $val) {
-				json_decode($val);
-				if(json_last_error() == JSON_ERROR_NONE) {
-					$formatedData[$key] = json_decode($val);
-				}else {
-					$formatedData[$key] = $val;
-				}
-			}
-			
-			return $formatedData;
-		}else {
-			$response['description'] = "The request could not be understood by the server due to malformed syntax. The client SHOULD NOT repeat the request without modifications.";
-			$response['error'] = "Not found!";
-			//\Library\RestApi::HTTPDocument(400,$response);
-			\Library\Factory::setMsg($response['error'],"wrong");
-			return false;
-		}
-		
-	}
-	
-	function getList() {
-		
-		$data = $this->getAll();
-		
-		if($data) {
-			foreach($data as $key => $value) {
-				$formatedData[$key] = $value;
-			}
-			
-			return $formatedData;
-		}else {
-			return false;
-		}
-		
-	}
+class MailModel extends \Main\Model {
 
-	function send($from,$to=null,$subject,$message,$cc=null,$bcc=null,$attachments = null) {
+	function sendMail($from,$to=null,$subject,$message,$cc=null,$bcc=null,$attachments = null) {
 		
-		$mail = new \vendor\PHPMailer\phpmailer\src\PHPMailer;
+		$mail = new Mailer();
 		
 		if(!is_null($to)) {
 			if(is_array($to)) {
@@ -109,112 +69,6 @@ class MailModel extends \Application\Model\Table\Mail {
 			return true;
 		}
 		
-	}
-	
-	function save($mail_id,$user_id,$subject,$address,$message,$attachments,$label="DRAFT",$schedule=null) {
-		
-		if(!is_null($mail_id)) {
-			$this->mail_id = $mail_id;
-			$this->getById();
-		}
-		
-		$this->user_id = $user_id;
-		$this->subject = $subject;
-		$this->address = json_encode($address);
-		$this->message = addslashes($message);
-		$this->attachments = json_encode($attachments);
-		$this->datetime = date("Y-m-d H:i:s");
-		$this->is_read = 1;
-		$this->label = $label;
-		
-		if(!is_null($schedule)) {
-		    $this->schedule_date = $schedule;
-		}
-		
-		if(is_null($mail_id)) {
-			$id = $this->insert();
-			return $id;
-		}else {
-			$this->update();
-			return $this->mail_id;
-		}
-		
-	}
-	
-	function attachedFile($data) {
-		
-		require_once(BASE.DS."vendor".DS."upload".DS."upload.php");
-		
-		$files = array();
-		foreach ($data as $k => $l) {
-			foreach ($l as $i => $v) {
-				if (!array_key_exists($i, $files))
-					$files[$i] = array();
-					$files[$i][$k] = $v;
-			}
-		}
-		
-		foreach ($files as $file) {
-			$handle = new \Vendor\Upload\Upload($file); 
-			if ($handle->uploaded) {
-			
-				$handle->file_safe_name = true;
-				
-				$handle->Process("email/temporary/"); 
-				
-				if ($handle->processed) {
-				
-					$uploadedImages[] = array(
-						"status" => 1,
-						"id" => rand(1000,10000).time(),
-						"filename" => $handle->file_dst_name
-					);
-				
-				}else {
-					
-					$uploadedImages[] = array(
-						"status" => 2,
-						"message" => "Error Uploading"
-					);
-					
-				}
-			}
-			unset($handle);
-		}
-		
-		return json_encode($uploadedImages);
-		
-	}
-	
-	function moveUploadedImage($data) {
-	
-		$images = [];
-	
-		for($i=0; $i<count($data); $i++) {
-			$old_filename = BASE.DS."email".DS."temporary".DS.$data[$i];
-			if(file_exists($old_filename)) {
-				
-				$new_filename = BASE.DS."email".DS."attachment".DS.$data[$i];
-				rename($old_filename,$new_filename);
-				
-				$images[] = array(
-					"filename" => $data[$i]
-				);
-				
-			}
-		}
-		
-		return $images;
-		
-	}
-	
-	function removeAttachment($filename) {
-		$file = "email/temporary/".$filename;
-		if(file_exists($file)) {
-			@unlink($file);
-		}else {
-			@unlink("email/attachments/".$filename);
-		}
 	}
 	
 	function tracker($id,$public_ip) {

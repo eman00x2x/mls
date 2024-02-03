@@ -86,12 +86,32 @@ $html[] = "<div class='page-body'>";
                                             $html[] = "</div>";
                                         $html[] = "</div>";
 
-                                        $html[] = "<div class='row g-3 align-items-center mb-3'>";
-                                            $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Mobile Number</label></div>";
-                                            $html[] = "<div class='col-md-9 col-6'>";
-                                                $html[] = "<input type='text' name='mobile_number' id='mobile_number' value='".$data['mobile_number']."' class='form-control' />";
-                                            $html[] = "</div>";
-                                        $html[] = "</div>";
+										$html[] = "<div class='row g-3 align-items-center mb-3'>";
+											$html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Profession</label></div>";
+											$html[] = "<div class='col-md-9 col-6'>";
+												$html[] = "<select name='profession' class='form-select' id='profession'>";
+													$professions = explode(",","Real Estate Consultant,Real Estate Appraiser,Real Estate Broker");
+													foreach ($professions as $profession) {
+														$sel = $profession == $data['profession'] ? "selected" : "";
+														$html[] = "<option value='".$profession."' $sel>$profession</option>";
+													}
+												$html[] = "</select>";
+											$html[] = "</div>";
+										$html[] = "</div>";
+
+										$html[] = "<div class='row g-3 align-items-center mb-3'>";
+											$html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>PRC License Number</label></div>";
+											$html[] = "<div class='col-md-9 col-6'>";
+												$html[] = "<input type='text' name='real_estate_license_number' id='real_estate_license_number' value='".$data['real_estate_license_number']."' class='form-control' />";
+											$html[] = "</div>";
+										$html[] = "</div>";
+
+										$html[] = "<div class='row g-3 align-items-center mb-3'>";
+											$html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Mobile Number</label></div>";
+											$html[] = "<div class='col-md-9 col-6'>";
+												$html[] = "<input type='text' name='mobile_number' id='mobile_number' value='".$data['mobile_number']."' class='form-control' />";
+											$html[] = "</div>";
+										$html[] = "</div>";
 
                                         $html[] = "<div class='row g-3 align-items-center mb-3 '>";
                                             $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Address</label></div>";

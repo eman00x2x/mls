@@ -29,5 +29,6 @@ define("DEFINITION", [
     "max_post" => "The total number of postings this account can add.",
     "max_users" => "Total number of users this account can add.",
     "display_ads" => "Total number of display ad this account can create.",
-    "featured_ads" => "Total number of featured ad this account can create."
+    "featured_ads" => "Total number of featured ad this account can create.",
+    "handshake_limit" => "Maximum number of handshake can initiate."
 ]);

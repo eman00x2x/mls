@@ -16,9 +16,9 @@ class LoginController extends \Admin\Application\Controller\LoginController {
     }
 	
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Manage");
+		$this->setTempalteBasePath(ROOT."Admin");
 		$this->domain = MANAGE;
 		return $this;
 	}
-	
+
 }

@@ -61,6 +61,12 @@ class Message {
 				$icon = "ti ti-check";
 			break;
 
+			default:
+				$mes = "Error!";
+                $class = $this->error;
+                $icon = "ti ti-alert-triangle";
+            
+
 		}
 
 		$this->msg = $openTag . $this->tag . " class='" . $class . " alert-dismissible' id='" . $this->id . "'>";

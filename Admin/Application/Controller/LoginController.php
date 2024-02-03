@@ -38,19 +38,17 @@ class LoginController extends \Main\Controller {
 			});
 		");
 
-		$doc->setTitle("Philproperties CRM Login");
+		$doc->setTitle("MLS Login");
 
 		$this->setTemplate("login/login.php");
 		return $this->getTemplate();
 		
 	}
 
-	function forgotPassowrd() {
+	function forgotPassword() {
 
 		$doc = $this->getLibrary("Factory")->getDocument();
-
-		$doc = \Library\Factory::getDocument();
-		$doc->setTitle("Send Password Reset Link - Philproperties CRM");
+		$doc->setTitle("Send Password Reset Link - MLS");
 
 		$this->setTemplate("login/forgot-password.php");
 		return $this->getTemplate();
@@ -58,11 +56,22 @@ class LoginController extends \Main\Controller {
 
 	function resetPassword() {
 
+		$doc = $this->getLibrary("Factory")->getDocument();
+		$doc->setTitle("Password Reset - Philproperties CRM");
+
 		if(!isset($_REQUEST['ref'])) {
 			response()->redirect('/not-found');
 		}else {
+
+			$ref = explode("&",base64_decode($_REQUEST['ref']));
+								
+			foreach($ref as $r) {
+				$d = explode("=",$r);
+				$data[@$d[0]] = @$d[1];
+			}
+
 			$this->setTemplate("login/reset-password.php");
-			return $this->getTemplate();
+			return $this->getTemplate($data);
 		}
 
 	}
@@ -218,28 +227,28 @@ class LoginController extends \Main\Controller {
 	
 	function sendPasswordResetLink() {
 		
-		$email = isset($_REQUEST['email']) ? $_REQUEST['email'] : false;
 		parse_str(file_get_contents('php://input'), $_POST);
-		
-		if($email) {
+
+		if($_POST['email']) {
 		
 			$user = $this->getModel("User");
-			$user->email = $email;
+			$user->column['email'] = $_POST['email'];
 			
-			if($user->getByEmail()) {
+			if($data = $user->getByEmail()) {
 			
 				$html[] = "<h1><img src='".CDN."images/logo.png' /></h1><br/><table cellpadding='10' cellspacing='2' border='1'>";
-				$html[] = "<p>Hi ".$user->firstname." ".$user->lastname."!</p>";
+				$html[] = "<p>Hi ".$data['name']."!</p>";
 				
 				$html[] = "<p>You request a password reset link through our system, Please click the link below to reset your password now.</p>";
 				
-				$link = ADMIN."?task=resetPassword&ref=".base64_encode("user_id=".$user->user_id."&expires=".date("Y-m-d H:i:s",strtotime("+24 hours")));
+				$ref = base64_encode("user_id=".$data['user_id']."&expires=".date("Y-m-d H:i:s",strtotime("+24 hours")));
+				$link = url("LoginController@resetPassword",null,['ref' => $ref]);
 				
 				$html[] = "<p>This link will be available for the next 24 hours</p>";
 				$html[] = "<p style='padding:10px;'><a href='$link'>Reset your password</a></p>";
 				
 				$mail = $this->getModel("Mail");
-				if($mail->send($mail->email_responder_address,$email,"Password Reset Request",implode("",$html))) {
+				if($mail->sendMail(EMAIL_RESPONDER_ADDRESS,$data['email'],"Password Reset Request",implode("",$html))) {
 					$this->getLibrary("Factory")->setMsg("Password reset link has been sent to your registered email.","correct");
 					$response = array(
 						"status" => 1,
@@ -254,7 +263,7 @@ class LoginController extends \Main\Controller {
 				}
 				
 			}else {
-				$this->getLibrary("Factory")->setMsg("Email \"$email\" does not recognized by our system!.","warning");
+				$this->getLibrary("Factory")->setMsg("Email \"".$_POST['email']."\" does not recognized by our system!.","warning");
 				$response = array(
 					"status" => 2,
 					"message" => getMsg()
@@ -276,22 +285,26 @@ class LoginController extends \Main\Controller {
 	function saveNewPassword() {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
+
 		$user = $this->getModel("User");
-		
-		if($user->save($_POST['user_id'],$_POST)) {
-		
-			$this->getLibrary("Factory")->setMsg("Password successfully change.","correct");
-			$response = array(
-				"status" => 1,
-				"message" => getMsg()
-			);
-			
+		$user->column['user_id'] = $_POST['user_id'];
+		$data = $user->getById();
+
+		if($data) {
+			$response = $user->save($data['user_id'], $_POST);
 		}else {
 			$response = array(
 				"status" => 2,
-				"message" => getMsg()
+				"type" => "error",
+                "message" => "Invalid Account! Request another password reset link!"
 			);
 		}
+		
+		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
+		$response = array(
+			"status" => $response['status'],
+			"message" => getMsg()
+		);
 		
 		return json_encode($response);
 		

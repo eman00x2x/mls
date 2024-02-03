@@ -10,6 +10,7 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
         'P' => 
         array (
             'Pecee\\' => 6,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
     );
 
@@ -18,10 +19,15 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
         array (
             0 => __DIR__ . '/..' . '/pecee/simple-router/src/Pecee',
         ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Verot\\Upload\\Upload' => __DIR__ . '/..' . '/verot/class.upload.php/src/class.upload.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

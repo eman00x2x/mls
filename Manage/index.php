@@ -32,6 +32,7 @@ function autoloader($class) {
 	}else if (file_exists($file = ROOT.'/'.str_replace('\\', '/', $class).'.php')) {
 		require_once($file);
 	}
+
 }
 
 spl_autoload_register('autoloader');
@@ -43,21 +44,36 @@ class Middleware implements IMiddleware {
 
 		$request->user = Login::getInstance()->checkSession();
 		Router::router()->reset();
-		
-		if($request->user == "") {
 
-			Router::request()->setMethod('get');
-			Router::request()->setRewriteUrl(url('/'));
+		if(url()->contains("/resetPassword")) {
 
-			Router::get('/', 'LoginController@login');
-			Router::post('/', 'LoginController@login');
+			Router::get('/resetPassword', 'LoginController@resetPassword', ['as' => 'resetPassword']);
+			Router::post('/resetPassword', 'LoginController@saveNewPassword');
+			$template = "templates/login.template.php";
+
+		} else if(url()->contains("/forgotPassword")) {
 
 			Router::get('/forgotPassword', 'LoginController@forgotPassword', ['as' => 'forgotPassword']);
+			Router::post('/forgotPassword', 'LoginController@sendPasswordResetLink');
+
 			$template = "templates/login.template.php";
-			
-        }else {
-			require_once('routes.php');
-			$template = "templates/template.php";
+		}else {
+		
+			if($request->user == "") {
+
+				Router::request()->setMethod('get');
+				Router::request()->setRewriteUrl(url('/'));
+
+				Router::get('/', 'LoginController@login');
+				Router::post('/', 'LoginController@login');
+
+				$template = "templates/login.template.php";
+				
+			}else {
+				require_once('routes.php');
+				$template = "templates/template.php";
+			}
+
 		}
 
 		Router::error(function(Request $request, \Exception $exception) {

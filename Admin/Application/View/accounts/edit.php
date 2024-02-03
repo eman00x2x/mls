@@ -70,11 +70,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 										$html[] = "<input type='text' name='tin' id='tin' value='".$data['tin']."' class='form-control'  />";
 									$html[] = "</div>";
 
-									$html[] = "<div class='mb-3'>";
-										$html[] = "<label class='text-muted col-form-label'>PRC License Number</label>";
-										$html[] = "<input type='text' name='real_estate_license_number' id='real_estate_license_number' value='".$data['real_estate_license_number']."' class='form-control'  />";
-									$html[] = "</div>";
-									
 								$html[] = "</div>";
 							$html[] = "</div>";
 						$html[] = "</div>";
@@ -88,8 +83,8 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 						$html[] = "<div class='card-body'>";
 
 							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>Status</label>";
-								$html[] = "<div class='col-sm-10'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Status</label>";
+								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select name='status' id='status' class='form-select'>";
 									foreach(array("active","banned") as $label) {
 										$sel = $data['status'] == $label ? "selected" : "";
@@ -100,8 +95,8 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>Account Type</label>";
-								$html[] = "<div class='col-sm-10'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Account Type</label>";
+								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select name='account_type' id='account_type' class='form-select'>";
 									foreach(array("Administrator","Customer Service","Real Estate Practitioner", "Banks") as $label) {
 										$sel = $data['account_type'] == $label ? "selected" : "";
@@ -121,34 +116,55 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 						
 						$html[] = "<div class='card-body'>";
 							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>First Name</label>";
-								$html[] = "<div class='col-sm-10'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>First Name</label>";
+								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<input type='text' name='firstname' id='firstname' value='".$data['firstname']."' class='form-control'  />";
 								$html[] = "</div>";
 							$html[] = "</div>";
 							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>Last Name</label>";
-								$html[] = "<div class='col-sm-10'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Last Name</label>";
+								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<input type='text' name='lastname' id='lastname' value='".$data['lastname']."' class='form-control'  />";
 								$html[] = "</div>";
 							$html[] = "</div>";
+
 							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>Mobile Number</label>";
-								$html[] = "<div class='col-sm-10'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Profession</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<select name='profession' class='form-select' id='profession'>";
+										$professions = explode(",","Real Estate Consultant,Real Estate Appraiser,Real Estate Broker");
+										foreach ($professions as $profession) {
+											$sel = $profession == $data['profession'] ? "selected" : "";
+											$html[] = "<option value='".$profession."' $sel>$profession</option>";
+										}
+									$html[] = "</select>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>PRC License Number</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<input type='text' name='real_estate_license_number' id='real_estate_license_number' value='".$data['real_estate_license_number']."' class='form-control' />";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Mobile Number</label>";
+								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<input type='text' name='mobile_number' id='mobile_number' value='".$data['mobile_number']."' class='form-control' autocomplete='off'  />";
 								$html[] = "</div>";
 							$html[] = "</div>";
 							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>Email Address</label>";
-								$html[] = "<div class='col-sm-10'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Email Address</label>";
+								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<input type='text' name='email' id='email' value='".$data['email']."' class='form-control'  />";
 								$html[] = "</div>";
 							$html[] = "</div>";
 							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>Address</label>";
-								$html[] = "<div class='col-sm-10'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Address</label>";
+								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<div class='row gy-2 gx-3 align-items-center'>";
-										$html[] = "<div class='col-auto'>";
+										$html[] = "<div class='col-12'>";
 											$html[] = "<label class='form-label text-muted'>Street</label>";
 											$html[] = "<input type='text' name='street' id='street' value='".$data['street']."' class='form-control'  />";
 										$html[] = "</div>";
@@ -177,16 +193,16 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 						$html[] = "<div class='card-body'>";
 							foreach(ACCOUNT_PRIVILEGES as $privilege => $val) {
 								$html[] = "<div class='row mb-3'>";
-									$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>".ucwords(str_replace("_"," ",$privilege))."</label>";
+									$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>".ucwords(str_replace("_"," ",$privilege))."</label>";
 									if(in_array($privilege, ["leads_DB","properties_DB"])) {
-										$html[] = "<div class='col-sm-10'>";
+										$html[] = "<div class='col-sm-9'>";
 											$html[] = "<div class='form-check form-switch'>";
 												$html[] = "<input class='form-check-input' type='checkbox' name='privileges[$privilege]' value='true' id='flexSwitchCheckDefault_".$privilege."' ".(isset($data['privileges'][$privilege]) && $data['privileges'][$privilege] == "true" ? "checked" : "").">";
 												$html[] = "<label class='form-check-label' for='flexSwitchCheckDefault_".$privilege."'>".DEFINITION[$privilege]."</label>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 									}else {
-										$html[] = "<div class='col-sm-10'>";
+										$html[] = "<div class='col-sm-9'>";
 											$html[] = "<span class='mb-1 d-block text-muted small'>".DEFINITION[$privilege]."</span>";
 											$html[] = "<input type='text' name='privileges[$privilege]' id='privileges[$privilege]' value='".$data['privileges'][$privilege]."' class='form-control'  />";
 										$html[] = "</div>";

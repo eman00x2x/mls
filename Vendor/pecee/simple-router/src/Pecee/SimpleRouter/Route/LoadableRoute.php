@@ -6,23 +6,24 @@ use Pecee\Http\Middleware\IMiddleware;
 use Pecee\Http\Request;
 use Pecee\SimpleRouter\Exceptions\HttpException;
 use Pecee\SimpleRouter\Router;
+use Pecee\SimpleRouter\SimpleRouter;
 
 abstract class LoadableRoute extends Route implements ILoadableRoute
 {
     /**
      * @var string
      */
-    protected $url;
+    protected string $url;
 
     /**
      * @var string
      */
-    protected $name;
+    protected ?string $name = null;
 
     /**
      * @var string|null
      */
-    protected $regex;
+    protected ?string $regex = null;
 
     /**
      * Loads and renders middlewares-classes
@@ -82,14 +83,17 @@ abstract class LoadableRoute extends Route implements ILoadableRoute
     {
         $this->url = ($url === '/') ? '/' : '/' . trim($url, '/') . '/';
 
+        $parameters = [];
         if (strpos($this->url, $this->paramModifiers[0]) !== false) {
 
             $regex = sprintf(static::PARAMETERS_REGEX_FORMAT, $this->paramModifiers[0], $this->paramOptionalSymbol, $this->paramModifiers[1]);
 
             if ((bool)preg_match_all('/' . $regex . '/u', $this->url, $matches) !== false) {
-                $this->parameters = array_fill_keys($matches[1], null);
+                $parameters = array_fill_keys($matches[1], null);
             }
         }
+
+        $this->parameters = $parameters;
 
         return $this;
     }
@@ -135,12 +139,6 @@ abstract class LoadableRoute extends Route implements ILoadableRoute
     {
         $url = $this->getUrl();
 
-        $group = $this->getGroup();
-
-        if ($group !== null && count($group->getDomains()) !== 0) {
-            $url = '//' . $group->getDomains()[0] . $url;
-        }
-
         /* Create the param string - {parameter} */
         $param1 = $this->paramModifiers[0] . '%s' . $this->paramModifiers[1];
 
@@ -167,14 +165,22 @@ abstract class LoadableRoute extends Route implements ILoadableRoute
 
             if (stripos($url, $param1) !== false || stripos($url, $param) !== false) {
                 /* Add parameter to the correct position */
-                $url = str_ireplace([sprintf($param1, $param), sprintf($param2, $param)], $value, $url);
+                $url = str_ireplace([sprintf($param1, $param), sprintf($param2, $param)], (string)$value, $url);
             } else {
                 /* Parameter aren't recognized and will be appended at the end of the url */
                 $url .= $value . '/';
             }
         }
 
-        return rtrim('/' . ltrim($url, '/'), '/') . '/';
+        $url = rtrim('/' . ltrim($url, '/'), '/') . '/';
+
+        $group = $this->getGroup();
+
+        if ($group !== null && count($group->getDomains()) !== 0 && SimpleRouter::request()->getHost() !== $group->getDomains()[0]) {
+            $url = '//' . $group->getDomains()[0] . $url;
+        }
+
+        return $url;
     }
 
     /**
@@ -195,7 +201,7 @@ abstract class LoadableRoute extends Route implements ILoadableRoute
      */
     public function hasName(string $name): bool
     {
-        return strtolower($this->name) === strtolower($name);
+        return strtolower((string)$this->name) === strtolower($name);
     }
 
     /**

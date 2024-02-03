@@ -3,13 +3,14 @@
 namespace Pecee\SimpleRouter\Route;
 
 use Pecee\Http\Request;
+use Pecee\SimpleRouter\SimpleRouter;
 
 class RouteController extends LoadableRoute implements IControllerRoute
 {
-    protected $defaultMethod = 'index';
-    protected $controller;
-    protected $method;
-    protected $names = [];
+    protected string $defaultMethod = 'index';
+    protected string $controller;
+    protected ?string $method = null;
+    protected array $names = [];
 
     public function __construct($url, $controller)
     {
@@ -77,13 +78,15 @@ class RouteController extends LoadableRoute implements IControllerRoute
 
         $group = $this->getGroup();
 
-        if ($group !== null && count($group->getDomains()) !== 0) {
-            $url .= '//' . $group->getDomains()[0];
+        $url .= '/' . trim($this->getUrl(), '/') . '/' . strtolower((string)$method) . implode('/', $parameters);
+
+        $url = '/' . trim($url, '/') . '/';
+
+        if ($group !== null && count($group->getDomains()) !== 0 && SimpleRouter::request()->getHost() !== $group->getDomains()[0]) {
+            $url = '//' . $group->getDomains()[0] . $url;
         }
 
-        $url .= '/' . trim($this->getUrl(), '/') . '/' . strtolower($method) . implode('/', $parameters);
-
-        return '/' . trim($url, '/') . '/';
+        return $url;
     }
 
     public function matchRoute(string $url, Request $request): bool
