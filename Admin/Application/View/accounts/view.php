@@ -90,7 +90,7 @@ $html[] = "<div class='page-body'>";
 
 							$html[] = "<div class='d-flex '>";
 								$html[] = "<div class='me-3'><label class='text-muted'>Address</label></div>";
-								$html[] = "<div class=''><span>".$data['address']."</span></div>";
+								$html[] = "<div class=''><span>".$data['street']." ".$data['city']." ".$data['province']."</span></div>";
 							$html[] = "</div>";
 						$html[] = "</div>";
 
@@ -144,7 +144,6 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<thead>";
 									$html[] = "<tr>";
 										$html[] = "<th class='text-center w-1'>#</th>";
-										$html[] = "<th>Username</th>";
 										$html[] = "<th>Name</th>";
 										$html[] = "<th>Email</th>";
 										$html[] = "<th>Date Created</th>";
@@ -157,7 +156,6 @@ $html[] = "<div class='page-body'>";
 									
 									$html[] = "<tr class='row_user_".$data['users'][$i]['user_id']."'>";
 										$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-										$html[] = "<td class='align-middle'><a href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."' class='ajax text-inherit' title='User: ".$data['users'][$i]['username']."'>".$data['users'][$i]['username']."</a></td>";
 										$html[] = "<td class='align-middle'><a href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."' class='ajax text-inherit' title='User: ".$data['users'][$i]['name']."'>".$data['users'][$i]['name']."</a></td>";
 										$html[] = "<td class='align-middle'><a href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."'>".$data['users'][$i]['email']."</a></td>";
 										$html[] = "<td class='align-middle'>".date("F d, Y",$data['users'][$i]['date_added'])."</td>";

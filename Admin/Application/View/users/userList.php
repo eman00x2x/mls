@@ -40,7 +40,6 @@ $html[] = "<div class='row g-0'>";
 							$html[] = "<thead>";
 								$html[] = "<tr>";
 									$html[] = "<th class='text-center w-1'>#</th>";
-									$html[] = "<th>Username</th>";
 									$html[] = "<th>Name</th>";
 									$html[] = "<th>Email</th>";
 									$html[] = "<th>Date Added</th>";
@@ -53,7 +52,6 @@ $html[] = "<div class='row g-0'>";
 								
 								$html[] = "<tr class='row_user_".$data[$i]['user_id']."'>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-									$html[] = "<td class='align-middle'><a href='".url("UsersController@view",["id" => $data[$i]['user_id']])."' class='ajax text-inherit' title='User: ".$data[$i]['username']."'>".$data[$i]['username']."</a></td>";
 									$html[] = "<td class='align-middle'><a href='".url("UsersController@view",["id" => $data[$i]['user_id']])."' class='ajax text-inherit' title='User: ".$data[$i]['name']."'>".$data[$i]['name']."</a></td>";
 									$html[] = "<td class='align-middle'><a href='".url("UsersController@view",["id" => $data[$i]['user_id']])."'>".$data[$i]['email']."</a></td>";
 									$html[] = "<td class='align-middle'>".date("F d, Y",$data[$i]['date_added'])."</td>";

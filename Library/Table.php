@@ -142,7 +142,7 @@ class Table {
 
 		if($this->DBO->numRows($result) > 0) {
 
-			$query = "SELECT ".($this->select != "" ? $this->select : "*").", COUNT(#__".$this->table.".".$this->primary_key.") AS total_row FROM #__".$this->table." ".$this->join." ".$this->where." ".$this->and." ".$this->orderby;
+			$query = "SELECT ".($this->select != "" ? $this->select : "*").", COUNT(".$this->primary_key.") AS total_row FROM #__".$this->table." ".$this->join." ".$this->where." ".$this->and." ".$this->orderby;
 			$line = $this->DBO->queryUniqueValue($query);
 			$this->rows = $line['total_row'];
 

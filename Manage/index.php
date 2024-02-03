@@ -45,18 +45,24 @@ class Middleware implements IMiddleware {
 		$request->user = Login::getInstance()->checkSession();
 		Router::router()->reset();
 
-		if(url()->contains("/resetPassword")) {
+		$template = "templates/login.template.php";
+
+		if(url()->contains("/register")) {
+
+			Router::get('/register', 'RegistrationController@register', ['as' => 'register']);
+			Router::post('/registerAccount', 'RegistrationController@registerAccount');
+			Router::post('/register', 'RegistrationController@saveNewAccount');
+			
+		}else if(url()->contains("/resetPassword")) {
 
 			Router::get('/resetPassword', 'LoginController@resetPassword', ['as' => 'resetPassword']);
 			Router::post('/resetPassword', 'LoginController@saveNewPassword');
-			$template = "templates/login.template.php";
-
+			
 		} else if(url()->contains("/forgotPassword")) {
 
 			Router::get('/forgotPassword', 'LoginController@forgotPassword', ['as' => 'forgotPassword']);
 			Router::post('/forgotPassword', 'LoginController@sendPasswordResetLink');
 
-			$template = "templates/login.template.php";
 		}else {
 		
 			if($request->user == "") {
@@ -67,8 +73,6 @@ class Middleware implements IMiddleware {
 				Router::get('/', 'LoginController@login');
 				Router::post('/', 'LoginController@login');
 
-				$template = "templates/login.template.php";
-				
 			}else {
 				require_once('routes.php');
 				$template = "templates/template.php";

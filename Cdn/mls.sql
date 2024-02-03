@@ -177,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `mls_leads` (
   `preferrences` text,
   `inquire_at` int NOT NULL,
   PRIMARY KEY (`lead_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mls_leads`

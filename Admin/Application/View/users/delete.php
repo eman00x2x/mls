@@ -16,7 +16,7 @@ if($data) {
 				$html[] = "<tbody>";
 				$html[] = "<tr>";
 					$html[] = "<td class=' align-middle'><span class='small text-muted d-block'>Name</span> ".$data['name']."</td>";
-					$html[] = "<td class=' align-middle'><span class='small text-muted d-block'>Username</span> ".$data['username']."</td>";
+					$html[] = "<td class=' align-middle'><span class='small text-muted d-block'>Email</span> ".$data['email']."</td>";
 					$html[] = "<td class=' align-middle'><span class='small text-muted d-block'>Date Created</span> ".date("F d, Y",$data['date_added'])."</td>";
 				$html[] = "</tr>";
 				$html[] = "</tbody>";

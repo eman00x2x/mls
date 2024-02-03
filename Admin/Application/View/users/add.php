@@ -47,7 +47,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 					
 						$html[] = "<div class='card-body'>";
 
-							$fields = array("name","username","password","email");
+							$fields = array("name","email","password");
 							
 							foreach($fields as $field) {
 								$html[] = "<div class='mb-3'>";

@@ -106,7 +106,7 @@ class AccountsController extends \Main\Controller {
 
 				$subscription->page['limit'] = 100;
 				$subscription
-				->select("account_subscription_id, s.premium_id, s.name, s.details, subscription_start_date, subscription_end_date, script")
+				->select("acs.account_subscription_id, s.premium_id, s.name, s.details, subscription_start_date, subscription_end_date, script")
 				->join(" acs JOIN #__premiums s ON s.premium_id=acs.premium_id ")
 				->where(" account_id = ".$data['account_id']." ")
 				->orderby(" acs.premium_id DESC");

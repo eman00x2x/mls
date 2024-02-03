@@ -10,9 +10,28 @@ class UserModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getByAccountId() {
+		$this->where(" account_id = ".$this->column['account_id']." ");
+		return $this->getList();
+	}
+
 	function getByUsernameAndPassword() {
 
 		$query = "SELECT * FROM #__users u JOIN #__accounts a ON a.account_id=u.account_id WHERE username = '".$this->column['username']."' AND password = '".$this->column['password']."'";
+		$result = $this->DBO->query($query);
+		
+		$this->initiateFields($result);
+
+		if($this->DBO->numRows($result) > 0) {
+			$line = $this->DBO->fetchAssoc($result);
+			return $this->stripQuotes($line);
+		}else {return false;}
+
+	}
+
+	function getByEmailAndPassword() {
+
+		$query = "SELECT * FROM #__users u JOIN #__accounts a ON a.account_id=u.account_id WHERE u.email = '".$this->column['email']."' AND password = '".$this->column['password']."'";
 		$result = $this->DBO->query($query);
 		
 		$this->initiateFields($result);
@@ -54,7 +73,7 @@ class UserModel extends \Main\Model {
 
 	function saveNew($data) {
 
-		$required_fields = array("username","password","email");
+		$required_fields = array("password","email");
 
 		foreach($required_fields as $value) {
 			if(!array_key_exists($value,$data)) {
@@ -68,23 +87,33 @@ class UserModel extends \Main\Model {
 			}
 		}
 
-		$this->column['username'] = strtolower($data['username']);
+		/* $this->column['username'] = strtolower($data['username']);
 		if($this->getByUsername()) {
 			return array(
 				"status" => 2,
 				"type" => "error",
 				"message" => "Username already exists."
 			);
+		} */
+
+		$this->column['email'] = strtolower($data['email']);
+		if($this->getByEmail()) {
+			return array(
+				"status" => 2,
+				"type" => "error",
+				"message" => "email already exists."
+			);
 		}
 
 		$v = $this->getValidator();
 
-		$v->validateUsername($data['username'], "Username must only contain alphanumeric, numbers and underscore no spaces and special characters.");
+		/* $v->validateUsername($data['username'], "Username must only contain alphanumeric, numbers and underscore no spaces and special characters.");
 		if(strlen($data['username']) < 4) {
 			$v->addError("Username must have 6 characters long.");
-		}
+		} */
 
-		$v->validateWords($data['username'],"Invalid username. You cannot use '".$data['username']."' for your username.");
+		/* $v->validateWords($data['username'],"Invalid username. You cannot use '".$data['username']."' for your username."); */
+		$v->validateEmail($data['email'],"* Invalid email");
 		$v->validateGeneral($data['password'],"Enter password");
 
 		if(strlen($data['password']) < 8) {
@@ -95,7 +124,7 @@ class UserModel extends \Main\Model {
 			return array(
 				"status" => 2,
 				"type" => "error",
-				"message" => "<h4 class='font-weight-bold'>Error</h4> * ".$v->listErrors('<br/> * ')
+				"message" => '<br/>'.$v->listErrors('<br/> * ')
 			);
 		}else {
 
@@ -192,7 +221,7 @@ class UserModel extends \Main\Model {
 
 	function deleteUser($id,$column = "user_id") {
 
-		/* $this->delete($id,$column); */
+		$this->delete($id,$column);
 
 		return array(
 			"status" => 1,

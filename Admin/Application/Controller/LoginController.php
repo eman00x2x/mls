@@ -26,7 +26,7 @@ class LoginController extends \Main\Controller {
 		$doc = $this->getLibrary("Factory")->getDocument();
 	
 		if($_SERVER['REQUEST_METHOD'] == "POST") {
-			if($this->checkCredentials($_POST['username'],md5($_POST['password']))) {
+			if($this->checkCredentials($_POST['email'],md5($_POST['password']))) {
 				header("LOCATION: ".$this->domain."");
 			}
 		}
@@ -57,7 +57,7 @@ class LoginController extends \Main\Controller {
 	function resetPassword() {
 
 		$doc = $this->getLibrary("Factory")->getDocument();
-		$doc->setTitle("Password Reset - Philproperties CRM");
+		$doc->setTitle("Password Reset - MLS");
 
 		if(!isset($_REQUEST['ref'])) {
 			response()->redirect('/not-found');
@@ -75,7 +75,7 @@ class LoginController extends \Main\Controller {
 		}
 
 	}
-	
+
 	function checkSession() {
 	
 		if(isset($_REQUEST['logout'])) {
@@ -84,7 +84,7 @@ class LoginController extends \Main\Controller {
 		}
 	
 		if(isset($_SESSION['logged']) && (isset($_SESSION['domain']) ? ($_SESSION['domain'] == $this->domain ? true : false) : false)) {
-			return $this->checkCredentials($_SESSION['username'],$_SESSION['password']);
+			return $this->checkCredentials($_SESSION['email'],$_SESSION['password']);
 		}else {
 			$this->doLogOut();
 			return false;
@@ -92,13 +92,13 @@ class LoginController extends \Main\Controller {
 		
 	}
 	
-	function checkCredentials($username,$password) {
+	function checkCredentials($email,$password) {
 
 		$user = $this->getModel('User');
-		$user->column['username'] = $username;
+		$user->column['email'] = $email;
 		$user->column['password'] = $password;
 
-		if($data = $user->getByUsernameAndPassword()) {
+		if($data = $user->getByEmailAndPassword()) {
 			
 			if($this->isBlock($data['status'])) {
 				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",ADMIN)) && $data['account_type'] != "Administrator") {
@@ -145,7 +145,7 @@ class LoginController extends \Main\Controller {
 	
 		$val = array('user_id' => (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : $login['user_id']),
 					'name' => (isset($_SESSION['name']) ? $_SESSION['name'] : $login['name']),
-					'username' => $login['username'],
+					'email' => $login['email'],
 					'password' => $login['password'],
 					'user_level' => $login['user_level'],
 					'permissions' => $login['permissions'],
@@ -178,7 +178,7 @@ class LoginController extends \Main\Controller {
 	
 		$val = array('user_id' => null,
 					'name' => null,
-					'username' => null,
+					'email' => null,
 					'password' => null,
 					'permissions' => null,
 					'privileges' => null,
@@ -309,5 +309,5 @@ class LoginController extends \Main\Controller {
 		return json_encode($response);
 		
 	}
-	
+
 }

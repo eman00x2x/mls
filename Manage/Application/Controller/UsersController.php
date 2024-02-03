@@ -20,7 +20,7 @@ class UsersController extends \Admin\Application\Controller\UsersController {
 			response()->redirect(url("AccountsController@index"));
 		}
 
-        $this->doc->setTitle("Premiums");
+        $this->doc->setTitle("Manage Users");
         $this->doc->addScript(CDN."js/photo-uploader.js");
 
 		$account = $this->getModel("Account");
@@ -50,6 +50,16 @@ class UsersController extends \Admin\Application\Controller\UsersController {
 	}
 
 	function new() {
+
+		$user = $this->getModel("User");
+		$user->column['account_id'] = $this->account_id;
+		$user->select(" COUNT(user_id) as total_users ");
+		$data = $user->getByAccountId();
+
+		if($data[0]['total_users'] >= $_SESSION['privileges']['max_users']) {
+			$this->getLibrary("Factory")->setMsg("Maximum users have reached! You cannot create more users","error");
+			response()->redirect(url("UsersController@index"));
+		}
 
 		if((!isset($_SESSION['permissions']['users']['access']))) {
 			$this->getLibrary("Factory")->setMsg("You do not have enough permissions to create a new user","error");

@@ -15,7 +15,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 							$html[] = "<h1 class='page-title'><i class='ti ti-users me-2'></i> Update User Info</h1>";
 						$html[] = "</div>";
 						$html[] = "<div class='col-auto ms-auto d-print-none'>";
-							if($_SESSION['account_type'] != "Administrator") {
+							if($_SESSION['account_type'] == "Administrator") {
 								$html[] = "<div class='btn-list text-end'>";
 									$html[] = "<a class='ajax btn btn-light' href='".url("AccountsController@view", ["id" => $data['account_id']])."'>";
 										$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['logo'].")'></span>";
@@ -45,33 +45,28 @@ $html[] = "<form id='form' action='' method='POST'>";
 						
 						$html[] = "<div class='card-body'>";
 
-							$fields = array("name","username","email");
-							
-							foreach($fields as $field) {
-								$html[] = "<div class='mb-3'>";
-									$html[] = "<div class='row'>";
-										$html[] = "<div class='col-3'>";
-											$html[] = "<label class='text-muted form-label mt-2 text-end'>".ucwords($field)."</label>";
-										$html[] = "</div>";
-										$html[] = "<div class='col-9'>";
-											
-											if($field == "email") {
-												if($data['user_level'] != 1) {
-													$html[] = "<input type='email' name='email' id='email' value='".$data['email']."' class='form-control' autocomplete='off' style='font-size:16px;' />";
-												}else {
-													$html[] = "<input type='email' value='".$data['email']."' class='form-control-plaintext' autocomplete='off'  />";
-													$html[] = "<span class='text-info text-italic'>Administrator email cannot change</span>";
-												}
-											}else {
-												$html[] = "<input type='".($field == "password" ? "password" : ($field == "email" ? "email" : "text"))."' name='$field' id='$field' value='".$data[$field]."' class='form-control' autocomplete='off' />";
-											}
-											
-										$html[] = "</div>";
+							$html[] = "<div class='mb-3'>";
+								$html[] = "<div class='row'>";
+									$html[] = "<div class='col-3'>";
+										$html[] = "<label class='text-muted form-label mt-2 text-end'>Name</label>";
+									$html[] = "</div>";
+									$html[] = "<div class='col-9'>";
+										$html[] = "<input type='text' name='name' id='name' value='".$data['name']."' class='form-control' autocomplete='off' style='font-size:16px;' />";
 									$html[] = "</div>";
 								$html[] = "</div>";
-							}
+							$html[] = "</div>";
+
+							$html[] = "<div class='mb-3'>";
+								$html[] = "<div class='row'>";
+									$html[] = "<div class='col-3'>";
+										$html[] = "<label class='text-muted form-label mt-2 text-end'>Email</label>";
+									$html[] = "</div>";
+									$html[] = "<div class='col-9'>";
+										$html[] = "<p class='form-control-plaintext'>".$data['email']."</p>";
+									$html[] = "</div>";
+								$html[] = "</div>";
+							$html[] = "</div>";
 							
-							$html[] = "</table>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 

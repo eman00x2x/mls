@@ -31,7 +31,7 @@ class AccountModel extends \Main\Model {
 
 	function saveNew($data) {
 
-		$required_fields = array("firstname","lastname","email","mobile_number");
+		$required_fields = array("firstname","lastname","email");
 
 		foreach($required_fields as $value) {
 			if(!array_key_exists($value,$data)) {
@@ -48,14 +48,14 @@ class AccountModel extends \Main\Model {
 		$v = $this->getValidator();
 
 		$v->validateGeneral($data['firstname'],"First Name");
-		$v->validateGeneral($data['firstname'],"Last Name");
+		$v->validateGeneral($data['lastname'],"Last Name");
 		$v->validateEmail($data['email'],"Email Address");
 		
 		if($v->foundErrors()) {
 			return array(
 				"status" => 2,
 				"type" => "error",
-				"message" => "<h4 class='font-weight-bold'>Error</h4> * ".$v->listErrors('<br/> * ')
+				"message" => $v->listErrors('<br/> * ')
 			);
 		}else {
 
@@ -88,7 +88,7 @@ class AccountModel extends \Main\Model {
 			}
 
 			if(isset($data['lastname'])) {
-				$v->validateGeneral($data['firstname'],"Last Name");
+				$v->validateGeneral($data['lastname'],"Last Name");
 			}
 
 			if(isset($data['email'])) {
