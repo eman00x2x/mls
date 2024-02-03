@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 02, 2024 at 10:08 AM
+-- Generation Time: Feb 03, 2024 at 06:22 AM
 -- Server version: 8.2.0
 -- PHP Version: 8.0.30
 
@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `mls_accounts` (
   `account_type` varchar(50) NOT NULL,
   `logo` text,
   `company_name` varchar(150) DEFAULT NULL,
+  `profession` varchar(150) DEFAULT NULL,
   `real_estate_license_number` varchar(150) DEFAULT NULL,
   `firstname` varchar(150) NOT NULL,
   `lastname` varchar(150) DEFAULT NULL,
@@ -55,10 +56,10 @@ CREATE TABLE IF NOT EXISTS `mls_accounts` (
 -- Dumping data for table `mls_accounts`
 --
 
-INSERT INTO `mls_accounts` (`account_id`, `account_type`, `logo`, `company_name`, `real_estate_license_number`, `firstname`, `lastname`, `address`, `street`, `city`, `province`, `mobile_number`, `email`, `tin`, `uploads`, `preferences`, `privileges`, `status`, `registration_date`) VALUES
-(1, 'Administrator', 'http://cdn.mls/images/accounts/62242481312762779081451953250792944729165370785647_24b7913aeeb499a52d2098ee2e04d916.jpg', 'EmanPOÑ', '', 'Eman', 'Olivas', '  ', '55 Justice R jabson St Bambang', 'Pasig City', 'National Capital Region', '09175223499', 'eman00x2xx@gmail.com', '666-666-6663', '', '', '{\"max_post\":\"15\",\"max_users\":\"1\",\"display_ads\":\"0\",\"featured_ads\":\"0\",\"handshake_limit\":\"1\"}', 'active', 1697967993),
-(2, 'Customer Service', 'http://cdn.mls/images/accounts/86188504160272786667972870548559707088642623386385_633a5d29473ee3664a3c92bbb2de8a9c.png', 'MLS', '', 'Eman', 'Olivas', '  ', '', '', '', '', 'test@test.com', 'testt', '', '', '{\"max_post\":\"15\",\"max_users\":\"1\",\"display_ads\":\"0\",\"featured_ads\":\"0\"}', 'active', 1697967993),
-(3, 'Registered User', 'http://cdn.mls/images/accounts/86188504160272786667972870548559707088642623386385_633a5d29473ee3664a3c92bbb2de8a9c.png', 'MLS', '', 'Eman2', 'Olivas', '  ', '', '', '', '', 'test@test.com', 'testt', '', '', '{\"max_post\":\"15\",\"max_users\":\"1\",\"display_ads\":\"0\",\"featured_ads\":\"0\"}', 'active', 1697967993);
+INSERT INTO `mls_accounts` (`account_id`, `account_type`, `logo`, `company_name`, `profession`, `real_estate_license_number`, `firstname`, `lastname`, `address`, `street`, `city`, `province`, `mobile_number`, `email`, `tin`, `uploads`, `preferences`, `privileges`, `status`, `registration_date`) VALUES
+(1, 'Administrator', 'http://cdn.mls/images/accounts/62242481312762779081451953250792944729165370785647_24b7913aeeb499a52d2098ee2e04d916.jpg', 'EmanPOÑ', 'Real Estate Broker', '715466', 'Eman', 'Olivas', '  ', '55 Justice R jabson St Bambang', 'Pasig City', 'National Capital Region', '09175223499', 'eman00x2xx@gmail.com', '666-666-6663', '', '', '{\"max_post\":\"15\",\"max_users\":\"1\",\"display_ads\":\"0\",\"featured_ads\":\"0\",\"handshake_limit\":\"1\"}', 'active', 1697967993),
+(2, 'Customer Service', 'http://cdn.mls/images/accounts/86188504160272786667972870548559707088642623386385_633a5d29473ee3664a3c92bbb2de8a9c.png', 'MLS', NULL, '', 'Eman', 'Olivas', '  ', '', '', '', '', 'test@test.com', 'testt', '', '', '{\"max_post\":\"15\",\"max_users\":\"1\",\"display_ads\":\"0\",\"featured_ads\":\"0\"}', 'active', 1697967993),
+(3, 'Registered User', 'http://cdn.mls/images/accounts/86188504160272786667972870548559707088642623386385_633a5d29473ee3664a3c92bbb2de8a9c.png', 'MLS', NULL, '', 'Eman2', 'Olivas', '  ', '', '', '', '', 'test@test.com', 'testt', '', '', '{\"max_post\":\"15\",\"max_users\":\"1\",\"display_ads\":\"0\",\"featured_ads\":\"0\"}', 'active', 1697967993);
 
 -- --------------------------------------------------------
 
