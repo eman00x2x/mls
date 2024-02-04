@@ -202,8 +202,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "</div>";
 											$html[] = "</div>";
 
-											
-											
 											$html[] = "<div class='form-group mb-3'>";
 												$html[] = "<label class='form-label text-muted'>Category</label>";
 												$html[] = "<div class='input-icon mb-3'>";

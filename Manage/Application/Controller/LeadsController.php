@@ -25,7 +25,7 @@ class LeadsController extends \Admin\Application\Controller\LeadsController {
 	}
 	
 	function saveUpdate($id) {
-		
+		return parent::saveUpdate($id);
 	}
 	
 	function delete($id) {

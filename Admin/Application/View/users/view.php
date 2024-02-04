@@ -36,7 +36,7 @@ $html[] = "<div class='row g-0'>";
 					
 					$html[] = "<div class='card-body'>";
 
-						$fields = array("name","username","email");
+						$fields = array("name","email");
 							
 						foreach($fields as $field) {
 							$html[] = "<div class=''>";

@@ -6,21 +6,20 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 		$html[] = "<div class='row g-2 '>";
 			$html[] = "<div class='col'>";
 				$html[] = "<div class='page-pretitle'>Manage Leads of ".$data['firstname']." ".$data['lastname']."</div>";
-				$html[] = "<h1 class='page-title'><i class='ti ti-building-estate me-2'></i> Leads</h1>";
+				$html[] = "<h1 class='page-title'><i class='ti ti-users me-2'></i> Leads</h1>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='d-none d-sm-inline'>";
 					$html[] = "<div class='btn-list'>";
 						
-						if($data['account_type'] != "Administrator") {
+						if($_SESSION['account_type'] == "Administrator") {
 							$html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@view", ["id" => $data['account_id']])."'>";
 								$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['logo'].")'></span>";
 								$html[] = $data['firstname']." ".$data['lastname']." account";
 							$html[] = "</a>";
-						}else {
-							
 						}
+
 					$html[] = "</div>";
 				$html[] = "</div>";
 			$html[] = "</div>";
@@ -52,10 +51,10 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<thead>";
 								$html[] = "<tr>";
 									$html[] = "<th class='text-center w-1'>#</th>";
-									$html[] = "<th class='w-1'></th>";
-									$html[] = "<th></th>";
-									$html[] = "<th></th>";
-									$html[] = "<th></th>";
+									$html[] = "<th class=''>Listing</th>";
+									$html[] = "<th>Lead Name</th>";
+									$html[] = "<th>Email Address</th>";
+									$html[] = "<th>Mobile Number</th>";
 									$html[] = "<th class='text-center'><i class='icon-settings'></i></th>";
 								$html[] = "</tr>";
 							$html[] = "</thead>";
@@ -65,9 +64,6 @@ $html[] = "<div class='page-body'>";
 
 								$html[] = "<tr class='row_leads_".$data['leads'][$i]['lead_id']."'>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-									$html[] = "<td class='align-middle'><a href='".url("LeadsController@view",["id" => $data['leads'][$i]['lead_id']])."'>".$data['leads'][$i]['name']."</a></td>";
-									$html[] = "<td class='align-middle'><a href='".url("LeadsController@view",["id" => $data['leads'][$i]['lead_id']])."'>".$data['leads'][$i]['email']."</a></td>";
-									$html[] = "<td class='align-middle'><a href='".url("LeadsController@view",["id" => $data['leads'][$i]['lead_id']])."'>".$data['leads'][$i]['mobile_no']."</a></td>";
 									$html[] = "<td class='align-middle'>";
 										$html[] = "<div class='d-flex'>";
 											$html[] = "<div class='avatar' style='background-image: url(".$data['leads'][$i]['listing']['thumb_img'].")'></div>";
@@ -77,6 +73,9 @@ $html[] = "<div class='page-body'>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 									$html[] = "</td>";
+									$html[] = "<td class='align-middle'><a href='".url("LeadsController@view",["id" => $data['leads'][$i]['lead_id']])."'>".$data['leads'][$i]['name']."</a></td>";
+									$html[] = "<td class='align-middle'><a href='".url("LeadsController@view",["id" => $data['leads'][$i]['lead_id']])."'>".$data['leads'][$i]['email']."</a></td>";
+									$html[] = "<td class='align-middle'><a href='".url("LeadsController@view",["id" => $data['leads'][$i]['lead_id']])."'>".$data['leads'][$i]['mobile_no']."</a></td>";
 									$html[] = "<td class='text-center'>";
 										$html[] = "<span class='btn btn-danger btn-delete' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("LeadsController@delete",["id" => $data['leads'][$i]['lead_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
 									$html[] = "</td>";

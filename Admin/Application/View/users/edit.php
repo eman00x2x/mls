@@ -70,7 +70,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 
-					if($_SESSION['user_id'] != $data['user_id']) {
+					if($_SESSION['user_id'] != $data['user_id'] || $_SESSION['account_type'] == "Administrator") {
 						$html[] = "<div class='card mb-3'>";
 							$html[] = "<div class='card-status bg-green'></div>";
 							$html[] = "<div class='card-header'>";
@@ -97,7 +97,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 						$html[] = "</div>";
 					}
 
-					if($_SESSION['user_level'] == 1 && $data['user_level'] != 1) {
+					if(($_SESSION['user_level'] == 1 && $data['user_level'] != 1) || $_SESSION['account_type'] == "Administrator") {
 						$html[] = "<div class='card mb-3'>";
 							$html[] = "<div class='card-header'>";
 								$html[] = "<h3 class='card-title text-blue'><i class='ti ti-settings me-2'></i> User Permissions</h3>";

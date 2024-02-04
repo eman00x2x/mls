@@ -69,12 +69,54 @@ $html[] = "<form id='form' action='' method='POST'>";
 										$html[] = "<label class='text-muted form-label'>Personal or Company TIN</label>";
 										$html[] = "<input type='text' name='tin' id='tin' value='' class='form-control'  />";
 									$html[] = "</div>";
+		
+								$html[] = "</div>";
+							$html[] = "</div>";
 
-									$html[] = "<div class='mb-3'>";
-										$html[] = "<label class='text-muted col-form-label'>PRC License Number</label>";
-										$html[] = "<input type='text' name='real_estate_license_number' id='real_estate_license_number' value='' class='form-control'  />";
-									$html[] = "</div>";
-									
+						$html[] = "</div>";
+					$html[] = "</div>";
+
+					$html[] = "<div class='card mb-3'>";
+						$html[] = "<div class='card-header'>";
+							$html[] = "<h3 class='card-title text-blue mb-0'>Account Details</h3>";
+						$html[] = "</div>";
+
+						$html[] = "<div class='card-body'>";
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Account Type</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<select name='account_type' id='account_type' class='form-select'>";
+									foreach(array("Administrator","Customer Service","Real Estate Practitioner"/* , "Banks" */) as $label) {
+										$sel = "Real Estate Practitioner" == $label ? "selected" : "";
+										$html[] = "<option value='$label' $sel>".ucwords($label)."</option>";
+									}
+									$html[] = "</select>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Broker License Number</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<input type='text' name='broker_prc_license_id' id='broker_prc_license_id' value='' class='form-control'  />";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Email Address</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<input type='email' name='email' id='email' value='' class='form-control'  />";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Status</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<select name='status' id='status' class='form-select'>";
+									foreach(array("active","banned") as $label) {
+										$html[] = "<option value='$label' >".ucwords($label)."</option>";
+									}
+									$html[] = "</select>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
@@ -90,38 +132,57 @@ $html[] = "<form id='form' action='' method='POST'>";
 						$html[] = "<div class='card-body'>";
 
 							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>First Name</label>";
-								$html[] = "<div class='col-sm-10'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Profession</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<select name='profession' class='form-select' id='profession'>";
+										$professions = explode(",","Real Estate Consultant,Real Estate Appraiser,Real Estate Broker,Real Estate Salesperson");
+										foreach ($professions as $profession) {
+											$html[] = "<option value='".$profession."'>$profession</option>";
+										}
+									$html[] = "</select>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>PRC License Number</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<input type='text' name='real_estate_license_number' id='real_estate_license_number' value='' class='form-control' />";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>First Name</label>";
+								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<input type='text' name='firstname' id='firstname' value='' class='form-control'  />";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>Last Name</label>";
-								$html[] = "<div class='col-sm-10'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Last Name</label>";
+								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<input type='text' name='lastname' id='lastname' value='' class='form-control'  />";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>Mobile Number</label>";
-								$html[] = "<div class='col-sm-10'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Birth Date</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<input type='date' name='birthdate' id='birthdate' value='' class='form-control'  />";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Mobile Number</label>";
+								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<input type='text' name='mobile_number' id='mobile_number' value='' class='form-control'  />";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>Email Address</label>";
-								$html[] = "<div class='col-sm-10'>";
-									$html[] = "<input type='text' name='email' id='email' value='' class='form-control'  />";
-								$html[] = "</div>";
-							$html[] = "</div>";
-
-							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>Address</label>";
-								$html[] = "<div class='col-sm-10'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Address</label>";
+								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<div class='row gy-2 gx-3 align-items-center'>";
-										$html[] = "<div class='col-auto'>";
+										$html[] = "<div class='col-12'>";
 											$html[] = "<label class='form-label text-muted'>Street</label>";
 											$html[] = "<input type='text' name='street' id='street' value='' class='form-control'  />";
 										$html[] = "</div>";
@@ -139,17 +200,6 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
-							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-2 col-form-label text-end'>Status</label>";
-								$html[] = "<div class='col-sm-10'>";
-									$html[] = "<select name='status' id='status' class='form-select'>";
-									foreach(array("active","banned") as $label) {
-										$html[] = "<option value='$label'>".ucwords($label)."</option>";
-									}
-									$html[] = "</select>";
-								$html[] = "</div>";
-							$html[] = "</div>";
-							
 						$html[] = "</div>";
 					$html[] = "</div>";
 

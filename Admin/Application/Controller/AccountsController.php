@@ -162,6 +162,13 @@ class AccountsController extends \Main\Controller {
 			$accounts->column['account_id'] = $account_id;
 
 			if($data = $accounts->getById()) {
+
+				$reference = $this->getModel("LicenseReference");
+				$reference->column['reference_id'] = $data['reference_id'];
+				$response =	$reference->getById();
+
+				$data['broker_prc_license_id'] = $response['broker_prc_license_id'];
+
 				$this->setTemplate("accounts/edit.php");
 				return $this->getTemplate($data);
 			}
@@ -204,16 +211,60 @@ class AccountsController extends \Main\Controller {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
 		
-		$accounts = $this->getModel("Account");
-		
 		if($_POST['logo'] != "") {
 			$_POST['logo'] = $accounts->moveUploadedImage($_POST['logo']);
 		}
 
-		$_POST['address'] = $_POST['street']." ".$_POST['city']." ".$_POST['province'];
+		$time = DATE_NOW;
+
+		$_POST['name'] = $_POST['firstname']." ".$_POST['lastname'];
+		$_POST['date_added'] = $time;
+		$_POST['registration_date'] = $time;
+		$_POST['created_at'] = $time;
+		$_POST['permissions'] = json_encode(USER_PERMISSIONS);
 		$_POST['privileges'] = json_encode($_POST['privileges']);
-		
-		$response = $accounts->saveNew($_POST);
+		$_POST['account_type'] = "Real Estate Practitioner";
+		$_POST['reference_id'] = 0;
+
+		$reference = $this->getModel("LicenseReference");
+		$response =	$reference->getByLicenseId($_POST['broker_prc_license_id']);
+
+		if($response['status'] == 1) {
+			if($response['data']['reference_id'] != 0) {
+				$_POST['reference_id'] = $response['data']['reference_id'];
+			}
+		}
+
+		$user = $this->getModel("User");
+		$response = $user->saveNew($_POST);
+
+		if($response['status'] == 1) {
+
+			$accounts = $this->getModel("Account");
+			$accountResponse = $accounts->saveNew($_POST);
+
+			if($_POST['reference_id'] == 0) {
+				$license = $this->getModel("LicenseReference");
+				$license->saveNew($_POST);
+			}
+
+			if($accountResponse['status'] == 1) {
+				$data['account_id'] = $accountResponse['id'];
+				$user->save($response['id'],$data);
+			}else {
+				$user->deleteUser($respons['user_id']);
+			}
+
+			$this->getLibrary("Factory")->setMsg($accountResponse['message'],$accountResponse['type']);
+
+			return json_encode(array(
+				"type" => 1,
+				"status" => $response['status'],
+				"message" => getMsg()
+			));
+
+		}
+
 
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 		
@@ -258,6 +309,17 @@ class AccountsController extends \Main\Controller {
 				}
 				
 				$_POST['logo'] = $accounts->moveUploadedImage($_POST['logo']);
+			}
+
+			$reference = $this->getModel("LicenseReference");
+			$response =	$reference->getByLicenseId($_POST['broker_prc_license_id']);
+
+			if($response['data']['reference_id'] != 0) {
+				$_POST['reference_id'] = $response['data']['reference_id'];
+			}else {
+				$_POST['created_at'] = DATE_NOW;
+				$response = $reference->saveNew($_POST);
+				$_POST['reference_id'] = $response['id'];
 			}
 
 			$response = $accounts->save($account_id,$_POST);

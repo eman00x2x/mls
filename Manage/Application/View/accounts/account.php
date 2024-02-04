@@ -70,6 +70,21 @@ $html[] = "<div class='page-body'>";
 
                                     $html[] = "<div class='mb-3 pb-3 border-bottom'>";
                                         $html[] = "<h2 class='text-blue mb-1 fw-bold'>Account Holder</h6>";
+
+                                        $html[] = "<div class='row g-3 align-items-center mb-3'>";
+											$html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Profession</label></div>";
+											$html[] = "<div class='col-md-9 col-6'>";
+												$html[] = "<input type='text' name='profession' id='profession' value='".$data['profession']."' class='form-control-plaintext' />";
+											$html[] = "</div>";
+										$html[] = "</div>";
+
+										$html[] = "<div class='row g-3 align-items-center mb-3'>";
+											$html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>PRC License Number</label></div>";
+											$html[] = "<div class='col-md-9 col-6'>";
+												$html[] = "<input type='text' name='real_estate_license_number' id='real_estate_license_number' value='".$data['real_estate_license_number']."' class='form-control' />";
+											$html[] = "</div>";
+										$html[] = "</div>";
+
                                         $html[] = "<div class='row g-3 align-items-center mb-3'>";
                                             $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Name</label></div>";
                                             $html[] = "<div class='col-md-9 col-6'>";
@@ -86,23 +101,10 @@ $html[] = "<div class='page-body'>";
                                             $html[] = "</div>";
                                         $html[] = "</div>";
 
-										$html[] = "<div class='row g-3 align-items-center mb-3'>";
-											$html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Profession</label></div>";
+                                        $html[] = "<div class='row g-3 align-items-center mb-3'>";
+											$html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Birth Date</label></div>";
 											$html[] = "<div class='col-md-9 col-6'>";
-												$html[] = "<select name='profession' class='form-select' id='profession'>";
-													$professions = explode(",","Real Estate Consultant,Real Estate Appraiser,Real Estate Broker");
-													foreach ($professions as $profession) {
-														$sel = $profession == $data['profession'] ? "selected" : "";
-														$html[] = "<option value='".$profession."' $sel>$profession</option>";
-													}
-												$html[] = "</select>";
-											$html[] = "</div>";
-										$html[] = "</div>";
-
-										$html[] = "<div class='row g-3 align-items-center mb-3'>";
-											$html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>PRC License Number</label></div>";
-											$html[] = "<div class='col-md-9 col-6'>";
-												$html[] = "<input type='text' name='real_estate_license_number' id='real_estate_license_number' value='".$data['real_estate_license_number']."' class='form-control' />";
+												$html[] = "<input type='date' name='birthdate' id='birthdate' value='".$data['birthdate']."' class='form-control' />";
 											$html[] = "</div>";
 										$html[] = "</div>";
 
@@ -155,6 +157,11 @@ $html[] = "<div class='page-body'>";
 
                                     $html[] = "<div class='mb-3 pb-3 border-bottom'>";
                                         $html[] = "<h2 class='text-blue mb-1 fw-bold'>Account Details</h6>";
+
+                                        $html[] = "<div class='row g-3 align-items-center'>";
+                                            $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Broker License Number</label></div>";
+                                            $html[] = "<div class='col-md-9 col-6'>".$data['broker_prc_license_id']."</div>";
+                                        $html[] = "</div>";
 
                                         $html[] = "<div class='row g-3 align-items-center'>";
                                             $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Email</label></div>";

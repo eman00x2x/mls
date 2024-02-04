@@ -23,7 +23,7 @@ class LicenseReferenceModel extends \Main\Model {
 			);
 		}else {
 
-			$query = "SELECT reference_id, prc_license_id FROM #__".$this->table." WHERE prc_license_id = '".$license_id."' ".$this->and;
+			$query = "SELECT reference_id, broker_prc_license_id FROM #__".$this->table." WHERE broker_prc_license_id = '".$license_id."' ".$this->and;
 			$result = $this->DBO->query($query);
 
 			$this->initiateFields($result);
@@ -47,7 +47,7 @@ class LicenseReferenceModel extends \Main\Model {
 
 		$v = $this->getValidator();
 
-		$v->validateGeneral($data['prc_license_id'],"Real Estate Broker PRC License Number is needed!");
+		$v->validateGeneral($data['broker_prc_license_id'],"Real Estate Broker PRC License Number is needed!");
 		
 		if($v->foundErrors()) {
 			return array(

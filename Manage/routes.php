@@ -61,7 +61,10 @@ Router::post('/mls/compare/remove', 'MlsController@removeFromCompare', ['as' => 
 /** LEADS ROUTES */
 Router::get('/leads', 'LeadsController@index', ['as' => 'leads']);
 Router::get('/leads/{id}', 'LeadsController@view', ['as' => 'leadView'])->where([ 'id' => '[0-9]+' ]);
+Router::get('/leads/{id}/edit', 'LeadsController@edit', ['as' => 'leadEdit'])->where([ 'id' => '[0-9]+' ]);
 Router::get('/leads/{id}/delete', 'LeadsController@delete', ['as' => 'leadDelete'])->where([ 'id' => '[0-9]+' ]);
+
+Router::post('/leads/{id}/saveUpdate', 'LeadsController@saveUpdate', ['as' => 'leadSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 
 /** MESSAGES ROUTES */
 Router::get('/messages', 'MessagesController@index', ['as' => 'messages']);

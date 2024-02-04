@@ -55,14 +55,14 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			parse_str(urldecode(base64_decode($_REQUEST['filter'])), $_REQUEST);
 		}
 
-		$handshake = $this->getModel("Handshake");
+		/* $handshake = $this->getModel("Handshake");
 		$handshake->column['requestor_account_id'] = $_SESSION['account_id'];
 		$handshake->select("GROUP_CONCAT(listing_id) as listing_ids")->and(" handshake_status IN('pending','active')");
 		$handshakeListings = $handshake->getByRequestorAccountId();
 		
 		if($handshakeListings['listing_ids'] != "") {
 			$filters[] = " listing_id NOT IN(".$handshakeListings['listing_ids'].")";
-		}
+		} */
 
 		if(isset($_REQUEST['address'])) {
 			if($_REQUEST['address']['region'] != "") {
@@ -85,6 +85,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		}
 
 		#$filters[] = " account_id != ".$_SESSION['account_id'];
+		$filters[] = " is_mls = 1 ";
 		$filters[] = " status = 1 ";
 
 		if(isset($_REQUEST['search'])) {

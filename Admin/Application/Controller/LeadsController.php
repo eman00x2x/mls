@@ -56,17 +56,19 @@ class LeadsController extends \Main\Controller {
 	
 	function edit($id) {
 		
-		$this->doc->setTitle("Update Lead Details");
-		
-		$account = $this->getModel("Account");
-		$account->column['account_id'] = $this->account_id;
-		$data = $account->getById();
-		
+		$this->doc->setTitle("Update Leads");
+
 		$lead = $this->getModel("Lead");
 		$lead->column['lead_id'] = $id;
-		$lead->and(" account_id = ".$data['account_id']);
+		$lead->where(" account_id = ".$this->account_id);
+		$data = $lead->getById();
 
-		$data['leads'] = $lead->getById();
+		$listing = $this->getModel("Listing");
+		$listing->column['listing_id'] = $data['listing_id'];
+		$data['listing'] = $listing->getById();
+
+		$lead->addresses = $this->getModel("Address");
+		$lead->categorySelection = $listing->categorySelection($data['preferences']['category']);
 		
 		if($data) {
 			$this->setTemplate("leads/edit.php");
@@ -83,11 +85,8 @@ class LeadsController extends \Main\Controller {
 		
 		$lead = $this->getModel("Lead");
 		$lead->column['lead_id'] = $id;
+		$lead->where(" account_id = ".$this->account_id);
 		$data = $lead->getById();
-
-		$account = $this->getModel("Account");
-		$account->column['account_id'] = $this->account_id;
-		$data['account'] = $account->getById();
 
 		$listing = $this->getModel("Listing");
 		$listing->column['listing_id'] = $data['listing_id'];
@@ -105,6 +104,10 @@ class LeadsController extends \Main\Controller {
 	function saveUpdate($id) {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
+
+		$_POST['preferences']['category'] = $_POST['category'];
+		$_POST['preferences']['address'] = $_POST['address'];
+		$_POST['preferences'] = json_encode($_POST['preferences']);
 
 		$lead = $this->getModel("Lead");
 		$response = $lead->save($id,$_POST);
