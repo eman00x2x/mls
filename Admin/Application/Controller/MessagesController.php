@@ -5,11 +5,19 @@ namespace Admin\Application\Controller;
 class MessagesController extends \Main\Controller {
 
 	private $doc;
-	private $websocketAddress = "ws://192.168.2.2:5465/mls/Manage/webSocketServer.php";
+	private $ws_client;
+	private $websocketAddress = "ws://localhost:8980/mls/Manage/webSocketServer.php";
 
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
+
+		$this->ws_client = new \WebSocket\Client($this->websocketAddress);
+		$this->ws_client
+			// Add standard middlewares
+			->addMiddleware(new \WebSocket\Middleware\CloseHandler())
+			->addMiddleware(new \WebSocket\Middleware\PingResponder())
+			;
 
 	}
 	
@@ -194,7 +202,6 @@ class MessagesController extends \Main\Controller {
 
 	function view($id) {
 
-
 		$thread = $this->getModel("Thread");
 		$thread->column['thread_id'] = $id;
 		$data = $thread->getById();
@@ -257,6 +264,8 @@ class MessagesController extends \Main\Controller {
 						'thread_id':$id,
 						'message': message 
 					},function(data) {
+						response = JSON.parse(data);
+						websocket.send(JSON.stringify(response.data));
 						$('#message').val('');
 					});
 				}
@@ -321,7 +330,7 @@ class MessagesController extends \Main\Controller {
 
 				}
 
-				return html
+				return html;
 			}
 
 		");
@@ -398,15 +407,9 @@ class MessagesController extends \Main\Controller {
 		$response['user_message'] = $data['message'];
 		$response['user_sent_time'] = date("M d, Y h:ia",$data['created_at']);
 
-		$client = new \WebSocket\Client($this->websocketAddress);
-		$client
-			// Add standard middlewares
-			->addMiddleware(new \WebSocket\Middleware\CloseHandler())
-			->addMiddleware(new \WebSocket\Middleware\PingResponder())
-			;
-
-		$client->text(json_encode($response));
-
+		/* $this->ws_client->text(json_encode($response));
+		$this->ws_client->close(); */
+		
 		return json_encode(array(
 			"status" => 1,
 			"type" => "success",

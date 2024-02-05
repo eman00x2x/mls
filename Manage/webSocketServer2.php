@@ -119,12 +119,12 @@ try {
             // Echo received message
             default:
                 $server->send($message); // Echo
-                /* echo "< [{$connection->getRemoteName()}] Sent [{$message->getOpcode()}] {$message->getContent()}\n"; */
+                echo "< [{$connection->getRemoteName()}] Sent [{$message->getOpcode()}] {$message->getContent()}\n";
         }
     })->onBinary(function ($server, $connection, $message) {
         echo "> [{$connection->getRemoteName()}] Received [{$message->getOpcode()}]\n";
         $connection->send($message); // Echo
-        /* echo "< [{$connection->getRemoteName()}] Sent [{$message->getOpcode()}] {$message->getContent()}\n"; */
+        echo "< [{$connection->getRemoteName()}] Sent [{$message->getOpcode()}] {$message->getContent()}\n";
     })->onPing(function ($server, $connection, $message) {
         echo "> [{$connection->getRemoteName()}] Received [{$message->getOpcode()}] {$message->getContent()}\n";
     })->onPong(function ($server, $connection, $message) {
@@ -138,6 +138,3 @@ try {
 } catch (Throwable $e) {
     echo "# ERROR: {$e->getMessage()}\n";
 }
-
-ob_flush();
-flush();
