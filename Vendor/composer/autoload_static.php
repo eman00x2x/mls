@@ -7,14 +7,39 @@ namespace Composer\Autoload;
 class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
 {
     public static $prefixLengthsPsr4 = array (
+        'W' => 
+        array (
+            'WebSocket\\' => 10,
+        ),
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
+            'Psr\\Http\\Message\\' => 17,
+            'Phrity\\Net\\' => 11,
             'Pecee\\' => 6,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'WebSocket\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phrity/websocket/src',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/src',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+        ),
+        'Phrity\\Net\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phrity/net-uri/src',
+            1 => __DIR__ . '/..' . '/phrity/net-stream/src',
+        ),
         'Pecee\\' => 
         array (
             0 => __DIR__ . '/..' . '/pecee/simple-router/src/Pecee',
@@ -23,6 +48,10 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
+    );
+
+    public static $fallbackDirsPsr4 = array (
+        0 => __DIR__ . '/..' . '/phrity/util-errorhandler/src',
     );
 
     public static $classMap = array (
@@ -35,6 +64,7 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2::$fallbackDirsPsr4;
             $loader->classMap = ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2::$classMap;
 
         }, null, ClassLoader::class);

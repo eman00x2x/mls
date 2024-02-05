@@ -21,8 +21,20 @@ function autoloader($class) {
 
 spl_autoload_register('autoloader');
 
-$webSocket = new Library\ChatWebSocketServer();
-$webSocket->chatServer();
+$server = new WebSocket\Server(ssl: false, port: 5465);
+$server
+    // Add standard middlewares
+    ->addMiddleware(new WebSocket\Middleware\CloseHandler())
+    ->addMiddleware(new WebSocket\Middleware\PingResponder())
+    // Listen to incoming Text messages
+    ->onText(function (WebSocket\Server $server, WebSocket\Connection $connection, WebSocket\Message\Message $message) {
+        // Act on incoming message
+        echo "Got message: {$message->getContent()} \n";
+        
+        // Possibly respond to all client
+        $server->send(new WebSocket\Message\Text("{$message->getContent()}"));
+    })
+    ->start();
 
 ob_flush();
 flush();

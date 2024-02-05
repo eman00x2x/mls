@@ -8,7 +8,7 @@ class ChatWebSocketServer extends Configuration {
 
     function chatServer() {
 
-		$host = "localhost";
+		$host = "192.168.2.2";
 		$port = '9000';
 		
         $path = 'D:/wamp64/www/mls/Cdn/';
@@ -21,7 +21,7 @@ class ChatWebSocketServer extends Configuration {
                 'verify_peer'         => false,            // Set this to true if acting as an SSL client
                 'ssltransport' => $transport,              // Transport Methods such as 'tlsv1.1', tlsv1.2' 
                 ] ];
-        $ssl_context = stream_context_create($ssl);
+        /* $ssl_context = stream_context_create($ssl); */
 
         #$server = stream_socket_server($transport . '://' . $host . ':' . $port, $errno, $errstr, STREAM_SERVER_BIND|STREAM_SERVER_LISTEN, $ssl_context);
         $server = stream_socket_server($transport . '://' . $host . ':' . $port, $errno, $errstr);

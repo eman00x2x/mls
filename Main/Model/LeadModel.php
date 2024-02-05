@@ -4,6 +4,22 @@ namespace Main\Model;
 
 class LeadModel extends \Main\Model {
 
+	var $preferences = array(
+		"type" => null,
+		"category" => null,
+		"address " => array(
+			"region" => "",
+			"province" => "",
+			"municipality" => "",
+			"barangay" => ""
+		),
+		"lot_area" => null,
+		"floor_area" => null,
+		"bedroom" => null,
+		"bathroom" => null,
+		"parking" => null
+	);
+
 	function __construct() {
 		$this->table = "leads";
 		$this->primary_key = "lead_id";

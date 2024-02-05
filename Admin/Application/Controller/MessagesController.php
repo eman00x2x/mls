@@ -5,6 +5,7 @@ namespace Admin\Application\Controller;
 class MessagesController extends \Main\Controller {
 
 	private $doc;
+	private $websocketAddress = "ws://192.168.2.2:5465/mls/Manage/webSocketServer.php";
 
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
@@ -193,6 +194,7 @@ class MessagesController extends \Main\Controller {
 
 	function view($id) {
 
+
 		$thread = $this->getModel("Thread");
 		$thread->column['thread_id'] = $id;
 		$data = $thread->getById();
@@ -201,65 +203,37 @@ class MessagesController extends \Main\Controller {
 
 		$this->doc->addScriptDeclaration("
 
-			var wsUri = 'ws://localhost:9000/mls/Manage/chatWebSocket.php';
-
+			var wsUri = '".$this->websocketAddress."';
 			websocket = new WebSocket(wsUri);
-
-			websocket.onopen = function(ev) { // connection is open 
-				alert(' Server Open ');
-			}
-
-			// Message received from server
-			websocket.onmessage = function(ev) {
-
-				console.log('Server: '+ev.data);
-
-				var response 		= JSON.parse(ev.data); //PHP sends Json data
-				
-				var user_message 	= response.user_message;
-				var user_name 		= response.user_name;
-				var user_sent_time 	= response.user_sent_time;
-
-				/**
-				 *
-				 * append message here
-				 * 
-				 **/
-
-				html = \"<div class='row align-items-end justify-content-end'>\";
-					html += \"<div class='col col-lg-6'>\";
-						html += \"<div class='chat-bubble chat-bubble-me'>\";
-							
-							html += \"<div class='chat-bubble-title'>\";
-								html += \"<div class='row'>\";
-									html += \"<div class='col chat-bubble-author'>\";
-										html += user_name;
-									html += \"</div>\";
-									html += \"<div class='col-auto chat-bubble-date'>\";
-										html += user_sent_time;
-									html += \"</div>\";
-								html += \"</div>\";
-							html += \"</div>\";
-							html += \"<div class='chat-bubble-body'>\";
-								html += \"<p>\" + user_message + \"</p>\";
-							html += \"</div>\";
-						html += \"</div>\";
-					html += \"</div>\";
-					html += \"<div class='col-auto'>\";
-						html += \"<span class='avatar'></span>\";
-					html += \"</div>\";
-				html += \"</div>\";
-
-				$('.chat-bubbles').append(html);
-				
-			};
-
-			websocket.onerror	= function(ev){ console.log('Error Occurred - ' + ev.data)  }; 
-			websocket.onclose 	= function(ev){ console.log('Connection Closed'); };
+			threadId = $id;
 
 			$(document).ready(function() {
 				var div = $('.card-body');
 				div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
+
+				websocket.onopen = function(ev) { // connection is open 
+					console.log(' Server Open ');
+				}
+
+				// Message received from server
+				websocket.onmessage = function(ev) {
+
+					console.log('Server: '+ev.data);
+
+					var response	= JSON.parse(ev.data); //PHP sends Json data
+					
+					if(threadId == response.thread_id) {
+						html = build_message(response);
+						$('.chat-bubbles').append(html);
+					}
+
+					div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
+					
+				};
+
+				websocket.onerror	= function(ev){ console.log('Error Occurred - ' + ev.data)  }; 
+				websocket.onclose 	= function(ev){ console.log('Connection Closed'); };
+
 			});
 
 			//Message send button
@@ -283,17 +257,71 @@ class MessagesController extends \Main\Controller {
 						'thread_id':$id,
 						'message': message 
 					},function(data) {
-
-						response = JSON.parse(data);
-						console.log(response);
-						console.log(JSON.stringify(response.data));
-
-						//convert and send data to server
-						websocket.send(JSON.stringify(response.data));
 						$('#message').val('');
 					});
 				}
 
+			}
+
+			function build_message(response) {
+
+				var id = $_SESSION[user_id];
+				
+				if(response.user_id == id) {
+				
+					html = \"<div class='row align-items-end justify-content-end '>\";
+						html += \"<div class='col col-lg-6'>\";
+							html += \"<div class='chat-bubble chat-bubble-me'>\";
+								
+								html += \"<div class='chat-bubble-title'>\";
+									html += \"<div class='row'>\";
+										html += \"<div class='col chat-bubble-author'>\";
+											html += response.user_name;
+										html += \"</div>\";
+										html += \"<div class='col-auto chat-bubble-date'>\";
+											html += response.user_sent_time;
+										html += \"</div>\";
+									html += \"</div>\";
+								html += \"</div>\";
+								html += \"<div class='chat-bubble-body'>\";
+									html += \"<p>\" + response.user_message + \"</p>\";
+								html += \"</div>\";
+							html += \"</div>\";
+						html += \"</div>\";
+						html += \"<div class='col-auto'>\";
+							html += \"<span class='avatar'></span>\";
+						html += \"</div>\";
+					html += \"</div>\";
+	
+				}else {
+
+					html = \"<div class='row align-items-end'>\";
+						html += \"<div class='col-auto'>\";
+							html += \"<span class='avatar'></span>\";
+						html += \"</div>\";
+						html += \"<div class='col col-lg-6'>\";
+							html += \"<div class='chat-bubble'>\";
+								
+								html += \"<div class='chat-bubble-title'>\";
+									html += \"<div class='row'>\";
+										html += \"<div class='col chat-bubble-author'>\";
+											html += response.user_name;
+										html += \"</div>\";
+										html += \"<div class='col-auto chat-bubble-date'>\";
+											html += response.user_sent_time;
+										html += \"</div>\";
+									html += \"</div>\";
+								html += \"</div>\";
+								html += \"<div class='chat-bubble-body'>\";
+									html += \"<p>\" + response.user_message + \"</p>\";
+								html += \"</div>\";
+							html += \"</div>\";
+						html += \"</div>\";
+					html += \"</div>\";
+
+				}
+
+				return html
 			}
 
 		");
@@ -364,9 +392,20 @@ class MessagesController extends \Main\Controller {
 		$user->column['user_id'] = $_SESSION['user_id'];
 		$data['user'] = $user->getById();
 
+		$response['thread_id'] = $_POST['thread_id'];
+		$response['user_id'] = $_SESSION['user_id'];
 		$response['user_name'] = $data['user']['name'];
 		$response['user_message'] = $data['message'];
 		$response['user_sent_time'] = date("M d, Y h:ia",$data['created_at']);
+
+		$client = new \WebSocket\Client($this->websocketAddress);
+		$client
+			// Add standard middlewares
+			->addMiddleware(new \WebSocket\Middleware\CloseHandler())
+			->addMiddleware(new \WebSocket\Middleware\PingResponder())
+			;
+
+		$client->text(json_encode($response));
 
 		return json_encode(array(
 			"status" => 1,

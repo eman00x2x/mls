@@ -67,6 +67,10 @@ class LeadsController extends \Main\Controller {
 		$listing->column['listing_id'] = $data['listing_id'];
 		$data['listing'] = $listing->getById();
 
+		if(!is_array($data['preferences'])) {
+			$data['preferences'] = $lead->preferences;
+		}
+
 		$lead->addresses = $this->getModel("Address");
 		$lead->categorySelection = $listing->categorySelection($data['preferences']['category']);
 		

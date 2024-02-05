@@ -163,9 +163,8 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 
                             $html[] = "<div class='form-group mb-3'>";
                                 $html[] = "<label class='form-label text-muted'>Address</label>";
-                                $html[] = $model->addresses->addressSelection($data['preferences']['address']);
+                                $html[] = $model->addresses->addressSelection((isset($data['preferences']['address'])));
                             $html[] = "</div>";
-
 
                         $html[] = "</div>";
                     $html[] = "</div>";
