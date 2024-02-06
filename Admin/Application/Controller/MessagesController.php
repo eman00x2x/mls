@@ -202,17 +202,178 @@ class MessagesController extends \Main\Controller {
 
 	function view($id) {
 
+		$this->doc->setTitle("Messages");
+		$this->ajaxChatScript($id);
+		/* $this->webSocketChatScript($id); */
+
+		$unset_account_data = explode(",","account_type,preferences,privileges,uploads");
+		$unset_user_data = explode(",","username,password,user_level,permissions,two_factor_authentication,two_factor_authentication_aps,date_added");
+
 		$thread = $this->getModel("Thread");
 		$thread->column['thread_id'] = $id;
 		$data = $thread->getById();
+		
+		$user = $this->getModel("User");
+		for($i=0; $i<count($data['participants']); $i++) {
+			$user->column['user_id'] = $data['participants'][$i];
+			$data['participant'][$data['participants'][$i]] = $user->getById();
 
-		$this->doc->setTitle("Messages");
+			foreach($unset_user_data as $column) {
+				unset($data['participant'][$data['participants'][$i]][$column]);
+			}
+		}
+
+		$data['participants'] = $data['participant'];
+		unset($data['participant']);
+
+		$account = $this->getModel("Account");
+		for($i=0; $i<count($data['accounts']); $i++) {
+			$account->column['account_id'] = $data['accounts'][$i];
+			$data['account'][$data['accounts'][$i]] = $account->getById();
+
+			foreach($unset_account_data as $column) {
+				unset($data['account'][$data['accounts'][$i]][$column]);
+			}
+		}
+
+		$data['accounts'] = $data['account'];
+		unset($data['account']);
+
+		if($data) {
+
+			$message = $this->getModel("Message");
+			$data['messages'] = $message->execute(" SELECT * 
+				FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread_id']." ORDER BY created_at DESC LIMIT 20) as sub 
+				ORDER BY created_at ASC
+			");
+
+			if($data['messages']) {
+				for($i=0; $i<count($data['messages']); $i++) {
+					$user->column['user_id'] = $data['messages'][$i]['user_id'];
+					$data['messages'][$i]['user'] = $user->getById();
+
+					foreach($unset_user_data as $column) {
+						unset($data['messages'][$i]['user'][$column]);
+					}
+
+				}
+			}
+
+
+			$this->setTemplate("messages/view.php");
+			return $this->getTemplate($data, $message);
+
+		}
+
+		$this->response(404);
+
+	}
+
+	function showMessages($thread_id,$lastMessageId) {
+
+		$message = $this->getModel("Message");
+		$message->and(" message_id > $lastMessageId ");
+		$message->orderBy(" created_at DESC ");
+		$data['messages'] = $message->getByThreadId($thread_id);
+
+		if($data['messages']) {
+			$user = $this->getModel("User");
+			for($i=0; $i<count($data['messages']); $i++) {
+				$user->column['user_id'] = $data['messages'][$i]['user_id'];
+				$data['messages'][$i]['user'] = $user->getById();
+			}
+
+			$this->setTemplate("messages/showMessages.php");
+			return $this->getTemplate($data);
+
+		}
+
+	}
+
+	function saveNewMessage() {
+
+		parse_str(file_get_contents('php://input'), $_POST);
+		
+		$message = $this->getModel("Message");
+
+		$data = array(
+			"user_id" => $_SESSION['user_id'],
+			"thread_id" => $_POST['thread_id'],
+			"message" => $_POST['message'],
+			"attachment" => null,
+			"created_at" => DATE_NOW
+		);
+
+		$id = $message->saveNew($data);
+
+		$user = $this->getModel("User");
+		$user->column['user_id'] = $_SESSION['user_id'];
+		$data['user'] = $user->getById();
+
+		$response['thread_id'] = $_POST['thread_id'];
+		$response['user_id'] = $_SESSION['user_id'];
+		$response['user_name'] = $data['user']['name'];
+		$response['user_message'] = base64_encode($data['message']);;
+		$response['user_sent_time'] = date("M d, Y h:ia",$data['created_at']);
+
+		return json_encode(array(
+			"status" => 1,
+			"type" => "success",
+			"id" => $id,
+			"data" => $response
+		));
+
+	}
+	
+	function saveNewThread($id) {
+		parse_str(file_get_contents('php://input'), $_POST);
+
+	}
+
+	function saveDeletedThread($id) {
+		
+		if($id) {
+			if(isset($_REQUEST['delete'])) {
+				$message = $this->getModel("Message");
+				$id = $message->saveNew(array(
+					"user_id" => $_SESSION['user_id'],
+					"thread_id" => $_POST['thread_id'],
+					"message" => $_POST['message'],
+					"created_at" => DATE_NOW
+				));
+
+				$this->getLibrary("Factory")->setMsg("Message deleted!.","success");
+				return json_encode(
+					array(
+						"status" => 1,
+						"message" => getMsg()
+					)
+				);
+
+			}else {
+				$data['id'] = $id;
+				$this->setTemplate("messages/removeThread.php");
+				return $this->getTemplate($data);
+			}
+		}
+
+		$this->response(404);
+		
+	}
+
+	function webSocketChatScript($thread_id) {
+
+		/** 
+		 * Run the websocket server first before using this
+		 * webSocketServer.php
+		 * 
+		 * */
 
 		$this->doc->addScriptDeclaration("
 
-			var wsUri = '".$this->websocketAddress."?name=" . (str_replace(" ","+",$_SESSION['name'])) ."';
-			websocket = new WebSocket(wsUri);
-			threadId = $id;
+		    var wsUri = '".$this->websocketAddress."?name=" . (str_replace(" ","+",$_SESSION['name'])) ."';
+			var websocket = new WebSocket(wsUri);
+			var threadId = $thread_id;
 
 			$(document).ready(function() {
 				var div = $('.card-body');
@@ -223,10 +384,9 @@ class MessagesController extends \Main\Controller {
 				}
 
 				websocket.onmessage = function(ev) {
-					console.log('Server: '+ev.data);
 					var response	= JSON.parse(ev.data);
 					if(threadId == response.thread_id) {
-						html = build_message(response);
+						html = buildMessage(response);
 						$('.chat-bubbles').append(html);
 					}
 					div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
@@ -250,15 +410,15 @@ class MessagesController extends \Main\Controller {
 
 			});
 
-			$(document).on('click', '.btn-send-message', function() { send_message(); });
-			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ send_message(); } });
+			$(document).on('click', '.btn-send-message', function() { sendMessage(); });
+			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ sendMessage(); } });
 
-			function send_message(){
+			function sendMessage(){
 				
 				var message = $('#message').val();
 				if(message != '') {
 					$.post('".url("MessagesController@saveNewMessage")."', {
-						'thread_id':$id,
+						'thread_id':$thread_id,
 						'message': message 
 					},function(data) {
 						response = JSON.parse(data);
@@ -269,7 +429,7 @@ class MessagesController extends \Main\Controller {
 
 			}
 
-			function build_message(response) {
+			function buildMessage(response) {
 
 				var id = $_SESSION[user_id];
 				
@@ -332,124 +492,61 @@ class MessagesController extends \Main\Controller {
 
 		");
 
-		if($data) {
+	}
 
-			$message = $this->getModel("Message");
-			$data['messages'] = $message->execute(" SELECT * 
-				FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread_id']." ORDER BY created_at DESC LIMIT 20) as sub 
-				ORDER BY created_at ASC
-			");
+	function ajaxChatScript($thread_id) {
 
-			if($data['messages']) {
-				$user = $this->getModel("User");
-				for($i=0; $i<count($data['messages']); $i++) {
-					$user->column['user_id'] = $data['messages'][$i]['user_id'];
-					$data['messages'][$i]['user'] = $user->getById();
+		$this->doc->addScriptDeclaration("
+
+		    var div;
+			var idleTime = 0;
+			
+			$(document).ready(function() {
+				div = $('.card-body');
+				div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
+				div.bind('scroll', fetchMore);
+				setInterval(fetchMore, 10000);
+			});
+
+			fetchMore = function() {
+				
+				var lastMessageId = $('.last_message_id').val();
+				
+				if(div.scrollTop() + div.innerHeight() >= div[0].scrollHeight) {
+					
+					div.unbind('scroll', fetchMore);
+					$.get('/messages/$thread_id/showMessages/' + lastMessageId, function(data) {
+						if(data != '') {
+							$('.last_message_id').remove();
+							$('.chat-bubbles').append(data);
+							div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
+						}
+						div.bind('scroll',fetchMore);
+					});
+				}
+			};
+
+			$(document).on('click', '.btn-send-message', function() { sendMessage(); });
+
+			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ sendMessage(); } });
+
+			function sendMessage() {
+
+				var message = $('#message').val();
+				if(message != '') {
+					$.post('".url("MessagesController@saveNewMessage")."', { 
+						'thread_id':$thread_id,
+						'message': message 
+					},function(data) {
+						eval('('+fetchMore+')()');
+						$('#message').val('');
+						div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
+					});
 				}
 			}
+			
+		");
 
-			$this->setTemplate("messages/view.php");
-			return $this->getTemplate($data, $message);
-
-		}
-
-		$this->response(404);
-
-	}
-
-	function showMessages($thread_id,$lastMessageId) {
-
-		$message = $this->getModel("Message");
-		$message->and(" message_id > $lastMessageId ");
-		$message->orderBy(" created_at DESC ");
-		$data['messages'] = $message->getByThreadId($thread_id);
-
-		if($data['messages']) {
-			$user = $this->getModel("User");
-			for($i=0; $i<count($data['messages']); $i++) {
-				$user->column['user_id'] = $data['messages'][$i]['user_id'];
-				$data['messages'][$i]['user'] = $user->getById();
-			}
-
-			$this->setTemplate("messages/showMessages.php");
-			return $this->getTemplate($data);
-
-		}
-
-	}
-
-	function saveNewMessage() {
-
-		parse_str(file_get_contents('php://input'), $_POST);
-		
-		$message = $this->getModel("Message");
-
-		$data = array(
-			"user_id" => $_SESSION['user_id'],
-			"thread_id" => $_POST['thread_id'],
-			"message" => $_POST['message'],
-			"attachment" => null,
-			"created_at" => DATE_NOW
-		);
-
-		$id = $message->saveNew($data);
-
-		$user = $this->getModel("User");
-		$user->column['user_id'] = $_SESSION['user_id'];
-		$data['user'] = $user->getById();
-
-		$response['thread_id'] = $_POST['thread_id'];
-		$response['user_id'] = $_SESSION['user_id'];
-		$response['user_name'] = $data['user']['name'];
-		$response['user_message'] = base64_encode($data['message']);;
-		$response['user_sent_time'] = date("M d, Y h:ia",$data['created_at']);
-
-		/* $this->ws_client->text(json_encode($response));
-		$this->ws_client->close(); */
-		
-		return json_encode(array(
-			"status" => 1,
-			"type" => "success",
-			"id" => $id,
-			"data" => $response
-		));
-
-	}
-	
-	function saveNewThread($id) {
-		parse_str(file_get_contents('php://input'), $_POST);
-
-	}
-
-	function saveDeletedThread($id) {
-		
-		if($id) {
-			if(isset($_REQUEST['delete'])) {
-				$message = $this->getModel("Message");
-				$id = $message->saveNew(array(
-					"user_id" => $_SESSION['user_id'],
-					"thread_id" => $_POST['thread_id'],
-					"message" => $_POST['message'],
-					"created_at" => DATE_NOW
-				));
-
-				$this->getLibrary("Factory")->setMsg("Message deleted!.","success");
-				return json_encode(
-					array(
-						"status" => 1,
-						"message" => getMsg()
-					)
-				);
-
-			}else {
-				$data['id'] = $id;
-				$this->setTemplate("messages/removeThread.php");
-				return $this->getTemplate($data);
-			}
-		}
-
-		$this->response(404);
-		
 	}
 
 }

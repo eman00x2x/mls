@@ -6,13 +6,14 @@ $html[] = "<div class='modal' id='serverErrorModal' tabindex='-1' aria-hidden='t
 			$html[] = "<div class='modal-body'>";
 				$html[] = "<div class='text-start'>";
 					$html[] = "<h3>Error!</h3>";
-					$html[] = "<p>There was a problem connecting to \"Message Server\", Please notiify the System Administrator about this problem. <br/>{Message Server Closed}</p>";
+					$html[] = "<p>There was a problem connecting to \"Message Server\", Please notiify the System Administrator about this problem. <br/>{Message Server Closed} <br/> Try reloading this page, it might help you to connect to Message Server.</p>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 	$html[] = "</div>";
 $html[] = "</div>";
 
+$html[] = "<div class='container-xl'>";
 $html[] = "<div class='row justify-content-center'>";
 	$html[] = "<div class='col-sm-10 col-md-6 col-12'>";
 
@@ -42,6 +43,24 @@ $html[] = "<div class='row justify-content-center'>";
 
 				$html[] = "<div class='response'>";
 					$html[] = getMsg();
+				$html[] = "</div>";
+
+				$html[] = "<div class='d-flex text-white mb-2 justify-content-between'>";
+					foreach($data['participants'] as $user_data) {
+						if($user_data['account_id'] != $_SESSION['account_id']) {
+							$html[] = "<div class='d-flex gap-2'>";
+								$html[] = "<span class='avatar avatar-lg' style='background-image: url()'></span>";
+								$html[] = "<div class=''>";
+									$html[] = "<span>".$user_data['name']."</span>";
+									$html[] = "<span class='d-block fst-italic'>Under ".$data['accounts'][$user_data['account_id']]['firstname']." ".$data['accounts'][$user_data['account_id']]['lastname']." Account</span>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+						}
+					}
+
+					$html[] = "<div class=''>";
+						$html[] = "<span class=''><i class='ti ti-dots-vertical'></i></span>";
+					$html[] = "</div>";
 				$html[] = "</div>";
 
 				$html[] = "<div class='card'>";
@@ -135,4 +154,5 @@ $html[] = "<div class='row justify-content-center'>";
 		$html[] = "</div>";
 
 	$html[] = "</div>";
+$html[] = "</div>";
 $html[] = "</div>";
