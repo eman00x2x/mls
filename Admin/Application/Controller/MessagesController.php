@@ -11,13 +11,13 @@ class MessagesController extends \Main\Controller {
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-
+/* 
 		$this->ws_client = new \WebSocket\Client($this->websocketAddress);
 		$this->ws_client
 			// Add standard middlewares
 			->addMiddleware(new \WebSocket\Middleware\CloseHandler())
 			->addMiddleware(new \WebSocket\Middleware\PingResponder())
-			;
+			; */
 
 	}
 	
@@ -210,7 +210,7 @@ class MessagesController extends \Main\Controller {
 
 		$this->doc->addScriptDeclaration("
 
-			var wsUri = '".$this->websocketAddress."';
+			var wsUri = '".$this->websocketAddress."?name=" . (str_replace(" ","+",$_SESSION['name'])) ."';
 			websocket = new WebSocket(wsUri);
 			threadId = $id;
 
@@ -222,40 +222,37 @@ class MessagesController extends \Main\Controller {
 					console.log(' Server Open ');
 				}
 
-				// Message received from server
 				websocket.onmessage = function(ev) {
-
 					console.log('Server: '+ev.data);
-
-					var response	= JSON.parse(ev.data); //PHP sends Json data
-					
+					var response	= JSON.parse(ev.data);
 					if(threadId == response.thread_id) {
 						html = build_message(response);
 						$('.chat-bubbles').append(html);
 					}
-
 					div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
-					
 				};
 
-				websocket.onerror	= function(ev){ console.log('Error Occurred - ' + ev.data)  }; 
-				websocket.onclose 	= function(ev){ console.log('Connection Closed'); };
+				websocket.onerror	= function(ev) { 
+					console.log('Error Occurred - ' + ev.data);
+					$('#serverErrorModal').show({
+						backdrop: 'static',
+						keyboard: false
+					});
+				};
+
+				websocket.onclose 	= function(ev) {
+					console.log('Connection Closed');
+					$('#serverErrorModal').show({
+						backdrop: 'static',
+						keyboard: false
+					});
+				};
 
 			});
 
-			//Message send button
-			$(document).on('click', '.btn-send-message', function(){
-				send_message();
-			});
+			$(document).on('click', '.btn-send-message', function() { send_message(); });
+			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ send_message(); } });
 
-			//User hits enter key 
-			$( document ).on( 'keydown', '#message', function( e ) {
-				if(e.which == 13){
-					send_message();
-				}
-			});
-
-			//Send message
 			function send_message(){
 				
 				var message = $('#message').val();
@@ -293,7 +290,7 @@ class MessagesController extends \Main\Controller {
 									html += \"</div>\";
 								html += \"</div>\";
 								html += \"<div class='chat-bubble-body'>\";
-									html += \"<p>\" + response.user_message + \"</p>\";
+									html += \"<p>\" + atob(response.user_message) + \"</p>\";
 								html += \"</div>\";
 							html += \"</div>\";
 						html += \"</div>\";
@@ -322,7 +319,7 @@ class MessagesController extends \Main\Controller {
 									html += \"</div>\";
 								html += \"</div>\";
 								html += \"<div class='chat-bubble-body'>\";
-									html += \"<p>\" + response.user_message + \"</p>\";
+									html += \"<p>\" + atob(response.user_message) + \"</p>\";
 								html += \"</div>\";
 							html += \"</div>\";
 						html += \"</div>\";
@@ -404,7 +401,7 @@ class MessagesController extends \Main\Controller {
 		$response['thread_id'] = $_POST['thread_id'];
 		$response['user_id'] = $_SESSION['user_id'];
 		$response['user_name'] = $data['user']['name'];
-		$response['user_message'] = $data['message'];
+		$response['user_message'] = base64_encode($data['message']);;
 		$response['user_sent_time'] = date("M d, Y h:ia",$data['created_at']);
 
 		/* $this->ws_client->text(json_encode($response));

@@ -53,11 +53,20 @@ try {
 
     echo "# Listening on port {$server->getPort()}\n";
     $server->onConnect(function ($server, $connection, $handshake) {
-        echo "> [{$connection->getRemoteName()}] Client connected {$handshake->getUri()}\n";
+        /* echo "> [{$connection->getRemoteName()}] Client connected {$handshake->getUri()}\n"; */
+
+        $uri = explode("?",$handshake->getUri());
+        $uri = explode("=",str_replace("+"," ",$uri[1]));
+        echo "> [{$connection->getRemoteName()}] {$uri[1]} connected\n";
+
     })->onDisconnect(function ($server, $connection) {
         echo "> [{$connection->getRemoteName()}] Client disconnected\n";
     })->onText(function ($server, $connection, $message) {
-        echo "> [{$connection->getRemoteName()}] Received [{$message->getOpcode()}] {$message->getContent()}\n";
+        /* echo "> [{$connection->getRemoteName()}] Received [{$message->getOpcode()}] {$message->getContent()}\n"; */
+
+        $f_client = json_decode("{$message->getContent()}", true);
+        echo "> [{$connection->getRemoteName()}] Received From ".$f_client['user_name']." -> ".$f_client['user_message']." on ".$f_client['user_sent_time']."\n";
+
         switch ($message->getContent()) {
             // Connection commands
             case '@close':

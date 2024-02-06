@@ -1,5 +1,18 @@
 <?php
 
+$html[] = "<div class='modal' id='serverErrorModal' tabindex='-1' aria-hidden='true' aria-labelledby='serverErrorModal'>";
+	$html[] = "<div class='modal-dialog modal-fullscreen'>";
+		$html[] = "<div class='modal-content'>";
+			$html[] = "<div class='modal-body'>";
+				$html[] = "<div class='text-start'>";
+					$html[] = "<h3>Error!</h3>";
+					$html[] = "<p>There was a problem connecting to \"Message Server\", Please notiify the System Administrator about this problem. <br/>{Message Server Closed}</p>";
+				$html[] = "</div>";
+			$html[] = "</div>";
+		$html[] = "</div>";
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<div class='row justify-content-center'>";
 	$html[] = "<div class='col-sm-10 col-md-6 col-12'>";
 
@@ -108,7 +121,7 @@ $html[] = "<div class='row justify-content-center'>";
 
 					$html[] = "<div class='card-footer'>";
 						$html[] = "<div class='input-group input-group-flat'>";
-							$html[] = "<input type='text' name='message' id='message' value='' class='form-control' placeholder='Type message' autocomplete='off' />'";
+							$html[] = "<input type='text' name='message' id='message' value='' class='form-control' placeholder='Type message' autocomplete='off' maxlength='2000' />'";
 							$html[] = "<span class='input-group-text'>";
 								$html[] = "<span class='btn btn-primary btn-send-message'><i class='ti ti-send'></i></span>";
 							$html[] = "</span>";
