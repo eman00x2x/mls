@@ -39,7 +39,7 @@ class MessagesController extends \Main\Controller {
 			$clause[] = implode(" AND ",$filters);
 		}
 
-		$clause[] = " JSON_CONTAINS(accounts, '".$_SESSION['account_id']."', '$')";
+		$clause[] = " JSON_CONTAINS(participants, '".$_SESSION['account_id']."', '$')";
 		
 		if($data['deletedThreads']['thread_ids']) {
 			$clause[] = " thread_id NOT IN(".$data['deletedThreads']['thread_ids'].")";
@@ -58,7 +58,6 @@ class MessagesController extends \Main\Controller {
 		
 		if($data['threads']) {
 
-			$user = $this->getModel("User");
 			$account = $this->getModel("Account");
 			
 			for($i=0; $i<count($data['threads']); $i++) {
@@ -66,47 +65,23 @@ class MessagesController extends \Main\Controller {
 				unset($data['threads'][$i]['accounts']);
 
 				for($x=0; $x<count($data['threads'][$i]['participants']); $x++) {
-					$user->column['user_id'] = $data['threads'][$i]['participants'][$x];
-					$userData = $user->getById();
-
-					unset($userData['username']);
-					unset($userData['password']);
-					unset($userData['user_level']);
-					unset($userData['permissions']);
-
-					$account->column['account_id'] = $userData['account_id'];
+					
+					$account->column['account_id'] = $data['threads'][$i]['participants'][$x];
 					$accountData = $account->getById();
 
-					unset($userData['account_id']);
 					unset($accountData['account_type']);
 					unset($accountData['tin']);
 					unset($accountData['preferences']);
 					unset($accountData['privileges']);
 
-					$data['threads'][$i]['participants'][$x] = $userData;
-					$data['threads'][$i]['participants'][$x]['account'] = $accountData;
+					$data['threads'][$i]['participants'][$x] = $accountData;
 
 				}
 
-				$user->column['user_id'] = $data['threads'][$i]['created_by'];
-				$userData = $user->getById();
-
-				unset($userData['username']);
-				unset($userData['password']);
-				unset($userData['user_level']);
-				unset($userData['permissions']);
-
-				$account->column['account_id'] = $userData['account_id'];
+				$account->column['account_id'] = $data['threads'][$i]['created_by'];
 				$accountData = $account->getById();
 
-				unset($userData['account_id']);
-				unset($accountData['account_type']);
-				unset($accountData['tin']);
-				unset($accountData['preferences']);
-				unset($accountData['privileges']);
-
-				$data['threads'][$i]['created_by'] = $userData;
-				$data['threads'][$i]['created_by']['account'] = $accountData;
+				$data['threads'][$i]['created_by'] = $accountData;
 
 			}
 		}
@@ -114,6 +89,17 @@ class MessagesController extends \Main\Controller {
 		$this->setTemplate("messages/messages.php");
 		return $this->getTemplate($data,$message);
 
+	}
+
+	function newThread($to_account_id) {
+
+		$account = $this->getModel("Account");
+		$account->column['account_id'] = $to_account_id;
+		$data = $account->getById();
+
+		$this->setTemplate("messages/newThread.php");
+		return $this->getTemplate($data,$account);
+		
 	}
 	
 	/* function view($id) {
@@ -207,37 +193,24 @@ class MessagesController extends \Main\Controller {
 		/* $this->webSocketChatScript($id); */
 
 		$unset_account_data = explode(",","account_type,preferences,privileges,uploads");
-		$unset_user_data = explode(",","username,password,user_level,permissions,two_factor_authentication,two_factor_authentication_aps,date_added");
-
+		$unset_user_data = explode(",","user_id,password,user_level,permissions,two_factor_authentication,two_factor_authentication_aps");
+		
 		$thread = $this->getModel("Thread");
 		$thread->column['thread_id'] = $id;
 		$data = $thread->getById();
 		
-		$user = $this->getModel("User");
+		$account = $this->getModel("Account");
 		for($i=0; $i<count($data['participants']); $i++) {
-			$user->column['user_id'] = $data['participants'][$i];
-			$data['participant'][$data['participants'][$i]] = $user->getById();
+			$account->column['account_id'] = $data['participants'][$i];
+			$data['participant'][$data['participants'][$i]] = $account->getById();
 
-			foreach($unset_user_data as $column) {
+			foreach($unset_account_data as $column) {
 				unset($data['participant'][$data['participants'][$i]][$column]);
 			}
 		}
 
 		$data['participants'] = $data['participant'];
 		unset($data['participant']);
-
-		$account = $this->getModel("Account");
-		for($i=0; $i<count($data['accounts']); $i++) {
-			$account->column['account_id'] = $data['accounts'][$i];
-			$data['account'][$data['accounts'][$i]] = $account->getById();
-
-			foreach($unset_account_data as $column) {
-				unset($data['account'][$data['accounts'][$i]][$column]);
-			}
-		}
-
-		$data['accounts'] = $data['account'];
-		unset($data['account']);
 
 		if($data) {
 
@@ -248,6 +221,7 @@ class MessagesController extends \Main\Controller {
 			");
 
 			if($data['messages']) {
+				$user = $this->getModel("User");
 				for($i=0; $i<count($data['messages']); $i++) {
 					$user->column['user_id'] = $data['messages'][$i]['user_id'];
 					$data['messages'][$i]['user'] = $user->getById();
@@ -304,7 +278,7 @@ class MessagesController extends \Main\Controller {
 			"created_at" => DATE_NOW
 		);
 
-		$id = $message->saveNew($data);
+		$message_response = $message->saveNew($data);
 
 		$user = $this->getModel("User");
 		$user->column['user_id'] = $_SESSION['user_id'];
@@ -319,14 +293,27 @@ class MessagesController extends \Main\Controller {
 		return json_encode(array(
 			"status" => 1,
 			"type" => "success",
-			"id" => $id,
+			"id" => $message_response['id'],
 			"data" => $response
 		));
 
 	}
 	
-	function saveNewThread($id) {
+	function saveNewThread() {
+
 		parse_str(file_get_contents('php://input'), $_POST);
+
+		$thread = $this->getModel("Thread");
+		$response = $thread->saveNew($_POST);
+
+		$this->getLibrary("Factory")->setMsg("Message sent!.","success");
+
+		return json_encode(array(
+			"status" => 1,
+			"type" => "success",
+			"id" => $response['id'],
+			"message" => getMsg()
+		));
 
 	}
 

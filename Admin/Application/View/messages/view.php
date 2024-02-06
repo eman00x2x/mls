@@ -46,13 +46,13 @@ $html[] = "<div class='row justify-content-center'>";
 				$html[] = "</div>";
 
 				$html[] = "<div class='d-flex text-white mb-2 justify-content-between'>";
-					foreach($data['participants'] as $user_data) {
-						if($user_data['account_id'] != $_SESSION['account_id']) {
+					foreach($data['participants'] as $account_data) {
+						if($account_data['account_id'] != $_SESSION['account_id']) {
 							$html[] = "<div class='d-flex gap-2'>";
-								$html[] = "<span class='avatar avatar-lg' style='background-image: url()'></span>";
+								$html[] = "<span class='avatar avatar-lg' style='background-image: url(".$data['participants'][$account_data['account_id']]['logo'].")'></span>";
 								$html[] = "<div class=''>";
-									$html[] = "<span>".$user_data['name']."</span>";
-									$html[] = "<span class='d-block fst-italic'>Under ".$data['accounts'][$user_data['account_id']]['firstname']." ".$data['accounts'][$user_data['account_id']]['lastname']." Account</span>";
+									$html[] = "<span class='d-block'>Account of ".$data['participants'][$account_data['account_id']]['firstname']." ".$data['participants'][$account_data['account_id']]['lastname']."</span>";
+									$html[] = "<span class='d-block'>".$data['participants'][$account_data['account_id']]['profession']."</span>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 						}
@@ -83,7 +83,7 @@ $html[] = "<div class='row justify-content-center'>";
 																		$html[] = $data['messages'][$i]['user']['name'];
 																	$html[] = "</div>";
 																	$html[] = "<div class='col-auto chat-bubble-date'>";
-																		$html[] = date("M d, Y h:ia",$data['messages'][$i]['created_at']);
+																		$html[] = "<span class='fs-11'><i class='ti ti-clock'></i> ".date("M d, Y h:ia",$data['messages'][$i]['created_at'])."</span>";
 																	$html[] = "</div>";
 																$html[] = "</div>";
 															$html[] = "</div>";
@@ -114,7 +114,7 @@ $html[] = "<div class='row justify-content-center'>";
 																		$html[] = $data['messages'][$i]['user']['name'];
 																	$html[] = "</div>";
 																	$html[] = "<div class='col-auto chat-bubble-date'>";
-																		$html[] = date("M d, Y h:ia",$data['messages'][$i]['created_at']);
+																		$html[] = "<span class='fs-11'><i class='ti ti-clock'></i> ".date("M d, Y h:ia",$data['messages'][$i]['created_at'])."</span>";
 																	$html[] = "</div>";
 																$html[] = "</div>";
 															$html[] = "</div>";
@@ -136,7 +136,13 @@ $html[] = "<div class='row justify-content-center'>";
 
 					$html[] = "</div>";
 
-					$html[] = "<input type='hidden' class='last_message_id' value='".@$data['messages'][($i-1)]['message_id']."' />";
+					if(isset($i) && $i > 0) {
+						$last_message_id = $data['messages'][($i - 1)]['message_id'];
+					}else {
+						$last_message_id = 0;
+					}
+
+					$html[] = "<input type='hidden' class='last_message_id' value='".$last_message_id."' />";
 
 					$html[] = "<div class='card-footer'>";
 						$html[] = "<div class='input-group input-group-flat'>";

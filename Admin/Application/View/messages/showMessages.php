@@ -41,7 +41,7 @@
 										$html[] = $data['messages'][$i]['user']['name'];
 									$html[] = "</div>";
 									$html[] = "<div class='col-auto chat-bubble-date'>";
-										$html[] = date("M d, Y h:ia",$data['messages'][$i]['created_at']);
+										$html[] = "<i class='ti ti-time'></i> ".date("M d, Y h:ia",$data['messages'][$i]['created_at']);
 									$html[] = "</div>";
 								$html[] = "</div>";
 							$html[] = "</div>";

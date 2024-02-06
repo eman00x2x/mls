@@ -120,6 +120,8 @@ class UserModel extends \Main\Model {
 			$v->addError("Password must have 8 characters long.");
 		}
 
+		$v->confirmPassword($data['password'],$data['cpassword']," Password does not match");
+
 		if($v->foundErrors()) {
 			return array(
 				"status" => 2,
@@ -127,6 +129,8 @@ class UserModel extends \Main\Model {
 				"message" => '<br/>'.$v->listErrors('<br/> * ')
 			);
 		}else {
+
+			$data['password'] = md5($data['password']);
 
 			foreach($data as $key => $val) {
 				$this->column[$key] = $val;

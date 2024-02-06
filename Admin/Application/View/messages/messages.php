@@ -44,8 +44,7 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<thead>";
 								$html[] = "<tr>";
 									$html[] = "<th class='text-center w-1'>#</th>";
-									$html[] = "<th>Subject</th>";
-									$html[] = "<th>From Account</th>";
+									$html[] = "<th>Participants</th>";
 									$html[] = "<th>Date</th>";
 									$html[] = "<th class='text-center'><i class='icon-settings'></i></th>";
 								$html[] = "</tr>";
@@ -56,21 +55,20 @@ $html[] = "<div class='page-body'>";
 
 								$html[] = "<tr class='row_listings_".$data['threads'][$i]['thread_id']."'>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-									$html[] = "<td class='align-middle'><a href='".url("MessagesController@view",["thread_id" => $data['threads'][$i]['thread_id']])."'>".$data['threads'][$i]['subject']."</a></td>";
 									
-                                    $html[] = "<td>";
+                                    $html[] = "<td><a href='".url("MessagesController@view", ["thread_id" => $data['threads'][$i]['thread_id']])."'>";
                                         for($x=0; $x<count($data['threads'][$i]['participants']); $x++) {
-                                            if($data['threads'][$i]['participants'][$x]['account']['account_id'] != $_SESSION['account_id']) {
+                                            if($data['threads'][$i]['participants'][$x]['account_id'] != $_SESSION['account_id']) {
                                                 $html[] = "<div class='d-flex gap-2'>";
                                                 	$html[] = "<div class='btn border border-1 rounded-2'>";
-                                                		$html[] = "<span class='avatar avatar-sm me-2' style='background-image: url(".$data['threads'][$i]['participants'][$x]['account']['logo'].")'></span>";
-                                                		$html[] = "<span class='d-block float-end lh-base'>".$data['threads'][$i]['participants'][$x]['account']['firstname']." ".$data['threads'][$i]['participants'][$x]['account']['lastname']."</span>";
+                                                		$html[] = "<span class='avatar avatar-sm me-2' style='background-image: url(".$data['threads'][$i]['participants'][$x]['logo'].")'></span>";
+                                                		$html[] = "<span class='d-block float-end lh-base'>".$data['threads'][$i]['participants'][$x]['firstname']." ".$data['threads'][$i]['participants'][$x]['lastname']."</span>";
 													$html[] = "</div>";
-                                                    $html[] = "<span class='d-block '><span class='d-block text-muted small'>Started by:</span> ".$data['threads'][$i]['participants'][$x]['name']."</span>";
+                                                    
                                                 $html[] = "</div>";
                                             }
                                         }
-                                    $html[] = "</td>";
+                                    $html[] = "</a></td>";
                                     
                                     $html[] = "<td class='align-middle'>".date("F d, Y g:ia",$data['threads'][$i]['created_at'])."</td>";
 									

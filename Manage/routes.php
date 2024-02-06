@@ -68,12 +68,14 @@ Router::post('/leads/{id}/saveUpdate', 'LeadsController@saveUpdate', ['as' => 'l
 
 /** MESSAGES ROUTES */
 Router::get('/messages', 'MessagesController@index', ['as' => 'messages']);
+Router::get('/messages/newThread/{to_account_id}', 'MessagesController@newThread', ['as' => 'newThread'])->where([ 'to_account_id' => '[0-9]+' ]);
 Router::get('/messages/server', 'MessagesController@messageServer', ['as' => 'messageServer']);
 Router::get('/messages/{thread_id}', 'MessagesController@view', ['as' => 'viewMessages'])->where([ 'thread_id' => '[0-9]+' ]);
 Router::get('/messages/{thread_id}/showMessages/{lastMessageId}', 'MessagesController@showMessages', ['as' => 'showMessages'])->where([ 'thread_id' => '[0-9]+', 'lastMessageId' => '[0-9]+' ]);
 Router::get('/messages/{thread_id}/removeMessage', 'MessagesController@saveDeletedThread', ['as' => 'saveDeletedThread'])->where([ 'thread_id' => '[0-9]+' ]);
 
 Router::post('/messages/saveNewMessage', 'MessagesController@saveNewMessage', ['as' => 'saveNewMessage']);
+Router::post('/messages/saveNewThread', 'MessagesController@saveNewThread', ['as' => 'saveNewThread']);
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get('/subscriptions', 'SubscriptionsController@index', ['as' => 'subscriptions']);

@@ -224,6 +224,7 @@ class AccountsController extends \Main\Controller {
 		$_POST['permissions'] = json_encode(USER_PERMISSIONS);
 		$_POST['privileges'] = json_encode($_POST['privileges']);
 		$_POST['account_type'] = "Real Estate Practitioner";
+		$_POST['user_level'] = 1;
 		$_POST['reference_id'] = 0;
 
 		$reference = $this->getModel("LicenseReference");

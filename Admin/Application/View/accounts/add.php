@@ -84,6 +84,17 @@ $html[] = "<form id='form' action='' method='POST'>";
 						$html[] = "<div class='card-body'>";
 
 							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Status</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<select name='status' id='status' class='form-select'>";
+									foreach(array("active","banned") as $label) {
+										$html[] = "<option value='$label' >".ucwords($label)."</option>";
+									}
+									$html[] = "</select>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='row mb-3'>";
 								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Account Type</label>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select name='account_type' id='account_type' class='form-select'>";
@@ -110,18 +121,24 @@ $html[] = "<form id='form' action='' method='POST'>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Status</label>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Password</label>";
 								$html[] = "<div class='col-sm-9'>";
-									$html[] = "<select name='status' id='status' class='form-select'>";
-									foreach(array("active","banned") as $label) {
-										$html[] = "<option value='$label' >".ucwords($label)."</option>";
-									}
-									$html[] = "</select>";
+									$html[] = "<input type='password' name='password' id='password' value='' class='form-control'  />";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Confirm Password</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<input type='password' name='cpassword' id='cpassword' value='' class='form-control'  />";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
 						$html[] = "</div>";
 					$html[] = "</div>";
+
+
+								
 				
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-status bg-orange'></div>";
