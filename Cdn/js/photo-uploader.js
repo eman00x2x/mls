@@ -35,12 +35,9 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 		console.log(data);
 
 		var response = JSON.parse(data);
+		var folder = "temporary";
 		
-		if($('#photo_uploader').val() == "articles" || $('#photo_uploader').val() == "accounts") {
-			switch($('#photo_uploader').val()) {
-				case 'articles': folder = "temporary"; break;
-				case 'accounts': folder = "temporary"; break;
-			}
+		if ($('#photo_uploader').val() == "articles" || $('#photo_uploader').val() == "accounts" || $('#photo_uploader').val() == "users") {
 			
 			$('.photo-preview').css('background-image', "url('" + CDN + "images/blank-profile.png')");
 			if(response.status == 1) {

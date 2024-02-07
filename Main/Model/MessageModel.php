@@ -10,6 +10,20 @@ class MessageModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getLastMessage($thread_id) {
+
+		$this->where(" thread_id = ".$thread_id);
+		$this->and(" message_id = (SELECT MAX(message_id) FROM #__".$this->table.") ");
+        $result = $this->getList();
+
+		if($result) {
+			return $result[0];
+		}
+
+		return false;
+
+	}
+
 	function getByThreadId($thread_id) {
         $this->where(" thread_id = ".$thread_id);
         return $this->getList();

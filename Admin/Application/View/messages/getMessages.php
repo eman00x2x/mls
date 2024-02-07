@@ -14,7 +14,7 @@
 										$html[] = $data['messages'][$i]['user']['name'];
 									$html[] = "</div>";
 									$html[] = "<div class='col-auto chat-bubble-date'>";
-										$html[] = date("M d, Y h:ia",$data['messages'][$i]['created_at']);
+										$html[] = "<span class='fs-11'>".date("M d, Y h:ia",$data['messages'][$i]['created_at'])."</span>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 							$html[] = "</div>";
@@ -24,13 +24,13 @@
 						$html[] = "</div>";
 					$html[] = "</div>";
 					$html[] = "<div class='col-auto'>";
-						$html[] = "<span class='avatar'></span>";
+						$html[] = "<span class='avatar' style='background-image: url(".$data['messages'][$i]['user']['photo'].")'></span>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 			}else {
 				$html[] = "<div class='row align-items-end'>";
 					$html[] = "<div class='col-auto'>";
-						$html[] = "<span class='avatar'></span>";
+						$html[] = "<span class='avatar' style='background-image: url(".$data['messages'][$i]['user']['photo'].")'></span>";
 					$html[] = "</div>";
 					$html[] = "<div class='col col-lg-6'>";
 						$html[] = "<div class='chat-bubble chat-bubble-me'>";
@@ -41,7 +41,7 @@
 										$html[] = $data['messages'][$i]['user']['name'];
 									$html[] = "</div>";
 									$html[] = "<div class='col-auto chat-bubble-date'>";
-										$html[] = "<i class='ti ti-time'></i> ".date("M d, Y h:ia",$data['messages'][$i]['created_at']);
+										$html[] = "<span class='fs-11'>".date("M d, Y h:ia",$data['messages'][$i]['created_at'])."</span>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 							$html[] = "</div>";

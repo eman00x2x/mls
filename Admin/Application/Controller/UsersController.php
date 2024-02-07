@@ -155,9 +155,24 @@ class UsersController extends \Main\Controller {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
 
+		$user = $this->getModel("User");
+
 		$_POST['permissions'] = json_encode($_POST['permissions']);
 		
-		$user = $this->getModel("User");
+		if($_POST['photo'] != $data['photo']) {
+				/* remove old logo */
+
+				$photo_url = explode("/", $data['photo']);
+				$current_photo = array_pop($photo_url);
+				$file = ROOT."Cdn/images/users/".$current_photo;
+				
+				if(file_exists($file)) {
+					@unlink($file);
+				}
+				
+				$_POST['photo'] = $user->moveUploadedImage($_POST['photo']);
+			}
+
 		$response = $user->saveNew($_POST);
 		
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
@@ -176,12 +191,29 @@ class UsersController extends \Main\Controller {
 		parse_str(file_get_contents('php://input'), $_POST);
 
 		if($user_id) {
+
+			$user = $this->getModel("User");
+			$user->column['user_id'] = $user_id;
+			$data = $user->getById();
 			
 			if(isset($_POST['permissions'])) {
 				$_POST['permissions'] = json_encode($_POST['permissions']);
 			}
 
-			$user = $this->getModel("User");
+			if($_POST['photo'] != $data['photo']) {
+				/* remove old logo */
+
+				$photo_url = explode("/", $data['photo']);
+				$current_photo = array_pop($photo_url);
+				$file = ROOT."Cdn/images/users/".$current_photo;
+				
+				if(file_exists($file)) {
+					@unlink($file);
+				}
+				
+				$_POST['photo'] = $user->moveUploadedImage($_POST['photo']);
+			}
+
 			$response = $user->save($user_id,$_POST);
 
 			$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
@@ -241,6 +273,11 @@ class UsersController extends \Main\Controller {
 		$this->setTemplate("users/delete.php");
 		return $this->getTemplate($data);
 		
+	}
+
+	function uploadPhoto() {
+		$user = $this->getModel("User");
+		return $user->uploadPhoto($_FILES['ImageBrowse']);
 	}
 
 }

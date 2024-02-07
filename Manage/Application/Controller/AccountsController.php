@@ -40,8 +40,12 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
         $reference = $this->getModel("LicenseReference");
 		$reference->column['reference_id'] = $data['reference_id'];
 		$response =	$reference->getById();
+        
+        $data['broker_prc_license_id'] = "Unknown Real Estate Broker";
+        if($response) {
+            $data['broker_prc_license_id'] = $response['broker_prc_license_id'];
+        }
 
-        $data['broker_prc_license_id'] = $response['broker_prc_license_id'];
         $data['privileges'] = $_SESSION['privileges'];
 
 		$this->setTemplate("accounts/account.php");

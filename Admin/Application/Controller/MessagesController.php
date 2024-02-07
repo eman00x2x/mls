@@ -25,10 +25,10 @@ class MessagesController extends \Main\Controller {
 
 		$this->doc->setTitle("Messages");
 
-		$thread = $this->getModel("DeletedThread");
-		$thread->select(" GROUP_CONCAT(thread_id) as thread_ids ");
-		$thread->column['account_id'] = $_SESSION['account_id'];
-		$data['deletedThreads'] = $thread->getByAccountId();
+		$deleted_thread = $this->getModel("DeletedThread");
+		$deleted_thread->select(" GROUP_CONCAT(thread_id) as thread_ids ");
+		$deleted_thread->column['account_id'] = $_SESSION['account_id'];
+		$data['deletedThreads'] = $deleted_thread->getByAccountId();
 		
 		if(isset($_REQUEST['search'])) {
 			$filters[] = " (subject LIKE '%".$_REQUEST['search']."%')";
@@ -45,20 +45,22 @@ class MessagesController extends \Main\Controller {
 			$clause[] = " thread_id NOT IN(".$data['deletedThreads']['thread_ids'].")";
 		}
 
-		$message = $this->getModel("Thread");
-		$message->where(isset($clause) ? implode(" ",$clause) : null)
+		$thread = $this->getModel("Thread");
+		$thread->where(isset($clause) ? implode(" ",$clause) : null)
 		->orderBy(" created_at DESC ");
 
-		$message->page['limit'] = 20;
-		$message->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$message->page['target'] = url("MessagesController@index");
-		$message->page['uri'] = (isset($uri) ? $uri : []);
+		$thread->page['limit'] = 20;
+		$thread->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+		$thread->page['target'] = url("MessagesController@index");
+		$thread->page['uri'] = (isset($uri) ? $uri : []);
 
-		$data['threads'] = $message->getList();
+		$data['threads'] = $thread->getList();
 		
 		if($data['threads']) {
 
 			$account = $this->getModel("Account");
+			$message = $this->getModel("Message");
+			$user = $this->getModel("User");
 			
 			for($i=0; $i<count($data['threads']); $i++) {
 
@@ -82,12 +84,19 @@ class MessagesController extends \Main\Controller {
 				$accountData = $account->getById();
 
 				$data['threads'][$i]['created_by'] = $accountData;
+				$data['last_message'] = $message->getLastMessage($data['threads'][$i]['thread_id']);
+
+				if($data['last_message']) {
+					$user->select(" user_id, name, email ");
+					$user->column['user_id'] = $data['last_message']['user_id'];
+					$data['last_message']['from'] = $user->getById();
+				}
 
 			}
 		}
 
 		$this->setTemplate("messages/messages.php");
-		return $this->getTemplate($data,$message);
+		return $this->getTemplate($data,$thread);
 
 	}
 
@@ -282,6 +291,7 @@ class MessagesController extends \Main\Controller {
 
 		$response['thread_id'] = $thread_id;
 		$response['user_id'] = $_SESSION['user_id'];
+		$response['photo'] = $data['user']['photo'];
 		$response['user_name'] = $data['user']['name'];
 		$response['user_message'] = base64_encode($data['message']);;
 		$response['user_sent_time'] = date("M d, Y h:ia",$data['created_at']);
@@ -431,7 +441,7 @@ class MessagesController extends \Main\Controller {
 							html += \"</div>\";
 						html += \"</div>\";
 						html += \"<div class='col-auto'>\";
-							html += \"<span class='avatar'></span>\";
+							html += \"<span class='avatar' style='background-image: url(\"+response.photo+\")'></span>\";
 						html += \"</div>\";
 					html += \"</div>\";
 	
@@ -439,7 +449,7 @@ class MessagesController extends \Main\Controller {
 
 					html = \"<div class='row align-items-end'>\";
 						html += \"<div class='col-auto'>\";
-							html += \"<span class='avatar'></span>\";
+							html += \"<span class='avatar' style='background-image: url(\"+response.photo+\")'></span>\";
 						html += \"</div>\";
 						html += \"<div class='col col-lg-6'>\";
 							html += \"<div class='chat-bubble'>\";
@@ -494,7 +504,7 @@ class MessagesController extends \Main\Controller {
 				if(div.scrollTop() + div.innerHeight() >= div[0].scrollHeight) {
 					if(thread_id > 0) {
 						div.unbind('scroll', fetchMore);
-						$.get('/threads/' + btoa(participants) + '/getMessages/' + lastMessageId, function(data) {
+						$.get(MANAGE+'threads/' + btoa(participants) + '/getMessages/' + lastMessageId, function(data) {
 							if(data != '') {
 								$('.last_message_id').remove();
 								$('.chat-bubbles').append(data);

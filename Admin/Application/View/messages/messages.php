@@ -45,7 +45,8 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<tr>";
 									$html[] = "<th class='text-center w-1'>#</th>";
 									$html[] = "<th>Participants</th>";
-									$html[] = "<th>Date</th>";
+									$html[] = "<th>Last Message</th>";
+									$html[] = "<th>Date Started</th>";
 									$html[] = "<th class='text-center'><i class='icon-settings'></i></th>";
 								$html[] = "</tr>";
 							$html[] = "</thead>";
@@ -60,17 +61,24 @@ $html[] = "<div class='page-body'>";
                                         for($x=0; $x<count($data['threads'][$i]['accounts']); $x++) {
                                             if($data['threads'][$i]['accounts'][$x]['account_id'] != $_SESSION['account_id']) {
                                                 $html[] = "<div class='d-flex gap-2'>";
-                                                	$html[] = "<div class='btn border border-1 rounded-2'>";
-                                                		$html[] = "<span class='avatar avatar-sm me-2' style='background-image: url(".$data['threads'][$i]['accounts'][$x]['logo'].")'></span>";
-                                                		$html[] = "<span class='d-block float-end lh-base'>".$data['threads'][$i]['accounts'][$x]['firstname']." ".$data['threads'][$i]['accounts'][$x]['lastname']."</span>";
-													$html[] = "</div>";
-                                                    
+                                                	$html[] = "<span class='avatar me-2' style='background-image: url(".$data['threads'][$i]['accounts'][$x]['logo'].")'></span>";
+                                                	$html[] = "<span class='align-middle d-block float-end lh-base'>".$data['threads'][$i]['accounts'][$x]['firstname']." ".$data['threads'][$i]['accounts'][$x]['lastname']." <br/> ".$data['threads'][$i]['accounts'][$x]['profession']."</span>";
                                                 $html[] = "</div>";
                                             }
                                         }
                                     $html[] = "</a></td>";
                                     
-                                    $html[] = "<td class='align-middle'>".date("F d, Y g:ia",$data['threads'][$i]['created_at'])."</td>";
+                                    $html[] = "<td class='align-middle cursor-pointer' onclick='window.location.href=\"".url("MessagesController@conversation", ["participants" => base64_encode(json_encode($data['threads'][$i]['participants']))])."\"'>";
+										if($data['last_message']['user_id'] == $_SESSION['user_id']) {
+											$html[] = "<span class=''>me: ".nicetrim($data['last_message']['message'], 50)."</span>";
+										}else {
+											$html[] = "<span class=''>".$data['last_message']['from']['name'].": ".nicetrim($data['last_message']['message'], 50)."</span>";
+										}
+
+										$html[] = "<span class='fs-11 d-block text-muted'>".date("M d, Y g:ia",$data['last_message']['created_at'])."</span>";
+
+									$html[] = "</td>";
+                                    $html[] = "<td class='align-middle'>".date("M d, Y g:ia",$data['threads'][$i]['created_at'])."</td>";
 									
 									$html[] = "<td class='text-center'>";
                                         $html[] = "<div class='btn-list'>";

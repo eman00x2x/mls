@@ -7,11 +7,23 @@ define("DATE_NOW",strtotime("Now"));
 /* define("DATE_NOW",strtotime("2023-11-06")); */
 define("LIST_LIMIT",20);
 
-define("API","http://api.mls/v1/");
+/* define("API","http://api.mls/v1/");
 define("ADMIN","http://admin.mls/");
 define("MANAGE","http://manage.mls/");
 define("WEBDOMAIN","http://mls/");
-define("CDN","http://cdn.mls/");
+define("CDN","http://cdn.mls/"); */
+
+
+define("API","http://192.168.254.250/mls/Api/");
+define("ADMIN","http://192.168.254.250/mls/Admin/");
+define("MANAGE","http://192.168.254.250/managemls/");
+define("WEBDOMAIN","http://192.168.254.250/mls/");
+define("CDN","http://192.168.254.250/cdnmls/");
+
+define("ALIAS","managemls");
+
+
+
 define("VRSN","v1.0");
 
 define("EMAIL_RESPONDER_ADDRESS","no-reply@mls.com");

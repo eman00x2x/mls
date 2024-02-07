@@ -223,7 +223,82 @@ class UserModel extends \Main\Model {
 
 	}
 
+	function moveUploadedImage($filename) {
+
+        $old_dir = ROOT.DS."Cdn".DS."images".DS."temporary".DS.$filename;
+
+		if(file_exists($old_dir)) {
+
+			$name = explode(".",$filename);
+			$ext = array_pop($name);
+
+			$length = 50;
+			$new_name = '';
+			$chars = range(0, 9);
+
+			for ($x = 0; $x < $length; $x++) {
+				$new_name .= $chars[array_rand($chars)];
+			}
+
+			$new_filename = $new_name."_".md5(time()).".".$ext;
+		
+			$new_dir = ROOT.DS."Cdn".DS."images".DS."users".DS.$new_filename;
+			rename($old_dir,$new_dir);
+
+			return CDN."images/users/".$new_filename;
+		}
+
+	}
+
+	function uploadPhoto($data) {
+
+		$handle = new \Vendor\Upload\Upload($data);
+
+		if ($handle->uploaded) {
+
+			$handle->allowed = array('image/*');
+			$handle->forbidden = array('application/*');
+
+			$handle->file_safe_name 	= true;
+			$handle->image_resize         = true;
+			$handle->image_x              = 200;
+			$handle->image_ratio_y        = true;
+
+			$handle->Process(ROOT."/Cdn/images/temporary/");
+
+			if ($handle->processed) {
+				return json_encode(array(
+					"status" => 1,
+					"message" => "Logo uploaded successfully",
+					"filename" => $handle->file_dst_name,
+					"temp_url" => CDN."/images/temporary/".$handle->file_dst_name,
+					"url" => CDN."/images/accounts/".$handle->file_dst_name
+				));
+			}
+
+		}
+
+	}
+
+	function removePhoto($filename) {
+
+		$file = ROOT.DS."Cdn".DS."images".DS."users".DS.$filename;
+		
+		/* check file if exists in main folder */
+		if(file_exists($file)) {
+			@unlink($file);
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
+
 	function deleteUser($id,$column = "user_id") {
+
+		$this->user_id = $id;
+		$data = $this->getById();
+		$this->removePhoto($data['photo']);
 
 		$this->delete($id,$column);
 

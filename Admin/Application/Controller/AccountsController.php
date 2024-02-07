@@ -310,8 +310,9 @@ class AccountsController extends \Main\Controller {
 				}
 				
 				$_POST['logo'] = $accounts->moveUploadedImage($_POST['logo']);
-			}
 
+			}
+			
 			$reference = $this->getModel("LicenseReference");
 			$response =	$reference->getByLicenseId($_POST['broker_prc_license_id']);
 
@@ -322,6 +323,15 @@ class AccountsController extends \Main\Controller {
 				$response = $reference->saveNew($_POST);
 				$_POST['reference_id'] = $response['id'];
 			}
+
+			$user = $this->getModel("User");
+			$user->column['email'] = $data['email'];
+			$data['user'] = $user->getByEmail();
+
+			$user->save($data['user']['user_id'],array(
+				"photo" => $_POST['logo'],
+				"name" => $_POST['firstname']." ".$_POST['lastname']
+			));
 
 			$response = $accounts->save($account_id,$_POST);
 			
@@ -383,7 +393,7 @@ class AccountsController extends \Main\Controller {
 						@unlink($file);
 					}
 
-					$user->delete($id,"account_id");
+					$user->deleteUser($id,"account_id");
 					$accounts->deleteAccount($id);
 					
 					$this->getLibrary("Factory")->setMsg("Account permanently deleted!.","success");

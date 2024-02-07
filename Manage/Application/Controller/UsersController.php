@@ -72,16 +72,25 @@ class UsersController extends \Admin\Application\Controller\UsersController {
 
 	function edit($account_id, $user_id) {
 
+		if($account_id != $this->account_id) {
+			$this->response(404);
+		}
+
 		if((!isset($_SESSION['permissions']['users']['access']))) {
 			$this->getLibrary("Factory")->setMsg("You do not have enough permissions to create a new user","error");
 			response()->redirect(url("UsersController@index"));
 		}
 
 		$this->setTempalteBasePath(ROOT."Admin");
-		return parent::edit($account_id,$user_id);
+		return parent::edit($this->account_id,$user_id);
 	}
 
 	function delete($account_id, $user_id) {
+		
+		if($account_id != $this->account_id) {
+			$this->response(404);
+		}
+
 		$this->setTempalteBasePath(ROOT."Admin");
 		return parent::delete($account_id,$user_id);
 	}

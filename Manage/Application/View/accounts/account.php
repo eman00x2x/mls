@@ -38,6 +38,9 @@ $html[] = "<div class='page-body'>";
 		$html[] = "</div>";
 
         $html[] = "<form id='form' action='' method='POST'>";
+
+            $html[] = "<input type='hidden' name='broker_prc_license_id' value='".$data['broker_prc_license_id']."' />";
+
             $html[] = "<div class='row'>";
                 $html[] = "<div class='col-md-12 col-12 mb-5'>";
 

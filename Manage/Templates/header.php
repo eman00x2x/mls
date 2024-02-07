@@ -15,7 +15,7 @@
 <script type="text/javascript" src="<?php echo CDN; ?>js/script.js"></script>
 
 <script type="text/javascript">
-    var DOMAIN = '<?php echo ADMIN; ?>';
+    var MANAGE = '<?php echo MANAGE; ?>';
     var CDN = '<?php echo CDN; ?>';
 </script>
 <?php
