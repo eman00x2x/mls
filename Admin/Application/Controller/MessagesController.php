@@ -74,7 +74,7 @@ class MessagesController extends \Main\Controller {
 					unset($accountData['preferences']);
 					unset($accountData['privileges']);
 
-					$data['threads'][$i]['participants'][$x] = $accountData;
+					$data['threads'][$i]['accounts'][$x] = $accountData;
 
 				}
 
@@ -91,113 +91,90 @@ class MessagesController extends \Main\Controller {
 
 	}
 
-	function newThread($to_account_id) {
-
-		$account = $this->getModel("Account");
-		$account->column['account_id'] = $to_account_id;
-		$data = $account->getById();
-
-		$this->setTemplate("messages/newThread.php");
-		return $this->getTemplate($data,$account);
-		
-	}
-	
-	/* function view($id) {
-
-		$this->doc->setTitle("Messages");
-
-		$this->doc->addScriptDeclaration("
-
-			var idleTime = 0;
-			$(document).ready(function() {
-				var div = $('.card-body');
-				div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
-				
-				div.bind('scroll', fetchMore);
-				setInterval(fetchMore, 10000);
-				
-			});
-
-			fetchMore = function() {
-				
-				var lastMessageId = $('.last_message_id').val();
-				var div = $('.card-body');
-
-				if(div.scrollTop() + div.innerHeight() >= div[0].scrollHeight) {
-					
-					div.unbind('scroll', fetchMore);
-					$.get('/messages/$id/showMessages/' + lastMessageId, function(data) {
-						if(data != '') {
-							$('.last_message_id').remove();
-							$('.chat-bubbles').append(data);
-							div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
-						}
-						div.bind('scroll',fetchMore);
-					});
-				}
-			};
-
-			$(document).on('click', '.btn-send-message', function() {
-				postMessage();
-			});
-
-			function postMessage() {
-
-				var message = $('#message').val();
-				if(message != '') {
-					$.post('".url("MessagesController@saveNewMessage")."', { 
-						'thread_id':$id,
-						'message': message 
-					},function(data) {
-						eval('('+fetchMore+')()');
-						$('#message').val('');
-					});
-				}
-			}
-			
-		");
+	function getThreadInfoByParticipants($participants) {
 
 		$thread = $this->getModel("Thread");
-		$thread->column['thread_id'] = $id;
-		$data = $thread->getById();
+		$thread->column['participants'] = $participants;
+		$data = $thread->getByParticipants();
 
-		if($data) {
+		return json_encode($data);
 
-			$message = $this->getModel("Message");
-			$data['messages'] = $message->execute(" SELECT * 
-				FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread_id']." ORDER BY created_at DESC LIMIT 20) as sub 
-				ORDER BY created_at ASC
-			");
+	}
 
-			if($data['messages']) {
-				$user = $this->getModel("User");
-				for($i=0; $i<count($data['messages']); $i++) {
-					$user->column['user_id'] = $data['messages'][$i]['user_id'];
-					$data['messages'][$i]['user'] = $user->getById();
+	function conversation($participants) {
+
+		if(isset($participants)) {
+
+			$participants = base64_decode($participants);
+
+			$this->doc->setTitle("Conversation");
+
+			$this->ajaxChatScript();
+			/* $this->webSocketChatScript(); */
+
+			$unset_account_data = explode(",","account_type,preferences,privileges,uploads");
+			$unset_user_data = explode(",","user_id,password,user_level,permissions,two_factor_authentication,two_factor_authentication_aps");
+
+			$participants = json_decode($participants, true);
+
+			$account = $this->getModel("Account");
+			foreach($participants as $participant_account_id) {
+				$account->column['account_id'] = $participant_account_id;
+				$data['participants'][$participant_account_id] = $account->getById();
+
+				foreach($unset_account_data as $column) {
+					unset($data['participants'][$participant_account_id][$column]);
 				}
+			}
+
+			$data['participants_id'] = $participants;
+
+			$data['thread'] = json_decode($this->getThreadInfoByParticipants(json_encode($participants)), true);
+			
+			if($data['thread']) {
+
+				$message = $this->getModel("Message");
+				$data['messages'] = $message->execute(" SELECT * 
+					FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread']['thread_id']." ORDER BY created_at DESC LIMIT 20) as sub 
+					ORDER BY created_at ASC
+				");
+
+				if($data['messages']) {
+					$user = $this->getModel("User");
+					for($i=0; $i<count($data['messages']); $i++) {
+						$user->column['user_id'] = $data['messages'][$i]['user_id'];
+						$data['messages'][$i]['user'] = $user->getById();
+
+						foreach($unset_user_data as $column) {
+							unset($data['messages'][$i]['user'][$column]);
+						}
+					}
+				}
+			}else {
+				$data['messages'] = false;
 			}
 
 			$this->setTemplate("messages/view.php");
-			return $this->getTemplate($data, $message);
-
+			return $this->getTemplate($data);
 		}
 
 		$this->response(404);
 
-	} */
+	}
 
-	function view($id) {
+	/* function view($participants) {
 
 		$this->doc->setTitle("Messages");
 		$this->ajaxChatScript($id);
-		/* $this->webSocketChatScript($id); */
+		#$this->webSocketChatScript($id);
 
 		$unset_account_data = explode(",","account_type,preferences,privileges,uploads");
 		$unset_user_data = explode(",","user_id,password,user_level,permissions,two_factor_authentication,two_factor_authentication_aps");
 		
+		
 		$thread = $this->getModel("Thread");
-		$thread->column['thread_id'] = $id;
-		$data = $thread->getById();
+		$thread->column['participants'] = $participants;
+		$data = $thread->getByParticipants();
 		
 		$account = $this->getModel("Account");
 		for($i=0; $i<count($data['participants']); $i++) {
@@ -233,7 +210,6 @@ class MessagesController extends \Main\Controller {
 				}
 			}
 
-
 			$this->setTemplate("messages/view.php");
 			return $this->getTemplate($data, $message);
 
@@ -241,24 +217,29 @@ class MessagesController extends \Main\Controller {
 
 		$this->response(404);
 
-	}
+	} */
 
-	function showMessages($thread_id,$lastMessageId) {
+	function getMessages($participants,$lastMessageId) {
 
-		$message = $this->getModel("Message");
-		$message->and(" message_id > $lastMessageId ");
-		$message->orderBy(" created_at DESC ");
-		$data['messages'] = $message->getByThreadId($thread_id);
+		$data['thread'] = json_decode($this->getThreadInfoByParticipants(base64_decode($participants)), true);
 
-		if($data['messages']) {
-			$user = $this->getModel("User");
-			for($i=0; $i<count($data['messages']); $i++) {
-				$user->column['user_id'] = $data['messages'][$i]['user_id'];
-				$data['messages'][$i]['user'] = $user->getById();
+		if($data['thread']) {
+
+			$message = $this->getModel("Message");
+			$message->and(" message_id > $lastMessageId ");
+			$message->orderBy(" created_at DESC ");
+			$data['messages'] = $message->getByThreadId($data['thread']['thread_id']);
+
+			if($data['messages']) {
+				$user = $this->getModel("User");
+				for($i=0; $i<count($data['messages']); $i++) {
+					$user->column['user_id'] = $data['messages'][$i]['user_id'];
+					$data['messages'][$i]['user'] = $user->getById();
+				}
+
+				$this->setTemplate("messages/getMessages.php");
+				return $this->getTemplate($data);
 			}
-
-			$this->setTemplate("messages/showMessages.php");
-			return $this->getTemplate($data);
 
 		}
 
@@ -267,12 +248,27 @@ class MessagesController extends \Main\Controller {
 	function saveNewMessage() {
 
 		parse_str(file_get_contents('php://input'), $_POST);
-		
+
+		$data['thread'] = json_decode($this->getThreadInfoByParticipants($_POST['participants']), true);
+
+		if($data['thread']) {
+			$thread_id = $data['thread']['thread_id'];
+		}else {
+			$thread = $this->getModel("Thread");
+            $response = $thread->saveNew(array(
+				"participants" => $_POST['participants'],
+				"created_by" => $_SESSION['user_id'],
+				"created_at" => DATE_NOW
+			));
+
+			$thread_id = $response['id'];
+		}
+
 		$message = $this->getModel("Message");
 
 		$data = array(
 			"user_id" => $_SESSION['user_id'],
-			"thread_id" => $_POST['thread_id'],
+			"thread_id" => $thread_id,
 			"message" => $_POST['message'],
 			"attachment" => null,
 			"created_at" => DATE_NOW
@@ -284,7 +280,7 @@ class MessagesController extends \Main\Controller {
 		$user->column['user_id'] = $_SESSION['user_id'];
 		$data['user'] = $user->getById();
 
-		$response['thread_id'] = $_POST['thread_id'];
+		$response['thread_id'] = $thread_id;
 		$response['user_id'] = $_SESSION['user_id'];
 		$response['user_name'] = $data['user']['name'];
 		$response['user_message'] = base64_encode($data['message']);;
@@ -294,29 +290,12 @@ class MessagesController extends \Main\Controller {
 			"status" => 1,
 			"type" => "success",
 			"id" => $message_response['id'],
+			"thread_id" => $thread_id,
 			"data" => $response
 		));
 
 	}
 	
-	function saveNewThread() {
-
-		parse_str(file_get_contents('php://input'), $_POST);
-
-		$thread = $this->getModel("Thread");
-		$response = $thread->saveNew($_POST);
-
-		$this->getLibrary("Factory")->setMsg("Message sent!.","success");
-
-		return json_encode(array(
-			"status" => 1,
-			"type" => "success",
-			"id" => $response['id'],
-			"message" => getMsg()
-		));
-
-	}
-
 	function saveDeletedThread($id) {
 		
 		if($id) {
@@ -348,7 +327,7 @@ class MessagesController extends \Main\Controller {
 		
 	}
 
-	function webSocketChatScript($thread_id) {
+	function webSocketChatScript() {
 
 		/** 
 		 * Run the websocket server first before using this
@@ -360,7 +339,7 @@ class MessagesController extends \Main\Controller {
 
 		    var wsUri = '".$this->websocketAddress."?name=" . (str_replace(" ","+",$_SESSION['name'])) ."';
 			var websocket = new WebSocket(wsUri);
-			var threadId = $thread_id;
+			var thread_id = 0;
 
 			$(document).ready(function() {
 				var div = $('.card-body');
@@ -372,7 +351,7 @@ class MessagesController extends \Main\Controller {
 
 				websocket.onmessage = function(ev) {
 					var response	= JSON.parse(ev.data);
-					if(threadId == response.thread_id) {
+					if(thread_id == response.thread_id) {
 						html = buildMessage(response);
 						$('.chat-bubbles').append(html);
 					}
@@ -398,19 +377,29 @@ class MessagesController extends \Main\Controller {
 			});
 
 			$(document).on('click', '.btn-send-message', function() { sendMessage(); });
-			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ sendMessage(); } });
+			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ $('.btn-send-message').trigger('click'); } });
 
 			function sendMessage(){
 				
 				var message = $('#message').val();
+				var participants = $('#participants').val();
 				if(message != '') {
+
+					$('.btn-send').removeClass('btn-send-message');
+					
 					$.post('".url("MessagesController@saveNewMessage")."', {
-						'thread_id':$thread_id,
+						'participants': participants,
 						'message': message 
 					},function(data) {
 						response = JSON.parse(data);
+
 						websocket.send(JSON.stringify(response.data));
 						$('#message').val('');
+
+						$('#thread_id').val(response.data['thread_id']);
+						thread_id = response.data['thread_id'];
+
+						$('.btn-send').addClass('btn-send-message');
 					});
 				}
 
@@ -481,53 +470,70 @@ class MessagesController extends \Main\Controller {
 
 	}
 
-	function ajaxChatScript($thread_id) {
+	function ajaxChatScript() {
 
 		$this->doc->addScriptDeclaration("
 
 		    var div;
 			var idleTime = 0;
+			var thread_id;
 			
 			$(document).ready(function() {
 				div = $('.card-body');
+				thread_id = parseInt($('#thread_id').val());
 				div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
 				div.bind('scroll', fetchMore);
-				setInterval(fetchMore, 10000);
+				setInterval(fetchMore, 8000);
 			});
 
 			fetchMore = function() {
 				
 				var lastMessageId = $('.last_message_id').val();
+				var participants = $('#participants').val();
 				
 				if(div.scrollTop() + div.innerHeight() >= div[0].scrollHeight) {
-					
-					div.unbind('scroll', fetchMore);
-					$.get('/messages/$thread_id/showMessages/' + lastMessageId, function(data) {
-						if(data != '') {
-							$('.last_message_id').remove();
-							$('.chat-bubbles').append(data);
-							div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
-						}
-						div.bind('scroll',fetchMore);
-					});
+					if(thread_id > 0) {
+						div.unbind('scroll', fetchMore);
+						$.get('/threads/' + btoa(participants) + '/getMessages/' + lastMessageId, function(data) {
+							if(data != '') {
+								$('.last_message_id').remove();
+								$('.chat-bubbles').append(data);
+								div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
+							}
+							div.bind('scroll',fetchMore);
+						});
+					}
 				}
 			};
 
 			$(document).on('click', '.btn-send-message', function() { sendMessage(); });
-
-			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ sendMessage(); } });
+			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ $('.btn-send-message').trigger('click'); } });
 
 			function sendMessage() {
 
 				var message = $('#message').val();
+				var participants = $('#participants').val();
+
 				if(message != '') {
-					$.post('".url("MessagesController@saveNewMessage")."', { 
-						'thread_id':$thread_id,
+
+					$('.btn-send').removeClass('btn-send-message');
+
+					$.post('".url("MessagesController@saveNewMessage")."', {
+						'participants': participants,
 						'message': message 
 					},function(data) {
+
+						response = JSON.parse(data);
+
 						eval('('+fetchMore+')()');
 						$('#message').val('');
 						div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
+
+						$('#thread_id').val(response.data['thread_id']);
+						thread_id = response.data['thread_id'];
+
+						$('.btn-send').addClass('btn-send-message');
+						
 					});
 				}
 			}

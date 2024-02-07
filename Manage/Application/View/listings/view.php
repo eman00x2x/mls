@@ -78,7 +78,7 @@ $html[] = "<div class='page-body'>";
 					$html[] = "<div class='btn-wrap text-center d-none d-md-block'>";
 						$html[] = "<div class='btn-list'>";
 							$html[] = $buttons();
-							$html[] = "<span class='btn btn-outline-primary btn-open-modal-message' data-bs-toggle='modal' data-bs-target='#accountModal' data-bs-backdrop='static' data-bs-keyboard='false' data-url='".url("MessagesController@newThread", ["to_account_id" => $data['listing']['account_id']], ["name" => $data['listing']['title']])."'><i class='ti ti-send me-2'></i> Send Message</span>";
+							$html[] = "<a class='btn btn-outline-primary' href='".url("MessagesController@conversation", ["participants" => base64_encode(json_encode(array($data['listing']['account_id'],$_SESSION['account_id'])))], ["listing_id" => $data['listing']['listing_id'], "name" => $data['listing']['title']])."'><i class='ti ti-send me-2'></i> Send Message</a>";
 						$html[] = "</div>";
 	                $html[] = "</div>";
 

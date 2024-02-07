@@ -10,11 +10,24 @@ class ThreadModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getByParticipants() {
+
+		$query = "SELECT * FROM #__threads WHERE participants = '".$this->column['participants']."' ".$this->and;
+		$result = $this->DBO->query($query);
+
+		$this->initiateFields($result);
+
+		if($this->DBO->numRows($result) > 0) {
+			$line = $this->DBO->fetchAssoc($result);
+			return $this->stripQuotes($line);
+		}else {return false;}
+
+	}
+
 	function saveNew($data) {
 
 		$v = $this->getValidator();
 
-		$v->validateGeneral($data['subject'],"Subject is required");
 		$v->validateGeneral($data['participants'],"Does not have participants.");
 
 		if($v->foundErrors()) {
@@ -49,7 +62,6 @@ class ThreadModel extends \Main\Model {
 
 			$v = $this->getValidator();
 
-			$v->validateGeneral($data['subject'],"Subject is required");
 			$v->validateGeneral($data['participants'],"Does not have participants.");
 
 			if($v->foundErrors()) {

@@ -8,10 +8,11 @@ $html[] = "<div class=''>";
     $html[] = "<button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>";
 
 	$html[] = "<form id='form' action='' method='POST'>";
+		$html[] = "<input type='hidden' name='name' value='".$_REQUEST['name']."' />";
+		$html[] = "<input type='hidden' name='listing_id' value='".$_REQUEST['listing_id']."' />";
 		$html[] = "<input type='hidden' name='created_by' value='".$_SESSION['account_id']."' />";
 		$html[] = "<input type='hidden' name='created_at' value='".DATE_NOW."' />";
-		$html[] = "<input type='hidden' name='accounts' value='[".$data['account_id'].",".$_SESSION['account_id']."]' />";
-		$html[] = "<input type='hidden' name='participants' value='[".$_SESSION['user_id']."]' />";
+		$html[] = "<input type='hidden' name='participants' value='[".$data['account_id'].",".$_SESSION['account_id']."]' />";
 		$html[] = "<input type='hidden' name='user_id' value='".$_SESSION['user_id']."' />";
 
 		$html[] = "<div class='row align-items-center'>";

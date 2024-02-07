@@ -68,6 +68,7 @@ $html[] = "<div class='row justify-content-center'>";
 					$html[] = "<div class='card-body scrollable' style='height: 35rem'>";
 						$html[] = "<div class='chat'>";
 							$html[] = "<div class='chat-bubbles'>";
+								
 								if($data['messages']) {
 									for($i=0; $i<count($data['messages']); $i++) {
 										$html[] = "<div  class='chat-item'>";
@@ -83,18 +84,15 @@ $html[] = "<div class='row justify-content-center'>";
 																		$html[] = $data['messages'][$i]['user']['name'];
 																	$html[] = "</div>";
 																	$html[] = "<div class='col-auto chat-bubble-date'>";
-																		$html[] = "<span class='fs-11'><i class='ti ti-clock'></i> ".date("M d, Y h:ia",$data['messages'][$i]['created_at'])."</span>";
+																		$html[] = date("M d, Y h:ia",$data['messages'][$i]['created_at']);
 																	$html[] = "</div>";
 																$html[] = "</div>";
 															$html[] = "</div>";
-
 															$html[] = "<div class='chat-bubble-body'>";
 																$html[] = "<p>".$data['messages'][$i]['message']."</p>";
 															$html[] = "</div>";
-
 														$html[] = "</div>";
 													$html[] = "</div>";
-
 													$html[] = "<div class='col-auto'>";
 														$html[] = "<span class='avatar'></span>";
 													$html[] = "</div>";
@@ -104,9 +102,8 @@ $html[] = "<div class='row justify-content-center'>";
 													$html[] = "<div class='col-auto'>";
 														$html[] = "<span class='avatar'></span>";
 													$html[] = "</div>";
-
 													$html[] = "<div class='col col-lg-6'>";
-														$html[] = "<div class='chat-bubble'>";
+														$html[] = "<div class='chat-bubble chat-bubble-me'>";
 															
 															$html[] = "<div class='chat-bubble-title'>";
 																$html[] = "<div class='row'>";
@@ -114,41 +111,47 @@ $html[] = "<div class='row justify-content-center'>";
 																		$html[] = $data['messages'][$i]['user']['name'];
 																	$html[] = "</div>";
 																	$html[] = "<div class='col-auto chat-bubble-date'>";
-																		$html[] = "<span class='fs-11'><i class='ti ti-clock'></i> ".date("M d, Y h:ia",$data['messages'][$i]['created_at'])."</span>";
+																		$html[] = "<i class='ti ti-time'></i> ".date("M d, Y h:ia",$data['messages'][$i]['created_at']);
 																	$html[] = "</div>";
 																$html[] = "</div>";
 															$html[] = "</div>";
-
 															$html[] = "<div class='chat-bubble-body'>";
 																$html[] = "<p>".$data['messages'][$i]['message']."</p>";
 															$html[] = "</div>";
-
 														$html[] = "</div>";
 													$html[] = "</div>";
 												$html[] = "</div>";
 											}
-
 										$html[] = "</div>";
 									}
 								}
+
 							$html[] = "</div>";
 						$html[] = "</div>";
 
 					$html[] = "</div>";
 
 					if(isset($i) && $i > 0) {
-						$last_message_id = $data['messages'][($i - 1)]['message_id'];
+						$last_message_id = $data['messages'][($i-1)]['message_id'];
 					}else {
 						$last_message_id = 0;
 					}
 
-					$html[] = "<input type='hidden' class='last_message_id' value='".$last_message_id."' />";
+					if(isset($data['thread']['thread_id'])) {
+						$thread_id = $data['thread']['thread_id'];
+					}else {
+						$thread_id = 0;
+					}
+
+					$html[] = "<input type='hidden' name='participants' id='participants' class='participants' value='".json_encode($data['participants_id'])."' />";
+					$html[] = "<input type='hidden' name='last_message_id' id='last_message_id' class='last_message_id' value='$last_message_id' />";
+					$html[] = "<input type='hidden' name='thread_id' id='thread_id' class='thread_id' value='$thread_id' />";
 
 					$html[] = "<div class='card-footer'>";
 						$html[] = "<div class='input-group input-group-flat'>";
 							$html[] = "<input type='text' name='message' id='message' value='' class='form-control' placeholder='Type message' autocomplete='off' maxlength='2000' />'";
 							$html[] = "<span class='input-group-text'>";
-								$html[] = "<span class='btn btn-primary btn-send-message'><i class='ti ti-send'></i></span>";
+								$html[] = "<span class='btn btn-primary btn-send btn-send-message'><i class='ti ti-send'></i></span>";
 							$html[] = "</span>";
 						$html[] = "</div>";
 					$html[] = "</div>";

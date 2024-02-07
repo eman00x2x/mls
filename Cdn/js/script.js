@@ -216,9 +216,3 @@ $(document).on('click', '.col-filter', function (e) {
 		$('table tr .' + id).hide();
 	}
 });
-
-$(document).on('click', '.btn-open-modal-message', function () { 
-	$.get($(this).data('url'), function (data, status) { 
-		$('#accountModal .response-modal').html(data);
-	});
-});
