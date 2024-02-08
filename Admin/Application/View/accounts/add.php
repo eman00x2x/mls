@@ -137,9 +137,6 @@ $html[] = "<form id='form' action='' method='POST'>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 
-
-								
-				
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-status bg-orange'></div>";
 						$html[] = "<div class='card-header'>";

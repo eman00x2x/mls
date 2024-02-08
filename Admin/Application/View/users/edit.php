@@ -59,7 +59,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<div class='col-9'>";
 									$html[] = "<div class='text-center bg-white mb-3' style='width:200px;'>";
 										$html[] = "<input type='hidden' name='photo' class='photo' id='photo' class='form-control' value='".$data['photo']."' />";
-										$html[] = "<span class='avatar photo-preview mb-1 w-100 mb-3' style='background-image: url(".$data['photo'].")'></span>";
+										$html[] = "<span class='avatar photo-preview mb-1 w-100 mb-3' style='background-image: url(".($data['photo'] != "" ? $data['photo'] : CDN."images/blank-profile.png").")'></span>";
 										$html[] = "<small>Click to Upload Photo</small>";
 										$html[] = "<span class='photo-upload-loader d-block'></span>";
 									$html[] = "</div>";
@@ -118,7 +118,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 						$html[] = "</div>";
 					}
 
-					if(($_SESSION['user_level'] == 1 && $data['user_level'] != 1) || $_SESSION['account_type'] == "Administrator") {
+					if(($_SESSION['user_level'] == 1 && $data['user_level'] != 1) || ($_SESSION['account_type'] == "Administrator" && $data['user_id'] != $_SESSION['user_id'])) {
 						$html[] = "<div class='card mb-3'>";
 							$html[] = "<div class='card-header'>";
 								$html[] = "<h3 class='card-title text-blue'><i class='ti ti-settings me-2'></i> User Permissions</h3>";

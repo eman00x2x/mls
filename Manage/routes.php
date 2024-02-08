@@ -11,6 +11,7 @@ Router::get(ALIAS.'/', 'DashboardController@index', ['as' => 'dashboard']);
 /** ACCOUNTS ROUTES */
 Router::get(ALIAS.'/account', 'AccountsController@index', ['as' => 'accounts']);
 Router::get(ALIAS.'/account', 'AccountsController@view', ['as' => 'accountView']);
+Router::get(ALIAS.'/account/profile', 'AccountsController@accountProfile', ['as' => 'profile']);
 
 Router::post(ALIAS.'/account/{id}/saveUpdate', 'AccountsController@saveUpdate', ['as' => 'accountsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 Router::post(ALIAS.'/account/uploadPhoto', 'AccountsController@uploadPhoto', ['as' => 'accountsUploadPhoto']);

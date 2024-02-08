@@ -69,6 +69,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 								$html[] = "<li class='nav-item' role='pressentation'><a href='#technical_description' 	class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-ruler me-2'></i> Technical Details</a></li>";
 								$html[] = "<li class='nav-item' role='pressentation'><a href='#payment_details' 		class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-cash me-2'></i> Payment Details</a></li>";
 								$html[] = "<li class='nav-item' role='pressentation'><a href='#images_list' 			class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-photo me-2'></i> Images</a></li>";
+								$html[] = "<li class='nav-item' role='pressentation'><a href='#settings'	 			class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-photo me-2'></i> Settings</a></li>";
 							$html[] = "</ul>";
 						$html[] = "</div>";
 						
@@ -82,25 +83,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 									$html[] = "<div class='row justify-content-center py-3'>";
 										$html[] = "<div class='col-md-8 col-lg-8 col-12'>";
 
-											$html[] = "<div class='d-flex gap-3 mb-5'>";
-												
-												$html[] = "<div class='border p-3'>";
-													$html[] = "<div class='form-check mb-0 cursor-pointer'>";
-														$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls' checked />";
-														$html[] = "<label class='form-check-label cursor-pointer' for='is_mls'>Post to MLS</label>";
-													$html[] = "</div>";
-												$html[] = "</div>";
-
-												$html[] = "<div class='border p-3'>";
-													$html[] = "<div class='form-check mb-0 cursor-pointer'>";
-														$html[] = "<input class='form-check-input cursor-pointer' name='is_website' type='checkbox' value='1' id='is_website' checked  />";
-														$html[] = "<label class='form-check-label cursor-pointer' for='is_website'>Post to Website</label>";
-													$html[] = "</div>";
-												$html[] = "</div>";
-
-											$html[] = "</div>";
-
-											
 											$html[] = "<div class='form-group mb-3'>";
 												$html[] = "<label class='form-label text-muted'>Title</label>";
 												$html[] = "<div class='input-icon mb-3'>";
@@ -411,6 +393,75 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 
+								$html[] = "</div>";
+
+								$html[] = "<div id='settings' class='tab-pane '>";
+									/***** SETTINGS *****/
+									
+									$html[] = "<div class='row justify-content-center py-3'>";
+										$html[] = "<div class='col-md-8 col-lg-8 col-12'>";
+
+											$html[] = "<div class='mb-3'>";
+												$html[] = "<label class='form-label text-muted'>Property Status</label>";
+												$html[] = "<div class='input-icon '>";
+													$html[] = "<span class='input-icon-addon'><i class='ti ti-status-change'></i></span>";
+													$html[] = "<select name='status' id='status' class='form-select'>";
+														$statuses = array(1=>"Available",2=>"Sold");
+														foreach($statuses as $key => $val) {
+															$html[] = "<option value='$key' >$val</option>";
+														}
+													$html[] = "</select>";
+													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+												$html[] = "</div>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='form-group mb-3'>";
+												$html[] = "<label class='form-check form-switch cursor-pointer'>";
+													$html[] = "<input class='form-check-input' type='checkbox' name='foreclosed' value='1' id='foreclosure' />";
+													$html[] = "<span class='form-check-label' for='foreclosure'>Is this property a foreclosure?</span>";
+												$html[] = "</label>";
+											$html[] = "</div>";
+													
+											$html[] = "<div class='form-group mb-3'>";
+												$html[] = "<label class='form-check form-switch cursor-pointer'>";
+													$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls' checked  />";
+													$html[] = "<span class='form-check-label cursor-pointer' for='is_mls'>Display this property listing on the Multiple Listing Service (MLS)</span>";
+												$html[] = "</label>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='form-group mb-4'>";
+												$html[] = "<label class='form-check form-switch cursor-pointer'>";
+													$html[] = "<input class='form-check-input cursor-pointer' name='is_website' type='checkbox' value='1' id='is_website' checked   />";
+													$html[] = "<span class='form-check-label cursor-pointer' for='is_website'>Publish this property listing on the website.</span>";
+												$html[] = "</label>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='mb-3'>";
+												$html[] = "<label class='form-label text-muted'>Commission Sharing Details</label>";
+												$html[] = "<div class='input-icon mb-2'>";
+													$html[] = "<span class='input-icon-addon'><i class='ti ti-percentage'></i></span>";
+													$html[] = "<input type='number' name='com_share' id='com_share' value='1.5' step='0.5' class='form-control' placeholder='Commission Share' />";
+												$html[] = "</div>";
+												$html[] = "<span class='form-hint'>Please specify the percentage of commission you are prepared to distribute.</span>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='mb-3'>";
+												$html[] = "<label class='form-label text-muted'>What type of authority do you hold for this property?</label>";
+												$html[] = "<div class='input-icon mb-3'>";
+													$html[] = "<span class='input-icon-addon'><i class='ti ti-certificate'></i></span>";
+													$html[] = "<select class='form-select' name='authority_type' id='authority_type'>";
+														foreach(["N/A","Non-Exclusive Authority To Sell", "Exclusive Authority To Sell"] as $authority) {
+															$html[] = "<option value='$authority'>".$authority."</option>";
+														}
+													$html[] = "</select>";
+													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+												$html[] = "</div>";
+												$html[] = "<span class='form-hint'>The legal permission granted to an individual or entity to sell a property on behalf of the owner(s)</span>";
+											$html[] = "</div>";
+
+										$html[] = "</div>";
+									$html[] = "</div>";
+									
 								$html[] = "</div>";
 								
 							$html[] = "</div>"; /*** TAB CONTENT END ***/

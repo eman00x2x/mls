@@ -52,6 +52,11 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		return $this->getTemplate($data,$account);
 
 	}
+
+    function accountProfile() {
+        $this->setTempalteBasePath(ROOT."Admin");
+        return parent::profile($this->account_id);
+    }
 	
 	
 }

@@ -40,6 +40,55 @@ class AccountsController extends \Main\Controller {
 		return $this->getTemplate($data,$accounts);
 		
 	}
+
+	function profile($id) {
+
+		$this->doc->setTitle("Profile");
+		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
+		$this->doc->addScriptDeclaration("
+			$(document).ready(function() {
+				tinymce.remove();
+						
+				tinymce.init({
+					selector: 'textarea#snow-container',
+					height: 500,
+					width: 'auto',
+					resize: false,
+					menubar: false,
+					plugins: [
+						'advlist autolink lists link charmap print preview anchor',
+						'searchreplace visualblocks code fullscreen',
+						'insertdatetime media table paste code wordcount image '
+					],
+					toolbar: 'table image link formatting | fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code ',
+					toolbar_groups: {
+						formatting: {
+							icon: 'bold',
+							tooltip: 'Formatting',
+							items: 'bold italic underline | superscript subscript'
+						},
+						alignment: {
+							icon: 'alignjustify',
+							tooltip: 'alignment',
+							items: ''
+						}
+					},
+					content_css: [
+						'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+						'".WEBDOMAIN."/css/style.css'
+					]
+				});
+			});
+		");
+
+		$accounts = $this->getModel("Account");
+		$accounts->column['account_id'] = $id;
+		$data = $accounts->getById();
+
+		$this->setTemplate("accounts/profile.php");
+		return $this->getTemplate($data);
+
+	}
 	
 	function view($account_id) {
 
@@ -102,6 +151,7 @@ class AccountsController extends \Main\Controller {
 
 				$user->page['limit'] = 100;
 				$user->where(" account_id = ".$data['account_id']." ");
+				$user->orderBy(" date_added DESC ");
 				$data['users'] = $user->getList(); 
 
 				$subscription->page['limit'] = 100;
@@ -298,7 +348,7 @@ class AccountsController extends \Main\Controller {
 				$_POST['privileges'] = json_encode($data['privileges']);
 			}
 
-			if($_POST['logo'] != $data['logo']) {
+			if(isset($_POST['logo']) && $_POST['logo'] != $data['logo']) {
 				/* remove old logo */
 
 				$logo_url = explode("/", $data['logo']);
@@ -313,25 +363,31 @@ class AccountsController extends \Main\Controller {
 
 			}
 			
-			$reference = $this->getModel("LicenseReference");
-			$response =	$reference->getByLicenseId($_POST['broker_prc_license_id']);
+			if(isset($_POST['broker_prc_license_id'])) {
 
-			if($response['data']['reference_id'] != 0) {
-				$_POST['reference_id'] = $response['data']['reference_id'];
-			}else {
-				$_POST['created_at'] = DATE_NOW;
-				$response = $reference->saveNew($_POST);
-				$_POST['reference_id'] = $response['id'];
+				$reference = $this->getModel("LicenseReference");
+				$response =	$reference->getByLicenseId($_POST['broker_prc_license_id']);
+
+				if($response['data']['reference_id'] != 0) {
+					$_POST['reference_id'] = $response['data']['reference_id'];
+				}else {
+					$_POST['created_at'] = DATE_NOW;
+					$response = $reference->saveNew($_POST);
+					$_POST['reference_id'] = $response['id'];
+				}
+
 			}
 
-			$user = $this->getModel("User");
-			$user->column['email'] = $data['email'];
-			$data['user'] = $user->getByEmail();
+			if(isset($_POST['firstname'])) {
+				$user = $this->getModel("User");
+				$user->column['email'] = $data['email'];
+				$data['user'] = $user->getByEmail();
 
-			$user->save($data['user']['user_id'],array(
-				"photo" => $_POST['logo'],
-				"name" => $_POST['firstname']." ".$_POST['lastname']
-			));
+				$user->save($data['user']['user_id'],array(
+					"photo" => $_POST['logo'],
+					"name" => $_POST['firstname']." ".$_POST['lastname']
+				));
+			}
 
 			$response = $accounts->save($account_id,$_POST);
 			

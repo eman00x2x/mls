@@ -86,6 +86,19 @@ class Factory {
 		return $instance;
 	}
 
+	static function getUserClient() {
+		static $instance;
+		if (!is_object($instance)) {
+			$instance = Factory::_userClient();
+		}
+		return $instance;
+	}
+
+	static function _userClient() {
+		$UserClient = new \Library\UserClient;
+		return $UserClient;
+	}
+
 	static function _imageHelper() {
 		$ImageHelper = new \Library\ImageHelper;
 		return $ImageHelper;

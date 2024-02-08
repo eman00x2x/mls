@@ -88,6 +88,14 @@ $html[] = "<div class='page-body'>";
 			$html[] = "<div class='col-md-9 col-12'>";
                 $html[] = "<div class='box-container mb-3'>";
 
+                    $html[] = "<div class='slider'>";
+                        if($data['listing']['images']) {
+                            for($i=0; $i<count($data['listing']['images']); $i++) {
+                                $html[] = "<div><img src='".$data['listing']['images'][$i]['url']."' /></div>";
+                            }
+                        }
+                    $html[] = "</div>";
+
                     $html[] = "<h3>".$data['listing']['title']." <small class='d-block fw-normal'>".ucwords($data['listing']['offer'])." ".$data['listing']['category']." in ".$data['listing']['address']['municipality'].", ".$data['listing']['address']['province']."</small></h3>";
 
                     $html[] = "<div class='mb-3'>";

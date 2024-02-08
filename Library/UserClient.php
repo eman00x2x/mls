@@ -22,7 +22,7 @@ class UserClient
 
     function __construct() {}
 
-    function getUserClientInformation() {
+    function information() {
 
         $this->setUserAgent()->setPlatform()->setBrowser()->setIP()->setGeolocation();
 

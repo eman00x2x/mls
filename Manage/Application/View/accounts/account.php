@@ -51,6 +51,7 @@ $html[] = "<div class='page-body'>";
                                 $html[] = "<div class='col-lg-3 col-md-3 col-12'>";
 
                                     $html[] = "<div class='list-group list-group-flush'>";
+                                        $html[] = "<a class='list-group-item list-group-item-action' href='".url("AccountsController@accountProfile")."'><i class='ti ti-file-certificate me-2'></i> My Profile</a>";
                                         $html[] = "<a class='list-group-item list-group-item-action' href='".url("AccountsController@index")."'><i class='ti ti-user-circle me-2'></i> My Account</a>";
 										
 										if(isset($_SESSION['permissions']['users']['access'])) {

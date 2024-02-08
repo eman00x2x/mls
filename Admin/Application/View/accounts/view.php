@@ -60,6 +60,7 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<div class='me-3'><label class='text-muted'>Account Type</label></div>";
 								$html[] = "<div class=''><span>".$data['account_type']."</span></div>";
 							$html[] = "</div>";
+							
 							$html[] = "<div class='d-flex'>";
 								$html[] = "<div class='me-3'><label class='text-muted'>Status</label></div>";
 								$html[] = "<div class=''><span>".$data['status']."</span></div>";
@@ -74,8 +75,33 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<div class='mb-3 pb-3 border-bottom'>";
 							$html[] = "<h6 class='mb-1 fw-bold'>Account Holder</h6>";
 							$html[] = "<div class='d-flex'>";
+								$html[] = "<div class='me-3'><label class='text-muted'>Company Name</label></div>";
+								$html[] = "<div class=''><span>".$data['company_name']."</span></div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='d-flex'>";
+								$html[] = "<div class='me-3'><label class='text-muted'>Profession</label></div>";
+								$html[] = "<div class=''><span>".$data['profession']."</span></div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='d-flex'>";
+								$html[] = "<div class='me-3'><label class='text-muted'>PRC License ID Number</label></div>";
+								$html[] = "<div class=''><span>".$data['real_estate_license_number']."</span></div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='d-flex'>";
+								$html[] = "<div class='me-3'><label class='text-muted'>TIN</label></div>";
+								$html[] = "<div class=''><span>".$data['tin']."</span></div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='d-flex'>";
 								$html[] = "<div class='me-3'><label class='text-muted'>Name</label></div>";
 								$html[] = "<div class=''><span>".$data['firstname']." ".$data['lastname']."</span></div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='d-flex'>";
+								$html[] = "<div class='me-3'><label class='text-muted'>Birth Date</label></div>";
+								$html[] = "<div class=''><span>".date("M/d/Y",strtotime($data['birthdate']))."</span></div>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='d-flex'>";
@@ -91,19 +117,6 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<div class='d-flex '>";
 								$html[] = "<div class='me-3'><label class='text-muted'>Address</label></div>";
 								$html[] = "<div class=''><span>".$data['street']." ".$data['city']." ".$data['province']."</span></div>";
-							$html[] = "</div>";
-						$html[] = "</div>";
-
-						$html[] = "<div class='mb-3 pb-3 border-bottom'>";
-							$html[] = "<h6 class='mb-1 fw-bold'>Company Details</h6>";
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>Company Name</label></div>";
-								$html[] = "<div class=''><span>".$data['company_name']."</span></div>";
-							$html[] = "</div>";
-
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>TIN</label></div>";
-								$html[] = "<div class=''><span>".$data['tin']."</span></div>";
 							$html[] = "</div>";
 						$html[] = "</div>";
 
@@ -146,6 +159,7 @@ $html[] = "<div class='page-body'>";
 										$html[] = "<th class='text-center w-1'>#</th>";
 										$html[] = "<th>Name</th>";
 										$html[] = "<th>Email</th>";
+										$html[] = "<th>User Type</th>";
 										$html[] = "<th>Date Created</th>";
 										$html[] = "<th class='text-center'><i class='icon-settings'></i></th>";
 									$html[] = "</tr>";
@@ -158,6 +172,7 @@ $html[] = "<div class='page-body'>";
 										$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
 										$html[] = "<td class='align-middle'><a href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."' class='ajax text-inherit' title='User: ".$data['users'][$i]['name']."'>".$data['users'][$i]['name']."</a></td>";
 										$html[] = "<td class='align-middle'><a href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."'>".$data['users'][$i]['email']."</a></td>";
+										$html[] = "<td class='align-middle'><a href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."'>".($data['users'][$i]['user_level'] == 1 ? "Account Holder" : "Regular User")."</a></td>";
 										$html[] = "<td class='align-middle'>".date("F d, Y",$data['users'][$i]['date_added'])."</td>";
 										
 										$html[] = "<td class='text-center'>";

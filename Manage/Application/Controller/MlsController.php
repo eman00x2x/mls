@@ -98,17 +98,17 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$uri['foreclosure'] = 1;
 		}
 
-		if(isset($_REQUEST['offer'])) {
+		if(isset($_REQUEST['offer']) && $_REQUEST['offer'] != "") {
 			$filters[] = " (offer LIKE '%".$_REQUEST['offer']."%')";
 			$uri['offer'] = $_REQUEST['offer'];
 		}
 
-		if(isset($_REQUEST['type'])) {
+		if(isset($_REQUEST['type']) && $_REQUEST['type'] != "") {
 			$filters[] = " (type LIKE '%".$_REQUEST['type']."%')";
 			$uri['type'] = $_REQUEST['type'];
 		}
 
-		if(isset($_REQUEST['category'])) {
+		if(isset($_REQUEST['category']) && $_REQUEST['category'] != "") {
 			$filters[] = " (type LIKE '%".$_REQUEST['category']."%')";
 			$uri['category'] = $_REQUEST['category'];
 		}

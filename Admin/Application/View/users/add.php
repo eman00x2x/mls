@@ -1,5 +1,12 @@
 <?php
 
+$html[] = "<input type='hidden' id='photo_uploader' value='users' />";
+$html[] = "<form action='".url("UsersController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
+	$html[] = "<center>";
+		$html[] = "<input type='file' name='ImageBrowse' id='ImageBrowse' />";
+	$html[] = "</center>";
+$html[] = "</form>";
+
 $html[] = "<input type='hidden' id='save_url' value='".url("UsersController@saveNew",["id" => $data['account_id']])."' />";
 
 $html[] = "<form id='form' action='' method='POST'>";
@@ -46,6 +53,19 @@ $html[] = "<form id='form' action='' method='POST'>";
 						$html[] = "</div>";
 					
 						$html[] = "<div class='card-body'>";
+
+							$html[] = "<div class='row'>";
+								$html[] = "<div class='col-3'>";
+								$html[] = "</div>";
+								$html[] = "<div class='col-9'>";
+									$html[] = "<div class='text-center bg-white mb-3' style='width:200px;'>";
+										$html[] = "<input type='hidden' name='photo' class='photo' id='photo' class='form-control' value='' />";
+										$html[] = "<span class='avatar photo-preview mb-1 w-100 mb-3' style='background-image: url(".CDN."images/blank-profile.png)'></span>";
+										$html[] = "<small>Click to Upload Photo</small>";
+										$html[] = "<span class='photo-upload-loader d-block'></span>";
+									$html[] = "</div>";
+								$html[] = "</div>";
+							$html[] = "</div>";
 
 							$fields = array("name","email","password");
 							

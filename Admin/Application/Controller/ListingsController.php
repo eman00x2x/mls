@@ -115,6 +115,20 @@ class ListingsController extends \Main\Controller {
 	function view($listing_id) {
 		
 		$this->doc->setTitle("View Property Listing");
+		$this->doc->addScript(CDN."bxslider/src/js/jquery.bxslider.js");
+		$this->doc->addStylesheet(CDN."bxslider/src/css/jquery.bxslider.css");
+
+		$this->doc->addScriptDeclaration("
+			$(document).ready(function(){
+				$('.slider').bxSlider({
+					slideWidth: 600,
+					auto: true,
+					autoControls: true,
+					pause: 3000,
+					mode: 'fade'
+				});
+			});
+		");
 		
 		$listing = $this->getModel("Listing");
 		$listing->column['listing_id'] = $listing_id;
@@ -135,6 +149,15 @@ class ListingsController extends \Main\Controller {
 		$data['handshake'] = $handshake->getByRequestorAccountId();
 
 		if($data) {
+
+			$traffic = $this->getModel("ListingView");
+			$traffic->saveNew(array(
+				"listing_id" => $data['listing']['listing_id'],
+				"account_id" => $data['account']['account_id'],
+				"created_at" => DATE_NOW,
+				"user_agent" => $this->getLibrary("Factory")->getUserClient()->information()
+			));
+
 			$this->setTemplate("listings/view.php");
 			return $this->getTemplate($data,$listing);
 		}
@@ -151,7 +174,15 @@ class ListingsController extends \Main\Controller {
 		$_POST['date_added'] = DATE_NOW;
 		$_POST['last_modified'] = DATE_NOW;
 		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."/images/listings/".$_POST['thumb_img'] : null;
-
+		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? $_POST['foreclosed'] : "0";
+		$_POST['is_mls'] = isset($_POST['is_mls']) ? $_POST['is_mls'] : "0";
+		$_POST['is_website'] = isset($_POST['is_website']) ? $_POST['is_website'] : "0";
+		
+		$_POST['other_details'] = json_encode(array(
+			"authority_type" => $_POST['authority_type'],
+			"com_share" => $_POST['com_share']
+		));
+		
 		if(isset($_POST['address'])) { $_POST['address'] = json_encode($_POST['address']); }
 		if(isset($_POST['tags'])) { $_POST['tags'] = json_encode($_POST['tags']); }
 		if(isset($_POST['amenities'])) {$_POST['amenities'] = implode(",",$_POST['amenities']); }
@@ -188,6 +219,13 @@ class ListingsController extends \Main\Controller {
 		$_POST['last_modified'] = DATE_NOW;
 		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."/images/listings/".$_POST['thumb_img'] : null;
 		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? $_POST['foreclosed'] : "0";
+		$_POST['is_mls'] = isset($_POST['is_mls']) ? $_POST['is_mls'] : "0";
+		$_POST['is_website'] = isset($_POST['is_website']) ? $_POST['is_website'] : "0";
+		
+		$_POST['other_details'] = json_encode(array(
+			"authority_type" => $_POST['authority_type'],
+			"com_share" => $_POST['com_share']
+		));
 
 		if(isset($_POST['address'])) { $_POST['address'] = json_encode($_POST['address']); }
 		if(isset($_POST['tags'])) { $_POST['tags'] = json_encode($_POST['tags']); }
