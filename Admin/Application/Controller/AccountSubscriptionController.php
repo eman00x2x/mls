@@ -14,24 +14,15 @@ class AccountSubscriptionController extends \Main\Controller {
 	
 	function view($user_id) {
 
-
-	}
-	
-	function add() {
-
-	}
-	
-	function edit($id) {
-
 	}
 	
 	function saveNew() {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
 
-		if(isset($_POST['subscription_start_date]'])) {
-			$_POST['subscription_start_date]'] = strtotime($_POST['subscription_start_date]']);
-			$_POST['subscription_end_date]'] = strtotime($_POST['subscription_start_date'], "+".$_POST['duration']);
+		if(isset($_POST['subscription_start_date'])) {
+			$_POST['subscription_start_date'] = strtotime($_POST['subscription_start_date']);
+			$_POST['subscription_end_date'] = strtotime("+".$_POST['duration'], $_POST['subscription_start_date']);
 		}
 
 		$account_subscription = $this->getModel("AccountSubscription");
@@ -48,36 +39,6 @@ class AccountSubscriptionController extends \Main\Controller {
 				"message" => getMsg()
 			)
 		);
-		
-	}
-	
-	function saveUpdate($id) {
-	
-		parse_str(file_get_contents('php://input'), $_POST);
-
-		if($id) {
-			
-			$account_subscription = $this->getModel("AccountSubscription");
-			$response = $account_subscription->save($id,$_POST);
-			
-			$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
-
-			return json_encode(
-				array(
-					"status" => $response['status'],
-					"message" => getMsg()
-				)
-			);
-			
-		}else {
-			$this->getLibrary("Factory")->setMsg("Account Subscription not found!.","error");
-			return json_encode(
-				array(
-					"status" => 2,
-					"message" => getMsg()
-				)
-			);
-		}
 		
 	}
 	

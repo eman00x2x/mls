@@ -81,11 +81,15 @@ Router::get(ALIAS.'/messages/{thread_id}/removeMessage', 'MessagesController@sav
 Router::post(ALIAS.'/messages/saveNewMessage', 'MessagesController@saveNewMessage', ['as' => 'saveNewMessage']);
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
-Router::get(ALIAS.'/subscriptions', 'SubscriptionsController@index', ['as' => 'subscriptions']);
-Router::post(ALIAS.'/subscriptions/saveNew', 'SubscriptionsController@saveNew', ['as' => 'accountSubscriptionSaveNew']);
+Router::get(ALIAS.'/subscriptions', 'AccountSubscriptionController@index', ['as' => 'subscriptions']);
+
+Router::post(ALIAS.'/subscriptions/saveNew', 'AccountSubscriptionController@saveNew', ['as' => 'accountSubscriptionSaveNew']);
 
 /** Premiums ROUTES */
-Router::get(ALIAS.'/premiums', 'PremiumsController@index', ['as' => 'premiums']);
+Router::get(ALIAS.'/premiums', 'PurchasePremiumsController@index', ['as' => 'premiums']);
+Router::get(ALIAS.'/premiums/selected/{premium_id}', 'PurchasePremiumsController@selectedPremium', ['as' => 'selectedPremium'])->where([ 'premium_id' => '[0-9]+' ]);
+
+Router::post(ALIAS.'/premiums/createOrder', 'PurchasePremiumsController@createOrder_paypal', ['as' => 'createOrder_paypal']);
 
 /** INVOICE ROUTES */
 Router::get(ALIAS.'/invoices', 'InvoicesController@index', ['as' => 'deleteInvoice']);

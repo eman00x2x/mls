@@ -23,8 +23,6 @@ define("CDN","http://192.168.254.250/cdnmls/");
 
 define("ALIAS","managemls"); */
 
-
-
 define("VRSN","v1.0");
 
 define("EMAIL_RESPONDER_ADDRESS","no-reply@mls.com");
@@ -107,3 +105,8 @@ define("PREMIUM_SCRIPTS",[
 define("PROPERTY_TAGS", [
 	"New","Pre Owned","Furnished Unit","Bare Unit","Ready For Occupancy"
 ]);
+
+define("PAYPAL_CLIENT_ID", "AczoZMmV6Tkw24LL55FDfCaCMsp7aSo5bf75EFLy22u0nswrH15Cmrac2tsimtGCLaiU35vb605Pi3oF");
+define("PAYPAL_CLIENT_SECRET", "EOxCjX0hgxSaffhW1QEFZcqto_LBL_qnAIl22TuYH1sVio-AljiMdb6ti95V8z0lb_RbKLexNcSSibE0");
+define("CURRENCY", "PHP");
+define("PAYPAL_ENVIRONMENT", "sandbox");

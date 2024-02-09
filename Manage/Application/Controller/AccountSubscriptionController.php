@@ -2,7 +2,7 @@
 
 namespace Manage\Application\Controller;
 
-class SubscriptionsController extends \Main\Controller {
+class AccountSubscriptionController extends \Admin\Application\Controller\AccountSubscriptionController {
 	
 	private $doc;
 	private $account_id;
@@ -44,10 +44,5 @@ class SubscriptionsController extends \Main\Controller {
 		return $this->getTemplate($data,$subscription);
 
 	}
-	
-	function edit($id) {
-		
-	}
-	
-	
+
 }

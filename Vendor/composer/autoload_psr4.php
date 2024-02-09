@@ -8,9 +8,10 @@ $baseDir = dirname($vendorDir);
 return array(
     'WebSocket\\' => array($vendorDir . '/phrity/websocket/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/src'),
-    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src', $vendorDir . '/psr/http-factory/src'),
-    'Phrity\\Net\\' => array($vendorDir . '/phrity/net-uri/src', $vendorDir . '/phrity/net-stream/src'),
+    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
+    'Phrity\\Net\\' => array($vendorDir . '/phrity/net-stream/src', $vendorDir . '/phrity/net-uri/src'),
     'Pecee\\' => array($vendorDir . '/pecee/simple-router/src/Pecee'),
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
+    'Braintree\\' => array($vendorDir . '/braintree/braintree_php/lib/Braintree'),
     '' => array($vendorDir . '/phrity/util-errorhandler/src'),
 );

@@ -3,6 +3,7 @@
         "phpmailer/phpmailer": "^6.9",
         "pecee/simple-router": "5.4.1.7",
         "verot/class.upload.php": "^2.1",
-        "phrity/websocket": "^2.1"
+        "phrity/websocket": "^2.1",
+        "braintree/braintree_php": "6.16.0"
     }
 }

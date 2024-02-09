@@ -68,14 +68,14 @@
 
 								<?php if(PREMIUM) { ?>
 									<li class="nav-item <?php echo (url()->contains("/subscriptions")) ? "active" : ""; ?>">
-										<a class="nav-link" href="<?php echo url("SubscriptionsController@index"); ?>">
+										<a class="nav-link" href="<?php echo url("AccountSubscriptionController@index"); ?>">
 											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-layers-union'></i></span>
 											<span class="nav-link-title">Subscriptions</span>
 										</a>
 									</li>
 									<?php if(isset($_SESSION['permissions']['subscriptions'])) { ?>
 										<li class="nav-item <?php echo (url()->contains("/premiums")) ? "active" : ""; ?>">
-											<a class="nav-link" href="<?php echo url("PremiumsController@index"); ?>">
+											<a class="nav-link" href="<?php echo url("PurchasePremiumsController@index"); ?>">
 												<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-layers-union'></i></span>
 												<span class="nav-link-title">Premiums</span>
 											</a>

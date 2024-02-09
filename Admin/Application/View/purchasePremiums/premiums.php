@@ -26,7 +26,6 @@ $html[] = "<div class='page-body'>";
 
         $html[] = "<h3 class='text-center text-white'>Available Package</h3>";
 
-		
 			$html[] = "<div class='mb-5' style='overflow:auto; white-space: nowrap;'>";
 				$html[] = "<div class='d-flex flex-row flex-nowrap justify-content-center '>";
 					if($data['premiums']['package']) {
@@ -52,7 +51,7 @@ $html[] = "<div class='page-body'>";
 											$html[] = "<ul>";
 										$html[] = "</div>";
 										$html[] = "<div class='text-center mt-4'>";
-											$html[] = "<a href='#' class='btn w-100'>Subscribe</a>";
+											$html[] = "<a href='".url("PurchasePremiumsController@selectedPremium", ["premium_id" => $data['premiums']['package'][$i]['premium_id']])."' class='btn w-100'>Subscribe</a>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 								$html[] = "</div>";
@@ -89,7 +88,7 @@ $html[] = "<div class='page-body'>";
 										$html[] = "<ul>";
 									$html[] = "</div>";
 									$html[] = "<div class='text-center mt-4'>";
-										$html[] = "<a href='#' class='btn w-100'>Subscribe</a>";
+										$html[] = "<a href='".url("PurchasePremiumsController@selectedPremium", ["premium_id" => $data['premiums']['individual'][$i]['premium_id']])."' class='btn w-100'>Subscribe</a>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 							$html[] = "</div>";

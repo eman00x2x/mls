@@ -72,7 +72,7 @@ if(!isset($_REQUEST['premium_id'])) {
 
 		$html[] = "<div class='mb-3'>";
 			$html[] = "<label class='form-label'>When will this subscription start?</label>";
-			$html[] = "<input type='datetime-local' name='subscription_start_date' id='subscription_start_date' value='".DATE_NOW."' class='form-control' />";
+			$html[] = "<input type='datetime-local' name='subscription_start_date' id='subscription_start_date' value='".date("Y-m-d H:i:s",DATE_NOW)."' class='form-control' />";
 		$html[] = "</div>";
 	$html[] = "</form>";
 
