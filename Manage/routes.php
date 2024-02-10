@@ -89,7 +89,8 @@ Router::post(ALIAS.'/subscriptions/saveNew', 'AccountSubscriptionController@save
 Router::get(ALIAS.'/premiums', 'PurchasePremiumsController@index', ['as' => 'premiums']);
 Router::get(ALIAS.'/premiums/selected/{premium_id}', 'PurchasePremiumsController@selectedPremium', ['as' => 'selectedPremium'])->where([ 'premium_id' => '[0-9]+' ]);
 
-Router::post(ALIAS.'/premiums/createOrder', 'PurchasePremiumsController@createOrder_paypal', ['as' => 'createOrder_paypal']);
+Router::post(ALIAS.'/premiums/checkoutValidate', 'PurchasePremiumsController@checkoutValidate', ['as' => 'checkoutValidate']);
+Router::post(ALIAS.'/premiums/paymentStatus', 'PurchasePremiumsController@paymentStatus', ['as' => 'paymentStatus']);
 
 /** INVOICE ROUTES */
 Router::get(ALIAS.'/invoices', 'InvoicesController@index', ['as' => 'deleteInvoice']);

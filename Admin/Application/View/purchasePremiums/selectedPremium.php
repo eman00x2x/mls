@@ -1,5 +1,7 @@
 <?php
 
+$html[] = "<div class='overlay d-none'><div class='overlay-content'><img src='".CDN."images/loader.gif' alt='Processing...'/></div></div>";
+
 $html[] = "<div class='page-body'>";
 	$html[] = "<div class='container-xl'>";
 
