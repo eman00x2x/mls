@@ -17,14 +17,24 @@ $html[] = "<div class='page-body'>";
 
 					$html[] = "<div class='card-body'>";
 						
-						$html[] = "<table class='table'>";
-						foreach($data['transaction'] as $fields => $val) {
-							$html[] = "<tr>";
-								$html[] = "<td>$fields</td>";
-								$html[] = "<td>$val</td>";
-							$html[] = "</tr>";
-						}
-						$html[] = "</table>";
+						$html[] = "<div class='table-responsive'>";
+							$html[] = "<table class='table'>";
+							foreach($data['transaction'] as $fields => $val) {
+								$html[] = "<tr>";
+									$html[] = "<td>$fields</td>";
+									if(is_array($val)) {
+										$html[] = "<td>";
+											$html[] = "<pre>";
+											$html[] = json_encode($val, JSON_PRETTY_PRINT);
+											$html[] = "</pre>";
+										$html[] = "</td>";
+									}else {
+										$html[] = "<td>$val</td>";
+									}
+								$html[] = "</tr>";
+							}
+							$html[] = "</table>";
+						$html[] = "</div>";
 
 					$html[] = "</div>";
 

@@ -4,20 +4,19 @@ namespace Admin\Application\Controller;
 
 class PurchasePremiumsController extends \Main\Controller {
 
-    private $doc;
-    private $client_id = PAYPAL_CLIENT_ID;
-    private $client_secret = PAYPAL_CLIENT_SECRET;
-    private $currency = CURRENCY;
-    private $environment = PAYPAL_ENVIRONMENT;
+    private	$doc;
+	private	$client_id = PAYPAL_CLIENT_ID;
+    private	$client_secret = PAYPAL_CLIENT_SECRET;
+    private	$currency = CURRENCY;
+    private	$environment = PAYPAL_ENVIRONMENT;
 
-	function __construct() {
+	function __construct()  {
 		$this->setTempalteBasePath(ROOT."Admin");
+		$this->doc = $this->getLibrary("Factory")->getDocument();
 	}
 
     function index() {
-
-       $doc = $this->getLibrary("Factory")->getDocument();
-
+		
 		if(!PREMIUM) {
 			$this->response(404);
 		}
@@ -27,7 +26,7 @@ class PurchasePremiumsController extends \Main\Controller {
 			response()->redirect(url("DashboardController@index"));
 		}
 		
-        $doc->setTitle("Premiums");
+        $this->doc->setTitle("Premiums");
         
         $premium = $this->getModel("Premium");
 		$premium->where(" visibility = 1 ");
@@ -52,15 +51,20 @@ class PurchasePremiumsController extends \Main\Controller {
 
     }
 
-    function selectedPremium($premium_id) {
+    function selectedPremium($account_id, $premium_id) {
 
-        $premium = $this->getModel("Premium");
+		/* $_REQUEST['order_id'] = "81P68441X8030654W";
+		$_REQUEST['paypal_order_check'] = 1;
+		$_REQUEST['account_id'] = $_SESSION['account_id'];
+		debug($this->checkoutValidate()); */
+
+		$premium = $this->getModel("Premium");
 		$premium->column['premium_id'] = $premium_id;
 		$data = $premium->getById();
 
-        $doc = $this->getLibrary("Factory")->getDocument();
-        $doc->addScript("https://www.paypal.com/sdk/js?client-id=".$this->client_id."&currency=".$this->currency."&intent=capture&commit=false&vault=true");
-		$doc->addScriptDeclaration("
+		$this->doc->setTitle("Checkout Premiums");
+        $this->doc->addScript("https://www.paypal.com/sdk/js?client-id=".$this->client_id."&currency=".$this->currency."&intent=capture&commit=false&vault=true");
+		$this->doc->addScriptDeclaration("
 
 			var paymentPageLink;
 			var order_id;
@@ -80,8 +84,8 @@ class PurchasePremiumsController extends \Main\Controller {
 						return actions.order.create({
 							\"intent\": \"CAPTURE\",
 							\"purchase_units\": [{
-								\"premium_id\": \"".$data["premium_id"]."\",
-								\"description\": \"".$data["name"]." - ".$data["details"]."\",
+								\"reference_id\": \"".$data["premium_id"]."\",
+								\"description\": \"".$data["name"]." [".$data["details"]."]\",
 								\"amount\": {
 									\"currency_code\": \"".$this->currency."\",
 									\"value\": ".$data["cost"]."
@@ -96,7 +100,7 @@ class PurchasePremiumsController extends \Main\Controller {
 						return actions.order.capture().then(function(orderData) {
 							setProcessing(true);
 
-							var postData = {paypal_order_check: 1, order_id: orderData.id};
+							var postData = {account_id: $account_id, paypal_order_check: 1, order_id: orderData.id};
 							fetch('".url("PurchasePremiumsController@checkoutValidate")."', {
 								method: 'POST',
 								headers: {'Accept': 'application/json'},
@@ -104,6 +108,8 @@ class PurchasePremiumsController extends \Main\Controller {
 							})
 							.then((response) => response.json())
 							.then((result) => {
+
+								console.log(result);
 
 								if(result.status == 1){
 									window.location.href = '".url("PurchasePremiumsController@paymentStatus")."?checkout_ref_id='+result.payment_transaction_id;
@@ -153,76 +159,72 @@ class PurchasePremiumsController extends \Main\Controller {
 
 	function checkoutValidate() {
 
-		$response = $this->generateAccessToken();
+		if(isset($_REQUEST['paypal_order_check']) && isset($_REQUEST['order_id'])) {
 
-		if(!empty($response['data']['access_token'])) {
+			$response = $this->generateAccessToken();
+		
+			$headers = array(
+				'Content-Type: application/json',
+				'Authorization: Bearer '. $response['data']['access_token']
+			);
 			
 			try {
-				$order_response = $this->request("","/v2/checkout/orders/".$_POST['order_id']);
+				$order_response = $this->request("GET","/v2/checkout/orders/".$_REQUEST['order_id'], null, $headers);
 			} catch(Exception $e) {  
 				$api_error = $e->getMessage();  
 			}
 
-			debug($order_response);
-
 			if(!empty($order_response)) {
-				$order_id = $order_response['data']['id'];
-				$intent = $order_response['intent'];
-				$order_status = $order_response['status']; 
-				$order_time = strtotime($order_response['create_time']); 
+				
+				$intent = $order_response['data']['intent'];
+				$order_status = $order_response['data']['status'];
 
-				if(!empty($order_response['purchase_units'][0])){ 
-					$purchase_unit = $order_response['purchase_units'][0]; 
+				$newData['account_id'] = $_REQUEST['account_id'];
+				$newData['created_at'] = strtotime($order_response['data']['create_time']);
+				$newData['modified_at'] = DATE_NOW;
+
+				if(!empty($order_response['data']['purchase_units'][0])){ 
+					$purchase_unit = $order_response['data']['purchase_units'][0]; 
 		
-					$newData['premium_id'] = $purchase_unit['premium_id']; 
-					$newData['premium_description'] = $purchase_unit['description']; 
+					$newData['premium_id'] = $purchase_unit['reference_id'];
+					$newData['premium_description'] = $purchase_unit['description'];
 					
-					if(!empty($purchase_unit['amount'])){ 
-						$newData['currency_code'] = $purchase_unit['amount']['currency_code']; 
-						$newData['amount_value'] = $purchase_unit['amount']['value']; 
+					if(!empty($purchase_unit['amount'])){
+						$newData['premium_price'] = $purchase_unit['amount']['value'];
 					} 
 		
 					if(!empty($purchase_unit['payments']['captures'][0])){ 
 						$payment_capture = $purchase_unit['payments']['captures'][0]; 
 						$newData['payment_transaction_id'] = $payment_capture['id']; 
-						$newData['payment_status'] = $payment_capture['status']; 
+						$newData['payment_status'] = $payment_capture['status'];
+						$newData['transaction_details'] = json_encode($payment_capture);
 					} 
 		
 					if(!empty($purchase_unit['payee'])){ 
 						$payee = $purchase_unit['payee']; 
-						$newData['payee_email_address'] = $payee['email_address']; 
+						$newData['merchant_email'] = $payee['email_address']; 
 						$newData['merchant_id'] = $payee['merchant_id']; 
 					} 
 				} 
 		
 				$newData['payment_source'] = ''; 
-				if(!empty($order_response['payment_source'])){ 
-					foreach($order_response['payment_source'] as $key => $value) { 
+				if(!empty($order_response['data']['payment_source'])){ 
+					foreach($order_response['data']['payment_source'] as $key => $value) { 
 						$newData['payment_source'] = $key; 
 					} 
 				} 
 
-				if(!empty($order_response['payer'])){ 
-					$payer = $order_response['payer']; 
-					$payer_id = $payer['payer_id']; 
-					$payer_name = $payer['name']; 
-					$payer_given_name = !empty($payer_name['given_name']) ? $payer_name['given_name'] : ''; 
-					$payer_surname = !empty($payer_name['surname']) ? $payer_name['surname'] : ''; 
-					$payer_full_name = trim($payer_given_name.' '.$payer_surname); 
-					$newData['payer_full_name]'] = filter_var($payer_full_name, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH); 
-		
-					$newData['payer_email_address'] = $payer['email_address']; 
-					$payer_address = $payer['address']; 
-					$newData['payer_country_code'] = !empty($payer_address['country_code']) ? $payer_address['country_code'] : ''; 
+				if(!empty($order_response['data']['payer'])){
+					$newData['payer'] = json_encode($order_response['data']['payer']);
 				} 
 
-				if(!empty($order_id) && $order_status == 'COMPLETED') { 
+				if(!empty($order_response['data']['id']) && $order_status == 'COMPLETED') { 
 
 					$transaction = $this->getModel("Transaction");
-					$transaction->column['payment_transaction_id'] = $payment_transaction_id;
+					$transaction->column['payment_transaction_id'] = $newData['payment_transaction_id'];
 					$data['transaction'] = $transaction->getByPaymentTransactionId();
 
-					if(!$data['transaction']) {
+					if($data['transaction'] === false) {
 						$response = $transaction->saveNew($newData);
 						$data['transaction']['transaction_id'] = $response['id'];
 					}
@@ -230,29 +232,37 @@ class PurchasePremiumsController extends \Main\Controller {
 				}
 
 				$response = array(
-					'status' => 1, 
-					'msg' => 'Transaction completed!', 
-					'payment_transaction_id' => base64_encode($newData['payment_transaction_id'])
+					"status" => 1, 
+					"msg" => 'Transaction completed!',
+					"payment_transaction_id" => base64_encode($newData['payment_transaction_id'])
 				); 
 				 
+			}else {
+				$response = array(
+					"status" => 0,
+					"msg" => $api_error
+				);
 			}
 
 		}else {
 			$response = array(
-				'status' => 0, 
-				'msg' => 'Transaction Failed!'
+				"status" => 0, 
+				"msg" => 'Transaction Failed!'
 			); 
 		}
 
-		return json_encode($response);
+		echo json_encode($response);
+		exit();
 
 	}
 
 	function paymentStatus() {
 
+		$this->doc->setTitle("MLS - Payment Confirmation");
+
 		// Check whether the payment ID is not empty 
 		if(!empty($_GET['checkout_ref_id'])){ 
-			$payment_txn_id  = base64_decode($_GET['checkout_ref_id']); 
+			$payment_transaction_id  = base64_decode($_GET['checkout_ref_id']); 
 			
 			$transaction = $this->getModel("Transaction");
 			$transaction->column['payment_transaction_id'] = $payment_transaction_id;
@@ -273,13 +283,14 @@ class PurchasePremiumsController extends \Main\Controller {
 	
 	}
 
-    function request($method, $endpoint, $data, $headers = array()) {
+    function request($method, $endpoint, $data = null, $headers = array()) {
 
         $url = PAYPAL_ENVIRONMENT === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com";
 
 		$handle = curl_init($url.$endpoint);
         curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, FALSE);
 		
 		switch($method) {
 			
@@ -289,24 +300,24 @@ class PurchasePremiumsController extends \Main\Controller {
 				break;
 			
 			default:
+				curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $method);
 			
 		}
 		
-		/* Get the HTML or whatever is linked in $url. */
-		$response = curl_exec($handle);
+		$response = json_decode(curl_exec($handle), true);
 		
-		if($response === false) {
-			echo "cURL error" . curl_error($handle); 
-			exit();
-		} 
-
+		$http_code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
 		$header_info = curl_getinfo($handle, CURLINFO_HEADER_OUT);
 		curl_close($handle);
-		
+
+		if ($http_code != 200 && !empty($response['error'])) {
+			throw new Exception('Error '.$response['error'].': '.$response['error_description']);
+        }
+
 		return array(
-            "header" => $header_info,
-            "data" => json_decode($response, true)
-        );
+			"headers" => $header_info,
+			"data" => $response
+		);
 
     }
 
@@ -317,28 +328,25 @@ class PurchasePremiumsController extends \Main\Controller {
 		$handle = curl_init($url."/v1/oauth2/token");
 		curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($handle, CURLOPT_POST, true);
-        curl_setopt($handle, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
-		curl_setopt($handle, CURLOPT_HTTPHEADER, [
-			"Content-Type: application/x-www-form-urlencoded",
-			"Authorization: Basic ".base64_encode($this->client_id.":".$this->client_secret)
-		]);
-			
+		curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($handle, CURLOPT_USERPWD, $this->client_id.":".$this->client_secret);
+		curl_setopt($handle, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
 		
-		/* Get the HTML or whatever is linked in $url. */
-		$response = curl_exec($handle);
+		$response = json_decode(curl_exec($handle), true);
 		
-		if($response === false) {
-			echo "cURL error" . curl_error($handle); 
-			exit();
-		}
-		
+		$http_code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
 		$header_info = curl_getinfo($handle, CURLINFO_HEADER_OUT);
 		curl_close($handle);
 
+		if ($http_code != 200 && !empty($response['error'])) {
+			throw new Exception('Error '.$response['error'].': '.$response['error_description']);
+        }
+
 		return array(
 			"headers" => $header_info,
-			"data" => json_decode($response, true)
+			"data" => $response
 		);
+
 	}
 
 }

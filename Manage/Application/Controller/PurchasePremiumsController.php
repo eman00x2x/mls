@@ -4,16 +4,19 @@ namespace Manage\Application\Controller;
 
 class PurchasePremiumsController extends \Admin\Application\Controller\PurchasePremiumsController {
 
+	private $account_id;
+
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Admin");
+		parent::__construct();
+		$this->account_id = $_SESSION['account_id'];
 	}
 
 	function index() {
 		return parent::index();
 	}
 
-	function selectedPremium($premium_id) {
-		return parent::selectedPremium($premium_id);
+	function checkout($premium_id) {
+		return parent::selectedPremium($this->account_id, $premium_id);
 	}
 
 }

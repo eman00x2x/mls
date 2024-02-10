@@ -87,10 +87,10 @@ Router::post(ALIAS.'/subscriptions/saveNew', 'AccountSubscriptionController@save
 
 /** Premiums ROUTES */
 Router::get(ALIAS.'/premiums', 'PurchasePremiumsController@index', ['as' => 'premiums']);
-Router::get(ALIAS.'/premiums/selected/{premium_id}', 'PurchasePremiumsController@selectedPremium', ['as' => 'selectedPremium'])->where([ 'premium_id' => '[0-9]+' ]);
+Router::get(ALIAS.'/premiums/checkout/{premium_id}', 'PurchasePremiumsController@checkout', ['as' => 'checkout'])->where([ 'premium_id' => '[0-9]+' ]);
+Router::get(ALIAS.'/premiums/paymentStatus', 'PurchasePremiumsController@paymentStatus', ['as' => 'paymentStatus']);
 
 Router::post(ALIAS.'/premiums/checkoutValidate', 'PurchasePremiumsController@checkoutValidate', ['as' => 'checkoutValidate']);
-Router::post(ALIAS.'/premiums/paymentStatus', 'PurchasePremiumsController@paymentStatus', ['as' => 'paymentStatus']);
 
 /** INVOICE ROUTES */
 Router::get(ALIAS.'/invoices', 'InvoicesController@index', ['as' => 'deleteInvoice']);
