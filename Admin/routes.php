@@ -62,7 +62,9 @@ Router::post('/premiums/new/save', 'PremiumsController@saveNew', ['as' => 'premi
 Router::post('/premiums/{id}/edit/saveUpdate', 'PremiumsController@saveUpdate', ['as' => 'premiumsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 
 /** TRANSACTIONS ROUTES */
-Router::get('/transaction/{id}/delete', 'TransactionsController@delete', ['as' => 'deleteTransaction'])->where([ 'id' => '[0-9]+' ]);
+Router::get('/accounts/{account_id}/transactions', 'TransactionsController@index', ['as' => 'transactionIndex'])->where([ 'account_id' => '[0-9]+' ]);
+Router::get('/accounts/{account_id}/transactions/{id}/invoice', 'TransactionsController@invoices', ['as' => 'transactionInvoice'])->where([ 'account_id' => '[0-9]+', 'id' => '[0-9]+' ]);
+Router::get('/transactions/{id}/delete', 'TransactionsController@delete', ['as' => 'deleteTransaction'])->where([ 'id' => '[0-9]+' ]);
 
 /** ADMINISTRATION ROUTES */
 Router::get('/experiment', 'AdministrationController@experiment', ['as' => 'experiment']);

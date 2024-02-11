@@ -90,7 +90,8 @@ if(SHOW_PREMIUM) {
     Router::get(ALIAS.'/premiums', 'PremiumsController@index', ['as' => 'premiums']);
 
     /** TRANSACTIONS ROUTES */
-    Router::get(ALIAS.'/transactions', 'TransactionsController@index', ['as' => 'transactions']);
+    Router::get(ALIAS.'/transactions', 'TransactionsController@transactions', ['as' => 'transactions']);
+    Router::get(ALIAS.'/transactions/{id}', 'TransactionsController@index', ['as' => 'transactions'])->where([ 'id' => '[0-9]+' ]);
     Router::get(ALIAS.'/transactions/checkout/{premium_id}', 'TransactionsController@checkout', ['as' => 'checkout'])->where([ 'premium_id' => '[0-9]+' ]);
     Router::get(ALIAS.'/transactions/paymentStatus', 'TransactionsController@paymentStatus', ['as' => 'paymentStatus']);
     Router::get(ALIAS.'/transactions/{id}/invoice', 'TransactionsController@invoice', ['as' => 'invoice'])->where([ 'id' => '[0-9]+' ]);

@@ -1,5 +1,6 @@
 <?php
 
+$html[] = "<div class='container-xl'>";
 $html[] = "<div class='row justify-content-center'>";
     $html[] = "<div class='col-md-8 col-12'>";
 
@@ -15,6 +16,14 @@ $html[] = "<div class='row justify-content-center'>";
 					$html[] = "<div class='col-auto ms-auto d-print-none'>";
 						$html[] = "<div class='d-none d-sm-inline'>";
 							$html[] = "<div class='btn-list'>";
+
+								if($_SESSION['account_type'] == "Administrator") {
+									$html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@view", ["id" => $data['account']['account_id']])."'>";
+										$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['account']['logo'].")'></span>";
+										$html[] = $data['account']['firstname']." ".$data['account']['lastname']." account";
+									$html[] = "</a>";
+								}
+								
 								$html[] = "<a class='ajax btn btn-dark' href='javascript:window.print()'><i class='ti ti-printer me-2'></i> Print</a>";
 							$html[] = "</div>";
 						$html[] = "</div>";
@@ -116,4 +125,5 @@ $html[] = "<div class='row justify-content-center'>";
 		$html[] = "</div>";
 
     $html[] = "</div>";
+$html[] = "</div>";
 $html[] = "</div>";

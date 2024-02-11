@@ -63,7 +63,7 @@ $html[] = "<div class='page-body'>";
 			$html[] = "</div>";
 		
 
-        $html[] = "<h3 class='text-center'>Available Individual</h3>";
+        $html[] = "<h3 class='text-center'>Available Add-On</h3>";
 
 		$html[] = "<div class='mb-5' style='overflow:auto; white-space: nowrap;'>";
             $html[] = "<div class='d-flex flex-row flex-nowrap justify-content-center '>";
@@ -88,7 +88,7 @@ $html[] = "<div class='page-body'>";
 										$html[] = "<ul>";
 									$html[] = "</div>";
 									$html[] = "<div class='text-center mt-4'>";
-										$html[] = "<a href='".url("PurchasePremiumsController@selectedPremium", ["premium_id" => $data['premiums']['individual'][$i]['premium_id']])."' class='btn w-100'>Subscribe</a>";
+										$html[] = "<a href='".url("TransactionsController@checkout", ["premium_id" => $data['premiums']['individual'][$i]['premium_id']])."' class='btn w-100'>Subscribe</a>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 							$html[] = "</div>";

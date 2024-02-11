@@ -286,10 +286,10 @@ $html[] = "<div class='page-body'>";
 											
 											$html[] = "<tr class='row_transaction_".$data['transaction'][$i]['transaction_id']."'>";
 												$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-												$html[] = "<td class='align-middle'>".date("F d, Y",$data['transaction'][$i]['created_at'])."</td>";
-												$html[] = "<td class='align-middle' style='width:300px !important'>".$data['transaction'][$i]['premium_description']."</td>";
-												$html[] = "<td class='align-middle text-center'>".strtoupper($data['transaction'][$i]['payment_source'])."</td>";
-												$html[] = "<td class='align-middle text-end'>&#8369;".number_format($data['transaction'][$i]['premium_price'],2)."</td>";
+												$html[] = "<td class='align-middle'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@invoice", ["account_id" => $data['account_id'], "id" => $data['transaction'][$i]['transaction_id']])."'>".date("F d, Y",$data['transaction'][$i]['created_at'])."</a></td>";
+												$html[] = "<td class='align-middle' style='width:300px !important'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@invoice", ["account_id" => $data['account_id'], "id" => $data['transaction'][$i]['transaction_id']])."'>".$data['transaction'][$i]['premium_description']."</a></td>";
+												$html[] = "<td class='align-middle text-center'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@invoice", ["account_id" => $data['account_id'], "id" => $data['transaction'][$i]['transaction_id']])."'>".strtoupper($data['transaction'][$i]['payment_source'])."</a></td>";
+												$html[] = "<td class='align-middle text-end'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@invoice", ["account_id" => $data['account_id'], "id" => $data['transaction'][$i]['transaction_id']])."'>&#8369;".number_format($data['transaction'][$i]['premium_price'],2)."</a></td>";
 												$html[] = "<td class='align-middle'>";
 													$html[] = "<span class='btn btn-outline-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("TransactionsController@delete",["id" => $data['transaction'][$i]['transaction_id']])."'><i class='ti ti-trash me-1'></i> Delete</span>";
 												$html[] = "</td>";

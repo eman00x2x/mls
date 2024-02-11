@@ -59,7 +59,7 @@
 									</a>
                 				</li>
 
-								<li class="nav-item <?php echo (url()->contains("/messages")) ? "active" : ""; ?>">
+								<li class="nav-item <?php echo (url()->contains("/threads")) ? "active" : ""; ?>">
 									<a class="nav-link" href="<?php echo url("MessagesController@index"); ?>">
 										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-message'></i></span>
 										<span class="nav-link-title">Messages</span>
@@ -68,26 +68,14 @@
 
 								<?php if(PREMIUM) { ?>
 									<?php if(SHOW_PREMIUM) { ?>
-										<li class="nav-item <?php echo (url()->contains("/subscriptions")) ? "active" : ""; ?>">
-											<a class="nav-link" href="<?php echo url("AccountSubscriptionController@index"); ?>">
-												<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-layers-union'></i></span>
-												<span class="nav-link-title">Subscriptions</span>
-											</a>
-										</li>
 										<?php if(isset($_SESSION['permissions']['subscriptions'])) { ?>
 											<li class="nav-item <?php echo (url()->contains("/premiums")) ? "active" : ""; ?>">
 												<a class="nav-link" href="<?php echo url("PremiumsController@index"); ?>">
 													<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-layers-union'></i></span>
-													<span class="nav-link-title">Premiums</span>
+													<span class="nav-link-title">Get Premium</span>
 												</a>
 											</li>
 										<?php } ?>
-										<li class="nav-item <?php echo (url()->contains("/transactions")) ? "active" : ""; ?>">
-											<a class="nav-link" href="<?php echo url("TransactionsController@index"); ?>">
-												<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-file-invoice'></i></span>
-												<span class="nav-link-title">Transactions</span>
-											</a>
-										</li>
 									<?php } ?>
 								<?php } ?>
 
@@ -147,7 +135,16 @@
 									<?php if(isset($_SESSION['permissions']['users']['access'])) { ?>
 										<a href="<?php echo url("UsersController@index"); ?>" class="dropdown-item"><i class='ti ti-users me-2'></i> Manage Users</a>
 									<?php } ?>
+
 									<a href="<?php echo url("UsersController@changePassword", ["id" => $_SESSION['user_id']]); ?>" class="dropdown-item"><i class='ti ti-key me-2'></i> Change Password</a>
+									
+									<?php if(PREMIUM) { ?>
+										<?php if(SHOW_PREMIUM) { ?>
+											<a href="<?php echo url("AccountSubscriptionController@index"); ?>" class="dropdown-item"><i class='ti ti-layers-union me-2'></i> My Subscriptions</a>
+											<a href="<?php echo url("TransactionsController@index"); ?>" class="dropdown-item"><i class='ti ti-file-invoice me-2'></i> My Transactions</a>
+										<?php } ?>
+									<?php } ?>
+									
 									<a href="?logout" class="dropdown-item"><i class='ti ti-logout-2 me-2'></i> Logout</a>
 								</div>
 							</div>

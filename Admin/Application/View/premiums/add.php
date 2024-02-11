@@ -73,7 +73,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<label class='col-sm-3 col-form-label'>Category</label>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select class='form-select' name='category'>";
-										foreach(["package","individual"] as $value) {
+										foreach(["package","add-on"] as $value) {
 											$html[] = "<option value='$value'>".ucwords(str_replace("_"," ",$value))."</option>";
 										}
 									$html[] = "</select>";
@@ -84,7 +84,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<label class='col-sm-3 col-form-label'>Type</label>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select class='form-select' name='type'>";
-										foreach(["permanent","limited_time"] as $value) {
+										foreach([/* "permanent", */"limited_time"] as $value) {
 											$sel = $value == "limited_time" ? "selected" : "";
 											$html[] = "<option value='$value' $sel>".ucwords(str_replace("_"," ",$value))."</option>";
 										}
@@ -96,7 +96,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<label class='col-sm-3 col-form-label'>Duration</label>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select class='form-select' name='duration'>";
-										foreach(["Permanent","10 days","15 days","30 days","40 days","60 days","90 days","120 days"] as $value) {
+										foreach([/* "Permanent", */"10 days","15 days","30 days","40 days","60 days","90 days","120 days","180 days","365 days"] as $value) {
 											$sel = $value == "30 days" ? "selected" : "";
 											$html[] = "<option value='$value' $sel>".$value."</option>";
 										}
