@@ -1,68 +1,25 @@
 <?php
 
-namespace Admin\Application\Controller;
+namespace Library;
 
-class PurchasePremiumsController extends \Main\Controller {
+// no direct access
 
-    private	$doc;
-	private	$client_id = PAYPAL_CLIENT_ID;
+defined( 'ACCESS' ) or die( 'Restricted access' );
+
+class PayPal {
+
+    private $doc;
+    private	$client_id = PAYPAL_CLIENT_ID;
     private	$client_secret = PAYPAL_CLIENT_SECRET;
     private	$currency = CURRENCY;
     private	$environment = PAYPAL_ENVIRONMENT;
 
-	function __construct()  {
-		$this->setTempalteBasePath(ROOT."Admin");
-		$this->doc = $this->getLibrary("Factory")->getDocument();
-	}
-
-    function index() {
-		
-		if(!PREMIUM) {
-			$this->response(404);
-		}
-
-		if(!isset($_SESSION['permissions']['subscriptions'])) {
-			$this->getLibrary("Factory")->setMsg("You do not have enough permissions to purchase a premium for this account","error");
-			response()->redirect(url("DashboardController@index"));
-		}
-		
-        $this->doc->setTitle("Premiums");
-        
-        $premium = $this->getModel("Premium");
-		$premium->where(" visibility = 1 ");
-		
-		$premium->page['limit'] = 20;
-		$premium->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$premium->page['target'] = url("PremiumsController@index");
-		$premium->page['uri'] = (isset($uri) ? $uri : []);
-
-		$data = $premium->getList();
-
-		if($data) {
-			for($i=0; $i<count($data); $i++) {
-				$list[$data[$i]['category']][] = $data[$i];
-			}
-        }
-		
-		$data['premiums'] = $list;
-
-		$this->setTemplate("purchasePremiums/premiums.php");
-		return $this->getTemplate($data,$premium);
-
+    function __construct() {
+        $this->doc =  \Library\Factory::getDocument();
     }
 
-    function selectedPremium($account_id, $premium_id) {
+    function createOrder($data, $validation_url, $payment_status_url) {
 
-		/* $_REQUEST['order_id'] = "81P68441X8030654W";
-		$_REQUEST['paypal_order_check'] = 1;
-		$_REQUEST['account_id'] = $_SESSION['account_id'];
-		debug($this->checkoutValidate()); */
-
-		$premium = $this->getModel("Premium");
-		$premium->column['premium_id'] = $premium_id;
-		$data = $premium->getById();
-
-		$this->doc->setTitle("Checkout Premiums");
         $this->doc->addScript("https://www.paypal.com/sdk/js?client-id=".$this->client_id."&currency=".$this->currency."&intent=capture&commit=false&vault=true");
 		$this->doc->addScriptDeclaration("
 
@@ -99,9 +56,9 @@ class PurchasePremiumsController extends \Main\Controller {
 
 						return actions.order.capture().then(function(orderData) {
 							setProcessing(true);
-
-							var postData = {account_id: $account_id, paypal_order_check: 1, order_id: orderData.id};
-							fetch('".url("PurchasePremiumsController@checkoutValidate")."', {
+							
+							var postData = {paypal_order_check: 1, order_id: orderData.id};
+							fetch('".$validation_url."', {
 								method: 'POST',
 								headers: {'Accept': 'application/json'},
 								body: encodeFormData(postData)
@@ -109,10 +66,8 @@ class PurchasePremiumsController extends \Main\Controller {
 							.then((response) => response.json())
 							.then((result) => {
 
-								console.log(result);
-
 								if(result.status == 1){
-									window.location.href = '".url("PurchasePremiumsController@paymentStatus")."?checkout_ref_id='+result.payment_transaction_id;
+									window.location.href = '".$payment_status_url."?checkout_ref_id='+result.payment_id;
 								}else{
 									$('.response').html(result.msg);
 								}
@@ -151,15 +106,12 @@ class PurchasePremiumsController extends \Main\Controller {
 			}  
 			
 		");
-        
-        $this->setTemplate("purchasePremiums/selectedPremium.php");
-		return $this->getTemplate($data,$premium);
 
     }
 
-	function checkoutValidate() {
+	function validatePayment($order_id) {
 
-		if(isset($_REQUEST['paypal_order_check']) && isset($_REQUEST['order_id'])) {
+		if(isset($order_id)) {
 
 			$response = $this->generateAccessToken();
 		
@@ -169,7 +121,7 @@ class PurchasePremiumsController extends \Main\Controller {
 			);
 			
 			try {
-				$order_response = $this->request("GET","/v2/checkout/orders/".$_REQUEST['order_id'], null, $headers);
+				$order_response = $this->request("GET","/v2/checkout/orders/".$order_id, null, $headers);
 			} catch(Exception $e) {  
 				$api_error = $e->getMessage();  
 			}
@@ -179,64 +131,55 @@ class PurchasePremiumsController extends \Main\Controller {
 				$intent = $order_response['data']['intent'];
 				$order_status = $order_response['data']['status'];
 
-				$newData['account_id'] = $_REQUEST['account_id'];
-				$newData['created_at'] = strtotime($order_response['data']['create_time']);
-				$newData['modified_at'] = DATE_NOW;
+				$new_data['modified_at'] = DATE_NOW;
 
 				if(!empty($order_response['data']['purchase_units'][0])){ 
 					$purchase_unit = $order_response['data']['purchase_units'][0]; 
 		
-					$newData['premium_id'] = $purchase_unit['reference_id'];
-					$newData['premium_description'] = $purchase_unit['description'];
+					$new_data['premium_id'] = $purchase_unit['reference_id'];
+					$new_data['premium_description'] = $purchase_unit['description'];
 					
 					if(!empty($purchase_unit['amount'])){
-						$newData['premium_price'] = $purchase_unit['amount']['value'];
+						$new_data['premium_price'] = $purchase_unit['amount']['value'];
 					} 
 		
 					if(!empty($purchase_unit['payments']['captures'][0])){ 
 						$payment_capture = $purchase_unit['payments']['captures'][0]; 
-						$newData['payment_transaction_id'] = $payment_capture['id']; 
-						$newData['payment_status'] = $payment_capture['status'];
-						$newData['transaction_details'] = json_encode($payment_capture);
+						$new_data['created_at'] = strtotime($payment_capture['create_time']);
+						$new_data['payment_id'] = $payment_capture['id']; 
+						$new_data['payment_status'] = $payment_capture['status'];
+						$new_data['transaction_details'] = $payment_capture;
 					} 
 		
 					if(!empty($purchase_unit['payee'])){ 
 						$payee = $purchase_unit['payee']; 
-						$newData['merchant_email'] = $payee['email_address']; 
-						$newData['merchant_id'] = $payee['merchant_id']; 
+						$new_data['merchant_email'] = $payee['email_address']; 
+						$new_data['merchant_id'] = $payee['merchant_id']; 
 					} 
 				} 
 		
-				$newData['payment_source'] = ''; 
+				$new_data['payment_source'] = ''; 
 				if(!empty($order_response['data']['payment_source'])){ 
 					foreach($order_response['data']['payment_source'] as $key => $value) { 
-						$newData['payment_source'] = $key; 
+						$new_data['payment_source'] = $key; 
 					} 
 				} 
 
 				if(!empty($order_response['data']['payer'])){
-					$newData['payer'] = json_encode($order_response['data']['payer']);
+					$new_data['payer'] = $order_response['data']['payer'];
 				} 
 
-				if(!empty($order_response['data']['id']) && $order_status == 'COMPLETED') { 
+				if(!empty($order_response['data']['id']) && $order_status == 'COMPLETED') {
 
-					$transaction = $this->getModel("Transaction");
-					$transaction->column['payment_transaction_id'] = $newData['payment_transaction_id'];
-					$data['transaction'] = $transaction->getByPaymentTransactionId();
-
-					if($data['transaction'] === false) {
-						$response = $transaction->saveNew($newData);
-						$data['transaction']['transaction_id'] = $response['id'];
-					}
+					$response = array(
+						"status" => 1,
+						"msg" => 'Transaction Completed!',
+						"payment_id" => base64_encode($new_data['payment_id']),
+						"processed_data" => $new_data
+					);
 
 				}
 
-				$response = array(
-					"status" => 1, 
-					"msg" => 'Transaction completed!',
-					"payment_transaction_id" => base64_encode($newData['payment_transaction_id'])
-				); 
-				 
 			}else {
 				$response = array(
 					"status" => 0,
@@ -251,39 +194,11 @@ class PurchasePremiumsController extends \Main\Controller {
 			); 
 		}
 
-		echo json_encode($response);
-		exit();
+		return $response;
 
 	}
 
-	function paymentStatus() {
-
-		$this->doc->setTitle("MLS - Payment Confirmation");
-
-		// Check whether the payment ID is not empty 
-		if(!empty($_GET['checkout_ref_id'])){ 
-			$payment_transaction_id  = base64_decode($_GET['checkout_ref_id']); 
-			
-			$transaction = $this->getModel("Transaction");
-			$transaction->column['payment_transaction_id'] = $payment_transaction_id;
-			$data['transaction'] = $transaction->getByPaymentTransactionId();
-		
-			if($data['transaction']){
-				$data['payment_status_message'] = 'Your Payment has been Successful!';
-			}else{ 
-				$data['payment_status_message'] = "Transaction has been failed!"; 
-			} 
-
-			$this->setTemplate("purchasePremiums/paymentStatus.php");
-			return $this->getTemplate($data,$transaction);
-
-		}
-
-		$this->response(404);
-	
-	}
-
-    function request($method, $endpoint, $data = null, $headers = array()) {
+	function request($method, $endpoint, $data = null, $headers = array()) {
 
         $url = PAYPAL_ENVIRONMENT === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com";
 

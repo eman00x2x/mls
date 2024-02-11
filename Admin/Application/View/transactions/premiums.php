@@ -51,7 +51,7 @@ $html[] = "<div class='page-body'>";
 											$html[] = "<ul>";
 										$html[] = "</div>";
 										$html[] = "<div class='text-center mt-4'>";
-											$html[] = "<a href='".url("PurchasePremiumsController@selectedPremium", ["premium_id" => $data['premiums']['package'][$i]['premium_id']])."' class='btn w-100'>Subscribe</a>";
+											$html[] = "<a href='".url("TransactionsController@checkout", ["premium_id" => $data['premiums']['package'][$i]['premium_id']])."' class='btn w-100'>Subscribe</a>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 								$html[] = "</div>";

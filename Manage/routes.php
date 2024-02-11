@@ -86,11 +86,12 @@ Router::get(ALIAS.'/subscriptions', 'AccountSubscriptionController@index', ['as'
 Router::post(ALIAS.'/subscriptions/saveNew', 'AccountSubscriptionController@saveNew', ['as' => 'accountSubscriptionSaveNew']);
 
 /** Premiums ROUTES */
-Router::get(ALIAS.'/premiums', 'PurchasePremiumsController@index', ['as' => 'premiums']);
-Router::get(ALIAS.'/premiums/checkout/{premium_id}', 'PurchasePremiumsController@checkout', ['as' => 'checkout'])->where([ 'premium_id' => '[0-9]+' ]);
-Router::get(ALIAS.'/premiums/paymentStatus', 'PurchasePremiumsController@paymentStatus', ['as' => 'paymentStatus']);
+Router::get(ALIAS.'/premiums', 'TransactionsController@index', ['as' => 'premiums']);
 
-Router::post(ALIAS.'/premiums/checkoutValidate', 'PurchasePremiumsController@checkoutValidate', ['as' => 'checkoutValidate']);
+Router::get(ALIAS.'/transactions/checkout/{premium_id}', 'TransactionsController@checkout', ['as' => 'checkout'])->where([ 'premium_id' => '[0-9]+' ]);
+Router::get(ALIAS.'/transactions/paymentStatus', 'TransactionsController@paymentStatus', ['as' => 'paymentStatus']);
+
+Router::post(ALIAS.'/transactions/validateCheckOut', 'TransactionsController@validateCheckOut', ['as' => 'validateCheckOut']);
 
 /** INVOICE ROUTES */
 Router::get(ALIAS.'/invoices', 'InvoicesController@index', ['as' => 'deleteInvoice']);

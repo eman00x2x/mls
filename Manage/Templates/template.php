@@ -75,7 +75,7 @@
 									</li>
 									<?php if(isset($_SESSION['permissions']['subscriptions'])) { ?>
 										<li class="nav-item <?php echo (url()->contains("/premiums")) ? "active" : ""; ?>">
-											<a class="nav-link" href="<?php echo url("PurchasePremiumsController@index"); ?>">
+											<a class="nav-link" href="<?php echo url("TransactionsController@index"); ?>">
 												<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-layers-union'></i></span>
 												<span class="nav-link-title">Premiums</span>
 											</a>
