@@ -25,9 +25,14 @@ define("ALIAS","managemls"); */
 
 define("VRSN","v1.0");
 
+/** Set the Email Address to use by the system to send email notifications to users */
 define("EMAIL_RESPONDER_ADDRESS","no-reply@mls.com");
 
+/** Enable premium set this to true */
 define("PREMIUM", true);
+
+/** if you want to enable premium from users set this to true */
+define("SHOW_PREMIUM", true);
 
 define("USER_PERMISSIONS",[
 	"account" => array (
@@ -110,3 +115,6 @@ define("PAYPAL_CLIENT_ID", "AczoZMmV6Tkw24LL55FDfCaCMsp7aSo5bf75EFLy22u0nswrH15C
 define("PAYPAL_CLIENT_SECRET", "EOxCjX0hgxSaffhW1QEFZcqto_LBL_qnAIl22TuYH1sVio-AljiMdb6ti95V8z0lb_RbKLexNcSSibE0");
 define("CURRENCY", "PHP");
 define("PAYPAL_ENVIRONMENT", "sandbox");
+
+/** if you want to include vat computation in INVOICE set this to true */
+define("VAT", true);

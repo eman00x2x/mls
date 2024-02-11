@@ -67,17 +67,25 @@
                 				</li>
 
 								<?php if(PREMIUM) { ?>
-									<li class="nav-item <?php echo (url()->contains("/subscriptions")) ? "active" : ""; ?>">
-										<a class="nav-link" href="<?php echo url("AccountSubscriptionController@index"); ?>">
-											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-layers-union'></i></span>
-											<span class="nav-link-title">Subscriptions</span>
-										</a>
-									</li>
-									<?php if(isset($_SESSION['permissions']['subscriptions'])) { ?>
-										<li class="nav-item <?php echo (url()->contains("/premiums")) ? "active" : ""; ?>">
-											<a class="nav-link" href="<?php echo url("TransactionsController@index"); ?>">
+									<?php if(SHOW_PREMIUM) { ?>
+										<li class="nav-item <?php echo (url()->contains("/subscriptions")) ? "active" : ""; ?>">
+											<a class="nav-link" href="<?php echo url("AccountSubscriptionController@index"); ?>">
 												<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-layers-union'></i></span>
-												<span class="nav-link-title">Premiums</span>
+												<span class="nav-link-title">Subscriptions</span>
+											</a>
+										</li>
+										<?php if(isset($_SESSION['permissions']['subscriptions'])) { ?>
+											<li class="nav-item <?php echo (url()->contains("/premiums")) ? "active" : ""; ?>">
+												<a class="nav-link" href="<?php echo url("PremiumsController@index"); ?>">
+													<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-layers-union'></i></span>
+													<span class="nav-link-title">Premiums</span>
+												</a>
+											</li>
+										<?php } ?>
+										<li class="nav-item <?php echo (url()->contains("/transactions")) ? "active" : ""; ?>">
+											<a class="nav-link" href="<?php echo url("TransactionsController@index"); ?>">
+												<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-file-invoice'></i></span>
+												<span class="nav-link-title">Transactions</span>
 											</a>
 										</li>
 									<?php } ?>

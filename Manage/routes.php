@@ -85,13 +85,18 @@ Router::get(ALIAS.'/subscriptions', 'AccountSubscriptionController@index', ['as'
 
 Router::post(ALIAS.'/subscriptions/saveNew', 'AccountSubscriptionController@saveNew', ['as' => 'accountSubscriptionSaveNew']);
 
-/** Premiums ROUTES */
-Router::get(ALIAS.'/premiums', 'TransactionsController@index', ['as' => 'premiums']);
+if(SHOW_PREMIUM) {
+    /** PREMIUMS ROUTES */
+    Router::get(ALIAS.'/premiums', 'PremiumsController@index', ['as' => 'premiums']);
 
-Router::get(ALIAS.'/transactions/checkout/{premium_id}', 'TransactionsController@checkout', ['as' => 'checkout'])->where([ 'premium_id' => '[0-9]+' ]);
-Router::get(ALIAS.'/transactions/paymentStatus', 'TransactionsController@paymentStatus', ['as' => 'paymentStatus']);
+    /** TRANSACTIONS ROUTES */
+    Router::get(ALIAS.'/transactions', 'TransactionsController@index', ['as' => 'transactions']);
+    Router::get(ALIAS.'/transactions/checkout/{premium_id}', 'TransactionsController@checkout', ['as' => 'checkout'])->where([ 'premium_id' => '[0-9]+' ]);
+    Router::get(ALIAS.'/transactions/paymentStatus', 'TransactionsController@paymentStatus', ['as' => 'paymentStatus']);
+    Router::get(ALIAS.'/transactions/{id}/invoice', 'TransactionsController@invoice', ['as' => 'invoice'])->where([ 'id' => '[0-9]+' ]);
 
-Router::post(ALIAS.'/transactions/validateCheckOut', 'TransactionsController@validateCheckOut', ['as' => 'validateCheckOut']);
+    Router::post(ALIAS.'/transactions/validateCheckOut', 'TransactionsController@validateCheckOut', ['as' => 'validateCheckOut']);
+}
 
 /** INVOICE ROUTES */
 Router::get(ALIAS.'/invoices', 'InvoicesController@index', ['as' => 'deleteInvoice']);

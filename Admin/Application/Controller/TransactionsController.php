@@ -17,38 +17,6 @@ class TransactionsController extends \Main\Controller {
 
     function index() {
 		
-		if(!PREMIUM) {
-			$this->response(404);
-		}
-
-		if(!isset($_SESSION['permissions']['subscriptions'])) {
-			$this->getLibrary("Factory")->setMsg("You do not have enough permissions to purchase a premium for this account","error");
-			response()->redirect(url("DashboardController@index"));
-		}
-		
-        $this->doc->setTitle("Premiums");
-        
-        $premium = $this->getModel("Premium");
-		$premium->where(" visibility = 1 ");
-		
-		$premium->page['limit'] = 20;
-		$premium->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$premium->page['target'] = url("PremiumsController@index");
-		$premium->page['uri'] = (isset($uri) ? $uri : []);
-
-		$data = $premium->getList();
-
-		if($data) {
-			for($i=0; $i<count($data); $i++) {
-				$list[$data[$i]['category']][] = $data[$i];
-			}
-        }
-		
-		$data['premiums'] = $list;
-
-		$this->setTemplate("transactions/premiums.php");
-		return $this->getTemplate($data,$premium);
-
     }
 
     function selectedPremium($account_id, $premium_id) {
@@ -92,16 +60,18 @@ class TransactionsController extends \Main\Controller {
 
 			if($data['transaction'] === false) {
 
+				$premium = $this->getModel("Premium");
+				$premium->column['premium_id'] = $new_data['premium_id'];
+				$premium_data = $premium->getById();
+
 				$new_data['transaction_details'] = json_encode($new_data['transaction_details']);
 				$new_data['payer'] = json_encode($new_data['payer']);
 
 				$new_data['payment_transaction_id'] = $new_data['payment_id'];
+				$new_data['premium_description'] = "[".$premium_data['name']."] ".$premium_data['details']."";
+
 				$processed_data = $transaction->saveNew($new_data);
 				$data['transaction']['transaction_id'] = $processed_data['id'];
-
-				$premium = $this->getModel("Premium");
-				$premium->column['premium_id'] = $new_data['premium_id'];
-				$premium_data = $premium->getById();
 
 				$account_subscription = $this->getModel("AccountSubscription");
 				$account_subscription->saveNew([
@@ -129,7 +99,8 @@ class TransactionsController extends \Main\Controller {
 		$this->doc->setTitle("MLS - Payment Confirmation");
 
 		// Check whether the payment ID is not empty 
-		if(!empty($_GET['checkout_ref_id'])){ 
+		if(!empty($_GET['checkout_ref_id'])) {
+			
 			$payment_transaction_id  = base64_decode($_GET['checkout_ref_id']); 
 			
 			$transaction = $this->getModel("Transaction");
@@ -149,6 +120,66 @@ class TransactionsController extends \Main\Controller {
 
 		$this->response(404);
 	
+	}
+
+	function invoices($account_id, $transaction_id) {
+
+		$account = $this->getModel("Account");
+		$account->column['account_id'] = $account_id;
+		$data['account'] = $account->getById();
+
+		$transaction = $this->getModel("Transaction");
+		$transaction->column['transaction_id'] = $transaction_id;
+		$data['transaction'] = $transaction->getById();
+
+		if(VAT) {
+			$data['transaction']['premium_price'] = ($data['transaction']['premium_price'] / 1.12);
+			$data['vat'] = $data['transaction']['premium_price'] * 0.12;
+			$data['total'] = $data['transaction']['premium_price'] + $data['vat'];
+		}else {
+			$data['total'] = $data['transaction']['premium_price'];
+		}
+
+		$this->setTemplate("transactions/invoice.php");
+		return $this->getTemplate($data,$transaction);
+	}
+
+	function delete($id) {
+
+		$this->doc->addStyleDeclaration("
+			.icon-tabler-alert-triangle {
+				color: red;
+				width: 132px;
+				height: 132px;
+				stroke-width: 1.25;
+			}
+
+		");
+
+		$transaction = $this->getModel("Transaction");
+		$transaction->column['transaction_id'] = $id;
+		$data['transaction'] = $transaction->getById();
+
+		if($data) {
+			if(isset($_REQUEST['delete'])) {
+				$response = $transaction->deleteTransaction($id);
+
+				$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
+				return json_encode(
+					array(
+						"status" => 1,
+						"message" => getMsg()
+					)
+				);
+			}
+
+		}else {
+			$this->getLibrary("Factory")->setMsg("Transaction not found.","warning");
+		}
+
+		$this->setTemplate("transactions/delete.php");
+		return $this->getTemplate($data);
+
 	}
 
 }

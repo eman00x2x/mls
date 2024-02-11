@@ -15,7 +15,7 @@ class AccountSubscriptionController extends \Main\Controller {
 	function view($user_id) {
 
 	}
-	
+
 	function saveNew() {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
@@ -28,8 +28,31 @@ class AccountSubscriptionController extends \Main\Controller {
 		$account_subscription = $this->getModel("AccountSubscription");
 		$response = $account_subscription->saveNew($_POST);
 
-		$invoices = $this->getModel("Invoice");
-		$invoices->saveNew($_POST);
+		$transaction = $this->getModel("Transaction");
+		$transaction->saveNew([
+			"account_id" => $_POST['account_id'],
+			"premium_id" => $_POST['premium_id'],
+			"premium_description" => $_POST['premium_description'],
+			"premium_price" => $_POST['premium_price'],
+			"payer" => json_encode($_POST['payer']),
+			"payment_transaction_id" => DATE_NOW,
+			"payment_source" => $_POST['payment_source'],
+			"payment_status" => "COMPLETED",
+			"transaction_details" => json_encode(
+				array(
+					"status" => "COMPLETED",
+					"transaction" => array(
+						"account_id" => $_SESSION['account_id'],
+						"account_type" => $_SESSION['account_type'],
+						"account_permissions" => $_SESSION['permissions'],
+						"name" => $_SESSION['name'],
+						"created_at" => DATE_NOW
+					)
+				)
+			),
+			"created_at" => DATE_NOW,
+			"modified_at" => 0
+		]);
 		
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 		

@@ -13,7 +13,6 @@ Router::get('/accounts', 'AccountsController@index', ['as' => 'accounts']);
 Router::get('/accounts/new', 'AccountsController@add', ['as' => 'accountsAdd']);
 Router::get('/accounts/{id}', 'AccountsController@view', ['as' => 'accountsView'])->where([ 'id' => '[0-9]+' ]);
 Router::get('/accounts/{id}/edit', 'AccountsController@edit', ['as' => 'accountsEdit'])->where([ 'id' => '[0-9]+' ]);
-Router::get('/accounts/{id}/subscriptionSelectionNew', 'AccountsController@subscriptionSelectionNew', ['as' => 'accountsSubscriptionSelectionNew'])->where([ 'id' => '[0-9]+' ]);
 Router::get('/accounts/{id}/delete', 'AccountsController@delete', ['as' => 'accountsDelete'])->where([ 'id' => '[0-9]+' ]);
 
 Router::post('/accounts/saveNewAccount', 'AccountsController@saveNew', ['as' => 'saveNewAccount']);
@@ -53,6 +52,7 @@ Router::post('/account_subscription/saveNew', 'AccountSubscriptionController@sav
 
 /** PREMIUMS ROUTES */
 Router::get('/premiums', 'PremiumsController@index', ['as' => 'premiums']);
+Router::get('/accounts/{id}/subscriptionSelectionNew', 'PremiumsController@premiumSelection', ['as' => 'accountsSubscriptionSelectionNew'])->where([ 'id' => '[0-9]+' ]);
 Router::get('/premiums/new', 'PremiumsController@add', ['as' => 'premiumsAdd']);
 Router::get('/premiums/{id}', 'PremiumsController@view', ['as' => 'premiumsView'])->where([ 'id' => '[0-9]+' ]);
 Router::get('/premiums/{id}/edit', 'PremiumsController@edit', ['as' => 'premiumsEdit'])->where([ 'id' => '[0-9]+' ]);
@@ -61,8 +61,8 @@ Router::get('/premiums/{id}/delete', 'PremiumsController@delete', ['as' => 'prem
 Router::post('/premiums/new/save', 'PremiumsController@saveNew', ['as' => 'premiumsSaveNew']);
 Router::post('/premiums/{id}/edit/saveUpdate', 'PremiumsController@saveUpdate', ['as' => 'premiumsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 
-/** INVOICE ROUTES */
-Router::get('/invoices/{id}/delete', 'InvoicesController@delete', ['as' => 'deleteInvoice'])->where([ 'id' => '[0-9]+' ]);
+/** TRANSACTIONS ROUTES */
+Router::get('/transaction/{id}/delete', 'TransactionsController@delete', ['as' => 'deleteTransaction'])->where([ 'id' => '[0-9]+' ]);
 
 /** ADMINISTRATION ROUTES */
 Router::get('/experiment', 'AdministrationController@experiment', ['as' => 'experiment']);

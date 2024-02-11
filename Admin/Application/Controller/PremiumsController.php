@@ -45,6 +45,38 @@ class PremiumsController extends \Main\Controller {
 		return $this->getTemplate($data,$premium);
 
 	}
+
+	function premiumSelection($account_id) {
+
+		if(!PREMIUM) {
+			$this->response(404);
+		}
+
+		if($account_id) {
+
+			$premium = $this->getModel("Premium");
+
+			if(!isset($_REQUEST['premium_id'])) {
+				$premium->page['limit'] = 999999;
+				$data['premiums'] = $premium->getList();
+			}else {
+				$premium->column['premium_id'] = $_REQUEST['premium_id'];
+				$data['premium'] = $premium->getById();
+
+				$accounts = $this->getModel("Account");
+				$accounts->column['account_id'] = $account_id;
+				$data['account'] = $accounts->getById();
+			}
+
+			$data['account_id'] = $account_id;
+
+			$this->setTemplate("premiums/selection.php");
+			return $this->getTemplate($data);
+		}
+
+		$this->response(404);
+
+	}
 	
 	function view($id) {
 

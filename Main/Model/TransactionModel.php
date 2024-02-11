@@ -10,6 +10,11 @@ class TransactionModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getByAccountId() {
+		$this->where(" account_id = ".$this->column['account_id']);
+		return $this->getList();
+	}
+
 	function getByPaymentTransactionId() {
 		
 		$query = "SELECT * FROM #__transactions WHERE payment_transaction_id = '".$this->column['payment_transaction_id']."' ".$this->and;

@@ -18,7 +18,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 								$html[] = "<a class='dropdown-item ajax' href='".url("ListingsController@index",["id" => $data['account_id']])."' ><i class='ti ti-building-estate me-2'></i> Manage Property Listings</a>";
 								
 								if(PREMIUM) {
-									$html[] = "<span class='dropdown-item ajax cursor-pointer' data-bs-toggle='modal' data-bs-target='#accountModal' data-url='".url("AccountsController@subscriptionSelectionNew",["id" => $data['account_id']])."' ><i class='ti ti-plus me-2'></i> Add Subscription</span>";
+									$html[] = "<span class='dropdown-item ajax cursor-pointer' data-bs-toggle='modal' data-bs-target='#accountModal' data-url='".url("PremiumsController@premiumSelection",["id" => $data['account_id']])."' ><i class='ti ti-plus me-2'></i> Add Subscription</span>";
 								}
 								
 								if($data['account_type'] != "Administrator") {
@@ -260,12 +260,12 @@ $html[] = "<div class='page-body'>";
 
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-header'>";
-							$html[] = "<h4 class='text-blue card-title mb-0'>Invoices</h4>";
+							$html[] = "<h4 class='text-blue card-title mb-0'>Transactions</h4>";
 						$html[] = "</div>";
 					
 						$html[] = "<div class='card-body'>";
 							
-							if($data['invoices']) { $c=0;
+							if($data['transaction']) { $c=0;
 								$html[] = "<div style='max-height: 500px; overflow-x:auto;'>";
 									$html[] = "<div class='table-responsive'>";
 										
@@ -273,25 +273,25 @@ $html[] = "<div class='page-body'>";
 										$html[] = "<thead>";
 											$html[] = "<tr>";
 												$html[] = "<th class='text-center w-1'>#</th>";
-												$html[] = "<th>Invoice Date</th>";
-												$html[] = "<th>Details</th>";
-												$html[] = "<th class='text-center'>Payment Gateway</th>";
+												$html[] = "<th>Transaction Date</th>";
+												$html[] = "<th>Premium</th>";
+												$html[] = "<th class='text-center'>Payment Source</th>";
 												$html[] = "<th class='text-end'>Amount</th>";
 												$html[] = "<th></th>";
 											$html[] = "</tr>";
 										$html[] = "</thead>";
 										
 										$html[] = "<tbody>";
-										for($i=0; $i<count($data['invoices']); $i++) { $c++;
+										for($i=0; $i<count($data['transaction']); $i++) { $c++;
 											
-											$html[] = "<tr class='row_invoice_".$data['invoices'][$i]['invoice_id']."'>";
+											$html[] = "<tr class='row_transaction_".$data['transaction'][$i]['transaction_id']."'>";
 												$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-												$html[] = "<td class='align-middle'>".date("F d, Y",$data['invoices'][$i]['invoice_date'])."</td>";
-												$html[] = "<td class='align-middle' style='width:300px !important'>".$data['invoices'][$i]['details']."</td>";
-												$html[] = "<td class='align-middle text-center'>".$data['invoices'][$i]['payment_gateway']."</td>";
-												$html[] = "<td class='align-middle text-end'>".number_format($data['invoices'][$i]['invoice_amount'],2)."</td>";
+												$html[] = "<td class='align-middle'>".date("F d, Y",$data['transaction'][$i]['created_at'])."</td>";
+												$html[] = "<td class='align-middle' style='width:300px !important'>".$data['transaction'][$i]['premium_description']."</td>";
+												$html[] = "<td class='align-middle text-center'>".strtoupper($data['transaction'][$i]['payment_source'])."</td>";
+												$html[] = "<td class='align-middle text-end'>&#8369;".number_format($data['transaction'][$i]['premium_price'],2)."</td>";
 												$html[] = "<td class='align-middle'>";
-													$html[] = "<span class='btn btn-outline-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("InvoicesController@delete",["id" => $data['invoices'][$i]['invoice_id']])."'><i class='ti ti-trash me-1'></i> Delete</span>";
+													$html[] = "<span class='btn btn-outline-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("TransactionsController@delete",["id" => $data['transaction'][$i]['transaction_id']])."'><i class='ti ti-trash me-1'></i> Delete</span>";
 												$html[] = "</td>";
 											$html[] = "</tr>";
 											
@@ -303,7 +303,7 @@ $html[] = "<div class='page-body'>";
 								$html[] = "</div>";
 								
 							}else {
-								$html[] = "<p class='mt-3'>This account does not have any invoice.</p>";
+								$html[] = "<p class='mt-3'>This account does not have any transaction.</p>";
 							}
 
 						$html[] = "</div>";

@@ -20,7 +20,7 @@ class PayPal {
 
     function createOrder($data, $validation_url, $payment_status_url) {
 
-        $this->doc->addScript("https://www.paypal.com/sdk/js?client-id=".$this->client_id."&currency=".$this->currency."&intent=capture&commit=false&vault=true");
+        $this->doc->addScript("https://www.paypal.com/sdk/js?client-id=".$this->client_id."&currency=".$this->currency."&intent=capture&commit=false&vault=false");
 		$this->doc->addScriptDeclaration("
 
 			var paymentPageLink;
@@ -42,7 +42,7 @@ class PayPal {
 							\"intent\": \"CAPTURE\",
 							\"purchase_units\": [{
 								\"reference_id\": \"".$data["premium_id"]."\",
-								\"description\": \"".$data["name"]." [".$data["details"]."]\",
+								\"description\": \"".nicetrim("[".$data["name"]."] ".$data["details"],100)."\",
 								\"amount\": {
 									\"currency_code\": \"".$this->currency."\",
 									\"value\": ".$data["cost"]."
@@ -131,7 +131,7 @@ class PayPal {
 				$intent = $order_response['data']['intent'];
 				$order_status = $order_response['data']['status'];
 
-				$new_data['modified_at'] = DATE_NOW;
+				$new_data['modified_at'] = 0;
 
 				if(!empty($order_response['data']['purchase_units'][0])){ 
 					$purchase_unit = $order_response['data']['purchase_units'][0]; 

@@ -142,7 +142,7 @@ class AccountsController extends \Main\Controller {
 		
 			$accounts = $this->getModel("Account");
 			$user = $this->getModel("User");
-			$invoices = $this->getModel("Invoice");
+			$transaction = $this->getModel("Transaction");
 			$subscription = $this->getModel("AccountSubscription");
 
 			$accounts->column['account_id'] = $account_id;
@@ -154,7 +154,7 @@ class AccountsController extends \Main\Controller {
 				$user->orderBy(" date_added DESC ");
 				$data['users'] = $user->getList(); 
 
-				$subscription->page['limit'] = 100;
+				$subscription->page['limit'] = 10;
 				$subscription
 				->select("acs.account_subscription_id, s.premium_id, s.name, s.details, subscription_start_date, subscription_end_date, script")
 				->join(" acs JOIN #__premiums s ON s.premium_id=acs.premium_id ")
@@ -177,9 +177,9 @@ class AccountsController extends \Main\Controller {
 					}
 				}
 
-				$invoices->page['limit'] = 100;
-				$invoices->where(" account_id = ".$data['account_id']." ORDER BY invoice_id DESC ");
-				$data['invoices'] = $invoices->getList();
+				$transaction->page['limit'] = 10;
+				$transaction->where(" account_id = ".$data['account_id']." ORDER BY created_at DESC ");
+				$data['transaction'] = $transaction->getList();
 
 				$this->setTemplate("accounts/view.php");
 				return $this->getTemplate($data);
@@ -229,34 +229,6 @@ class AccountsController extends \Main\Controller {
 		
 	}
 
-	function subscriptionSelectionNew($account_id) {
-
-		if(!PREMIUM) {
-			$this->response(404);
-		}
-
-		if($account_id) {
-
-			$premium = $this->getModel("Premium");
-
-			if(!isset($_REQUEST['premium_id'])) {
-				$premium->page['limit'] = 999999;
-				$data['premiums'] = $premium->getList();
-			}else {
-				$premium->column['premium_id'] = $_REQUEST['premium_id'];
-				$data['premium'] = $premium->getById();
-			}
-
-			$data['account_id'] = $account_id;
-
-			$this->setTemplate("premiums/selection.php");
-			return $this->getTemplate($data);
-		}
-
-		$this->response(404);
-
-	}
-	
 	function saveNew() {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
