@@ -33,7 +33,7 @@ $html[] = "<page style='font-size: 12pt'>";
 					$html[] = "<table>";
 					$html[] = "<tr>";
 
-						for($i=0; $i<count($data['listing']['images']); $i++) {
+						for($i=5; $i<count($data['listing']['images']); $i++) {
 
 							if($i % 2 == 0) {}else {
 								$html[] = "</tr>";

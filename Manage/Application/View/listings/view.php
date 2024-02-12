@@ -88,6 +88,8 @@ $html[] = "<div class='page-body'>";
 			$html[] = "<div class='col-md-9 col-12'>";
                 $html[] = "<div class='box-container mb-3'>";
 
+                    $html[] = "<h3>[Id: ".$data['listing']['listing_id']."] ".$data['listing']['title']." <small class='d-block fw-normal'><i class='ti ti-map-pin me-1'></i> ".$data['listing']['address']['municipality'].", ".$data['listing']['address']['province']."</small></h3>";
+
                     $html[] = "<div class='slider'>";
                         if($data['listing']['images']) {
                             for($i=0; $i<count($data['listing']['images']); $i++) {
@@ -96,21 +98,33 @@ $html[] = "<div class='page-body'>";
                         }
                     $html[] = "</div>";
 
-                    $html[] = "<h3>".$data['listing']['title']." <small class='d-block fw-normal'>".ucwords($data['listing']['offer'])." ".$data['listing']['category']." in ".$data['listing']['address']['municipality'].", ".$data['listing']['address']['province']."</small></h3>";
-
                     $html[] = "<div class='mb-3'>";
-                        $html[] = "<div class='d-flex'>";
-                            $html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Floor Area</label>".number_format($data['listing']['floor_area'],0)." sqm</span>";
-                            $html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Lot Area</label>".number_format($data['listing']['lot_area'],0)." sqm</span>";
-                            $html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Unit Area</label>".number_format($data['listing']['unit_area'],0)." sqm</span>";
-                            $html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Bedroom</label>".$data['listing']['bedroom']."</span>";
-                            $html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Bathroom</label>".$data['listing']['bathroom']."</span>";
-                            $html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Car Garage</label>".$data['listing']['parking']."</span>";
+                        $html[] = "<div class='row'>";
+                            $html[] = "<div class='col-4'>";
+                                $html[] = "<table>";
+                                $html[] = "<tr><td colspan='2'>".$data['listing']['category']."</td></tr>";
+								if($data['listing']['floor_area'] > 0) { $html[] = "<tr><td style='width:120px;'>Floor Area</td>	<td><i class='ti ti-ruler me-2'></i> ".number_format($data['listing']['floor_area'],0)." sqm</td></tr>"; }
+                                if($data['listing']['lot_area'] > 0) { $html[] = "<tr><td style='width:120px;'>Lot Area</td>		<td><i class='ti ti-ruler me-2'></i> ".number_format($data['listing']['lot_area'],0)." sqm</td></tr>"; }
+                                if($data['listing']['unit_area'] > 0) { $html[] = "<tr><td style='width:120px;'>Unit Area</td>		<td><i class='ti ti-ruler-measure me-2'></i> ".number_format($data['listing']['unit_area'],0)." sqm</td></tr>"; }
+                                if($data['listing']['bedroom'] != "") { $html[] = "<tr><td style='width:120px;'>Bedroom</td>		<td><i class='ti ti-bed me-2'></i> ".$data['listing']['bedroom']."</td></tr>"; }
+                                if($data['listing']['bathroom'] != "") { $html[] = "<tr><td style='width:120px;'>Bathroom</td>		<td><i class='ti ti-bath me-2'></i> ".$data['listing']['bathroom']."</td></tr>"; }
+								$html[] = "<tr><td style='width:120px;'>Car Garage</td>       										<td><i class='ti ti-car-garage me-2'></i> ".($data['listing']['parking'] > 0 ? $data['listing']['parking'] : "No Parking")."</td></tr>";
+                                $html[] = "</table>";
+                            $html[] = "</div>";
+
+							$html[] = "<div class='col-8'>";
+								$html[] = "<h3 class='mb-0'><i class='ti ti-key me-2'></i> Amenities</h3>";
+                    			$html[] = "<p class='mb-2'>".str_replace(",",", ", ucwords($data['listing']['amenities']))."</p>";
+								$html[] = "<p class=''><i class='ti ti-tags me-2'></i> Tags: ".implode(", ",$data['listing']['tags'])."</p>";
+
+								$html[] = "<div class='mb-3'>";
+									$html[] = "<span class='text-muted d-block'>Selling Price</span>";
+									$html[] = "<p class='p-0 m-0 fw-bold fs-30'><img src='".CDN."images/icons/currency-peso.png' style='width:32px;' />".number_format($data['listing']['price'],0)."</p>";
+								$html[] = "</div>";
+
+                            $html[] = "</div>";
                         $html[] = "</div>";
                     $html[] = "</div>";
-
-                    $html[] = "<h3 class='mb-0'>Amenities</h3>";
-                    $html[] = str_replace(",",", ", ucwords($data['listing']['amenities']));
 
                     $html[] = "<h3 class='mt-3 mb-2'>Pricing</h3>";
                     $html[] = "<div class='mb-3'>";
