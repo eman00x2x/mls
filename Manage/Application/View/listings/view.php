@@ -24,8 +24,8 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='d-none d-sm-inline'>";
 					$html[] = "<div class='btn-list'>";
-						
 						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@handshakedIndex")."'><i class='ti ti-heart-handshake me-2'></i> Handshaked</a>";
+						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@downloadPDFFormat", ["id" => $data['listing']['listing_id']])."'><i class='ti ti-download me-2'></i> Download</a>";
 						
 					$html[] = "</div>";
 				$html[] = "</div>";
@@ -44,7 +44,7 @@ $html[] = "<div class='page-body'>";
 
 		$html[] = "<div class='row'>";
 
-            $html[] = "<div class='col-md-3 col-12'>";
+            $html[] = "<div class='col-md-3 col-12 mls-sidebar'>";
                 $html[] = "<div class='box-container mb-3'>";
                     $html[] = "<h3 class=''>Broker Details</h3>";
                     $html[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$data['account']['logo'].")'></div>";

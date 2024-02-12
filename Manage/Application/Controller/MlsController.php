@@ -2,6 +2,10 @@
 
 namespace Manage\Application\Controller;
 
+use Spipu\Html2Pdf\Html2Pdf;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
+use Spipu\Html2Pdf\Exception\ExceptionFormatter;
+
 class MlsController extends \Admin\Application\Controller\ListingsController {
 	
 	private $account_id;
@@ -456,6 +460,42 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$handshake = $this->getModel("Handshake");
 		$handshake->query(" DELETE FROM #__handshake WHERE date_created <= $time ");
 
+	}
+
+	function downloadPDFFormat($id)  {
+
+		$listing = $this->getModel("Listing");
+		$listing->column['listing_id'] = $id;
+		$data['listing'] = $listing->getById();
+
+		$listingImage = $this->getModel("ListingImage");
+		$listingImage->column['listing_id'] = $id;
+		$data['listing']['images'] = $listingImage->getByListingId();
+
+		$this->setTemplate("listings/download.php");
+
+		try {
+
+			$filename = $data['listing']['name'].".pdf";
+
+			ob_start();
+				echo $this->getTemplate($data,$listing);
+			$content = ob_get_clean();
+
+			$pdf = new Html2Pdf('P', 'Letter',);
+			$pdf->pdf->SetDisplayMode('fullpage');
+			$pdf->writeHTML($content);
+			$pdf->Output($filename);
+
+		} catch (Html2PdfException $e) {
+			$pdf->clean();
+
+			$formatter = new ExceptionFormatter($e);
+			echo $formatter->getHtmlMessage();
+		}
+
+        exit();
+		
 	}
 	
 }

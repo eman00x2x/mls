@@ -54,6 +54,9 @@ Router::get(ALIAS.'/mls/handshaked/{id}/deniedRequest', 'MlsController@deniedReq
 Router::get(ALIAS.'/mls/handshaked/{id}/doneHandshake', 'MlsController@doneHandshake', ['as' => 'doneHandshake'])->where([ 'id' => '[0-9]+' ]);
 Router::get(ALIAS.'/mls/handshaked/{listing_id}/cancelHandshake', 'MlsController@cancelHandshake', ['as' => 'cancelHandshake'])->where([ 'listing_id' => '[0-9]+' ]);
 
+/** DOWNLOAD URL */
+Router::get(ALIAS.'/mls/{id}/download', 'MlsController@downloadPDFFormat', ['as' => 'listingsView'])->where([ 'id' => '[0-9]+' ]);
+
 Router::get(ALIAS.'/mls/{id}', 'MlsController@viewListing', ['as' => 'viewListing'])->where([ 'id' => '[0-9]+' ]);
 Router::get(ALIAS.'/mls/{listing_id}/requestHandshake', 'MlsController@requestHandshake', ['as' => 'requestHandshake'])->where([ 'listing_id' => '[0-9]+' ]);
 
