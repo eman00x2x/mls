@@ -19,7 +19,6 @@ class DeletedThreadModel extends \Main\Model {
 		$v = $this->getValidator();
 
 		$v->validateGeneral($data['thread_id'],"thread_id ");
-		$v->validateGeneral($data['user_id'],"user_id ");
 		$v->validateGeneral($data['account_id'],"account_id");
 
 		if($v->foundErrors()) {
@@ -55,7 +54,6 @@ class DeletedThreadModel extends \Main\Model {
 			$v = $this->getValidator();
 
 			$v->validateGeneral($data['thread_id'],"thread_id ");
-			$v->validateGeneral($data['user_id'],"user_id ");
 			$v->validateGeneral($data['account_id'],"account_id");
 
 			if($v->foundErrors()) {

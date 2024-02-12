@@ -88,7 +88,7 @@ $html[] = "<div class='page-body'>";
 			$html[] = "<div class='col-md-9 col-12'>";
                 $html[] = "<div class='box-container mb-3'>";
 
-                    $html[] = "<h3>[Id: ".$data['listing']['listing_id']."] ".$data['listing']['title']." <small class='d-block fw-normal'><i class='ti ti-map-pin me-1'></i> ".$data['listing']['address']['municipality'].", ".$data['listing']['address']['province']."</small></h3>";
+                    $html[] = "<h2 class='mt-0'>[Id: ".$data['listing']['listing_id']."] ".$data['listing']['title']." <small class='d-block fw-normal'><i class='ti ti-map-pin me-1'></i> ".$data['listing']['address']['municipality'].", ".$data['listing']['address']['province']."</small></h2>";
 
                     $html[] = "<div class='slider'>";
                         if($data['listing']['images']) {
@@ -126,20 +126,7 @@ $html[] = "<div class='page-body'>";
                         $html[] = "</div>";
                     $html[] = "</div>";
 
-                    $html[] = "<h3 class='mt-3 mb-2'>Pricing</h3>";
-                    $html[] = "<div class='mb-3'>";
-                        $html[] = "<div class='d-flex'>";
-                            $html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Price</label>".number_format($data['listing']['price'],0)."</span>";
-                            $html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Reservation</label>".number_format($data['listing']['reservation'],0)."</span>";
-                            $html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Monthly Down Payment</label>".number_format($data['listing']['monthly_downpayment'],0)."</span>";
-                            $html[] = "<span class='d-block border me-2 p-2 text-center'><label class='d-block text-muted small'>Monthly Amortization</label>".number_format($data['listing']['monthly_amortization'],0)."</span>";
-                        $html[] = "</div>";
-                    $html[] = "</div>";
-
-                    $html[] = "<h3 class='mt-3 mb-2'><i class='ti ti-tag'></i> Tags</h3>";
-                    $html[] = implode(", ",$data['listing']['tags']);
-
-                    $html[] = "<h3 class='mt-3 mb-2'><i class='ti ti-edit'></i> Description</h3>";
+                    $html[] = "<h3 class='mt-3 mb-2'>Description</h3>";
                     $html[] = "<div class='mt-2'>";
                         $html[] = $data['listing']['long_desc'];
                     $html[] = "</div>";

@@ -217,7 +217,7 @@ class ListingsController extends \Main\Controller {
 
 		$_POST['name'] = sanitize($_POST['title']);
 		$_POST['last_modified'] = DATE_NOW;
-		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."/images/listings/".$_POST['thumb_img'] : null;
+		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."images/listings/".$_POST['thumb_img'] : null;
 		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? $_POST['foreclosed'] : "0";
 		$_POST['is_mls'] = isset($_POST['is_mls']) ? $_POST['is_mls'] : "0";
 		$_POST['is_website'] = isset($_POST['is_website']) ? $_POST['is_website'] : "0";

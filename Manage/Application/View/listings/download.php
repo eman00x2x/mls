@@ -1,6 +1,32 @@
 <?php
 
-$html[] = "<page style='font-size: 12pt'>";
+$html[] = "<style type=\"text/css\">
+.images {
+	background-color: #999;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.main-image {
+	width:450px;
+	height:350px;
+	background-size: cover;
+}
+
+.sub-images {
+	width: 150px;
+	height: 112px;
+	background-size: 150px !important;
+}
+
+.description p {
+	margin:0;
+	padding:0;
+	font-size: 12px;
+}
+</style>";
+
+$html[] = "<page style=''>";
     $html[] = "<div style='line-height:1.5;'>";
 
 		$html[] = "<div style='border-bottom:2px solid #e1e1e1; margin-bottom:20px; color:#aeaeae;'>";
@@ -13,36 +39,41 @@ $html[] = "<page style='font-size: 12pt'>";
 			$html[] = "</tr>";
 			$html[] = "</table>";
 
-			$html[] = "<div style='position:absolute; top:20px; right:0;'>";
+			$html[] = "<div style='position:absolute; top:20px; right:10px;'>";
 				$html[] = "<qrcode value='".WEBDOMAIN."' ec='Q' style='padding:1px; border: 1px solid #e1e1e1; width: 30mm;'></qrcode>";
 				$html[] = "<br/><span style='font-size:10px; margin-top:5px;'>Scan QR to visit the page</span>";
 			$html[] = "</div>";
 
 		$html[] = "</div>";
 		
-		$html[] = "<h1 style='margin:0; padding:0;'>[Id: ".$data['listing']['listing_id']."] ".$data['listing']['title']."</h1>";
+		$html[] = "<h1 style='margin:0; padding:0; font-size:18px;'>[Id: ".$data['listing']['listing_id']."] ".$data['listing']['title']."</h1>";
 		$html[] = "<p style='margin:0; padding:0;'><span><img src='".CDN."images/icons/map-pin.png' style='width:24px;' /> ".$data['listing']['address']['municipality'].", ".$data['listing']['address']['province']."</span></p>";
         
         $html[] = "<div style='margin:15px 0 15px; '>";
 
 			$html[] = "<table>";
 			$html[] = "<tr>";
-                $html[] = "<td><img src='".$data['listing']['thumb_img']."' style='width:450px' /></td>";
+                $html[] = "<td>";
+					/* $html[] = "<img src='".$data['listing']['thumb_img']."' style='width:450px' />"; */
+					$html[] = "<div class='images main-image' style='background-image: url(".$data['listing']['thumb_img'].");'></div>";
+				$html[] = "</td>";
                 $html[] = "<td>";
 
 					$html[] = "<table>";
 					$html[] = "<tr>";
 
-						for($i=5; $i<count($data['listing']['images']); $i++) {
+						for($i=0; $i<count($data['listing']['images']); $i++) {
 
 							if($i % 2 == 0) {}else {
 								$html[] = "</tr>";
 								$html[] = "<tr>";
 							}
 							
-							if($data['listing']['thumb_img'] != $data['listing']['images'][$i]['url']) {
-								$html[] = "<td><img src='".$data['listing']['images'][$i]['url']."' style='width:150px;' /></td>";
-							}
+							$html[] = "<td>";
+								if($data['listing']['thumb_img'] != $data['listing']['images'][$i]['url']) {
+									$html[] = "<div class='images sub-images' style='background-image: url(".$data['listing']['images'][$i]['url'].");'></div>";
+								}
+							$html[] = "</td>";
 
 						}
 
@@ -55,7 +86,7 @@ $html[] = "<page style='font-size: 12pt'>";
 
         $html[] = "</div>";
 
-		$html[] = "<div style='margin-bottom: 15px; font-size:16px;'>";
+		$html[] = "<div style='margin-bottom: 15px; font-size:14px;'>";
 
 			$html[] = "<table style='width:100%;'>";
 			$html[] = "<tr>";
@@ -116,7 +147,7 @@ $html[] = "<page style='font-size: 12pt'>";
         				$html[] = "<p style='margin:0; padding:0;'><img src='".CDN."images/icons/tags.png' style='width:24px;' /> Tags: ".implode(", ",$data['listing']['tags'])."</p>";
 					
 						$html[] = "<div style='padding:10px; margin-top:10px; border:1px solid #e1e1e1;'>";
-							$html[] = "<span style='color:#555; font-size:14px;'>Selling Price</span>";
+							$html[] = "<span style='color:#555; font-size:12px;'>Selling Price</span>";
 							$html[] = "<p style='padding:0; margin:0; font-size:32px; font-weight:bold;'><img src='".CDN."images/icons/currency-peso.png' style='width:32px;' />".number_format($data['listing']['price'],0)."</p>";
 						$html[] = "</div>";
 
@@ -127,8 +158,8 @@ $html[] = "<page style='font-size: 12pt'>";
 
 		$html[] = "</div>";
 
-		$html[] = "<div style=''>";
-        	$html[] = "<h3 style='margin:0 0 15px; padding:0;'>Description</h3>";
+		$html[] = "<div class='description' style=''>";
+        	$html[] = "<h3 style='margin:0 0 10px; padding:0;'>Description</h3>";
             $html[] = $data['listing']['long_desc'];
         $html[] = "</div>";
 

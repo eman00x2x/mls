@@ -35,18 +35,18 @@ class MessagesController extends \Main\Controller {
 			$uri['search'] = $_REQUEST['search'];
 		}
 		
+		$filters[] = " JSON_CONTAINS(participants, '".$_SESSION['account_id']."', '$')";
+		
+		if($data['deletedThreads']['thread_ids']) {
+			$filters[] = " thread_id NOT IN(".$data['deletedThreads']['thread_ids'].")";
+		}
+
 		if(isset($filters)) {
 			$clause[] = implode(" AND ",$filters);
 		}
 
-		$clause[] = " JSON_CONTAINS(participants, '".$_SESSION['account_id']."', '$')";
-		
-		if($data['deletedThreads']['thread_ids']) {
-			$clause[] = " thread_id NOT IN(".$data['deletedThreads']['thread_ids'].")";
-		}
-
 		$thread = $this->getModel("Thread");
-		$thread->where(isset($clause) ? implode(" ",$clause) : null)
+		$thread->where(isset($clause) ? implode("",$clause) : null)
 		->orderBy(" created_at DESC ");
 
 		$thread->page['limit'] = 20;
@@ -310,13 +310,15 @@ class MessagesController extends \Main\Controller {
 		
 		if($id) {
 			if(isset($_REQUEST['delete'])) {
-				$message = $this->getModel("Message");
-				$id = $message->saveNew(array(
-					"user_id" => $_SESSION['user_id'],
-					"thread_id" => $_POST['thread_id'],
-					"message" => $_POST['message'],
-					"created_at" => DATE_NOW
+				$message = $this->getModel("DeletedThread");
+				$response = $message->saveNew(array(
+					"account_id" => $_SESSION['account_id'],
+					"thread_id" => $id,
+					"deleted_by" => $_SESSION['name'],
+					"deleted_at" => DATE_NOW
 				));
+
+				$data['id'] = $response['id'];
 
 				$this->getLibrary("Factory")->setMsg("Message deleted!.","success");
 				return json_encode(
