@@ -69,9 +69,7 @@ class MessageModel extends \Main\Model {
 
 			$v = $this->getValidator();
 
-			$v->validateGeneral($data['thread_id'],"Does not have thread_id");
-			$v->validateGeneral($data['user_id'],"User is required");
-			$v->validateGeneral($data['created_at'],"Time sent is required");
+
 
 			if($v->foundErrors()) {
 				return array(

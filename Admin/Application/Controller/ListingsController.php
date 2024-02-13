@@ -145,18 +145,20 @@ class ListingsController extends \Main\Controller {
 
 		$handshake = $this->getModel("Handshake");
 		$handshake->column['requestor_account_id'] = $_SESSION['account_id'];
-		$handshake->and(" listing_id = ".$listing_id);
+		$handshake->and(" listing_id = ".$listing_id." AND handshake_status NOT IN('done','cancel')");
 		$data['handshake'] = $handshake->getByRequestorAccountId();
 
 		if($data) {
 
-			$traffic = $this->getModel("ListingView");
-			$traffic->saveNew(array(
-				"listing_id" => $data['listing']['listing_id'],
-				"account_id" => $data['account']['account_id'],
-				"created_at" => DATE_NOW,
-				"user_agent" => $this->getLibrary("Factory")->getUserClient()->information()
-			));
+			if($data['listing']['account_id'] !== $_SESSION['account_id']) {
+				$traffic = $this->getModel("ListingView");
+				$traffic->saveNew(array(
+					"listing_id" => $data['listing']['listing_id'],
+					"account_id" => $data['account']['account_id'],
+					"created_at" => DATE_NOW,
+					"user_agent" => $this->getLibrary("Factory")->getUserClient()->information()
+				));
+			}
 
 			$this->setTemplate("listings/view.php");
 			return $this->getTemplate($data,$listing);

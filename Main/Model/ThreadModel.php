@@ -62,8 +62,6 @@ class ThreadModel extends \Main\Model {
 
 			$v = $this->getValidator();
 
-			$v->validateGeneral($data['participants'],"Does not have participants.");
-
 			if($v->foundErrors()) {
 				return array(
 					"status" => 2,
@@ -71,6 +69,8 @@ class ThreadModel extends \Main\Model {
 					"message" => "Please correct the following: ".$v->listErrors(', ')
 				);
 			}else {
+
+				$data['participants'] = json_encode(isset($data['participants']) ? $data['participants'] : $this->column['participants']);
 
 				foreach($data as $key => $val) {
 					$this->column[$key] = $val;

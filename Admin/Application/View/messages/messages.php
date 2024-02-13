@@ -84,6 +84,7 @@ $html[] = "<div class='page-body'>";
 									
 									$html[] = "<td class='text-center'>";
                                         $html[] = "<div class='btn-list'>";
+											$html[] = "<a href='".url("MessagesController@downloadThreadMessages", ["id" => $data['threads'][$i]['thread_id']])."' class='btn btn-dark btn-download'>Download</a>";
                                             $html[] = "<span class='btn btn-danger btn-delete ' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MessagesController@saveDeletedThread",["thread_id" => $data['threads'][$i]['thread_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
                                         $html[] = "</div>";
 									$html[] = "</td>";

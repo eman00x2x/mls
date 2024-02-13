@@ -2,7 +2,7 @@
 
 $buttons = function() use (&$data) {
     
-    if($data['handshake']) {
+    if($data['handshake'] && $data['handshake']['requestee_account_id'] == $_SESSION['account_id']) {
 		$html[] = "<span class='btn btn-md btn-danger ms-1 btn-cancel-handshake row_listings_".$data['listing']['listing_id']."' data-row='row_listings_".$data['listing']['listing_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
     }else {
         $html[] = "<span class='btn btn-md btn-primary me-1 btn-requestHandshake row_listings_".$data['listing']['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
@@ -77,8 +77,10 @@ $html[] = "<div class='page-body'>";
 
 					$html[] = "<div class='btn-wrap text-center d-none d-md-block'>";
 						$html[] = "<div class='btn-list'>";
-							$html[] = $buttons();
-							$html[] = "<a class='btn btn-outline-primary' href='".url("MessagesController@conversation", ["participants" => base64_encode(json_encode(array($data['listing']['account_id'],$_SESSION['account_id'])))], ["listing_id" => $data['listing']['listing_id'], "name" => $data['listing']['title']])."'><i class='ti ti-send me-2'></i> Send Message</a>";
+                            if($data['account']['account_id'] != $_SESSION['account_id']) {
+                                $html[] = $buttons();
+                                $html[] = "<a class='btn btn-outline-primary' href='".url("MessagesController@conversation", ["participants" => base64_encode(json_encode(array($data['listing']['account_id'],$_SESSION['account_id'])))], ["listing_id" => $data['listing']['listing_id'], "name" => $data['listing']['title']])."'><i class='ti ti-send me-2'></i> Send Message</a>";
+                            }
 						$html[] = "</div>";
 	                $html[] = "</div>";
 
@@ -126,10 +128,44 @@ $html[] = "<div class='page-body'>";
                         $html[] = "</div>";
                     $html[] = "</div>";
 
-                    $html[] = "<h3 class='mt-3 mb-2'>Description</h3>";
-                    $html[] = "<div class='mt-2'>";
-                        $html[] = $data['listing']['long_desc'];
+                    $html[] = "<div class='mb-3'>";
+                        $html[] = "<h3 class='mt-3 mb-2'>Description</h3>";
+                        $html[] = "<div class='mt-2'>";
+                            $html[] = $data['listing']['long_desc'];
+                        $html[] = "</div>";
                     $html[] = "</div>";
+
+                    if($data['handshake'] && $data['handshake']['requestee_account_id'] == $_SESSION['account_id']) {
+                        $html[] = "<div class='mb-3 border p-2'>";
+                            $html[] = "<h3 class='mt-3 mb-0'>Handshake Details</h3>";
+                            $html[] = "<table class='table table-borderless mb-0'>";
+							$html[] = "<tr>";
+								$html[] = "<td class='align-middle'>";
+							        $html[] = "<p><span class='d-block text-muted fs-12'>Status</span> ".strtoupper($data['handshake']['handshake_status'])." <span class='d-block text-muted fs-11'> Since: ".date("F d, Y", $data['handshake']['handshake_status_date'])."</span></p>";
+							    $html[] = "</td>";
+							    $html[] = "<td class='align-middle'>";
+							        $html[] = "<p><span class='d-block text-muted fs-12'>Requestor</span> ".$data['handshake']['requestor_details']['firstname']." ".$data['handshake']['requestor_details']['lastname']." <span class='d-block text-muted fs-11'>".$data['handshake']['requestor_details']['profession']." - ".$data['handshake']['requestor_details']['real_estate_license_number']."</span></p>";
+							    $html[] = "</td>";
+							    $html[] = "<td class='align-middle'>";
+							        $html[] = "<p><span class='d-block text-muted fs-12'>Mobile Number</span> ".$data['handshake']['requestor_details']['mobile_number']."</p>";
+							    $html[] = "</td>";
+							    $html[] = "<td class='align-middle'>";
+							        $html[] = "<p><span class='d-block text-muted fs-12'>Email</span> ".$data['handshake']['requestor_details']['email']."</p>";
+							    $html[] = "</td>";
+							    $html[] = "<td class='align-middle'>";
+							        $html[] = "<p><span class='d-block text-muted fs-12'>Registered Since</span> ".date("F d, Y", $data['handshake']['requestor_details']['registration_date'])."</p>";
+							    $html[] = "</td>";
+							$html[] = "</tr>";
+
+                            /* $html[] = "<tr>";
+                                $html[] = "<td class='align-middle'>";
+                                    $html[] = "<p><span class='d-block text-muted fs-12'>Requestor</span> ".$data['handshake']['firstname']." ".$data['handshake']['lastname']." <span class='d-block text-muted fs-11'>".$data['handshake']['profession']." - ".$data['handshake']['real_estate_license_number']."</span></p>";
+                                $html[] = "</td>";
+                            $html[] = "</tr>"; */
+							
+                            $html[] = "</table>";
+                        $html[] = "</div>";
+                    }
 
                 $html[] = "</div>";
             $html[] = "</div>";

@@ -43,8 +43,23 @@ class UserClient
         return $this;
     }
 
+	function getIP() {
+
+		$doc = \Library\Factory::getDocument();
+        $doc->addScriptDeclaration("
+        
+			$(document).ready(function() {
+            	$.getJSON('https://api.ipify.org?format=json', function(data) {
+					$('body').append(\"<input type='hidden' id='ip_address' value='\"+data.ip+\"'  />\");
+            	});
+            });
+
+        ");
+
+	}
+
     function setIP() {
-        $this->ip = file_get_contents('https://api.ipify.org');
+        $this->ip = file_get_contents('https://api.ipify.org?format=json');
         return $this;
     }
 

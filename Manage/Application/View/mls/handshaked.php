@@ -38,77 +38,79 @@ $html[] = "<div class='page-body'>";
 
 			if($data) { $c=$model->page['starting_number'];
 
+				$html[] = "<table class='table'>";
+				
 				for($i=0; $i<count($data); $i++) { $c++;
-					$html[] = "<div class='row_listings_".$data[$i]['handshake_id']." listing-wrap my-2'>";
-						$html[] = "<div class='row'>";
-							$html[] = "<div class='col-12 col-md-3'>";
-								$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-decoration-none'>";
-									$html[] = "<div class='avatar avatar-xxxl mb-2' style='background-image: url(".$data[$i]['listing']['thumb_img'].")'></div>";
-								$html[] = "</a>";
-							$html[] = "</div>";
-							$html[] = "<div class='col-12 col-md-9'>";
-								$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-decoration-none'>";
-									$html[] = "<h3 class='p-0'>".$data[$i]['listing']['title']."<small class='d-block fw-normal'>".ucwords($data[$i]['listing']['offer'])." ".$data[$i]['listing']['category']." in ".$data[$i]['listing']['address']['municipality'].", ".$data[$i]['listing']['address']['province']."</small></h3>";
-								$html[] = "</a>";
-
-								$html[] = "<div class='mb-3'>";
-									$html[] = "<div class='d-flex'>";
-										$html[] = "<span class='d-block border me-2 p-2 text-center fw-bold fs-20'><label class='text-start d-block text-muted small fs-10 fw-normal'>Price</label>&#8369;".number_format($data[$i]['listing']['price'],0)."</span>";
-										if($data[$i]['listing']['floor_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Floor Area</label>".number_format($data[$i]['listing']['floor_area'],0)." sqm</span>"; }
-										if($data[$i]['listing']['lot_area'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Lot Area</label>".number_format($data[$i]['listing']['lot_area'],0)." sqm</span>"; }
-										if($data[$i]['listing']['bedroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bedroom</label>".$data[$i]['listing']['bedroom']."</span>"; }
-										if($data[$i]['listing']['bathroom'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bathroom</label>".$data[$i]['listing']['bathroom']."</span>"; }
-										if($data[$i]['listing']['parking'] > 0) { $html[] = "<span class='d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Car Garage</label>".$data[$i]['listing']['parking']."</span>"; }
-									$html[] = "</div>";
-								$html[] = "</div>";
-
-								$html[] = "<div class='btn-list'>";
-									
-                                    if($data[$i]['requestor_account_id'] == $_SESSION['account_id']) {
-                                        switch($data[$i]['handshake_status']) {
-                                            case 'pending':
-                                                $html[] = "<span class='btn btn-secondary '><i class='ti ti-hourglass-empty me-2'></i> ".ucwords($data[$i]['handshake_status'])."</span>";
-												$html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data[$i]['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
-                                                break;
-                                            case 'active':
-                                                $html[] = "<span class='btn btn-light '>Active since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
-												$html[] = "<span class='btn btn-success btn-done-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@doneHandshake", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-discount-check-filled me-2'></i> Done Handshake</span>";
-												$html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data[$i]['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
-                                                break;
-											case 'done':
-                                                $html[] = "<span class='btn btn-light '>Done since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
-                                                break;
-											case 'denied':
-                                                $html[] = "<span class='btn btn-light '>Deined at: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
-                                                break;
-                                        }
-                                    }
-
-                                    if($data[$i]['requestee_account_id'] == $_SESSION['account_id']) {
-                                        switch($data[$i]['handshake_status']) {
-                                            case 'pending':
-                                                $html[] = "<span class='btn btn-success btn-accept-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@acceptRequest", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-circle-check me-2'></i> Accept Request</span>";
-                                                $html[] = "<span class='btn btn-danger btn-denied-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@deniedRequest", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-ban me-2'></i> Denied</span>";
-                                                break;
-                                            case 'active':
-                                                $html[] = "<span class='btn btn-light '>Active since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
-                                                break;
-											case 'done':
-                                                $html[] = "<span class='btn btn-light '>Done since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
-                                                break;
-											case 'denied':
-                                                $html[] = "<span class='btn btn-light '>Deined at: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
-                                                break;
-                                        }
-                                    }
-
-								$html[] = "</div>";
-
-							$html[] = "</div>";
-						$html[] = "</div>";
+					$html[] = "<tr>";
+						$html[] = "<td class='align-middle w-1 bg-dark text-white'>";
+							$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-white text-decoration-none'><span class='avatar avatar-lg' style='background-image: url(".$data[$i]['listing']['thumb_img'].")'></span></a>";
+					    $html[] = "</td>";
+						$html[] = "<td class='align-middle bg-dark text-white'>";
+					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-white text-decoration-none'><span class='d-block text-muted fs-12'>ID: ".$data[$i]['listing']['listing_id']."</span> ".$data[$i]['listing']['title']."</a>";
+					    $html[] = "</td>";
+						$html[] = "<td class='align-middle bg-dark text-white'>";
+					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-white text-decoration-none'><span class='d-block text-muted fs-12'>Commission Sharing</span> <span>com rate</span></a>";
+					    $html[] = "</td>";
 						
-					$html[] = "</div>";
+					    $html[] = "<td class='align-middle'>";
+							$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Requestor</span> ".$data[$i]['requestor_details']['firstname']." ".$data[$i]['requestor_details']['lastname']." <span class='d-block text-muted fs-11'>".$data[$i]['requestor_details']['profession']." - ".$data[$i]['requestor_details']['real_estate_license_number']."</span></a>";
+					    $html[] = "</td>";
+					    $html[] = "<td class='align-middle'>";
+					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Mobile Number</span> ".$data[$i]['requestor_details']['mobile_number']."</a>";
+					    $html[] = "</td>";
+					    $html[] = "<td class='align-middle'>";
+					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Email</span> ".$data[$i]['requestor_details']['email']."</a>";
+					    $html[] = "</td>";
+					    $html[] = "<td class='align-middle'>";
+					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Registered Since</span> ".date("F d, Y", $data[$i]['requestor_details']['registration_date'])."</a>";
+					    $html[] = "</td>";
+					$html[] = "</tr>";
+					$html[] = "<tr>";
+						$html[] = "<td class='align-middle' colspan='7'>";
+							$html[] = "<div class='btn-list'>";
+							if($data[$i]['requestor_account_id'] == $_SESSION['account_id']) {
+                                switch($data[$i]['handshake_status']) {
+                                    case 'pending':
+                                        $html[] = "<span class='btn btn-secondary '><i class='ti ti-hourglass-empty me-2'></i> ".ucwords($data[$i]['handshake_status'])."</span>";
+										$html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data[$i]['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
+                                        break;
+                                    case 'active':
+                                        $html[] = "<span class='btn btn-light '>Active since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+										$html[] = "<span class='btn btn-success btn-done-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@doneHandshake", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-discount-check-filled me-2'></i> Done Handshake</span>";
+										$html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data[$i]['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
+                                        break;
+									case 'done':
+                                        $html[] = "<span class='btn btn-light '>Done since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+                                        break;
+									case 'denied':
+                                        $html[] = "<span class='btn btn-light '>Deined at: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+                                        break;
+                                }
+                            }
+
+                            if($data[$i]['requestee_account_id'] == $_SESSION['account_id']) {
+                                switch($data[$i]['handshake_status']) {
+                                    case 'pending':
+                                        $html[] = "<span class='btn btn-success btn-accept-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@acceptRequest", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-circle-check me-2'></i> Accept Request</span>";
+                                        $html[] = "<span class='btn btn-danger btn-denied-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@deniedRequest", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-ban me-2'></i> Denied</span>";
+                                        break;
+                                    case 'active':
+                                        $html[] = "<span class='btn btn-light '>Active since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+                                        break;
+									case 'done':
+                                        $html[] = "<span class='btn btn-light '>Done since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+                                        break;
+									case 'denied':
+                                        $html[] = "<span class='btn btn-light '>Deined at: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+                                        break;
+                                }
+                            }
+							$html[] = "</div>";
+						$html[] = "</td>";
+					$html[] = "</tr>";
 				}
+
+				$html[] = "</table>";
 
 			}else {
 				$html[] = "<p class='mt-3'>Does not have handshaked listing yet.</p>";

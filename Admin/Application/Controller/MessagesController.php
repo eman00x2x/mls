@@ -24,7 +24,7 @@ class MessagesController extends \Main\Controller {
 	function index() {
 
 		$this->doc->setTitle("Messages");
-
+		
 		$deleted_thread = $this->getModel("DeletedThread");
 		$deleted_thread->select(" GROUP_CONCAT(thread_id) as thread_ids ");
 		$deleted_thread->column['account_id'] = $_SESSION['account_id'];
@@ -63,8 +63,6 @@ class MessagesController extends \Main\Controller {
 			$user = $this->getModel("User");
 			
 			for($i=0; $i<count($data['threads']); $i++) {
-
-				unset($data['threads'][$i]['accounts']);
 
 				for($x=0; $x<count($data['threads'][$i]['participants']); $x++) {
 					
@@ -310,9 +308,15 @@ class MessagesController extends \Main\Controller {
 		
 		if($id) {
 			if(isset($_REQUEST['delete'])) {
-				$message = $this->getModel("DeletedThread");
-				$response = $message->saveNew(array(
+				$thread = $this->getModel("Thread");
+				$thread->save($id, array(
+					"status" => 0
+				));
+
+				$deleted_thread = $this->getModel("DeletedThread");
+				$response = $deleted_thread->saveNew(array(
 					"account_id" => $_SESSION['account_id'],
+					"user_id" => $_SESSION['user_id'],
 					"thread_id" => $id,
 					"deleted_by" => $_SESSION['name'],
 					"deleted_at" => DATE_NOW
@@ -337,6 +341,76 @@ class MessagesController extends \Main\Controller {
 
 		$this->response(404);
 		
+	}
+
+	function downloadThreadMessages($id) {
+
+		$thread = $this->getModel("Thread");
+		$thread->column['thread_id'] = $id;
+		$data['thread'] = $thread->getById();
+
+		if($data['thread']) {
+
+			$text[] = "Downloaded at ".MANAGE." ".date("Y-m-d g:ia", DATE_NOW)."\r";
+			$text[] = "Thread started at ".date("Y-m-d g:ia", $data['thread']['created_at'])."";
+			$text[] = "Participants: ";
+
+			for($i=0; $i<count($data['thread']['participants']); $i++) {
+				$user = $this->getModel("User");
+				$user->select(" user_id, account_id, email, name ");
+				$user->column['user_id'] = $data['thread']['participants'][$i];
+				$data['thread']['users'][ $data['thread']['participants'][$i] ] = $user->getById();
+
+				$text[] = "\t".$data['thread']['users'][ $data['thread']['participants'][$i] ]['name'];
+			}
+
+			$text[] = "\r";
+
+			$message = $this->getModel("Message");
+			$message->page['limit'] = 10000000;
+			$message->orderBy(" created_at DESC ");
+			$data['messages'] = $message->getByThreadId($data['thread']['thread_id']);
+
+			if($data['messages']) {
+				for($i=0; $i<count($data['messages']); $i++) {
+					$text[] = "-".date("Y-m-d g:ia", $data['messages'][$i]['created_at'])."\t".$data['thread']['users'][ $data['messages'][$i]['user_id'] ]['name'].":\t".$data['messages'][$i]['message']."";
+				}
+			}
+
+			$local_path = "../Cdn/public/threads/";
+			$files = glob($local_path.'*'); // get all file names
+			foreach($files as $file){ // iterate files
+				if(is_file($file)) {
+					unlink($file); // delete file
+				}
+			}
+
+			$filename = "mls_thread_messages_".$data['thread']['thread_id']."".date("Ymd",$data['thread']['created_at']).".txt";
+			$file_url = CDN."public/threads/$filename";
+
+			$handle = fopen("../Cdn/public/threads/".$filename, "w");
+			fwrite($handle, implode("\r",$text));
+			fclose($handle);
+
+			header("Content-Description: File Transfer");
+			header('Content-Type: application/octet-stream');
+			header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\""); 
+			header('Expires: 0');
+    		header('Cache-Control: must-revalidate');
+    		header('Pragma: public');
+			header("Content-length: ".filesize($local_path."/".$filename));
+
+			ob_clean();
+			ob_flush();
+			flush();
+
+			readfile($file_url);
+
+			exit();
+		}
+
+		$this->response(404);
+
 	}
 
 	function webSocketChatScript() {

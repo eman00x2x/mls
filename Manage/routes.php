@@ -54,7 +54,7 @@ Router::get(ALIAS.'/mls/handshaked/{id}/deniedRequest', 'MlsController@deniedReq
 Router::get(ALIAS.'/mls/handshaked/{id}/doneHandshake', 'MlsController@doneHandshake', ['as' => 'doneHandshake'])->where([ 'id' => '[0-9]+' ]);
 Router::get(ALIAS.'/mls/handshaked/{listing_id}/cancelHandshake', 'MlsController@cancelHandshake', ['as' => 'cancelHandshake'])->where([ 'listing_id' => '[0-9]+' ]);
 
-/** DOWNLOAD URL */
+/** DOWNLOAD MLS LISTING URL */
 Router::get(ALIAS.'/mls/{id}/download', 'MlsController@downloadPDFFormat', ['as' => 'listingsView'])->where([ 'id' => '[0-9]+' ]);
 
 Router::get(ALIAS.'/mls/{id}', 'MlsController@viewListing', ['as' => 'viewListing'])->where([ 'id' => '[0-9]+' ]);
@@ -73,6 +73,7 @@ Router::post(ALIAS.'/leads/{id}/saveUpdate', 'LeadsController@saveUpdate', ['as'
 
 /** THREADS ROUTES */
 Router::get(ALIAS.'/threads', 'MessagesController@index', ['as' => 'messages']);
+Router::get(ALIAS.'/threads/{id}/downloadThreadMessages', 'MessagesController@downloadThreadMessages', ['as' => 'downloadThreadMessages'])->where([ 'id' => '[0-9]+' ]);
 Router::get(ALIAS.'/threads/{participants}', 'MessagesController@conversation', ['as' => 'conversation'])->where([ 'participants' => '[\w\-\=]+' ]);
 Router::get(ALIAS.'/threads/{participants}/getMessages/{lastMessageId}', 'MessagesController@getMessages', ['as' => 'getMessages'])->where([ 'participants' => '[\w\-\=]+', 'lastMessageId' => '[0-9]+' ]);
 Router::get(ALIAS.'/threads/getThreadInfoByParticipants/{participants}', 'MessagesController@getThreadInfoByParticipants', ['as' => 'showMessages'])->where([ 'participants' => '[\w\-\=]+' ]);

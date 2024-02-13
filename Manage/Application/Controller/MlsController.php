@@ -208,7 +208,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		}
 
 		$this->setTemplate("mls/handshaked.php");
-		return $this->getTemplate($data,$listing);
+		return $this->getTemplate($data,$handshake);
 
 	}
 
