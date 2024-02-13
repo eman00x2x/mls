@@ -136,6 +136,7 @@ class ListingsController extends \Main\Controller {
 		$data['listing'] = $listing->getById();
 
 		$account = $this->getModel("Account");
+		$account->select(" account_id, logo, profession, real_estate_license_number, firstname, lastname, mobile_number, email, registration_date");
 		$account->column['account_id'] = $data['listing']['account_id'];
 		$data['account'] = $account->getById();
 		
@@ -150,7 +151,7 @@ class ListingsController extends \Main\Controller {
 
 		if($data) {
 
-			if($data['listing']['account_id'] !== $_SESSION['account_id']) {
+			/* if($data['listing']['account_id'] !== $_SESSION['account_id']) {
 				$traffic = $this->getModel("ListingView");
 				$traffic->saveNew(array(
 					"listing_id" => $data['listing']['listing_id'],
@@ -158,7 +159,7 @@ class ListingsController extends \Main\Controller {
 					"created_at" => DATE_NOW,
 					"user_agent" => $this->getLibrary("Factory")->getUserClient()->information()
 				));
-			}
+			} */
 
 			$this->setTemplate("listings/view.php");
 			return $this->getTemplate($data,$listing);
