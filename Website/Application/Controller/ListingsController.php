@@ -11,10 +11,27 @@ class ListingsController extends \Main\Controller {
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 	}
 
+	function index() {
+
+		if(url()->contains("/buy")) {
+			$filters[] = " offer = 'for sale'";
+		}
+
+		if(url()->contains("/rent")) {
+			$filters[] = " offer = 'for rent'";
+		}
+
+		$listing = $this->getModel("Listing");
+		
+		debug($listing);
+		
+
+	}
+
 	function view($id) {
 
 		$listing = $this->getModel("Listing");
-		$listing->listing_id = $id;
+		$listing->column['listing_id'] = $id;
 		$data = $listing->getById();
 
 		if($data) {
