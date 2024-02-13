@@ -14,7 +14,7 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 	define("AJAX_REQUEST",false);
 }
 
-define("ROOT","D:/wamp64/www/system/");
+define("ROOT","D:/wamp64/www/mls/");
 define("BASE",dirname(__FILE__));
 define("DS",DIRECTORY_SEPARATOR);
 define("ACCESS", 1);

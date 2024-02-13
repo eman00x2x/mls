@@ -25,7 +25,6 @@ require_once(ROOT."/Includes/define.php");
 require_once(ROOT."/Includes/functions.php");
 require_once(ROOT."/Vendor/autoload.php");
 require_once(ROOT."/Vendor/pecee/simple-router/helpers.php");
-require_once(ROOT."/Vendor/braintree/braintree_php/lib/Braintree.php");
 
 function autoloader($class) {
 	if (file_exists($file = BASE.'/'.str_replace('\\', '/', $class).'.php')) {
