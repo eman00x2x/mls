@@ -31,7 +31,7 @@ class AccountModel extends \Main\Model {
 
 	function saveNew($data) {
 
-		$required_fields = array("firstname","lastname","email");
+		$required_fields = array("real_estate_license_number","firstname","lastname","email");
 
 		foreach($required_fields as $value) {
 			if(!array_key_exists($value,$data)) {
@@ -47,6 +47,7 @@ class AccountModel extends \Main\Model {
 
 		$v = $this->getValidator();
 
+		$v->validateGeneral($data['real_estate_license_number'],"Real Estate License Number");
 		$v->validateGeneral($data['firstname'],"First Name");
 		$v->validateGeneral($data['lastname'],"Last Name");
 		$v->validateEmail($data['email'],"Email Address");

@@ -257,7 +257,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-building-cottage'></i></span>";
 													$html[] = "<select class='form-select' name='tags[]' id='tags' multiple='multiple'>";
 														/** Additional tags can be add in /includes/define.php */
-														foreach(PROPERTY_TAGS as $key => $val) {
+														foreach(CONFIG['property_tags'] as $key => $val) {
 															$html[] = "<option value='$val'>$val</option>";
 														}
 													$html[] = "</select>";

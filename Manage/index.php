@@ -37,6 +37,8 @@ function autoloader($class) {
 
 spl_autoload_register('autoloader');
 
+require_once(ROOT."/Includes/config.php");
+
 class Middleware implements IMiddleware {
 
     public function handle(Request $request): void 
@@ -49,9 +51,10 @@ class Middleware implements IMiddleware {
 
 		if(url()->contains("/register")) {
 
-			Router::get('/register', 'RegistrationController@register', ['as' => 'register']);
+			Router::get('/register', 'RegistrationController@register');
+			Router::post('/register', 'RegistrationController@register');
 			Router::post('/registerAccount', 'RegistrationController@registerAccount');
-			Router::post('/register', 'RegistrationController@saveNewAccount');
+			Router::post('/registerAccountSave', 'RegistrationController@saveNew');
 			
 		}else if(url()->contains("/resetPassword")) {
 

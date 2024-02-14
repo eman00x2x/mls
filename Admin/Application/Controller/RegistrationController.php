@@ -2,7 +2,7 @@
 
 namespace Admin\Application\Controller;
 
-class RegistrationController extends \Main\Controller {
+class RegistrationController extends \Admin\Application\Controller\AccountsController {
 	
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
@@ -39,10 +39,33 @@ class RegistrationController extends \Main\Controller {
 
 				});
 			});
+
+			$(document).on('change', '#policy_agree', function() {
+				if($(this).prop('checked')) {
+					$('.btn-continue').removeClass('d-none');
+				}else {
+					$('.btn-continue').addClass('d-none');
+				}
+			});
+
+			$(document).on('click', '.btn-continue', function() {
+				$.post($('#save_url').val(), $('#form').serialize(), function(data) {
+					$('.registration_form').html(data);
+					$('.response').html('');
+					return false;
+				});
+			});
 		");
 
-		$this->setTemplate("registration/broker_license.php");
-		return $this->getTemplate();
+		if(!isset($_POST['policy_agree'])) {
+			$data['data_privacy'] = CONFIG['data_privacy'];
+
+			$this->setTemplate("registration/dataPrivacy.php");
+			return $this->getTemplate($data);
+		}else {
+			$this->setTemplate("registration/broker_license.php");
+			return $this->getTemplate();
+		}
 
 	}
 
@@ -74,61 +97,6 @@ class RegistrationController extends \Main\Controller {
 				"message" => getMsg()
 			));
 		}
-
-	}
-	
-	function saveNewAccount() {
-
-		parse_str(file_get_contents('php://input'), $_POST);
-
-		$time = DATE_NOW;
-
-		$_POST['name'] = $_POST['firstname']." ".$_POST['lastname'];
-		$_POST['date_added'] = $time;
-		$_POST['registration_date'] = $time;
-		$_POST['created_at'] = $time;
-		$_POST['privileges'] = json_encode(ACCOUNT_PRIVILEGES);
-		$_POST['permissions'] = json_encode(USER_PERMISSIONS);
-		$_POST['account_type'] = "Real Estate Practitioner";
-		$_POST['status'] = "active";
-
-		$user = $this->getModel("User");
-		$response = $user->saveNew($_POST);
-
-		if($response['status'] == 1) {
-
-			$accounts = $this->getModel("Account");
-			$accountResponse = $accounts->saveNew($_POST);
-
-			if($_POST['reference_id'] == 0) {
-				$license = $this->getModel("LicenseReference");
-				$license->saveNew($_POST);
-			}
-
-			if($accountResponse['status'] == 1) {
-				$data['account_id'] = $accountResponse['id'];
-				$user->save($response['id'],$data);
-			}else {
-				$user->deleteUser($respons['user_id']);
-			}
-
-			$this->getLibrary("Factory")->setMsg($accountResponse['message'],$accountResponse['type']);
-
-			return json_encode(array(
-				"type" => 1,
-				"status" => $response['status'],
-				"message" => getMsg()
-			));
-
-		}
-
-		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
-
-		return json_encode(array(
-			"type" => 2,
-			"status" => $response['status'],
-			"message" => getMsg()
-		));
 
 	}
 	

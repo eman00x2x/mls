@@ -56,13 +56,19 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 									$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";
 
 									if(url()->contains("/common-settings")) {
+
+										$html[] = "<input name='enable_kyc_verification' id='enable_kyc_verification' type='hidden' value='".$data['enable_kyc_verification']."' />";
+										$html[] = "<input name='enable_premium' id='enable_premium' type='hidden' value='".$data['enable_premium']."' />";
+										$html[] = "<input name='show_vat' id='show_vat' type='hidden' value='".$data['show_vat']."' />";
+										$html[] = "<input name='enable_pin_access' id='enable_pin_access' type='hidden' value='".$data['enable_pin_access']."' />";
+
 										$html[] = "<h2 class='mb-4'>Contact Info</h2>";
 										$html[] = "<div class='mb-4'>";
 											$html[] = "<h3 class='card-title mt-4'>Customer Service Mobile Number</h3>";
 											$html[] = "<p class='card-subtitle mb-2'>This contact will be shown to others publicly.</p>";
 											$html[] = "<div class='row g-2'>";
 												$html[] = "<div class='col-md'>";
-													$html[] = "<input type='text' name='mobile_number' class='form-control' value='' placeholder='Mobile Number' />";
+													$html[] = "<input type='text' name='contact_info[mobile_number]' class='form-control' value='".$data['contact_info']['mobile_number']."' placeholder='Mobile Number' />";
 												$html[] = "</div>";
 											$html[] = "</div>";
 										$html[] = "</div>";
@@ -72,7 +78,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "<p class='card-subtitle mb-2'>This email address will be shown to others publicly.</p>";
 											$html[] = "<div class='row g-2'>";
 												$html[] = "<div class='col-md'>";
-													$html[] = "<input type='text' name='email' class='form-control' value='' placeholder='Email Address' />";
+													$html[] = "<input type='text' name='contact_info[email]' class='form-control' value='".$data['contact_info']['email']."' placeholder='Email Address' />";
 												$html[] = "</div>";
 											$html[] = "</div>";
 										$html[] = "</div>";
@@ -82,7 +88,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "<p class='card-subtitle mb-2'>The exact address of your organization office.</p>";
 											$html[] = "<div class='row g-2'>";
 												$html[] = "<div class='col-md'>";
-													$html[] = "<textarea name='office_address' class='form-control' placeholder='Office Address' style='width:100%; height:200px;'></textarea>";
+													$html[] = "<textarea name='contact_info[office_address]' class='form-control' placeholder='Office Address' style='width:100%; height:200px;'>".$data['contact_info']['office_address']."</textarea>";
 												$html[] = "</div>";
 											$html[] = "</div>";
 										$html[] = "</div>";
@@ -94,7 +100,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "<h3 class='card-title mt-4'>KYC Verification</h3>";
 											$html[] = "<p class='card-subtitle mb-2'>Upon activation of KYC Verification, users will be prompted to authenticate their identity by submitting a government-issued identification document along with a corresponding self-portrait. This step ensures compliance with regulatory standards and enhances the security and credibility of our platform.</p>";
 											$html[] = "<label class='form-check form-switch cursor-pointer'>";
-												$html[] = "<input type='checkbox' name='enable_kyc_verification' class='form-check-input' value='1' />";
+												$html[] = "<input type='checkbox' name='enable_kyc_verification' class='form-check-input' value='1' ".($data['enable_kyc_verification'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable KYC Verification</span>";
 											$html[] = "</label>";
 										$html[] = "</div>";
@@ -103,7 +109,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "<h3 class='card-title mt-4'>Premium (Account Privileges)</h3>";
 											$html[] = "<p class='card-subtitle mb-2'>If you choose to activate the premium feature, users will have the option to purchase premium privileges to augment their account functionality.</p>";
 											$html[] = "<label class='form-check form-switch cursor-pointer'>";
-												$html[] = "<input type='checkbox' name='enable_premium' class='form-check-input' value='1' />";
+												$html[] = "<input type='checkbox' name='enable_premium' class='form-check-input' value='1' ".($data['enable_premium'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable Premium Purchase</span>";
 											$html[] = "</label>";
 										$html[] = "</div>";
@@ -112,7 +118,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "<h3 class='card-title mt-4'>VAT Computation</h3>";
 											$html[] = "<p class='card-subtitle mb-2'>Display the VAT computation clearly on invoices for transparency and compliance.</p>";
 											$html[] = "<label class='form-check form-switch cursor-pointer'>";
-												$html[] = "<input type='checkbox' name='show_vat' class='form-check-input' value='1' />";
+												$html[] = "<input type='checkbox' name='show_vat' class='form-check-input' value='1' ".($data['show_vat'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Display VAT Computation</span>";
 											$html[] = "</label>";
 										$html[] = "</div>";
@@ -121,7 +127,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "<h3 class='card-title mt-4'>PIN Based Access</h3>";
 											$html[] = "<p class='card-subtitle mb-2'>If PIN-based access is enabled, users experiencing issues can contact our customer service team and provide their PIN for verification. Upon successful authentication, our representatives will assist users in resolving any account-related issues they encounter.</p>";
 											$html[] = "<label class='form-check form-switch cursor-pointer'>";
-												$html[] = "<input type='checkbox' name='enable_pin_access' class='form-check-input' value='1' />";
+												$html[] = "<input type='checkbox' name='enable_pin_access' class='form-check-input' value='1' ".($data['enable_pin_access'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable PIN Based Access</span>";
 											$html[] = "</label>";
 										$html[] = "</div>";
@@ -131,7 +137,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "<p class='card-subtitle mb-2'>Please provide the email address designated as the responder for sending email notifications to users.</p>";
 											$html[] = "<div class='row g-2'>";
 												$html[] = "<div class='col-md'>";
-													$html[] = "<input type='text' name='email_address_responder' class='form-control' value='' placeholder='Email Address Responder' />";
+													$html[] = "<input type='text' name='email_address_responder' class='form-control' value='".$data['email_address_responder']."' placeholder='Email Address Responder' />";
 												$html[] = "</div>";
 											$html[] = "</div>";
 										$html[] = "</div>";
@@ -141,13 +147,19 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "<p class='card-subtitle mb-2'>Please specify the tags that can be used to categorize or assign attributes to a property.<br/>Tags must be separated by commas.</p>";
 											$html[] = "<div class='row g-2'>";
 												$html[] = "<div class='col-md'>";
-													$html[] = "<textarea name='property_tags' class='form-control' placeholder='Property Tags' style='width:100%; height:200px;'></textarea>";
+													$html[] = "<textarea name='property_tags' class='form-control' placeholder='Property Tags' style='width:100%; height:200px;'>".implode(", ",$data['property_tags'])."</textarea>";
 												$html[] = "</div>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 									}
 
 									if(url()->contains("/analytics")) {
+
+										$html[] = "<input name='enable_kyc_verification' id='enable_kyc_verification' type='hidden' value='".$data['enable_kyc_verification']."' />";
+										$html[] = "<input name='enable_premium' id='enable_premium' type='hidden' value='".$data['enable_premium']."' />";
+										$html[] = "<input name='show_vat' id='show_vat' type='hidden' value='".$data['show_vat']."' />";
+										$html[] = "<input name='enable_pin_access' id='enable_pin_access' type='hidden' value='".$data['enable_pin_access']."' />";
+
 										$html[] = "<h2 class='mb-4'>Analytics Script</h2>";
 										$html[] = "<div class='mb-4'>";
 											$html[] = "<p class='card-subtitle mb-2'>Please insert your analytics script, such as the following example, to monitor website traffic:</p>";
@@ -161,15 +173,21 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 	");
 											$html[] = "</pre>";
 											$html[] = "<p class='card-subtitle mb-3'>Replace 'UA-XXXXX-Y' with your own Google Analytics tracking ID.</p>";
-											$html[] = "<textarea name='analytics' class='form-control' placeholder='Analytics Script' style='width:100%; height:200px;'></textarea>";
+											$html[] = "<textarea name='analytics' class='form-control' placeholder='Analytics Script' style='width:100%; height:200px;'>".$data['analytics']."</textarea>";
 										$html[] = "</div>";
 									}
 
 									if(url()->contains("/head-script")) {
+
+										$html[] = "<input name='enable_kyc_verification' id='enable_kyc_verification' type='hidden' value='".$data['enable_kyc_verification']."' />";
+										$html[] = "<input name='enable_premium' id='enable_premium' type='hidden' value='".$data['enable_premium']."' />";
+										$html[] = "<input name='show_vat' id='show_vat' type='hidden' value='".$data['show_vat']."' />";
+										$html[] = "<input name='enable_pin_access' id='enable_pin_access' type='hidden' value='".$data['enable_pin_access']."' />";
+
 										$html[] = "<h2 class='mb-4'>Header Script</h2>";
 										$html[] = "<div class='mb-4'>";
 											$html[] = "<p class='card-subtitle mb-2'>Please insert your custom script, such as the following example:</p>";
-											$html[] = "<textarea name='header_script' class='form-control' placeholder='Header Script' style='width:100%; height:200px;'></textarea>";
+											$html[] = "<textarea name='header_script' class='form-control' placeholder='Header Script' style='width:100%; height:200px;'>".$data['header_script']."</textarea>";
 											$html[] = "<div class='my-4'>";
 												$html[] = "<p>Example META Pixel Snippet:</p>";
 												$html[] = "<pre>";
@@ -195,26 +213,44 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 									}
 
 									if(url()->contains("/data-privacy")) {
+
+										$html[] = "<input name='enable_kyc_verification' id='enable_kyc_verification' type='hidden' value='".$data['enable_kyc_verification']."' />";
+										$html[] = "<input name='enable_premium' id='enable_premium' type='hidden' value='".$data['enable_premium']."' />";
+										$html[] = "<input name='show_vat' id='show_vat' type='hidden' value='".$data['show_vat']."' />";
+										$html[] = "<input name='enable_pin_access' id='enable_pin_access' type='hidden' value='".$data['enable_pin_access']."' />";
+
 										$html[] = "<h2 class='mb-4'>Data Privacy Content</h2>";
 										$html[] = "<div class='mb-4'>";
 											$html[] = "<p class='card-subtitle mb-2'>Please insert your data privacy content to ensure compliance with regulations and protect user privacy.</p>";
-											$html[] = "<textarea id='snow-container' name='data_privacy' class='form-control'></textarea>";
+											$html[] = "<textarea id='snow-container' name='data_privacy' class='form-control'>".$data['data_privacy']."</textarea>";
 										$html[] = "</div>";
 									}
 
 									if(url()->contains("/terms")) {
+
+										$html[] = "<input name='enable_kyc_verification' id='enable_kyc_verification' type='hidden' value='".$data['enable_kyc_verification']."' />";
+										$html[] = "<input name='enable_premium' id='enable_premium' type='hidden' value='".$data['enable_premium']."' />";
+										$html[] = "<input name='show_vat' id='show_vat' type='hidden' value='".$data['show_vat']."' />";
+										$html[] = "<input name='enable_pin_access' id='enable_pin_access' type='hidden' value='".$data['enable_pin_access']."' />";
+
 										$html[] = "<h2 class='mb-4'>Terms of Service Content</h2>";
 										$html[] = "<div class='mb-4'>";
 											$html[] = "<p class='card-subtitle mb-2'>Please insert your terms of service content to outline the terms and conditions governing the use of our services.</p>";
-											$html[] = "<textarea id='snow-container' name='terms' class='form-control'></textarea>";
+											$html[] = "<textarea id='snow-container' name='terms' class='form-control'>".$data['terms']."</textarea>";
 										$html[] = "</div>";
 									}
 
 									if(url()->contains("/refund-policy")) {
+
+										$html[] = "<input name='enable_kyc_verification' id='enable_kyc_verification' type='hidden' value='".$data['enable_kyc_verification']."' />";
+										$html[] = "<input name='enable_premium' id='enable_premium' type='hidden' value='".$data['enable_premium']."' />";
+										$html[] = "<input name='show_vat' id='show_vat' type='hidden' value='".$data['show_vat']."' />";
+										$html[] = "<input name='enable_pin_access' id='enable_pin_access' type='hidden' value='".$data['enable_pin_access']."' />";
+
 										$html[] = "<h2 class='mb-4'>Refund Policy Content</h2>";
 										$html[] = "<div class='mb-4'>";
 											$html[] = "<p class='card-subtitle mb-2'>Please insert your refund policy content outlining the terms and conditions regarding refunds for products or services.</p>";
-											$html[] = "<textarea id='snow-container' name='refund_policy' class='form-control'></textarea>";
+											$html[] = "<textarea id='snow-container' name='refund_policy' class='form-control'>".$data['refund_policy']."</textarea>";
 										$html[] = "</div>";
 									}
 

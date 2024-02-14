@@ -67,15 +67,13 @@
                 				</li>
 
 								<?php if(PREMIUM) { ?>
-									<?php if(SHOW_PREMIUM) { ?>
-										<?php if(isset($_SESSION['permissions']['subscriptions'])) { ?>
-											<li class="nav-item <?php echo (url()->contains("/premiums")) ? "active" : ""; ?>">
-												<a class="nav-link" href="<?php echo url("PremiumsController@index"); ?>">
-													<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-layers-union'></i></span>
-													<span class="nav-link-title">Get Premium</span>
-												</a>
-											</li>
-										<?php } ?>
+									<?php if(isset($_SESSION['permissions']['subscriptions'])) { ?>
+										<li class="nav-item <?php echo (url()->contains("/premiums")) ? "active" : ""; ?>">
+											<a class="nav-link" href="<?php echo url("PremiumsController@index"); ?>">
+												<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-layers-union'></i></span>
+												<span class="nav-link-title">Get Premium</span>
+											</a>
+										</li>
 									<?php } ?>
 								<?php } ?>
 
@@ -139,10 +137,8 @@
 									<a href="<?php echo url("UsersController@changePassword", ["id" => $_SESSION['user_id']]); ?>" class="dropdown-item"><i class='ti ti-key me-2'></i> Change Password</a>
 									
 									<?php if(PREMIUM) { ?>
-										<?php if(SHOW_PREMIUM) { ?>
-											<a href="<?php echo url("AccountSubscriptionController@index"); ?>" class="dropdown-item"><i class='ti ti-layers-union me-2'></i> My Subscriptions</a>
-											<a href="<?php echo url("TransactionsController@index"); ?>" class="dropdown-item"><i class='ti ti-file-invoice me-2'></i> My Transactions</a>
-										<?php } ?>
+										<a href="<?php echo url("AccountSubscriptionController@index"); ?>" class="dropdown-item"><i class='ti ti-layers-union me-2'></i> My Subscriptions</a>
+										<a href="<?php echo url("TransactionsController@index"); ?>" class="dropdown-item"><i class='ti ti-file-invoice me-2'></i> My Transactions</a>
 									<?php } ?>
 									
 									<a href="?logout" class="dropdown-item"><i class='ti ti-logout-2 me-2'></i> Logout</a>

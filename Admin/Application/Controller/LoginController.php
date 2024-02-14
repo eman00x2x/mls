@@ -248,7 +248,7 @@ class LoginController extends \Main\Controller {
 				$html[] = "<p style='padding:10px;'><a href='$link'>Reset your password</a></p>";
 				
 				$mail = $this->getModel("Mail");
-				if($mail->sendMail(EMAIL_RESPONDER_ADDRESS,$data['email'],"Password Reset Request",implode("",$html))) {
+				if($mail->sendMail(CONFIG['email_address_responder'],$data['email'],"Password Reset Request",implode("",$html))) {
 					$this->getLibrary("Factory")->setMsg("Password reset link has been sent to your registered email.","correct");
 					$response = array(
 						"status" => 1,

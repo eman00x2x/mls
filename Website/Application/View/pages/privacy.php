@@ -1,3 +1,3 @@
 <?php
 
-$html[] = "<h1>PRIVACY</h1>";
+$html[] = $data['data_privacy'];

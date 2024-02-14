@@ -89,7 +89,7 @@ Router::get(ALIAS.'/subscriptions', 'AccountSubscriptionController@index', ['as'
 
 Router::post(ALIAS.'/subscriptions/saveNew', 'AccountSubscriptionController@saveNew', ['as' => 'accountSubscriptionSaveNew']);
 
-if(SHOW_PREMIUM) {
+if(PREMIUM) {
     /** PREMIUMS ROUTES */
     Router::get(ALIAS.'/premiums', 'PremiumsController@index', ['as' => 'premiums']);
 

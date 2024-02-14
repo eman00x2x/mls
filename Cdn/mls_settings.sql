@@ -33,18 +33,18 @@ CREATE TABLE IF NOT EXISTS `mls_settings` (
   `property_tags` text,
   `paypal_credentials` text,
   `show_vat` tinyint(1) NOT NULL DEFAULT '1',
-  `email_address_responder` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `email_address_responder` varchar(150) CHARACTER SET utf8mb4 NOT NULL,
   `enable_kyc_verification` tinyint(1) NOT NULL DEFAULT '0',
   `enable_premium` tinyint(1) NOT NULL DEFAULT '0',
   `enable_pin_access` tinyint(1) NOT NULL DEFAULT '0',
   `analytics` text,
   `header_script` text,
-  `data_privacy` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `data_privacy` text CHARACTER SET utf8mb4,
   `terms` text,
   `refund_policy` text,
   `modified_at` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mls_settings`

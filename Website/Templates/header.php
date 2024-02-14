@@ -15,6 +15,11 @@
 </script>
 
 <?php
+
     $document = \Library\Factory::getDocument();
     echo \Library\DocumentRenderer::fetchHead($document);
+
+    echo CONFIG['header_script'];
+    echo CONFIG['analytics'];
+
 ?>

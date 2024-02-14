@@ -233,7 +233,7 @@ class AccountsController extends \Main\Controller {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
 		
-		if($_POST['logo'] != "") {
+		if(isset($_POST['logo']) && $_POST['logo'] != "") {
 			$_POST['logo'] = $accounts->moveUploadedImage($_POST['logo']);
 		}
 
@@ -244,13 +244,13 @@ class AccountsController extends \Main\Controller {
 		$_POST['registration_date'] = $time;
 		$_POST['created_at'] = $time;
 		$_POST['permissions'] = json_encode(USER_PERMISSIONS);
-		$_POST['privileges'] = json_encode($_POST['privileges']);
+		$_POST['privileges'] = (isset($_POST['privileges']) ? json_encode($_POST['privileges']) : ACCOUNT_PRIVILEGES);
 		$_POST['account_type'] = "Real Estate Practitioner";
 		$_POST['user_level'] = 1;
 		$_POST['reference_id'] = 0;
 
 		$reference = $this->getModel("LicenseReference");
-		$response =	$reference->getByLicenseId($_POST['broker_prc_license_id']);
+		$response =	$reference->getByLicenseId($_POST['prc_license_id']);
 
 		if($response['status'] == 1) {
 			if($response['data']['reference_id'] != 0) {
@@ -258,27 +258,26 @@ class AccountsController extends \Main\Controller {
 			}
 		}
 
-		$user = $this->getModel("User");
-		$response = $user->saveNew($_POST);
+		$accounts = $this->getModel("Account");
+		$accountResponse = $accounts->saveNew($_POST);
+		
+		if($accountResponse['status'] == 1) {
 
-		if($response['status'] == 1) {
+			$_POST['account_id'] = $response['id'];
 
-			$accounts = $this->getModel("Account");
-			$accountResponse = $accounts->saveNew($_POST);
+			$user = $this->getModel("User");
+			$response = $user->saveNew($_POST);
 
-			if($_POST['reference_id'] == 0) {
-				$license = $this->getModel("LicenseReference");
-				$license->saveNew($_POST);
-			}
-
-			if($accountResponse['status'] == 1) {
-				$data['account_id'] = $accountResponse['id'];
-				$user->save($response['id'],$data);
+			if($response['status'] == 1) {
+				if($_POST['reference_id'] == 0) {
+					$license = $this->getModel("LicenseReference");
+					$license->saveNew($_POST);
+				}
 			}else {
-				$user->deleteUser($respons['user_id']);
+				$user->deleteAccount($respons['account_id']);
 			}
 
-			$this->getLibrary("Factory")->setMsg($accountResponse['message'],$accountResponse['type']);
+			$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 
 			return json_encode(array(
 				"type" => 1,
@@ -288,12 +287,11 @@ class AccountsController extends \Main\Controller {
 
 		}
 
-
-		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
+		$this->getLibrary("Factory")->setMsg($accountResponse['message'],$accountResponse['type']);
 		
 		return json_encode(
 			array(
-				"status" => $response['status'],
+				"status" => $accountResponse['status'],
 				"message" => getMsg()
 			)
 		);

@@ -71,7 +71,7 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<td class='align-middle'><a href='".url("AccountsController@view",["id" => $data[$i]['account_id']])."'>".$data[$i]['account_type']."</a></td>";
 									$html[] = "<td class='align-middle'><a href='".url("AccountsController@view",["id" => $data[$i]['account_id']])."'>".$data[$i]['email']."</a></td>";
 									$html[] = "<td class='align-middle'>".($data[$i]['status'] == 'active' ? "<span class='text-success '>Active</span>" : "<span class='text-danger'>Banned</span>")."</td>";
-									$html[] = "<td class='align-middle'>".date("F d, Y",$data[$i]['registration_date'])."</td>";
+									$html[] = "<td class='align-middle'>".date("F d, Y", strtotime($data[$i]['registration_date']))."</td>";
 									
 									$html[] = "<td class='text-center'>";
 									

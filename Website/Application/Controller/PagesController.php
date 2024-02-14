@@ -22,6 +22,7 @@ class PagesController extends \Main\Controller {
 	}
 
 	function contact() {
+		$data['contact_info'] = CONFIG['contact_info'];
 		$this->setTemplate("pages/contact.php");
 		return $this->getTemplate();
 	}
@@ -32,13 +33,25 @@ class PagesController extends \Main\Controller {
 	}
 
 	function privacy() {
+		$data['data_privacy'] = CONFIG['data_privacy'];
 		$this->setTemplate("pages/privacy.php");
-		return $this->getTemplate();
+		return $this->getTemplate($data);
 	}
 
 	function terms() {
+
+		$data['terms'] = CONFIG['terms'];
+
 		$this->setTemplate("pages/terms.php");
-		return $this->getTemplate();
+		return $this->getTemplate($data);
+	}
+
+	function refundPolicy() {
+
+		$data['refund_policy'] = CONFIG['refund_policy'];
+
+		$this->setTemplate("pages/refundPolicy.php");
+		return $this->getTemplate($data);
 	}
 	
 }
