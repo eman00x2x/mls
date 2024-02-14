@@ -67,6 +67,9 @@ Router::get('/accounts/{account_id}/transactions/{id}/invoice', 'TransactionsCon
 Router::get('/transactions/{id}/delete', 'TransactionsController@delete', ['as' => 'deleteTransaction'])->where([ 'id' => '[0-9]+' ]);
 
 /** ADMINISTRATION ROUTES */
+Router::get('/settings/{page}', 'SettingsController@index', ['as' => 'settings'])->where([ 'page' => '[\w\-\=]+' ]);
+Router::post('/settings/saveUpdate', 'SettingsController@saveUpdate', ['as' => 'settings'])->where([ 'page' => '[\w\-\=]+' ]);
+
 Router::get('/experiment', 'AdministrationController@experiment', ['as' => 'experiment']);
 Router::get('/administration', 'AdministrationController@index', ['as' => 'administration']);
 Router::post('/administration', 'AdministrationController@queryResult', ['as' => 'administration-queryResult']);
