@@ -177,42 +177,76 @@ $html[] = "<div class='page-body'>";
 
 					if($data['listings']) { $c=$model->page['starting_number'];
 
-						for($i=0; $i<count($data['listings']); $i++) { $c++;
-							$html[] = "<div class='row_listings_".$data['listings'][$i]['listing_id']." listing-wrap my-2 pb-2 border-bottom'>";
-								$html[] = "<div class='row'>";
-									$html[] = "<div class='col-sm-5 col-md-4 col-12 text-center'>";
-										$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data['listings'][$i]['listing_id']])."' class='text-decoration-none'>";
-											$html[] = "<div class='avatar avatar-xxxl mb-2' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div>";
-										$html[] = "</a>";
-									$html[] = "</div>";
-									$html[] = "<div class='col-sm-7 col-md-8 col-12'>";
-										$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data['listings'][$i]['listing_id']])."' class='text-decoration-none'>";
-											$html[] = "<h3 class='p-0'>".$data['listings'][$i]['title']."<small class='d-block fw-normal'>".ucwords($data['listings'][$i]['offer'])." ".$data['listings'][$i]['category']." in ".$data['listings'][$i]['address']['municipality'].", ".$data['listings'][$i]['address']['province']."</small></h3>";
-										$html[] = "</a>";
-
-										$html[] = "<div class='mb-3'>";
-											$html[] = "<div class='d-flex flex-wrap'>";
-												$html[] = "<span class='mb-2 d-block border me-2 p-2 text-center fw-bold fs-20'><label class='text-start d-block text-muted small fs-10 fw-normal'>Price</label>&#8369;".number_format($data['listings'][$i]['price'],0)."</span>";
-												if($data['listings'][$i]['floor_area'] > 0) { $html[] = "<span class='mb-2 d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Floor Area</label>".number_format($data['listings'][$i]['floor_area'],0)." sqm</span>"; }
-												if($data['listings'][$i]['lot_area'] > 0) { $html[] = "<span class='mb-2 d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Lot Area</label>".number_format($data['listings'][$i]['lot_area'],0)." sqm</span>"; }
-												if($data['listings'][$i]['bedroom'] > 0) { $html[] = "<span class='mb-2 d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bedroom</label>".$data['listings'][$i]['bedroom']."</span>"; }
-												if($data['listings'][$i]['bathroom'] > 0) { $html[] = "<span class='mb-2 d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Bathroom</label>".$data['listings'][$i]['bathroom']."</span>"; }
-												if($data['listings'][$i]['parking'] > 0) { $html[] = "<span class='mb-2 d-block border me-2 p-2 text-center fs-16'><label class='text-start d-block text-muted fs-10'>Car Garage</label>".$data['listings'][$i]['parking']."</span>"; }
+						$html[] = "<div class='row row-cards'>";
+							$html[] = "<div class='space-y'>";
+							for($i=0; $i<count($data['listings']); $i++) { $c++;
+								$html[] = "<div class='card row_listings_".$data['listings'][$i]['listing_id']."'>";
+									$html[] = "<div class='row g-0'>";
+										$html[] = "<div class='col-md-3 col-sm-auto'>";
+											$html[] = "<div class='card-body'>";
+												$html[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div>";
 											$html[] = "</div>";
 										$html[] = "</div>";
+										$html[] = "<div class='col-md-9 col-sm-auto'>";
+											$html[] = "<div class='card-body'>";
+												$html[] = "<div class='row'>";
+													$html[] = "<div class='col-md-8 col-8'>";
+														$html[] = "<h3 class='mb-0'>".$data['listings'][$i]['title']." <small class='d-block fw-normal'><i class='ti ti-map-pin me-1'></i> ".$data['listings'][$i]['address']['municipality'].", ".$data['listings'][$i]['address']['province']."</small></h3>";
+													$html[] = "</div>";
+													
+													$html[] = "<div class='col-md-4 col-4 text-end'>";
+														$html[] = "<span class='fs-18 text-green fw-bold'><i class='ti ti-tag'></i> &#8369;".number_format($data['listings'][$i]['price'],0)."</span>";
+													$html[] = "</div>";
+												$html[] = "</div>";
 
-										$html[] = "<div class='btn-list'>";
-											$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listings'][$i]['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
-											if(!in_array($data['listings'][$i]['listing_id'],array_keys($_SESSION['compare']['listings']))) {
-												$html[] = "<span class='btn btn-md btn-light btn-add-to-compare btn-add-to-compare_".$data['listings'][$i]['listing_id']."' data-url='".url("MlsController@addToCompare")."' data-id='".$data['listings'][$i]['listing_id']."'><i class='ti ti-layers-difference me-2'></i> Compare</span>";
-											}
+												$html[] = "<div class='row'>";
+													$html[] = "<div class='col-md'>";
+														$html[] = "<div class=' list-inline list-inline-dots mb-0 text-secondary d-sm-block'>";
+															if($data['listings'][$i]['bedroom'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Bedroom</span> <i class='ti ti-bed me-1'></i> ".$data['listings'][$i]['bedroom']."</div>"; }
+															if($data['listings'][$i]['bathroom'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Bathroom</span> <i class='ti ti-bath me-1'></i> ".$data['listings'][$i]['bathroom']."</div>"; }
+															if($data['listings'][$i]['floor_area'] > 0) { $html[] = "<div class='list-inline-item me-4'>	<span class='d-block mb-1 fs-10 text-muted'>Floor Area</span> <i class='ti ti-ruler me-1'></i> ".number_format($data['listings'][$i]['floor_area'],0)." sqm</div>"; }
+															if($data['listings'][$i]['lot_area'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Land Area</span> <i class='ti ti-maximize me-1'></i> ".number_format($data['listings'][$i]['lot_area'],0)." sqm</div>"; }
+															if($data['listings'][$i]['parking'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Garage</span> <i class='ti ti-car-garage me-1'></i> ".$data['listings'][$i]['parking']."</div>"; }
+														$html[] = "</div>";
+
+														/** MOBILE DESIGN */
+														/* $html[] = "<div class='mt-3 list mb-0 text-secondary d-block d-sm-none'>";
+															if($data['listings'][$i]['bedroom'] > 0) { $html[] = "<div class='list-inline'><i class='ti ti-bed me-1'></i>".$data['listings'][$i]['bedroom']."</div>"; }
+															if($data['listings'][$i]['bathroom'] > 0) { $html[] = "<div class='list-inline'><i class='ti ti-bath me-1'></i>".$data['listings'][$i]['bathroom']."</div>"; }
+															if($data['listings'][$i]['floor_area'] > 0) { $html[] = "<div class='list-inline'><i class='ti ti-ruler me-1'></i>".number_format($data['listings'][$i]['floor_area'],0)." sqm</div>"; }
+															if($data['listings'][$i]['lot_area'] > 0) { $html[] = "<div class='list-inline'><i class='ti ti-maximize me-1'></i> ".number_format($data['listings'][$i]['lot_area'],0)." sqm</div>"; }
+															if($data['listings'][$i]['parking'] > 0) { $html[] = "<div class='list-inline'><i class='ti ti-car-garage me-1'></i>".$data['listings'][$i]['parking']."</div>"; }
+														$html[] = "</div>"; */
+													$html[] = "</div>";
+
+													if($data['listings'][$i]['tags']) {
+														$html[] = "<div class='col-md-auto'>";
+															$html[] = "<div class='mt-3 badges'>";
+																foreach($data['listings'][$i]['tags'] as $tag) {
+																	$html[] = "<span class='badge badge-outline text-secondary fw-normal badge-pill mx-1'>$tag</span>";
+																}
+															$html[] = "</div>";
+														$html[] = "</div>";
+													}
+												$html[] = "</div>";
+
+												$html[] = "<div class='mt-4 '>";
+													$html[] = "<div class='btn-list'>";
+														$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listings'][$i]['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
+														if(!in_array($data['listings'][$i]['listing_id'],array_keys($_SESSION['compare']['listings']))) {
+															$html[] = "<span class='btn btn-md btn-light btn-add-to-compare btn-add-to-compare_".$data['listings'][$i]['listing_id']."' data-url='".url("MlsController@addToCompare")."' data-id='".$data['listings'][$i]['listing_id']."'><i class='ti ti-layers-difference me-2'></i> Compare</span>";
+														}
+													$html[] = "</div>";
+												$html[] = "</div>";
+
+											$html[] = "</div>";
 										$html[] = "</div>";
-
 									$html[] = "</div>";
 								$html[] = "</div>";
-								
+
+							}
 							$html[] = "</div>";
-						}
+						$html[] = "</div>";
 
 					}else {
 						$html[] = "<p class='mt-3'>Does not have listing yet.</p>";

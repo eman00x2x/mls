@@ -116,8 +116,11 @@ class MessagesController extends \Main\Controller {
 
 			$this->doc->setTitle("Conversation");
 
-			$this->ajaxChatScript();
-			/* $this->webSocketChatScript(); */
+			if(CONFIG['chat_is_websocket'] == 1) {
+				$this->webSocketChatScript();
+			}else {
+				$this->ajaxChatScript();
+			}
 
 			$unset_account_data = explode(",","account_type,preferences,privileges,uploads");
 			$unset_user_data = explode(",","user_id,password,user_level,permissions,two_factor_authentication,two_factor_authentication_aps");
