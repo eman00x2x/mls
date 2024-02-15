@@ -47,6 +47,7 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 
 					if($data['listings']) { $c=$model->page['starting_number'];
+
 						$html[] = "<div class='table-responsive'>";
 							
 							$html[] = "<table class='table table-hover table-outline'>";

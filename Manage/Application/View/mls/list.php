@@ -184,14 +184,16 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<div class='row g-0'>";
 										$html[] = "<div class='col-md-3 col-sm-auto'>";
 											$html[] = "<div class='card-body'>";
-												$html[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div>";
+												$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data['listings'][$i]['listing_id']])."'>";
+													$html[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div>";
+												$html[] = "</a>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 										$html[] = "<div class='col-md-9 col-sm-auto'>";
 											$html[] = "<div class='card-body'>";
 												$html[] = "<div class='row'>";
 													$html[] = "<div class='col-md-8 col-8'>";
-														$html[] = "<h3 class='mb-0'>".$data['listings'][$i]['title']." <small class='d-block fw-normal'><i class='ti ti-map-pin me-1'></i> ".$data['listings'][$i]['address']['municipality'].", ".$data['listings'][$i]['address']['province']."</small></h3>";
+														$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data['listings'][$i]['listing_id']])."' style='text-decoration: none;' class='text-dark'><h3 class='mb-0'>".$data['listings'][$i]['title']." <small class='d-block fw-normal'><i class='ti ti-map-pin me-1'></i> ".$data['listings'][$i]['address']['municipality'].", ".$data['listings'][$i]['address']['province']."</small></h3></a>";
 													$html[] = "</div>";
 													
 													$html[] = "<div class='col-md-4 col-4 text-end'>";

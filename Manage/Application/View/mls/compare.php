@@ -30,6 +30,8 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 								$html[] = "<li class='dropdown-item pb-0'><div class='form-check pb-0 mb-0'><input type='checkbox' value='' class='form-check-input col-filter' checked id='col-price' /><label class='form-check-label' for='col-price'>Price</label></div></li>";
 							$html[] = "</ul>";
 						$html[] = "</div>";
+
+						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@handshakedIndex")."'><i class='ti ti-heart-handshake me-2'></i> Handshaked</a>";
 						
 					$html[] = "</div>";
 				$html[] = "</div>";
@@ -46,59 +48,53 @@ $html[] = "<div class='page-body'>";
 			$html[] = getMsg();
 		$html[] = "</div>";
 
-		$html[] = "<div class='box-container mb-3'>";
-		
-			if($data) { $c=$model->page['starting_number'];
+		$columns = explode(",","listing_id,offer,category,lot_area,floor_area,bedroom,bathroom,parking,address,price");
 
-				$html[] = "<div class='table-responsive'>";
-					$html[] = "<table class='table table-bordered table-hover table-striped'>";
+		$html[] = "<h1 class='d-none d-print-block'>MLS System - Comparative Analysis Table</h1>";
+		$html[] = "<div class='card'>";
+			$html[] = "<div class='table-responsive'>";
+				$html[] = "<table class='table table-vcenter table-bordered table-nowrap card-table caption-top'>";
+				$html[] = "<thead>";
 					$html[] = "<tr>";
-						$html[] = "<th class='align-middle text-center fw-bold col-avatar'></th>";
-						$html[] = "<th class='align-middle text-center fw-bold col-foreclosed'>Forclosure?</th>";
-						$html[] = "<th class='align-middle text-center fw-bold col-offer'>Offer</th>";
-						$html[] = "<th class='align-middle text-center fw-bold col-category'>Category</th>";
-						$html[] = "<th class='align-middle text-center fw-bold col-lot_area'>Land Area</th>";
-						$html[] = "<th class='align-middle text-center fw-bold col-floor_area'>Floor Area</th>";
-						$html[] = "<th class='align-middle text-center fw-bold col-bedroom'>Bedroom</th>";
-						$html[] = "<th class='align-middle text-center fw-bold col-bathroom'>Bathroom</th>";
-						$html[] = "<th class='align-middle text-center fw-bold col-parking'>Car Garage</th>";
-						$html[] = "<th class='align-middle text-center fw-bold col-address'>Address</th>";
-						$html[] = "<th class='align-middle text-center fw-bold col-price'>Price</th>";
-						$html[] = "<th></th>";
+						$html[] = "<td class='text-center col-avatar' style='width:150px;'>Image</td>";
+						for($i=0; $i<count($data); $i++) {
+							$html[] = "<td class='text-center col-avatar'>";
+								$html[] = "<div class='avatar avatar-xl' style='background-image: url(".$data[$i]['thumb_img'].")'></div>";
+							$html[] = "</td>";
+						}
 					$html[] = "</tr>";
+				$html[] = "</thead>";
 
-					for($i=0; $i<count($data); $i++) { $c++;
+				$html[] = "<tbody>";
 
-						$html[] = "<tr class='compare_row_".$data[$i]['listing_id']."'>";
-							$html[] = "<td class='align-middle text-center col-avatar'><div class='avatar avatar-md' style='background-image: url(".$data[$i]['thumb_img'].")'></div></td>";
-							$html[] = "<td class='align-middle text-center col-foreclosed'>".($data[$i]['foreclosed'] == 0 ? "No" : "Yes")."</td>";
-							$html[] = "<td class='align-middle text-center col-offer'>".ucwords($data[$i]['offer'])."</td>";
-							$html[] = "<td class='align-middle text-center col-category'>".$data[$i]['category']."</td>";
-							$html[] = "<td class='align-middle text-center col-lot_area'>".($data[$i]['lot_area'] > 0 ? $data[$i]['lot_area']." sqm" : "-")."</td>";
-							$html[] = "<td class='align-middle text-center col-floor_area'>".($data[$i]['floor_area'] > 0 ? $data[$i]['floor_area']." sqm" : "-")."</td>";
-							$html[] = "<td class='align-middle text-center col-bedroom'>".($data[$i]['bedroom'] != 0 ? $data[$i]['bedroom'] : "-")."</td>";
-							$html[] = "<td class='align-middle text-center col-bathroom'>".($data[$i]['bathroom'] != 0 ? $data[$i]['bathroom'] : "-")."</td>";
-							$html[] = "<td class='align-middle text-center col-parking'>".($data[$i]['parking'] > 0 ? $data[$i]['parking'] : "-")."</td>";
-							$html[] = "<td class='align-middle text-center col-address'>".$data[$i]['address']['municipality'].", ".$data[$i]['address']['province']."</td>";
-							$html[] = "<td class='align-middle text-center col-price'>&#8369; ".number_format($data[$i]['price'],0)."</td>";
-							$html[] = "<td class='align-middle text-center'><span class='btn btn-danger btn-remove-from-compare btn-remove-from-compare_".$data[$i]['listing_id']."' data-url='".url("MlsController@removeFromCompare")."' data-id='".$data[$i]['listing_id']."'><i class='ti ti-trash me-2'></i> Remove</span></td>";
-						$html[] = "</tr>";
+					foreach($columns as $col) {
+						$html[] = "<tr>";
+							$html[] = "<td class='text-center col-$col'>".ucwords(str_replace("_"," ",$col))."</td>";
 
+							for($x=0; $x<count($data); $x++) {
+								
+								switch($col) {
+									case 'address':
+										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data[$x]["address"]['municipality']." ".$data[$x]["address"]['province']."</td>";
+										break;
+									
+									case 'price':
+										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>&#8369;".number_format($data[$x]['price'],0)."</td>";
+										break;
+
+									default:
+										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data[$x][$col]."</td>";
+								}
+
+							}
+
+						$html[] = "<tr>";
 					}
 
-					$html[] = "</table>";
-				$html[] = "</div>";
-
-			}else {
-				$html[] = "<p class='mt-3'>Compare table is empty.</p>";
-			}
-			
+				$html[] = "</tbody>";
+				$html[] = "</table>";
+			$html[] = "</div>";
 		$html[] = "</div>";
-			
-
-		if(!empty($model)) {
-			$html[] = $model->pagination;
-		}
 
 	$html[] = "</div>";
 $html[] = "</div>";

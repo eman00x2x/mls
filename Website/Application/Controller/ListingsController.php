@@ -13,6 +13,13 @@ class ListingsController extends \Main\Controller {
 
 	function index() {
 
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", "");
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", "");
+		$this->doc->setFacebookMetaData("og:description", "");
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
+
 		if(url()->contains("/buy")) {
 			$filters[] = " offer = 'for sale'";
 		}
@@ -33,6 +40,13 @@ class ListingsController extends \Main\Controller {
 		$listing = $this->getModel("Listing");
 		$listing->column['listing_id'] = $id;
 		$data = $listing->getById();
+
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", $data['title']);
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", $data['thumb_img']);
+		$this->doc->setFacebookMetaData("og:description", "P".number_format($data['price'],0)." ".$data['type']." ".$data['category']." in ".$data['address']['municipality']." ".$data['address']['province']." with land area of ".$data['lot_area']);
+		$this->doc->setFacebookMetaData("og:updated_time", $data['last_modified']);
 
 		if($data) {
 			

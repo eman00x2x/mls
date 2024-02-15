@@ -12,27 +12,67 @@ class PagesController extends \Main\Controller {
 	}
 
 	function index() {
+
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", "");
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", "");
+		$this->doc->setFacebookMetaData("og:description", "");
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
+
 		$this->setTemplate("pages/index.php");
 		return $this->getTemplate();
 	}
 
 	function about() {
+
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", "");
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", "");
+		$this->doc->setFacebookMetaData("og:description", "");
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
+
 		$this->setTemplate("pages/about.php");
 		return $this->getTemplate();
 	}
 
 	function contact() {
+
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", "");
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", "");
+		$this->doc->setFacebookMetaData("og:description", "");
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
+
 		$data['contact_info'] = CONFIG['contact_info'];
 		$this->setTemplate("pages/contact.php");
 		return $this->getTemplate();
 	}
 
 	function articles() {
+
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", "");
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", "");
+		$this->doc->setFacebookMetaData("og:description", "");
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
+
 		$this->setTemplate("pages/articles.php");
 		return $this->getTemplate();
 	}
 
 	function privacy() {
+
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", "");
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", "");
+		$this->doc->setFacebookMetaData("og:description", "");
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
+
 		$data['data_privacy'] = CONFIG['data_privacy'];
 		$this->setTemplate("pages/privacy.php");
 		return $this->getTemplate($data);
@@ -40,6 +80,13 @@ class PagesController extends \Main\Controller {
 
 	function terms() {
 
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", "");
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", "");
+		$this->doc->setFacebookMetaData("og:description", "");
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
+		
 		$data['terms'] = CONFIG['terms'];
 
 		$this->setTemplate("pages/terms.php");
@@ -47,6 +94,13 @@ class PagesController extends \Main\Controller {
 	}
 
 	function refundPolicy() {
+
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", "");
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", "");
+		$this->doc->setFacebookMetaData("og:description", "");
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
 		$data['refund_policy'] = CONFIG['refund_policy'];
 
