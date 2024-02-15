@@ -72,4 +72,25 @@ class ListingsController extends \Main\Controller {
 
 	}
 
+	function comparativeAnalysis($uri) {
+
+		$this->doc->setTitle("MLS System - Comparative Analysis Table");
+
+		$uri = base64_decode($uri);
+		
+		$total = isset($_SESSION['compare']['listings']) ? count($_SESSION['compare']['listings']) : 0;
+		
+		if($total > 0) {
+			
+			$listing = $this->getModel("Listing");
+			$listing->page['limit'] = 4;
+
+			$data = $listing->where(" listing_id IN(".$uri['ids'].") ")->getList();
+		}else { $data = false; $listing = false; }
+
+		$this->setTemplate("listings/comparative.php");
+		return $this->getTemplate($data,$listing);
+
+	}
+
 }

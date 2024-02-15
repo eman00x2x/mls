@@ -49,7 +49,9 @@ class Middleware implements IMiddleware {
 
 		$template = "templates/login.template.php";
 
-		if(url()->contains("/register")) {
+		if(url()->contains("/2-step-verification-code")) {
+			Router::get('/2-step-verification-code', 'LoginController@twoStepVerificationCode');
+		}else if(url()->contains("/register")) {
 
 			Router::get('/register', 'RegistrationController@register');
 			Router::post('/register', 'RegistrationController@register');

@@ -13,3 +13,5 @@ Router::get('/rent', 'ListingsController@index');
 Router::get('/data-privacy', 'PagesController@privacy');
 Router::get('/terms', 'PagesController@terms');
 Router::get('/refund-policy', 'PagesController@refundPolicy');
+
+Router::get('/comparative-analysis/{uri}', 'ListingsController@comparativeAnalysis')->where([ 'uri' => '[\w\-\=]+' ]);

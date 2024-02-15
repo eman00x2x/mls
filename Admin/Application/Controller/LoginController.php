@@ -76,6 +76,37 @@ class LoginController extends \Main\Controller {
 
 	}
 
+	function twoStepVerificationCode() {
+
+		$doc = $this->getLibrary("Factory")->getDocument();
+
+		$doc->addScriptDeclaration("
+
+			document.addEventListener('DOMContentLoaded', function() {
+				var inputs = document.querySelectorAll('[data-code-input]');
+				// Attach an event listener to each input element
+				for(let i = 0; i < inputs.length; i++) {
+					inputs[i].addEventListener('input', function(e) {
+						// If the input field has a character, and there is a next input field, focus it
+						if(e.target.value.length === e.target.maxLength && i + 1 < inputs.length) {
+							inputs[i + 1].focus();
+						}
+					});
+					inputs[i].addEventListener('keydown', function(e) {
+						// If the input field is empty and the keyCode for Backspace (8) is detected, and there is a previous input field, focus it
+						if(e.target.value.length === 0 && e.keyCode === 8 && i > 0) {
+							inputs[i - 1].focus();
+						}
+					});
+				}
+			});
+
+		");
+
+		$this->setTemplate("login/2-step-verification-code.php");
+		return $this->getTemplate();
+	}
+
 	function checkSession() {
 	
 		if(isset($_REQUEST['logout'])) {

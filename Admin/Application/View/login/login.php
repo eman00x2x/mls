@@ -1,39 +1,47 @@
 <?php
 
-$html[] = "<div class='container-fluid'>";
-	$html[] = "<div class='row'>";
-		$html[] = "<div class='col-md-4 col-12  mx-auto'>";
-			$html[] = "<div class='text-center mb-5'>&nbsp;</div>";
-			$html[] = "<form class='card border-0' action='' method='POST'>";
+$html[] = "<div class='d-flex flex-column'>";
+	$html[] = "<div class='page page-center'>";
+		$html[] = "<div class='container container-tight py-4'>";
+			$html[] = "<div class='text-center mb-4 mt-5'>";
+				$html[] = "<a href='".WEBDOMAIN."' class='navbar-brand'><span class='d-block fs-30 fw-bold'><i class='ti ti-building-skyscraper'></i> MLS</span></a>";
+				$html[] = "<span class='d-block'><b>MLS Account Authentication</b></span>";
+			$html[] = "</div>";
 
-				$html[] = "<div class='card-body p-4 '>";
-			
-					$html[] = "<div class='text-wrap'>";
-						/* $html[] = "<p class='text-center mt-4 mb-5'><img src='".CDN."images/logo.png' class='img-fluid mb-3' style='width:350px;' /><br/><b>MLS Account Management</b></p>"; */
-						$html[] = "<p class='text-center mt-4 mb-5'><span class='fs-30 fw-bold'><i class='ti ti-building-skyscraper'></i> MLS</span><br/><b>MLS Account Management</b></p>";
-					$html[] = "</div>";
+			$html[] = "<div class='card card-md'>";
+				$html[] = "<div class='card-body'>";
+					$html[] = "<h2 class='h2 text-center mb-4'>Login to your account</h2>";
+					$html[] = "<form class='border-0' action='' method='POST'>";
 
-					$html[] = getMsg();
+						$html[] = "<div class='mb-3'>";
+							$html[] = "<label class='form-label'><i class='ti ti-user-hexagon'></i> Email</label>";
+							$html[] = "<input type='email' class='form-control' name='email'  placeholder='Enter email' autocomplete='off' tabindex='1'>";
+						$html[] = "</div>";
 
-					$html[] = "<div class='mb-3'>";
-						$html[] = "<label class='form-label'><i class='ti ti-user-hexagon'></i> Email</label>";
-						$html[] = "<input type='email' class='form-control' name='email'  placeholder='Enter email' autocomplete='off' tabindex='1'>";
-					$html[] = "</div>";
+						$html[] = "<div class='mb-3'>";
+							$html[] = "<label class='form-label'>";
+								$html[] = "<span><i class='ti ti-key'></i> Password</span>";
+								$html[] = "<span class='form-label-description'><a href='".url("/forgotPassword")."' class='text-decoration-none' title='Send Password Reset Link'><i class='ti ti-user-question'></i> I forgot my password</a></span>";
+							$html[] = "</label>";
+							$html[] = "<div class='input-group input-group-flat'>";
+								$html[] = "<input type='password' class='form-control' name='password' placeholder='Password' tabindex='2'>";
+								$html[] = "<span class='input-group-text'>";
+									/* $html[] = "<a href='#' title='Show password' data-bs-toggle='tooltip'><i class='ti ti-eye'></i></a>"; */
+								$html[] = "</span>";
+							$html[] = "</div>";
+						$html[] = "</div>";
 
-					$html[] = "<div class='mb-3'>";
-						$html[] = "<label class='form-label d-flex justify-content-between'>";
-							$html[] = "<span class='d-block'><i class='ti ti-key'></i> Password</span>";
-							$html[] = "<span class='d-block'><a href='".url("/forgotPassword")."' class='small text-decoration-none' title='Send Password Reset Link'><i class='ti ti-user-question'></i> I forgot my password</a></span>";
-						$html[] = "</label>";
-						$html[] = "<input type='password' class='form-control' name='password' placeholder='Password' tabindex='2'>";
-					$html[] = "</div>";
-
-					$html[] = "<div class='form-footer text-end'>";
-						$html[] = "<button type='submit' class='btn btn-primary btn-block'>Sign in</button>";
-					$html[] = "</div>";
-
+						$html[] = "<div class='form-footer'>";
+							$html[] = "<button type='submit' class='btn btn-primary w-100'>Sign in</button>";
+						$html[] = "</div>";
+					$html[] = "</form>";
 				$html[] = "</div>";
-			$html[] = "</form>";
+			$html[] = "</div>";
+
+			$html[] = "<div class='text-center text-secondary mt-3'>";
+				$html[] = "Don't have account yet? <a href='".url("/register")."' tabindex='-1'>Sign up</a>";
+			$html[] = "</div>";
+
 		$html[] = "</div>";
 	$html[] = "</div>";
 $html[] = "</div>";

@@ -427,6 +427,8 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 	}
 
 	function compareListings() {
+
+		$this->doc->setTitle("MLS System - Comparative Analysis Table");
 		
 		$total = isset($_SESSION['compare']['listings']) ? count($_SESSION['compare']['listings']) : 0;
 		
@@ -440,7 +442,10 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$listing->page['target'] = url("MlsController@index");
 			$listing->page['uri'] = (isset($uri) ? $uri : []);
 
-			$data = $listing->where(" listing_id IN($ids) ")->getList();
+			$data['listing'] = $listing->where(" listing_id IN($ids) ")->getList();
+
+			$data['share_link'] = WEBDOMAIN . "comparative-analysis/" . base64_encode($ids);
+
 		}else { $data = false; $listing = false; }
 
 		$this->setTemplate("mls/compare.php");

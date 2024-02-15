@@ -1,5 +1,9 @@
+@import url('https://rsms.me/inter/inter.css');
+
+:root {
+	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+}
 html, body {
-	font-family: var(--tblr-body-font-family);
 	font-feature-settings: "cv03", "cv04", "cv11";
 	height: 100%;
 }

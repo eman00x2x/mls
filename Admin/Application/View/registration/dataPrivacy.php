@@ -50,6 +50,10 @@ $html[] = "<div class='page page-center'>";
 				$html[] = "</div>";
 			$html[] = "</form>";
 
+			$html[] = "<div class='text-center text-secondary mt-3'>";
+			$html[] = "Already have account? <a href='".url("/")."' tabindex='-1'>Sign in</a>";
+			$html[] = "</div>";
+
 	$html[] = "</div>";
 $html[] = "</div>";
 $html[] = "</div>";
