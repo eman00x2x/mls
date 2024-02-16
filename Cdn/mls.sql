@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 16, 2024 at 11:26 AM
--- Server version: 5.7.31
+-- Generation Time: Feb 16, 2024 at 04:32 PM
+-- Server version: 8.3.0
 -- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `mls_accounts`;
 CREATE TABLE IF NOT EXISTS `mls_accounts` (
-  `account_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `reference_id` bigint(20) NOT NULL DEFAULT '0',
+  `account_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `reference_id` bigint NOT NULL DEFAULT '0',
   `account_type` varchar(50) NOT NULL,
   `logo` text,
   `company_name` varchar(150) DEFAULT NULL,
@@ -49,11 +49,11 @@ CREATE TABLE IF NOT EXISTS `mls_accounts` (
   `uploads` text COMMENT 'collection of filename uploaded json format',
   `preferences` text,
   `privileges` text COMMENT 'account privileges json format',
-  `kyc_verified` int(11) NOT NULL DEFAULT '0',
+  `kyc_verified` int NOT NULL DEFAULT '0',
   `status` varchar(20) NOT NULL DEFAULT 'active',
-  `registration_date` int(11) NOT NULL,
+  `registration_date` int NOT NULL,
   PRIMARY KEY (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `mls_accounts`
@@ -71,15 +71,15 @@ INSERT INTO `mls_accounts` (`account_id`, `reference_id`, `account_type`, `logo`
 
 DROP TABLE IF EXISTS `mls_account_subscriptions`;
 CREATE TABLE IF NOT EXISTS `mls_account_subscriptions` (
-  `account_subscription_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `account_id` bigint(20) UNSIGNED NOT NULL,
-  `transaction_id` bigint(20) NOT NULL,
-  `premium_id` int(11) NOT NULL,
-  `subscription_date` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `subscription_start_date` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `subscription_end_date` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `account_subscription_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `account_id` bigint UNSIGNED NOT NULL,
+  `transaction_id` bigint NOT NULL,
+  `premium_id` int NOT NULL,
+  `subscription_date` int UNSIGNED NOT NULL DEFAULT '0',
+  `subscription_start_date` int UNSIGNED NOT NULL DEFAULT '0',
+  `subscription_end_date` int UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`account_subscription_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `mls_account_subscriptions`
@@ -101,13 +101,20 @@ INSERT INTO `mls_account_subscriptions` (`account_subscription_id`, `account_id`
 
 DROP TABLE IF EXISTS `mls_deleted_threads`;
 CREATE TABLE IF NOT EXISTS `mls_deleted_threads` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `thread_id` bigint(20) NOT NULL,
-  `account_id` bigint(20) NOT NULL,
-  `deleted_by` bigint(20) NOT NULL,
-  `deleted_at` int(10) UNSIGNED NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `thread_id` bigint NOT NULL,
+  `account_id` bigint NOT NULL,
+  `deleted_by` bigint NOT NULL,
+  `deleted_at` int UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `mls_deleted_threads`
+--
+
+INSERT INTO `mls_deleted_threads` (`id`, `thread_id`, `account_id`, `deleted_by`, `deleted_at`) VALUES
+(2, 4, 1, 0, 1708089387);
 
 -- --------------------------------------------------------
 
@@ -117,16 +124,25 @@ CREATE TABLE IF NOT EXISTS `mls_deleted_threads` (
 
 DROP TABLE IF EXISTS `mls_handshakes`;
 CREATE TABLE IF NOT EXISTS `mls_handshakes` (
-  `handshake_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `requestor_account_id` bigint(20) NOT NULL,
+  `handshake_id` bigint NOT NULL AUTO_INCREMENT,
+  `requestor_account_id` bigint NOT NULL,
   `requestor_details` text,
-  `requestee_account_id` bigint(20) NOT NULL,
-  `listing_id` bigint(20) NOT NULL,
+  `requestee_account_id` bigint NOT NULL,
+  `listing_id` bigint NOT NULL,
   `handshake_status` varchar(10) DEFAULT 'pending',
-  `handshake_status_date` int(11) NOT NULL,
-  `requested_date` int(11) NOT NULL,
+  `handshake_status_date` int NOT NULL,
+  `requested_date` int NOT NULL,
   PRIMARY KEY (`handshake_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `mls_handshakes`
+--
+
+INSERT INTO `mls_handshakes` (`handshake_id`, `requestor_account_id`, `requestor_details`, `requestee_account_id`, `listing_id`, `handshake_status`, `handshake_status_date`, `requested_date`) VALUES
+(8, 1, '{\n    \"account_id\": 1,\n    \"reference_id\": 1,\n    \"logo\": \"http:\\/\\/cdn.mls\\/images\\/accounts\\/51121767665307886810120324132780464665364144552692_4c8db409820f58a6bedde1e1eaa66d4e.jpg\",\n    \"company_name\": \"EmanPO&Ntilde;\",\n    \"profession\": \"Real Estate Broker\",\n    \"real_estate_license_number\": 27431,\n    \"firstname\": \"Eman\",\n    \"lastname\": \"Olivas\",\n    \"birthdate\": \"1988-08-18\",\n    \"street\": \"55 Justice R jabson St Bambang\",\n    \"city\": \"Pasig City\",\n    \"province\": \"National Capital Region\",\n    \"mobile_number\": \"09175223499\",\n    \"email\": \"eman00x2xx@gmail.com\",\n    \"tin\": \"666-666-6663\",\n    \"profile\": \"<p>test test test test<\\/p>\",\n    \"kyc_verified\": 0,\n    \"status\": \"active\",\n    \"registration_date\": 2147483647\n}', 1, 1, 'done', 1708088481, 1708088451),
+(9, 1, '{\n    \"account_id\": 1,\n    \"reference_id\": 1,\n    \"logo\": \"http:\\/\\/cdn.mls\\/images\\/accounts\\/51121767665307886810120324132780464665364144552692_4c8db409820f58a6bedde1e1eaa66d4e.jpg\",\n    \"company_name\": \"EmanPO&Ntilde;\",\n    \"profession\": \"Real Estate Broker\",\n    \"real_estate_license_number\": 27431,\n    \"firstname\": \"Eman\",\n    \"lastname\": \"Olivas\",\n    \"birthdate\": \"1988-08-18\",\n    \"street\": \"55 Justice R jabson St Bambang\",\n    \"city\": \"Pasig City\",\n    \"province\": \"National Capital Region\",\n    \"mobile_number\": \"09175223499\",\n    \"email\": \"eman00x2xx@gmail.com\",\n    \"tin\": \"666-666-6663\",\n    \"profile\": \"<p>test test test test<\\/p>\",\n    \"kyc_verified\": 0,\n    \"status\": \"active\",\n    \"registration_date\": 2147483647\n}', 1, 2, 'denied', 1708089103, 1708089094),
+(10, 1, '{\n    \"account_id\": 1,\n    \"reference_id\": 1,\n    \"logo\": \"http:\\/\\/cdn.mls\\/images\\/accounts\\/51121767665307886810120324132780464665364144552692_4c8db409820f58a6bedde1e1eaa66d4e.jpg\",\n    \"company_name\": \"EmanPO&Ntilde;\",\n    \"profession\": \"Real Estate Broker\",\n    \"real_estate_license_number\": 27431,\n    \"firstname\": \"Eman\",\n    \"lastname\": \"Olivas\",\n    \"birthdate\": \"1988-08-18\",\n    \"street\": \"55 Justice R jabson St Bambang\",\n    \"city\": \"Pasig City\",\n    \"province\": \"National Capital Region\",\n    \"mobile_number\": \"09175223499\",\n    \"email\": \"eman00x2xx@gmail.com\",\n    \"tin\": \"666-666-6663\",\n    \"profile\": \"<p>test test test test<\\/p>\",\n    \"kyc_verified\": 0,\n    \"status\": \"active\",\n    \"registration_date\": 2147483647\n}', 4, 4, 'active', 1708089141, 1708089141);
 
 -- --------------------------------------------------------
 
@@ -136,17 +152,17 @@ CREATE TABLE IF NOT EXISTS `mls_handshakes` (
 
 DROP TABLE IF EXISTS `mls_leads`;
 CREATE TABLE IF NOT EXISTS `mls_leads` (
-  `lead_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `listing_id` bigint(20) NOT NULL,
-  `account_id` bigint(20) NOT NULL,
+  `lead_id` bigint NOT NULL AUTO_INCREMENT,
+  `listing_id` bigint NOT NULL,
+  `account_id` bigint NOT NULL,
   `name` varchar(150) DEFAULT NULL,
   `mobile_no` varchar(150) DEFAULT NULL,
   `email` varchar(150) DEFAULT NULL,
   `message` text,
   `preferences` text,
-  `inquire_at` int(11) NOT NULL,
+  `inquire_at` int NOT NULL,
   PRIMARY KEY (`lead_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `mls_leads`
@@ -164,11 +180,11 @@ INSERT INTO `mls_leads` (`lead_id`, `listing_id`, `account_id`, `name`, `mobile_
 
 DROP TABLE IF EXISTS `mls_license_reference`;
 CREATE TABLE IF NOT EXISTS `mls_license_reference` (
-  `reference_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `reference_id` bigint NOT NULL AUTO_INCREMENT,
   `broker_prc_license_id` varchar(150) DEFAULT NULL,
-  `created_at` int(10) NOT NULL,
+  `created_at` int NOT NULL,
   PRIMARY KEY (`reference_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `mls_license_reference`
@@ -187,37 +203,37 @@ INSERT INTO `mls_license_reference` (`reference_id`, `broker_prc_license_id`, `c
 
 DROP TABLE IF EXISTS `mls_listings`;
 CREATE TABLE IF NOT EXISTS `mls_listings` (
-  `listing_id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_id` bigint(20) NOT NULL,
+  `listing_id` int NOT NULL AUTO_INCREMENT,
+  `account_id` bigint NOT NULL,
   `is_mls` tinyint(1) NOT NULL DEFAULT '0',
   `is_website` tinyint(1) NOT NULL DEFAULT '0',
   `offer` varchar(50) DEFAULT NULL COMMENT 'for sale, for rent',
   `type` varchar(100) NOT NULL COMMENT 'Residential, Commercial',
-  `foreclosed` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `foreclosed` tinyint UNSIGNED NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `tags` text COMMENT 'foreclosure, new, old, fully furnished, bare, semi-furnished',
   `long_desc` longtext,
   `category` varchar(150) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `price` bigint(20) NOT NULL,
+  `price` bigint NOT NULL,
   `reservation` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
   `monthly_downpayment` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
   `monthly_amortization` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `floor_area` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `lot_area` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `unit_area` int(10) UNSIGNED NOT NULL,
-  `bedroom` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `bathroom` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `parking` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `floor_area` int UNSIGNED NOT NULL DEFAULT '0',
+  `lot_area` int UNSIGNED NOT NULL DEFAULT '0',
+  `unit_area` int UNSIGNED NOT NULL,
+  `bedroom` int UNSIGNED NOT NULL DEFAULT '0',
+  `bathroom` int UNSIGNED NOT NULL DEFAULT '0',
+  `parking` int UNSIGNED NOT NULL DEFAULT '0',
   `thumb_img` text,
   `video` text,
   `amenities` text,
   `other_details` text,
-  `date_added` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `last_modified` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `status` tinyint(3) UNSIGNED NOT NULL DEFAULT '1' COMMENT '1 = available, 2 = sold, 3 = removed',
-  `display` tinyint(3) UNSIGNED NOT NULL DEFAULT '1' COMMENT '1 = show, 2 = hidden',
+  `date_added` int UNSIGNED NOT NULL DEFAULT '0',
+  `last_modified` int UNSIGNED NOT NULL DEFAULT '0',
+  `status` tinyint UNSIGNED NOT NULL DEFAULT '1' COMMENT '1 = available, 2 = sold, 3 = removed',
+  `display` tinyint UNSIGNED NOT NULL DEFAULT '1' COMMENT '1 = show, 2 = hidden',
   PRIMARY KEY (`listing_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
@@ -229,7 +245,7 @@ INSERT INTO `mls_listings` (`listing_id`, `account_id`, `is_mls`, `is_website`, 
 (1, 1, 1, 1, 'for sale', 'Residential', 0, 'samplesss', 'samplesss', '[\"New\"]', '<p>sample esar&nbsp;</p>', 'Condominium', '{\"barangay\":\"\",\"municipality\":\"Pasig City\",\"province\":\"Metro Manila\",\"region\":\"NCR\"}', 16000000, 100000.00, 600000.00, 80000.00, 233, 2589, 233, 4, 2, 2, 'http://cdn.mls/images/listings/18362362385124463689010255540495713831578558815919_0bd3dfef0e2e42824866367511e1ea81.webp', NULL, 'Lap Pool,Bowling Room,Basket Ball Court,Game rooms,Day care centers,Lobby,Club House,Function Halls,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', '{\"authority_type\":\"Non-Exclusive Authority To Sell\",\"com_share\":\"2\"}', 1698849808, 1707745112, 1, 1),
 (2, 1, 1, 0, 'for sale', 'Residential', 0, 'test', 'test', '[\"New\",\"Pre Owned\"]', '<p>test</p>', 'House and Lot', '{\"barangay\":\"Sipac-Almacen\",\"municipality\":\"Navotas City\",\"province\":\"Metro Manila\",\"region\":\"NCR\"}', 1500000, 20000.00, 56000.00, 85000.00, 0, 0, 0, 0, 0, 0, 'http://cdn.mls//images/listings/20589086521943721573908927020568652944736005968973_0d2ddc51bced3a7da9c49208c52c1167.webp', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', '{\"authority_type\":\"Non-Exclusive Authority To Sell\",\"com_share\":\"2\"}', 1699018530, 1706408975, 1, 1),
 (3, 1, 1, 1, 'for sale', 'Residential', 0, 'modern-2-storey-5-bedrooms-alabang-400-village-muntinlupa-city', 'Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City', '[\"New\",\"Pre Owned\"]', '<p>5 bedrooms with toilet and bath</p>\r\n<ul>\r\n<li>walk in closet in bedrooms upstairs</li>\r\n<li>ensuite in all bedrooms</li>\r\n<li>bathtub in master&rsquo;s bedroom</li>\r\n<li>airconditioning in 4 rooms and living area</li>\r\n<li>hot and cold water system</li>\r\n</ul>\r\n<p>25m frontage</p>\r\n<p>Built 2010</p>\r\n<p>3 elevated under cover garage</p>\r\n<p>High ceiling</p>\r\n<p>Open plan concept</p>\r\n<p>Balcony at rear</p>\r\n<p>Pantry room</p>\r\n<p>Big garden</p>\r\n<p>SP: 35 M gross</p>\r\n<p>Clean title</p>\r\n<p>RFS: family migrating to Australia</p>', 'House and Lot', '{\"barangay\":\"New Alabang Village\",\"municipality\":\"Muntinlupa City\",\"province\":\"Metro Manila\",\"region\":\"NCR\"}', 1500000, 20000.00, 56000.00, 85000.00, 300, 412, 0, 5, 5, 2, 'http://cdn.mls/images/listings/34386680823233921755628498012360148501361322493813_7e12b9298c1869571ac20626b9bbb411.webp', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', '{\"authority_type\":\"Non-Exclusive Authority To Sell\",\"com_share\":\"\"}', 1699019091, 1707743402, 1, 1),
-(4, 4, 1, 0, 'for sale', 'Residential', 0, 'test', 'test', '[\"New\",\"Pre Owned\"]', '<p>test</p>', 'Subdivision Lot', '{\"barangay\":\"Lower Sulitan\",\"municipality\":\"Naga\",\"province\":\"Zamboanga Sibugay\",\"region\":\"Region IX\"}', 1500000, 20000.00, 56000.00, 85000.00, 0, 0, 0, 0, 0, 0, 'http://cdn.mls//images/listings/55141816083775074918346737185762835964551378384965_ae7a8e233176ecb7a64763d494530f5a.webp', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', '{\"authority_type\":\"Non-Exclusive Authority To Sell\",\"com_share\":\"2\"}', 1699019712, 1706409221, 1, 1);
+(4, 4, 1, 0, 'for sale', 'Residential', 0, 'testing', 'testing', '[\"New\",\"Pre Owned\"]', '<p>test</p>', 'Subdivision Lot', '{\"barangay\":\"Lower Sulitan\",\"municipality\":\"Naga\",\"province\":\"Zamboanga Sibugay\",\"region\":\"Region IX\"}', 1500000, 20000.00, 56000.00, 85000.00, 0, 0, 0, 0, 0, 0, 'http://cdn.mls//images/listings/55141816083775074918346737185762835964551378384965_ae7a8e233176ecb7a64763d494530f5a.webp', NULL, 'Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools', '{\"authority_type\":\"Non-Exclusive Authority To Sell\",\"com_share\":\"2\"}', 1699019712, 1706409221, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -239,14 +255,14 @@ INSERT INTO `mls_listings` (`listing_id`, `account_id`, `is_mls`, `is_website`, 
 
 DROP TABLE IF EXISTS `mls_listings_view`;
 CREATE TABLE IF NOT EXISTS `mls_listings_view` (
-  `listing_view_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `listing_id` bigint(20) UNSIGNED NOT NULL,
-  `account_id` bigint(20) NOT NULL,
-  `session_id` int(11) NOT NULL,
-  `created_at` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `listing_view_id` bigint NOT NULL AUTO_INCREMENT,
+  `listing_id` bigint UNSIGNED NOT NULL,
+  `account_id` bigint NOT NULL,
+  `session_id` int NOT NULL,
+  `created_at` int UNSIGNED NOT NULL DEFAULT '0',
   `user_agent` text COMMENT 'user agent info',
   PRIMARY KEY (`listing_view_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `mls_listings_view`
@@ -340,11 +356,11 @@ INSERT INTO `mls_listings_view` (`listing_view_id`, `listing_id`, `account_id`, 
 
 DROP TABLE IF EXISTS `mls_listing_images`;
 CREATE TABLE IF NOT EXISTS `mls_listing_images` (
-  `image_id` int(11) NOT NULL AUTO_INCREMENT,
-  `listing_id` int(10) UNSIGNED NOT NULL,
+  `image_id` int NOT NULL AUTO_INCREMENT,
+  `listing_id` int UNSIGNED NOT NULL,
   `filename` text NOT NULL,
   `url` text,
-  `img_sort` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `img_sort` int UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`image_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
@@ -374,30 +390,27 @@ INSERT INTO `mls_listing_images` (`image_id`, `listing_id`, `filename`, `url`, `
 
 DROP TABLE IF EXISTS `mls_messages`;
 CREATE TABLE IF NOT EXISTS `mls_messages` (
-  `message_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `thread_id` bigint(20) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
+  `message_id` bigint NOT NULL AUTO_INCREMENT,
+  `thread_id` bigint NOT NULL,
+  `user_id` bigint NOT NULL,
   `message` text NOT NULL,
-  `attachment` text,
-  `created_at` int(10) UNSIGNED NOT NULL,
+  `is_read` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` int UNSIGNED NOT NULL,
   PRIMARY KEY (`message_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `mls_messages`
 --
 
-INSERT INTO `mls_messages` (`message_id`, `thread_id`, `user_id`, `message`, `attachment`, `created_at`) VALUES
-(2, 3, 4, 'However, to actually answer your question, you could create an array of the keys you want to remove and loop through, explicitly unsetting them', NULL, 1707310015),
-(3, 3, 4, 'There are a couple of ways to redirect to another webpage with JavaScript. The most popular ones are location.href and location.replace:', NULL, 1707310645),
-(4, 3, 4, 'It looks like the function extract() would be a better tool for what you\'re trying to do (assuming it\'s extract all key/values from an array and assign them to variables with the same names as the keys in the local scope). After you\'ve extracted the contents, you could then unset the entire $post, assuming it didn\'t contain anything else you wanted.', NULL, 1707313730),
-(5, 3, 4, 'Be careful: if the value of the field you want to remove is equal to the index of the (flipped) element you want to remove the key will not be removed. It can lead to security problems by exposing data. Can see the results here: replit.com/@xbeat/unset-array-of-key#index.php', NULL, 1707313895),
-(6, 3, 1, 'smart but slow for large input arrays. foreach unset seems much faster with big input arrays and (at least) relatively small number of keys to unset.', NULL, 1707314025),
-(7, 3, 4, 'You could use array_intersect_key if you wanted to supply an array of keys to keep.', NULL, 1707314060),
-(8, 3, 1, 'This is almost certainly an XY Problem. There probably isn\'t any beneficial reason to unset these elements. And if you have concerns regarding variable scope, there may be better ways to address them than explicitly unsetting, but we cannot advise without more/better context.', NULL, 1707314141),
-(9, 3, 1, 'Hey im here using my phone', NULL, 1707318090),
-(10, 3, 1, 'Oh', NULL, 1707318557),
-(11, 4, 1, 'hey', NULL, 1707746547);
+INSERT INTO `mls_messages` (`message_id`, `thread_id`, `user_id`, `message`, `is_read`, `created_at`) VALUES
+(59, 3, 1, 'PSX96AU09Vtb3Gyl/9+SuZJbYaicyXGoqz3kPsG2FjkuNKd4xtUt4uENNOeA8BOG2N8IvbGRyTKg2BV0G5+RqffPEFSeoW5ah/23mI+4ilv+ra9hvjNx0TUXt+6YyFSFYIsXpT6HTai5wrtc4bk5xf6S5zYMOJPJ0kK+3WUYHB3GlRxFRqXbZrf0AIMiHCvHVjyIJZcx0XLMQitBbbWcnbU93g==', 0, 1708095964),
+(60, 3, 4, 'Lz+z4hQ06VJN3Calr9iauogIKaidjD+p5DmlPsq8DTNrO715gpt0i7UFYPSG9xrBnt4J/qaUxy66nhg8BYWU/afaClCK5HdalLPglcqijg3y4+F69js+wD9auOqF2RGfYM47ozmKRqi50LpVpOouz7CT8XlDNZjHhn6zmDYUBgLIkVJCCbbXKr27F8BlFnPHETKMYJA2gmmMXzBXLejB', 1, 1708096283),
+(61, 3, 1, 'TWz8+wV68kBS3C2k7IvWt5lbbPjclHylpirkd8r1Tj0lerV0zpwjzqgDZvmf7RiF2IYJ8qGcxDTpkwI7HJaU/frwWALWsjEM1aCjw9/52Uig8Lcm52VjgWlJ7rjDjxGYd5ht4HuHVeyqh+AL8vlplKPCpywfZs7RlRvozyVEWluWxQ8QGvaNfg==', 0, 1708096303),
+(62, 3, 4, 'JiPj7kBg6VpN3Dur+c6I9o9HLKyBwjTmpWmwKMelQyAkeqd1x9ld45ZAZ++a6x6E2MgI+bfd3C/p2AUzGYWV/bjODBGQ6WJLxuf/lcrugAvjquB7pXY13XRa+tuE0wfPJd0wrDmeRr65wrpJ++p65P+A+nZDMJnJx0S/3X4WHwqFkRxFRrHHZr79UtdlHHPjMQPYM5Y30H2GDThLZ6PPnfQ9hUGSMoXGCle1T1oMzW6/OpoxiAckftVAoxILYtRl9eIoK3sOVjP/sG0iyCyaQTa53MJ9rz2NvpEQbUU+Az2RHIvJYXywEGQ05AZhGi7eFm5f+bVElv7uLpKuLYi3o9IMJ3e6eVZAbzACdpFCzgHeUVXFHrFlMVZ0yrph+wIih5rP8IJnxfpK543OYYw=', 1, 1708096378),
+(63, 3, 1, 'HS3++wxxoVpY3DGl+g==', 0, 1708100851),
+(64, 3, 1, 'Ging/0B15lJXkg==', 0, 1708100920),
+(65, 3, 1, 'Ging/0Am', 0, 1708100940);
 
 -- --------------------------------------------------------
 
@@ -407,13 +420,13 @@ INSERT INTO `mls_messages` (`message_id`, `thread_id`, `user_id`, `message`, `at
 
 DROP TABLE IF EXISTS `mls_notifications`;
 CREATE TABLE IF NOT EXISTS `mls_notifications` (
-  `notification_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `account_id` int(11) NOT NULL,
+  `notification_id` bigint NOT NULL AUTO_INCREMENT,
+  `account_id` int NOT NULL,
   `content` text,
   `status` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` int(11) NOT NULL,
+  `created_at` int NOT NULL,
   PRIMARY KEY (`notification_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `mls_notifications`
@@ -422,8 +435,24 @@ CREATE TABLE IF NOT EXISTS `mls_notifications` (
 INSERT INTO `mls_notifications` (`notification_id`, `account_id`, `content`, `status`, `created_at`) VALUES
 (1, 1, '{\"title\":\"Eman Olivas requested a handshake\",\"message\":\"Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshaked\"}', 0, 1708071577),
 (2, 1, '{\"title\":\"Eman Olivas requested a handshake\",\"message\":\"Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshaked\"}', 0, 1708071577),
-(3, 1, '{\"title\":\"Eman Olivas requested a handshake\",\"message\":\"Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshaked\"}', 1, 1708071577),
-(4, 1, '{\"title\":\"Eman Olivas requested a handshake\",\"message\":\"Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshaked\"}', 1, 1708071577);
+(3, 1, '{\"title\":\"Eman Olivas requested a handshake\",\"message\":\"Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshaked\"}', 0, 1708071577),
+(4, 1, '{\"title\":\"Eman Olivas requested a handshake\",\"message\":\"Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshaked\"}', 0, 1708071577),
+(5, 1, '{\"title\":\"Eman Olivas requested a handshake\",\"message\":\"samplesss\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshake\"}', 0, 1708086164),
+(6, 1, '{\"title\":\"Eman Olivas accepted your handshake request\",\"message\":null,\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshake\"}', 0, 1708086179),
+(7, 1, '{\"title\":\"Eman Olivas requested a handshake\",\"message\":\"samplesss\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshake\"}', 0, 1708086308),
+(8, 1, '{\"title\":\"Eman Olivas canceled a handshake\",\"message\":\"samplesss\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/1\"}', 0, 1708086612),
+(9, 1, '{\"title\":\"Eman Olivas requested a handshake\",\"message\":\"samplesss\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshake\"}', 0, 1708086630),
+(10, 1, '{\"title\":\"Eman Olivas canceled a handshake\",\"message\":\"samplesss\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/1\"}', 0, 1708088362),
+(11, 1, '{\"title\":\"Eman Olivas requested a handshake\",\"message\":\"samplesss\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshaked\"}', 0, 1708088451),
+(12, 1, '{\"title\":\"Eman Olivas accepted your handshake request\",\"message\":\"samplesss\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshaked\"}', 0, 1708088470),
+(13, 1, '{\"title\":\"Eman Olivas mark done a handshake\",\"message\":\"samplesss\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/1\"}', 0, 1708088481),
+(14, 1, '{\"title\":\"Eman Olivas requested a handshake\",\"message\":\"test\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshaked\"}', 1, 1708089094),
+(15, 1, '{\"title\":\"Eman Olivas denied your handshake request\",\"message\":\"test\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/2\"}', 1, 1708089103),
+(16, 4, '{\"title\":\"Eman Olivas requested a handshake\",\"message\":\"testing\",\"url\":\"http:\\/\\/manage.mls\\/mls\\/handshaked\"}', 1, 1708089141),
+(17, 4, '{\"title\":\"Eman Olivas\",\"message\":\"Sent you a message\",\"url\":\"http:\\/\\/manage.mls\\/threads\\/WzEsNF0=\"}', 1, 1708100762),
+(18, 4, '{\"title\":\"Eman Olivas\",\"message\":\"Sent you a message\",\"url\":\"http:\\/\\/manage.mls\\/threads\\/WzEsNF0=\"}', 1, 1708100851),
+(19, 4, '{\"title\":\"Eman Olivas\",\"message\":\"Sent you a message\",\"url\":\"http:\\/\\/manage.mls\\/threads\\/WzEsNF0=\"}', 1, 1708100920),
+(20, 1, '{\"title\":\"Eman Olivas\",\"message\":\"Sent you a message\",\"url\":\"http:\\/\\/manage.mls\\/threads\\/WzEsNF0=\"}', 0, 1708100940);
 
 -- --------------------------------------------------------
 
@@ -433,7 +462,7 @@ INSERT INTO `mls_notifications` (`notification_id`, `account_id`, `content`, `st
 
 DROP TABLE IF EXISTS `mls_premiums`;
 CREATE TABLE IF NOT EXISTS `mls_premiums` (
-  `premium_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `premium_id` bigint NOT NULL AUTO_INCREMENT,
   `category` varchar(50) DEFAULT NULL,
   `type` varchar(50) DEFAULT 'limited_time' COMMENT 'permanent, limited_time',
   `name` varchar(50) DEFAULT NULL,
@@ -441,11 +470,11 @@ CREATE TABLE IF NOT EXISTS `mls_premiums` (
   `script` text COMMENT 'json value',
   `duration` varchar(10) NOT NULL DEFAULT '30 days' COMMENT 'days duration',
   `cost` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `visibility` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
-  `date_added` int(10) UNSIGNED NOT NULL,
-  `date_end` int(10) UNSIGNED NOT NULL,
+  `visibility` tinyint UNSIGNED NOT NULL DEFAULT '1',
+  `date_added` int UNSIGNED NOT NULL,
+  `date_end` int UNSIGNED NOT NULL,
   PRIMARY KEY (`premium_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `mls_premiums`
@@ -469,7 +498,7 @@ INSERT INTO `mls_premiums` (`premium_id`, `category`, `type`, `name`, `details`,
 
 DROP TABLE IF EXISTS `mls_settings`;
 CREATE TABLE IF NOT EXISTS `mls_settings` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `contact_info` text,
   `property_tags` text,
   `paypal_credentials` text,
@@ -484,9 +513,9 @@ CREATE TABLE IF NOT EXISTS `mls_settings` (
   `data_privacy` text,
   `terms` text,
   `refund_policy` text,
-  `modified_at` int(11) NOT NULL,
+  `modified_at` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `mls_settings`
@@ -503,13 +532,13 @@ INSERT INTO `mls_settings` (`id`, `contact_info`, `property_tags`, `paypal_crede
 
 DROP TABLE IF EXISTS `mls_threads`;
 CREATE TABLE IF NOT EXISTS `mls_threads` (
-  `thread_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `thread_id` bigint NOT NULL AUTO_INCREMENT,
   `participants` text COMMENT 'participants account_id in JSON format',
-  `created_by` bigint(20) NOT NULL,
-  `created_at` int(10) UNSIGNED NOT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT '1',
+  `created_by` bigint NOT NULL,
+  `created_at` int UNSIGNED NOT NULL,
+  `status` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`thread_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `mls_threads`
@@ -526,22 +555,22 @@ INSERT INTO `mls_threads` (`thread_id`, `participants`, `created_by`, `created_a
 
 DROP TABLE IF EXISTS `mls_transactions`;
 CREATE TABLE IF NOT EXISTS `mls_transactions` (
-  `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_id` bigint(20) NOT NULL,
-  `premium_id` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `premium_description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `transaction_id` int NOT NULL AUTO_INCREMENT,
+  `account_id` bigint NOT NULL,
+  `premium_id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `premium_description` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   `premium_price` float(10,2) DEFAULT NULL,
-  `merchant_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `merchant_email` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `payer` text COLLATE utf8_unicode_ci,
-  `payment_transaction_id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `payment_source` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `payment_status` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  `transaction_details` text COLLATE utf8_unicode_ci,
-  `created_at` int(10) DEFAULT '0',
-  `modified_at` int(10) DEFAULT '0',
+  `merchant_id` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `merchant_email` varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `payer` text CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci,
+  `payment_transaction_id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `payment_source` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `payment_status` varchar(25) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `transaction_details` text CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci,
+  `created_at` int DEFAULT '0',
+  `modified_at` int DEFAULT '0',
   PRIMARY KEY (`transaction_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Dumping data for table `mls_transactions`
@@ -563,19 +592,19 @@ INSERT INTO `mls_transactions` (`transaction_id`, `account_id`, `premium_id`, `p
 
 DROP TABLE IF EXISTS `mls_users`;
 CREATE TABLE IF NOT EXISTS `mls_users` (
-  `user_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `account_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `account_id` bigint UNSIGNED NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(150) NOT NULL,
   `name` varchar(50) DEFAULT NULL,
   `photo` text,
-  `user_level` int(10) UNSIGNED NOT NULL DEFAULT '2',
+  `user_level` int UNSIGNED NOT NULL DEFAULT '2',
   `permissions` text,
   `two_factor_authentication` tinyint(1) NOT NULL DEFAULT '0',
   `two_factor_authentication_aps` varchar(50) DEFAULT NULL,
-  `date_added` int(11) DEFAULT NULL,
+  `date_added` int DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `mls_users`
