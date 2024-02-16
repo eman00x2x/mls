@@ -134,3 +134,9 @@ function convertMillions($num) {
     }
     
 }
+
+function strtohex($x) {
+    $s='';
+    foreach (str_split($x) as $c) $s.=sprintf("%02X",ord($c));
+    return($s);
+}

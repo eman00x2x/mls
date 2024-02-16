@@ -24,6 +24,10 @@ class NotificationModel extends \Main\Model {
 			);
 		}else {
 
+			if(isset($data['content'])) {
+				$data['content'] = json_encode($data['content']);
+			}
+
 			foreach($data as $key => $val) {
 				$this->column[$key] = $val;
 			}

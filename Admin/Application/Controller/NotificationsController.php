@@ -24,10 +24,10 @@ class NotificationsController extends \Main\Controller {
 		$notification->page['target'] = url("NotificationsController@index");
 		$notification->page['uri'] = (isset($uri) ? $uri : []);
 
-		$notification->where(" account_id = ".$this->account_id);
+		$notification->where(" account_id = ".$this->account_id)->orderBy(" status DESC, created_at DESC");
 		$data = $notification->getList();
 
-		$this->setTemplate("notifications/notifications.php");
+		$this->setTemplate("notifications/index.php");
 		return $this->getTemplate($data,$notification);
 
 	}
@@ -36,42 +36,16 @@ class NotificationsController extends \Main\Controller {
 
 		$notification = $this->getModel("Notification");
 
-		$notification->page['limit'] = 20;
-		$notification->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$notification->page['target'] = url("NotificationsController@index");
-		$notification->page['uri'] = (isset($uri) ? $uri : []);
-
-		$notification->where(" account_id = ".$this->account_id);
-		$notification->and(" status = 1 ");
+		$notification->page['limit'] = 5;
+		$notification->where(" account_id = ".$this->account_id)
+			->and(" status = 1 ")
+			->orderBy(" status DESC, created_at DESC");
 		$data = $notification->getList();
 
 		if($data) {
 			$this->setTemplate("notifications/latest.php");
 			return $this->getTemplate($data,$notification);
 		}
-
-	}
-
-	function createNotification($account_id, $data) {
-
-		$data['content'] = array(
-			"title" => $data['title'],
-			"message" => $data['message'],
-			"url" => $data['url'],
-		);
-
-		$data['account_id'] = $account_id;
-		$data['status'] = 1;
-		$data['created_at'] = DATE_NOW;
-
-		$notification = $this->getModel("Notification");
-		$response = $notification->saveNew($data);
-
-		return json_encode(array(
-			"status" => 1,
-			"type" => "success",
-			"id" => $response['id']
-		));
 
 	}
 

@@ -56,7 +56,7 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 
 					if($data['account']['account_id'] != $_SESSION['user_logged']['account_id']) {
-					    $html[] = "<a class='card-btn ' href='".url("MessagesController@conversation", ["participants" => base64_encode(json_encode(array($data['listing']['account_id'],$_SESSION['account_id'])))], ["listing_id" => $data['listing']['listing_id'], "name" => $data['listing']['title']])."'><i class='ti ti-send me-2'></i> Send Message</a>";
+					    $html[] = "<a class='card-btn ' href='".url("MessagesController@conversation", ["participants" => base64_encode(json_encode(array($data['listing']['account_id'],$_SESSION['user_logged']['account_id'])))], ["listing_id" => $data['listing']['listing_id'], "name" => $data['listing']['title']])."'><i class='ti ti-send me-2'></i> Send Message</a>";
 					}
 
 				$html[] = "</div>";
@@ -67,8 +67,10 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<div class='card mb-3'>";
 					$html[] = "<div class='card-body'>";
 						$html[] = "<div class='card-title'>Posting Details</div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-certificate me-1'></i> Authority:</span> <strong>".$data['listing']['other_details']['authority_type']."</strong></div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-license me-1'></i> Commission Share:</span> <strong>".$data['listing']['other_details']['com_share']."%</strong></div>";
 						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-status-change me-1'></i> Status:</span> <strong>".$status[$data['listing']['status']]."</strong></div>";
-						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Modified:</span> <strong>".date("F d, Y",$data['listing']['last_modified'])."</strong></div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Modified at:</span> <strong>".date("F d, Y",$data['listing']['last_modified'])."</strong></div>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 
@@ -95,8 +97,6 @@ $html[] = "<div class='page-body'>";
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-body'>";
 							$html[] = "<div class='card-title'>Handshake Details</div>";
-							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-certificate me-1'></i> Authority:</span> <strong>".$data['listing']['other_details']['authority_type']."</strong></div>";
-							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-license me-1'></i> Commission Share:</span> <strong>".$data['listing']['other_details']['com_share']."%</strong></div>";
 							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-status-change me-1'></i> Status:</span> <strong>".strtoupper($data['handshake']['handshake_status'])."</strong></div>";
 							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Status Date:</span> <strong>".date("F d, Y", $data['handshake']['handshake_status_date'])."</strong></div>";
 						$html[] = "</div>";
@@ -105,10 +105,6 @@ $html[] = "<div class='page-body'>";
 
 				$html[] = "<div class='text-center mb-4 d-md-block d-none'>";
 					$html[] = $buttons();
-					if($data['handshake'] && $data['handshake']['handshake_status'] == "pending") {
-                        $html[] = "<span class='btn'>Handshake Pending</span>";
-                    }
-
 				$html[] = "</div>";
 			
             $html[] = "</div>";

@@ -8,17 +8,13 @@ class MessagesController extends \Main\Controller {
 	private $ws_client;
 	private $websocketAddress = "ws://localhost:8980/mls/Manage/webSocketServer.php";
 
+	private $cipher = "AES-128-CTR";
+	private $key_path = "../key";
+	private $pseudo_bytes_path = "../pseudo_bytes";
+
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-/* 
-		$this->ws_client = new \WebSocket\Client($this->websocketAddress);
-		$this->ws_client
-			// Add standard middlewares
-			->addMiddleware(new \WebSocket\Middleware\CloseHandler())
-			->addMiddleware(new \WebSocket\Middleware\PingResponder())
-			; */
-
 	}
 	
 	function index() {
@@ -88,6 +84,15 @@ class MessagesController extends \Main\Controller {
 					$user->select(" user_id, name, email ");
 					$user->column['user_id'] = $data['last_message']['user_id'];
 					$data['last_message']['from'] = $user->getById();
+
+					$file = fopen($this->key_path, "r");
+					$encryption_key = fread($file, filesize($this->key_path));
+					
+					$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
+					$encryption_iv = fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
+					
+					$data['last_message']['message'] = openssl_decrypt($data['last_message']['message'], $this->cipher, $encryption_key, 0, $encryption_iv);
+
 				}
 
 			}
@@ -100,8 +105,11 @@ class MessagesController extends \Main\Controller {
 
 	function getThreadInfoByParticipants($participants) {
 
+		/** should match each participants and vise-versa [1,4] OR [4,1] */
+
 		$thread = $this->getModel("Thread");
 		$thread->column['participants'] = $participants;
+		$thread->and(" status = 1 ");
 		$data = $thread->getByParticipants();
 
 		return json_encode($data);
@@ -144,6 +152,8 @@ class MessagesController extends \Main\Controller {
 			if($data['thread']) {
 
 				$message = $this->getModel("Message");
+				$message->DBO->query("UPDATE #__messages SET is_read = 1 WHERE thread_id = ".$data['thread']['thread_id']." AND user_id != ".$_SESSION['user_logged']['user_id']."");
+
 				$data['messages'] = $message->execute(" SELECT * 
 					FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread']['thread_id']." ORDER BY created_at DESC LIMIT 20) as sub 
 					ORDER BY created_at ASC
@@ -155,10 +165,19 @@ class MessagesController extends \Main\Controller {
 						$user->column['user_id'] = $data['messages'][$i]['user_id'];
 						$data['messages'][$i]['user'] = $user->getById();
 
+						$file = fopen($this->key_path, "r");
+						$encryption_key = fread($file, filesize($this->key_path));
+						
+						$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
+						$encryption_iv = fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
+						
+						$data['messages'][$i]['message'] = openssl_decrypt($data['messages'][$i]['message'], $this->cipher, $encryption_key, 0, $encryption_iv);
+
 						foreach($unset_user_data as $column) {
 							unset($data['messages'][$i]['user'][$column]);
 						}
 					}
+
 				}
 			}else {
 				$data['messages'] = false;
@@ -171,63 +190,6 @@ class MessagesController extends \Main\Controller {
 		$this->response(404);
 
 	}
-
-	/* function view($participants) {
-
-		$this->doc->setTitle("Messages");
-		$this->ajaxChatScript($id);
-		#$this->webSocketChatScript($id);
-
-		$unset_account_data = explode(",","account_type,preferences,privileges,uploads");
-		$unset_user_data = explode(",","user_id,password,user_level,permissions,two_factor_authentication,two_factor_authentication_aps");
-		
-		
-		$thread = $this->getModel("Thread");
-		$thread->column['participants'] = $participants;
-		$data = $thread->getByParticipants();
-		
-		$account = $this->getModel("Account");
-		for($i=0; $i<count($data['participants']); $i++) {
-			$account->column['account_id'] = $data['participants'][$i];
-			$data['participant'][$data['participants'][$i]] = $account->getById();
-
-			foreach($unset_account_data as $column) {
-				unset($data['participant'][$data['participants'][$i]][$column]);
-			}
-		}
-
-		$data['participants'] = $data['participant'];
-		unset($data['participant']);
-
-		if($data) {
-
-			$message = $this->getModel("Message");
-			$data['messages'] = $message->execute(" SELECT * 
-				FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread_id']." ORDER BY created_at DESC LIMIT 20) as sub 
-				ORDER BY created_at ASC
-			");
-
-			if($data['messages']) {
-				$user = $this->getModel("User");
-				for($i=0; $i<count($data['messages']); $i++) {
-					$user->column['user_id'] = $data['messages'][$i]['user_id'];
-					$data['messages'][$i]['user'] = $user->getById();
-
-					foreach($unset_user_data as $column) {
-						unset($data['messages'][$i]['user'][$column]);
-					}
-
-				}
-			}
-
-			$this->setTemplate("messages/view.php");
-			return $this->getTemplate($data, $message);
-
-		}
-
-		$this->response(404);
-
-	} */
 
 	function getMessages($participants,$lastMessageId) {
 
@@ -243,8 +205,24 @@ class MessagesController extends \Main\Controller {
 			if($data['messages']) {
 				$user = $this->getModel("User");
 				for($i=0; $i<count($data['messages']); $i++) {
+
+					if($data['messages'][$i]['user_id'] != $_SESSION['user_logged']['user_id']) {
+						$message->save($data['messages'][$i]['message_id'], [
+							"is_read" => 0
+						]);
+					}
+
 					$user->column['user_id'] = $data['messages'][$i]['user_id'];
 					$data['messages'][$i]['user'] = $user->getById();
+
+					$file = fopen($this->key_path, "r");
+					$encryption_key = fread($file, filesize($this->key_path));
+					
+					$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
+					$encryption_iv = fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
+					
+					$data['messages'][$i]['message'] = openssl_decrypt($data['messages'][$i]['message'], $this->cipher, $encryption_key, 0, $encryption_iv);
+
 				}
 
 				$this->setTemplate("messages/getMessages.php");
@@ -274,17 +252,45 @@ class MessagesController extends \Main\Controller {
 			$thread_id = $response['id'];
 		}
 
+		$file = fopen($this->key_path, "r");
+		$encryption_key = fread($file, filesize($this->key_path));
+		
+		$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
+		$encryption_iv = fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
+
 		$message = $this->getModel("Message");
 
-		$data = array(
+		$new_data = array(
 			"user_id" => $_SESSION['user_logged']['user_id'],
 			"thread_id" => $thread_id,
-			"message" => $_POST['message'],
-			"attachment" => null,
+			"message" => openssl_encrypt($_POST['message'], $this->cipher, $encryption_key, 0, $encryption_iv),
+			"is_read" => 0,
 			"created_at" => DATE_NOW
 		);
 
-		$message_response = $message->saveNew($data);
+		$message_response = $message->saveNew(
+			$new_data
+		);
+
+		if (($key = array_search($_SESSION['user_logged']['account_id'], $data['thread']['participants'])) !== false) {
+			unset($data['thread']['participants'][$key]);
+		}
+
+		$recipient_account_id = implode("", $data['thread']['participants']);
+
+		$notification = $this->getModel("Notification");
+		$notification->saveNew(
+			array(
+				"account_id" => $recipient_account_id,
+				"status" => 1,
+				"created_at" => DATE_NOW,
+				"content" => array(
+					"title" => $_SESSION['user_logged']['name'],
+					"message" => "Sent you a message",
+					"url" => MANAGE."threads/".base64_encode($_POST['participants'])
+				)
+			)
+		);
 
 		$user = $this->getModel("User");
 		$user->column['user_id'] = $_SESSION['user_logged']['user_id'];
@@ -294,8 +300,8 @@ class MessagesController extends \Main\Controller {
 		$response['user_id'] = $_SESSION['user_logged']['user_id'];
 		$response['photo'] = $data['user']['photo'];
 		$response['user_name'] = $data['user']['name'];
-		$response['user_message'] = base64_encode($data['message']);;
-		$response['user_sent_time'] = date("M d, Y h:ia",$data['created_at']);
+		$response['user_message'] = base64_encode($new_data['message']);;
+		$response['user_sent_time'] = date("M d, Y h:ia",$new_data['created_at']);
 
 		return json_encode(array(
 			"status" => 1,

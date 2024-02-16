@@ -80,10 +80,24 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<div class='card-body'>";
 								$html[] = "<div class='row align-items-center'>";
 									$html[] = "<div class='col-auto'>";
-										$html[] = "<span class='bg-light text-white avatar'>&nbsp;</span>";
+										$html[] = "<span class='bg-red text-white avatar'><i class='ti ti-heart'></i></span>";
 									$html[] = "</div>";
 									$html[] = "<div class='col'>";
+										$html[] = "<div class='font-weight-medium'>2 Active Handshaked</div>";
+										/* $html[] = "<div class='text-secondary'>Platinum Package 365 days left</div>"; */
 										
+										$html[] = "<div class='d-flex gap-3'>";
+											$html[] = "<div class='avatar-list avatar-list-stacked'>";
+												$html[] = "<span class='avatar avatar-xs rounded' style='background-image: url(".$_SESSION['user_logged']['logo'].")'></span>";
+												$html[] = "<span class='avatar avatar-xs rounded'>JL</span>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='avatar-list avatar-list-stacked'>";
+												$html[] = "<span class='avatar avatar-xs rounded'>EO</span>";
+												$html[] = "<span class='avatar avatar-xs rounded' style='background-image: url(".$_SESSION['user_logged']['photo'].")'></span>";
+											$html[] = "</div>";
+										$html[] = "</div>";
+
 									$html[] = "</div>";
 								$html[] = "</div>";
 							$html[] = "</div>";

@@ -25,7 +25,7 @@ class Table {
 		"adjacents" => null,
 		"limit" => 20,
 		"current" => null,
-		"uri" => null,
+		"uri" => [],
 		"target" => null,
 		"starting_number" => null
 	];
@@ -220,6 +220,7 @@ class Table {
 			
 			return $this->results;
 		}else {return false;}
+		
 
 	}
 

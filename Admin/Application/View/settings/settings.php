@@ -175,17 +175,17 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 										$html[] = "<input name='chat_is_websocket' id='chat_is_websocket' type='hidden' value='".$data['chat_is_websocket']."' />";
 
 										$html[] = "<h2 class='mb-4'>Analytics Script</h2>";
-										$html[] = "<div class='mb-5'>";
+										$html[] = "<div class='mb-5 language-js highlighter-rouge'>";
 											$html[] = "<p class='card-subtitle mb-2'>Please insert your analytics script, such as the following example, to monitor website traffic:</p>";
-											$html[] = "<pre>";
+											$html[] = "<pre class='highlight'><code>";
 												$html[] = htmlentities("<script async src=\"https://www.google-analytics.com/analytics.js\"></script>
-	<script>
+<script>
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'UA-XXXXX-Y', 'auto');
 	ga('send', 'pageview');
-	</script>
+</script>
 	");
-											$html[] = "</pre>";
+											$html[] = "</code></pre>";
 											$html[] = "<p class='card-subtitle mb-3'>Replace 'UA-XXXXX-Y' with your own Google Analytics tracking ID.</p>";
 											$html[] = "<textarea name='analytics' class='form-control' placeholder='Analytics Script' style='width:100%; height:200px;'>".$data['analytics']."</textarea>";
 										$html[] = "</div>";
@@ -205,23 +205,25 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "<textarea name='header_script' class='form-control' placeholder='Header Script' style='width:100%; height:200px;'>".$data['header_script']."</textarea>";
 											$html[] = "<div class='my-4'>";
 												$html[] = "<p>Example META Pixel Snippet:</p>";
-												$html[] = "<pre>";
+												$html[] = "<pre class='highlight'><code>";
 													$html[] = htmlentities("<script>
-	!function(f,b,e,v,n,t,s)
-	{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-	n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-	if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-	n.queue=[];t=b.createElement(e);t.async=!0;
-	t.src=v;s=b.getElementsByTagName(e)[0];
-	s.parentNode.insertBefore(t,s)}(window, document,'script',
-	'https://connect.facebook.net/en_US/fbevents.js');
+	!function(f,b,e,v,n,t,s) {
+		
+		if(f.fbq)return;n=f.fbq=function(){
+			n.callMethod ? n.callMethod.apply(n,arguments):n.queue.push(arguments)
+		};
+
+		if(!f._fbq) f._fbq=n; n.push=n; n.loaded=!0; n.version='2.0';
+		n.queue=[]; t=b.createElement(e); t.async=!0;
+		t.src=v; s=b.getElementsByTagName(e)[0];
+		s.parentNode.insertBefore(t,s)
+
+	}(window, document,'script', 'https://connect.facebook.net/en_US/fbevents.js');
 	fbq('init', 'your-pixel-id-goes-here');
 	fbq('track', 'PageView');
-	</script>
-	<noscript><img height=\"1\" width=\"1\" style=\"display:none\"
-	src=\"https://www.facebook.com/tr?id=your-pixel-id-goes-here&ev=PageView&noscript=1\"
-	/></noscript>");
-												$html[] = "</pre>";
+</script>
+<noscript><img height=\"1\" width=\"1\" style=\"display:none\"src=\"https://www.facebook.com/tr?id=your-pixel-id-goes-here&ev=PageView&noscript=1\" /></noscript>");
+												$html[] = "</code></pre>";
 												$html[] = "<p class='card-subtitle mb-3'>Replace 'your-pixel-id-goes-here' with your actual Pixel ID provided by Facebook.</p>";
 											$html[] = "</div>";
 										$html[] = "</div>";

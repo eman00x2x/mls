@@ -36,9 +36,9 @@ namespace Library {
 			$this->query = $sql;
 			$sql = str_replace('#_',$this->db_prefix,$sql);
 			$result = mysqli_query($this->link,$sql) or die($this->dbError($this->error));
-
+			
 			return $result;
-
+			
 		}
 
 		function fetchAssoc($result) {

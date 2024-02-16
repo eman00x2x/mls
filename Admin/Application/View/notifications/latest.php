@@ -10,8 +10,9 @@
 
 		$html[] = "<div class='card'>";
 
-			$html[] = "<div class='card-header py-2'>";
+			$html[] = "<div class='card-header py-2 d-flex justify-content-between'>";
 				$html[] = "<h3 class='card-title'>Notifications</h3>";
+				$html[] = "<a href='".url("NotificationsController@index")."' class='text-white'>Show all</a>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='list-group list-group-flush list-group-hoverable'>";

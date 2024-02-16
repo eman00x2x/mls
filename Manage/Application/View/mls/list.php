@@ -168,12 +168,12 @@ $html[] = "<div class='page-body'>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-md-9 col-12'>";
-				$html[] = "<div class='box-container mb-3'>";
-				
-					$html[] = "<div class='search-box'>";
+				/* $html[] = "<div class='box-container'>";
+					$html[] = "<div class='search-box' style='margin-bottom: -15px;'>";
 						$html[] = "<input type='text' name='search' id='search' value='' placeholder='Search' data-url='".url("MlsController@MLSIndex")."' />";
 						$html[] = "<a href='".url("MlsController@MLSIndex")."' class='btn btn-sm btn-light clearFilter'>CLEAR FILTER</a>";
 					$html[] = "</div>";
+				$html[] = "</div>"; */
 
 					if($data['listings']) { $c=$model->page['starting_number'];
 
@@ -254,7 +254,6 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<p class='mt-3'>Does not have listing yet.</p>";
 					}
 					
-				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 

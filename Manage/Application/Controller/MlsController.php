@@ -273,11 +273,18 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 					));
 
 					$notification = $this->getModel("Notification");
-					$notification->createNotification($data['account_id'], array(
-						"title" => $requestor['firstname']." ".$requestor['lastname']." requested a handshake",
-						"message" => $data['title'],
-						"url" => MANAGE."mls/handshake"
-					));
+					$notification->saveNew(
+						array(
+							"account_id" => $data['account_id'],
+							"status" => 1,
+							"created_at" => DATE_NOW,
+							"content" => array(
+								"title" => $requestor['firstname']." ".$requestor['lastname']." requested a handshake",
+								"message" => $data['title'],
+								"url" => MANAGE."mls/handshaked"
+							)
+						)
+					);
 
 					$this->getLibrary("Factory")->setMsg("Handshake Requested!","success");
 					return json_encode(
@@ -311,16 +318,27 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			"handshake_status_date" => DATE_NOW
 		));
 
+		$listing = $this->getModel("Listing");
+		$listing->column['listing_id'] = $data['listing_id'];
+		$data['listing'] = $listing->getById();
+
 		$account = $this->getModel("Account");
 		$account->column['account_id'] = $data['requestee_account_id'];
 		$data['requestee'] = $account->getById();
 
 		$notification = $this->getModel("Notification");
-		$notification->createNotification($data['requestor_account_id'], array(
-			"title" => $$data['requestee']['firstname']." ".$$data['requestee']['lastname']." accepted your handshake request",
-			"message" => $data['title'],
-			"url" => MANAGE."mls/handshake"
-		));
+		$notification->saveNew(
+			array(
+				"account_id" => $data['requestor_account_id'],
+				"status" => 1,
+				"created_at" => DATE_NOW,
+				"content" => array(
+					"title" => $data['requestee']['firstname']." ".$data['requestee']['lastname']." accepted your handshake request",
+					"message" => $data['listing']['title'],
+					"url" => MANAGE."mls/handshaked"
+				)
+			)
+		);
 
 		$this->getLibrary("Factory")->setMsg("Handshake Accepted!","success");
 		return json_encode(
@@ -335,10 +353,35 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 	function deniedRequest($id) {
 
 		$handshake = $this->getModel("Handshake");
+		$handshake->column['handshake_id'] = $id;
+		$data = $handshake->getById();
+
 		$handshake->save($id, array(
 			"handshake_status" => "denied",
 			"handshake_status_date" => DATE_NOW
 		));
+
+		$listing = $this->getModel("Listing");
+		$listing->column['listing_id'] = $data['listing_id'];
+		$data['listing'] = $listing->getById();
+
+		$account = $this->getModel("Account");
+		$account->column['account_id'] = $data['requestee_account_id'];
+		$data['requestee'] = $account->getById();
+
+		$notification = $this->getModel("Notification");
+		$notification->saveNew(
+			array(
+				"account_id" => $data['requestor_account_id'],
+				"status" => 1,
+				"created_at" => DATE_NOW,
+				"content" => array(
+					"title" => $data['requestee']['firstname']." ".$data['requestee']['lastname']." denied your handshake request",
+					"message" => $data['listing']['title'],
+					"url" => MANAGE."mls/".$data['listing_id']
+				)
+			)
+		);
 
 		$this->getLibrary("Factory")->setMsg("Handshake Denied!","info");
 		return json_encode(
@@ -353,10 +396,31 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 	function doneHandshake($id) {
 
 		$handshake = $this->getModel("Handshake");
+		$handshake->column['handshake_id'] = $id;
+		$data = $handshake->getById();
+
 		$handshake->save($id, array(
 			"handshake_status" => "done",
 			"handshake_status_date" => DATE_NOW
 		));
+		
+		$listing = $this->getModel("Listing");
+		$listing->column['listing_id'] = $data['listing_id'];
+		$data['listing'] = $listing->getById();
+
+		$notification = $this->getModel("Notification");
+		$notification->saveNew(
+			array(
+				"account_id" => ($_SESSION['user_logged']['account_id'] != $data['requestee_account_id'] ? $data['requestor_account_id'] : $data['requestee_account_id']),
+				"status" => 1,
+				"created_at" => DATE_NOW,
+				"content" => array(
+					"title" => $_SESSION['user_logged']['firstname']." ".$_SESSION['user_logged']['lastname']." mark done a handshake",
+					"message" => $data['listing']['title'],
+					"url" => MANAGE."mls/".$data['listing_id']
+				)
+			)
+		);
 
 		$this->getLibrary("Factory")->setMsg("Handshake Done!","info");
 		return json_encode(
@@ -379,6 +443,24 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 			$handshake->and(" requestor_account_id = ".$_SESSION['user_logged']['account_id']);
 			$handshake->deleteHandshake($listing_id,"listing_id");
+
+			$listing = $this->getModel("Listing");
+			$listing->column['listing_id'] = $data['listing_id'];
+			$data['listing'] = $listing->getById();
+
+			$notification = $this->getModel("Notification");
+			$notification->saveNew(
+				array(
+					"account_id" => ($_SESSION['user_logged']['account_id'] != $data['requestee_account_id'] ? $data['requestor_account_id'] : $data['requestee_account_id']),
+					"status" => 1,
+					"created_at" => DATE_NOW,
+					"content" => array(
+						"title" => $_SESSION['user_logged']['firstname']." ".$_SESSION['user_logged']['lastname']." canceled a handshake",
+						"message" => $data['listing']['title'],
+						"url" => MANAGE."mls/".$data['listing_id']
+					)
+				)
+			);
 
 			$this->getLibrary("Factory")->setMsg("Handshake Canceled!","info");
 

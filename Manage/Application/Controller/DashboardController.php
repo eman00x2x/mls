@@ -12,7 +12,7 @@ class DashboardController extends \Main\Controller {
 	}
 
     function index() {
-       
+
         $this->sampleChart();
         $this->setTemplate("dashboard/index.php");
 		return $this->getTemplate();
