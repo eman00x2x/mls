@@ -311,11 +311,13 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			"handshake_status_date" => DATE_NOW
 		));
 
-		
+		$account = $this->getModel("Account");
+		$account->column['account_id'] = $data['requestee_account_id'];
+		$data['requestee'] = $account->getById();
 
 		$notification = $this->getModel("Notification");
 		$notification->createNotification($data['requestor_account_id'], array(
-			"title" => $data['firstname']." ".$requestor['lastname']." requested a handshake",
+			"title" => $$data['requestee']['firstname']." ".$$data['requestee']['lastname']." accepted your handshake request",
 			"message" => $data['title'],
 			"url" => MANAGE."mls/handshake"
 		));
