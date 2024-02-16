@@ -15,7 +15,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
                     $html[] = "<div class='col-auto ms-auto d-print-none'>";
 
                         $html[] = "<div class='btn-list'>";
-                            if($_SESSION['account_type'] == "Administrator") {
+                            if($_SESSION['user_logged']['account_type'] == "Administrator") {
                                 $html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@view", ["id" => $data['account']['account_id']])."'>";
                                     $html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['account']['logo'].")'></span>";
                                     $html[] = $data['account']['firstname']." ".$data['account']['lastname']." account";

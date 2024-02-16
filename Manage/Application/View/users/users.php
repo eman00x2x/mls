@@ -36,15 +36,15 @@ $html[] = "<div class='page-body'>";
                                 $html[] = "<div class='col-lg-3 col-md-3 col-12'>";
 
                                     $html[] = "<div class='list-group list-group-flush'>";
-										if(isset($_SESSION['permissions']['account']['access'])) {
+										if(isset($_SESSION['user_logged']['permissions']['account']['access'])) {
                                         	$html[] = "<a class='list-group-item list-group-item-action' href='".url("AccountsController@index")."'><i class='ti ti-user-circle me-2'></i> My Account</a>";
 										}
 
-										if(isset($_SESSION['permissions']['users']['access'])) {
-										    $html[] = "<a class='list-group-item list-group-item-action' href='".url("UsersController@index", [ "id" => $_SESSION['account_id'] ])."'><i class='ti ti-users me-2'></i> Manage Users</a>";
+										if(isset($_SESSION['user_logged']['permissions']['users']['access'])) {
+										    $html[] = "<a class='list-group-item list-group-item-action' href='".url("UsersController@index", [ "id" => $_SESSION['user_logged']['account_id'] ])."'><i class='ti ti-users me-2'></i> Manage Users</a>";
 										}
 
-                                        $html[] = "<a class='list-group-item list-group-item-action' href='".url("UsersController@changePassword",["id" => $_SESSION['user_id']])."'><i class='ti ti-key me-2'></i> Change Password</a>";
+                                        $html[] = "<a class='list-group-item list-group-item-action' href='".url("UsersController@changePassword",["id" => $_SESSION['user_logged']['user_id']])."'><i class='ti ti-key me-2'></i> Change Password</a>";
                                     $html[] = "</div>";
                                 
                                 $html[] = "</div>";
@@ -55,7 +55,7 @@ $html[] = "<div class='page-body'>";
 										$html[] = "<div class='card-header'>";
 											$html[] = "<h4 class='text-blue card-title mb-0'><i class='ti ti-users me-2'></i> Users</h4>";
 											$html[] = "<div class='card-actions'>";
-												if((!isset($_SESSION['permissions']['users']['access']))) {
+												if((!isset($_SESSION['user_logged']['permissions']['users']['access']))) {
 													$html[] = "<a href='".url("UsersController@new")."' class='btn btn-outline-primary'><i class='ti ti-user-plus me-2'></i> New User</a>";
 												}
 											$html[] = "</div>";
@@ -86,7 +86,7 @@ $html[] = "<div class='page-body'>";
 															$html[] = "<td class='align-middle'>".date("F d, Y",$data['users'][$i]['date_added'])."</td>";
 															
 															$html[] = "<td class='text-center'>";
-																if(isset($_SESSION['permissions']['users']['delete']) && $_SESSION['permissions']['users']['delete'] == true && $data['users'][$i]['user_level'] != 1) {
+																if(isset($_SESSION['user_logged']['permissions']['users']['delete']) && $_SESSION['user_logged']['permissions']['users']['delete'] == true && $data['users'][$i]['user_level'] != 1) {
 																	$html[] = "<span class='btn btn-outline-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("UsersController@delete",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."'><i class='ti ti-trash me-2'></i> Delete User</span>";
 																}
 															$html[] = "</td>";

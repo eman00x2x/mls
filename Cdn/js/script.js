@@ -1,4 +1,18 @@
-$(document).on('click','.btn-view-account',function() {
+$(document).ready(function () {
+	$.get('/notifications/getLatest', function (data, status) {
+		$('.notifications-container').html(data);
+	});
+});
+
+$(document).on('click', '.data-open-notification', function () {
+	url = $(this).data('url');
+	$.get(url, function (data, status) {
+		response = JSON.parse(data);
+		window.location = response.url;
+	});
+});
+
+$(document).on('click', '.btn-view-account', function () {
 	url = $(this).data('url');
 	window.location = url;
 });

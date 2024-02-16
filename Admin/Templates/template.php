@@ -102,14 +102,14 @@
 
 							<div class="nav-item dropdown">
 								<a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-									<span class="avatar avatar-sm" style="background-image: url(<?php echo $_SESSION['logo']; ?>)"></span>
+									<span class="avatar avatar-sm" style="background-image: url(<?php echo $_SESSION['user_logged']['logo']; ?>)"></span>
 									<div class="d-none d-xl-block ps-2">
-										<div><?php echo $_SESSION['name']; ?></div>
-										<div class="mt-1 small text-muted"><?php echo $_SESSION['account_type']; ?></div>
+										<div><?php echo $_SESSION['user_logged']['name']; ?></div>
+										<div class="mt-1 small text-muted"><?php echo $_SESSION['user_logged']['account_type']; ?></div>
 									</div>
 								</a>
 								<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-									<a href="<?php echo url("UsersController@userEdit",["id" => $_SESSION['user_id']]); ?>" class="dropdown-item">Update Account</a>
+									<a href="<?php echo url("UsersController@userEdit",["id" => $_SESSION['user_logged']['user_id']]); ?>" class="dropdown-item">Update Account</a>
 									<a href="?logout" class="dropdown-item">Logout</a>
 								</div>
 							</div>

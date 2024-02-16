@@ -23,7 +23,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 							$html[] = "<h1 class='page-title'><i class='ti ti-users me-2'></i> Update User Info</h1>";
 						$html[] = "</div>";
 						$html[] = "<div class='col-auto ms-auto d-print-none'>";
-							if($_SESSION['account_type'] == "Administrator") {
+							if($_SESSION['user_logged']['account_type'] == "Administrator") {
 								$html[] = "<div class='btn-list text-end'>";
 									$html[] = "<a class='ajax btn btn-light' href='".url("AccountsController@view", ["id" => $data['account_id']])."'>";
 										$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['logo'].")'></span>";
@@ -91,7 +91,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 
-					if($_SESSION['user_id'] != $data['user_id'] || $_SESSION['account_type'] == "Administrator") {
+					if($_SESSION['user_logged']['user_id'] != $data['user_id'] || $_SESSION['user_logged']['account_type'] == "Administrator") {
 						$html[] = "<div class='card mb-3'>";
 							$html[] = "<div class='card-status bg-green'></div>";
 							$html[] = "<div class='card-header'>";
@@ -118,7 +118,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 						$html[] = "</div>";
 					}
 
-					if(($_SESSION['user_level'] == 1 && $data['user_level'] != 1) || ($_SESSION['account_type'] == "Administrator" && $data['user_id'] != $_SESSION['user_id'])) {
+					if(($_SESSION['user_logged']['user_level'] == 1 && $data['user_level'] != 1) || ($_SESSION['user_logged']['account_type'] == "Administrator" && $data['user_id'] != $_SESSION['user_logged']['user_id'])) {
 						$html[] = "<div class='card mb-3'>";
 							$html[] = "<div class='card-header'>";
 								$html[] = "<h3 class='card-title text-blue'><i class='ti ti-settings me-2'></i> User Permissions</h3>";

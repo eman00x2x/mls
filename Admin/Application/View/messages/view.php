@@ -47,7 +47,7 @@ $html[] = "<div class='row justify-content-center'>";
 
 				$html[] = "<div class='d-flex text-white mb-2 justify-content-between'>";
 					foreach($data['participants'] as $account_data) {
-						if($account_data['account_id'] != $_SESSION['account_id']) {
+						if($account_data['account_id'] != $_SESSION['user_logged']['account_id']) {
 							$html[] = "<div class='d-flex gap-2'>";
 								$html[] = "<span class='avatar avatar-lg' style='background-image: url(".$data['participants'][$account_data['account_id']]['logo'].")'></span>";
 								$html[] = "<div class=''>";
@@ -73,7 +73,7 @@ $html[] = "<div class='row justify-content-center'>";
 									for($i=0; $i<count($data['messages']); $i++) {
 										$html[] = "<div  class='chat-item'>";
 											
-											if($data['messages'][$i]['user_id'] == $_SESSION['user_id']) {
+											if($data['messages'][$i]['user_id'] == $_SESSION['user_logged']['user_id']) {
 												$html[] = "<div class='row align-items-end justify-content-end'>";
 													$html[] = "<div class='col col-lg-6'>";
 														$html[] = "<div class='chat-bubble chat-bubble-me'>";

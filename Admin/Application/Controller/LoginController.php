@@ -115,7 +115,7 @@ class LoginController extends \Main\Controller {
 		}
 	
 		if(isset($_SESSION['logged']) && (isset($_SESSION['domain']) ? ($_SESSION['domain'] == $this->domain ? true : false) : false)) {
-			return $this->checkCredentials($_SESSION['email'],$_SESSION['password']);
+			return $this->doLogin($_SESSION['user_logged']);
 		}else {
 			$this->doLogOut();
 			return false;
@@ -137,6 +137,7 @@ class LoginController extends \Main\Controller {
 					return false;
 				}
 
+				
 				$subscription = $this->getModel("AccountSubscription");
 				$subscription->page["limit"] = 999999;
 				$subscription
@@ -162,6 +163,7 @@ class LoginController extends \Main\Controller {
 					}
 
 				}
+				
 
 				return $this->doLogin($data);
 			}
@@ -174,7 +176,7 @@ class LoginController extends \Main\Controller {
 	
 	function doLogin($login) {
 	
-		$val = array('user_id' => (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : $login['user_id']),
+		/* $val = array('user_id' => (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : $login['user_id']),
 					'name' => (isset($_SESSION['name']) ? $_SESSION['name'] : $login['name']),
 					'email' => $login['email'],
 					'password' => $login['password'],
@@ -183,9 +185,17 @@ class LoginController extends \Main\Controller {
 					'privileges' => $login['privileges'],
 					'account_id' => $login['account_id'],
 					'account_type' => $login['account_type'],
+					'user_logged' => $login,
 					'logo' => $login['logo'],
 					'domain' => $this->domain,
-					'logged' => true);
+					'logged' => true); */
+
+		$val = array(
+			'user_logged' => $login,
+			'domain' => $this->domain,
+			'logged' => true
+		);
+
 		$this->storeSession($val);
 		return true;
 		
@@ -207,17 +217,11 @@ class LoginController extends \Main\Controller {
 	
 	function doLogOut() {
 	
-		$val = array('user_id' => null,
-					'name' => null,
-					'email' => null,
-					'password' => null,
-					'permissions' => null,
-					'privileges' => null,
-					'account_id' => null,
-					'account_type' => null,
-					'logo' => null,
-					'domain' => null,
-					'logged' => false);
+		$val = array(
+			'user_logged' => null,
+			'domain' => null,
+			'logged' => false
+		);
 					
 		$this->unsetCS($val);
 		
@@ -243,16 +247,19 @@ class LoginController extends \Main\Controller {
 				/* delete cookies */
 				@setcookie($val, $key, time()-3600);
 				unset($_COOKIE[$val]);
+
+				unset($_SESSION);
+			session_destroy();
 				
 			}
 			
 			#header("LOCATION: ".DOMAINNAME);
 		}
 		
-		/*if(!isset($_SESSION['logged'])) {
+		/* if(!isset($_SESSION['logged'])) {
 			unset($_SESSION);
 			session_destroy();
-		}*/
+		} */
 		
 	}
 	

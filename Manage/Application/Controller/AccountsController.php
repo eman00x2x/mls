@@ -10,7 +10,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
         parent::__construct();
         $this->setTempalteBasePath(ROOT."Manage");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->account_id = $_SESSION['account_id'];
+		$this->account_id = $_SESSION['user_logged']['account_id'];
 	}
 	
 	function index() {
@@ -46,7 +46,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
             $data['broker_prc_license_id'] = $response['broker_prc_license_id'];
         }
 
-        $data['privileges'] = $_SESSION['privileges'];
+        $data['privileges'] = $_SESSION['user_logged']['privileges'];
 
 		$this->setTemplate("accounts/account.php");
 		return $this->getTemplate($data,$account);

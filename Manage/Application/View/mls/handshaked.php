@@ -38,18 +38,19 @@ $html[] = "<div class='page-body'>";
 
 			if($data) { $c=$model->page['starting_number'];
 
-				$html[] = "<table class='table'>";
+				$html[] = "<div class='table-responsive'>";
+				$html[] = "<table class='table mt-3'>";
 				
 				for($i=0; $i<count($data); $i++) { $c++;
 					$html[] = "<tr>";
 						$html[] = "<td class='align-middle w-1 bg-dark text-white'>";
 							$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-white text-decoration-none'><span class='avatar avatar-lg' style='background-image: url(".$data[$i]['listing']['thumb_img'].")'></span></a>";
 					    $html[] = "</td>";
-						$html[] = "<td class='align-middle bg-dark text-white'>";
-					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-white text-decoration-none'><span class='d-block text-muted fs-12'>ID: ".$data[$i]['listing']['listing_id']."</span> ".$data[$i]['listing']['title']."</a>";
+						$html[] = "<td class='align-middle bg-dark text-white' style='width:300px;'>";
+					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-white text-decoration-none'><span class='d-block text-muted fs-12'>Listing ID: ".$data[$i]['listing']['listing_id']."</span> ".$data[$i]['listing']['title']."</a>";
 					    $html[] = "</td>";
 						$html[] = "<td class='align-middle bg-dark text-white'>";
-					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-white text-decoration-none'><span class='d-block text-muted fs-12'>Commission Sharing</span> <span>com rate</span></a>";
+					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-white text-decoration-none'><span class='d-block text-muted fs-12'>Commission Sharing</span> <span>".$data[$i]['listing']['other_details']['com_share']."%</span></a>";
 					    $html[] = "</td>";
 						
 					    $html[] = "<td class='align-middle'>";
@@ -68,7 +69,7 @@ $html[] = "<div class='page-body'>";
 					$html[] = "<tr>";
 						$html[] = "<td class='align-middle' colspan='7'>";
 							$html[] = "<div class='btn-list'>";
-							if($data[$i]['requestor_account_id'] == $_SESSION['account_id']) {
+							if($data[$i]['requestor_account_id'] == $_SESSION['user_logged']['account_id']) {
                                 switch($data[$i]['handshake_status']) {
                                     case 'pending':
                                         $html[] = "<span class='btn btn-secondary '><i class='ti ti-hourglass-empty me-2'></i> ".ucwords($data[$i]['handshake_status'])."</span>";
@@ -88,7 +89,7 @@ $html[] = "<div class='page-body'>";
                                 }
                             }
 
-                            if($data[$i]['requestee_account_id'] == $_SESSION['account_id']) {
+                            if($data[$i]['requestee_account_id'] == $_SESSION['user_logged']['account_id']) {
                                 switch($data[$i]['handshake_status']) {
                                     case 'pending':
                                         $html[] = "<span class='btn btn-success btn-accept-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@acceptRequest", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-circle-check me-2'></i> Accept Request</span>";
@@ -111,6 +112,7 @@ $html[] = "<div class='page-body'>";
 				}
 
 				$html[] = "</table>";
+				$html[] = "</div>";
 
 			}else {
 				$html[] = "<p class='mt-3'>Does not have handshaked listing yet.</p>";

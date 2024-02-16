@@ -5,11 +5,11 @@ namespace Manage\Application\Controller;
 class LeadsController extends \Admin\Application\Controller\LeadsController {
 	
 	private $doc;
-	private $account_id;
+	var $account_id;
 	
 	function __construct() {
 		parent::__construct();
-		$this->account_id = $_SESSION['account_id'];
+		$this->account_id = $_SESSION['user_logged']['account_id'];
 	}
 
 	function index() {

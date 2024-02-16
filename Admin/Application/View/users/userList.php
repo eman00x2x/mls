@@ -64,7 +64,7 @@ $html[] = "<div class='row g-0'>";
 											
 											$html[] = "<div class='dropdown-menu dropdown-menu-right'>";
 												$html[] = "<a class='ajax dropdown-item' href='".url("UsersController@edit",["id" => $data[$i]['user_id']])."' title='Update User Account: ".$data[$i]['username']."'><i class='ti ti-edit me-2'></i> Edit User Details</a>";
-												if($data[$i]['user_id'] != $_SESSION['user_id'] || $data[$i]['user_level'] != 1) {
+												if($data[$i]['user_id'] != $_SESSION['user_logged']['user_id'] || $data[$i]['user_level'] != 1) {
 													$html[] = "<span class='ajax dropdown-item text-white bg-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("UsersController@delete",["id" => $data[$i]['account_id'], "user_id" => $data[$i]['user_id']])."'><i class='ti ti-trash me-2'></i> Delete User</span>";
 												}
 											$html[] = "</div>";

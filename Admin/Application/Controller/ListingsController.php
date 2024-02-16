@@ -145,13 +145,13 @@ class ListingsController extends \Main\Controller {
 		$data['listing']['images'] = $listingImage->getByListingId();
 
 		$handshake = $this->getModel("Handshake");
-		$handshake->column['requestor_account_id'] = $_SESSION['account_id'];
+		$handshake->column['requestor_account_id'] = $_SESSION['user_logged']['account_id'];
 		$handshake->and(" listing_id = ".$listing_id." AND handshake_status NOT IN('done','cancel')");
 		$data['handshake'] = $handshake->getByRequestorAccountId();
 
 		if($data) {
 
-			/* if($data['listing']['account_id'] !== $_SESSION['account_id']) {
+			/* if($data['listing']['account_id'] !== $_SESSION['user_logged']['account_id']) {
 				$traffic = $this->getModel("ListingView");
 				$traffic->saveNew(array(
 					"listing_id" => $data['listing']['listing_id'],

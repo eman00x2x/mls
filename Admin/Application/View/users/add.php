@@ -27,7 +27,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 						$html[] = "</div>";
 						$html[] = "<div class='col-auto ms-auto d-print-none'>";
 							$html[] = "<div class='btn-list text-end'>";
-								if($_SESSION['account_type'] == "Administrator") {
+								if($_SESSION['user_logged']['account_type'] == "Administrator") {
 									$html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@view", ["id" => $data['account_id']])."'>";
 										$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['logo'].")'></span>";
 										$html[] = $data['firstname']." ".$data['lastname']." account";

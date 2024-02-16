@@ -8,7 +8,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 	
 	function __construct() {
 		parent::__construct();
-		$this->account_id = $_SESSION['account_id'];
+		$this->account_id = $_SESSION['user_logged']['account_id'];
 	}
 	
 	function listingIndex() {

@@ -59,7 +59,7 @@ $html[] = "<div class='page-body'>";
 									
                                     $html[] = "<td><a href='".url("MessagesController@conversation", ["participants" => base64_encode(json_encode($data['threads'][$i]['participants']))])."'>";
                                         for($x=0; $x<count($data['threads'][$i]['accounts']); $x++) {
-                                            if($data['threads'][$i]['accounts'][$x]['account_id'] != $_SESSION['account_id']) {
+                                            if($data['threads'][$i]['accounts'][$x]['account_id'] != $_SESSION['user_logged']['account_id']) {
                                                 $html[] = "<div class='d-flex gap-2'>";
                                                 	$html[] = "<span class='avatar me-2' style='background-image: url(".$data['threads'][$i]['accounts'][$x]['logo'].")'></span>";
                                                 	$html[] = "<span class='align-middle d-block float-end lh-base'>".$data['threads'][$i]['accounts'][$x]['firstname']." ".$data['threads'][$i]['accounts'][$x]['lastname']." <br/> ".$data['threads'][$i]['accounts'][$x]['profession']."</span>";
@@ -70,7 +70,7 @@ $html[] = "<div class='page-body'>";
                                     
                                     $html[] = "<td class='align-middle cursor-pointer' onclick='window.location.href=\"".url("MessagesController@conversation", ["participants" => base64_encode(json_encode($data['threads'][$i]['participants']))])."\"'>";
 									if($data['last_message']) {
-										if($data['last_message']['user_id'] == $_SESSION['user_id']) {
+										if($data['last_message']['user_id'] == $_SESSION['user_logged']['user_id']) {
 											$html[] = "<span class=''>me: ".nicetrim($data['last_message']['message'], 50)."</span>";
 										}else {
 											$html[] = "<span class=''>".$data['last_message']['from']['name'].": ".nicetrim($data['last_message']['message'], 50)."</span>";

@@ -5,12 +5,12 @@ namespace Admin\Application\Controller;
 class LeadsController extends \Main\Controller {
 	
 	private $doc;
-	private $account_id;
+	var $account_id;
 	
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->account_id = $_SESSION['account_id'];
+		$this->account_id = $_SESSION['user_logged']['account_id'];
 	}
 
 	function index() {

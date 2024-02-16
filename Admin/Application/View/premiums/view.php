@@ -13,7 +13,7 @@
 						$html[] = "<div class='col-auto ms-auto d-print-none'>";
 							$html[] = "<div class='btn-list text-end'>";
 								$html[] = "<a class='ajax btn btn-dark' href='".url("PremiumsController@edit",["id" => $data['premium_id']])."'><i class='ti ti-edit me-2'></i> Update Premium</a>";
-								if($_SESSION['user_level'] == 1) {
+								if($_SESSION['user_logged']['user_level'] == 1) {
 									$html[] = "<span class='ajax btn btn-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("PremiumsController@delete",["id" => $data['premium_id']])."'><i class='ti ti-trash me-2'></i> Delete Premium</span>";
 								}
 							$html[] = "</div>";

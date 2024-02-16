@@ -10,7 +10,7 @@ class AccountSubscriptionController extends \Admin\Application\Controller\Accoun
 	function __construct() {
         $this->setTempalteBasePath(ROOT."Manage");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->account_id = $_SESSION['account_id'];
+		$this->account_id = $_SESSION['user_logged']['account_id'];
 	}
 	
 	function index() {

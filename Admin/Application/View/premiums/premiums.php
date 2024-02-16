@@ -72,7 +72,7 @@ $html[] = "<div class='row g-0'>";
 											
 											$html[] = "<div class='dropdown-menu dropdown-menu-right'>";
 												$html[] = "<a class='ajax dropdown-item' href='".url("PremiumsController@edit",["id" => $data[$i]['premium_id']])."'><i class='ti ti-edit me-2'></i> Edit Premium</a>";
-												if($_SESSION['user_level'] == 1) {
+												if($_SESSION['user_logged']['user_level'] == 1) {
 													$html[] = "<span class='ajax dropdown-item text-white bg-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("PremiumsController@delete",["id" => $data[$i]['premium_id']])."'><i class='ti ti-trash me-2'></i> Delete Premium</span>";
 												}
 											$html[] = "</div>";

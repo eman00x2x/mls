@@ -8,7 +8,7 @@ class TransactionsController extends \Admin\Application\Controller\TransactionsC
 
 	function __construct() {
 		parent::__construct();
-		$this->account_id = $_SESSION['account_id'];
+		$this->account_id = $_SESSION['user_logged']['account_id'];
 		
 		$this->validation_url = url("TransactionsController@validateCheckOut");
 		$this->payment_status_url = url("TransactionsController@paymentStatus");
@@ -25,7 +25,7 @@ class TransactionsController extends \Admin\Application\Controller\TransactionsC
 
 	function checkout($premium_id) {
 
-		if(!isset($_SESSION['permissions']['subscriptions'])) {
+		if(!isset($_SESSION['user_logged']['permissions']['subscriptions'])) {
 			$this->getLibrary("Factory")->setMsg("You do not have enough permissions to purchase a premium for this account","error");
 			response()->redirect(url("DashboardController@index"));
 		}

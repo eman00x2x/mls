@@ -2,8 +2,8 @@
 
 $buttons = function() use (&$data) {
     
-    if($data['handshake'] && in_array($_SESSION['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
-		$html[] = "<span class='btn btn-md btn-danger ms-1 btn-cancel-handshake row_listings_".$data['listing']['listing_id']."' data-row='row_listings_".$data['listing']['listing_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
+    if($data['handshake'] && in_array($_SESSION['user_logged']['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
+		$html[] = "<span class='btn btn-md btn-danger ms-1 mb-2 btn-cancel-handshake row_listings_".$data['listing']['listing_id']."' data-row='row_listings_".$data['listing']['listing_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
     }else {
         $html[] = "<span class='btn btn-md btn-primary me-1 btn-requestHandshake row_listings_".$data['listing']['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
     }  
@@ -55,7 +55,7 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<div class='text-secondary'>".$data['account']['profession']."</div>";
 					$html[] = "</div>";
 
-					if($data['account']['account_id'] != $_SESSION['account_id']) {
+					if($data['account']['account_id'] != $_SESSION['user_logged']['account_id']) {
 					    $html[] = "<a class='card-btn ' href='".url("MessagesController@conversation", ["participants" => base64_encode(json_encode(array($data['listing']['account_id'],$_SESSION['account_id'])))], ["listing_id" => $data['listing']['listing_id'], "name" => $data['listing']['title']])."'><i class='ti ti-send me-2'></i> Send Message</a>";
 					}
 
@@ -72,7 +72,7 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 
-				if($data['handshake'] && in_array($_SESSION['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
+				if($data['handshake'] && in_array($_SESSION['user_logged']['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-body'>";
 							

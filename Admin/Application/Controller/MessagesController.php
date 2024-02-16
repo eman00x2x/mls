@@ -27,7 +27,7 @@ class MessagesController extends \Main\Controller {
 		
 		$deleted_thread = $this->getModel("DeletedThread");
 		$deleted_thread->select(" GROUP_CONCAT(thread_id) as thread_ids ");
-		$deleted_thread->column['account_id'] = $_SESSION['account_id'];
+		$deleted_thread->column['account_id'] = $_SESSION['user_logged']['account_id'];
 		$data['deletedThreads'] = $deleted_thread->getByAccountId();
 		
 		if(isset($_REQUEST['search'])) {
@@ -35,7 +35,7 @@ class MessagesController extends \Main\Controller {
 			$uri['search'] = $_REQUEST['search'];
 		}
 		
-		$filters[] = " JSON_CONTAINS(participants, '".$_SESSION['account_id']."', '$')";
+		$filters[] = " JSON_CONTAINS(participants, '".$_SESSION['user_logged']['account_id']."', '$')";
 		
 		if($data['deletedThreads']['thread_ids']) {
 			$filters[] = " thread_id NOT IN(".$data['deletedThreads']['thread_ids'].")";
@@ -267,7 +267,7 @@ class MessagesController extends \Main\Controller {
 			$thread = $this->getModel("Thread");
             $response = $thread->saveNew(array(
 				"participants" => $_POST['participants'],
-				"created_by" => $_SESSION['user_id'],
+				"created_by" => $_SESSION['user_logged']['user_id'],
 				"created_at" => DATE_NOW
 			));
 
@@ -277,7 +277,7 @@ class MessagesController extends \Main\Controller {
 		$message = $this->getModel("Message");
 
 		$data = array(
-			"user_id" => $_SESSION['user_id'],
+			"user_id" => $_SESSION['user_logged']['user_id'],
 			"thread_id" => $thread_id,
 			"message" => $_POST['message'],
 			"attachment" => null,
@@ -287,11 +287,11 @@ class MessagesController extends \Main\Controller {
 		$message_response = $message->saveNew($data);
 
 		$user = $this->getModel("User");
-		$user->column['user_id'] = $_SESSION['user_id'];
+		$user->column['user_id'] = $_SESSION['user_logged']['user_id'];
 		$data['user'] = $user->getById();
 
 		$response['thread_id'] = $thread_id;
-		$response['user_id'] = $_SESSION['user_id'];
+		$response['user_id'] = $_SESSION['user_logged']['user_id'];
 		$response['photo'] = $data['user']['photo'];
 		$response['user_name'] = $data['user']['name'];
 		$response['user_message'] = base64_encode($data['message']);;
@@ -318,10 +318,10 @@ class MessagesController extends \Main\Controller {
 
 				$deleted_thread = $this->getModel("DeletedThread");
 				$response = $deleted_thread->saveNew(array(
-					"account_id" => $_SESSION['account_id'],
-					"user_id" => $_SESSION['user_id'],
+					"account_id" => $_SESSION['user_logged']['account_id'],
+					"user_id" => $_SESSION['user_logged']['user_id'],
 					"thread_id" => $id,
-					"deleted_by" => $_SESSION['name'],
+					"deleted_by" => $_SESSION['user_logged']['name'],
 					"deleted_at" => DATE_NOW
 				));
 
@@ -426,7 +426,7 @@ class MessagesController extends \Main\Controller {
 
 		$this->doc->addScriptDeclaration("
 
-		    var wsUri = '".$this->websocketAddress."?name=" . (str_replace(" ","+",$_SESSION['name'])) ."';
+		    var wsUri = '".$this->websocketAddress."?name=" . (str_replace(" ","+",$_SESSION['user_logged']['name'])) ."';
 			var websocket = new WebSocket(wsUri);
 			var thread_id = 0;
 
@@ -496,7 +496,7 @@ class MessagesController extends \Main\Controller {
 
 			function buildMessage(response) {
 
-				var id = $_SESSION[user_id];
+				var id = $_SESSION[user_logged][user_id];
 				
 				if(response.user_id == id) {
 				

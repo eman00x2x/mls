@@ -3,7 +3,7 @@
 	for($i=0; $i<count($data['messages']); $i++) {
 		$html[] = "<div  class='chat-item'>";
 			
-			if($data['messages'][$i]['user_id'] == $_SESSION['user_id']) {
+			if($data['messages'][$i]['user_id'] == $_SESSION['user_logged']['user_id']) {
 				$html[] = "<div class='row align-items-end justify-content-end'>";
 					$html[] = "<div class='col col-lg-6'>";
 						$html[] = "<div class='chat-bubble chat-bubble-me'>";

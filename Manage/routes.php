@@ -8,6 +8,10 @@ Router::enableMultiRouteRendering(false);
 
 Router::get(ALIAS.'/', 'DashboardController@index', ['as' => 'dashboard']);
 
+/** NOTIFICATIONS ROUTES */
+Router::get(ALIAS.'/notifications/getLatest', 'NotificationsController@getLatest', ['as' => 'getLatest']);
+Router::get(ALIAS.'/notifications/{id}/update-status', 'NotificationsController@updateNotification', ['as' => 'updateNotification'])->where([ 'id' => '[0-9]+' ]);
+
 /** ACCOUNTS ROUTES */
 Router::get(ALIAS.'/account', 'AccountsController@index', ['as' => 'accounts']);
 Router::get(ALIAS.'/account', 'AccountsController@view', ['as' => 'accountView']);

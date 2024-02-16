@@ -10,12 +10,12 @@ class UsersController extends \Admin\Application\Controller\UsersController {
         parent::__construct();
         $this->setTempalteBasePath(ROOT."Manage");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->account_id = $_SESSION['account_id'];
+		$this->account_id = $_SESSION['user_logged']['account_id'];
 	}
 	
 	function index() {
 
-		if((!isset($_SESSION['permissions']['users']['access']) && $_SESSION['permissions']['users']['access'] != 'true')) {
+		if((!isset($_SESSION['user_logged']['permissions']['users']['access']) && $_SESSION['user_logged']['permissions']['users']['access'] != 'true')) {
 			$this->getLibrary("Factory")->setMsg("You do not have enough permissions to manage the account users","error");
 			response()->redirect(url("AccountsController@index"));
 		}
@@ -56,12 +56,12 @@ class UsersController extends \Admin\Application\Controller\UsersController {
 		$user->select(" COUNT(user_id) as total_users ");
 		$data = $user->getByAccountId();
 
-		if($data[0]['total_users'] >= $_SESSION['privileges']['max_users']) {
+		if($data[0]['total_users'] >= $_SESSION['user_logged']['privileges']['max_users']) {
 			$this->getLibrary("Factory")->setMsg("Maximum users have reached! You cannot create more users","error");
 			response()->redirect(url("UsersController@index"));
 		}
 
-		if((!isset($_SESSION['permissions']['users']['access']))) {
+		if((!isset($_SESSION['user_logged']['permissions']['users']['access']))) {
 			$this->getLibrary("Factory")->setMsg("You do not have enough permissions to create a new user","error");
 			response()->redirect(url("UsersController@index"));
 		}
@@ -76,7 +76,7 @@ class UsersController extends \Admin\Application\Controller\UsersController {
 			$this->response(404);
 		}
 
-		if((!isset($_SESSION['permissions']['users']['access']))) {
+		if((!isset($_SESSION['user_logged']['permissions']['users']['access']))) {
 			$this->getLibrary("Factory")->setMsg("You do not have enough permissions to create a new user","error");
 			response()->redirect(url("UsersController@index"));
 		}

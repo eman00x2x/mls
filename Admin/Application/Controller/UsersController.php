@@ -101,9 +101,9 @@ class UsersController extends \Main\Controller {
 			}
 
 			/** OTHER ACCOUNTS */
-			if($_SESSION['account_id'] == $data['account_id']) {
+			if($_SESSION['user_logged']['account_id'] == $data['account_id']) {
 				
-				if($data['total_users'] == $_SESSION['privileges']['max_users']) {
+				if($data['total_users'] == $_SESSION['user_logged']['privileges']['max_users']) {
 					$this->getLibrary("Factory")->setMsg("Maximum users have been reached for this account.","error");
 					response()->redirect(url("UsersController@index"));
 				}
@@ -123,7 +123,7 @@ class UsersController extends \Main\Controller {
 	}
 
 	function userEdit($id) {
-		return $this->edit($_SESSION['account_id'], $id); 
+		return $this->edit($_SESSION['user_logged']['account_id'], $id); 
 	}
 	
 	function edit($account_id, $id) {
