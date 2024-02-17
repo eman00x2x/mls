@@ -4,6 +4,16 @@ namespace Main\Model;
 
 class MessageModel extends \Main\Model {
 
+	/* content column schema
+		$content = [
+			"type" => "text|image|file",
+			"message" => "some message to be sent to recipient",
+			"info" => [
+				"links" => [urls]
+			]
+		];
+	*/
+
 	function __construct() {
 		$this->table = "messages";
 		$this->primary_key = "message_id";
@@ -106,6 +116,139 @@ class MessageModel extends \Main\Model {
 			"message" => "Successfully Deleted"
 		);
 
+	}
+
+	function getContentType($content) {
+
+		if(preg_match('/(jpg|jpeg|png|gif)/', $content, $matches)) {
+			return "image";
+		}else if(preg_match('/(http|https)/', $content, $matches)) {
+			return "link";
+		}else if(preg_match('/(pdf)/', $content, $matches)) {
+			return "file";
+		}else {
+			return "text";
+		}
+
+	}
+
+	function moveUploadedAttachment($filename) {
+
+        $old_dir = ROOT.DS."Cdn".DS."public".DS."temporary".DS.$filename;
+
+		if(file_exists($old_dir)) {
+
+			$name = explode(".",$filename);
+			$ext = array_pop($name);
+
+			$length = 50;
+			$new_name = '';
+			$chars = range(0, 9);
+
+			for ($x = 0; $x < $length; $x++) {
+				$new_name .= $chars[array_rand($chars)];
+			}
+
+			$new_filename = $new_name."_".md5(time()).".".$ext;
+		
+			$new_dir = ROOT.DS."Cdn".DS."public".DS."chat".DS.$new_filename;
+			rename($old_dir,$new_dir);
+
+			return CDN."public/chat/".$new_filename;
+		}
+
+	}
+
+	function uploadAttachment($data) {
+
+		if(count($data['name']) > 5) {
+			
+			\Library\Factory::setMsg("Select 5 or less images per upload!","wrong");
+			$uploadedImages[] = array(
+				"status" => 2,
+				"message" => getMsg()
+			);
+
+			return json_encode($uploadedImages);
+		}
+		
+		require_once(ROOT.DS."vendor".DS."upload".DS."upload.php");
+		
+		$files = array();
+		foreach ($data as $k => $l) {
+			foreach ($l as $i => $v) {
+				if (!array_key_exists($i, $files))
+					$files[$i] = array();
+					$files[$i][$k] = $v;
+			}
+		}
+		
+		foreach ($files as $file) {
+
+			$handle = new \Vendor\Upload\Upload($file); 
+
+			if ($handle->uploaded) {
+			
+				$handle->file_safe_name = true;
+
+				$handle->file_max_size = '2048000';
+				$handle->allowed = array('image/*');
+				$handle->forbidden = array('application/*');
+				
+				if($handle->image_src_x > 800) {
+					$handle->image_resize = true;
+					$handle->image_x = 800;
+					$handle->image_ratio_y = true;
+				}
+				
+				$handle->Process(ROOT."/Cdn/images/temporary/"); 
+				
+				if ($handle->processed) {
+				
+					$uploadedImages[] = array(
+						"status" => 1,
+						"id" => rand(1000,10000).time(),
+						"temp_url" => CDN."public/temporary/".$handle->file_dst_name,
+						"filename" => $handle->file_dst_name
+					);
+				
+				}else {
+
+					\Library\Factory::setMsg("There was an error uploading your file \"".$file['name']."\". Only image are allowed and less than 2MB file sizes are allowed, Please check your image file size before uploading.","wrong");
+					
+					$uploadedImages[] = array(
+						"status" => 2,
+						"message" => getMsg()
+					);
+					
+				}
+			}else {
+				\Library\Factory::setMsg("There was an error uploading your file \"".$file['name']."\". Only image are allowed and less than 2MB file sizes are allowed, Please check your image file size before uploading.","wrong");
+				$uploadedImages[] = array(
+					"status" => 2,
+					"message" => getMsg()
+				);
+			}
+
+			unset($handle);
+		}
+		
+		return json_encode($uploadedImages);
+
+	}
+
+	function removePhoto($filename) {
+
+		$file = ROOT.DS."Cdn".DS."public".DS."chat".DS.$filename;
+		
+		/* check file if exists in main folder */
+		if(file_exists($file)) {
+			@unlink($file);
+			return true;
+		}else {
+			return false;
+		}
+		
 	}
 
 }

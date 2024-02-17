@@ -88,6 +88,7 @@ Router::get(ALIAS.'/threads/getThreadInfoByParticipants/{participants}', 'Messag
 Router::get(ALIAS.'/messages/{thread_id}/removeMessage', 'MessagesController@saveDeletedThread', ['as' => 'saveDeletedThread'])->where([ 'thread_id' => '[0-9]+' ]);
 
 Router::post(ALIAS.'/messages/saveNewMessage', 'MessagesController@saveNewMessage', ['as' => 'saveNewMessage']);
+Router::post(ALIAS.'/messages/upload', 'MessagesController@uploadAttachment', ['as' => 'uploadMessageAttachment']);
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get(ALIAS.'/subscriptions', 'AccountSubscriptionController@index', ['as' => 'subscriptions']);

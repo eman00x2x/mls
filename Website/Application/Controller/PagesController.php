@@ -93,19 +93,4 @@ class PagesController extends \Main\Controller {
 		return $this->getTemplate($data);
 	}
 
-	function refundPolicy() {
-
-		$this->doc->setFacebookMetaData("og:url", url());
-		$this->doc->setFacebookMetaData("og:title", "");
-		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", "");
-		$this->doc->setFacebookMetaData("og:description", "");
-		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
-
-		$data['refund_policy'] = CONFIG['refund_policy'];
-
-		$this->setTemplate("pages/refundPolicy.php");
-		return $this->getTemplate($data);
-	}
-	
 }

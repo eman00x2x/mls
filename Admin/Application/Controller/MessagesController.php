@@ -121,7 +121,8 @@ class MessagesController extends \Main\Controller {
 		if(isset($participants)) {
 
 			$participants = base64_decode($participants);
-
+			
+			$this->doc->addScript(CDN."js/chat-attachment-uploader.js");
 			$this->doc->setTitle("Conversation");
 
 			if(CONFIG['chat_is_websocket'] == 1) {
@@ -171,7 +172,7 @@ class MessagesController extends \Main\Controller {
 						$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
 						$encryption_iv = fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
 						
-						$data['messages'][$i]['message'] = openssl_decrypt($data['messages'][$i]['message'], $this->cipher, $encryption_key, 0, $encryption_iv);
+						$data['messages'][$i]['content'] = openssl_decrypt($data['messages'][$i]['content'], $this->cipher, $encryption_key, 0, $encryption_iv);
 
 						foreach($unset_user_data as $column) {
 							unset($data['messages'][$i]['user'][$column]);
@@ -259,11 +260,18 @@ class MessagesController extends \Main\Controller {
 		$encryption_iv = fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
 
 		$message = $this->getModel("Message");
+		
+		$content_type = $message->getContentType($_POST['message']);
+		$content = [
+			"type" => $content_type,
+			"message" => $_POST['message'],
+			"info" => [$_POST['links']]
+		];
 
 		$new_data = array(
 			"user_id" => $_SESSION['user_logged']['user_id'],
 			"thread_id" => $thread_id,
-			"message" => openssl_encrypt($_POST['message'], $this->cipher, $encryption_key, 0, $encryption_iv),
+			"content" => openssl_encrypt($_POST['message'], $this->cipher, $encryption_key, 0, $encryption_iv),
 			"is_read" => 0,
 			"created_at" => DATE_NOW
 		);
@@ -420,6 +428,11 @@ class MessagesController extends \Main\Controller {
 
 		$this->response(404);
 
+	}
+
+	function uploadAttachment() {
+		$message = $this->getModel("Message");
+		return $message->uploadAttachment($_FILES['ImageBrowse']);
 	}
 
 	function webSocketChatScript() {

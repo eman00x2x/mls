@@ -93,4 +93,40 @@ class ListingsController extends \Main\Controller {
 
 	}
 
+	function sendMessage($listing_id) {
+
+		parse_str(file_get_contents('php://input'), $_POST);
+
+		$_POST['inquired_at'] = DATE_NOW;
+
+		$listing = $this->getModel("Listing");
+		$listing->column['listing_id'] = $listing_id;
+		$data = $listing->getById();
+
+		$leads = $this->getModel("Lead");
+		$response = $leads->saveNew($_POST);
+
+		$notification = $this->getModel("Notification");
+		$notification->saveNew(
+			array(
+				"account_id" => $data['account_id'],
+				"status" => 1,
+				"created_at" => DATE_NOW,
+				"content" => array(
+					"title" => "New Leads",
+					"message" => $_POST['name']." inquired about ".$data['title'],
+					"url" => MANAGE."leads/".$response['id']
+				)
+			)
+		);
+
+		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
+
+		return json_encode(array(
+			"status" => $response['status'],
+			"message" => getMsg()
+		));
+
+	}
+
 }

@@ -1,5 +1,11 @@
 <?php
 
+$html[] = "<form action='".url("MessagesController@uploadAttachment")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
+	$html[] = "<center>";
+		$html[] = "<input type='file' name='ImageBrowse[]' id='ImageBrowse' multiple='multiple' />";
+	$html[] = "</center>";
+$html[] = "</form>";
+
 $html[] = "<div class='modal' id='serverErrorModal' tabindex='-1' aria-hidden='true' aria-labelledby='serverErrorModal'>";
 	$html[] = "<div class='modal-dialog modal-fullscreen'>";
 		$html[] = "<div class='modal-content'>";
@@ -89,7 +95,7 @@ $html[] = "<div class='row justify-content-center'>";
 																$html[] = "</div>";
 															$html[] = "</div>";
 															$html[] = "<div class='chat-bubble-body'>";
-																$html[] = "<p>".$data['messages'][$i]['message']."</p>";
+																$html[] = "<p>".$data['messages'][$i]['content']."</p>";
 															$html[] = "</div>";
 														$html[] = "</div>";
 													$html[] = "</div>";
@@ -116,7 +122,7 @@ $html[] = "<div class='row justify-content-center'>";
 																$html[] = "</div>";
 															$html[] = "</div>";
 															$html[] = "<div class='chat-bubble-body'>";
-																$html[] = "<p>".$data['messages'][$i]['message']."</p>";
+																$html[] = "<p>".$data['messages'][$i]['content']."</p>";
 															$html[] = "</div>";
 														$html[] = "</div>";
 													$html[] = "</div>";
@@ -148,7 +154,17 @@ $html[] = "<div class='row justify-content-center'>";
 					$html[] = "<input type='hidden' name='thread_id' id='thread_id' class='thread_id' value='$thread_id' />";
 
 					$html[] = "<div class='card-footer'>";
+
+						$html[] = "<div class='upload-container'></div>";
+
+						$html[] = "<div class='upload-response mb-1 '></div>";
+						$html[] = "<div class='upload-loader mb-1 '></div>";
+
 						$html[] = "<div class='input-group input-group-flat'>";
+							$html[] = "<span class='input-group-text'>";
+								$html[] = "<span class='link-secondary ms-2 cursor-pointer btn-file-browse' title='Upload File' data-bs-toggle='tooltip' data-bs-original-title='Upload File' aria-label='Upload File'><i class='ti ti-file-upload'></i></span>";
+								$html[] = "<span class='link-secondary ms-2 cursor-pointer btn-browse' title='Upload Photo' data-bs-toggle='tooltip' data-bs-original-title='Upload Photo' aria-label='Upload Photo'><i class='ti ti-photo-plus'></i></span>";
+							$html[] = "</span>";
 							$html[] = "<input type='text' name='message' id='message' value='' class='form-control' placeholder='Type message' autocomplete='off' maxlength='2000' />'";
 							$html[] = "<span class='input-group-text'>";
 								$html[] = "<span class='btn btn-primary btn-send btn-send-message'><i class='ti ti-send'></i></span>";
