@@ -76,31 +76,34 @@ $html[] = "<div class='row justify-content-center'>";
 							$html[] = "<div class='chat-bubbles'>";
 								
 								if($data['messages']) {
-									for($i=0; $i<count($data['messages']); $i++) {
+									for($i=0; $i<count($data['messages']); $i++) { $mes = [];
+										
+										$content = $data['messages'][$i]['content'];
 
-										if($data['messages'][$i]['content']['type'] == 'text') {
-											$message[] = "<p>".$data['messages'][$i]['content']['message']."</p>";
+										if($content['type'] === 'text') {
+											$mes[] = "<p>".$content['message']."</p>";
 										}else {
-
-											$links = $data['messages'][$i]['content']['info']['links'];
-
-											$message[] = "<div class='images_container row'>";
-												for($x=0; $ix<count($links); $x++) {
-													$message[] = "<div class='col-auto'>";
-														$message[] = "<div class='avatar avatar-lg' style='background-image: url(".$links[$x].")'></div>";
-													$message[] = "</div>";
-												}
-											$message[] = "</div>";
-
+											if($content['info'] == "") {
+												$mes[] = "<p>".$content['message']."</p>";
+											}else {
+												$links = $content['info']['links'];
+												$mes[] = "<div class='images_container row'>";
+													for($x=0; $x<count($links); $x++) {
+														$mes[] = "<div class='col-auto'>";
+															$mes[] = "<div class='avatar avatar-xl' style='background-image: url(".$links[$x].")'></div>";
+														$mes[] = "</div>";
+													}
+												$mes[] = "</div>";
+											}
 										}
 
-										$message = implode("",$message);
+										$message = implode("",$mes);
 
 										$html[] = "<div  class='chat-item'>";
 											
 											if($data['messages'][$i]['user_id'] == $_SESSION['user_logged']['user_id']) {
 												$html[] = "<div class='row align-items-end justify-content-end'>";
-													$html[] = "<div class='col col-lg-6'>";
+													$html[] = "<div class='col col-md-8'>";
 														$html[] = "<div class='chat-bubble chat-bubble-me'>";
 															
 															$html[] = "<div class='chat-bubble-title'>";
@@ -127,7 +130,7 @@ $html[] = "<div class='row justify-content-center'>";
 													$html[] = "<div class='col-auto'>";
 														$html[] = "<span class='avatar' style='background-image: url(".$data['messages'][$i]['user']['photo'].")'></span>";
 													$html[] = "</div>";
-													$html[] = "<div class='col col-lg-6'>";
+													$html[] = "<div class='col col-md-8'>";
 														$html[] = "<div class='chat-bubble '>";
 															
 															$html[] = "<div class='chat-bubble-title'>";
@@ -151,16 +154,18 @@ $html[] = "<div class='row justify-content-center'>";
 									}
 								}
 
+								if(isset($i) && $i > 0) {
+									$last_message_id = $data['messages'][($i-1)]['message_id'];
+								}else {
+									$last_message_id = 0;
+								}
+
+								$html[] = "<input type='hidden' name='last_message_id' id='last_message_id' class='last_message_id' value='$last_message_id' />";
+
 							$html[] = "</div>";
 						$html[] = "</div>";
 
 					$html[] = "</div>";
-
-					if(isset($i) && $i > 0) {
-						$last_message_id = $data['messages'][($i-1)]['message_id'];
-					}else {
-						$last_message_id = 0;
-					}
 
 					if(isset($data['thread']['thread_id'])) {
 						$thread_id = $data['thread']['thread_id'];
@@ -170,7 +175,6 @@ $html[] = "<div class='row justify-content-center'>";
 
 					$html[] = "<form id='form' action='' method='POST'>";
 						$html[] = "<input type='hidden' name='participants' id='participants' class='participants' value='".json_encode($data['participants_id'])."' />";
-						$html[] = "<input type='hidden' name='last_message_id' id='last_message_id' class='last_message_id' value='$last_message_id' />";
 						$html[] = "<input type='hidden' name='thread_id' id='thread_id' class='thread_id' value='$thread_id' />";
 						$html[] = "<input type='hidden' name='type' id='type' value='text' />";
 

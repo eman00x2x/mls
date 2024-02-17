@@ -14,6 +14,10 @@ class MessageModel extends \Main\Model {
 		];
 	*/
 
+	private $cipher = "AES-128-CTR";
+	private $key_path = "../key";
+	private $pseudo_bytes_path = "../pseudo_bytes";
+
 	function __construct() {
 		$this->table = "messages";
 		$this->primary_key = "message_id";
@@ -34,7 +38,7 @@ class MessageModel extends \Main\Model {
 
 	}
 
-	function getByThreadId($thread_id) {
+	function getByThreadId(int $thread_id) {
         $this->where(" thread_id = ".$thread_id);
         return $this->getList();
     }
@@ -54,6 +58,14 @@ class MessageModel extends \Main\Model {
 				"message" => "<h4 class='font-weight-bold'>Error</h4> * ".$v->listErrors('<br/> * ')
 			);
 		}else {
+
+			if(isset($data['content']['info']['links']) && is_array($data['content']['info']['links'])) {
+				for($i=0; $i<count($data['content']['info']['links']); $i++) {
+					$data['content']['info']['links'][$i] = $this->moveUploadedAttachment(basename($data['content']['info']['links'][$i]));
+				}
+			}
+
+			$data['content'] = $this->encrypt(json_encode($data['content']));
 
 			foreach($data as $key => $val) {
 				$this->column[$key] = $val;
@@ -78,8 +90,6 @@ class MessageModel extends \Main\Model {
 		if(($this->getById()) !== false) {
 
 			$v = $this->getValidator();
-
-
 
 			if($v->foundErrors()) {
 				return array(
@@ -255,5 +265,24 @@ class MessageModel extends \Main\Model {
 		}
 		
 	}
+
+	function encrypt($message) {
+		return openssl_encrypt($message, $this->cipher, $this->getEncryptionKey(), 0, $this->getEncryptionIV());
+	}
+
+	function decrypt($message) {
+		return openssl_decrypt($message, $this->cipher, $this->getEncryptionKey(), 0, $this->getEncryptionIV());
+	}
+
+	private function getEncryptionKey() {
+		$file = fopen($this->key_path, "r");
+		return fread($file, filesize($this->key_path));
+	}
+
+	private function getEncryptionIV() {
+		$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
+		return fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
+	}
+
 
 }

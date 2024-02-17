@@ -1,30 +1,33 @@
 <?php
 
-	for($i=0; $i<count($data['messages']); $i++) {
+	for($i=0; $i<count($data['messages']); $i++) { $mes = [];
 
 		$content = $data['messages'][$i]['content'];
 
-		if($content['type'] == 'text') {
-			$message = "<p>".$data['messages'][$i]['content']['message']."</p>";
+		if($content['type'] === 'text') {
+			$mes[] = "<p>".$content['message']."</p>";
 		}else {
-
-			$links = $data['messages'][$i]['content']['info']['links'];
-
-			$message[] = "<div class='images_container row'>";
-				for($x=0; $ix<count($links); $x++) {
-					$message[] = "<div class='col-auto'>";
-						$message[] = "<div class='avatar avatar-lg' style='background-image: url(".$links[$x].")'></div>";
-					$message[] = "</div>";
-				}
-			$message[] = "</div>";
-
+			if($content['info'] == "") {
+				$mes[] = "<p>".$content['message']."</p>";
+			}else {
+				$links = $content['info']['links'];
+				$mes[] = "<div class='images_container row'>";
+					for($x=0; $x<count($links); $x++) {
+						$mes[] = "<div class='col-auto'>";
+							$mes[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$links[$x].")'></div>";
+						$mes[] = "</div>";
+					}
+				$mes[] = "</div>";
+			}
 		}
+
+		$message = implode("",$mes);
 
 		$html[] = "<div  class='chat-item'>";
 			
 			if($data['messages'][$i]['user_id'] == $_SESSION['user_logged']['user_id']) {
 				$html[] = "<div class='row align-items-end justify-content-end'>";
-					$html[] = "<div class='col col-lg-6'>";
+					$html[] = "<div class='col col-md-8'>";
 						$html[] = "<div class='chat-bubble chat-bubble-me'>";
 							
 							$html[] = "<div class='chat-bubble-title'>";
@@ -51,7 +54,7 @@
 					$html[] = "<div class='col-auto'>";
 						$html[] = "<span class='avatar' style='background-image: url(".$data['messages'][$i]['user']['photo'].")'></span>";
 					$html[] = "</div>";
-					$html[] = "<div class='col col-lg-6'>";
+					$html[] = "<div class='col col-md-8'>";
 						$html[] = "<div class='chat-bubble chat-bubble-me'>";
 							
 							$html[] = "<div class='chat-bubble-title'>";

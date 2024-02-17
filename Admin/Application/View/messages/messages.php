@@ -70,10 +70,17 @@ $html[] = "<div class='page-body'>";
                                     
                                     $html[] = "<td class='align-middle cursor-pointer' onclick='window.location.href=\"".url("MessagesController@conversation", ["participants" => base64_encode(json_encode($data['threads'][$i]['participants']))])."\"'>";
 									if($data['last_message']) {
-										if($data['last_message']['user_id'] == $_SESSION['user_logged']['user_id']) {
-											$html[] = "<span class=''><span class='text-muted'>me:</span> ".nicetrim($data['last_message']['message'], 50)."</span>";
+
+										if($data['last_message']['body']['type'] == "text") {
+											$message =nicetrim( $data['last_message']['body']['message'], 50);
 										}else {
-											$html[] = "<span class=''><span class='text-muted'>".$data['last_message']['from']['name'].":</span> ".nicetrim($data['last_message']['message'], 50)."</span>";
+											$message = "sent an image";
+										}
+
+										if($data['last_message']['user_id'] == $_SESSION['user_logged']['user_id']) {
+											$html[] = "<span class=''><span class='text-muted'>me:</span> ".$message."</span>";
+										}else {
+											$html[] = "<span class=''><span class='text-muted'>".$data['last_message']['from']['name'].":</span> ".$message."</span>";
 										}
 
 										$html[] = "<span class='fs-11 d-block text-muted'>".date("M d, Y g:ia",$data['last_message']['created_at'])."</span>";

@@ -10,17 +10,29 @@ class ThreadModel extends \Main\Model {
 		$this->init();
 	}
 
-	function getByParticipants() {
+	function getByParticipants(string $participants) {
 
-		$query = "SELECT * FROM #__threads WHERE participants = '".$this->column['participants']."' ".$this->and;
-		$result = $this->DBO->query($query);
+		/** should match each participants and vise-versa [1,4] OR [4,1] */
+		if(is_string($participants)) {
+			$participants = json_decode($participants, true);
 
-		$this->initiateFields($result);
+			if(is_array($participants)) {
 
-		if($this->DBO->numRows($result) > 0) {
-			$line = $this->DBO->fetchAssoc($result);
-			return $this->stripQuotes($line);
-		}else {return false;}
+				foreach($participants as $participant) {
+					$filter[] = " JSON_CONTAINS(participants, '$participant')";
+				}
+
+				#$this->where(" (participants->>'$[0]' = ".$participants[0]." AND participants->>'$[1]' = ".$participants[1].") OR (participants->>'$[0]' = ".$participants[1]." AND participants->>'$[1]' = ".$participants[0].") ");
+				$this->where( implode(" AND ", $filter) );
+				$data = $this->getList();
+
+				return $data[0];
+
+			}
+			
+		}
+
+		return false;
 
 	}
 

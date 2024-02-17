@@ -8,10 +8,6 @@ class MessagesController extends \Main\Controller {
 	private $ws_client;
 	private $websocketAddress = "ws://localhost:8980/mls/Manage/webSocketServer.php";
 
-	private $cipher = "AES-128-CTR";
-	private $key_path = "../key";
-	private $pseudo_bytes_path = "../pseudo_bytes";
-
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
@@ -85,14 +81,7 @@ class MessagesController extends \Main\Controller {
 					$user->column['user_id'] = $data['last_message']['user_id'];
 					$data['last_message']['from'] = $user->getById();
 
-					$file = fopen($this->key_path, "r");
-					$encryption_key = fread($file, filesize($this->key_path));
-					
-					$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
-					$encryption_iv = fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
-					
-					$data['last_message']['message'] = openssl_decrypt($data['last_message']['message'], $this->cipher, $encryption_key, 0, $encryption_iv);
-
+					$data['last_message']['body'] = json_decode($message->decrypt($data['last_message']['content']), true);
 				}
 
 			}
@@ -127,25 +116,31 @@ class MessagesController extends \Main\Controller {
 
 	function conversation($participants) {
 
-		if(isset($participants)) {
+		$participants = base64_decode($participants);
+		$thread = $this->getModel("Thread");
+		$data['thread'] = $thread->getByParticipants($participants);
 
-			$participants = json_decode(base64_decode($participants), true);
+		$this->doc->addScript(CDN."js/chat-attachment-uploader.js");
+		$this->doc->setTitle("Conversation");
 
-			$data['thread'] = $this->getThreadInfoByParticipants(json_encode($participants));
+		if(CONFIG['chat_is_websocket'] == 1) {
+			$this->webSocketChatScript();
+		}else {
+			$this->ajaxChatScript();
+		}
 
-			$this->doc->addScript(CDN."js/chat-attachment-uploader.js");
-			$this->doc->setTitle("Conversation");
+		$unset_account_data = explode(",","account_type,preferences,privileges,uploads");
+		$unset_user_data = explode(",","user_id,password,user_level,permissions,two_factor_authentication,two_factor_authentication_aps");
 
-			if(CONFIG['chat_is_websocket'] == 1) {
-				$this->webSocketChatScript();
-			}else {
-				$this->ajaxChatScript();
+		try {
+			
+			$account = $this->getModel("Account");
+			$participants = json_decode($participants, true);
+			
+			if(!is_array($participants)) {
+				throw new \Exception('Invalid Participant ids');
 			}
 
-			$unset_account_data = explode(",","account_type,preferences,privileges,uploads");
-			$unset_user_data = explode(",","user_id,password,user_level,permissions,two_factor_authentication,two_factor_authentication_aps");
-
-			$account = $this->getModel("Account");
 			foreach($participants as $participant_account_id) {
 				$account->column['account_id'] = $participant_account_id;
 				$data['participants'][$participant_account_id] = $account->getById();
@@ -155,53 +150,50 @@ class MessagesController extends \Main\Controller {
 				}
 			}
 
-			$data['participants_id'] = $participants;
-
-			if($data['thread']) {
-
-				$message = $this->getModel("Message");
-				$message->DBO->query("UPDATE #__messages SET is_read = 1 WHERE thread_id = ".$data['thread']['thread_id']." AND user_id != ".$_SESSION['user_logged']['user_id']."");
-
-				$data['messages'] = $message->execute(" SELECT * 
-					FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread']['thread_id']." ORDER BY created_at DESC LIMIT 20) as sub 
-					ORDER BY created_at ASC
-				");
-
-				if($data['messages']) {
-					$user = $this->getModel("User");
-					for($i=0; $i<count($data['messages']); $i++) {
-						$user->column['user_id'] = $data['messages'][$i]['user_id'];
-						$data['messages'][$i]['user'] = $user->getById();
-
-						$file = fopen($this->key_path, "r");
-						$encryption_key = fread($file, filesize($this->key_path));
-						
-						$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
-						$encryption_iv = fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
-						
-						$data['messages'][$i]['content'] = json_decode(openssl_decrypt($data['messages'][$i]['content'], $this->cipher, $encryption_key, 0, $encryption_iv), true);
-
-						foreach($unset_user_data as $column) {
-							unset($data['messages'][$i]['user'][$column]);
-						}
-					}
-
-				}
-			}else {
-				$data['messages'] = false;
-			}
-
-			$this->setTemplate("messages/view.php");
-			return $this->getTemplate($data);
+		}catch (Exception $e) {
+			$this->response(404);
 		}
 
-		$this->response(404);
+		if($data['thread']) {
 
+			$data['participants_id'] = $participants;
+
+			$message = $this->getModel("Message");
+			$message->DBO->query("UPDATE #__messages SET is_read = 1 WHERE thread_id = ".$data['thread']['thread_id']." AND user_id != ".$_SESSION['user_logged']['user_id']."");
+
+			$data['messages'] = $message->execute(" SELECT * 
+				FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread']['thread_id']." ORDER BY created_at DESC LIMIT 20) as sub 
+				ORDER BY created_at ASC
+			");
+
+			if($data['messages']) {
+				$user = $this->getModel("User");
+				for($i=0; $i<count($data['messages']); $i++) {
+					$user->column['user_id'] = $data['messages'][$i]['user_id'];
+					$data['messages'][$i]['user'] = $user->getById();
+
+					$data['messages'][$i]['content'] = json_decode($message->decrypt($data['messages'][$i]['content']), true);
+
+					foreach($unset_user_data as $column) {
+						unset($data['messages'][$i]['user'][$column]);
+					}
+				}
+
+			}
+
+		}else {
+			$data['messages'] = false;
+		}
+
+		$this->setTemplate("messages/view.php");
+		return $this->getTemplate($data);
+		
 	}
 
 	function getMessages($participants,$lastMessageId) {
 
-		$data['thread'] = $this->getThreadInfoByParticipants(base64_decode($participants));
+		$thread = $this->getModel("Thread");
+		$data['thread'] = $thread->getByParticipants(base64_decode($participants));
 
 		if($data['thread']) {
 
@@ -223,13 +215,7 @@ class MessagesController extends \Main\Controller {
 					$user->column['user_id'] = $data['messages'][$i]['user_id'];
 					$data['messages'][$i]['user'] = $user->getById();
 
-					$file = fopen($this->key_path, "r");
-					$encryption_key = fread($file, filesize($this->key_path));
-					
-					$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
-					$encryption_iv = fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
-					
-					$data['messages'][$i]['content'] = json_decode(openssl_decrypt($data['messages'][$i]['content'], $this->cipher, $encryption_key, 0, $encryption_iv), true);
+					$data['messages'][$i]['content'] = json_decode($message->decrypt($data['messages'][$i]['content']), true);
 
 				}
 
@@ -245,7 +231,8 @@ class MessagesController extends \Main\Controller {
 
 		parse_str(file_get_contents('php://input'), $_POST);
 
-		$data['thread'] = $this->getThreadInfoByParticipants($_POST['participants']);
+		$thread = $this->getModel("Thread");
+		$data['thread'] = $thread->getByParticipants($_POST['participants']);
 
 		if($data['thread']) {
 			$thread_id = $data['thread']['thread_id'];
@@ -260,36 +247,29 @@ class MessagesController extends \Main\Controller {
 			$thread_id = $response['id'];
 		}
 
-		$file = fopen($this->key_path, "r");
-		$encryption_key = fread($file, filesize($this->key_path));
-		
-		$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
-		$encryption_iv = fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
-
 		$message = $this->getModel("Message");
 		
-		$content = json_encode([
+		$content = [
 			"type" => $_POST['type'],
 			"message" => $_POST['message'],
 			"info" => isset($_POST['info']) ? $_POST['info'] : null
-		]);
+		];
 
-		$new_data = array(
-			"user_id" => $_SESSION['user_logged']['user_id'],
-			"thread_id" => $thread_id,
-			"content" => openssl_encrypt($content, $this->cipher, $encryption_key, 0, $encryption_iv),
-			"is_read" => 0,
-			"created_at" => DATE_NOW
+		$message_response = $message->saveNew(
+			array(
+				"user_id" => $_SESSION['user_logged']['user_id'],
+				"thread_id" => $thread_id,
+				"content" =>  $content,
+				"is_read" => 0,
+				"created_at" => DATE_NOW
+			)
 		);
-
-		$message_response = $message->saveNew($new_data);
 
 		if (($key = array_search($_SESSION['user_logged']['account_id'], $data['thread']['participants'])) !== false) {
 			unset($data['thread']['participants'][$key]);
 		}
 
 		$recipient_account_id = implode("", $data['thread']['participants']);
-
 		$notification = $this->getModel("Notification");
 		$notification->saveNew(
 			array(
@@ -304,24 +284,22 @@ class MessagesController extends \Main\Controller {
 			)
 		);
 
-		$user = $this->getModel("User");
-		$user->column['user_id'] = $_SESSION['user_logged']['user_id'];
-		$data['user'] = $user->getById();
-
-		$response['thread_id'] = $thread_id;
-		$response['user_id'] = $_SESSION['user_logged']['user_id'];
-		$response['photo'] = $data['user']['photo'];
-		$response['user_name'] = $data['user']['name'];
-		$response['user_message'] = $new_data['content'];
-		$response['user_sent_time'] = date("M d, Y h:ia",$new_data['created_at']);
-
-		return json_encode(array(
-			"status" => 1,
-			"type" => "success",
-			"id" => $message_response['id'],
-			"thread_id" => $thread_id,
-			"data" => $response
-		));
+		return json_encode(
+			array(
+				"status" => 1,
+				"type" => "success",
+				"id" => $message_response['id'],
+				"thread_id" => $thread_id,
+				"data" => array(
+					"thread_id" => $thread_id,
+					"user_id" => $_SESSION['user_logged']['user_id'],
+					"photo" => $_SESSION['user_logged']['photo'],
+					"user_name" => $_SESSION['user_logged']['name'],
+					"user_message" => $message->encrypt(json_encode($content)),
+					"user_sent_time" => date("M d, Y h:ia", DATE_NOW),
+				)
+			)
+		);
 
 	}
 	
@@ -392,9 +370,19 @@ class MessagesController extends \Main\Controller {
 			$message->orderBy(" created_at DESC ");
 			$data['messages'] = $message->getByThreadId($data['thread']['thread_id']);
 
-			if($data['messages']) {
-				for($i=0; $i<count($data['messages']); $i++) {
-					$text[] = "-".date("Y-m-d g:ia", $data['messages'][$i]['created_at'])."\t".$data['thread']['users'][ $data['messages'][$i]['user_id'] ]['name'].":\t".$data['messages'][$i]['message']."";
+			if($data['messages']) { 
+				for($i=0; $i<count($data['messages']); $i++) { $con = '';
+					$con .= "-".date("Y-m-d g:ia", $data['messages'][$i]['created_at'])."\t".$data['thread']['users'][ $data['messages'][$i]['user_id'] ]['name'].":\t";
+
+					$content = json_decode($message->decrypt($data['messages']['content']), true);
+
+					if($content['type'] == "text") {
+						$con .= $content['message'];
+					}else {
+						$con .= "sent an image ".implode(", ", $content['info']['links']);
+					}
+
+					$text[] = $con;
 				}
 			}
 

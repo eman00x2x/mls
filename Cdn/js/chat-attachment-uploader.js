@@ -62,6 +62,7 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 
 		$('.btn-send-message').trigger('click');
 		
+		$('#type').val('text');
 		$('.file-container').remove();
 		localStorage.clear();
 
