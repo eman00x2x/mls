@@ -1,6 +1,25 @@
 <?php
 
 	for($i=0; $i<count($data['messages']); $i++) {
+
+		$content = $data['messages'][$i]['content'];
+
+		if($content['type'] == 'text') {
+			$message = "<p>".$data['messages'][$i]['content']['message']."</p>";
+		}else {
+
+			$links = $data['messages'][$i]['content']['info']['links'];
+
+			$message[] = "<div class='images_container row'>";
+				for($x=0; $ix<count($links); $x++) {
+					$message[] = "<div class='col-auto'>";
+						$message[] = "<div class='avatar avatar-lg' style='background-image: url(".$links[$x].")'></div>";
+					$message[] = "</div>";
+				}
+			$message[] = "</div>";
+
+		}
+
 		$html[] = "<div  class='chat-item'>";
 			
 			if($data['messages'][$i]['user_id'] == $_SESSION['user_logged']['user_id']) {
@@ -19,7 +38,7 @@
 								$html[] = "</div>";
 							$html[] = "</div>";
 							$html[] = "<div class='chat-bubble-body'>";
-								$html[] = "<p>".$data['messages'][$i]['message']."</p>";
+								$html[] = $message;
 							$html[] = "</div>";
 						$html[] = "</div>";
 					$html[] = "</div>";
@@ -46,7 +65,7 @@
 								$html[] = "</div>";
 							$html[] = "</div>";
 							$html[] = "<div class='chat-bubble-body'>";
-								$html[] = "<p>".$data['messages'][$i]['message']."</p>";
+								$html[] = $message;
 							$html[] = "</div>";
 						$html[] = "</div>";
 					$html[] = "</div>";

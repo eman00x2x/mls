@@ -201,7 +201,7 @@ class MessageModel extends \Main\Model {
 					$handle->image_ratio_y = true;
 				}
 				
-				$handle->Process(ROOT."/Cdn/images/temporary/"); 
+				$handle->Process(ROOT."Cdn/public/temporary/"); 
 				
 				if ($handle->processed) {
 				
@@ -209,6 +209,7 @@ class MessageModel extends \Main\Model {
 						"status" => 1,
 						"id" => rand(1000,10000).time(),
 						"temp_url" => CDN."public/temporary/".$handle->file_dst_name,
+						"url" => CDN."public/chat/".$handle->file_dst_name,
 						"filename" => $handle->file_dst_name
 					);
 				
@@ -237,15 +238,19 @@ class MessageModel extends \Main\Model {
 
 	}
 
-	function removePhoto($filename) {
+	function removeAttachment($filename) {
 
+		$file_temp = ROOT.DS."Cdn".DS."public".DS."temporary".DS.$filename;
 		$file = ROOT.DS."Cdn".DS."public".DS."chat".DS.$filename;
 		
 		/* check file if exists in main folder */
 		if(file_exists($file)) {
 			@unlink($file);
 			return true;
-		}else {
+		}else if(file_exists($file_temp)) {
+			@unlink($file_temp);
+			return true;
+		} else {
 			return false;
 		}
 		

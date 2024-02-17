@@ -107,12 +107,21 @@ class MessagesController extends \Main\Controller {
 
 		/** should match each participants and vise-versa [1,4] OR [4,1] */
 
-		$thread = $this->getModel("Thread");
-		$thread->column['participants'] = $participants;
-		$thread->and(" status = 1 ");
-		$data = $thread->getByParticipants();
+		$participants = json_decode($participants, true);
 
-		return json_encode($data);
+		if(!is_array($participants)) {
+			$this->response(404);
+		}
+
+		if(count($participants) == 2) {
+			$thread = $this->getModel("Thread");
+			$thread->where(" (participants->>'$[0]' = ".$participants[0]." AND participants->>'$[1]' = ".$participants[1].") OR (participants->>'$[0]' = ".$participants[1]." AND participants->>'$[1]' = ".$participants[0].") ");
+			$data = $thread->getList();
+
+			return $data[0];
+		}
+
+		return false;
 
 	}
 
@@ -120,8 +129,10 @@ class MessagesController extends \Main\Controller {
 
 		if(isset($participants)) {
 
-			$participants = base64_decode($participants);
-			
+			$participants = json_decode(base64_decode($participants), true);
+
+			$data['thread'] = $this->getThreadInfoByParticipants(json_encode($participants));
+
 			$this->doc->addScript(CDN."js/chat-attachment-uploader.js");
 			$this->doc->setTitle("Conversation");
 
@@ -133,8 +144,6 @@ class MessagesController extends \Main\Controller {
 
 			$unset_account_data = explode(",","account_type,preferences,privileges,uploads");
 			$unset_user_data = explode(",","user_id,password,user_level,permissions,two_factor_authentication,two_factor_authentication_aps");
-
-			$participants = json_decode($participants, true);
 
 			$account = $this->getModel("Account");
 			foreach($participants as $participant_account_id) {
@@ -148,8 +157,6 @@ class MessagesController extends \Main\Controller {
 
 			$data['participants_id'] = $participants;
 
-			$data['thread'] = json_decode($this->getThreadInfoByParticipants(json_encode($participants)), true);
-			
 			if($data['thread']) {
 
 				$message = $this->getModel("Message");
@@ -172,7 +179,7 @@ class MessagesController extends \Main\Controller {
 						$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
 						$encryption_iv = fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
 						
-						$data['messages'][$i]['content'] = openssl_decrypt($data['messages'][$i]['content'], $this->cipher, $encryption_key, 0, $encryption_iv);
+						$data['messages'][$i]['content'] = json_decode(openssl_decrypt($data['messages'][$i]['content'], $this->cipher, $encryption_key, 0, $encryption_iv), true);
 
 						foreach($unset_user_data as $column) {
 							unset($data['messages'][$i]['user'][$column]);
@@ -194,7 +201,7 @@ class MessagesController extends \Main\Controller {
 
 	function getMessages($participants,$lastMessageId) {
 
-		$data['thread'] = json_decode($this->getThreadInfoByParticipants(base64_decode($participants)), true);
+		$data['thread'] = $this->getThreadInfoByParticipants(base64_decode($participants));
 
 		if($data['thread']) {
 
@@ -222,7 +229,7 @@ class MessagesController extends \Main\Controller {
 					$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
 					$encryption_iv = fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
 					
-					$data['messages'][$i]['message'] = openssl_decrypt($data['messages'][$i]['message'], $this->cipher, $encryption_key, 0, $encryption_iv);
+					$data['messages'][$i]['content'] = json_decode(openssl_decrypt($data['messages'][$i]['content'], $this->cipher, $encryption_key, 0, $encryption_iv), true);
 
 				}
 
@@ -238,7 +245,7 @@ class MessagesController extends \Main\Controller {
 
 		parse_str(file_get_contents('php://input'), $_POST);
 
-		$data['thread'] = json_decode($this->getThreadInfoByParticipants($_POST['participants']), true);
+		$data['thread'] = $this->getThreadInfoByParticipants($_POST['participants']);
 
 		if($data['thread']) {
 			$thread_id = $data['thread']['thread_id'];
@@ -261,24 +268,21 @@ class MessagesController extends \Main\Controller {
 
 		$message = $this->getModel("Message");
 		
-		$content_type = $message->getContentType($_POST['message']);
-		$content = [
-			"type" => $content_type,
+		$content = json_encode([
+			"type" => $_POST['type'],
 			"message" => $_POST['message'],
-			"info" => [$_POST['links']]
-		];
+			"info" => isset($_POST['info']) ? $_POST['info'] : null
+		]);
 
 		$new_data = array(
 			"user_id" => $_SESSION['user_logged']['user_id'],
 			"thread_id" => $thread_id,
-			"content" => openssl_encrypt($_POST['message'], $this->cipher, $encryption_key, 0, $encryption_iv),
+			"content" => openssl_encrypt($content, $this->cipher, $encryption_key, 0, $encryption_iv),
 			"is_read" => 0,
 			"created_at" => DATE_NOW
 		);
 
-		$message_response = $message->saveNew(
-			$new_data
-		);
+		$message_response = $message->saveNew($new_data);
 
 		if (($key = array_search($_SESSION['user_logged']['account_id'], $data['thread']['participants'])) !== false) {
 			unset($data['thread']['participants'][$key]);
@@ -308,7 +312,7 @@ class MessagesController extends \Main\Controller {
 		$response['user_id'] = $_SESSION['user_logged']['user_id'];
 		$response['photo'] = $data['user']['photo'];
 		$response['user_name'] = $data['user']['name'];
-		$response['user_message'] = base64_encode($new_data['message']);;
+		$response['user_message'] = $new_data['content'];
 		$response['user_sent_time'] = date("M d, Y h:ia",$new_data['created_at']);
 
 		return json_encode(array(
@@ -435,6 +439,11 @@ class MessagesController extends \Main\Controller {
 		return $message->uploadAttachment($_FILES['ImageBrowse']);
 	}
 
+	function removeAttachment($filename) {
+		$message = $this->getModel("Message");
+		return $message->removeAttachment($filename);
+	}
+
 	function webSocketChatScript() {
 
 		/** 
@@ -489,16 +498,14 @@ class MessagesController extends \Main\Controller {
 
 			function sendMessage(){
 				
+				var type = $('#type').val();
 				var message = $('#message').val();
-				var participants = $('#participants').val();
-				if(message != '') {
+
+				if((type == 'text' && message != '') || (type == 'image')) {
 
 					$('.btn-send').removeClass('btn-send-message');
 					
-					$.post('".url("MessagesController@saveNewMessage")."', {
-						'participants': participants,
-						'message': message 
-					},function(data) {
+					$.post('".url("MessagesController@saveNewMessage")."',  $('#form').serialize(), function(data) {
 						response = JSON.parse(data);
 
 						websocket.send(JSON.stringify(response.data));
@@ -619,18 +626,17 @@ class MessagesController extends \Main\Controller {
 
 			function sendMessage() {
 
+				var type = $('#type').val();
 				var message = $('#message').val();
-				var participants = $('#participants').val();
-
-				if(message != '') {
+				
+				if((type == 'text' && message != '') || (type == 'image')) {
 
 					$('.btn-send').removeClass('btn-send-message');
 
-					$.post('".url("MessagesController@saveNewMessage")."', {
-						'participants': participants,
-						'message': message 
-					},function(data) {
+					$.post('".url("MessagesController@saveNewMessage")."', $('#form').serialize(), function(data) {
 
+						console.log(data);
+						
 						response = JSON.parse(data);
 
 						eval('('+fetchMore+')()');
@@ -643,7 +649,9 @@ class MessagesController extends \Main\Controller {
 						$('.btn-send').addClass('btn-send-message');
 						
 					});
+
 				}
+
 			}
 			
 		");

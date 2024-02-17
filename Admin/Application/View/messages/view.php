@@ -77,6 +77,25 @@ $html[] = "<div class='row justify-content-center'>";
 								
 								if($data['messages']) {
 									for($i=0; $i<count($data['messages']); $i++) {
+
+										if($data['messages'][$i]['content']['type'] == 'text') {
+											$message[] = "<p>".$data['messages'][$i]['content']['message']."</p>";
+										}else {
+
+											$links = $data['messages'][$i]['content']['info']['links'];
+
+											$message[] = "<div class='images_container row'>";
+												for($x=0; $ix<count($links); $x++) {
+													$message[] = "<div class='col-auto'>";
+														$message[] = "<div class='avatar avatar-lg' style='background-image: url(".$links[$x].")'></div>";
+													$message[] = "</div>";
+												}
+											$message[] = "</div>";
+
+										}
+
+										$message = implode("",$message);
+
 										$html[] = "<div  class='chat-item'>";
 											
 											if($data['messages'][$i]['user_id'] == $_SESSION['user_logged']['user_id']) {
@@ -95,7 +114,7 @@ $html[] = "<div class='row justify-content-center'>";
 																$html[] = "</div>";
 															$html[] = "</div>";
 															$html[] = "<div class='chat-bubble-body'>";
-																$html[] = "<p>".$data['messages'][$i]['content']."</p>";
+																$html[] = $message;
 															$html[] = "</div>";
 														$html[] = "</div>";
 													$html[] = "</div>";
@@ -122,7 +141,7 @@ $html[] = "<div class='row justify-content-center'>";
 																$html[] = "</div>";
 															$html[] = "</div>";
 															$html[] = "<div class='chat-bubble-body'>";
-																$html[] = "<p>".$data['messages'][$i]['content']."</p>";
+																$html[] = $message;
 															$html[] = "</div>";
 														$html[] = "</div>";
 													$html[] = "</div>";
@@ -149,32 +168,34 @@ $html[] = "<div class='row justify-content-center'>";
 						$thread_id = 0;
 					}
 
-					$html[] = "<input type='hidden' name='participants' id='participants' class='participants' value='".json_encode($data['participants_id'])."' />";
-					$html[] = "<input type='hidden' name='last_message_id' id='last_message_id' class='last_message_id' value='$last_message_id' />";
-					$html[] = "<input type='hidden' name='thread_id' id='thread_id' class='thread_id' value='$thread_id' />";
+					$html[] = "<form id='form' action='' method='POST'>";
+						$html[] = "<input type='hidden' name='participants' id='participants' class='participants' value='".json_encode($data['participants_id'])."' />";
+						$html[] = "<input type='hidden' name='last_message_id' id='last_message_id' class='last_message_id' value='$last_message_id' />";
+						$html[] = "<input type='hidden' name='thread_id' id='thread_id' class='thread_id' value='$thread_id' />";
+						$html[] = "<input type='hidden' name='type' id='type' value='text' />";
 
-					$html[] = "<div class='card-footer'>";
+						$html[] = "<div class='card-footer'>";
 
-						$html[] = "<div class='upload-container'></div>";
+							$html[] = "<div class='upload-container d-flex gap-2 mb-2'></div>";
 
-						$html[] = "<div class='upload-response mb-1 '></div>";
-						$html[] = "<div class='upload-loader mb-1 '></div>";
+							$html[] = "<div class='upload-response mb-1 '></div>";
+							$html[] = "<div class='upload-loader mb-1 '></div>";
 
-						$html[] = "<div class='input-group input-group-flat'>";
-							$html[] = "<span class='input-group-text'>";
-								$html[] = "<span class='link-secondary ms-2 cursor-pointer btn-file-browse' title='Upload File' data-bs-toggle='tooltip' data-bs-original-title='Upload File' aria-label='Upload File'><i class='ti ti-file-upload'></i></span>";
-								$html[] = "<span class='link-secondary ms-2 cursor-pointer btn-browse' title='Upload Photo' data-bs-toggle='tooltip' data-bs-original-title='Upload Photo' aria-label='Upload Photo'><i class='ti ti-photo-plus'></i></span>";
-							$html[] = "</span>";
-							$html[] = "<input type='text' name='message' id='message' value='' class='form-control' placeholder='Type message' autocomplete='off' maxlength='2000' />'";
-							$html[] = "<span class='input-group-text'>";
-								$html[] = "<span class='btn btn-primary btn-send btn-send-message'><i class='ti ti-send'></i></span>";
-							$html[] = "</span>";
+							$html[] = "<div class='input-group input-group-flat'>";
+								$html[] = "<span class='input-group-text'>";
+									/* $html[] = "<span class='link-secondary ms-2 cursor-pointer btn-file-browse' title='Upload File' data-bs-toggle='tooltip' data-bs-original-title='Upload File' aria-label='Upload File'><i class='ti ti-file-upload'></i></span>"; */
+									$html[] = "<span class='link-secondary ms-2 cursor-pointer btn-browse' title='Upload Photo' data-bs-toggle='tooltip' data-bs-original-title='Upload Photo' aria-label='Upload Photo'><i class='ti ti-photo-plus'></i></span>";
+								$html[] = "</span>";
+								$html[] = "<input type='text' name='message' id='message' value='' class='form-control' placeholder='Type message' autocomplete='off' maxlength='2000' />";
+								$html[] = "<span class='input-group-text'>";
+									$html[] = "<span class='btn btn-primary btn-send btn-send-message'><i class='ti ti-send'></i></span>";
+								$html[] = "</span>";
+							$html[] = "</div>";
 						$html[] = "</div>";
-					$html[] = "</div>";
+					$html[] = "</form>";
 					
 				$html[] = "</div>";
 					
-
 			$html[] = "</div>";
 		$html[] = "</div>";
 

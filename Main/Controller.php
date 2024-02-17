@@ -13,9 +13,9 @@ class Controller {
 
 	function response($error) {
 		switch($error) {
-			case 404: return request()->setRewriteCallback('ErrorsController@notFound');
-			case 403: return request()->setRewriteCallback('ErrorsController@forbidden');
-			case 500: return request()->setRewriteCallback('ErrorsController@serverError');
+			case 404: return redirect("/not-found",404);
+			case 403: return redirect("/forbidden",403);
+			case 500: return redirect("/Error",500);
 		}
 	}
 
