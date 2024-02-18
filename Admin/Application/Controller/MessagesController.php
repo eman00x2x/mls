@@ -198,17 +198,28 @@ class MessagesController extends \Main\Controller {
 		if($data['thread']) {
 
 			$message = $this->getModel("Message");
-			$message->and(" message_id > $lastMessageId ");
-			$message->orderBy(" created_at DESC ");
-			$data['messages'] = $message->getByThreadId($data['thread']['thread_id']);
+			
+			if($lastMessageId > 0) {
+				$message->and(" message_id > $lastMessageId ");
+			}else {
+				$message->page['limit'] = 20;
+			}
+
+			/* $message->orderBy(" created_at ASC ");
+			$data['messages'] = $message->getByThreadId($data['thread']['thread_id']); */
+
+			$data['messages'] = $message->execute(" SELECT * 
+				FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread']['thread_id']." ".$message->and." ORDER BY created_at DESC LIMIT 20) as sub 
+				ORDER BY created_at ASC
+			");
 
 			if($data['messages']) {
 				$user = $this->getModel("User");
 				for($i=0; $i<count($data['messages']); $i++) {
 
-					if($data['messages'][$i]['user_id'] != $_SESSION['user_logged']['user_id']) {
+					if($data['messages'][$i]['user_id'] != $_SESSION['user_logged']['user_id'] && $data['messages'][$i]['is_read'] == 0) {
 						$message->save($data['messages'][$i]['message_id'], [
-							"is_read" => 0
+							"is_read" => 1
 						]);
 					}
 
@@ -374,7 +385,7 @@ class MessagesController extends \Main\Controller {
 				for($i=0; $i<count($data['messages']); $i++) { $con = '';
 					$con .= "-".date("Y-m-d g:ia", $data['messages'][$i]['created_at'])."\t".$data['thread']['users'][ $data['messages'][$i]['user_id'] ]['name'].":\t";
 
-					$content = json_decode($message->decrypt($data['messages']['content']), true);
+					$content = json_decode($message->decrypt($data['messages'][$i]['content']), true);
 
 					if($content['type'] == "text") {
 						$con .= $content['message'];
@@ -580,33 +591,54 @@ class MessagesController extends \Main\Controller {
 		    var div;
 			var idleTime = 0;
 			var thread_id;
-			
+			var lastMessageId = 0;
+			var firstMessageId = 0;
+
 			$(document).ready(function() {
 				div = $('.card-body');
 				thread_id = parseInt($('#thread_id').val());
-				div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
+				
+				fetchMore();
+
 				div.bind('scroll', fetchMore);
 				setInterval(fetchMore, 8000);
 			});
 
 			fetchMore = function() {
 				
-				var lastMessageId = $('.last_message_id').val();
 				var participants = $('#participants').val();
 				
-				if(div.scrollTop() + div.innerHeight() >= div[0].scrollHeight) {
-					if(thread_id > 0) {
-						div.unbind('scroll', fetchMore);
-						$.get(MANAGE+'threads/' + btoa(participants) + '/getMessages/' + lastMessageId, function(data) {
-							if(data != '') {
-								$('.last_message_id').remove();
-								$('.chat-bubbles').append(data);
-								div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
-							}
-							div.bind('scroll',fetchMore);
-						});
-					}
+				if(thread_id > 0) {
+					div.unbind('scroll', fetchMore);
+					$.get(MANAGE+'threads/' + btoa(participants) + '/getMessages/' + lastMessageId, function(data) {
+						if(data != '') {
+							$('.last_message_id').remove();
+							$('.chat-bubbles').append(data);
+							div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
+							lastMessageId = $('.last_message_id').val();
+						}
+						/* div.bind('scroll',fetchMore); */
+					});
 				}
+				
+			};
+
+			fetchBackMore = function() {
+				
+				var participants = $('#participants').val();
+				
+				if(thread_id > 0) {
+					div.unbind('scroll', fetchMore);
+					$.get(MANAGE+'threads/' + btoa(participants) + '/getMessages/' + firstMessageId, function(data) {
+						if(data != '') {
+							$('.first_message_id').remove();
+							$('.chat-bubbles').prepend(data);
+							firstMessageId = $('.first_message_id').val();
+						}
+						/* div.bind('scroll',fetchMore); */
+					});
+				}
+				
 			};
 
 			$(document).on('click', '.btn-send-message', function() { sendMessage(); });

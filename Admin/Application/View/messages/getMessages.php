@@ -1,5 +1,7 @@
 <?php
 
+$html[] = "<input type='hidden' class='first_message_id' value='".$data['messages'][0]['message_id']."' />";
+
 	for($i=0; $i<count($data['messages']); $i++) { $mes = [];
 
 		$content = $data['messages'][$i]['content'];

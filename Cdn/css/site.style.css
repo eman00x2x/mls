@@ -1,0 +1,26 @@
+@import url('https://rsms.me/inter/inter.css');
+
+:root {
+    --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+}
+
+html,
+body {
+    font-feature-settings: "cv03", "cv04", "cv11";
+    height: 100%;
+}
+
+.hero-image {
+
+}
+
+.hero-image .bg-big {
+    background-size: 70%;
+    background-position: center right;
+    background-repeat: no-repeat;
+    height: 500px;
+    width:100%;
+}
+
+.search-filter {
+}

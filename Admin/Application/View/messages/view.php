@@ -75,7 +75,7 @@ $html[] = "<div class='row justify-content-center'>";
 						$html[] = "<div class='chat'>";
 							$html[] = "<div class='chat-bubbles'>";
 								
-								if($data['messages']) {
+								/* if($data['messages']) {
 									for($i=0; $i<count($data['messages']); $i++) { $mes = [];
 										
 										$content = $data['messages'][$i]['content'];
@@ -158,14 +158,14 @@ $html[] = "<div class='row justify-content-center'>";
 									$last_message_id = $data['messages'][($i-1)]['message_id'];
 								}else {
 									$last_message_id = 0;
-								}
-
-								$html[] = "<input type='hidden' name='last_message_id' id='last_message_id' class='last_message_id' value='$last_message_id' />";
+								} */
 
 							$html[] = "</div>";
 						$html[] = "</div>";
 
 					$html[] = "</div>";
+
+					$html[] = "<input type='hidden' name='last_message_id' id='last_message_id' class='last_message_id' value='0' />";
 
 					if(isset($data['thread']['thread_id'])) {
 						$thread_id = $data['thread']['thread_id'];
