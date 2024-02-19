@@ -67,14 +67,14 @@
                 				</li>
 
 								<?php if(PREMIUM) { ?>
-									
+									<?php if(isset($_SESSION['user_logged']['permissions']['subscriptions'])) { ?>
 										<li class="nav-item <?php echo (url()->contains("/premiums")) ? "active" : ""; ?>">
 											<a class="nav-link" href="<?php echo url("PremiumsController@index"); ?>">
 												<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-layers-union'></i></span>
 												<span class="nav-link-title">Get Premium</span>
 											</a>
 										</li>
-									
+									<?php } ?>
 								<?php } ?>
 
 							</ul>

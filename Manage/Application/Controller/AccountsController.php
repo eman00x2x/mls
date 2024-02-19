@@ -15,7 +15,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 	
 	function index() {
 
-        if(!isset($_SESSION['permissions']['account']['access'])) {
+        if(!isset($_SESSION['user_logged']['permissions']['account']['access'])) {
             $this->getLibrary("Factory")->setMsg("You do not have enough permissions to access the account details","error");
 			response()->redirect(url("DashboardController@index"));
         }
@@ -23,7 +23,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
         $this->doc->setTitle("My Accounts");
         $this->doc->addScript(CDN."js/photo-uploader.js");
 
-        if((!isset($_SESSION['permissions']['users']['access']))) {
+        if((!isset($_SESSION['user_logged']['permissions']['users']['access']))) {
             $this->doc->addScriptDeclaration("
                 $(document).ready(function() {
                     $('input').removeClass('form-control');

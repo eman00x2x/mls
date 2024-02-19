@@ -1,8 +1,8 @@
 <?php
 
-$html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveUpdate",["id" => $_SESSION['account_id']])."' />";
+$html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveUpdate",["id" => $_SESSION['user_logged']['account_id']])."' />";
 
-if(isset($_SESSION['permissions']['account']['access'])) {
+if(isset($_SESSION['user_logged']['permissions']['account']['access'])) {
 	$html[] = "<input type='hidden' id='photo_uploader' value='accounts' />";
 	$html[] = "<form action='".url("AccountsController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 		$html[] = "<center>";
@@ -55,10 +55,10 @@ $html[] = "<div class='page-body'>";
                                         $html[] = "<a class='list-group-item list-group-item-action' href='".url("AccountsController@index")."'><i class='ti ti-user-circle me-2'></i> My Account</a>";
 										
 										if(isset($_SESSION['permissions']['users']['access'])) {
-											$html[] = "<a class='list-group-item list-group-item-action' href='".url("UsersController@index", [ "id" => $_SESSION['account_id'] ])."'><i class='ti ti-users me-2'></i> Manage Users</a>";
+											$html[] = "<a class='list-group-item list-group-item-action' href='".url("UsersController@index", [ "id" => $_SESSION['user_logged']['account_id'] ])."'><i class='ti ti-users me-2'></i> Manage Users</a>";
 										}
 
-                                        $html[] = "<a class='list-group-item list-group-item-action' href='".url("UsersController@changePassword",["id" => $_SESSION['user_id']])."'><i class='ti ti-key me-2'></i> Change Password</a>";
+                                        $html[] = "<a class='list-group-item list-group-item-action' href='".url("UsersController@changePassword",["id" => $_SESSION['user_logged']['user_id']])."'><i class='ti ti-key me-2'></i> Change Password</a>";
                                     $html[] = "</div>";
                                 
                                 $html[] = "</div>";
@@ -214,7 +214,7 @@ $html[] = "<div class='btn-save-container fixed-bottom bg-white py-3 border-top'
 		$html[] = "<div class='col-lg-12 col-md-12 col-sm-12 col-12'>";
 			$html[] = "<div class='container-xl'>";
 				$html[] = "<div class='text-end'>";
-					if((!isset($_SESSION['permissions']['account']['access']))) {
+					if((!isset($_SESSION['user_logged']['permissions']['account']['access']))) {
 						$html[] = "<p class='text-info'>Permission is required to update account details</p>";
 					}else {
 						$html[] = "<span class='btn btn-outline-primary btn-save'><i class='ti ti-device-floppy me-2'></i> Save Account Details</span>";
