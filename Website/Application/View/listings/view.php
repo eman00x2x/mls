@@ -1,7 +1,5 @@
 <?php
 
-$html[] = "<h1>LISTINGS</h1>";
-
 $html[] = "<div class='row justify-content-center my-5'>";
     $html[] = "<div class='col-6'>";
 
