@@ -10,7 +10,7 @@ define("LIST_LIMIT",20);
 define("API","http://api.mls/v1/");
 define("ADMIN","http://admin.mls/");
 define("MANAGE","http://manage.mls/");
-define("WEBDOMAIN","http://mls/");
+define("WEBDOMAIN","http://mls");
 define("CDN","http://cdn.mls/");
 define("ALIAS","");
 

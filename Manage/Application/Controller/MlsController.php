@@ -113,7 +113,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		}
 
 		if(isset($_REQUEST['category']) && $_REQUEST['category'] != "") {
-			$filters[] = " (type LIKE '%".$_REQUEST['category']."%')";
+			$filters[] = " (category LIKE '%".$_REQUEST['category']."%')";
 			$uri['category'] = $_REQUEST['category'];
 		}
 
