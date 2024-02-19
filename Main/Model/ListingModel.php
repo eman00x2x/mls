@@ -10,6 +10,20 @@ class ListingModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getByName() {
+
+		$query = "SELECT * FROM #__listings WHERE name = '".$this->column['name']."' ".$this->and;
+		$result = $this->DBO->query($query);
+
+		$this->initiateFields($result);
+
+		if($this->DBO->numRows($result) > 0) {
+			$line = $this->DBO->fetchAssoc($result);
+			return $this->stripQuotes($line);
+		}else {return false;}
+
+	}
+
 	function saveNew($data) {
 
 		$v = $this->getValidator();

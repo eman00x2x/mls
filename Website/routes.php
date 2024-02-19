@@ -18,11 +18,12 @@ Router::get('/articles/{name}', 'ArticlesController@view')->where([ 'name' => '[
 /** LISTINGS ROUTES */
 Router::get('/buy', 'ListingsController@buy');
 Router::get('/buy/{category}', 'ListingsController@buy')->where([ 'category' => '[\w\-]+' ]);
-Router::get('/buy/{category}/{type}', 'ListingsController@buy')->where([ 'category' => '[\w\-]+', 'type' => '[\w\-]+' ]);
+Router::get('/buy/{category}/{type}', 'ListingsController@buy')->where(['category' => '[\w\-]+', 'type' => '[\w\-]+' ]);
 
 Router::get('/rent', 'ListingsController@rent');
-Router::get('/rent/{category}', 'ListingsController@rent')->where([ 'category' => '[\w\-]+' ]);
-Router::get('/rent/{category}/{type}', 'ListingsController@rent')->where([ 'category' => '[\w\-]+', 'type' => '[\w\-]+' ]);
+Router::get('/rent/{category}', 'ListingsController@rent')->where([  'category' => '[\w\-]+' ]);
+Router::get('/rent/{category}/{type}', 'ListingsController@rent')->where([  'category' => '[\w\-]+', 'type' => '[\w\-]+' ]);
+
 
 Router::get('/p-{name}', 'ListingsController@view')->where([ 'name' => '[\w\-]+' ]);
 

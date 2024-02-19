@@ -11,6 +11,9 @@ class ListingsController extends \Main\Controller {
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 	}
 
+	function buy() { return $this->index(); }
+	function rent() { return $this->index(); }
+
 	function index() {
 
 		$this->doc->setFacebookMetaData("og:url", url());
@@ -28,18 +31,26 @@ class ListingsController extends \Main\Controller {
 			$filters[] = " offer = 'for rent'";
 		}
 
-		$listing = $this->getModel("Listing");
+		$listings = $this->getModel("Listing");
+		$listings->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" last_modified DESC ");
+
+		$listings->page['limit'] = 20;
+		$listings->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+		$listings->page['target'] = url("ListingsController@index");
+		$listings->page['uri'] = (isset($uri) ? $uri : []);
+
+		$data = $listings->getList();
 		
-		debug($listing);
-		
+		$this->setTemplate("listings/index.php");
+		return $this->getTemplate($data,$listings);
 
 	}
 
-	function view($id) {
+	function view($name) {
 
 		$listing = $this->getModel("Listing");
-		$listing->column['listing_id'] = $id;
-		$data = $listing->getById();
+		$listing->column['name'] = $name;
+		$data = $listing->getByName();
 
 		$this->doc->setFacebookMetaData("og:url", url());
 		$this->doc->setFacebookMetaData("og:title", $data['title']);
@@ -50,7 +61,10 @@ class ListingsController extends \Main\Controller {
 
 		if($data) {
 			
-			$this->saveListingView($data['listing_id'], $data['account_id']);
+			/* $this->saveListingView($data['listing_id'], $data['account_id']); */
+
+			$this->setTemplate("listings/view.php");
+			return $this->getTemplate($data,$listing);
 
 		}
 
