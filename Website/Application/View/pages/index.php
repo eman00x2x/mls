@@ -55,7 +55,6 @@ $html[] = "<div class=''>";
 	$html[] = "</div>";
 
 	$html[] = "<div class='container-xl'>";
-
 		$html[] = "<div class='my-3 py-5 px-3'>";
 			$html[] = "<h2>Featured Properties</h2>";
 			$html[] = "<div class='p-featured'>";
@@ -89,17 +88,23 @@ $html[] = "<div class=''>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";
+	$html[] = "</div>";
 				
-		$html[] = "<div class='my-3 py-5 px-3'>";
-			$html[] = "<h2>About</h2>";
-			$html[] = "<div class=''>";
-				$html[] = "<img src='".CDN."images/item_default.jpg' class='float-start me-2' style='width:200px;' />";
-				$html[] = "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dictum volutpat nunc, ut malesuada magna pellentesque sollicitudin. In ut nisl finibus augue luctus dictum. Nulla et tincidunt nunc. Sed aliquam rhoncus interdum. Vivamus convallis lectus et enim rhoncus tempor. Vestibulum cursus porttitor massa nec consectetur. Sed in est porttitor lacus interdum interdum vitae a nulla.</p>";
-				$html[] = "<p>Fusce lobortis, risus et consectetur rhoncus, turpis turpis interdum mi, et lobortis magna enim ut tortor. Proin finibus fringilla placerat. Fusce laoreet lacus est, sed vulputate justo hendrerit quis. Donec at ipsum ipsum. Vivamus eget varius metus. Ut semper dapibus augue nec gravida. Nam suscipit nibh urna, elementum malesuada neque semper posuere. Quisque viverra egestas felis at pulvinar. Fusce laoreet ipsum ut porttitor consequat. Proin tempor massa vel enim interdum consequat. Phasellus tempus arcu quis nibh finibus semper.</p>";
-				$html[] = "<p>Proin maximus, lacus ac ultrices maximus, velit elit auctor mauris, eu convallis metus velit id tellus. Sed interdum diam ligula, et blandit risus feugiat eu. Cras diam nulla, condimentum in neque a, consequat sagittis eros. Praesent mollis iaculis nisl accumsan aliquam. Fusce a turpis nisi. Duis semper accumsan dolor a elementum. Nullam ac ultrices eros. Sed semper, massa quis vulputate convallis, tellus libero porta odio, vel placerat arcu purus et sem. Curabitur iaculis erat vitae arcu suscipit, sit amet pellentesque purus euismod. Quisque in vestibulum tellus. Pellentesque feugiat nulla sit amet sapien sollicitudin vehicula. Proin eu lacus sodales, porta risus in, semper felis. Nam ante nibh, tincidunt eget malesuada in, sodales ut nibh.</p>";
+	$html[] = "<div class='bg-white'>";
+		$html[] = "<div class='container-xl'>";
+			$html[] = "<div class='my-3 py-5 px-3'>";
+				$html[] = "<h2>About</h2>";
+				$html[] = "<div class=''>";
+					$html[] = "<img src='".CDN."images/item_default.jpg' class='float-start me-2' style='width:200px;' />";
+					$html[] = "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dictum volutpat nunc, ut malesuada magna pellentesque sollicitudin. In ut nisl finibus augue luctus dictum. Nulla et tincidunt nunc. Sed aliquam rhoncus interdum. Vivamus convallis lectus et enim rhoncus tempor. Vestibulum cursus porttitor massa nec consectetur. Sed in est porttitor lacus interdum interdum vitae a nulla.</p>";
+					$html[] = "<p>Fusce lobortis, risus et consectetur rhoncus, turpis turpis interdum mi, et lobortis magna enim ut tortor. Proin finibus fringilla placerat. Fusce laoreet lacus est, sed vulputate justo hendrerit quis. Donec at ipsum ipsum. Vivamus eget varius metus. Ut semper dapibus augue nec gravida. Nam suscipit nibh urna, elementum malesuada neque semper posuere. Quisque viverra egestas felis at pulvinar. Fusce laoreet ipsum ut porttitor consequat. Proin tempor massa vel enim interdum consequat. Phasellus tempus arcu quis nibh finibus semper.</p>";
+					$html[] = "<p>Proin maximus, lacus ac ultrices maximus, velit elit auctor mauris, eu convallis metus velit id tellus. Sed interdum diam ligula, et blandit risus feugiat eu. Cras diam nulla, condimentum in neque a, consequat sagittis eros. Praesent mollis iaculis nisl accumsan aliquam. Fusce a turpis nisi. Duis semper accumsan dolor a elementum. Nullam ac ultrices eros. Sed semper, massa quis vulputate convallis, tellus libero porta odio, vel placerat arcu purus et sem. Curabitur iaculis erat vitae arcu suscipit, sit amet pellentesque purus euismod. Quisque in vestibulum tellus. Pellentesque feugiat nulla sit amet sapien sollicitudin vehicula. Proin eu lacus sodales, porta risus in, semper felis. Nam ante nibh, tincidunt eget malesuada in, sodales ut nibh.</p>";
+				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";
-
+	$html[] = "</div>";
+	
+	$html[] = "<div class='container-xl'>";
 		$html[] = "<div class='my-3 py-5 px-3'>";
 			$html[] = "<h2>Articles</h2>";
 			$html[] = "<div class='p-featured'>";
