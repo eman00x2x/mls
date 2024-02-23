@@ -1,11 +1,10 @@
 <?php
 
+use Library\SessionHandler;
 use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Request as Request;
 use Pecee\Http\Middleware\IMiddleware;
 use Manage\Application\Controller\LoginController as Login;
-
-session_start();
 
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start();
 
@@ -39,12 +38,14 @@ spl_autoload_register('autoloader');
 
 require_once(ROOT."/Includes/config.php");
 
+SessionHandler::getInstance()->begin();
+
 class Middleware implements IMiddleware {
 
     public function handle(Request $request): void 
     {
 
-		$request->user = Login::getInstance()->checkSession();
+		$request->user = SessionHandler::getInstance()->check();
 		Router::router()->reset();
 
 		$template = "templates/login.template.php";

@@ -25,10 +25,11 @@ class UserClient
     function information() {
 
         $this->setUserAgent()->setPlatform()->setBrowser()->setIP()->setGeolocation();
+        $ip = json_decode($this->ip, true);
 
         return json_encode(
                 array(
-                    "ip" => $this->ip,
+                    "ip_address" => $ip['ip'],
                     "user_agent" => $this->user_agent,
                     "browser_name" => $this->browser_name,
                     "browser_version" => $this->browser_version,
@@ -68,6 +69,7 @@ class UserClient
         $os_platform = "Unknown Operating System";
 
         $os_array     = array(
+            '/windows nt 11/i'      =>  'Windows 11',
             '/windows nt 10/i'      =>  'Windows 10',
             '/windows nt 6.3/i'     =>  'Windows 8.1',
             '/windows nt 6.2/i'     =>  'Windows 8',
@@ -110,6 +112,7 @@ class UserClient
             '/safari/i'    => 'Safari',
             '/chrome/i'    => 'Chrome',
             '/edge/i'      => 'Edge',
+            '/edg/i'       => 'Edg',
             '/opera/i'     => 'Opera',
             '/netscape/i'  => 'Netscape',
             '/maxthon/i'   => 'Maxthon',
@@ -120,6 +123,7 @@ class UserClient
         foreach ($browser_array as $regex => $value)
             if (preg_match($regex, $this->user_agent))
                 $browser = $value;
+
 
         // finally get the correct version number
         $known = array('Version', $browser, 'other');
@@ -146,7 +150,7 @@ class UserClient
         // check if we have a number
         if ($version==null || $version=="") {$version="?";}
 
-        $this->browser_name = $browser;
+        $this->browser_name = ($browser == "Edg" ? "Edge" : $browser);
         $this->browser_version = $version;
 
         return $this;

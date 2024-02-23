@@ -2,6 +2,8 @@
 
 namespace Admin\Application\Controller;
 
+use Josantonius\Session\Facades\Session;
+
 class LoginController extends \Main\Controller {
 	
 	private static $_instance = null;
@@ -108,6 +110,16 @@ class LoginController extends \Main\Controller {
 	}
 
 	function checkSession() {
+
+		$user_login = $controller->getModel("UserLogin");
+		$user_login->column['user_id'] = $session['user_id'];
+		$user_login->and(" status = 1 ");
+		$data = $user_login->getByUserId();
+
+		if($data) {
+
+		}
+
 	
 		if(isset($_REQUEST['logout'])) {
 			$this->doLogOut();
@@ -137,7 +149,6 @@ class LoginController extends \Main\Controller {
 					return false;
 				}
 
-				
 				$subscription = $this->getModel("AccountSubscription");
 				$subscription->page["limit"] = 999999;
 				$subscription
@@ -163,8 +174,18 @@ class LoginController extends \Main\Controller {
 					}
 
 				}
-				
 
+				$client_info = \Library\UserClient::getInstance()->information();
+
+				$user_login = $this->getModel("UserLogin");
+				$user_login->saveNew([
+					"user_id" => $data['user_id'],
+					"session_id" => session_id(),
+					"status" => 1,
+					"login_at" => DATE_NOW,
+					"login_details" => $client_info
+				]);
+				
 				return $this->doLogin($data);
 			}
 		}
@@ -228,10 +249,9 @@ class LoginController extends \Main\Controller {
 	}
 	
 	function storeSession($arr = array()) {
-	
+
 		foreach($arr as $val => $key) {
-			$_SESSION[$val] = $key;
-			/* setcookie($val, $key, time()+604800); */
+			Session::set($val, $key);
 		}
 		
 	}
@@ -241,18 +261,14 @@ class LoginController extends \Main\Controller {
 		if(isset($_SESSION['logged'])) {
 			foreach($arr as $val => $key) {
 			
-				/* delete sessions */
-				unset($_SESSION[$val]);
-				
 				/* delete cookies */
 				@setcookie($val, $key, time()-3600);
 				unset($_COOKIE[$val]);
-
 				unset($_SESSION);
-			session_destroy();
 				
 			}
-			
+
+			session_destroy();
 			#header("LOCATION: ".DOMAINNAME);
 		}
 		

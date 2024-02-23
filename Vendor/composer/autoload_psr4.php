@@ -13,6 +13,7 @@ return array(
     'Phrity\\Net\\' => array($vendorDir . '/phrity/net-stream/src', $vendorDir . '/phrity/net-uri/src'),
     'Pecee\\' => array($vendorDir . '/pecee/simple-router/src/Pecee'),
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
+    'Josantonius\\Session\\' => array($vendorDir . '/josantonius/session/src'),
     'Braintree\\' => array($vendorDir . '/braintree/braintree_php/lib/Braintree'),
     '' => array($vendorDir . '/phrity/util-errorhandler/src'),
 );

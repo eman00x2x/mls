@@ -23,6 +23,10 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
             'Pecee\\' => 6,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
+        'J' => 
+        array (
+            'Josantonius\\Session\\' => 20,
+        ),
         'B' => 
         array (
             'Braintree\\' => 10,
@@ -59,6 +63,10 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'Josantonius\\Session\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/josantonius/session/src',
         ),
         'Braintree\\' => 
         array (
