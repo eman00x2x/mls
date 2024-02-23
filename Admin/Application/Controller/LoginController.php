@@ -109,32 +109,6 @@ class LoginController extends \Main\Controller {
 		return $this->getTemplate();
 	}
 
-	function checkSession() {
-
-		$user_login = $controller->getModel("UserLogin");
-		$user_login->column['user_id'] = $session['user_id'];
-		$user_login->and(" status = 1 ");
-		$data = $user_login->getByUserId();
-
-		if($data) {
-
-		}
-
-	
-		if(isset($_REQUEST['logout'])) {
-			$this->doLogOut();
-			return false;
-		}
-	
-		if(isset($_SESSION['logged']) && (isset($_SESSION['domain']) ? ($_SESSION['domain'] == $this->domain ? true : false) : false)) {
-			return $this->doLogin($_SESSION['user_logged']);
-		}else {
-			$this->doLogOut();
-			return false;
-		}
-		
-	}
-	
 	function checkCredentials($email,$password) {
 
 		$user = $this->getModel('User');
@@ -177,15 +151,19 @@ class LoginController extends \Main\Controller {
 
 				$client_info = \Library\UserClient::getInstance()->information();
 
+				$session_id = session_id();
+
 				$user_login = $this->getModel("UserLogin");
 				$user_login->saveNew([
 					"user_id" => $data['user_id'],
-					"session_id" => session_id(),
+					"session_id" => $session_id,
 					"status" => 1,
 					"login_at" => DATE_NOW,
 					"login_details" => $client_info
 				]);
 				
+
+				$data['session_id'] = $session_id;
 				return $this->doLogin($data);
 			}
 		}
@@ -197,20 +175,6 @@ class LoginController extends \Main\Controller {
 	
 	function doLogin($login) {
 	
-		/* $val = array('user_id' => (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : $login['user_id']),
-					'name' => (isset($_SESSION['name']) ? $_SESSION['name'] : $login['name']),
-					'email' => $login['email'],
-					'password' => $login['password'],
-					'user_level' => $login['user_level'],
-					'permissions' => $login['permissions'],
-					'privileges' => $login['privileges'],
-					'account_id' => $login['account_id'],
-					'account_type' => $login['account_type'],
-					'user_logged' => $login,
-					'logo' => $login['logo'],
-					'domain' => $this->domain,
-					'logged' => true); */
-
 		$val = array(
 			'user_logged' => $login,
 			'domain' => $this->domain,
@@ -225,10 +189,7 @@ class LoginController extends \Main\Controller {
 	function isBlock($status) {
 		
 		if( $status == 2 ) {
-			
 			$this->getLibrary("Factory")->setMsg("You have been blocked by the System Administrator","warning");
-			$this->doLogOut();
-			
 			return false;
 		}else {
 			return true;
@@ -236,47 +197,10 @@ class LoginController extends \Main\Controller {
 		
 	}
 	
-	function doLogOut() {
-	
-		$val = array(
-			'user_logged' => null,
-			'domain' => null,
-			'logged' => false
-		);
-					
-		$this->unsetCS($val);
-		
-	}
-	
 	function storeSession($arr = array()) {
-
 		foreach($arr as $val => $key) {
 			Session::set($val, $key);
 		}
-		
-	}
-	
-	function unsetCS($arr = array()) {
-	
-		if(isset($_SESSION['logged'])) {
-			foreach($arr as $val => $key) {
-			
-				/* delete cookies */
-				@setcookie($val, $key, time()-3600);
-				unset($_COOKIE[$val]);
-				unset($_SESSION);
-				
-			}
-
-			session_destroy();
-			#header("LOCATION: ".DOMAINNAME);
-		}
-		
-		/* if(!isset($_SESSION['logged'])) {
-			unset($_SESSION);
-			session_destroy();
-		} */
-		
 	}
 	
 	function sendPasswordResetLink() {

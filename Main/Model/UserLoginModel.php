@@ -66,8 +66,6 @@ class UserLoginModel extends \Main\Model {
 
 			$v = $this->getValidator();
 
-			$v->validateGeneral($data['user_id'],"User not found");
-
 			if($v->foundErrors()) {
 				return array(
 					"status" => 2,
@@ -75,6 +73,10 @@ class UserLoginModel extends \Main\Model {
 					"message" => "Please correct the following: ".$v->listErrors(', ')
 				);
 			}else {
+
+				if(!isset($data['login_details'])) {
+					$data['login_details'] = json_encode($this->column['login_details']);
+				}
 
 				foreach($data as $key => $val) {
 					$this->column[$key] = $val;
