@@ -2,7 +2,7 @@
 
 namespace Admin\Application\Controller;
 
-use Josantonius\Session\Facades\Session;
+use Library\SessionHandler;
 
 class LoginController extends \Main\Controller {
 	
@@ -116,7 +116,7 @@ class LoginController extends \Main\Controller {
 		$user->column['password'] = $password;
 
 		if($data = $user->getByEmailAndPassword()) {
-			
+
 			if($this->isBlock($data['status'])) {
 				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",ADMIN)) && $data['account_type'] != "Administrator") {
 					$this->getLibrary("Factory")->setMsg("Only Administrator can login here.","error");
@@ -162,7 +162,6 @@ class LoginController extends \Main\Controller {
 					"login_details" => $client_info
 				]);
 				
-
 				$data['session_id'] = $session_id;
 				return $this->doLogin($data);
 			}
@@ -198,8 +197,9 @@ class LoginController extends \Main\Controller {
 	}
 	
 	function storeSession($arr = array()) {
+		$session = new SessionHandler;
 		foreach($arr as $val => $key) {
-			Session::set($val, $key);
+			$session->set($val, $key);
 		}
 	}
 	

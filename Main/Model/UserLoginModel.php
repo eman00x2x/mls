@@ -76,6 +76,8 @@ class UserLoginModel extends \Main\Model {
 
 				if(!isset($data['login_details'])) {
 					$data['login_details'] = json_encode($this->column['login_details']);
+				}else {
+					$data['login_details'] = json_encode($data['login_details']);
 				}
 
 				foreach($data as $key => $val) {
@@ -93,6 +95,10 @@ class UserLoginModel extends \Main\Model {
 			}
 		}
 
+	}
+
+	function setStatus($id, $status) {
+		$this->DBO->query("UPDATE #__user_login SET status = $status WHERE user_id = $id");
 	}
 
 	function deleteUserLogin($id,$column = "user_login_id") {

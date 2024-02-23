@@ -26,35 +26,36 @@ class SessionHandler extends \Josantonius\Session\Session {
 
 	function check() {
 
+		if(isset($_REQUEST['logout'])) {
+			/** user wants to logout */
+			return $this->end($this->getLoggedUser());
+		}
+
 		if($this->get("logged")) {
 			/* already logged */
 
-			if(isset($_REQUEST['logout'])) {
-				/** user wants to logout */
-				$this->end($this->getLoggedUser());
-				return;
-			}
-
 			/* check if logging in the same domain */
 			if($this->get('domain') != $this->getCurrentDomain()) {
-				$this->end($this->getLoggedUser());
-				return;
+				return $this->end($this->getLoggedUser());
 			}
 
 			/* verify user if the same */
 			if(!$this->validateLoggedUser()) {
 				/** logged user is different from record */
-				$controller = new MainController();
-				$controller->getLibrary("Factory")->setMsg("Someone already using this account! you will be logout.","error");
-				return;
+				
+				return [
+					"status" => 0
+				];
             }
 
+			return $this->getLoggedUser();
+			
 		}else {
 			/* not logged */
-			return;
+			return [
+				"status" => 0
+			];
 		}
-
-		return 1;
 
 	}
 
@@ -62,12 +63,15 @@ class SessionHandler extends \Josantonius\Session\Session {
 
 		$controller = new MainController();
 		$user_login = $controller->getModel("UserLogin");
-		$user_login->save($data['user_id'], [
-			"status" => 0
-		]);
+		$user_login->setStatus($data['user_id'], 0);
 
+		$this->regenerateId();
 		$this->clear();
 		$this->destroy();
+
+		return [
+			"status" => 0
+		];
 
 	}
 
@@ -75,12 +79,16 @@ class SessionHandler extends \Josantonius\Session\Session {
 
 		$data = $this->getLoggedUser();
 
-		if($data) {
+		if(isset($data['user_id'])) {
 
 			/* Already logged check if session_id is equal to the stored data */
 			if($data['session_id'] != $this->getId()) {
 				/* session_id not same */
 				$this->end($data);
+
+				$controller = new MainController();
+				$controller->getLibrary("Factory")->setMsg("Someone already using this account! you will be logout.","error");
+
 				return false;
 			}
 
@@ -96,11 +104,21 @@ class SessionHandler extends \Josantonius\Session\Session {
 
 		$session = $this->get("user_logged");
 
-		$controller = new MainController();
-		$user_login = $controller->getModel("UserLogin");
-		$user_login->column['user_id'] = $session['user_id'];
-		$user_login->and(" status = 1 ");
-		return $user_login->getByUserId();
+		if(isset($session['user_id'])) {
+			$controller = new MainController();
+			$user_login = $controller->getModel("UserLogin");
+			$user_login->column['user_id'] = $session['user_id'];
+			$user_login->and(" status = 1 ");
+			
+			$user = $user_login->getByUserId();
+
+			if($user) {
+				return $user;
+			}
+		}
+
+		/** user status not logged destroy session */
+		return $this->end($session);
 
 	}
 

@@ -13,6 +13,10 @@ $html[] = "<div class='d-flex flex-column'>";
 					$html[] = "<h2 class='h2 text-center mb-4'>Login to your account</h2>";
 					$html[] = "<form class='border-0' action='' method='POST'>";
 
+						$html[] = "<div class='response'>";
+							$html[] = getMsg();
+						$html[] = "</div>";
+
 						$html[] = "<div class='mb-3'>";
 							$html[] = "<label class='form-label'><i class='ti ti-user-hexagon'></i> Email</label>";
 							$html[] = "<input type='email' class='form-control' name='email'  placeholder='Enter email' autocomplete='off' tabindex='1'>";

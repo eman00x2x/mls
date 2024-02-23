@@ -70,8 +70,10 @@ class Middleware implements IMiddleware {
 			Router::post('/forgotPassword', 'LoginController@sendPasswordResetLink');
 
 		}else {
-		
-			if($request->user == "") {
+
+			print_r($request->user);
+
+			if($request->user['status'] == 0) {
 
 				Router::request()->setMethod('get');
 				Router::request()->setRewriteUrl(url('/'));
