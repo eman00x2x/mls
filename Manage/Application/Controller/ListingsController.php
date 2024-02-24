@@ -7,12 +7,17 @@ use \Admin\Application\Controller\SessionController;
 class ListingsController extends \Admin\Application\Controller\ListingsController {
 	
 	private $account_id;
-	private $session;
+	public $session;
 	
 	function __construct() {
 		parent::__construct();
 		$this->session = SessionController::getInstance()->session->get("user_logged");
 		$this->account_id = $this->session['account_id'];
+
+		if(!$this->session['permissions']['properties']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permissions to access this content.", "warning");
+			response()->redirect(url("DashboardController@index"));
+		}
 	}
 	
 	function listingIndex() {

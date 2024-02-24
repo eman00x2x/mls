@@ -52,6 +52,7 @@ class SettingsController extends \Main\Controller {
 		$_POST['enable_kyc_verification'] = isset($_POST['enable_kyc_verification']) ? $_POST['enable_kyc_verification'] : 0;
 		$_POST['enable_premium'] = isset($_POST['enable_premium']) ? $_POST['enable_premium'] : 0;
 		$_POST['enable_pin_access'] = isset($_POST['enable_pin_access']) ? $_POST['enable_pin_access'] : 0;
+		$_POST['privileges'] = json_encode($_POST['privileges']);
 
 		$_POST['modified_at'] = DATE_NOW;
 

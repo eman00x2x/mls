@@ -141,24 +141,8 @@ class LoginController extends \Main\Controller {
 	function setPrivileges($data) {
 
 		$subscription = $this->getModel("AccountSubscription");
-		$subscription->page["limit"] = 999999;
-		$subscription
-		->join(" acs JOIN #__premiums p ON p.premium_id = acs.premium_id ")
-		->where(" ((subscription_start_date <= '".DATE_NOW."' AND subscription_end_date >= '".DATE_NOW."') OR subscription_date = 0) ")
-		->and(" subscription_status = 1 AND account_id = ".$data['account_id'] );
-		$data['subscriptions'] = $subscription->getList();
-
-		if($data) {
-
-			if($data['subscriptions']) {
-				for($i=0; $i<count($data['subscriptions']); $i++) {
-					foreach($data['subscriptions'][$i]['script'] as $privilege => $val) {
-						$data['privileges'][$privilege] += $val;
-					}
-				}
-			}
-
-		}
+		$subscription->column['account_id'] = $data['account_id'];
+		$data['priviliges'] = $subscription->getSubscription();
 
 		return $data;
 	}

@@ -77,7 +77,9 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<td class='align-middle'><a href='".url("LeadsController@view",["id" => $data['leads'][$i]['lead_id']])."'>".$data['leads'][$i]['email']."</a></td>";
 									$html[] = "<td class='align-middle'><a href='".url("LeadsController@view",["id" => $data['leads'][$i]['lead_id']])."'>".$data['leads'][$i]['mobile_no']."</a></td>";
 									$html[] = "<td class='text-center'>";
-										$html[] = "<span class='btn btn-danger btn-delete' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("LeadsController@delete",["id" => $data['leads'][$i]['lead_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
+										if($_SESSION['user_logged']['permissions']['leads']['delete']) {
+											$html[] = "<span class='btn btn-danger btn-delete' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("LeadsController@delete",["id" => $data['leads'][$i]['lead_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
+										}
 									$html[] = "</td>";
 									
 								$html[] = "</tr>";

@@ -16,9 +16,11 @@ class AccountSubscriptionModel extends \Main\Model {
 		$this
 		->join(" acs JOIN #__premiums p ON p.premium_id = acs.premium_id ")
 		->where(" (subscription_end_date >= '".DATE_NOW."' OR subscription_date = 0) ")
-		->and(" account_id = ". $this->column['account_id'] );
+		->and(" subscription_status = 1 AND account_id = ". $this->column['account_id'] );
 
 		$data = $this->getList();
+
+		
 
 		if($data) {
 			for($i=0; $i<count($data); $i++) {

@@ -73,11 +73,12 @@ class ListingsController extends \Main\Controller {
 
 		$data['listing'] = $listing->getById();
 		
-		$listingImage = $this->getModel("ListingImage");
-		$listingImage->column['listing_id'] = $listing_id;
-		$data['listing']['images'] = $listingImage->getByListingId();
+		if($data['listing']) {
 
-		if($data) {
+			$listingImage = $this->getModel("ListingImage");
+			$listingImage->column['listing_id'] = $listing_id;
+			$data['listing']['images'] = $listingImage->getByListingId();
+
 			$this->setTemplate("listings/edit.php");
 			return $this->getTemplate($data,$listing);
 		}
@@ -129,6 +130,7 @@ class ListingsController extends \Main\Controller {
 			$this->setTemplate("listings/add.php");
 			return $this->getTemplate($data, $listing);
 		}
+		
 	}
 
 	function view($listing_id) {
@@ -154,21 +156,21 @@ class ListingsController extends \Main\Controller {
 		
 		$data['listing'] = $listing->getById();
 
-		$account = $this->getModel("Account");
-		$account->select(" account_id, logo, profession, real_estate_license_number, firstname, lastname, mobile_number, email, registration_date");
-		$account->column['account_id'] = $data['listing']['account_id'];
-		$data['account'] = $account->getById();
-		
-		$listingImage = $this->getModel("ListingImage");
-		$listingImage->column['listing_id'] = $listing_id;
-		$data['listing']['images'] = $listingImage->getByListingId();
-
-		$handshake = $this->getModel("Handshake");
-		$handshake->column['requestor_account_id'] = $_SESSION['user_logged']['account_id'];
-		$handshake->and(" listing_id = ".$listing_id." AND handshake_status NOT IN('done','cancel')");
-		$data['handshake'] = $handshake->getByRequestorAccountId();
-
 		if($data) {
+
+			$account = $this->getModel("Account");
+			$account->select(" account_id, logo, profession, real_estate_license_number, firstname, lastname, mobile_number, email, registration_date");
+			$account->column['account_id'] = $data['listing']['account_id'];
+			$data['account'] = $account->getById();
+			
+			$listingImage = $this->getModel("ListingImage");
+			$listingImage->column['listing_id'] = $listing_id;
+			$data['listing']['images'] = $listingImage->getByListingId();
+
+			$handshake = $this->getModel("Handshake");
+			$handshake->column['requestor_account_id'] = $_SESSION['user_logged']['account_id'];
+			$handshake->and(" listing_id = ".$listing_id." AND handshake_status NOT IN('done','cancel')");
+			$data['handshake'] = $handshake->getByRequestorAccountId();
 
 			/* if($data['listing']['account_id'] !== $_SESSION['user_logged']['account_id']) {
 				$traffic = $this->getModel("ListingView");
@@ -288,6 +290,11 @@ class ListingsController extends \Main\Controller {
 	}
 	
 	function delete($id) {
+
+		if(!$this->session['permissions']['properties']['delete']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permissions to access this content.", "warning");
+			return getMsg();
+		}
 
 		$listing = $this->getModel("Listing");
 		$listing->column['listing_id'] = $id;

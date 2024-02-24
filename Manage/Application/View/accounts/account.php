@@ -54,7 +54,7 @@ $html[] = "<div class='page-body'>";
                                         $html[] = "<a class='list-group-item list-group-item-action' href='".url("AccountsController@accountProfile")."'><i class='ti ti-file-certificate me-2'></i> My Profile</a>";
                                         $html[] = "<a class='list-group-item list-group-item-action' href='".url("AccountsController@index")."'><i class='ti ti-user-circle me-2'></i> My Account</a>";
 										
-										if(isset($_SESSION['permissions']['users']['access'])) {
+										if(isset($_SESSION['user_logged']['permissions']['users']['access'])) {
 											$html[] = "<a class='list-group-item list-group-item-action' href='".url("UsersController@index", [ "id" => $_SESSION['user_logged']['account_id'] ])."'><i class='ti ti-users me-2'></i> Manage Users</a>";
 										}
 

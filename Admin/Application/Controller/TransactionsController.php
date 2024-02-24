@@ -194,9 +194,11 @@ class TransactionsController extends \Main\Controller {
 			$data['transaction'] = $transaction->getByPaymentTransactionId();
 		
 			if($data['transaction']){
-				$data['payment_status_message'] = 'Your Payment has been Successful!';
+				$data['payment_status_message'] = '';
+				$data['transaction_status'] = true;
 			}else{ 
-				$data['payment_status_message'] = "Transaction has been failed!"; 
+				$data['payment_status_message'] = ""; 
+				$data['transaction_status'] = false;
 			} 
 
 			$this->setTemplate("transactions/paymentStatus.php");

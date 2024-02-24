@@ -85,7 +85,7 @@ $html[] = "<div class='page-body'>";
 											
 											$html[] = "<div class='dropdown-menu dropdown-menu-right'>";
 												$html[] = "<a class='ajax dropdown-item' href='".url("ListingsController@edit",[ "id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-edit me-2'></i> Update Listing</a>";
-												if(isset($_SESSION['permissions']['properties']['delete'])) {
+												if(isset($_SESSION['user_logged']['permissions']['properties']['delete'])) {
 													$html[] = "<span class='dropdown-item text-light bg-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@delete",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
 												}
 											$html[] = "</div>";

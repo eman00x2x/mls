@@ -85,6 +85,8 @@ define("ADMIN_PERMISSIONS",[
 define("ACCOUNT_PRIVILEGES",[
     "max_post" => 20,
     "max_users" => 1,
+    "mls_access" => 0,
+    "chat_access" => 1,
     "display_ads" => 0,
     "featured_ads" => 0,
     "handshake_limit" => 1
@@ -93,6 +95,8 @@ define("ACCOUNT_PRIVILEGES",[
 define("PREMIUM_SCRIPTS",[
     "max_post" => 20,
     "max_users" => 1,
+	"mls_access" => 0,
+    "chat_access" => 0,
     "display_ads" => 0,
     "featured_ads" => 0,
 	"handshake_limit" => 1

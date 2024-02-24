@@ -63,18 +63,19 @@ class LeadsController extends \Main\Controller {
 		$lead->where(" account_id = ".$this->account_id);
 		$data = $lead->getById();
 
-		$listing = $this->getModel("Listing");
-		$listing->column['listing_id'] = $data['listing_id'];
-		$data['listing'] = $listing->getById();
-
-		if(!is_array($data['preferences'])) {
-			$data['preferences'] = $lead->preferences;
-		}
-
-		$lead->addresses = $this->getModel("Address");
-		$lead->categorySelection = $listing->categorySelection($data['preferences']['category']);
-		
 		if($data) {
+
+			$listing = $this->getModel("Listing");
+			$listing->column['listing_id'] = $data['listing_id'];
+			$data['listing'] = $listing->getById();
+
+			if(!is_array($data['preferences'])) {
+				$data['preferences'] = $lead->preferences;
+			}
+
+			$lead->addresses = $this->getModel("Address");
+			$lead->categorySelection = $listing->categorySelection($data['preferences']['category']);
+			
 			$this->setTemplate("leads/edit.php");
 			return $this->getTemplate($data,$lead);
 		}
@@ -92,11 +93,12 @@ class LeadsController extends \Main\Controller {
 		$lead->where(" account_id = ".$this->account_id);
 		$data = $lead->getById();
 
-		$listing = $this->getModel("Listing");
-		$listing->column['listing_id'] = $data['listing_id'];
-		$data['listing'] = $listing->getById();
-		
 		if($data) {
+
+			$listing = $this->getModel("Listing");
+			$listing->column['listing_id'] = $data['listing_id'];
+			$data['listing'] = $listing->getById();
+			
 			$this->setTemplate("leads/view.php");
 			return $this->getTemplate($data,$lead);
 		}

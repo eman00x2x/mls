@@ -97,57 +97,63 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 
 									if(url()->contains("/system-settings")) {
 										$html[] = "<h2 class='mb-4'>System Settings</h2>";
-										$html[] = "<div class='mb-5'>";
-											$html[] = "<h3 class='card-title mt-4'>KYC Verification</h3>";
-											$html[] = "<p class='card-subtitle mb-2'>Upon activation of KYC Verification, users will be prompted to authenticate their identity by submitting a government-issued identification document along with a corresponding self-portrait. This step ensures compliance with regulatory standards and enhances the security and credibility of our platform.</p>";
-											$html[] = "<label class='form-check form-switch cursor-pointer'>";
+
+										/* $html[] = "<div class='mb-5 border rounded-3 p-5'>";
+											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";
+												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>KYC Verification</h3>";
+												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>Upon activation of KYC Verification, users will be prompted to authenticate their identity by submitting a government-issued identification document along with a corresponding self-portrait. This step ensures compliance with regulatory standards and enhances the security and credibility of our platform.</p>";
+											
 												$html[] = "<input type='checkbox' name='enable_kyc_verification' class='form-check-input' value='1' ".($data['enable_kyc_verification'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable KYC Verification</span>";
 											$html[] = "</label>";
-										$html[] = "</div>";
+										$html[] = "</div>"; */
 
-										$html[] = "<div class='mb-5'>";
-											$html[] = "<h3 class='card-title mt-4'>Enable WebSocket Chat Based</h3>";
-											$html[] = "<p class='card-subtitle mb-2'>If WebSocket chat functionality is activated, users gain the ability to engage in real-time communication via chat while seamlessly receiving messages as they are transmitted.</p>";
-											$html[] = "<pre>";
-												$html[] = "Run the websocket server from the terminal<br/>file path: ".ROOT."Manage/webSocketServer.php";
-											$html[] = "</pre>";
-											$html[] = "<label class='form-check form-switch cursor-pointer'>";
+										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";
+												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>Enable WebSocket Chat Based</h3>";
+												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>If WebSocket chat functionality is activated, users gain the ability to engage in real-time communication via chat while seamlessly receiving messages as they are transmitted.</p>";
+												$html[] = "<pre style='margin-left:-40px;'>";
+													$html[] = "Utilize PuTTY to access SSH on the web server for running the WebSocket server.<br/>file path: ".ROOT."Manage/webSocketServer.php";
+												$html[] = "</pre>";
+											
 												$html[] = "<input type='checkbox' name='chat_is_websocket' class='form-check-input' value='1' ".($data['chat_is_websocket'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable WebSocket</span>";
 											$html[] = "</label>";
 										$html[] = "</div>";
 
-										$html[] = "<div class='mb-5'>";
-											$html[] = "<h3 class='card-title mt-4'>Premium (Account Privileges)</h3>";
-											$html[] = "<p class='card-subtitle mb-2'>If you choose to activate the premium feature, users will have the option to purchase premium privileges to augment their account functionality.</p>";
-											$html[] = "<label class='form-check form-switch cursor-pointer'>";
+										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";
+												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>Premium (Account Privileges)</h3>";
+												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>If you choose to activate the premium feature, users will have the option to purchase premium privileges to augment their account functionality.</p>";
+											
 												$html[] = "<input type='checkbox' name='enable_premium' class='form-check-input' value='1' ".($data['enable_premium'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable Premium Purchase</span>";
 											$html[] = "</label>";
 										$html[] = "</div>";
 
-										$html[] = "<div class='mb-5'>";
-											$html[] = "<h3 class='card-title mt-4'>VAT Computation</h3>";
-											$html[] = "<p class='card-subtitle mb-2'>Display the VAT computation clearly on invoices for transparency and compliance.</p>";
-											$html[] = "<label class='form-check form-switch cursor-pointer'>";
+										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";
+												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>VAT Computation</h3>";
+												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>Display the VAT computation clearly on invoices for transparency and compliance.</p>";
+												
 												$html[] = "<input type='checkbox' name='show_vat' class='form-check-input' value='1' ".($data['show_vat'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Display VAT Computation</span>";
 											$html[] = "</label>";
 										$html[] = "</div>";
 
-										$html[] = "<div class='mb-5'>";
-											$html[] = "<h3 class='card-title mt-4'>PIN Based Access</h3>";
-											$html[] = "<p class='card-subtitle mb-2'>If PIN-based access is enabled, users experiencing issues can contact our customer service team and provide their PIN for verification. Upon successful authentication, our representatives will assist users in resolving any account-related issues they encounter.</p>";
-											$html[] = "<label class='form-check form-switch cursor-pointer'>";
+										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";
+												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>PIN Based Access</h3>";
+												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>If PIN-based access is enabled, users experiencing issues can contact our customer service team and provide their PIN for verification. Upon successful authentication, our representatives will assist users in resolving any account-related issues they encounter.</p>";
+												
 												$html[] = "<input type='checkbox' name='enable_pin_access' class='form-check-input' value='1' ".($data['enable_pin_access'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable PIN Based Access</span>";
 											$html[] = "</label>";
 										$html[] = "</div>";
 
-										$html[] = "<div class='mb-5'>";
-											$html[] = "<h3 class='card-title mt-4'>Email Address Responder</h3>";
-											$html[] = "<p class='card-subtitle mb-2'>Please provide the email address designated as the responder for sending email notifications to users.</p>";
+										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+											$html[] = "<h3 class='card-title'>Email Address Responder</h3>";
+											$html[] = "<p class='card-subtitle'>Please provide the email address designated as the responder for sending email notifications to users.</p>";
 											$html[] = "<div class='row g-2'>";
 												$html[] = "<div class='col-md'>";
 													$html[] = "<input type='text' name='email_address_responder' class='form-control' value='".$data['email_address_responder']."' placeholder='Email Address Responder' />";
@@ -155,14 +161,31 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 
-										$html[] = "<div class='mb-5'>";
-											$html[] = "<h3 class='card-title mt-4'>Property Tags</h3>";
-											$html[] = "<p class='card-subtitle mb-2'>Please specify the tags that can be used to categorize or assign attributes to a property.<br/>Tags must be separated by commas.</p>";
+										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+											$html[] = "<h3 class='card-title'>Property Tags</h3>";
+											$html[] = "<p class='card-subtitle'>Please specify the tags that can be used to categorize or assign attributes to a property.<br/>Tags must be separated by commas.</p>";
 											$html[] = "<div class='row g-2'>";
 												$html[] = "<div class='col-md'>";
 													$html[] = "<textarea name='property_tags' class='form-control' placeholder='Property Tags' style='width:100%; height:200px;'>".implode(", ",$data['property_tags'])."</textarea>";
 												$html[] = "</div>";
 											$html[] = "</div>";
+										$html[] = "</div>";
+
+										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+											$html[] = "<h3 class='card-title'>Default Privileges</h3>";
+											$html[] = "<p class='card-subtitle'>Customize default account privileges to restrict user access, incentivizing premium subscriptions and enhancing service offerings</p>";
+											
+											foreach(ACCOUNT_PRIVILEGES as $privileges => $val) {
+												$html[] = "<div class='row g-2 mb-3'>";
+													$html[] = "<label class='col-form-label col-3 mb-0 text-end'>$privileges</label>";
+													$html[] = "<div class='col'>";
+														$html[] = "<input type='text' name='privileges[$privileges]' class='form-control' value='".$data['privileges'][$privileges]."' placeholder='".DEFINITION[$privileges]."' />";
+														$html[] = "<small class='form-hint'>".DEFINITION[$privileges]."</small>";
+													$html[] = "</div>";
+												$html[] = "</div>";
+											}
+												
+											
 										$html[] = "</div>";
 									}
 

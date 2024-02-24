@@ -130,7 +130,9 @@ class SessionController extends \Main\Controller {
 		$account->column['account_id'] = $session['account_id'];
 		$data = $account->getById();
 		
-		$data = \Admin\Application\Controller\LoginController::getInstance()->setPrivileges($data);
+		$subscription = $this->getModel("AccountSubscription");
+		$subscription->column['account_id'] = $session['account_id'];
+		$data['privileges'] = $subscription->getSubscription();
 
 		foreach($data as $key => $val) {
 			$_SESSION['user_logged'][$key] = $val;

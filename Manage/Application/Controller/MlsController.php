@@ -2,6 +2,7 @@
 
 namespace Manage\Application\Controller;
 
+use \Admin\Application\Controller\SessionController;
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
@@ -9,16 +10,25 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 class MlsController extends \Admin\Application\Controller\ListingsController {
 	
 	private $account_id;
+	public $session;
 	
 	function __construct() {
+
         parent::__construct();
         $this->setTempalteBasePath(ROOT."Manage");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->account_id = $_SESSION['user_logged']['account_id'];
+		$this->session = SessionController::getInstance()->session->get("user_logged");
+		$this->account_id = $this->session['account_id'];
 
-		if(!isset($_SESSION['user_logged']['compare']['listings'])) {
-			$_SESSION['user_logged']['compare']['listings'] = [];
+		if(!isset($this->session['privileges']['mls_access'])) {
+			$this->getLibrary("Factory")->setMsg("Access to the MLS (Multiple Listing Service) requires premium privileges. Upgrade your subscription or subscribe to a premium to gain access.", "warning");
+			response()->redirect(url("DashboardController@index"));
 		}
+
+		if(!isset($this->session['compare']['listings'])) {
+			$this->session['compare']['listings'] = [];
+		}
+
 	}
 	
 	function MLSIndex() {
@@ -60,7 +70,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		}
 
 		/* $handshake = $this->getModel("Handshake");
-		$handshake->column['requestor_account_id'] = $_SESSION['user_logged']['account_id'];
+		$handshake->column['requestor_account_id'] = $this->session['account_id'];
 		$handshake->select("GROUP_CONCAT(listing_id) as listing_ids")->and(" handshake_status IN('pending','active')");
 		$handshakeListings = $handshake->getByRequestorAccountId();
 		
@@ -88,7 +98,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$uri['address'] = $_REQUEST['address'];
 		}
 
-		#$filters[] = " account_id != ".$_SESSION['user_logged']['account_id'];
+		#$filters[] = " account_id != ".$this->session['account_id'];
 		$filters[] = " is_mls = 1 ";
 		$filters[] = " status = 1 ";
 
@@ -184,7 +194,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$listing = $this->getModel("Listing");
 
 		$handshake = $this->getModel("Handshake");
-		$handshake->where(" requestor_account_id = ".$_SESSION['user_logged']['account_id']." OR requestee_account_id = ".$_SESSION['user_logged']['account_id'])
+		$handshake->where(" requestor_account_id = ".$this->session['account_id']." OR requestee_account_id = ".$this->session['account_id'])
 		->and(" handshake_status IN('pending','active') ")
 		->orderby(" FIELD(handshake_status,'pending','active','done','denied'), handshake_status_date DESC ");
 		
@@ -230,13 +240,13 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
     function requestHandshake($listing_id) {
 
 		$handshake = $this->getModel("Handshake");
-		$handshake->column['requestor_account_id'] = $_SESSION['user_logged']['account_id'];
+		$handshake->column['requestor_account_id'] = $this->session['account_id'];
 		$handshake->select("COUNT(listing_id) AS total_handshakes")
 		->and(" handshake_status IN('pending','active') ");
 		
 		$handshakeListings = $handshake->getByRequestorAccountId();
 
-		if($handshakeListings['total_handshakes'] >= $_SESSION['user_logged']['privileges']['handshake_limit']) {
+		if($handshakeListings['total_handshakes'] >= $this->session['privileges']['handshake_limit']) {
 			$this->getLibrary("Factory")->setMsg("You have reached the limit of handshake request.","warning");
 			$data = false;
 		}else {
@@ -253,7 +263,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 				if(isset($_REQUEST['confirm'])) {
 
-					$account->column['account_id'] = $_SESSION['user_logged']['account_id'];
+					$account->column['account_id'] = $this->session['account_id'];
 					$requestor = $account->getById();
 
 					unset($requestor['account_type']);
@@ -263,7 +273,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 					$handshake = $this->getModel("Handshake");
 					$handshake->saveNew(array(
-						"requestor_account_id" => $_SESSION['user_logged']['account_id'],
+						"requestor_account_id" => $this->session['account_id'],
 						"requestor_details" => json_encode($requestor, JSON_PRETTY_PRINT),
 						"requestee_account_id" => $data['account_id'],
 						"listing_id" => $data['listing_id'],
@@ -411,11 +421,11 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$notification = $this->getModel("Notification");
 		$notification->saveNew(
 			array(
-				"account_id" => ($_SESSION['user_logged']['account_id'] != $data['requestee_account_id'] ? $data['requestor_account_id'] : $data['requestee_account_id']),
+				"account_id" => ($this->session['account_id'] != $data['requestee_account_id'] ? $data['requestor_account_id'] : $data['requestee_account_id']),
 				"status" => 1,
 				"created_at" => DATE_NOW,
 				"content" => array(
-					"title" => $_SESSION['user_logged']['firstname']." ".$_SESSION['user_logged']['lastname']." mark done a handshake",
+					"title" => $this->session['firstname']." ".$this->session['lastname']." mark done a handshake",
 					"message" => $data['listing']['title'],
 					"url" => MANAGE."mls/".$data['listing_id']
 				)
@@ -435,13 +445,13 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 	function cancelHandshake($listing_id) {
 
 		$handshake = $this->getModel("Handshake");
-		$handshake->column['requestor_account_id'] = $_SESSION['user_logged']['account_id'];
+		$handshake->column['requestor_account_id'] = $this->session['account_id'];
 		$handshake->and(" listing_id = $listing_id ");
 		$data = $handshake->getByRequestorAccountId();
 
 		if($data) {
 
-			$handshake->and(" requestor_account_id = ".$_SESSION['user_logged']['account_id']);
+			$handshake->and(" requestor_account_id = ".$this->session['account_id']);
 			$handshake->deleteHandshake($listing_id,"listing_id");
 
 			$listing = $this->getModel("Listing");
@@ -451,11 +461,11 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$notification = $this->getModel("Notification");
 			$notification->saveNew(
 				array(
-					"account_id" => ($_SESSION['user_logged']['account_id'] != $data['requestee_account_id'] ? $data['requestor_account_id'] : $data['requestee_account_id']),
+					"account_id" => ($this->session['account_id'] != $data['requestee_account_id'] ? $data['requestor_account_id'] : $data['requestee_account_id']),
 					"status" => 1,
 					"created_at" => DATE_NOW,
 					"content" => array(
-						"title" => $_SESSION['user_logged']['firstname']." ".$_SESSION['user_logged']['lastname']." canceled a handshake",
+						"title" => $this->session['firstname']." ".$this->session['lastname']." canceled a handshake",
 						"message" => $data['listing']['title'],
 						"url" => MANAGE."mls/".$data['listing_id']
 					)
@@ -481,7 +491,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		parse_str(file_get_contents('php://input'), $_POST);
 
-		$total = count($_SESSION['user_logged']['compare']['listings']);
+		$total = count($this->session['compare']['listings']);
 
 		if($total >= 4) {
 			$this->getLibrary("Factory")->setMsg("Maximum count of listings has been reached! Cannot add more in compare table!","info");
@@ -491,7 +501,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$listing->column['listing_id'] = $_POST['listing_id'];
 			$data = $listing->getById();
 
-			$_SESSION['user_logged']['compare']['listings'][$_POST['listing_id']] = $data;
+			$this->session['compare']['listings'][$_POST['listing_id']] = $data;
 
 			$this->getLibrary("Factory")->setMsg("Listing added to compare table!","info");
 
@@ -508,7 +518,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	function removeFromCompare() {
 		parse_str(file_get_contents('php://input'), $_POST);
-		unset($_SESSION['user_logged']['compare']['listings'][$_POST['listing_id']]);
+		unset($this->session['compare']['listings'][$_POST['listing_id']]);
 		
 		$this->getLibrary("Factory")->setMsg("Listing remove from compare table!","info");
 
@@ -522,8 +532,8 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	function comparePreview() {
 
-		$data['listings'] = $_SESSION['user_logged']['compare']['listings'];
-		$data['count'] = count($_SESSION['user_logged']['compare']['listings']);
+		$data['listings'] = $this->session['compare']['listings'];
+		$data['count'] = count($this->session['compare']['listings']);
 		
 		$this->setTemplate("mls/comparePreview.php");
         return $this->getTemplate($data);
@@ -533,10 +543,10 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		$this->doc->setTitle("MLS System - Comparative Analysis Table");
 		
-		$total = isset($_SESSION['user_logged']['compare']['listings']) ? count($_SESSION['user_logged']['compare']['listings']) : 0;
+		$total = isset($this->session['compare']['listings']) ? count($this->session['compare']['listings']) : 0;
 		
 		if($total > 0) {
-			$ids = implode(",", array_keys($_SESSION['user_logged']['compare']['listings']));
+			$ids = implode(",", array_keys($this->session['compare']['listings']));
 
 			$listing = $this->getModel("Listing");
 

@@ -11,13 +11,41 @@ $html[] = "<div class='page-body'>";
 
 				$html[] = "<div class='card'>";
 				
-					$html[] = "<div class='card-header'>";
-						$html[] = "<h2 class='card-title'><i class='ti ti-shopping-cart me-2'></i> ".$data['payment_status_message']."</h2>";
-					$html[] = "</div>";
+					$html[] = "<div class='card-body pb-5'>";
 
-					$html[] = "<div class='card-body'>";
+						$html[] = "<h2 class='text-green text-center mb-5'>";
+							
+						if($data['transaction_status']) {
+							$html[] = "<span class='d-block'>";
+								$html[] = "<img src='".CDN."images/icons/checks.svg' width='128' />";
+							$html[] = "</span>";
+							$html[] = "Your Payment has been Successful!";
+						}else {
+							$html[] = "Transaction has been failed!";
+						}
+
+						$html[] = "</h2>";
+
+						$html[] = "<p class='text-center'>";
+							$html[] = "<span class='d-block text-muted'>Transaction Id</span>";
+							$html[] = "<span class='fs-22'>".$data['transaction']['payment_transaction_id']."</span>";
+						$html[] = "</p>";
+
+						$html[] = "<p class='text-center'>";
+							$html[] = "<span class='d-block text-muted'>Payment Date</span>";
+							$html[] = "<span class='fs-22'>".date("d F Y", strtotime($data['transaction']['transaction_details']['create_time']))."</span>";
+						$html[] = "</p>";
+
+						$html[] = "<p class='text-center'>";
+							$html[] = "<span class='d-block text-muted'>Total Amount Paid</span>";
+							$html[] = "<span class='fs-22'>".$data['transaction']['premium_price']."</span>";
+						$html[] = "</p>";
+
+						$html[] = "<p class='text-center my-5'>";
+							$html[] = "<a href='".url("TransactionsController@invoice", ["id" => $data['transaction']['transaction_id']])."' class='btn btn-primary'>View invoice</a>";
+						$html[] = "</p>";
 						
-						$html[] = "<div class='table-responsive'>";
+						/* $html[] = "<div class='table-responsive'>";
 							$html[] = "<table class='table'>";
 							foreach($data['transaction'] as $fields => $val) {
 								$html[] = "<tr>";
@@ -34,7 +62,7 @@ $html[] = "<div class='page-body'>";
 								$html[] = "</tr>";
 							}
 							$html[] = "</table>";
-						$html[] = "</div>";
+						$html[] = "</div>"; */
 
 					$html[] = "</div>";
 
