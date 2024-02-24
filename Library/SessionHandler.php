@@ -24,47 +24,50 @@ class SessionHandler extends \Josantonius\Session\Session {
 		if(!$this->isStarted()) { $this->start($options);  }
 	}
 
-	function check() {
+	function monitor() {
 
-		if(isset($_REQUEST['logout'])) {
-			/** user wants to logout */
-			return $this->end($this->getLoggedUser());
-		}
+		$logged = $this->get("user_logged");
 
-		if($this->get("logged")) {
+		if(isset($logged['user_id'])) {
 			/* already logged */
+			if(isset($_REQUEST['logout'])) {
+				/** user wants to logout */
+				return $this->end();
+			}
 
 			/* check if logging in the same domain */
 			if($this->get('domain') != $this->getCurrentDomain()) {
-				return $this->end($this->getLoggedUser());
+				return $this->end();
 			}
 
-			/* verify user if the same */
-			if(!$this->validateLoggedUser()) {
-				/** logged user is different from record */
-				
-				return [
-					"status" => 0
-				];
-            }
+			if(!$this->verifySession()) {
+				/** invalid session */
+				\Library\Factory::setMsg("Someone has logged in using this account! This account will be logged out in all devices.","warning");
+				echo getMsg();
+				return $this->end();
+			}
 
-			return $this->getLoggedUser();
-			
-		}else {
-			/* not logged */
 			return [
-				"status" => 0
+				"status" => 1
 			];
+
 		}
 
+		/* not logged */
+		return [
+			"status" => 0
+		];
+		
 	}
 
-	function end($data) {
+	function end() {
+
+		$data = $this->get("user_logged");
 
 		$controller = new MainController();
 		$user_login = $controller->getModel("UserLogin");
 		$user_login->setStatus($data['user_id'], 0);
-
+	
 		$this->regenerateId();
 		$this->clear();
 		$this->destroy();
@@ -75,50 +78,31 @@ class SessionHandler extends \Josantonius\Session\Session {
 
 	}
 
-	function validateLoggedUser() {
+	function verifySession() {
 
-		$data = $this->getLoggedUser();
+		$data = $this->get("user_logged");
 
-		if(isset($data['user_id'])) {
+		$controller = new MainController();
+		$user_login = $controller->getModel("UserLogin");
+		$user_login->column['user_id'] = $data['user_id'];
+		$user_login->and(" status = 1 ");
 
-			/* Already logged check if session_id is equal to the stored data */
-			if($data['session_id'] != $this->getId()) {
-				/* session_id not same */
-				$this->end($data);
+		$user = $user_login->getByUserId();
 
-				$controller = new MainController();
-				$controller->getLibrary("Factory")->setMsg("Someone already using this account! you will be logout.","error");
+		if($user) {
 
+			/** check current user session */
+			if($user['session_id'] != $this->getId()) {
+				/** user current session not same */
 				return false;
 			}
 
-			/* session_id same, do nothing */
+			/** everything is alright, do nothing */
+			return true;
 
+		}else {
+			return false;
 		}
-
-		return true;
-
-	}
-
-	function getLoggedUser() {
-
-		$session = $this->get("user_logged");
-
-		if(isset($session['user_id'])) {
-			$controller = new MainController();
-			$user_login = $controller->getModel("UserLogin");
-			$user_login->column['user_id'] = $session['user_id'];
-			$user_login->and(" status = 1 ");
-			
-			$user = $user_login->getByUserId();
-
-			if($user) {
-				return $user;
-			}
-		}
-
-		/** user status not logged destroy session */
-		return $this->end($session);
 
 	}
 

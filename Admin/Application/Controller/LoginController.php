@@ -123,47 +123,14 @@ class LoginController extends \Main\Controller {
 					return false;
 				}
 
-				$subscription = $this->getModel("AccountSubscription");
-				$subscription->page["limit"] = 999999;
-				$subscription
-				->join(" acs JOIN #__premiums p ON p.premium_id = acs.premium_id ")
-				->where(" ((subscription_start_date <= '".DATE_NOW."' AND subscription_end_date >= '".DATE_NOW."') OR subscription_date = 0) ")
-				->and(" account_id = ".$data['account_id'] );
-				$data['subscriptions'] = $subscription->getList();
-
-				if($data) {
-
-					if($data['subscriptions']) {
-						for($i=0; $i<count($data['subscriptions']); $i++) {
-							foreach($data['subscriptions'][$i]['script'] as $privilege => $val) {
-
-								if(in_array($privilege,["leads_DB","properties_DB"])) {
-									if($val == 1) $data['privileges'][$privilege] = 1;
-								}else {
-									$data['privileges'][$privilege] += $val;
-								}
-								
-							}
-						}
-					}
-
+				if(!$this->checkLoggedUser($data)) {
+					return false;
 				}
 
-				$client_info = \Library\UserClient::getInstance()->information();
+				$this->setPrivileges($data);
+				$this->recordSession($data);
 
-				$session_id = session_id();
-
-				$user_login = $this->getModel("UserLogin");
-				$user_login->saveNew([
-					"user_id" => $data['user_id'],
-					"session_id" => $session_id,
-					"status" => 1,
-					"login_at" => DATE_NOW,
-					"login_details" => $client_info
-				]);
-				
-				$data['session_id'] = $session_id;
-				return $this->doLogin($data);
+				return true;
 			}
 		}
 
@@ -171,16 +138,84 @@ class LoginController extends \Main\Controller {
 		return false;
 		
 	}
+
+	function setPrivileges($data) {
+
+		$session_id = session_id();
+		$data['session_id'] = $session_id;
+
+		$subscription = $this->getModel("AccountSubscription");
+		$subscription->page["limit"] = 999999;
+		$subscription
+		->join(" acs JOIN #__premiums p ON p.premium_id = acs.premium_id ")
+		->where(" ((subscription_start_date <= '".DATE_NOW."' AND subscription_end_date >= '".DATE_NOW."') OR subscription_date = 0) ")
+		->and(" account_id = ".$data['account_id'] );
+		$data['subscriptions'] = $subscription->getList();
+
+		if($data) {
+
+			if($data['subscriptions']) {
+				for($i=0; $i<count($data['subscriptions']); $i++) {
+					foreach($data['subscriptions'][$i]['script'] as $privilege => $val) {
+
+						if(in_array($privilege,["leads_DB","properties_DB"])) {
+							if($val == 1) $data['privileges'][$privilege] = 1;
+						}else {
+							$data['privileges'][$privilege] += $val;
+						}
+						
+					}
+				}
+			}
+
+		}
+
+		return true;
+	}
+
+	function checkLoggedUser($data) {
+
+		$user_login = $this->getModel("UserLogin");
+		$user_login->and(" user_id = ".$data['user_id']);
+		$user_login->where(" status = 1 ");
+		
+		if($user_login->getList()) {
+
+			/** user already logged, we assume someone else login the account, end this login attempt and user already logged will be force to logout  */
+			$user_login->setStatus($data['user_id'], 0);
+
+			$this->getLibrary("Factory")->setMsg("Someone is already using this account! This account will be logout in all devices.","warning");
+			return false;
+
+		}
+
+		return true;
+
+	}
 	
-	function doLogin($login) {
+	function recordSession($data) {
+
+		$client_info = \Library\UserClient::getInstance()->information();
+
+		$user_login = $this->getModel("UserLogin");
+		$user_login->saveNew([
+			"user_id" => $data['user_id'],
+			"session_id" => session_id(),
+			"status" => 1,
+			"login_at" => DATE_NOW,
+			"login_details" => $client_info
+		]);
 	
-		$val = array(
-			'user_logged' => $login,
+		$arr = array(
+			'user_logged' => $data,
 			'domain' => $this->domain,
 			'logged' => true
 		);
 
-		$this->storeSession($val);
+		foreach($arr as $key => $val) {
+			$_SESSION[$key] = $val;
+		}
+
 		return true;
 		
 	}
@@ -194,13 +229,6 @@ class LoginController extends \Main\Controller {
 			return true;
 		}
 		
-	}
-	
-	function storeSession($arr = array()) {
-		$session = new SessionHandler;
-		foreach($arr as $val => $key) {
-			$session->set($val, $key);
-		}
 	}
 	
 	function sendPasswordResetLink() {

@@ -45,7 +45,7 @@ class Middleware implements IMiddleware {
     public function handle(Request $request): void 
     {
 
-		$request->user = SessionHandler::getInstance()->check();
+		$request->user = SessionHandler::getInstance()->monitor();
 		Router::router()->reset();
 
 		$template = "templates/login.template.php";
@@ -70,8 +70,6 @@ class Middleware implements IMiddleware {
 			Router::post('/forgotPassword', 'LoginController@sendPasswordResetLink');
 
 		}else {
-
-			print_r($request->user);
 
 			if($request->user['status'] == 0) {
 
