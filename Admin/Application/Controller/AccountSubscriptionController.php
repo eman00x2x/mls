@@ -25,6 +25,8 @@ class AccountSubscriptionController extends \Main\Controller {
 			$_POST['subscription_end_date'] = strtotime("+".$_POST['duration'], $_POST['subscription_start_date']);
 		}
 
+		$_POST['susbcription_status'] = 1;
+
 		$account_subscription = $this->getModel("AccountSubscription");
 		$response = $account_subscription->saveNew($_POST);
 
@@ -64,6 +66,36 @@ class AccountSubscriptionController extends \Main\Controller {
 			)
 		);
 		
+	}
+
+	function updateStatus($id) {
+
+		parse_str(file_get_contents('php://input'), $_POST);
+		
+		$account_subscription = $this->getModel("AccountSubscription");
+		$account_subscription->column['account_subscription_id'] = $id;
+		$data = $account_subscription->getById();
+
+		if($data['subscription_status'] == 1) {
+			$status = 0;
+			$label = "Activate";
+		}else { 
+			$status = 1; 
+			$label = "Deactivate";
+		}
+
+		$response = $account_subscription->save($id,[
+			'subscription_status' => $status
+		]);
+		
+		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
+
+		return json_encode(array(
+			"status" => $response['status'],
+			"message" => getMsg(),
+			"label" => $label
+		));
+
 	}
 	
 	function delete($id) {

@@ -52,6 +52,7 @@ $html[] = "<div class='page-body'>";
 											$html[] = "<th>Details</th>";
 											$html[] = "<th>Subscription Started</th>";
 											$html[] = "<th>Subscription End</th>";
+											$html[] = "<th></th>";
 										$html[] = "</tr>";
 									$html[] = "</thead>";
 									
@@ -70,6 +71,7 @@ $html[] = "<div class='page-body'>";
 													$html[] = "Permanent";
 												}
 											$html[] = "</td>";
+											$html[] = "<td class='align-middle text-center'>".($data['subscriptions'][$i]['subscription_status'] == 1 ? "Active" : "Suspended")."</td>";
 										$html[] = "</tr>";
 										
 									}

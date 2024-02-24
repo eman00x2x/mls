@@ -2,13 +2,17 @@
 
 namespace Manage\Application\Controller;
 
+use \Admin\Application\Controller\SessionController;
+
 class ListingsController extends \Admin\Application\Controller\ListingsController {
 	
 	private $account_id;
+	private $session;
 	
 	function __construct() {
 		parent::__construct();
-		$this->account_id = $_SESSION['user_logged']['account_id'];
+		$this->session = SessionController::getInstance()->session->get("user_logged");
+		$this->account_id = $this->session['account_id'];
 	}
 	
 	function listingIndex() {

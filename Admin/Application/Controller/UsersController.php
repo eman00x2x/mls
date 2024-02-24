@@ -73,41 +73,12 @@ class UsersController extends \Main\Controller {
 		if($data) {
 
 			$subscription = $this->getModel("AccountSubscription");
-			$subscription->page["limit"] = 999999;
-			$subscription
-			->join(" acs JOIN #__premiums p ON p.premium_id = acs.premium_id ")
-			->where(" (subscription_end_date >= '".DATE_NOW."' OR subscription_date = 0) ")
-			->and(" account_id = $id ");
+			$subscription->column['account_id'] = $id;
+			$data['privileges'] = $subscription->getSubscription();
 
-			$data['subscriptions'] = $subscription->getList();
-
-			if($data['subscriptions']) {
-				for($i=0; $i<count($data['subscriptions']); $i++) {
-					foreach($data['subscriptions'][$i]['script'] as $privilege => $val) {
-
-						if(in_array($privilege,["leads_DB","properties_DB"])) {
-							if($val == 1) $data['privileges'][$privilege] = 1;
-						}else {
-							$data['privileges'][$privilege] += $val;
-						}
-						
-					}
-				}
-			}
-
-			if($data['total_users'] == $data['privileges']['max_users'] && !in_array($data['account_type'],["Administrator","Customer Service"])) {
-				$this->getLibrary("Factory")->setMsg("Maximum users have been reached for this account.","error");
+			if($data['total_users'] >= $data['privileges']['max_users'] && !in_array($data['account_type'],["Administrator","Customer Service"])) {
+				$this->getLibrary("Factory")->setMsg("The maximum number of users for this account has been reached.","error");
 				response()->redirect(url("AccountsController@view",["id" => $data['account_id']]));
-			}
-
-			/** OTHER ACCOUNTS */
-			if($_SESSION['user_logged']['account_id'] == $data['account_id']) {
-				
-				if($data['total_users'] == $_SESSION['user_logged']['privileges']['max_users']) {
-					$this->getLibrary("Factory")->setMsg("Maximum users have been reached for this account.","error");
-					response()->redirect(url("UsersController@index"));
-				}
-
 			}
 
 			if($data['logo'] == "") {
@@ -160,18 +131,18 @@ class UsersController extends \Main\Controller {
 		$_POST['permissions'] = json_encode($_POST['permissions']);
 		
 		if($_POST['photo'] != $data['photo']) {
-				/* remove old logo */
+			/* remove old logo */
 
-				$photo_url = explode("/", $data['photo']);
-				$current_photo = array_pop($photo_url);
-				$file = ROOT."Cdn/images/users/".$current_photo;
-				
-				if(file_exists($file)) {
-					@unlink($file);
-				}
-				
-				$_POST['photo'] = $user->moveUploadedImage($_POST['photo']);
+			$photo_url = explode("/", $data['photo']);
+			$current_photo = array_pop($photo_url);
+			$file = ROOT."Cdn/images/users/".$current_photo;
+			
+			if(file_exists($file)) {
+				@unlink($file);
 			}
+			
+			$_POST['photo'] = $user->moveUploadedImage($_POST['photo']);
+		}
 
 		$response = $user->saveNew($_POST);
 		

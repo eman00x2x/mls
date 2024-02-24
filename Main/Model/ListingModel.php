@@ -10,6 +10,11 @@ class ListingModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getByAccountId() {
+		$this->where(" account_id = ". $this->column['account_id'] );
+		return $this->getList();
+	}
+
 	function getByName() {
 
 		$query = "SELECT * FROM #__listings WHERE name = '".$this->column['name']."' ".$this->and;

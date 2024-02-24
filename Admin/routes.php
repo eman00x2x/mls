@@ -48,6 +48,7 @@ Router::get('/listingImages/{id}/delete', 'ListingImagesController@delete', ['as
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get('/account_subscription/{id}/delete', 'AccountSubscriptionController@delete', ['as' => 'deleteAccountSubscription'])->where([ 'id' => '[0-9]+' ]);
+Router::get('/account_subscription/{id}/updateStatus', 'AccountSubscriptionController@updateStatus', ['as' => 'updateStatusAccountSubscription'])->where([ 'id' => '[0-9]+' ]);
 Router::post('/account_subscription/saveNew', 'AccountSubscriptionController@saveNew', ['as' => 'accountSubscriptionSaveNew']);
 
 /** PREMIUMS ROUTES */

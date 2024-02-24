@@ -230,3 +230,16 @@ $(document).on('click', '.col-filter', function (e) {
 		$('table tr .' + id).hide();
 	}
 });
+
+$(document).on('click', '.btn-update_subscription_status', function (e) {
+	
+	url = $(this).data('url');
+	id = $(this).data('id');
+
+	$.get(url, function (data) {
+		response = JSON.parse(data);
+		$('.response').html(response.message);
+		$('.row_subscription_' + id + ' .btn-update_subscription_status .text-label').text(response.label);
+	});
+
+});

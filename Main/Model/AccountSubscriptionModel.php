@@ -10,6 +10,33 @@ class AccountSubscriptionModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getSubscription() {
+
+		$this->page["limit"] = 999999;
+		$this
+		->join(" acs JOIN #__premiums p ON p.premium_id = acs.premium_id ")
+		->where(" (subscription_end_date >= '".DATE_NOW."' OR subscription_date = 0) ")
+		->and(" account_id = ". $this->column['account_id'] );
+
+		$data = $this->getList();
+
+		if($data) {
+			for($i=0; $i<count($data); $i++) {
+				foreach($data[$i]['script'] as $key => $val) {
+
+					if(!isset($privileges[$key])) {
+						$privileges[$key] = 0;
+					}
+
+					$privileges[$key] += $val;
+				}
+			}
+		}
+
+		return $privileges;
+
+	}
+
 	function saveNew($data) {
 
 		$required_fields = array("account_id","subscription_start_date");

@@ -83,7 +83,7 @@ define("ADMIN_PERMISSIONS",[
 ]);
 
 define("ACCOUNT_PRIVILEGES",[
-    "max_post" => 30,
+    "max_post" => 20,
     "max_users" => 1,
     "display_ads" => 0,
     "featured_ads" => 0,
@@ -91,7 +91,7 @@ define("ACCOUNT_PRIVILEGES",[
 ]);
 
 define("PREMIUM_SCRIPTS",[
-    "max_post" => 30,
+    "max_post" => 20,
     "max_users" => 1,
     "display_ads" => 0,
     "featured_ads" => 0,

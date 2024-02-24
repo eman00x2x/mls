@@ -1,12 +1,11 @@
 <?php
 
-namespace Library;
+namespace Admin\Application\Controller;
 
-use Main\Controller as MainController;
-
-class SessionHandler extends \Josantonius\Session\Session {
+class SessionController extends \Main\Controller {
 
 	private static $_instance;
+	public $session;
 
 	public static function getInstance () {
 		if (self::$_instance === null) {
@@ -17,16 +16,16 @@ class SessionHandler extends \Josantonius\Session\Session {
 	}
 
 	function __construct() {
-		
+		$this->session = new \Josantonius\Session\Session;
 	}
 
 	function begin($options = []) {
-		if(!$this->isStarted()) { $this->start($options);  }
+		if(!$this->session->isStarted()) { $this->session->start($options);  }
 	}
 
 	function monitor() {
 
-		$logged = $this->get("user_logged");
+		$logged = $this->session->get("user_logged");
 
 		if(isset($logged['user_id'])) {
 			/* already logged */
@@ -36,7 +35,7 @@ class SessionHandler extends \Josantonius\Session\Session {
 			}
 
 			/* check if logging in the same domain */
-			if($this->get('domain') != $this->getCurrentDomain()) {
+			if($this->session->get('domain') != $this->getCurrentDomain()) {
 				return $this->end();
 			}
 
@@ -65,15 +64,14 @@ class SessionHandler extends \Josantonius\Session\Session {
 
 	function end() {
 
-		$data = $this->get("user_logged");
+		$data = $this->session->get("user_logged");
 
-		$controller = new MainController();
-		$user_login = $controller->getModel("UserLogin");
+		$user_login = $this->getModel("UserLogin");
 		$user_login->setStatus($data['user_id'], 0);
 	
-		$this->regenerateId();
-		$this->clear();
-		$this->destroy();
+		$this->session->regenerateId();
+		$this->session->clear();
+		$this->session->destroy();
 
 		return [
 			"status" => 0
@@ -83,10 +81,9 @@ class SessionHandler extends \Josantonius\Session\Session {
 
 	function verifySession() {
 
-		$data = $this->get("user_logged");
+		$data = $this->session->get("user_logged");
 
-		$controller = new MainController();
-		$user_login = $controller->getModel("UserLogin");
+		$user_login = $this->getModel("UserLogin");
 		$user_login->column['user_id'] = $data['user_id'];
 		$user_login->and(" status = 1 ");
 
@@ -95,12 +92,13 @@ class SessionHandler extends \Josantonius\Session\Session {
 		if($user) {
 
 			/** check current user session */
-			if($user['session_id'] != $this->getId()) {
+			if($user['session_id'] != $this->session->getId()) {
 				/** user current session not same */
 				return false;
 			}
 
-			/** everything is alright, do nothing */
+			/** everything is alright, update current session */
+			$this->updateSession();
 			return true;
 
 		}else {
@@ -122,6 +120,22 @@ class SessionHandler extends \Josantonius\Session\Session {
 
 		return $domain;
 		
+	}
+
+	function updateSession() {
+
+		$session = $this->session->get("user_logged");
+
+		$account = $this->getModel("Account");
+		$account->column['account_id'] = $session['account_id'];
+		$data = $account->getById();
+		
+		$data = \Admin\Application\Controller\LoginController::getInstance()->setPrivileges($data);
+
+		foreach($data as $key => $val) {
+			$_SESSION['user_logged'][$key] = $val;
+		}
+
 	}
 
 }

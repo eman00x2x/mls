@@ -127,8 +127,7 @@ class LoginController extends \Main\Controller {
 					return false;
 				}
 
-				$this->setPrivileges($data);
-				$this->recordSession($data);
+				$this->recordLogin($this->setPrivileges($data));
 
 				return true;
 			}
@@ -141,15 +140,12 @@ class LoginController extends \Main\Controller {
 
 	function setPrivileges($data) {
 
-		$session_id = session_id();
-		$data['session_id'] = $session_id;
-
 		$subscription = $this->getModel("AccountSubscription");
 		$subscription->page["limit"] = 999999;
 		$subscription
 		->join(" acs JOIN #__premiums p ON p.premium_id = acs.premium_id ")
 		->where(" ((subscription_start_date <= '".DATE_NOW."' AND subscription_end_date >= '".DATE_NOW."') OR subscription_date = 0) ")
-		->and(" account_id = ".$data['account_id'] );
+		->and(" subscription_status = 1 AND account_id = ".$data['account_id'] );
 		$data['subscriptions'] = $subscription->getList();
 
 		if($data) {
@@ -157,20 +153,14 @@ class LoginController extends \Main\Controller {
 			if($data['subscriptions']) {
 				for($i=0; $i<count($data['subscriptions']); $i++) {
 					foreach($data['subscriptions'][$i]['script'] as $privilege => $val) {
-
-						if(in_array($privilege,["leads_DB","properties_DB"])) {
-							if($val == 1) $data['privileges'][$privilege] = 1;
-						}else {
-							$data['privileges'][$privilege] += $val;
-						}
-						
+						$data['privileges'][$privilege] += $val;
 					}
 				}
 			}
 
 		}
 
-		return true;
+		return $data;
 	}
 
 	function checkLoggedUser($data) {
@@ -193,14 +183,17 @@ class LoginController extends \Main\Controller {
 
 	}
 	
-	function recordSession($data) {
+	function recordLogin($data) {
+
+		$session_id = session_id();
+		$data['session_id'] = $session_id;
 
 		$client_info = \Library\UserClient::getInstance()->information();
 
 		$user_login = $this->getModel("UserLogin");
 		$user_login->saveNew([
 			"user_id" => $data['user_id'],
-			"session_id" => session_id(),
+			"session_id" => $session_id,
 			"status" => 1,
 			"login_at" => DATE_NOW,
 			"login_details" => $client_info
@@ -221,12 +214,19 @@ class LoginController extends \Main\Controller {
 	}
 	
 	function isBlock($status) {
-		
-		if( $status == 2 ) {
-			$this->getLibrary("Factory")->setMsg("You have been blocked by the System Administrator","warning");
-			return false;
-		}else {
-			return true;
+
+		switch($status) {
+			case 0:
+				$this->getLibrary("Factory")->setMsg("This user has been deactivated due to an expired subscription.","warning");
+				return false;
+				break;
+			case 2:
+				$this->getLibrary("Factory")->setMsg("You have been blocked by the system administrator.","warning");
+				return false;
+				break;
+			
+			default:
+				return true;
 		}
 		
 	}

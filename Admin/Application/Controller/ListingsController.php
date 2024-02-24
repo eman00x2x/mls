@@ -106,10 +106,29 @@ class ListingsController extends \Main\Controller {
 		$data = $account->getById();
 
 		$listing = $this->getModel("Listing");
-		$listing->addresses = $this->getModel("Address");
+		
+		$listing->select(" COUNT(listing_id) AS total ");
+		$listing->column['account_id'] = $account_id;
+		$data['listings'] = $listing->getByAccountId();
 
-		$this->setTemplate("listings/add.php");
-		return $this->getTemplate($data, $listing);
+		$subscription = $this->getModel("AccountSubscription");
+		$subscription->column['account_id'] = $account_id;
+		$data['privileges'] = $subscription->getSubscription();
+
+		if($data['privileges']['max_post'] <= $data['listings'][0]['total']) {
+			$this->getLibrary("Factory")->setMsg("Maximum postings have been reached. You cannot add any more property listings. Subscribe to our premium package to increase your maximum postings allowance", "warning");
+			if($_SESSION['domain'] == ADMIN) {
+				response()->redirect(url("ListingsController@index",["id" => $data['account_id']]));
+			}else {
+				response()->redirect(url("ListingsController@listingIndex"));
+			}
+		}else {
+
+			$listing->addresses = $this->getModel("Address");
+
+			$this->setTemplate("listings/add.php");
+			return $this->getTemplate($data, $listing);
+		}
 	}
 
 	function view($listing_id) {

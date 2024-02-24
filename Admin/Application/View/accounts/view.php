@@ -230,8 +230,8 @@ $html[] = "<div class='page-body'>";
 											
 											$html[] = "<tr class='row_subscription_".$data['subscriptions'][$i]['account_subscription_id']."'>";
 												$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-												$html[] = "<td class='align-middle'>".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_start_date'])."</td>";
-												$html[] = "<td class='align-middle' style='width:300px'>".$data['subscriptions'][$i]['name']." <span class='text-muted small d-block'>".$data['subscriptions'][$i]['details']."</span></td>";
+												$html[] = "<td class='align-middle' style='width:100px'>".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_start_date'])."</td>";
+												$html[] = "<td class='align-middle' style='width:250px'>".$data['subscriptions'][$i]['name']." <span class='text-muted small d-block'>".$data['subscriptions'][$i]['details']."</span></td>";
 												$html[] = "<td class='align-middle'>";
 													if($data['subscriptions'][$i]['subscription_end_date'] > 0) {
 														$html[] = "".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_end_date'])."";
@@ -241,7 +241,10 @@ $html[] = "<div class='page-body'>";
 													
 												$html[] = "</td>";
 												$html[] = "<td class='align-middle'>";
-													$html[] = "<span class='btn btn-outline-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountSubscriptionController@delete",["id" => $data['subscriptions'][$i]['account_subscription_id']])."'><i class='ti ti-trash me-1'></i> Delete</span>";
+													$html[] = "<div class='btn-list'>";
+														$html[] = "<span class='btn btn-outline-primary btn-update_subscription_status' data-id='".$data['subscriptions'][$i]['account_subscription_id']."' data-url='".url("AccountSubscriptionController@updateStatus", ["id" => $data['subscriptions'][$i]['account_subscription_id']])."'><i class='ti ti-lock-access me-2'></i> <span class='text-label'>".($data['subscriptions'][$i]['subscription_status'] == 1 ? "Deactivate": "Activate")."</span></span>";
+														$html[] = "<span class='btn btn-outline-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountSubscriptionController@delete",["id" => $data['subscriptions'][$i]['account_subscription_id']])."'><i class='ti ti-trash me-1'></i> Delete</span>";
+													$html[] = "</div>";
 												$html[] = "</td>";
 											$html[] = "</tr>";
 											

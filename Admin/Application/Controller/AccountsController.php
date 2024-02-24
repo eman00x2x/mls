@@ -156,23 +156,25 @@ class AccountsController extends \Main\Controller {
 
 				$subscription->page['limit'] = 10;
 				$subscription
-				->select("acs.account_subscription_id, s.premium_id, s.name, s.details, subscription_start_date, subscription_end_date, script")
+				->select("acs.account_subscription_id, s.premium_id, s.name, s.details, subscription_status, subscription_start_date, subscription_end_date, script")
 				->join(" acs JOIN #__premiums s ON s.premium_id=acs.premium_id ")
-				->where(" account_id = ".$data['account_id']." ")
+				->and(" account_id = ".$data['account_id']." ")
 				->orderby(" acs.premium_id DESC");
 
 				$data['subscriptions'] = $subscription->getList();
 
 				if($data['subscriptions']) {
 					for($i=0; $i<count($data['subscriptions']); $i++) {
-						foreach($data['subscriptions'][$i]['script'] as $privilege => $val) {
+						if($data['subscriptions'][$i]['subscription_status'] == 1) {
+							foreach($data['subscriptions'][$i]['script'] as $privilege => $val) {
 
-							if(in_array($privilege,["leads_DB","properties_DB"])) {
-								if($val == 1) $data['privileges'][$privilege] = 1;
-							}else {
-								$data['privileges'][$privilege] += $val;
+								if(in_array($privilege,["leads_DB","properties_DB"])) {
+									if($val == 1) $data['privileges'][$privilege] = 1;
+								}else {
+									$data['privileges'][$privilege] += $val;
+								}
+								
 							}
-							
 						}
 					}
 				}
