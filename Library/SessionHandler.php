@@ -42,9 +42,12 @@ class SessionHandler extends \Josantonius\Session\Session {
 
 			if(!$this->verifySession()) {
 				/** invalid session */
+				$this->end();
 				\Library\Factory::setMsg("Someone has logged in using this account! This account will be logged out in all devices.","warning");
-				echo getMsg();
-				return $this->end();
+
+				return [
+					"status" => 0
+				];
 			}
 
 			return [
