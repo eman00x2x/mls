@@ -7,8 +7,9 @@ define("DATE_NOW",strtotime("Now"));
 /* define("DATE_NOW",strtotime("2023-11-06")); */
 define("LIST_LIMIT",20);
 
-define("API","http://api.mls/v1/");
+define("API","http://api.mls/");
 define("ADMIN","http://admin.mls/");
+define("WEBADMIN","http://webadmin.mls/");
 define("MANAGE","http://manage.mls/");
 define("WEBDOMAIN","http://mls");
 define("CDN","http://cdn.mls/");
