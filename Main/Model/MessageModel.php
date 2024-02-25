@@ -2,6 +2,8 @@
 
 namespace Main\Model;
 
+use Library\Encrypt;
+
 class MessageModel extends \Main\Model {
 
 	/* content column schema
@@ -13,10 +15,6 @@ class MessageModel extends \Main\Model {
 			]
 		];
 	*/
-
-	private $cipher = "AES-128-CTR";
-	private $key_path = "../key";
-	private $pseudo_bytes_path = "../pseudo_bytes";
 
 	function __construct() {
 		$this->table = "messages";
@@ -267,22 +265,11 @@ class MessageModel extends \Main\Model {
 	}
 
 	function encrypt($message) {
-		return openssl_encrypt($message, $this->cipher, $this->getEncryptionKey(), 0, $this->getEncryptionIV());
+		return Encrypt::getInstance()->encrypt($message);
 	}
 
 	function decrypt($message) {
-		return openssl_decrypt($message, $this->cipher, $this->getEncryptionKey(), 0, $this->getEncryptionIV());
+		return Encrypt::getInstance()->decrypt($message);
 	}
-
-	private function getEncryptionKey() {
-		$file = fopen($this->key_path, "r");
-		return fread($file, filesize($this->key_path));
-	}
-
-	private function getEncryptionIV() {
-		$pseudo_bytes = fopen($this->pseudo_bytes_path, "r");
-		return fread($pseudo_bytes, filesize($this->pseudo_bytes_path));
-	}
-
 
 }

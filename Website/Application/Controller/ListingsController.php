@@ -2,6 +2,8 @@
 
 namespace Website\Application\Controller;
 
+use Library\Encrypt;
+
 class ListingsController extends \Main\Controller {
 
 	private $doc;
@@ -117,6 +119,12 @@ class ListingsController extends \Main\Controller {
 		$listing->column['listing_id'] = $listing_id;
 		$data = $listing->getById();
 
+		$_POST['name'] = Encrypt::getInstance()->encrypt($_POST['name']);
+		$_POST['email'] = Encrypt::getInstance()->encrypt($_POST['email']);
+		$_POST['mobile_no'] = Encrypt::getInstance()->encrypt($_POST['mobile_no']);
+		$_POST['message'] = Encrypt::getInstance()->encrypt( $_POST['message']);
+
+		$message = $this->getModel("Lead");
 		$leads = $this->getModel("Lead");
 		$response = $leads->saveNew($_POST);
 
