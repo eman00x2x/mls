@@ -18,7 +18,7 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 				$html[] = "<div class='row g-2 '>";
 					$html[] = "<div class='col'>";
 						$html[] = "<div class='page-pretitle'>Articles from website</div>";
-						$html[] = "<h1 class='page-title'><i class='ti ti-users me-2'></i> Articles</h1>";
+						$html[] = "<h1 class='page-title'><i class='ti ti-edit me-2'></i> Articles</h1>";
 					$html[] = "</div>";
 
 					$html[] = "<div class='col-auto ms-auto d-print-none'>";

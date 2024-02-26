@@ -15,15 +15,19 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 							$html[] = "<div class='dropdown-menu'>";
 								$html[] = "<a class='dropdown-item ajax' href='".url("AccountsController@edit",["id" => $data['account_id']])."' ><i class='ti ti-edit me-2'></i> Update Account</a>";
 								$html[] = "<a class='dropdown-item ajax' href='".url("UsersController@add",["id" => $data['account_id']])."' ><i class='ti ti-user-plus me-2'></i> New User</a>";
-								$html[] = "<a class='dropdown-item ajax' href='".url("ListingsController@index",["id" => $data['account_id']])."' ><i class='ti ti-building-estate me-2'></i> Manage Property Listings</a>";
 								
-								if(PREMIUM) {
-									$html[] = "<span class='dropdown-item ajax cursor-pointer' data-bs-toggle='modal' data-bs-target='#accountModal' data-url='".url("PremiumsController@premiumSelection",["id" => $data['account_id']])."' ><i class='ti ti-plus me-2'></i> Add Subscription</span>";
+								if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+									$html[] = "<a class='dropdown-item ajax' href='".url("ListingsController@index",["id" => $data['account_id']])."' ><i class='ti ti-building-estate me-2'></i> Manage Property Listings</a>";
+								
+									if(PREMIUM) {
+										$html[] = "<span class='dropdown-item ajax cursor-pointer' data-bs-toggle='modal' data-bs-target='#accountModal' data-url='".url("PremiumsController@premiumSelection",["id" => $data['account_id']])."' ><i class='ti ti-plus me-2'></i> Add Subscription</span>";
+									}
+								
+									if($data['account_type'] != "Administrator") {
+										$html[] = "<a class='dropdown-item text-danger btn-delete' data-bs-toggle='offcanvas' aria-controls='offcanvasEnd' href='#offcanvasEnd'  data-url='".url("AccountsController@delete",["id" => $data['account_id']])."'><i class='ti ti-trash me-2'></i> Delete Account</a>";
+									}
 								}
 								
-								if($data['account_type'] != "Administrator") {
-									$html[] = "<a class='dropdown-item text-danger btn-delete' data-bs-toggle='offcanvas' aria-controls='offcanvasEnd' href='#offcanvasEnd'  data-url='".url("AccountsController@delete",["id" => $data['account_id']])."'><i class='ti ti-trash me-2'></i> Delete Account</a>";
-								}
 							$html[] = "</div>";
 						$html[] = "</div>";
 					$html[] = "</div>";

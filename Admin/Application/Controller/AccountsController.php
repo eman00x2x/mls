@@ -168,12 +168,11 @@ class AccountsController extends \Main\Controller {
 						if($data['subscriptions'][$i]['subscription_status'] == 1) {
 							foreach($data['subscriptions'][$i]['script'] as $privilege => $val) {
 
-								if(in_array($privilege,["leads_DB","properties_DB"])) {
-									if($val == 1) $data['privileges'][$privilege] = 1;
-								}else {
-									$data['privileges'][$privilege] += $val;
+								if(!isset($data['privileges'][$privilege])) {
+									$data['privileges'][$privilege] = 0;
 								}
-								
+
+								$data['privileges'][$privilege] += $val;
 							}
 						}
 					}
@@ -215,11 +214,15 @@ class AccountsController extends \Main\Controller {
 
 			if($data = $accounts->getById()) {
 
-				$reference = $this->getModel("LicenseReference");
-				$reference->column['reference_id'] = $data['reference_id'];
-				$response =	$reference->getById();
+				if($data['reference_id'] != 0) {
+					$reference = $this->getModel("LicenseReference");
+					$reference->column['reference_id'] = $data['reference_id'];
+					$response =	$reference->getById();
 
-				$data['broker_prc_license_id'] = $response['broker_prc_license_id'];
+					$data['broker_prc_license_id'] = $response['broker_prc_license_id'];
+				}else {
+					$data['broker_prc_license_id'] = "";
+				}
 
 				$this->setTemplate("accounts/edit.php");
 				return $this->getTemplate($data);
@@ -251,12 +254,14 @@ class AccountsController extends \Main\Controller {
 		$_POST['user_level'] = 1;
 		$_POST['reference_id'] = 0;
 
-		$reference = $this->getModel("LicenseReference");
-		$response =	$reference->getByLicenseId($_POST['prc_license_id']);
+		if($_POST['broker_prc_license_id'] != 1) {
+			$reference = $this->getModel("LicenseReference");
+			$response =	$reference->getByLicenseId($_POST['broker_prc_license_id']);
 
-		if($response['status'] == 1) {
-			if($response['data']['reference_id'] != 0) {
-				$_POST['reference_id'] = $response['data']['reference_id'];
+			if($response['status'] == 1) {
+				if($response['data']['reference_id'] != 0) {
+					$_POST['reference_id'] = $response['data']['reference_id'];
+				}
 			}
 		}
 
@@ -265,18 +270,21 @@ class AccountsController extends \Main\Controller {
 		
 		if($accountResponse['status'] == 1) {
 
-			$_POST['account_id'] = $response['id'];
+			$_POST['account_id'] = $accountResponse['id'];
 
 			$user = $this->getModel("User");
+			$_POST['status'] = 1;
 			$response = $user->saveNew($_POST);
 
 			if($response['status'] == 1) {
-				if($_POST['reference_id'] == 0) {
-					$license = $this->getModel("LicenseReference");
-					$license->saveNew($_POST);
+				if($_POST['broker_prc_license_id'] != 1) {
+					if($_POST['reference_id'] == 0) {
+						$license = $this->getModel("LicenseReference");
+						$license->saveNew($_POST);
+					}
 				}
 			}else {
-				$user->deleteAccount($respons['account_id']);
+				$accounts->deleteAccount($accountResponse['id']);
 			}
 
 			$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
@@ -333,7 +341,7 @@ class AccountsController extends \Main\Controller {
 				
 				$_POST['logo'] = $accounts->moveUploadedImage($_POST['logo']);
 
-			}
+			}else { $_POST['logo'] = null; }
 			
 			if(isset($_POST['broker_prc_license_id'])) {
 

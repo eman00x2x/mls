@@ -77,12 +77,12 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 		$doc->setTitle("Register Account - MLS");
 
 		$reference = $this->getModel("LicenseReference");
-		$response =	$reference->getByLicenseId($_POST['prc_license_id']);
+		$response =	$reference->getByLicenseId($_POST['broker_prc_license_id']);
 
 		if($response['status'] == 1) {
 
 			if($response['data']['reference_id'] == 0) {
-				$response['data']['prc_license_id'] = $_POST['prc_license_id'];
+				$response['data']['broker_prc_license_id'] = $_POST['broker_prc_license_id'];
 			}
 				
 			$this->setTemplate("registration/register.php");

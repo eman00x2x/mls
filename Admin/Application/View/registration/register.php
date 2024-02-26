@@ -4,7 +4,7 @@
 $html[] = "<input type='hidden' id='save_url' value='".url("RegistrationController@saveNew")."' />";
 
 $html[] = "<input type='hidden' name='reference_id' value='".$data['reference_id']."' />";
-$html[] = "<input type='hidden' name='prc_license_id' value='".$data['prc_license_id']."' />";
+$html[] = "<input type='hidden' name='broker_prc_license_id' value='".$data['broker_prc_license_id']."' />";
 
 $html[] = "<div class='response'></div>";
 

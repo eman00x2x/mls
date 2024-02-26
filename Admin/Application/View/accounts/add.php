@@ -98,7 +98,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Account Type</label>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select name='account_type' id='account_type' class='form-select'>";
-									foreach(array("Administrator","Customer Service","Real Estate Practitioner"/* , "Banks" */) as $label) {
+									foreach(array("Web Admin","Customer Service","Real Estate Practitioner"/* , "Banks" */) as $label) {
 										$sel = "Real Estate Practitioner" == $label ? "selected" : "";
 										$html[] = "<option value='$label' $sel>".ucwords($label)."</option>";
 									}

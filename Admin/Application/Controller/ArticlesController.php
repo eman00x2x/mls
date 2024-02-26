@@ -13,6 +13,11 @@ class ArticlesController extends \Main\Controller {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = SessionController::getInstance()->session->get("user_logged");
+
+		if($this->session['permissions']['web_settings']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have enough permision to access articles","warning");
+			response()->redirect(url("DashboardController@index"));
+		}
 	}
 
 	function index() {
@@ -55,6 +60,11 @@ class ArticlesController extends \Main\Controller {
 	}
 	
 	function edit($id) {
+
+		if($this->session['permissions']['web_settings']['edit']) {
+			$this->getLibrary("Factory")->setMsg("You do not have enough permision to edit articles","warning");
+			response()->redirect(url("DashboardController@index"));
+		}
 		
 		$this->doc->setTitle("Update Article");
 		$this->doc->addScript(CDN."tinymce/tinymce.min.js");

@@ -10,6 +10,7 @@ define("LIST_LIMIT",20);
 define("API","http://api.mls/");
 define("ADMIN","http://admin.mls/");
 define("WEBADMIN","http://webadmin.mls/");
+define("CS","http://cs.mls/");
 define("MANAGE","http://manage.mls/");
 define("WEBDOMAIN","http://mls");
 define("CDN","http://cdn.mls/");
@@ -83,6 +84,18 @@ define("ADMIN_PERMISSIONS",[
     )
 ]);
 
+define("WEBADMIN_PERMISSIONS",[
+    "web_settings" => array (
+ 		"access" => true,
+ 		"edit" => true
+	),
+    "articles" => array (
+		"access" => true,
+		"edit" => true,
+		"delete" => true
+    )
+]);
+
 define("ACCOUNT_PRIVILEGES",[
     "max_post" => 20,
     "max_users" => 1,
@@ -102,5 +115,3 @@ define("PREMIUM_SCRIPTS",[
     "featured_ads" => 0,
 	"handshake_limit" => 1
 ]);
-
-

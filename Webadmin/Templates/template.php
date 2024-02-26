@@ -38,18 +38,25 @@
 										<span class="nav-link-title">Home</span>
 									</a>
                 				</li>
-								<li class="nav-item <?php echo (url()->contains("/articles")) ? "active" : ""; ?>">
-									<a class="nav-link" href="<?php echo url("ArticlesController@index"); ?>">
-										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-building-estate'></i></span>
-										<span class="nav-link-title">Articles</span>
-									</a>
-                				</li>
-								<li class="nav-item <?php echo (url()->contains("/settings")) ? "active" : ""; ?>">
-									<a class="nav-link" href="<?php echo url("SettingsController@webSettings",["page" => "common-settings"]); ?>">
-										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-settings-cog'></i></span>
-										<span class="nav-link-title">Settings</span>
-									</a>
-                				</li>
+
+								<?php if($_SESSION['user_logged']['permissions']['articles']['access']) { ?>
+									<li class="nav-item <?php echo (url()->contains("/articles")) ? "active" : ""; ?>">
+										<a class="nav-link" href="<?php echo url("ArticlesController@index"); ?>">
+											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-edit'></i></span>
+											<span class="nav-link-title">Articles</span>
+										</a>
+									</li>
+								<?php } ?>
+
+								<?php if($_SESSION['user_logged']['permissions']['web_settings']['access']) { ?>
+									<li class="nav-item <?php echo (url()->contains("/settings")) ? "active" : ""; ?>">
+										<a class="nav-link" href="<?php echo url("SettingsController@webSettings",["page" => "common-settings"]); ?>">
+											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-settings-cog'></i></span>
+											<span class="nav-link-title">Settings</span>
+										</a>
+									</li>
+								<?php } ?>
+
 							</ul>
 						</div>
 					</div>

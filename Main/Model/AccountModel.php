@@ -194,7 +194,7 @@ class AccountModel extends \Main\Model {
 
 	function deleteAccount($id,$column = "account_id") {
 
-		$this->account_id = $id;
+		$this->column['account_id'] = $id;
 		$data = $this->getById();
 		$this->removePhoto($data['logo']);
 

@@ -5,7 +5,8 @@ namespace Admin\Application\Controller;
 class SettingsController extends \Main\Controller {
 
 	private static $_instance = null;
-	private $doc;
+	public $doc;
+	public $session;
 	
 	public static function getInstance () {
         if (self::$_instance === null) {
@@ -18,6 +19,7 @@ class SettingsController extends \Main\Controller {
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->session = SessionController::getInstance()->session->get("user_logged");
 	}
 	
 	function index() {
@@ -52,7 +54,10 @@ class SettingsController extends \Main\Controller {
 		$_POST['enable_kyc_verification'] = isset($_POST['enable_kyc_verification']) ? $_POST['enable_kyc_verification'] : 0;
 		$_POST['enable_premium'] = isset($_POST['enable_premium']) ? $_POST['enable_premium'] : 0;
 		$_POST['enable_pin_access'] = isset($_POST['enable_pin_access']) ? $_POST['enable_pin_access'] : 0;
-		$_POST['privileges'] = json_encode($_POST['privileges']);
+		
+		if(isset($_POST['privileges'])) {
+			$_POST['privileges'] = json_encode($_POST['privileges']);
+		}
 
 		$_POST['modified_at'] = DATE_NOW;
 
@@ -71,6 +76,11 @@ class SettingsController extends \Main\Controller {
 	}
 
 	function webSettings() {
+
+		if($this->session['permissions']['web_settings']['access']) {
+			$this->getLibrary("Factory")->setMsg("The maximum number of users for this account has been reached.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("Site Settings");
 

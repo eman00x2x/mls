@@ -21,4 +21,13 @@ class LoginController extends \Admin\Application\Controller\LoginController {
 		return $this;
 	}
 
+	function login() {
+
+		parent::login();
+		$this->setTempalteBasePath(ROOT."Manage");
+		$this->setTemplate("login/login.php");
+		return $this->getTemplate();
+		
+	}
+
 }

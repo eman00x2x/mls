@@ -93,7 +93,17 @@ $html[] = "<form id='form' action='' method='POST'>";
 						$html[] = "<div class='card-body'>";
 							
 							$html[] = "<ul class='list-group list-group-flush'>";
-							foreach(USER_PERMISSIONS as $app => $arr) {
+							if($data['account_type'] == "Administrator") {
+								$permissions = ADMIN_PERMISSIONS;
+							}else if($data['account_type'] == "Customer Service") {
+								$permissions = CS_PERMISSIONS;
+							}else if($data['account_type'] == "Web Admin") {
+								$permissions = WEBADMIN_PERMISSIONS;
+							}else {
+								$permissions = USER_PERMISSIONS;
+							}
+
+							foreach($permissions as $app => $arr) {
 								$html[] = "<li class='list-group-item'>";
 								$html[] = "<h3>".ucwords(str_replace("_"," ",$app))." <span class='small text-muted d-block'></span></h3>";
 								foreach($arr as $access => $val) {

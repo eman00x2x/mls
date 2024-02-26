@@ -8,7 +8,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 		$html[] = "<div class='row g-2 '>";
 			$html[] = "<div class='col'>";
 				$html[] = "<div class='page-pretitle'></div>";
-				$html[] = "<h1 class='page-title'><i class='ti ti-building-estate me-2'></i> Web Settings</h1>";
+				$html[] = "<h1 class='page-title'><i class='ti ti-settings-cog me-2'></i> Web Settings</h1>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";

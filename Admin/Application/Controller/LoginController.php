@@ -2,8 +2,6 @@
 
 namespace Admin\Application\Controller;
 
-use Library\SessionHandler;
-
 class LoginController extends \Main\Controller {
 	
 	private static $_instance = null;
@@ -118,8 +116,24 @@ class LoginController extends \Main\Controller {
 		if($data = $user->getByEmailAndPassword()) {
 
 			if($this->isBlock($data['status'])) {
+
 				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",ADMIN)) && $data['account_type'] != "Administrator") {
 					$this->getLibrary("Factory")->setMsg("Only Administrator can login here.","error");
+					return false;
+				}
+
+				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",WEBADMIN)) && !in_array($data['account_type'], ["Web Admin", "Administrator"]) ) {
+					$this->getLibrary("Factory")->setMsg("Only Web Administrator can login here.","error");
+					return false;
+				}
+
+				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",CS)) && !in_array($data['account_type'], ["Customer Service", "Administrator"]) ) {
+					$this->getLibrary("Factory")->setMsg("Only Customer Service can login here.","error");
+					return false;
+				}
+
+				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",MANAGE)) && !in_array($data['account_type'], ["Real Estate Practitioner", "Administrator"]) ) {
+					$this->getLibrary("Factory")->setMsg("Only Real Estate Practitioner can login here.","error");
 					return false;
 				}
 
@@ -200,11 +214,11 @@ class LoginController extends \Main\Controller {
 	function isBlock($status) {
 
 		switch($status) {
-			case 0:
+			case "inactive":
 				$this->getLibrary("Factory")->setMsg("This user has been deactivated due to an expired subscription.","warning");
 				return false;
 				break;
-			case 2:
+			case "banned":
 				$this->getLibrary("Factory")->setMsg("You have been blocked by the system administrator.","warning");
 				return false;
 				break;

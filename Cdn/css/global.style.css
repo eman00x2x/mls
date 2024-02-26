@@ -28,6 +28,10 @@ input {
 	width:10px;
 }
 
+.page-pretitle {
+	margin-bottom: .25rem;
+}
+
 .photo-preview {
 	margin: 0 auto;
 	height: 200px;

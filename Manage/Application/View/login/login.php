@@ -42,9 +42,9 @@ $html[] = "<div class='d-flex flex-column'>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 
-			/* $html[] = "<div class='text-center text-secondary mt-3'>";
+			$html[] = "<div class='text-center text-secondary mt-3'>";
 				$html[] = "Don't have account yet? <a href='".url("/register")."' tabindex='-1'>Sign up</a>";
-			$html[] = "</div>"; */
+			$html[] = "</div>";
 
 		$html[] = "</div>";
 	$html[] = "</div>";

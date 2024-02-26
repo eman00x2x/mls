@@ -78,13 +78,16 @@ class UsersController extends \Main\Controller {
 
 		if($data) {
 
-			$subscription = $this->getModel("AccountSubscription");
-			$subscription->column['account_id'] = $id;
-			$data['privileges'] = $subscription->getSubscription();
+			if(!in_array($data['account_type'],["Administrator","Customer Service", "Web Admin"])) {
+				$subscription = $this->getModel("AccountSubscription");
+				$subscription->column['account_id'] = $id;
+				$data['privileges'] = $subscription->getSubscription();
 
-			if($data['total_users'] >= $data['privileges']['max_users'] && !in_array($data['account_type'],["Administrator","Customer Service"])) {
-				$this->getLibrary("Factory")->setMsg("The maximum number of users for this account has been reached.","error");
-				response()->redirect(url("AccountsController@view",["id" => $data['account_id']]));
+				if($data['total_users'] >= $data['privileges']['max_users']) {
+					$this->getLibrary("Factory")->setMsg("The maximum number of users for this account has been reached.","error");
+					response()->redirect(url("AccountsController@view",["id" => $data['account_id']]));
+				}
+
 			}
 
 			if($data['logo'] == "") {
