@@ -2,13 +2,17 @@
 
 namespace Admin\Application\Controller;
 
+use \Admin\Application\Controller\SessionController;
+
 class ArticlesController extends \Main\Controller {
 	
-	private $doc;
+	public $doc;
+	public $session;
 	
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->session = SessionController::getInstance()->session->get("user_logged");
 	}
 
 	function index() {
@@ -30,24 +34,21 @@ class ArticlesController extends \Main\Controller {
 		$article->page['target'] = url("ArticlesController@index");
 		$article->page['uri'] = (isset($uri) ? $uri : []);
 		
-		$data['articles'] = $article->getList();
-
-		if($data['articles']) {
-
-		}
+		$data = $article->getList();
 
 		$this->setTemplate("articles/articles.php");
 		return $this->getTemplate($data,$article);
 		
 	}
 
-	function add($id) {
+	function add() {
 		
 		$this->doc->setTitle("Update Article");
-		$doc->addScript(CDN."js/photo-uploader.js");
+		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
+		$this->doc->addScript(CDN."js/photo-uploader.js");
 
 		$this->setTemplate("articles/add.php");
-		return $this->getTemplate($data);
+		return $this->getTemplate();
 		
 		$this->response(404);
 		
@@ -56,7 +57,8 @@ class ArticlesController extends \Main\Controller {
 	function edit($id) {
 		
 		$this->doc->setTitle("Update Article");
-		$doc->addScript(CDN."js/photo-uploader.js");
+		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
+		$this->doc->addScript(CDN."js/photo-uploader.js");
 
 		$article = $this->getModel("Article");
 		$article->column['article_id'] = $id;
@@ -76,13 +78,16 @@ class ArticlesController extends \Main\Controller {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
 
-		$_POST['name'] = sanitize($_POST['title']);
+		$article = $this->getModel("Article");
 
-		if(isset($_POST['banner'])) {
-			$_POST['banner'] = $user->moveUploadedImage($_POST['banner']);
+		$_POST['name'] = sanitize($_POST['title']);
+		$_POST['created_by'] = $this->session['name'];
+		$_POST['created_at'] = DATE_NOW;
+
+		if(isset($_POST['banner']) && $_POST['banner'] != "") {
+			$_POST['banner'] = $article->moveUploadedImage($_POST['banner']);
 		}
 
-		$article = $this->getModel("Article");
 		$response = $article->saveNew($_POST);
 		
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);

@@ -69,7 +69,8 @@ Router::get('/transactions/{id}/delete', 'TransactionsController@delete', ['as' 
 
 /** ADMINISTRATION ROUTES */
 Router::get('/settings/{page}', 'SettingsController@index', ['as' => 'settings'])->where([ 'page' => '[\w\-\=]+' ]);
-Router::post('/settings/saveUpdate', 'SettingsController@saveUpdate', ['as' => 'settings'])->where([ 'page' => '[\w\-\=]+' ]);
+Router::get('/web-settings/{page}', 'SettingsController@webSettings', ['as' => 'webSettings'])->where([ 'page' => '[\w\-\=]+' ]);
+Router::post('/settings/saveUpdate', 'SettingsController@saveUpdate', ['as' => 'saveUpdate'])->where([ 'page' => '[\w\-\=]+' ]);
 
 Router::get('/experiment', 'AdministrationController@experiment', ['as' => 'experiment']);
 Router::get('/administration', 'AdministrationController@index', ['as' => 'administration']);

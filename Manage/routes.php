@@ -24,7 +24,7 @@ Router::post(ALIAS.'/account/uploadPhoto', 'AccountsController@uploadPhoto', ['a
 /** USERS ROUTES */
 Router::get(ALIAS.'/account/users', 'UsersController@index', ['as' => 'users']);
 Router::get(ALIAS.'/account/user/new', 'UsersController@new', ['as' => 'userAdd']);
-Router::get(ALIAS.'/account/user/{id}/changePassword', 'UsersController@changePassword', ['as' => 'changePassword'])->where([ 'id' => '[0-9]+' ]);
+Router::get(ALIAS.'/account/user/changePassword', 'UsersController@changePassword', ['as' => 'changePassword']);
 Router::get(ALIAS.'/account/{id}/user/{user_id}/edit', 'UsersController@edit', ['as' => 'userEdit'])->where([ 'id' => '[0-9]+', 'user_id' => '[0-9]+' ]);
 Router::get(ALIAS.'/account/{id}/user/{user_id}/delete', 'UsersController@delete', ['as' => 'userDelete'])->where([ 'id' => '[0-9]+', 'user_id' => '[0-9]+' ]);
 

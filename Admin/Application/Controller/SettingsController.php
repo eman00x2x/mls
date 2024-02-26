@@ -69,5 +69,18 @@ class SettingsController extends \Main\Controller {
 		);
 	
 	}
+
+	function webSettings() {
+
+		$this->doc->setTitle("Site Settings");
+
+		$settings = $this->getModel("Setting");
+		$settings->column['id'] = 1;
+		$data = $settings->getById();
+
+		$this->setTemplate("settings/webSettings.php");
+		return $this->getTemplate($data, $settings);
+
+	}
 	
 }

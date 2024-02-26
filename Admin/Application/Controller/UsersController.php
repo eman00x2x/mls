@@ -2,16 +2,22 @@
 
 namespace Admin\Application\Controller;
 
+use \Admin\Application\Controller\SessionController;
+
 class UsersController extends \Main\Controller {
+
+	public $doc;
+	public $session;
 
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
+		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->session = SessionController::getInstance()->session->get("user_logged");
 	}
 	
 	function index() {
 
-		$doc = $this->getLibrary("Factory")->getDocument();
-		$doc->setTitle("Account Users");
+		$this->doc->setTitle("Account Users");
 		
 		if(isset($_REQUEST['search'])) {
 			$filters[] = " (username LIKE '%".$_REQUEST['search']."%' OR name LIKE '%".$_REQUEST['search']."%')";
@@ -39,8 +45,8 @@ class UsersController extends \Main\Controller {
 	
 	function view($account_id, $id) {
 
-		$doc = $this->getLibrary("Factory")->getDocument();
-		$doc->setTitle("View User");
+		
+		$this->doc->setTitle("View User");
 		
 		if($id) {
 		
@@ -60,10 +66,10 @@ class UsersController extends \Main\Controller {
 	
 	function add($id) {
 
-		$doc = $this->getLibrary("Factory")->getDocument();
-		$doc->addScript(CDN."js/photo-uploader.js");
+		
+		$this->doc->addScript(CDN."js/photo-uploader.js");
 
-		$doc->setTitle("Add New User");
+		$this->doc->setTitle("Add New User");
 
 		$accounts = $this->getModel("Account");
 		$accounts->select(" *, (SELECT COUNT(*) FROM #__users WHERE account_id = $id) as total_users");
@@ -96,15 +102,15 @@ class UsersController extends \Main\Controller {
 	function userEdit($id) {
 		return $this->edit($_SESSION['user_logged']['account_id'], $id); 
 	}
-	
+
 	function edit($account_id, $id) {
 
-		$doc = $this->getLibrary("Factory")->getDocument();
-		$doc->setTitle("Update User");
+		
+		$this->doc->setTitle("Update User");
 		
 		if($id) {
 
-			$doc->addScript(CDN."js/photo-uploader.js");
+			$this->doc->addScript(CDN."js/photo-uploader.js");
 			
 			$table['user'] = $this->getModel("User");
 			$table['user']->column['user_id'] = $id;
@@ -120,6 +126,19 @@ class UsersController extends \Main\Controller {
 
 		$this->response(404);
 		
+	}
+
+	function changePassword($id, $account_id) {
+
+		$this->doc->setTitle("Change Password");
+
+		$user = $this->getModel("User");
+		$user->column['user_id'] = $id;
+		$user->and(" account_id = ". $account_id);
+		$data = $user->getById();
+
+		$this->setTemplate("users/changePassword.php");
+		return $this->getTemplate($data,$user);
 	}
 	
 	function saveNew($account_id) {
@@ -165,13 +184,14 @@ class UsersController extends \Main\Controller {
 
 			$user = $this->getModel("User");
 			$user->column['user_id'] = $user_id;
+			$user->where(" account_id = $account_id ");
 			$data = $user->getById();
 			
 			if(isset($_POST['permissions'])) {
 				$_POST['permissions'] = json_encode($_POST['permissions']);
 			}
 
-			if($_POST['photo'] != $data['photo']) {
+			if(isset($_POST['photo']) && $_POST['photo'] != $data['photo']) {
 				/* remove old logo */
 
 				$photo_url = explode("/", $data['photo']);

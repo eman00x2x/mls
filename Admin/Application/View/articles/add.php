@@ -50,7 +50,7 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 
 						$html[] = "<div class='card-body'>";
 
-							$html[] = "<div class='text-center bg-white mb-3' style='width:200px;'>";
+							$html[] = "<div class='text-center bg-white mb-5'>";
 								$html[] = "<input type='hidden' name='banner' class='banner' id='banner' class='form-control' value='' />";
 								$html[] = "<span class='avatar photo-preview mb-1 w-100 mb-3' style='background-image: url(".CDN."images/blank-profile.png)'></span>";
 								$html[] = "<small>Click to Upload Banner</small>";

@@ -49,18 +49,35 @@ class Middleware implements IMiddleware {
 
 		$template = "templates/login.template.php";
 
-		
-		if($request->user['status'] == 0) {
+		if(url()->contains("/2-step-verification-code")) {
 
-			Router::request()->setMethod('get');
-			Router::request()->setRewriteUrl(url('/'));
+			Router::get('/2-step-verification-code', 'LoginController@twoStepVerificationCode');
+			
+		}else if(url()->contains("/resetPassword")) {
 
-			Router::get('/', 'LoginController@login');
-			Router::post('/', 'LoginController@login');
+			Router::get('/resetPassword', 'LoginController@resetPassword', ['as' => 'resetPassword']);
+			Router::post('/resetPassword', 'LoginController@saveNewPassword');
+			
+		} else if(url()->contains("/forgotPassword")) {
+
+			Router::get('/forgotPassword', 'LoginController@forgotPassword', ['as' => 'forgotPassword']);
+			Router::post('/forgotPassword', 'LoginController@sendPasswordResetLink');
 
 		}else {
-			require_once('routes.php');
-			$template = "templates/template.php";
+		
+			if($request->user['status'] == 0) {
+
+				Router::request()->setMethod('get');
+				Router::request()->setRewriteUrl(url('/'));
+
+				Router::get('/', 'LoginController@login');
+				Router::post('/', 'LoginController@login');
+
+			}else {
+				require_once('routes.php');
+				$template = "templates/template.php";
+			}
+
 		}
 
 		Router::error(function(Request $request, \Exception $exception) {
