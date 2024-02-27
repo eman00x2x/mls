@@ -54,7 +54,7 @@
 									</li>
 								<?php } ?>
 								<li class="nav-item <?php echo (url()->contains("/settings")) ? "active" : ""; ?>">
-									<a class="nav-link" href="<?php echo url("SettingsController@index",["page" => "common-settings"]); ?>">
+									<a class="nav-link" href="<?php echo url("SettingsController@index",["page" => "system-settings"]); ?>">
 										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-settings-cog'></i></span>
 										<span class="nav-link-title">Settings</span>
 									</a>

@@ -86,6 +86,10 @@ define("ADMIN_PERMISSIONS",[
 		"edit" => (boolean) true,
 		"delete" => (boolean) true
     ),
+	"web_settings" => array (
+ 		"access" => (boolean) true,
+ 		"edit" => (boolean) true
+	),
     "settings" => array (
 		"access" => (boolean) true,
 		"edit" => (boolean) true

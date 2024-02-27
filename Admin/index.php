@@ -99,7 +99,6 @@ class Middleware implements IMiddleware {
     }
 }
 
-
 $middleWare = new \Middleware();
 $middleWare->handle(new Request());
 

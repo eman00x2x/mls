@@ -82,6 +82,8 @@ class SettingsController extends \Main\Controller {
 
 	function webSettings() {
 
+		debug($this->session['permissions']);
+		
 		if(!$this->session['permissions']['web_settings']['access']) {
 			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
 			response()->redirect(url("DashboardController@index"));

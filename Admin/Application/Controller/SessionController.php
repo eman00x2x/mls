@@ -129,7 +129,7 @@ class SessionController extends \Main\Controller {
 		$account = $this->getModel("Account");
 		$account->column['account_id'] = $session['account_id'];
 		$data = $account->getById();
-		
+
 		$subscription = $this->getModel("AccountSubscription");
 		$subscription->column['account_id'] = $session['account_id'];
 		$data['privileges'] = $subscription->getSubscription();
