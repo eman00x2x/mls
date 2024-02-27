@@ -11,8 +11,8 @@ if(isset($_SESSION['user_logged']['permissions']['account']['access'])) {
 	$html[] = "</form>";
 }
 
-$html[] = "<div class='response'>";
-	$html[] = "<div class='container-xl'>";
+$html[] = "<div class='container-xl'>";
+	$html[] = "<div class='response'>";
 		$html[] = getMsg();
 	$html[] = "</div>";
 $html[] = "</div>";

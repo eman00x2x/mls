@@ -1,7 +1,7 @@
 <?php
 
-$html[] = "<div class='response'>";
-	$html[] = "<div class='container-xl'>";
+$html[] = "<div class='container-xl'>";
+	$html[] = "<div class='response'>";
 		$html[] = getMsg();
 	$html[] = "</div>";
 $html[] = "</div>";
@@ -138,7 +138,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 												$html[] = "<div class='row g-2 mb-3'>";
 													$html[] = "<label class='col-form-label col-3 mb-0 text-end'>$privileges</label>";
 													$html[] = "<div class='col'>";
-														$html[] = "<input type='text' name='privileges[$privileges]' class='form-control' value='".$data['privileges'][$privileges]."' placeholder='".DEFINITION[$privileges]."' />";
+														$html[] = "<input type='text' name='privileges[$privileges]' class='form-control' value='".(isset($data['privileges'][$privileges]) ? $data['privileges'][$privileges] : null)."' placeholder='".DEFINITION[$privileges]."' />";
 														$html[] = "<small class='form-hint'>".DEFINITION[$privileges]."</small>";
 													$html[] = "</div>";
 												$html[] = "</div>";

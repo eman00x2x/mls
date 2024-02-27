@@ -41,6 +41,24 @@ class SettingsController extends \Main\Controller {
 
 	}
 
+	function webSettings() {
+
+		if(!$this->session['permissions']['web_settings']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
+
+		$this->doc->setTitle("Site Settings");
+
+		$settings = $this->getModel("Setting");
+		$settings->column['id'] = 1;
+		$data = $settings->getById();
+
+		$this->setTemplate("settings/webSettings.php");
+		return $this->getTemplate($data, $settings);
+
+	}
+
 	function getConfig() {
 
 		$settings = $this->getModel("Setting");
@@ -60,9 +78,10 @@ class SettingsController extends \Main\Controller {
 		$_POST['enable_premium'] = isset($_POST['enable_premium']) ? $_POST['enable_premium'] : 0;
 		$_POST['enable_pin_access'] = isset($_POST['enable_pin_access']) ? $_POST['enable_pin_access'] : 0;
 		
-		if(isset($_POST['privileges'])) {
-			$_POST['privileges'] = json_encode($_POST['privileges']);
-		}
+		if(isset($_POST['privileges'])) { $_POST['privileges'] = json_encode($_POST['privileges']); }
+		if(isset($_POST['paypal_credentials'])) { $_POST['paypal_credentials'] = json_encode($_POST['paypal_credentials']); }
+		if(isset($_POST['contact_info'])) { $_POST['contact_info'] = json_encode($_POST['contact_info']); }
+		if(isset($_POST['property_tags'])) { $_POST['property_tags'] = json_encode(explode(", ",$_POST['property_tags'])); }
 
 		$_POST['modified_at'] = DATE_NOW;
 
@@ -80,24 +99,4 @@ class SettingsController extends \Main\Controller {
 	
 	}
 
-	function webSettings() {
-
-		debug($this->session['permissions']);
-		
-		if(!$this->session['permissions']['web_settings']['access']) {
-			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
-			response()->redirect(url("DashboardController@index"));
-		}
-
-		$this->doc->setTitle("Site Settings");
-
-		$settings = $this->getModel("Setting");
-		$settings->column['id'] = 1;
-		$data = $settings->getById();
-
-		$this->setTemplate("settings/webSettings.php");
-		return $this->getTemplate($data, $settings);
-
-	}
-	
 }

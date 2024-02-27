@@ -10,8 +10,8 @@ $html[] = "<style type='text/css'>";
 	}";
 $html[] = "</style>";
 
-$html[] = "<div class='response'>";
-	$html[] = "<div class='container-xl'>";
+$html[] = "<div class='container-xl'>";
+	$html[] = "<div class='response'>";
 		$html[] = getMsg();
 	$html[] = "</div>";
 $html[] = "</div>";
