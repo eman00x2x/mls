@@ -99,7 +99,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 										}
 										$html[] = "</select>";
 									}else {
-										$html[] = "<input type='text' name='account_type' id='account_type' value='".$data['account_type']."' class='form-control-plaintext'  />";
+										$html[] = "<input type='text' value='".$data['account_type']."' class='form-control-plaintext'  />";
 									}
 									
 								$html[] = "</div>";
@@ -122,17 +122,19 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
-							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Status</label>";
-								$html[] = "<div class='col-sm-9'>";
-									$html[] = "<select name='status' id='status' class='form-select'>";
-									foreach(array("active","banned") as $label) {
-										$sel = $data['status'] == $label ? "selected" : "";
-										$html[] = "<option value='$label' $sel>".ucwords($label)."</option>";
-									}
-									$html[] = "</select>";
+							if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+								$html[] = "<div class='row mb-3'>";
+									$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Status</label>";
+									$html[] = "<div class='col-sm-9'>";
+										$html[] = "<select name='status' id='status' class='form-select'>";
+										foreach(array("active","banned") as $label) {
+											$sel = $data['status'] == $label ? "selected" : "";
+											$html[] = "<option value='$label' $sel>".ucwords($label)."</option>";
+										}
+										$html[] = "</select>";
+									$html[] = "</div>";
 								$html[] = "</div>";
-							$html[] = "</div>";
+							}
 
 						$html[] = "</div>";
 					$html[] = "</div>";

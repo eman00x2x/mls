@@ -74,14 +74,38 @@ $html[] = "<div class='row g-0'>";
 					$html[] = "</div>";
 					
 					$html[] = "<div class='card-body'>";
+
+						if($data['account_type'] == "Administrator") {
+							$permissions = ADMIN_PERMISSIONS;
+						}else if($data['account_type'] == "Customer Service") {
+							$permissions = CS_PERMISSIONS;
+						}else if($data['account_type'] == "Web Admin") {
+							$permissions = WEBADMIN_PERMISSIONS;
+						}else {
+							$permissions = USER_PERMISSIONS;
+						}
 						
 						$html[] = "<ul class='list-group list-group-flush'>";
-						foreach(USER_PERMISSIONS as $app => $arr) {
+						foreach($permissions as $app => $arr) {
 							$html[] = "<li class='list-group-item'>";
 							$html[] = "<h3>".ucwords(str_replace("_"," ",$app))."</h3>";
 							foreach($arr as $access => $val) {
 								$html[] = "<div class=''>";
-									$html[] = "<label class='form-label'>".(isset($data['permissions'][$app][$access]) && $data['permissions'][$app][$access] == "true" ? "<i class='ti ti-check me-1 text-success'></i>" : "<i class='ti ti-ban me-1 text-danger'></i>")." ".(isset(DEFINITION[$app][$access]) ? DEFINITION[$app][$access] : $access)."</label>";
+
+									if($data['account_type'] == "Real Estate Practitioner") {
+										$html[] = "<label class='form-label'>".(isset($data['permissions'][$app][$access]) && $data['permissions'][$app][$access] == "true" ? "<i class='ti ti-check me-1 text-success'></i>" : "<i class='ti ti-ban me-1 text-danger'></i>")." ".(isset(DEFINITION[$app][$access]) ? DEFINITION[$app][$access] : $access)."</label>";
+									}else {
+										$html[] = "<label class='form-label'>";
+										if(isset($data['permissions'][$app][$access]) && $data['permissions'][$app][$access] == "true") {
+											$html[] = "<i class='ti ti-check me-1 text-success'></i> ";
+											$html[] = "".(isset(DEFINITION['ADMIN'][$app][$access]) ? str_replace("Allow this user","This user is allowed",DEFINITION['ADMIN'][$app][$access]) : $access)."";
+										}else {
+											$html[] = "<i class='ti ti-ban me-1 text-danger'></i> ";
+											$html[] = "".(isset(DEFINITION['ADMIN'][$app][$access]) ? str_replace("Allow this user","This user is not allowed",DEFINITION['ADMIN'][$app][$access]) : $access)."";
+										}
+										$html[] = "</label>";
+									}
+
 								$html[] = "</div>";
 							}
 							$html[] = "</li>";

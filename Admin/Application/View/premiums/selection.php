@@ -113,7 +113,7 @@ if(!isset($_REQUEST['premium_id'])) {
 
 	$html[] = "</form>";
 
-	$html[] = "<div class='text-end'>";
+	$html[] = "<div class='text-end mt-3'>";
 		$html[] = "<span class='btn btn-outline-primary btn-save btn-save-subscription'><i class='ti ti-device-floppy me-1'></i> Subscribe to Premium</span>";
 	$html[] = "</div>";
 

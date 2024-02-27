@@ -52,6 +52,7 @@ class UsersController extends \Main\Controller {
 		
 			$table['user'] = $this->getModel("User");
 			$table['user']->column['user_id'] = $id;
+			$table['user']->join = " u JOIN #__accounts a ON u.account_id = a.account_id";
 
 			if($data = $table['user']->getById()) {
 				$this->setTemplate("users/view.php");
@@ -193,8 +194,10 @@ class UsersController extends \Main\Controller {
 			$data = $user->getById();
 			
 			if(isset($_POST['permissions'])) {
-				foreach($_POST['permissions'] as $key => $val) {
-					$_POST['permissions'][$key] = (boolean) $val;
+				foreach($_POST['permissions'] as $key => $arr) {
+					foreach($arr as $arrkey => $val) {
+						$_POST['permissions'][$key][$arrkey] = (boolean) $val;
+					}
 				}
 			}
 

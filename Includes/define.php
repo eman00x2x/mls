@@ -15,7 +15,6 @@ define("WEBDOMAIN","http://mls");
 define("CDN","http://cdn.mls/");
 define("ALIAS","");
 
-
 /* define("API","http://192.168.254.250/mls/Api/");
 define("ADMIN","http://192.168.254.250/mls/Admin/");
 define("MANAGE","http://192.168.254.250/managemls/");
@@ -27,85 +26,97 @@ define("ALIAS","managemls"); */
 define("VRSN","v1.0");
 
 define("USER_PERMISSIONS",[
-	"account" => array (
- 		"access" => (boolean) true
-    ),
-    "users" => array (
- 		"access" => (boolean) true,
+	"account" => [
+		"access" => (boolean) true
+	],
+    "users" => [
+		"access" => (boolean) true,
  		"delete" => (boolean) true
-    ),
-    "leads" => array (
+	],
+    "leads" => [
 		"access" => (boolean) true,
 		"delete" => (boolean) true
-    ),
-    "properties" => array (
+	],
+    "properties" => [
 		"access" => (boolean) true,
 		"delete" => (boolean) true
-    ),
-    "subscriptions" => array (
-		"purchased" => (boolean) true
-    )
+	],
+    "premiums" => [
+		"process_subscription" => (boolean) true
+	],
+	"transactions" => [
+		"access" => (boolean) true
+	]
 ]);
 
 define("CS_PERMISSIONS",[
-    "accounts" => array (
+    "accounts" => [
 		"access" => (boolean) true,
  		"edit" => (boolean) true,
  		"delete" => (boolean) true
-	),
-    "users" => array (
- 		"access" => (boolean) true,
+	],
+    "users" => [
+		"access" => (boolean) true,
  		"edit" => (boolean) true,
  		"delete" => (boolean) true
-	),
-    "properties" => array (
+	],
+    "properties" => [
 		"access" => (boolean) true,
 		"edit" => (boolean) true,
 		"delete" => (boolean) true
-    )
+	],
+	"premiums" => [
+		"process_subscription" => (boolean) true
+	]
 ]);
 
 define("ADMIN_PERMISSIONS",[
-    "accounts" => array (
-		"access" => (boolean) true,
- 		"edit" => (boolean) true,
- 		"delete" => (boolean) true
-	),
-    "users" => array (
- 		"access" => (boolean) true,
- 		"edit" => (boolean) true,
- 		"delete" => (boolean) true
-	),
-    "properties" => array (
+    "accounts" => [
 		"access" => (boolean) true,
 		"edit" => (boolean) true,
 		"delete" => (boolean) true
-    ),
-	"premiums" => array (
+	],
+    "users" => [
 		"access" => (boolean) true,
 		"edit" => (boolean) true,
 		"delete" => (boolean) true
-    ),
-	"web_settings" => array (
- 		"access" => (boolean) true,
- 		"edit" => (boolean) true
-	),
-    "settings" => array (
+	],
+    "properties" => [
+		"access" => (boolean) true,
+		"edit" => (boolean) true,
+		"delete" => (boolean) true
+	],
+	"premiums" => [
+		"access" => (boolean) true,
+		"edit" => (boolean) true,
+		"delete" => (boolean) true,
+		"process_subscription" => (boolean) true
+	],
+	"web_settings" => [
 		"access" => (boolean) true,
 		"edit" => (boolean) true
-    )
+	],
+    "settings" => [
+		"access" => (boolean) true,
+		"edit" => (boolean) true
+	],
+    "articles" => [
+		"access" => (boolean) true,
+		"edit" => (boolean) true,
+		"delete" => (boolean) true
+	]
 ]);
 
 define("WEBADMIN_PERMISSIONS",[
-    "web_settings" => array (
+    "web_settings" => [
  		"access" => (boolean) true,
  		"edit" => (boolean) true
-	),
-    "articles" => array (
+	],
+    "articles" => [
 		"access" => (boolean) true,
 		"edit" => (boolean) true,
 		"delete" => (boolean) true
-    )
+	]
 ]);
 
 define("ACCOUNT_PRIVILEGES",[

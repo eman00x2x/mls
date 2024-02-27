@@ -29,7 +29,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
                             }
 
                             $html[] = "<div class='btn-group dropstart'>";
-                                $html[] = "<span class='btn btn-dark dropdown-toggle' id='transactionDropdownFilter' data-bs-toggle='dropdown' aria-expanded='false'><i class='ti ti-filter me-2'></i> Filter Result</span>";
+                                $html[] = "<span class='btn btn-dark dropdown-toggle' id='transactionDropdownFilter' data-bs-toggle='dropdown' aria-expanded='false'><i class='ti ti-filter me-2'></i> Filter Result </span>";
 
                                 $html[] = "<ul class='dropdown-menu' aria-labelledby='transactionDropdownFilter'>";
                                     $html[] = "<li><a class='dropdown-item' href='".url("TransactionsController@index", $data['account']['account_id'], ["date" => "today"])."'>Today</a></li></li>";

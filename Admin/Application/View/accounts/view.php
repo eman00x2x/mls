@@ -26,7 +26,9 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 									$html[] = "<a class='dropdown-item ajax' href='".url("ListingsController@index",["id" => $data['account_id']])."' ><i class='ti ti-building-estate me-2'></i> Manage Property Listings</a>";
 								
 									if(PREMIUM) {
-										$html[] = "<span class='dropdown-item ajax cursor-pointer' data-bs-toggle='modal' data-bs-target='#accountModal' data-url='".url("PremiumsController@premiumSelection",["id" => $data['account_id']])."' ><i class='ti ti-plus me-2'></i> Add Subscription</span>";
+										if($_SESSION['user_logged']['permissions']['premiums']['process_subscription'] || $data['account_type'] == "Administrator") {
+											$html[] = "<span class='dropdown-item ajax cursor-pointer' data-bs-toggle='modal' data-bs-target='#accountModal' data-url='".url("PremiumsController@premiumSelection",["id" => $data['account_id']])."' ><i class='ti ti-plus me-2'></i> Add Subscription</span>";
+										}
 									}
 								
 									if($data['account_type'] != "Administrator") {
@@ -164,7 +166,6 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<tr>";
 										$html[] = "<th class='text-center w-1'>#</th>";
 										$html[] = "<th>Name</th>";
-										$html[] = "<th>Email</th>";
 										$html[] = "<th>User Type</th>";
 										$html[] = "<th>Date Created</th>";
 										$html[] = "<th class='text-center'><i class='icon-settings'></i></th>";
@@ -176,9 +177,21 @@ $html[] = "<div class='page-body'>";
 									
 									$html[] = "<tr class='row_user_".$data['users'][$i]['user_id']."'>";
 										$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-										$html[] = "<td class='align-middle'><a href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."' class='ajax text-inherit' title='User: ".$data['users'][$i]['name']."'>".$data['users'][$i]['name']."</a></td>";
-										$html[] = "<td class='align-middle'><a href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."'>".$data['users'][$i]['email']."</a></td>";
-										$html[] = "<td class='align-middle'><a href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."'>".($data['users'][$i]['user_level'] == 1 ? "Account Holder" : "Regular User")."</a></td>";
+										$html[] = "<td class='align-middle'>";
+											$html[] = "<div class='d-flex py-1 align-items-center'>";
+												$html[] = "<span class='avatar me-2' style='background-image:url(".$data['users'][$i]['photo'].")'></span>";
+												$html[] = "<div class='flex-fill'>";
+													$html[] = "<div class='font-weight-medium'>";
+														$html[] = "<a class='text-reset text-decoration-none' href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."' class='ajax text-inherit' title='User: ".$data['users'][$i]['name']."'>".$data['users'][$i]['name']."</a>";
+													$html[] = "</div>";
+													$html[] = "<div class='text-secondary'>";
+														$html[] = "<a class='text-reset text-decoration-none' href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."'>".$data['users'][$i]['email']."</a>";
+													$html[] = "</div>";
+												$html[] = "</div>";
+											$html[] = "</div>";
+										$html[] = "</td>";
+
+										$html[] = "<td class='align-middle'><a class='text-reset text-decoration-none' href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."'>".($data['users'][$i]['user_level'] == 1 ? "Account Holder" : "Regular User")."</a></td>";
 										$html[] = "<td class='align-middle'>".date("F d, Y",$data['users'][$i]['date_added'])."</td>";
 										
 										$html[] = "<td class='text-center'>";

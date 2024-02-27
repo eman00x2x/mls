@@ -17,8 +17,11 @@ define("DEFINITION", [
         "access" => "Allow this user to access the list of real estate properties posted in your account.",
         "delete" => "Allow this user to permanently delete a real estate property posted in your account."
     ],
-    "subscriptions" => [
-        "purchased" => "Allow this user to purchase a subscription for your account.",
+    "premiums" => [
+        "process_subscription" => "Allow this user to purchase a subscription for your account.",
+    ],
+    "transactions" => [
+        "access" => "Allow this user to access the list of subscription purchase."
     ],
 
     /** ACCOUNT ACCESS */
@@ -54,7 +57,8 @@ define("DEFINITION", [
         "premiums" => [
             "access" => "Allow this user to access the Premiums.",
             "edit" => "Allow this user to update the Premium settings",
-            "delete" => "Allow this user to permanently delete a Premium."
+            "delete" => "Allow this user to permanently delete a Premium.",
+            "process_subscription" => "Allow this user to process a Premium Subscription for other accounts."
         ],
         "settings" => [
             "access" => "Allow this user to access the Settings of the system.",
@@ -66,7 +70,8 @@ define("DEFINITION", [
         ],
          "articles" => [
             "access" => "Allow this user to access and create Articles and post to website.",
-            "edit" => "Allow this user to update the Articles posted in website."
+            "edit" => "Allow this user to update the Articles posted in website.",
+            "delete" => "Allow this user to permanently delete an Articles posted in website."
         ]
     ]
 

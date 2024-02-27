@@ -149,7 +149,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 											if($data['account_type'] == "Real Estate Practitioner") {
 												$html[] = "<label class='form-check-label' for='flexSwitchCheckDefault_".$app."_".$access."'>".(isset(DEFINITION[$app][$access]) ? DEFINITION[$app][$access] : $access)."</label>";
 											}else {
-												$html[] = "<label class='form-check-label' for='flexSwitchCheckDefault_".$app."_".$access."'>".(isset(DEFINITION['Admin'][$app][$access]) ? DEFINITION['Admin'][$app][$access] : $access)."</label>";
+												$html[] = "<label class='form-check-label' for='flexSwitchCheckDefault_".$app."_".$access."'>".(isset(DEFINITION['ADMIN'][$app][$access]) ? DEFINITION['ADMIN'][$app][$access] : $access)."</label>";
 											}
 
 										$html[] = "</div>";
