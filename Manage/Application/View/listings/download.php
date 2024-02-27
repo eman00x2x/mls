@@ -26,6 +26,12 @@ $html[] = "<style type=\"text/css\">
 }
 </style>";
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<page style=''>";
     $html[] = "<div style='line-height:1.5;'>";
 

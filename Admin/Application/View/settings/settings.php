@@ -1,5 +1,11 @@
 <?php
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<input type='hidden' id='save_url' value='".url("SettingsController@saveUpdate")."' />";
 
 $html[] = "<div class='page-header d-print-none text-white'>";
@@ -25,10 +31,6 @@ $html[] = "</div>";
 
 $html[] = "<div class='page-body mb-5 pb-5'>";
 	$html[] = "<div class='container-xl'>";
-
-		$html[] = "<div class='response'>";
-			$html[] = getMsg();
-		$html[] = "</div>";
 
 		$html[] = "<div class='card'>";
             $html[] = "<div class='row g-0'>";

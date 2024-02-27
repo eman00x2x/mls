@@ -1,10 +1,9 @@
 <?php
 defined("ACCESS")or die("Restricted page!");
 
-date_default_timezone_set("Asia/Kuala_Lumpur");
+date_default_timezone_set("Asia/Manila");
 
 define("DATE_NOW",strtotime("Now"));
-/* define("DATE_NOW",strtotime("2023-11-06")); */
 define("LIST_LIMIT",20);
 
 define("API","http://api.mls/");
@@ -29,70 +28,79 @@ define("VRSN","v1.0");
 
 define("USER_PERMISSIONS",[
 	"account" => array (
- 		"access" => true
+ 		"access" => (boolean) true
     ),
     "users" => array (
- 		"access" => true,
- 		"delete" => true
+ 		"access" => (boolean) true,
+ 		"delete" => (boolean) true
     ),
     "leads" => array (
-		"access" => true,
-		"delete" => true
+		"access" => (boolean) true,
+		"delete" => (boolean) true
     ),
     "properties" => array (
-		"access" => true,
-		"delete" => true
+		"access" => (boolean) true,
+		"delete" => (boolean) true
     ),
     "subscriptions" => array (
-		"purchased" => true
+		"purchased" => (boolean) true
     )
 ]);
 
 define("CS_PERMISSIONS",[
     "accounts" => array (
-		"access" => true,
- 		"edit" => true,
- 		"delete" => false
+		"access" => (boolean) true,
+ 		"edit" => (boolean) true,
+ 		"delete" => (boolean) true
 	),
     "users" => array (
- 		"access" => true,
- 		"edit" => true,
- 		"delete" => false
+ 		"access" => (boolean) true,
+ 		"edit" => (boolean) true,
+ 		"delete" => (boolean) true
 	),
     "properties" => array (
-		"access" => true,
-		"edit" => true,
-		"delete" => true
+		"access" => (boolean) true,
+		"edit" => (boolean) true,
+		"delete" => (boolean) true
     )
 ]);
 
 define("ADMIN_PERMISSIONS",[
     "accounts" => array (
-		"access" => true,
- 		"edit" => true,
- 		"delete" => true
+		"access" => (boolean) true,
+ 		"edit" => (boolean) true,
+ 		"delete" => (boolean) true
 	),
     "users" => array (
- 		"access" => true,
- 		"edit" => true,
- 		"delete" => true
+ 		"access" => (boolean) true,
+ 		"edit" => (boolean) true,
+ 		"delete" => (boolean) true
 	),
     "properties" => array (
-		"access" => true,
-		"edit" => true,
-		"delete" => true
+		"access" => (boolean) true,
+		"edit" => (boolean) true,
+		"delete" => (boolean) true
+    ),
+	"premiums" => array (
+		"access" => (boolean) true,
+		"edit" => (boolean) true,
+		"delete" => (boolean) true
+    ),
+    "settings" => array (
+		"access" => (boolean) true,
+		"edit" => (boolean) true
     )
 ]);
 
 define("WEBADMIN_PERMISSIONS",[
     "web_settings" => array (
- 		"access" => true,
- 		"edit" => true
+ 		"access" => (boolean) true,
+ 		"edit" => (boolean) true
 	),
     "articles" => array (
-		"access" => true,
-		"edit" => true,
-		"delete" => true
+		"access" => (boolean) true,
+		"edit" => (boolean) true,
+		"delete" => (boolean) true
     )
 ]);
 

@@ -24,6 +24,11 @@ class SettingsController extends \Main\Controller {
 	
 	function index() {
 
+		if(!$this->session['permissions']['settings']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
+
 		$this->doc->setTitle("Site Settings");
 		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
 
@@ -77,8 +82,8 @@ class SettingsController extends \Main\Controller {
 
 	function webSettings() {
 
-		if($this->session['permissions']['web_settings']['access']) {
-			$this->getLibrary("Factory")->setMsg("The maximum number of users for this account has been reached.","error");
+		if(!$this->session['permissions']['web_settings']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
 			response()->redirect(url("DashboardController@index"));
 		}
 

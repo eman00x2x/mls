@@ -1,5 +1,11 @@
 <?php
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<div class='row g-0'>";
 	$html[] = "<div class='col-lg-6 col-md-6 col-sm-12 col-12 m-auto '>";
 
@@ -24,10 +30,6 @@ $html[] = "<div class='row g-0'>";
 		$html[] = "<div class='page-body'>";
 			$html[] = "<div class='container-xl'>";
 
-				$html[] = "<div class='response'>";
-					$html[] = getMsg();
-				$html[] = "</div>";
-			
 				$html[] = "<div class='card mb-3'>";
 
 					$html[] = "<div class='card-header'>";

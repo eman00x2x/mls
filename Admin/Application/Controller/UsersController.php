@@ -150,8 +150,10 @@ class UsersController extends \Main\Controller {
 
 		$user = $this->getModel("User");
 
-		$_POST['permissions'] = json_encode($_POST['permissions']);
-		
+		foreach($_POST['permissions'] as $key => $val) {
+			$_POST['permissions'][$key] = (boolean) $val;
+		}
+
 		if($_POST['photo'] != $data['photo']) {
 			/* remove old logo */
 
@@ -191,7 +193,9 @@ class UsersController extends \Main\Controller {
 			$data = $user->getById();
 			
 			if(isset($_POST['permissions'])) {
-				$_POST['permissions'] = json_encode($_POST['permissions']);
+				foreach($_POST['permissions'] as $key => $val) {
+					$_POST['permissions'][$key] = (boolean) $val;
+				}
 			}
 
 			if(isset($_POST['photo']) && $_POST['photo'] != $data['photo']) {

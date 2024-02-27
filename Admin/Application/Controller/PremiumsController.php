@@ -5,16 +5,23 @@ namespace Admin\Application\Controller;
 class PremiumsController extends \Main\Controller {
 
 	private $doc;
+	public $session;
 
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->session = SessionController::getInstance()->session->get("user_logged");
 	}
 	
 	function index() {
 
 		if(!PREMIUM) {
 			$this->response(404);
+		}
+
+		if(!$this->session['permissions']['premiums']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
 		}
 
 		$this->doc->setTitle("Premiums");
@@ -80,6 +87,11 @@ class PremiumsController extends \Main\Controller {
 	
 	function view($id) {
 
+		if(!$this->session['permissions']['premiums']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
+
 		$this->doc->setTitle("Premium");
 
 		$premium = $this->getModel("Premium");
@@ -95,6 +107,12 @@ class PremiumsController extends \Main\Controller {
 	}
 	
 	function add() {
+
+		if(!$this->session['permissions']['premiums']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
+
 		$this->doc->setTitle("New Premium");
 
 		$this->setTemplate("premiums/add.php");
@@ -102,6 +120,11 @@ class PremiumsController extends \Main\Controller {
 	}
 	
 	function edit($id) {
+
+		if(!$this->session['permissions']['premiums']['edit']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("Update Premium");
 
@@ -186,6 +209,11 @@ class PremiumsController extends \Main\Controller {
 	}
 	
 	function delete($id) {
+
+		if(!$this->session['permissions']['premiums']['delete']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		if($id) {
 		

@@ -1,5 +1,11 @@
 <?php
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<form action='".url("MessagesController@uploadAttachment")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 	$html[] = "<center>";
 		$html[] = "<input type='file' name='ImageBrowse[]' id='ImageBrowse' multiple='multiple' />";
@@ -46,10 +52,6 @@ $html[] = "<div class='row justify-content-center'>";
 
 		$html[] = "<div class='page-body'>";
 			$html[] = "<div class='container-xl'>";
-
-				$html[] = "<div class='response'>";
-					$html[] = getMsg();
-				$html[] = "</div>";
 
 				$html[] = "<div class='d-flex text-white mb-2 justify-content-between'>";
 					foreach($data['participants'] as $account_data) {

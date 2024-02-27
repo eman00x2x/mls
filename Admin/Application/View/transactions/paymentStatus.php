@@ -1,14 +1,17 @@
 <?php
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<div class='page-body'>";
 	$html[] = "<div class='container-xl'>";
 
         $html[] = "<div class='row justify-content-center'>";
         	$html[] = "<div class='col-md-6 col-12'>";
-				$html[] = "<div class='response'>";
-					$html[] = getMsg();
-				$html[] = "</div>";
-
+				
 				$html[] = "<div class='card'>";
 				
 					$html[] = "<div class='card-body pb-5'>";

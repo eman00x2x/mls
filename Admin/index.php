@@ -43,6 +43,8 @@ class Middleware implements IMiddleware {
     public function handle(Request $request): void 
     {
 
+		
+
 		$request->user = SessionController::getInstance()->monitor();
 		Router::router()->reset();
 
@@ -96,6 +98,7 @@ class Middleware implements IMiddleware {
 
     }
 }
+
 
 $middleWare = new \Middleware();
 $middleWare->handle(new Request());

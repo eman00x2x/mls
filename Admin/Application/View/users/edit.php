@@ -1,5 +1,11 @@
 <?php
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<input type='hidden' id='photo_uploader' value='users' />";
 $html[] = "<form action='".url("UsersController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 	$html[] = "<center>";
@@ -40,11 +46,6 @@ $html[] = "<form id='form' action='' method='POST'>";
 			$html[] = "<div class='page-body'>";
 				$html[] = "<div class='container-xl'>";
 
-					$html[] = "<div class='response'>";
-						$html[] = getMsg();
-					$html[] = "</div>";
-
-				
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-status bg-orange'></div>";
 						$html[] = "<div class='card-header'>";
@@ -144,7 +145,13 @@ $html[] = "<form id='form' action='' method='POST'>";
 									foreach($arr as $access => $val) {
 										$html[] = "<div class='form-check form-switch'>";
 											$html[] = "<input class='form-check-input' type='checkbox' name='permissions[$app][$access]' value='true' id='flexSwitchCheckDefault_".$app."_".$access."' ".(isset($data['permissions'][$app][$access]) && $data['permissions'][$app][$access] == "true" ? "checked" : "").">";
-											$html[] = "<label class='form-check-label' for='flexSwitchCheckDefault_".$app."_".$access."'>".(isset(DEFINITION[$app][$access]) ? DEFINITION[$app][$access] : $access)."</label>";
+											
+											if($data['account_type'] == "Real Estate Practitioner") {
+												$html[] = "<label class='form-check-label' for='flexSwitchCheckDefault_".$app."_".$access."'>".(isset(DEFINITION[$app][$access]) ? DEFINITION[$app][$access] : $access)."</label>";
+											}else {
+												$html[] = "<label class='form-check-label' for='flexSwitchCheckDefault_".$app."_".$access."'>".(isset(DEFINITION['Admin'][$app][$access]) ? DEFINITION['Admin'][$app][$access] : $access)."</label>";
+											}
+
 										$html[] = "</div>";
 									}
 									$html[] = "</li>";

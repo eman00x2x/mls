@@ -1,5 +1,11 @@
 <?php
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<div id='fb-root'></div>";
 $html[] = "<script>";
 	$html[] = "(function(d, s, id) {";
@@ -52,10 +58,6 @@ $html[] = "</div>";
 
 $html[] = "<div class='page-body'>";
 	$html[] = "<div class='container-xl'>";
-
-		$html[] = "<div class='response'>";
-			$html[] = getMsg();
-		$html[] = "</div>";
 
 		$columns = explode(",","listing_id,offer,category,lot_area,floor_area,bedroom,bathroom,parking,address,price");
 

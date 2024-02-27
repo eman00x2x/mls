@@ -1,5 +1,11 @@
 <?php
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<input type='hidden' id='photo_uploader' value='users' />";
 $html[] = "<form action='".url("UsersController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 	$html[] = "<center>";
@@ -42,10 +48,6 @@ $html[] = "<form id='form' action='' method='POST'>";
 			$html[] = "<div class='page-body'>";
 				$html[] = "<div class='container-xl'>";
 
-					$html[] = "<div class='response'>";
-						$html[] = getMsg();
-					$html[] = "</div>";
-			
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-status bg-green'></div>";
 						$html[] = "<div class='card-header'>";
@@ -108,8 +110,14 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<h3>".ucwords(str_replace("_"," ",$app))." <span class='small text-muted d-block'></span></h3>";
 								foreach($arr as $access => $val) {
 									$html[] = "<div class='form-check form-switch'>";
-										$html[] = "<input class='form-check-input' type='checkbox' name='permissions[$app][$access]' value='true' id='flexSwitchCheckDefault_".$app."_".$access."' ".(isset(USER_PERMISSIONS[$app][$access]) && USER_PERMISSIONS[$app][$access] == true ? "checked" : "").">";
-										$html[] = "<label class='form-check-label' for='flexSwitchCheckDefault_".$app."_".$access."'>".(isset(DEFINITION[$app][$access]) ? DEFINITION[$app][$access] : $access)."</label>";
+										$html[] = "<input class='form-check-input' type='checkbox' name='permissions[$app][$access]' value='true' id='flexSwitchCheckDefault_".$app."_".$access."' ".(isset($permissions[$app][$access]) && $permissions[$app][$access] == true ? "checked" : "").">";
+										
+										if($data['account_type'] == "Real Estate Practitioner") {
+											$html[] = "<label class='form-check-label' for='flexSwitchCheckDefault_".$app."_".$access."'>".(isset(DEFINITION[$app][$access]) ? DEFINITION[$app][$access] : $access)."</label>";
+										}else {
+											$html[] = "<label class='form-check-label' for='flexSwitchCheckDefault_".$app."_".$access."'>".(isset(DEFINITION['Admin'][$app][$access]) ? DEFINITION['Admin'][$app][$access] : $access)."</label>";
+										}
+
 									$html[] = "</div>";
 								}
 								$html[] = "</li>";

@@ -132,6 +132,10 @@ class UserModel extends \Main\Model {
 
 			$data['password'] = md5($data['password']);
 
+			if(isset($data['permissions'])) {
+				$data['permissions'] = json_encode($data['permissions']);
+			}
+
 			foreach($data as $key => $val) {
 				$this->column[$key] = $val;
 			}
@@ -204,7 +208,11 @@ class UserModel extends \Main\Model {
 				);
 			}else {
 
-				$this->column['permissions'] = json_encode($this->column['permissions']);
+				if(isset($data['permissions'])) {
+					$data['permissions'] = json_encode($data['permissions']);
+				}else {
+					$this->column['permissions'] = json_encode($this->column['permissions']);
+				}
 
 				foreach($data as $key => $val) {
 					$this->column[$key] = $val;

@@ -9,6 +9,12 @@ $html[] = "<form action='".url("AccountsController@uploadPhoto")."' id='imageUpl
 	$html[] = "</center>";
 $html[] = "</form>";
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<form id='form' action='' method='POST'>";
 
 	$html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
@@ -34,10 +40,6 @@ $html[] = "<form id='form' action='' method='POST'>";
 			/** START PAGE BODY */
 			$html[] = "<div class='page-body'>";
 				$html[] = "<div class='container-xl'>";
-
-					$html[] = "<div class='response'>";
-						$html[] = getMsg();
-					$html[] = "</div>";
 
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-status bg-orange'></div>";

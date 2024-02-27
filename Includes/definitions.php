@@ -32,5 +32,42 @@ define("DEFINITION", [
     "chat_access" => "Gives the user access to Chat Platform",
     "display_ads" => "Total number of display ad this account can create.",
     "featured_ads" => "Total number of featured ad this account can create.",
-    "handshake_limit" => "Maximum number of handshake can initiate."
+    "handshake_limit" => "Maximum number of handshake can initiate.",
+
+    /** USER PERMISSIONS */
+    "ADMIN" => [
+        "accounts" => [
+            "access" => "Allow this user to access the accounts of others.",
+            "edit" => "Allow this user to update the accounts of others.",
+            "delete" => "Allow this user to permanently delete the accounts of others."
+        ],
+        "users" => [
+            "access" => "Allow this user to access the users of others.",
+            "edit" => "Allow this user to update the users of others.",
+            "delete" => "Allow this user to permanently delete the users of others."
+        ],
+        "properties" => [
+            "access" => "Allow this user to access the Properties Posted of others.",
+            "edit" => "Allow this user to update the Properties Posted of others.",
+            "delete" => "Allow this user to permanently delete the Properties Posted of others."
+        ],
+        "premiums" => [
+            "access" => "Allow this user to access the Premiums.",
+            "edit" => "Allow this user to update the Premium settings",
+            "delete" => "Allow this user to permanently delete a Premium."
+        ],
+        "settings" => [
+            "access" => "Allow this user to access the Settings of the system.",
+            "edit" => "Allow this user to update the Settings of the system."
+        ],
+        "web_settings" => [
+            "access" => "Allow this user to access the WEB Settings of the website.",
+            "edit" => "Allow this user to update the WEB Settings of the website."
+        ],
+         "articles" => [
+            "access" => "Allow this user to access and create Articles and post to website.",
+            "edit" => "Allow this user to update the Articles posted in website."
+        ]
+    ]
+
 ]);

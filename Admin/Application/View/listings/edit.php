@@ -10,6 +10,12 @@ $html[] = "<style type='text/css'>";
 	}";
 $html[] = "</style>";
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<input type='hidden' id='save_url' value='".url("ListingsController@saveUpdate", ["id" => $data['listing']['listing_id']])."' />";
 
 $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
@@ -46,10 +52,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 		/** START PAGE BODY */
 		$html[] = "<div class='page-body'>";
 			$html[] = "<div class='container-xl'>";
-
-				$html[] = "<div class='response'>";
-					$html[] = getMsg();
-				$html[] = "</div>";
 
 				$html[] = "<input type='hidden' id='photo_uploader' value='listings' />";
 				$html[] = "<form action='".url("ListingsController@uploadImages", ["id" => $data['listing']['account_id']])."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";

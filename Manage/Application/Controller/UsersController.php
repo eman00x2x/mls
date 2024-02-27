@@ -40,7 +40,8 @@ class UsersController extends \Admin\Application\Controller\UsersController {
 
 	}
 
-	function changePassword($id = null) {
+	function changePassword($id = null, $account_id = null) {
+		$this->setTempalteBasePath(ROOT."Admin");
 		return parent::changePassword($this->session['user_id'], $this->account_id);
 	}
 

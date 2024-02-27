@@ -1,5 +1,11 @@
 <?php
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 	$html[] = "<div class='col-lg-6 col-md-6 col-12 m-auto '>";
 

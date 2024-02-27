@@ -1,5 +1,11 @@
 <?php
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<input type='hidden' id='save_url' value='".url("LeadsController@saveUpdate", ["id" => $data['lead_id']])."' />";
 
 $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
@@ -28,10 +34,6 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 
         $html[] = "<div class='page-body'>";
             $html[] = "<div class='container-xl'>";
-
-                $html[] = "<div class='response'>";
-                    $html[] = getMsg();
-                $html[] = "</div>";
 
                 $html[] = "<form id='form' action='' method='POST'>";
 					$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";

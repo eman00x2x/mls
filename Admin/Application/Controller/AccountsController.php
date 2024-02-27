@@ -5,13 +5,20 @@ namespace Admin\Application\Controller;
 class AccountsController extends \Main\Controller {
 
 	private $doc;
+	public $session;
 
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->session = SessionController::getInstance()->session->get("user_logged");
 	}
 	
 	function index() {
+
+		if(!$this->session['permissions']['accounts']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("Accounts");
 		
@@ -91,6 +98,11 @@ class AccountsController extends \Main\Controller {
 	}
 	
 	function view($account_id) {
+
+		if(!$this->session['permissions']['accounts']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("View Account");
 
@@ -194,14 +206,25 @@ class AccountsController extends \Main\Controller {
 	
 	function add() {
 
+		if(!$this->session['permissions']['accounts']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
+
 		$this->doc->setTitle("New Account");
 		$this->doc->addScript(CDN."js/photo-uploader.js");
 
 		$this->setTemplate("accounts/add.php");
 		return $this->getTemplate();
+
 	}
 	
 	function edit($account_id) {
+
+		if(!$this->session['permissions']['accounts']['edit']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("Update Account");
 
@@ -393,6 +416,11 @@ class AccountsController extends \Main\Controller {
 	}
 	
 	function delete($id) {
+
+		if(!$this->session['permissions']['accounts']['delete']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 		
 		$accounts = $this->getModel("Account");
 		$accounts->column['account_id'] = $id;

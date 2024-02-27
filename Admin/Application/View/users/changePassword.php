@@ -1,5 +1,11 @@
 <?php
 
+$html[] = "<div class='response'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = getMsg();
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<input type='hidden' id='save_url' value='".url("UsersController@saveUpdate",["id" => $data['account_id'], "user_id" => $data['user_id']])."' />";
 
 $html[] = "<form id='form' action='' method='POST'>";
@@ -28,12 +34,6 @@ $html[] = "<form id='form' action='' method='POST'>";
 			$html[] = "<div class='page-body'>";
 				$html[] = "<div class='container-xl'>";
 
-					$html[] = "<div class='response'>";
-						$html[] = getMsg();
-					$html[] = "</div>";
-
-				
-					
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-header'>";
 							$html[] = "<h3 class='card-title text-blue'><i class='ti ti-key me-2'></i> Change Password</h3>";

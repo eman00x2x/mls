@@ -69,7 +69,7 @@ class Message {
 
 		}
 
-		$this->msg = $openTag . $this->tag . " class='" . $class . " alert-dismissible' id='" . $this->id . "'>";
+		$this->msg = $openTag . $this->tag . " class='message " . $class . " alert-dismissible' id='" . $this->id . "'>";
 			$this->msg .= "<div class='d-flex'>";
 				$this->msg .= "<div class=''><i class='$icon me-2' aria-hidden='true'></i></div>";
 				$this->msg .= "<div class=''>";

@@ -169,53 +169,16 @@ input {
 .cursor-zoom-in {cursor: zoom-in;}
 .cursor-zoom-out {cursor: zoom-out;}
 
-
 .response {
 	content: '';
 }
 
 /************** MESSAGE *********************/
 
-.message, .msg {
-	display:block;
-	padding:10px 20px;
-	margin-bottom:20px;
-}
-
-.message p {
-	width:auto;
-	margin-bottom:0;
-	margin-left:60px;
-	margin-top:0;
-	padding:0;
-	color:#555;
-}
-
-.message h2 {
-	margin-top:0;
-	margin-left:60px;
-	margin-bottom:5px;
-	color:#333;
-}
-
-.warning {
-	background:#feffc8 url('../images/warning_48.png') 20px 50% no-repeat;
-	border:1px solid #f1aa2d;
-}
-
-.error {
-	background:#fdcea4 url('../images/stop_48.png') 20px 50% no-repeat;
-	border:1px solid #c44509;
-}
-
-.success {
-	background:#d4f684 url('../images/tick_48.png') 20px 50% no-repeat;
-	border:1px solid #739f1d;
-}
-
-.information {
-	background:#c3e4fd url('../images/info_48.png') 20px 50% no-repeat;
-	border:1px solid #688fdc;
+.message {
+	margin-top: 1rem;
+	margin-bottom: -0.50rem;
+	background: #FFF;
 }
 
 .message:hover {
