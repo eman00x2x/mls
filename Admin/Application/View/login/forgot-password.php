@@ -14,7 +14,7 @@ $html[] = "<div class='d-flex flex-column'>";
 					$html[] = "<h2 class='card-title text-center mb-4'>Forgot Password</h2>";
 					$html[] = "<p class='text-secondary mb-4'>Enter your email address and your password reset link will be emailed to you.</p>";
 
-					$html[] = "<div class='response'>".getMsg()."</div>";
+					$html[] = "<div class='response mb-4'>".getMsg()."</div>";
 
 					$html[] = "<div class='mb-3'>";
 						$html[] = "<label class='form-label'><i class='ti ti-email'></i> Registered email address</label>";

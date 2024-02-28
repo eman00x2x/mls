@@ -22,7 +22,7 @@ $html[] = "<div class='d-flex flex-column'>";
 						if($date_now <= $expire_date) {
 							
 							$html[] = "<div class='card-title'>Reset your password</div>";
-							$html[] = "<div class='response'>";
+							$html[] = "<div class='respons mb-4'>";
 								$html[] = getMsg();
 							$html[] = "</div>";
 							

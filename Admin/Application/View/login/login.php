@@ -13,7 +13,7 @@ $html[] = "<div class='d-flex flex-column'>";
 					$html[] = "<h2 class='h2 text-center mb-4'>Login to your account</h2>";
 					$html[] = "<form class='border-0' action='' method='POST'>";
 
-						$html[] = "<div class='response'>";
+						$html[] = "<div class='response mb-4'>";
 							$html[] = getMsg();
 						$html[] = "</div>";
 
