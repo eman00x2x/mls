@@ -156,7 +156,7 @@ class LoginController extends \Main\Controller {
 
 		$subscription = $this->getModel("AccountSubscription");
 		$subscription->column['account_id'] = $data['account_id'];
-		$data['priviliges'] = $subscription->getSubscription();
+		$data['privileges'] = $subscription->getSubscription();
 
 		return $data;
 	}
