@@ -487,5 +487,23 @@ class AccountsController extends \Main\Controller {
 		$accounts = $this->getModel("Account");
 		return $accounts->uploadPhoto($_FILES['ImageBrowse']);
 	}
+
+	function kycFormProcess($account_id) {
+
+		$account = $this->getModel("Account");
+		$account->column['account_id'] = $account_id;
+		$data = $account->getById();
+
+		if(isset($_REQUEST['step']) && $_REQUEST['step'] == 2) {
+			$this->setTemplate("accounts/kyc/identity.php");
+		}else if(isset($_REQUEST['step']) && $_REQUEST['step'] == 3) {
+			$this->setTemplate("accounts/kyc/final.php");
+		}else {
+			$this->setTemplate("accounts/kyc/step1.php");
+		}
+
+		return $this->getTemplate($data);
+
+	}
 	
 }
