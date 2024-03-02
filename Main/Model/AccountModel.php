@@ -104,6 +104,24 @@ class AccountModel extends \Main\Model {
 				);
 			}else {
 
+				if(isset($data['privileges'])) {
+					$data['privileges'] = json_encode($data['privileges']);
+				}else {
+					$this->column['privileges'] = json_encode($this->column['privileges']);
+				}
+
+				if(isset($data['uploads'])) {
+
+					foreach($data['uploads'] as $key => $val) {
+						$this->column['uploads'][$key] = $val;
+					}
+
+					$data['uploads'] = json_encode($this->column['uploads']);
+
+				}else {
+					$this->column['uploads'] = json_encode($this->column['uploads']);
+				}
+
 				foreach($data as $key => $val) {
 					$this->column[$key] = $val;
 				}
@@ -121,9 +139,9 @@ class AccountModel extends \Main\Model {
 
 	}
 
-	function moveUploadedImage($filename) {
+	function moveUploadedImage($filename, $path = "/images/accounts") {
 
-        $old_dir = ROOT.DS."Cdn".DS."images".DS."temporary".DS.$filename;
+        $old_dir = ROOT."Cdn/images/temporary/".$filename;
 
 		if(file_exists($old_dir)) {
 
@@ -140,15 +158,20 @@ class AccountModel extends \Main\Model {
 
 			$new_filename = $new_name."_".md5(time()).".".$ext;
 		
-			$new_dir = ROOT.DS."Cdn".DS."images".DS."accounts".DS.$new_filename;
-			rename($old_dir,$new_dir);
+			$new_dir = ROOT."Cdn/$path/";
 
-			return CDN."images/accounts/".$new_filename;
+			if(!is_dir($new_dir)) {
+				mkdir($new_dir, 0775, true);
+			}
+
+			rename($old_dir,$new_dir."/".$new_filename);
+
+			return CDN."$path/".$new_filename;
 		}
 
 	}
 
-	function uploadPhoto($data) {
+	function uploadPhoto($data, $path = "/images/accounts") {
 
 		$handle = new \Vendor\Upload\Upload($data);
 
@@ -167,10 +190,10 @@ class AccountModel extends \Main\Model {
 			if ($handle->processed) {
 				return json_encode(array(
 					"status" => 1,
-					"message" => "Logo uploaded successfully",
+					"message" => "Uploaded successfully",
 					"filename" => $handle->file_dst_name,
-					"temp_url" => CDN."/images/temporary/".$handle->file_dst_name,
-					"url" => CDN."/images/accounts/".$handle->file_dst_name
+					"temp_url" => CDN."images/temporary/".$handle->file_dst_name,
+					"url" => CDN."$path/".$handle->file_dst_name
 				));
 			}
 
@@ -178,9 +201,9 @@ class AccountModel extends \Main\Model {
 
 	}
 
-	function removePhoto($filename) {
+	function removePhoto($filename, $path = "/images/accounts") {
 
-		$file = ROOT.DS."Cdn".DS."images".DS."accounts".DS.$filename;
+		$file = ROOT."Cdn".$path."/".$filename;
 		
 		/* check file if exists in main folder */
 		if(file_exists($file)) {

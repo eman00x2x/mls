@@ -66,7 +66,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 							$html[] = "</ul>";
 
 							$html[] = "<div class='text-start'>";
-								$html[] = "<a href='".url("AccountsController@kycFormProcess", null, ["step" => 2])."' class='btn btn-outline-primary'><i class='ti ti-arrow-right me-2'></i> Continue</a>";
+								$html[] = "<a href='".url("AccountsController@kycVerificationForm", null, ["step" => 2])."' class='btn btn-outline-primary'><i class='ti ti-arrow-right me-2'></i> Continue</a>";
 							$html[] = "</div>";
 
 						$html[] = "</div>";

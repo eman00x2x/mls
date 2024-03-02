@@ -1,9 +1,10 @@
 <?php
 
-$html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveNew")."' />";
+$html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveUpdate", ["id" => $data['account_id']])."' />";
 
-$html[] = "<input type='hidden' id='photo_uploader' value='accounts' />";
-$html[] = "<form action='".url("AccountsController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
+$html[] = "<input type='hidden' id='reference_url' value='".url("AccountsController@kycVerificationForm", ["id" => $data['account_id']], ["step" => "3"])."' />";
+$html[] = "<input type='hidden' id='photo_container' value='' />";
+$html[] = "<form action='".url("AccountsController@kycDocsUpload", ["id" => $data['account_id']])."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 	$html[] = "<center>";
 		$html[] = "<input type='file' name='ImageBrowse' id='ImageBrowse' />";
 	$html[] = "</center>";
@@ -49,14 +50,17 @@ $html[] = "<form id='form' action='' method='POST'>";
 
 							$html[] = "<hr />";
 
+							$html[] = "<input type='hidden' class='photo-selfie' name='uploads[kyc][selfie]' value='' />";
+							$html[] = "<input type='hidden' class='photo-id' name='uploads[kyc][id]' value='' />";
+
 							$html[] = "<div class='d-flex mb-3 gap-4'>";
 								$html[] = "<div class=''>";
-									$html[] = "<span class='avatar avatar-xxl photo-preview' style='background-image: url(".CDN."images/blank-profile.png)'></span>";
+									$html[] = "<span class='avatar avatar-xxl photo-preview selfie-container' style='background-image: url(".CDN."images/blank-profile.png)' data-photo-container='selfie-container'></span>";
 									$html[] = "<small class='d-block mt-2 text-center fw-bold'>UPLOAD SELFIE HERE</small>";
 								$html[] = "</div>";
 
 								$html[] = "<div class=''>";
-									$html[] = "<span class='avatar avatar-xxl photo-preview' style='width:300px; background-image: url(".CDN."images/reb-sample-license.jpg)'></span>";
+									$html[] = "<span class='avatar avatar-xxl photo-preview id-container' style='width:300px; background-image: url(".CDN."images/reb-sample-license.jpg)' data-photo-container='id-container'></span>";
 									$html[] = "<small class='d-block mt-2 text-center fw-bold'>UPLOAD REAL ESTATE<br/> BROKER LICENSE (FRONT) HERE</small>";
 								$html[] = "</div>";
 							$html[] = "</div>";

@@ -332,7 +332,7 @@ class AccountsController extends \Main\Controller {
 	}
 	
 	function saveUpdate($account_id) {
-	
+
 		parse_str(file_get_contents('php://input'), $_POST);
 
 		if($account_id) {
@@ -343,12 +343,6 @@ class AccountsController extends \Main\Controller {
 			
 			if(isset($_POST['address'])) {
 				$_POST['address'] = (isset($_POST['street']) ? $_POST['street'] : "")." ".(isset($_POST['city']) ? $_POST['city'] : "")." ".(isset($_POST['province']) ? $_POST['province'] : "");
-			}
-
-			if(isset($_POST['privileges'])) {
-				$_POST['privileges'] = json_encode($_POST['privileges']);
-			}else {
-				$_POST['privileges'] = json_encode($data['privileges']);
 			}
 
 			if(isset($_POST['logo']) && $_POST['logo'] != $data['logo']) {
@@ -390,6 +384,21 @@ class AccountsController extends \Main\Controller {
 					"photo" => $_POST['logo'],
 					"name" => $_POST['firstname']." ".$_POST['lastname']
 				));
+			}
+
+			if(isset($_POST['uploads'])) {
+
+				if(isset($_POST['uploads']['kyc'])) {
+					array_map('unlink', array_filter((array) glob(ROOT."Cdn/public/kyc/$account_id/*")));
+				}
+
+				foreach($_POST['uploads'] as $key => $val) {
+					if($key == "kyc") {
+						$accounts->moveUploadedImage($_POST['uploads']['kyc']['selfie'], "public/kyc/$account_id");
+						$accounts->moveUploadedImage($_POST['uploads']['kyc']['id'], "public/kyc/$account_id");
+					}
+				}
+
 			}
 
 			$response = $accounts->save($account_id,$_POST);
@@ -488,7 +497,10 @@ class AccountsController extends \Main\Controller {
 		return $accounts->uploadPhoto($_FILES['ImageBrowse']);
 	}
 
-	function kycFormProcess($account_id) {
+	function kycVerificationForm($account_id) {
+
+		$this->doc->setTitle("KYC Verification");
+		$this->doc->addScript(CDN."js/kyc.js");
 
 		$account = $this->getModel("Account");
 		$account->column['account_id'] = $account_id;
@@ -503,6 +515,48 @@ class AccountsController extends \Main\Controller {
 		}
 
 		return $this->getTemplate($data);
+
+	}
+
+	function kycDocsUpload($id) {
+		$accounts = $this->getModel("Account");
+		return $accounts->uploadPhoto($_FILES['ImageBrowse'], "/public/kyc/$id");
+	}
+
+	function kycVerificationProcessIndex($data) {
+
+		if(!$this->session['permissions']['accounts']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
+
+		$this->doc->setTitle("Accounts");
+		
+		if(isset($_REQUEST['search'])) {
+			$filters[] = " (firstname LIKE '%".$_REQUEST['search']."%' OR lastname LIKE '%".$_REQUEST['search']."%' OR email LIKE '%".$_REQUEST['search']."%')";
+			$uri['search'] = $_REQUEST['search'];
+		}
+
+		$filters[] = " kyc_verified = 0 ";
+		
+		if(isset($filters)) {
+			$clause[] = implode(" AND ",$filters);
+		}
+		
+		$accounts = $this->getModel("Account");
+		$accounts
+		->where(isset($clause) ? implode(" ",$clause) : null)
+		->orderBy(" registration_date DESC ");
+
+		$accounts->page['limit'] = 20;
+		$accounts->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+		$accounts->page['target'] = url("AccountsController@kycVerificationProcessIndex");
+		$accounts->page['uri'] = (isset($uri) ? $uri : []);
+
+		$data = $accounts->getList();
+
+		$this->setTemplate("accounts/accountList.php");
+		return $this->getTemplate($data,$accounts);
 
 	}
 	

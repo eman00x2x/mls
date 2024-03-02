@@ -19,8 +19,11 @@ Router::post('/accounts/saveNewAccount', 'AccountsController@saveNew', ['as' => 
 Router::post('/accounts/{id}/edit/saveUpdate', 'AccountsController@saveUpdate', ['as' => 'accountsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 Router::post('/accounts/uploadPhoto', 'AccountsController@uploadPhoto', ['as' => 'accountsUploadPhoto']);
 
+/** KYC ROUTES */
+Router::get('/accounts/{id}/kycVerificationForm', 'AccountsController@kycVerificationForm', ['as' => 'kycVerificationForm'])->where([ 'id' => '[0-9]+' ]);
+Router::get('/accounts/{id}/kycVerificationProcess', 'AccountsController@kycVerificationProcess', ['as' => 'kycVerificationProcess'])->where([ 'id' => '[0-9]+' ]);
 
-Router::get('/accounts/{id}/kycFormProcess', 'AccountsController@kycFormProcess', ['as' => 'kycFormProcess'])->where([ 'id' => '[0-9]+' ]);
+Router::post('/accounts/{id}/kycDocsUpload', 'AccountsController@kycDocsUpload', ['as' => 'kycDocsUpload'])->where([ 'id' => '[0-9]+' ]);
 
 /** USERS ROUTES */
 Router::get('/accounts/{id}/users', 'UsersController@index', ['as' => 'users'])->where([ 'id' => '[0-9]+' ]);

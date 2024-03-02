@@ -54,6 +54,8 @@ $(document).on('click','.btn-save', function(e) {
 		});
 
 		$(this).show();
+
+		if ($('#reference_url').val() !== undefined) { window.location = $('#reference_url').val(); }
 	});
 
 	if (localStorage.getItem('items') !== null) {
