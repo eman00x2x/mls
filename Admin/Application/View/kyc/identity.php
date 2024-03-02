@@ -1,6 +1,6 @@
 <?php
 
-$html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveUpdate", ["id" => $data['account_id']])."' />";
+$html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveNew")."' />";
 
 $html[] = "<input type='hidden' id='reference_url' value='".url("AccountsController@kycVerificationForm", ["id" => $data['account_id']], ["step" => "3"])."' />";
 $html[] = "<input type='hidden' id='photo_container' value='' />";
@@ -17,6 +17,8 @@ $html[] = "<div class='container-xl'>";
 $html[] = "</div>";
 
 $html[] = "<form id='form' action='' method='POST'>";
+
+	$html[] = "<input type='hidden' name='account_id' value='".$data['account_id']."' />";
 
 	$html[] = "<div class='row justify-content-center'>";
 		$html[] = "<div class='col-md-6 col-12'>";
@@ -50,8 +52,8 @@ $html[] = "<form id='form' action='' method='POST'>";
 
 							$html[] = "<hr />";
 
-							$html[] = "<input type='hidden' class='photo-selfie' name='uploads[kyc][selfie]' value='' />";
-							$html[] = "<input type='hidden' class='photo-id' name='uploads[kyc][id]' value='' />";
+							$html[] = "<input type='hidden' class='photo-selfie' name='documents[kyc][selfie]' value='' />";
+							$html[] = "<input type='hidden' class='photo-id' name='documents[kyc][id]' value='' />";
 
 							$html[] = "<div class='d-flex mb-3 gap-4'>";
 								$html[] = "<div class=''>";
