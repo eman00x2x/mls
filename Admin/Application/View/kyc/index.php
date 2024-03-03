@@ -61,27 +61,17 @@ $html[] = "<div class='page-body'>";
 								
 								$html[] = "<tr>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-									$html[] = "<td class='align-middle text-center'><a href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."'>".$data[$i]['account_id']."</a></td>";
-									$html[] = "<td class='align-middle'><a href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."' class='ajax text-inherit'>".$data[$i]['firstname']." ".$data[$i]['lastname']."</a></td>";
+									$html[] = "<td class='align-middle text-center'><a class='text-decoration-none' href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."'>".$data[$i]['account_id']."</a></td>";
+									$html[] = "<td class='align-middle'><a class='text-decoration-none' href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."' class='ajax text-inherit'>".$data[$i]['firstname']." ".$data[$i]['lastname']."</a></td>";
 									
 									$html[] = "<td class='align-middle'>".
 										($data[$i]['kyc_status'] == 1 ? "<span class='text-success '>Active</span>" : "<span class='text-warning'>Pending</span>")."</td>";
-										$html[] = "<td class='align-middle'><a href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."'>".$data[$i]['verified_by']."</a></td>";
+										$html[] = "<td class='align-middle'><a class='text-decoration-none' href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."'>".$data[$i]['verified_by']."</a></td>";
 									$html[] = "<td class='align-middle'>".($data[$i]['verified_at'] > 0 ? date("F d, Y", $data[$i]['verified_at']) : '')."</td>";
 									$html[] = "<td class='align-middle'>".date("F d, Y", $data[$i]['created_at'])."</td>";
 									
 									$html[] = "<td class='text-center'>";
-									
-										$html[] = "<div class='item-action dropdown'>";
-										
-											$html[] = "<span class='btn btn-outline-primary btn-md' data-bs-toggle='dropdown'><i class='ti ti-dots-vertical'></i></span>";
-											
-											$html[] = "<div class='dropdown-menu dropdown-menu-right'>";
-												$html[] = "<a class='ajax dropdown-item' href='".url("KYCController@verify",["id" => $data[$i]['kyc_id']])."'><i class='ti ti-edit me-2'></i> Verify</a>";
-											$html[] = "</div>";
-											
-										$html[] = "</div>";
-									
+										$html[] = "<a class='btn btn-primary ajax' href='".url("KYCController@verify",["id" => $data[$i]['kyc_id']])."'><i class='ti ti-lock me-1'></i> Verify</a>";
 									$html[] = "</td>";
 									
 								$html[] = "</tr>";

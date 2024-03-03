@@ -50,7 +50,6 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<th class='w-1'></th>";
 									$html[] = "<th>Name</th>";
 									$html[] = "<th>Account Type</th>";
-									$html[] = "<th>Email</th>";
 									$html[] = "<th>Status</th>";
 									$html[] = "<th>Registration Date</th>";
 									$html[] = "<th class='text-center'><i class='icon-settings'></i></th>";
@@ -63,16 +62,10 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<tr>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
 									$html[] = "<td class='align-middle'><div class='avatar' style='background-image: url(".$data[$i]['logo'].")'></div></td>";
-									$html[] = "<td class='align-middle'><a href='".url("AccountsController@view",["id" => $data[$i]['account_id']])."' class='ajax text-inherit'>";
-										if($data[$i]['company_name'] == "") {
-											$html[] = "(".$data[$i]['firstname']." ".$data[$i]['lastname'].")";
-										}else {
-											$html[] = $data[$i]['company_name']." <small class='text-muted'>(".$data[$i]['firstname']." ".$data[$i]['lastname'].")</small>";
-										}
-										
+									$html[] = "<td class='align-middle'><a href='".url("AccountsController@view",["id" => $data[$i]['account_id']])."' class='ajax text-inherit text-decoration-none'>";
+										$html[] = $data[$i]['firstname']." ".$data[$i]['lastname']." <small class='text-muted d-block'>".$data[$i]['email']."</small>";
 									$html[] = "</a></td>";
-									$html[] = "<td class='align-middle'><a href='".url("AccountsController@view",["id" => $data[$i]['account_id']])."'>".$data[$i]['account_type']."</a></td>";
-									$html[] = "<td class='align-middle'><a href='".url("AccountsController@view",["id" => $data[$i]['account_id']])."'>".$data[$i]['email']."</a></td>";
+									$html[] = "<td class='align-middle'><a href='".url("AccountsController@view",["id" => $data[$i]['account_id']])."' class='text-decoration-none'>".$data[$i]['account_type']."</a></td>";
 									$html[] = "<td class='align-middle'>".($data[$i]['status'] == 'active' ? "<span class='text-success '>Active</span>" : "<span class='text-danger'>Banned</span>")."</td>";
 									$html[] = "<td class='align-middle'>".date("F d, Y", $data[$i]['registration_date'])."</td>";
 									
