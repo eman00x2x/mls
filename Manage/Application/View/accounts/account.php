@@ -216,7 +216,7 @@ $html[] = "<div class='btn-save-container fixed-bottom bg-white py-3 border-top'
 		$html[] = "<div class='col-lg-12 col-md-12 col-sm-12 col-12'>";
 			$html[] = "<div class='container-xl'>";
 				$html[] = "<div class='text-end'>";
-					if((!isset($_SESSION['user_logged']['permissions']['account']['access']))) {
+					if((!isset($_SESSION['user_logged']['permissions']['accounts']['access']))) {
 						$html[] = "<p class='text-info'>Permission is required to update account details</p>";
 					}else {
 						$html[] = "<span class='btn btn-outline-primary btn-save'><i class='ti ti-device-floppy me-2'></i> Save Account Details</span>";

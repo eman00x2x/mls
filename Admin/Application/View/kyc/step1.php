@@ -17,12 +17,12 @@ $html[] = "</div>";
 
 $html[] = "<form id='form' action='' method='POST'>";
 
-	$html[] = "<div class='row justify-content-center'>";
-		$html[] = "<div class='col-md-6 col-12'>";
+	/** START PAGE BODY */
+	$html[] = "<div class='page-body'>";
+		$html[] = "<div class='container-xl'>";
 
-			/** START PAGE BODY */
-			$html[] = "<div class='page-body'>";
-				$html[] = "<div class='container-xl'>";
+			$html[] = "<div class='row justify-content-center'>";
+				$html[] = "<div class='col-md-6 col-12'>";
 
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-body'>";
@@ -66,7 +66,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 							$html[] = "</ul>";
 
 							$html[] = "<div class='text-start'>";
-								$html[] = "<a href='".url("AccountsController@kycVerificationForm", null, ["step" => 2])."' class='btn btn-outline-primary'><i class='ti ti-arrow-right me-2'></i> Continue</a>";
+								$html[] = "<a href='".url("KYCController@kycVerificationForm",  ["id" => $data['account_id']], ["step" => 2])."' class='btn btn-outline-primary'><i class='ti ti-arrow-right me-2'></i> Continue</a>";
 							$html[] = "</div>";
 
 						$html[] = "</div>";
@@ -74,9 +74,11 @@ $html[] = "<form id='form' action='' method='POST'>";
 
 				$html[] = "</div>";
 			$html[] = "</div>";
-			/** END PAGE */
-		
+
 		$html[] = "</div>";
 	$html[] = "</div>";
+	/** END PAGE */
+		
+		
 
 $html[] = "</form>";

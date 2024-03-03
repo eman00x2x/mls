@@ -17,12 +17,12 @@ $html[] = "</div>";
 
 $html[] = "<form id='form' action='' method='POST'>";
 
-	$html[] = "<div class='row justify-content-center'>";
-		$html[] = "<div class='col-md-6 col-12'>";
+	/** START PAGE BODY */
+	$html[] = "<div class='page-body'>";
+		$html[] = "<div class='container-xl'>";
 
-			/** START PAGE BODY */
-			$html[] = "<div class='page-body'>";
-				$html[] = "<div class='container-xl'>";
+			$html[] = "<div class='row justify-content-center'>";
+				$html[] = "<div class='col-md-6 col-12'>";
 
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-body'>";
@@ -36,12 +36,11 @@ $html[] = "<form id='form' action='' method='POST'>";
 							$html[] = "</div>";
 						$html[] = "</div>";
 					$html[] = "</div>";
-
 				$html[] = "</div>";
 			$html[] = "</div>";
-			/** END PAGE */
-		
+
 		$html[] = "</div>";
 	$html[] = "</div>";
-
+	/** END PAGE */
+		
 $html[] = "</form>";

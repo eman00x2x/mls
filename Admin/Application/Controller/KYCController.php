@@ -11,6 +11,11 @@ class KYCController extends \Main\Controller {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = SessionController::getInstance()->session->get("user_logged");
+
+		if(!KYC) {
+			$this->response(404);
+		}
+		
 	}
 
 	function index() {
@@ -27,7 +32,7 @@ class KYCController extends \Main\Controller {
 			$uri['search'] = $_REQUEST['search'];
 		}
 
-		$filters[] = " kyc_verified = 0 ";
+		$filters[] = " kyc_status = 0 ";
 		
 		if(isset($filters)) {
 			$clause[] = implode(" AND ",$filters);
@@ -54,11 +59,13 @@ class KYCController extends \Main\Controller {
 	function verify($id) {
 
 		$this->doc->setTitle("KYC Verfication");
+		$this->doc->addScript(CDN."tabler/dist/libs/fslightbox/index.js");
 
 		$kyc = $this->getModel("KYC");
-		$kyc->column['account_id'] = $id;
-		$kyc->join(" JOIN #__accounts a ON k.account_id=a.account_id ");
-		$data = $kyc->getByAccountId();
+		$kyc->column['kyc_id'] = $id;
+		$kyc->join(" k JOIN #__accounts a ON k.account_id=a.account_id ");
+		$kyc->and(" kyc_status = 0 "); 
+		$data = $kyc->getById();
 
 		$this->setTemplate("kyc/verify.php");
 		return $this->getTemplate($data,$kyc);
@@ -67,19 +74,30 @@ class KYCController extends \Main\Controller {
 	
 	function kycVerificationForm($account_id) {
 
-		$this->doc->setTitle("KYC Verification");
-		$this->doc->addScript(CDN."js/kyc.js");
+		$this->doc->setTitle("KYC Verfication");
 
-		$account = $this->getModel("Account");
-		$account->column['account_id'] = $account_id;
-		$data = $account->getById();
+		$kyc = $this->getModel("KYC");
+		$kyc->where(" account_id = $account_id ");
+		$kyc->and(" kyc_status = 0 ");
+		$data = $kyc->getList();
 
-		if(isset($_REQUEST['step']) && $_REQUEST['step'] == 2) {
-			$this->setTemplate("kyc/identity.php");
-		}else if(isset($_REQUEST['step']) && $_REQUEST['step'] == 3) {
-			$this->setTemplate("kyc/final.php");
+		if($data) {
+			$this->setTemplate("kyc/pending.php");
 		}else {
-			$this->setTemplate("kyc/step1.php");
+			$this->doc->setTitle("KYC Verification");
+			$this->doc->addScript(CDN."js/kyc.js");
+
+			$account = $this->getModel("Account");
+			$account->column['account_id'] = $account_id;
+			$data = $account->getById();
+
+			if(isset($_REQUEST['step']) && $_REQUEST['step'] == 2) {
+				$this->setTemplate("kyc/identity.php");
+			}else if(isset($_REQUEST['step']) && $_REQUEST['step'] == 3) {
+				$this->setTemplate("kyc/final.php");
+			}else {
+				$this->setTemplate("kyc/step1.php");
+			}
 		}
 
 		return $this->getTemplate($data);
@@ -91,18 +109,20 @@ class KYCController extends \Main\Controller {
 		return $accounts->uploadPhoto($_FILES['ImageBrowse'], "/public/kyc/$id");
 	}
 
-	function saveNew() {
+	function saveNew($account_id) {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
 		
 		if(isset($_POST['documents'])) {
 
+			$kyc = $this->getModel("KYC");
+
 			if($_POST['documents']['kyc']['selfie']) {
-				$_POST['documents']['kyc']['selfie'] = $accounts->moveUploadedImage($_POST['documents']['kyc']['selfie'], "public/kyc/$account_id");
+				$_POST['documents']['kyc']['selfie'] = $kyc->moveUploadedImage($_POST['documents']['kyc']['selfie'], "public/kyc/$account_id");
 			}
 			
 			if($_POST['documents']['kyc']['id']) {
-				$_POST['documents']['kyc']['id'] = $accounts->moveUploadedImage($_POST['documents']['kyc']['id'], "public/kyc/$account_id");
+				$_POST['documents']['kyc']['id'] = $kyc->moveUploadedImage($_POST['documents']['kyc']['id'], "public/kyc/$account_id");
 			}
 
 		}
@@ -112,15 +132,18 @@ class KYCController extends \Main\Controller {
 		$_POST['kyc_status'] = 0;
 		$_POST['created_at'] = $time;
 		$_POST['created_at'] = $time;
-
+		
 		$kyc = $this->getModel("KYC");
-		$kyc->saveNew($_POST);
 
-		$this->getLibrary("Factory")->setMsg($accountResponse['message'],$accountResponse['type']);
+		$kyc->delete();
+
+		$response = $kyc->saveNew($_POST);
+
+		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 		
 		return json_encode(
 			array(
-				"status" => $accountResponse['status'],
+				"status" => $response['status'],
 				"message" => getMsg()
 			)
 		);
@@ -140,11 +163,11 @@ class KYCController extends \Main\Controller {
 			if(isset($_POST['documents'])) {
 
 				if($_POST['documents']['kyc']['selfie']) {
-					$_POST['documents']['kyc']['selfie'] = $accounts->moveUploadedImage($_POST['documents']['kyc']['selfie'], "public/kyc/$account_id");
+					$_POST['documents']['kyc']['selfie'] = $kyc->moveUploadedImage($_POST['documents']['kyc']['selfie'], "public/kyc/".$data['account_id']);
 				}
 				
 				if($_POST['documents']['kyc']['id']) {
-					$_POST['documents']['kyc']['id'] = $accounts->moveUploadedImage($_POST['documents']['kyc']['id'], "public/kyc/$account_id");
+					$_POST['documents']['kyc']['id'] = $kyc->moveUploadedImage($_POST['documents']['kyc']['id'], "public/kyc/".$data['account_id']);
 				}
 				
 			}
@@ -173,6 +196,33 @@ class KYCController extends \Main\Controller {
 			);
 		}
 		
+	}
+
+	function delete($kyc_id) {
+
+		$kyc = $this->getModel("KYC");
+		$kyc->column['kyc_id'] = $kyc_id;
+
+		$data = $kyc->getById();
+
+		foreach($data['documents']['kyc'] as $key => $route) {
+			$data['documents']['kyc'][$key] = str_replace(CDN, ROOT."Cdn", $route);
+
+			if(file_exists($data['documents']['kyc'][$key])) {
+				unlink($data['documents']['kyc'][$key]);
+			}
+		}
+
+		$kyc->deleteKYC($data['kyc_id']);
+
+		return json_encode(
+			array(
+				"status" => 1,
+				"type" => "success",
+				"message" => "Successfully Deleted"
+			)
+		);
+
 	}
 
 

@@ -21,6 +21,12 @@ Router::get(ALIAS.'/account/profile', 'AccountsController@accountProfile', ['as'
 Router::post(ALIAS.'/account/{id}/saveUpdate', 'AccountsController@saveUpdate', ['as' => 'accountsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 Router::post(ALIAS.'/account/uploadPhoto', 'AccountsController@uploadPhoto', ['as' => 'accountsUploadPhoto']);
 
+/** KYC ROUTES */
+Router::get('/kyc', 'KYCController@kycVerificationForm', ['as' => 'kycVerificationForm']);
+
+Router::post('/kyc/{id}/kycVerificationForm', 'KYCController@saveNew', ['as' => 'saveNewKYC'])->where([ 'id' => '[0-9]+' ]);
+Router::post('/kyc/{id}/kycDocsUpload', 'KYCController@kycDocsUpload', ['as' => 'kycDocsUpload'])->where([ 'id' => '[0-9]+' ]);
+
 /** USERS ROUTES */
 Router::get(ALIAS.'/account/users', 'UsersController@index', ['as' => 'users']);
 Router::get(ALIAS.'/account/user/new', 'UsersController@new', ['as' => 'userAdd']);

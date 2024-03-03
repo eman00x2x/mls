@@ -20,13 +20,13 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$this->session = SessionController::getInstance()->session->get("user_logged");
 		$this->account_id = $this->session['account_id'];
 
-		if(!isset($this->session['privileges']['mls_access'])) {
+		if(!isset($this->session['privileges']['mls_access']) && in_array($this->session['account_type'], ["Customer Service"])) {
 			$this->getLibrary("Factory")->setMsg("Access to the MLS (Multiple Listing Service) requires premium privileges. Upgrade your subscription or subscribe to a premium to gain access.", "warning");
 			response()->redirect(url("DashboardController@index"));
 		}
 
-		if(!isset($this->session['compare']['listings'])) {
-			$this->session['compare']['listings'] = [];
+		if(!isset($_SESSION['compare']['listings'])) {
+			$_SESSION['compare']['listings'] = [];
 		}
 
 	}
@@ -491,7 +491,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		parse_str(file_get_contents('php://input'), $_POST);
 
-		$total = count($this->session['compare']['listings']);
+		$total = count($_SESSION['compare']['listings']);
 
 		if($total >= 4) {
 			$this->getLibrary("Factory")->setMsg("Maximum count of listings has been reached! Cannot add more in compare table!","info");
@@ -501,7 +501,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$listing->column['listing_id'] = $_POST['listing_id'];
 			$data = $listing->getById();
 
-			$this->session['compare']['listings'][$_POST['listing_id']] = $data;
+			$_SESSION['compare']['listings'][$_POST['listing_id']] = $data;
 
 			$this->getLibrary("Factory")->setMsg("Listing added to compare table!","info");
 
@@ -518,7 +518,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	function removeFromCompare() {
 		parse_str(file_get_contents('php://input'), $_POST);
-		unset($this->session['compare']['listings'][$_POST['listing_id']]);
+		unset($_SESSION['compare']['listings'][$_POST['listing_id']]);
 		
 		$this->getLibrary("Factory")->setMsg("Listing remove from compare table!","info");
 
@@ -532,21 +532,22 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	function comparePreview() {
 
-		$data['listings'] = $this->session['compare']['listings'];
-		$data['count'] = count($this->session['compare']['listings']);
-		
+		$data['listings'] = $_SESSION['compare']['listings'];
+		$data['count'] = count($_SESSION['compare']['listings']);
+
 		$this->setTemplate("mls/comparePreview.php");
-        return $this->getTemplate($data);
+		return $this->getTemplate($data);
+
 	}
 
 	function compareListings() {
 
 		$this->doc->setTitle("MLS System - Comparative Analysis Table");
 		
-		$total = isset($this->session['compare']['listings']) ? count($this->session['compare']['listings']) : 0;
+		$total = isset($_SESSION['compare']['listings']) ? count($_SESSION['compare']['listings']) : 0;
 		
 		if($total > 0) {
-			$ids = implode(",", array_keys($this->session['compare']['listings']));
+			$ids = implode(",", array_keys($_SESSION['compare']['listings']));
 
 			$listing = $this->getModel("Listing");
 
@@ -556,8 +557,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$listing->page['uri'] = (isset($uri) ? $uri : []);
 
 			$data['listing'] = $listing->where(" listing_id IN($ids) ")->getList();
-
-			$data['share_link'] = WEBDOMAIN . "comparative-analysis/" . base64_encode($ids);
+			$data['share_link'] = WEBDOMAIN . "/comparative-analysis/" . base64_encode($ids);
 
 		}else { $data = false; $listing = false; }
 

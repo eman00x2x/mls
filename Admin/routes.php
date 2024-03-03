@@ -22,10 +22,7 @@ Router::post('/accounts/uploadPhoto', 'AccountsController@uploadPhoto', ['as' =>
 /** KYC ROUTES */
 Router::get('/kyc', 'KYCController@index', ['as' => 'kycIndex']);
 Router::get('/kyc/{id}/verify', 'KYCController@verify', ['as' => 'verify'])->where([ 'id' => '[0-9]+' ]);
-Router::get('/accounts/{id}/kycVerificationForm', 'KYCController@kycVerificationForm', ['as' => 'kycVerificationForm'])->where([ 'id' => '[0-9]+' ]);
 
-Router::post('/accounts/{id}/kycVerificationForm', 'KYCController@saveNew', ['as' => 'saveNewKYC'])->where([ 'id' => '[0-9]+' ]);
-Router::post('/accounts/{id}/kycDocsUpload', 'KYCController@kycDocsUpload', ['as' => 'kycDocsUpload'])->where([ 'id' => '[0-9]+' ]);
 Router::post('/kyc/{id}/verify', 'KYCController@saveUpdate', ['as' => 'saveKYCUpdate'])->where([ 'kyc_id' => '[0-9]+' ]);
 
 /** USERS ROUTES */

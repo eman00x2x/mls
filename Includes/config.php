@@ -9,6 +9,9 @@ define("EMAIL_ADDRESS_RESPONDER", CONFIG['email_address_responder']);
 /** Enable premium set this to true */
 define("PREMIUM", CONFIG['enable_premium']);
 
+/** Enable KYC set this to true */
+define("KYC", CONFIG['enable_kyc_verification']);
+
 /** if you want to include vat computation in INVOICE set this to true */
 define("VAT", CONFIG['show_vat']);
 

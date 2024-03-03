@@ -97,7 +97,7 @@
 									</div>
 								</a>
 								<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-									<?php if(isset($_SESSION['user_logged']['permissions']['account']['access'])) { ?>
+									<?php if(isset($_SESSION['user_logged']['permissions']['accounts']['access'])) { ?>
 										<a href="<?php echo url("AccountsController@index",["id" => $_SESSION['user_logged']['account_id']]); ?>" class="dropdown-item"><i class='ti ti-user-circle me-2'></i> My Account</a>
 									<?php } ?>
 									<?php if(isset($_SESSION['user_logged']['permissions']['users']['access'])) { ?>
@@ -112,7 +112,11 @@
 											<a href="<?php echo url("TransactionsController@index"); ?>" class="dropdown-item"><i class='ti ti-file-invoice me-2'></i> My Transactions</a>
 										<?php } ?>
 									<?php } ?>
-									
+
+									<?php if(KYC) { ?>
+										<a href="<?php echo url("KYCController@kycVerificationForm"); ?>" class="dropdown-item"><i class='ti ti-user-circle me-2'></i> KYC Verification</a>
+									<?php } ?>
+
 									<a href="?logout" class="dropdown-item"><i class='ti ti-logout-2 me-2'></i> Logout</a>
 								</div>
 							</div>

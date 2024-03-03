@@ -26,7 +26,7 @@ define("ALIAS","managemls"); */
 define("VRSN","v1.0");
 
 define("USER_PERMISSIONS",[
-	"account" => [
+	"accounts" => [
 		"access" => (boolean) true
 	],
     "users" => [
@@ -67,6 +67,9 @@ define("CS_PERMISSIONS",[
 	],
 	"premiums" => [
 		"process_subscription" => (boolean) true
+	],
+	"kyc" => [
+		"access" => (boolean) true
 	]
 ]);
 
@@ -104,6 +107,9 @@ define("ADMIN_PERMISSIONS",[
 		"access" => (boolean) true,
 		"edit" => (boolean) true,
 		"delete" => (boolean) true
+	],
+	"kyc" => [
+		"access" => (boolean) true
 	]
 ]);
 

@@ -1,10 +1,10 @@
 <?php
 
-$html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveNew")."' />";
+$html[] = "<input type='hidden' id='save_url' value='".url("KYCController@saveNew", ["id" => $data['account_id']])."' />";
 
-$html[] = "<input type='hidden' id='reference_url' value='".url("AccountsController@kycVerificationForm", ["id" => $data['account_id']], ["step" => "3"])."' />";
+$html[] = "<input type='hidden' id='reference_url' value='".url("KYCController@kycVerificationForm", ["id" => $data['account_id']], ["step" => "3"])."' />";
 $html[] = "<input type='hidden' id='photo_container' value='' />";
-$html[] = "<form action='".url("AccountsController@kycDocsUpload", ["id" => $data['account_id']])."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
+$html[] = "<form action='".url("KYCController@kycDocsUpload", ["id" => $data['account_id']])."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 	$html[] = "<center>";
 		$html[] = "<input type='file' name='ImageBrowse' id='ImageBrowse' />";
 	$html[] = "</center>";
@@ -20,12 +20,14 @@ $html[] = "<form id='form' action='' method='POST'>";
 
 	$html[] = "<input type='hidden' name='account_id' value='".$data['account_id']."' />";
 
-	$html[] = "<div class='row justify-content-center'>";
-		$html[] = "<div class='col-md-6 col-12'>";
+	
 
-			/** START PAGE BODY */
-			$html[] = "<div class='page-body'>";
-				$html[] = "<div class='container-xl'>";
+	/** START PAGE BODY */
+	$html[] = "<div class='page-body'>";
+		$html[] = "<div class='container-xl'>";
+
+			$html[] = "<div class='row justify-content-center'>";
+				$html[] = "<div class='col-md-6 col-12'>";
 
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-body'>";
@@ -75,12 +77,12 @@ $html[] = "<form id='form' action='' method='POST'>";
 
 						$html[] = "</div>";
 					$html[] = "</div>";
-
+				
 				$html[] = "</div>";
 			$html[] = "</div>";
-			/** END PAGE */
-		
+
 		$html[] = "</div>";
 	$html[] = "</div>";
-
+	/** END PAGE */
+		
 $html[] = "</form>";

@@ -17,12 +17,12 @@ $html[] = "</div>";
 
 $html[] = "<form id='form' action='' method='POST'>";
 
-	$html[] = "<div class='row justify-content-center'>";
-		$html[] = "<div class='col-md-6 col-12'>";
+	/** START PAGE BODY */
+	$html[] = "<div class='page-body'>";
+		$html[] = "<div class='container-xl'>";
 
-			/** START PAGE BODY */
-			$html[] = "<div class='page-body'>";
-				$html[] = "<div class='container-xl'>";
+			$html[] = "<div class='row justify-content-center'>";
+				$html[] = "<div class='col-md-6 col-12'>";
 
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-body'>";
@@ -59,11 +59,15 @@ $html[] = "<form id='form' action='' method='POST'>";
 									$html[] = "<span class='mb-3 d-block'><i class='ti ti-file-check'></i> Documents</span>";
 
 										$html[] = "<div class='mb-3'>";
-											$html[] = "<span class='avatar avatar-xxxl' style='background-image:url(".$data['documents']['kyc']['selfie'].")'></span>";
+											$html[] = "<a data-fslightbox href='".$data['documents']['kyc']['selfie']."'>";
+												$html[] = "<span class='avatar avatar-xxxl' style='background-image:url(".$data['documents']['kyc']['selfie'].")'></span>";
+											$html[] = "</a>";
 										$html[] = "</div>";
 
 										$html[] = "<div class='mb-3'>";
-											$html[] = "<span class='avatar avatar-xxxl' style='width:430px; background-image:url(".$data['documents']['kyc']['id'].")'></span>";
+											$html[] = "<a data-fslightbox href='".$data['documents']['kyc']['id']."'>";
+												$html[] = "<span class='avatar avatar-xxxl' style='width:430px; background-image:url(".$data['documents']['kyc']['id'].")'></span>";
+											$html[] = "</a>";
 										$html[] = "</div>";
 									
 								$html[] = "</li>";
@@ -73,14 +77,17 @@ $html[] = "<form id='form' action='' method='POST'>";
 
 									$html[] = "<div class='mb-3'>";
 										$html[] = "<label class='form-label'>ID Expiration Date</label>";
-										$html[] = "<input type='date' name='id_expiration_date' value='' class='form-control' />";
+										$html[] = "<input type='date' name='id_expiration_date' value='".$data['id_expiration_date']."' class='form-control' />";
 									$html[] = "</div>";
 
 									$html[] = "<div class='mb-4'>";
 										$html[] = "<label class='form-label'>KYC Staus</label>";
 										$html[] = "<select name='kyc_status' class='form-select'>";
-											$html[] = "<option value='2'>Denied KYC Docs</option>";
-											$html[] = "<option value='1'>Accept KYC Docs</option>";
+											foreach([1=>"Accept Docs", "2" => "Denied Docs"] as $key => $value) {
+												$sel = $data['kyc_status'] == $key ? "selected" : "";
+												$html[] = "<option value='$key' $sel>$value</option>";
+											}
+											
 										$html[] = "</select>";
 									$html[] = "</div>";
 
@@ -90,19 +97,18 @@ $html[] = "<form id='form' action='' method='POST'>";
 
 							$html[] = "<div class='mb-3'>";
 								$html[] = "<div class='btn-list'>";
-									$html[] = "<span class='btn btn-secondary'><i class='ti ti-x me-2'></i> cancel</span>";
-									$html[] = "<span class='btn btn-success btn-save'><i class='ti ti-check me-2'></i> Save KYC</span>";
+									$html[] = "<span class='btn btn-secondary'><i class='ti ti-x me-1'></i> cancel</span>";
+									$html[] = "<span class='btn btn-primary btn-save'><i class='ti ti-device-floppy me-1'></i> Save KYC</span>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
 						$html[] = "</div>";
 					$html[] = "</div>";
-
 				$html[] = "</div>";
 			$html[] = "</div>";
-			/** END PAGE */
-		
+
 		$html[] = "</div>";
 	$html[] = "</div>";
-
+	/** END PAGE */
+		
 $html[] = "</form>";

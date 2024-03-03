@@ -26,17 +26,18 @@ class KYCModel extends \Main\Model {
 
 		$v = $this->getValidator();
 
+		$v->validateGeneral($data['documents']['kyc']['selfie'], "Upload your selfie");
+		$v->validateGeneral($data['documents']['kyc']['id'], "Upload your ID");
+
 		if($v->foundErrors()) {
 			return array(
 				"status" => 2,
 				"type" => "error",
-				"message" => "<h4 class='font-weight-bold'>Error</h4> * ".$v->listErrors('<br/> * ')
+				"message" => "<br /> *".$v->listErrors('<br/> * ')
 			);
 		}else {
 
-			if(isset($data['title'])) {
-				$data['name'] = sanitize($data['title']);
-			}
+			$data['documents'] = json_encode($data['documents']);
 
 			foreach($data as $key => $val) {
 				$this->column[$key] = $val;
@@ -60,8 +61,12 @@ class KYCModel extends \Main\Model {
 
 		if(($this->getById()) !== false) {
 
+			$this->column['documents'] = json_encode($this->column['documents']);
+
 			$v = $this->getValidator();
 
+			$v->validateGeneral($this->column['documents'], "Upload your selfie and ID");
+			
 			if($v->foundErrors()) {
 				return array(
 					"status" => 2,
@@ -69,8 +74,6 @@ class KYCModel extends \Main\Model {
 					"message" => "Please correct the following: ".$v->listErrors(', ')
 				);
 			}else {
-
-				if(!isset($data['documents'])) { $this->column['documents'] = json_encode($this->column['documents']); }
 
 				foreach($data as $key => $val) {
 					$this->column[$key] = $val;
@@ -89,16 +92,8 @@ class KYCModel extends \Main\Model {
 
 	}
 
-	function deleteArticle($id,$column = "article_id") {
-
+	function deleteKYC($id,$column = "kyc_id") {
 		$this->delete($id,$column);
-
-		return array(
-			"status" => 1,
-			"type" => "success",
-			"message" => "Successfully Deleted"
-		);
-
 	}
 
 	function moveUploadedImage($filename, $path = "/images/accounts") {

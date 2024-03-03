@@ -17,9 +17,9 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='btn-list'>";
-					$html[] = "<span class='d-none d-sm-inline'>";
+					/* $html[] = "<span class='d-none d-sm-inline'>";
 						$html[] = "<a class='ajax btn btn-dark' href='".url("KYCController@kycVerificationForm")."'><i class='ti ti-user-plus me-2'></i> New Verification</a>";
-					$html[] = "</span>";
+					$html[] = "</span>"; */
 				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";

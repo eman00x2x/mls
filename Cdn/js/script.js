@@ -44,8 +44,12 @@ $(document).on('click','.btn-save', function(e) {
 		console.log(data);
 
 		if (typeof data == 'object') {
-			response = data;
-		} else { response = JSON.parse(data); }
+			var response = data;
+		} else { var response = JSON.parse(data); }
+
+		if (response.status == 1) {
+			if ($('#reference_url').val() !== undefined) { window.location = $('#reference_url').val(); }
+		}
 
 		$('.response').html(response.message);
 		$(this).css({
@@ -55,7 +59,6 @@ $(document).on('click','.btn-save', function(e) {
 
 		$(this).show();
 
-		if ($('#reference_url').val() !== undefined) { window.location = $('#reference_url').val(); }
 	});
 
 	if (localStorage.getItem('items') !== null) {

@@ -57,15 +57,15 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 									if(url()->contains("/system-settings")) {
 										$html[] = "<h2 class='mb-4'>System Settings</h2>";
 
-										/* $html[] = "<div class='mb-5 border rounded-3 p-5'>";
+										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
 											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";
 												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>KYC Verification</h3>";
-												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>Upon activation of KYC Verification, users will be prompted to authenticate their identity by submitting a government-issued identification document along with a corresponding self-portrait. This step ensures compliance with regulatory standards and enhances the security and credibility of our platform.</p>";
+												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>Upon activation of KYC Verification, users will be prompted to authenticate their identity by submitting a <b>Real Estate Broker identification document</b> along with a corresponding self-portrait. This step ensures compliance with regulatory standards and enhances the security and credibility of our platform.</p>";
 											
 												$html[] = "<input type='checkbox' name='enable_kyc_verification' class='form-check-input' value='1' ".($data['enable_kyc_verification'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable KYC Verification</span>";
 											$html[] = "</label>";
-										$html[] = "</div>"; */
+										$html[] = "</div>";
 
 										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
 											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";

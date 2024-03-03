@@ -15,7 +15,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 	
 	function index() {
 
-        if(!isset($_SESSION['user_logged']['permissions']['account']['access'])) {
+        if(!isset($_SESSION['user_logged']['permissions']['accounts']['access'])) {
             $this->getLibrary("Factory")->setMsg("You do not have enough permissions to access the account details","error");
 			response()->redirect(url("DashboardController@index"));
         }
