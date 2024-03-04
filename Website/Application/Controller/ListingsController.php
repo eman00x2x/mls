@@ -2,15 +2,19 @@
 
 namespace Website\Application\Controller;
 
+use Library\SessionHandler;
 use Library\Encrypt;
 
 class ListingsController extends \Main\Controller {
 
 	private $doc;
+	private $session;
 	
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Website");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
+
+		$this->session = SessionHandler::getInstance();
 	}
 
 	function buy() { return $this->index(); }
@@ -63,7 +67,7 @@ class ListingsController extends \Main\Controller {
 
 		if($data) {
 			
-			/* $this->saveListingView($data['listing_id'], $data['account_id']); */
+			$this->saveListingView($data);
 
 			$this->setTemplate("listings/view.php");
 			return $this->getTemplate($data,$listing);
@@ -72,18 +76,19 @@ class ListingsController extends \Main\Controller {
 
 	}
 	
-	private function saveListingView($listing_id, $account_id) {
+	private function saveListingView($data) {
 
-		if(isset($_SESSION['listings']) && !in_array($listing_id, $_SESSION['listings'])) {
-
-			$listing_view = $this->getModel("ListingView");
-			$response = $listing_view->saveNew([
-				"listing_id" => $listing_id,
-				"account_id" => $account_id,
-				"datetime" => DATE_NOW,
-				"user_agent" => json_encode([])
-			]);
-
+		$traffic = $this->getModel("ListingView");
+		$traffic->column['session_id'] = $this->session->get("id");
+		
+		if(!$traffic->getBySessionId()) {
+			$traffic->saveNew(array(
+				"listing_id" => $data['listing_id'],
+				"account_id" => $data['account_id'],
+				"session_id" => $this->session->get("id"),
+				"created_at" => DATE_NOW,
+				"user_agent" => json_encode($this->session->get("user_agent"))
+			));
 		}
 
 	}

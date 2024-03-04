@@ -88,89 +88,88 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 					
 					$html[] = '<div class="card-table table-responsive">
-                    <table class="table table-vcenter">
-                      <thead>
-                        <tr>
-                          <th>Post name</th>
-                          <th>Visitors</th>
-                          <th>Unique</th>
-                          <th colspan="2">Bounce rate</th>
-                        </tr>
-                      </thead>
-                      <tr>
-                        <td>
-                          Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City
-                          <a href="#" class="ms-1" aria-label="Open website"><!-- Download SVG icon from http://tabler-icons.io/i/link -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
-                          </a>
-                        </td>
-                        <td class="text-secondary">4,896</td>
-                        <td class="text-secondary">3,654</td>
-                        <td class="text-secondary">82.54%</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City
-                          <a href="#" class="ms-1" aria-label="Open website"><!-- Download SVG icon from http://tabler-icons.io/i/link -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
-                          </a>
-                        </td>
-                        <td class="text-secondary">3,652</td>
-                        <td class="text-secondary">3,215</td>
-                        <td class="text-secondary">76.29%</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City
-                          <a href="#" class="ms-1" aria-label="Open website"><!-- Download SVG icon from http://tabler-icons.io/i/link -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
-                          </a>
-                        </td>
-                        <td class="text-secondary">3,256</td>
-                        <td class="text-secondary">2,865</td>
-                        <td class="text-secondary">72.65%</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City
-                          <a href="#" class="ms-1" aria-label="Open website"><!-- Download SVG icon from http://tabler-icons.io/i/link -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
-                          </a>
-                        </td>
-                        <td class="text-secondary">986</td>
-                        <td class="text-secondary">865</td>
-                        <td class="text-secondary">44.89%</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City
-                          <a href="#" class="ms-1" aria-label="Open website"><!-- Download SVG icon from http://tabler-icons.io/i/link -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
-                          </a>
-                        </td>
-                        <td class="text-secondary">912</td>
-                        <td class="text-secondary">822</td>
-                        <td class="text-secondary">41.12%</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City
-                          <a href="#" class="ms-1" aria-label="Open website"><!-- Download SVG icon from http://tabler-icons.io/i/link -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
-                          </a>
-                        </td>
-                        <td class="text-secondary">855</td>
-                        <td class="text-secondary">798</td>
-                        <td class="text-secondary">32.65%</td>
-                      </tr>
-                    </table>
-                  </div>';
+						<table class="table table-vcenter">
+							<thead>
+								<tr>
+									<th>Post name</th>
+									<th>Visitors</th>
+									<th>Unique</th>
+									<th colspan="2">Bounce rate</th>
+								</tr>
+							</thead>
+							<tr>
+								<td>
+									Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City
+									<a href="#" class="ms-1" aria-label="Open website"><!-- Download SVG icon from http://tabler-icons.io/i/link -->
+										<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
+									</a>
+								</td>
+								<td class="text-secondary">4,896</td>
+								<td class="text-secondary">3,654</td>
+								<td class="text-secondary">82.54%</td>
+							</tr>
+							<tr>
+								<td>
+									Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City
+									<a href="#" class="ms-1" aria-label="Open website"><!-- Download SVG icon from http://tabler-icons.io/i/link -->
+										<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
+									</a>
+								</td>
+								<td class="text-secondary">3,652</td>
+								<td class="text-secondary">3,215</td>
+								<td class="text-secondary">76.29%</td>
+							</tr>
+							<tr>
+								<td>
+									Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City
+									<a href="#" class="ms-1" aria-label="Open website"><!-- Download SVG icon from http://tabler-icons.io/i/link -->
+										<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
+									</a>
+								</td>
+								<td class="text-secondary">3,256</td>
+								<td class="text-secondary">2,865</td>
+								<td class="text-secondary">72.65%</td>
+							</tr>
+							<tr>
+								<td>
+									Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City
+									<a href="#" class="ms-1" aria-label="Open website"><!-- Download SVG icon from http://tabler-icons.io/i/link -->
+										<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
+									</a>
+								</td>
+								<td class="text-secondary">986</td>
+								<td class="text-secondary">865</td>
+								<td class="text-secondary">44.89%</td>
+							</tr>
+							<tr>
+								<td>
+									Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City
+									<a href="#" class="ms-1" aria-label="Open website"><!-- Download SVG icon from http://tabler-icons.io/i/link -->
+										<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
+									</a>
+								</td>
+								<td class="text-secondary">912</td>
+								<td class="text-secondary">822</td>
+								<td class="text-secondary">41.12%</td>
+							</tr>
+							<tr>
+								<td>
+									Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City
+									<a href="#" class="ms-1" aria-label="Open website"><!-- Download SVG icon from http://tabler-icons.io/i/link -->
+										<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
+									</a>
+								</td>
+								<td class="text-secondary">855</td>
+								<td class="text-secondary">798</td>
+								<td class="text-secondary">32.65%</td>
+							</tr>
+						</table>
+					</div>';
 				$html[] = "</div>";
 			$html[] = "</div>";
 
 		$html[] = "</div>";
 
-
-    $html[] = "</div>";
+	$html[] = "</div>";
 $html[] = "</div>";
-    
+		

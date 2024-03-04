@@ -45,18 +45,7 @@ class UserClient
     }
 
 	function getIP() {
-
-		$doc = \Library\Factory::getDocument();
-        $doc->addScriptDeclaration("
-        
-			$(document).ready(function() {
-            	$.getJSON('https://api.ipify.org?format=json', function(data) {
-					$('body').append(\"<input type='hidden' id='ip_address' value='\"+data.ip+\"'  />\");
-            	});
-            });
-
-        ");
-
+        return $this->setIP();
 	}
 
     function setIP() {

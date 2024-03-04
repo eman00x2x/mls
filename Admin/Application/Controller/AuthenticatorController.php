@@ -27,7 +27,7 @@ class AuthenticatorController extends \Main\Controller
     }
 
     function beginSession($options = []) {
-		if(!$this->session->isStarted()) { $this->session->start($options);  }
+		if(!$this->session->isStarted()) { $this->session->start($options); }
 	}
 
     function monitor() {
@@ -35,6 +35,7 @@ class AuthenticatorController extends \Main\Controller
 		$logged = $this->session->get("user_logged");
 
 		if(isset($logged['user_id'])) {
+
 			/* already logged */
 			if(isset($_REQUEST['logout'])) {
 				/** user wants to logout */

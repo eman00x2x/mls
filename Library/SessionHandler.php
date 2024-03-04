@@ -2,15 +2,14 @@
 
 namespace Library;
 
-use Josantonius\Session\Session;
-use \UserClient;
+use Library\UserClient;
 
-class SessionHandler 
+class SessionHandler extends \Josantonius\Session\Session
 {
 
 	private static $_instance = null;
-	private $session;
-	private $lifetime = "+8 hours";
+	private $lifetime = "+30 minutes";
+	private $container = "session";
 	
 	public static function getInstance () {
         if (self::$_instance === null) {
@@ -21,58 +20,50 @@ class SessionHandler
     }
 
 	function __construct() {
-		$this->session = new Session();
 	}
 
-	public function setConfig(Array $config) {
+	public function init() {
+
+		if(!$this->isStarted()) {
+			$this->start();
+		}
+
+		if(!$this->has("id")) {
+			$this->buildAttributes();
+		}
+
+		if(time() >= $this->get("end")) {
+			$this->renew();
+		}
+
+	}
+
+	public function buildAttributes() {
+
+		$timestamp = time();
+
+		$this->replace([
+			"id" => $this->getId(),
+			"started" => $timestamp,
+			"end" => strtotime($this->lifetime, $timestamp),
+			"user_agent" => json_decode(UserClient::getInstance()->information(), true)
+		]);
 		
-		foreach($config as $attribute => $value) {
-			if(isset($this->$attribute)) {
-				$this->$attribute = $value;
-			}else {
-				throw new Exception($attribute." is invalid.");
-				break;
-			}
-		}
-
-		return $this;
-
 	}
 
-	public function start() {
-
-		if(!$this->session->isStarted()) {
-
-			$this->session->start();
-
-			$this->session->set("session_id", $this->session->getId());
-			$this->session->set("started", time());
-			$this->session->set("lifetime", strtotime('+8 hours', time()));
-
-			$user_agent = json_decode(UserClient::getInstace()->information(), true);
-			$this->session->set("user_agent", $user_agent);
-
-		}
-
-		return $this;
-
+	public function renew() {
+		$this->regenerateId();
+		$this->buildAttributes();
 	}
 
-	public function monitor() {
-
-		if(time() >= $this->session->get("lifetime")) {
-			$this->endSession();
-			return false;
-		}
-
+	public function getAttributes(): mixed {
+		return $this->all();
 	}
 
-	private function endSession() {
-		
-		$this->session->regenerateId();
-		$this->session->clear();
-		$this->session->destroy();
-
+	public function endSession(): void {
+		$this->regenerateId();
+		$this->clear();
+		$this->destroy();
 	}
 
 }

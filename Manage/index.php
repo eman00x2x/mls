@@ -1,5 +1,6 @@
 <?php
 
+use Library\SessionHandler;
 use Manage\Application\Controller\AuthenticatorController as Authenticator;
 use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Request as Request;
@@ -79,6 +80,9 @@ class Middleware implements IMiddleware {
 				Router::post('/', 'AuthenticatorController@getLoginForm');
 
 			}else {
+
+				SessionHandler::getInstance()->init();
+
 				require_once('routes.php');
 				$template = "templates/template.php";
 			}

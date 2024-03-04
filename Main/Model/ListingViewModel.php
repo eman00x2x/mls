@@ -10,6 +10,18 @@ class ListingViewModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getBySessionId() {
+		$query = "SELECT ".($this->select == "" ? "*" : $this->select)." FROM #__listings_view ".$this->join." WHERE session_id = '".$this->column['session_id']."' ".$this->and;
+		$result = $this->DBO->query($query);
+
+		$this->initiateFields($result);
+
+		if($this->DBO->numRows($result) > 0) {
+			$line = $this->DBO->fetchAssoc($result);
+			return $this->stripQuotes($line);
+		}else {return false;}
+	}
+
 	function saveNew($data) {
 
 		$v = $this->getValidator();

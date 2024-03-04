@@ -2,8 +2,6 @@
 
 namespace Admin\Application\Controller;
 
-use Josantonius\Session\Facades\Session;
-
 class ListingsController extends \Main\Controller {
 	
 	public $doc;
@@ -13,7 +11,7 @@ class ListingsController extends \Main\Controller {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 
-		$this->session = Session::get("user_logged");
+		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 	}
 
 	function index($account_id) {
@@ -167,7 +165,7 @@ class ListingsController extends \Main\Controller {
 			$account->select(" account_id, logo, profession, real_estate_license_number, firstname, lastname, mobile_number, email, registration_date");
 			$account->column['account_id'] = $data['listing']['account_id'];
 			$data['account'] = $account->getById();
-			
+
 			$listingImage = $this->getModel("ListingImage");
 			$listingImage->column['listing_id'] = $listing_id;
 			$data['listing']['images'] = $listingImage->getByListingId();
@@ -177,15 +175,21 @@ class ListingsController extends \Main\Controller {
 			$handshake->and(" listing_id = ".$listing_id." AND handshake_status NOT IN('done','cancel')");
 			$data['handshake'] = $handshake->getByRequestorAccountId();
 
-			/* if($data['listing']['account_id'] !== $_SESSION['user_logged']['account_id']) {
+			if($data['listing']['account_id'] !== $this->session['account_id']) {
 				$traffic = $this->getModel("ListingView");
-				$traffic->saveNew(array(
-					"listing_id" => $data['listing']['listing_id'],
-					"account_id" => $data['account']['account_id'],
-					"created_at" => DATE_NOW,
-					"user_agent" => $this->getLibrary("Factory")->getUserClient()->information()
-				));
-			} */
+				$traffic->column['session_id'] = $this->getLibrary("SessionHandler")->get("id");
+				
+				if(!$traffic->getBySessionId()) {
+					$traffic->saveNew(array(
+						"listing_id" => $data['listing']['listing_id'],
+						"account_id" => $data['account']['account_id'],
+						"session_id" => $this->getLibrary("SessionHandler")->get("id"),
+						"created_at" => DATE_NOW,
+						"user_agent" => json_encode($this->getLibrary("SessionHandler")->get("user_agent"))
+					));
+				}
+
+			}
 
 			$this->setTemplate("listings/view.php");
 			return $this->getTemplate($data,$listing);
