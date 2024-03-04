@@ -2,8 +2,6 @@
 
 namespace Manage\Application\Controller;
 
-use \Admin\Application\Controller\SessionController;
-
 class LeadsController extends \Admin\Application\Controller\LeadsController {
 	
 	private $doc;
@@ -13,7 +11,6 @@ class LeadsController extends \Admin\Application\Controller\LeadsController {
 	function __construct() {
 
 		parent::__construct();
-		$this->session = SessionController::getInstance()->session->get("user_logged");
 		$this->account_id = $this->session['account_id'];
 
 		if(!$this->session['permissions']['leads']['access']) {

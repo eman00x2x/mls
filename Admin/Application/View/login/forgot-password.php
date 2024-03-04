@@ -8,7 +8,7 @@ $html[] = "<div class='d-flex flex-column'>";
 				$html[] = "<span class='d-block'><b>MLS Account Password Reset Link</b></span>";
 			$html[] = "</div>";
 
-			$html[] = "<input type='hidden' id='save_url' value='".url("LoginController@sendPasswordResetLink")."' />";
+			$html[] = "<input type='hidden' id='save_url' value='".url("AuthenticatorController@sendPasswordResetLink")."' />";
 			$html[] = "<form id='form' class='card card-md' action='' method='POST' autocomplete='off'>";
 				$html[] = "<div class='card-body'>";
 					$html[] = "<h2 class='card-title text-center mb-4'>Forgot Password</h2>";

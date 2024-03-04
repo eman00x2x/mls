@@ -3,6 +3,7 @@
 namespace Admin\Application\Controller;
 
 use \Admin\Application\Controller\SessionController;
+use \Josantonius\Session\Facades\Session;
 
 class UsersController extends \Main\Controller {
 
@@ -12,7 +13,7 @@ class UsersController extends \Main\Controller {
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->session = SessionController::getInstance()->session->get("user_logged");
+		$this->session = Session::get("user_logged");
 	}
 	
 	function index() {

@@ -4,8 +4,12 @@ namespace Admin\Application\Controller;
 
 class AccountSubscriptionController extends \Main\Controller {
 
+	private $doc;
+	private $account_id;
+
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
+		$this->doc = $this->getLibrary("Factory")->getDocument();
 	}
 	
 	function index() {

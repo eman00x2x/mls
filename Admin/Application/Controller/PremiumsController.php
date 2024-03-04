@@ -2,6 +2,8 @@
 
 namespace Admin\Application\Controller;
 
+use Josantonius\Session\Facades\Session;
+
 class PremiumsController extends \Main\Controller {
 
 	private $doc;
@@ -10,7 +12,7 @@ class PremiumsController extends \Main\Controller {
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->session = SessionController::getInstance()->session->get("user_logged");
+		$this->session = Session::get("user_logged");
 	}
 	
 	function index() {

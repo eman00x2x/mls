@@ -2,16 +2,21 @@
 
 namespace Admin\Application\Controller;
 
+use \Josantonius\Session\Facades\Session;
+
 class NotificationsController extends \Main\Controller {
 
 	private $doc;
-	var $account_id;
+	public $account_id;
+	public $session;
 
 	function __construct() {
 
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->account_id = $_SESSION['user_logged']['account_id'];
+
+		$this->session = Session::get("user_logged");
+		$this->account_id = $this->session['account_id'];
 
 	}
 	

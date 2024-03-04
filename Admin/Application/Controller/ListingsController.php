@@ -2,13 +2,18 @@
 
 namespace Admin\Application\Controller;
 
+use \Josantonius\Session\Facades\Session;
+
 class ListingsController extends \Main\Controller {
 	
 	private $doc;
+	public $session;
 	
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
+
+		$this->session = Session::get("user_logged");
 	}
 
 	function index($account_id) {

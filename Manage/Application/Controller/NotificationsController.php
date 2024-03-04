@@ -10,7 +10,7 @@ class NotificationsController extends \Admin\Application\Controller\Notification
 	function __construct() {
 		
 		parent::__construct();
-		$this->account_id = $_SESSION['user_logged']['account_id'];
+		$this->account_id = $this->session['account_id'];
 
 	}
 	

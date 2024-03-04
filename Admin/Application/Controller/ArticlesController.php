@@ -2,7 +2,7 @@
 
 namespace Admin\Application\Controller;
 
-use \Admin\Application\Controller\SessionController;
+use \Josantonius\Session\Facades\Session;
 
 class ArticlesController extends \Main\Controller {
 	
@@ -12,7 +12,7 @@ class ArticlesController extends \Main\Controller {
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->session = SessionController::getInstance()->session->get("user_logged");
+		$this->session = Session::get("user_logged");
 
 		if($this->session['permissions']['web_settings']['access']) {
 			$this->getLibrary("Factory")->setMsg("You do not have enough permision to access articles","warning");

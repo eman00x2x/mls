@@ -2,16 +2,12 @@
 
 namespace Manage\Application\Controller;
 
-use \Admin\Application\Controller\SessionController;
-
 class ListingsController extends \Admin\Application\Controller\ListingsController {
 	
 	private $account_id;
-	public $session;
 	
 	function __construct() {
 		parent::__construct();
-		$this->session = SessionController::getInstance()->session->get("user_logged");
 		$this->account_id = $this->session['account_id'];
 
 		if(!$this->session['permissions']['properties']['access']) {

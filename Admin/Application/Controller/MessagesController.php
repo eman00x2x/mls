@@ -2,15 +2,21 @@
 
 namespace Admin\Application\Controller;
 
+use \Josantonius\Session\Facades\Session;
+
 class MessagesController extends \Main\Controller {
 
 	private $doc;
+	public $session;
+	
 	private $ws_client;
 	private $websocketAddress = "ws://localhost:8980/mls/Manage/webSocketServer.php";
 
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
+
+		$this->session = Session::get("user_logged");
 	}
 	
 	function index() {

@@ -1,6 +1,6 @@
 <?php
 
-$html[] = "<input type='hidden' id='save_url' value='".url("LoginController@saveNewPassword")."' />";
+$html[] = "<input type='hidden' id='save_url' value='".url("AuthenticatorController@saveNewPassword")."' />";
 $html[] = "<div class='d-flex flex-column'>";
 	$html[] = "<div class='page page-center'>";
 		$html[] = "<div class='container container-tight py-4'>";

@@ -4,13 +4,9 @@ namespace Manage\Application\Controller;
 
 class AccountSubscriptionController extends \Admin\Application\Controller\AccountSubscriptionController {
 	
-	private $doc;
-	private $account_id;
-	
 	function __construct() {
         $this->setTempalteBasePath(ROOT."Manage");
-		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->account_id = $_SESSION['user_logged']['account_id'];
+		$this->account_id = $this->session['account_id'];
 	}
 	
 	function index() {
