@@ -4,8 +4,7 @@ namespace Manage\Application\Controller;
 
 class NotificationsController extends \Admin\Application\Controller\NotificationsController {
 
-	private $doc;
-	var $account_id;
+	public $account_id;
 
 	function __construct() {
 		

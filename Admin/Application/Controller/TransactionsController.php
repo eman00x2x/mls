@@ -2,12 +2,12 @@
 
 namespace Admin\Application\Controller;
 
-Use \Library\Paypal as Paypal;
-use \Josantonius\Session\Facades\Session;
+Use Library\Paypal as Paypal;
+use Josantonius\Session\Facades\Session;
 
 class TransactionsController extends \Main\Controller {
 
-    private	$doc;
+    public	$doc;
 	public $session;
 
 	public $validation_url;

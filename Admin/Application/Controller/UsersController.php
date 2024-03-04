@@ -2,8 +2,8 @@
 
 namespace Admin\Application\Controller;
 
-use \Admin\Application\Controller\SessionController;
-use \Josantonius\Session\Facades\Session;
+use Admin\Application\Controller\SessionController;
+use Josantonius\Session\Facades\Session;
 
 class UsersController extends \Main\Controller {
 

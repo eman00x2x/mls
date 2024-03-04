@@ -54,7 +54,7 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 
 							$html[] = "<div class='text-center bg-white mb-5'>";
 								$html[] = "<input type='hidden' name='banner' class='banner' id='banner' class='form-control' value='".$data['banner']."' />";
-								$html[] = "<span class='avatar photo-preview  mb-1 mb-3' style='background-image: url(".($data['banner'] != "" ? $data['banner'] : CDN."images/blank-profile.png").")'></span>";
+								$html[] = "<span class='avatar photo-preview  mb-1 w-100 mb-3' style='background-image: url(".($data['banner'] != "" ? $data['banner'] : CDN."images/blank-profile.png").")'></span>";
 								$html[] = "<small>Click to Upload Banner</small>";
 								$html[] = "<span class='photo-upload-loader d-block'></span>";
 							$html[] = "</div>";

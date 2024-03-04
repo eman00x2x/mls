@@ -2,11 +2,11 @@
 
 namespace Admin\Application\Controller;
 
-use \Josantonius\Session\Facades\Session;
+use Josantonius\Session\Facades\Session;
 
 class KYCController extends \Main\Controller {
 
-	private $doc;
+	public $doc;
 	public $session;
 
 	function __construct() {

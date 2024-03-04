@@ -23,6 +23,7 @@ class AuthenticatorController extends \Main\Controller
 		$this->domain = ADMIN;
 
         $this->session = new \Josantonius\Session\Session;
+
     }
 
     function beginSession($options = []) {

@@ -4,7 +4,7 @@ namespace Webadmin\Application\Controller;
 
 class DashboardController extends \Main\Controller {
 
-    private $doc;
+    public $doc;
 
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Manage");

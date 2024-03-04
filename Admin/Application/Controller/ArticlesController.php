@@ -2,7 +2,7 @@
 
 namespace Admin\Application\Controller;
 
-use \Josantonius\Session\Facades\Session;
+use Josantonius\Session\Facades\Session;
 
 class ArticlesController extends \Main\Controller {
 	
@@ -14,7 +14,7 @@ class ArticlesController extends \Main\Controller {
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = Session::get("user_logged");
 
-		if($this->session['permissions']['web_settings']['access']) {
+		if(!$this->session['permissions']['articles']['access']) {
 			$this->getLibrary("Factory")->setMsg("You do not have enough permision to access articles","warning");
 			response()->redirect(url("DashboardController@index"));
 		}
@@ -61,7 +61,7 @@ class ArticlesController extends \Main\Controller {
 	
 	function edit($id) {
 
-		if($this->session['permissions']['web_settings']['edit']) {
+		if(!$this->session['permissions']['articles']['edit']) {
 			$this->getLibrary("Factory")->setMsg("You do not have enough permision to edit articles","warning");
 			response()->redirect(url("DashboardController@index"));
 		}

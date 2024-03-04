@@ -4,12 +4,9 @@ namespace Manage\Application\Controller;
 
 class PremiumsController extends \Admin\Application\Controller\PremiumsController {
 
-	private $doc;
-
 	function __construct() {
 		parent::__construct();
 		$this->setTempalteBasePath(ROOT."Manage");
-		$this->doc = $this->getLibrary("Factory")->getDocument();
 	}
 	
 	function index() {

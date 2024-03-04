@@ -2,10 +2,9 @@
 
 namespace Manage\Application\Controller;
 
-class LoginController extends \Admin\Application\Controller\LoginController {
+class AuthenticatorController extends \Admin\Application\Controller\AuthenticatorController {
 	
 	private static $_instance = null;
-	var $domain;
 	
 	public static function getInstance () {
         if (self::$_instance === null) {
@@ -14,16 +13,16 @@ class LoginController extends \Admin\Application\Controller\LoginController {
 
         return self::$_instance;
     }
-	
+
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Admin");
+		parent::__construct();
 		$this->domain = MANAGE;
 		return $this;
 	}
 
-	function login() {
+	function getLoginForm() {
 
-		parent::login();
+		parent::getLoginForm();
 		$this->setTempalteBasePath(ROOT."Manage");
 		$this->setTemplate("login/login.php");
 		return $this->getTemplate();

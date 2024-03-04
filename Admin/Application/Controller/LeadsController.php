@@ -2,11 +2,11 @@
 
 namespace Admin\Application\Controller;
 
-use \Josantonius\Session\Facades\Session;
+use Josantonius\Session\Facades\Session;
 
 class LeadsController extends \Main\Controller {
 	
-	private $doc;
+	public $doc;
 	public $account_id;
 	public $session;
 	

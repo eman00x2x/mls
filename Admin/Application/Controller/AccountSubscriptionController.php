@@ -2,14 +2,19 @@
 
 namespace Admin\Application\Controller;
 
+use Josantonius\Session\Facades\Session;
+
 class AccountSubscriptionController extends \Main\Controller {
 
-	private $doc;
-	private $account_id;
+	public $doc;
+	public $account_id;
+	public $session;
 
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
+
+		$this->session = Session::get("user_logged");
 	}
 	
 	function index() {

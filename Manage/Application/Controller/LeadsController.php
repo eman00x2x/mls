@@ -4,9 +4,7 @@ namespace Manage\Application\Controller;
 
 class LeadsController extends \Admin\Application\Controller\LeadsController {
 	
-	private $doc;
 	public $account_id;
-	public $session;
 	
 	function __construct() {
 

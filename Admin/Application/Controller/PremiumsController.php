@@ -6,7 +6,7 @@ use Josantonius\Session\Facades\Session;
 
 class PremiumsController extends \Main\Controller {
 
-	private $doc;
+	public $doc;
 	public $session;
 
 	function __construct() {

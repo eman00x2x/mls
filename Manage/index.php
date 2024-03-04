@@ -1,6 +1,6 @@
 <?php
 
-use Admin\Application\Controller\SessionController;
+use Manage\Application\Controller\AuthenticatorController as Authenticator;
 use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Request as Request;
 use Pecee\Http\Middleware\IMiddleware;
@@ -37,20 +37,20 @@ spl_autoload_register('autoloader');
 
 require_once(ROOT."/Includes/config.php");
 
-SessionController::getInstance()->begin();
+Authenticator::getInstance()->beginSession();
 
 class Middleware implements IMiddleware {
 
     public function handle(Request $request): void 
     {
 
-		$request->user = SessionController::getInstance()->monitor();
+		$request->user = Authenticator::getInstance()->monitor();
 		Router::router()->reset();
 
 		$template = "templates/login.template.php";
 
 		if(url()->contains("/2-step-verification-code")) {
-			Router::get('/2-step-verification-code', 'LoginController@twoStepVerificationCode');
+			Router::get('/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeForm');
 		}else if(url()->contains("/register")) {
 
 			Router::get('/register', 'RegistrationController@register');
@@ -60,13 +60,13 @@ class Middleware implements IMiddleware {
 			
 		}else if(url()->contains("/resetPassword")) {
 
-			Router::get('/resetPassword', 'LoginController@resetPassword', ['as' => 'resetPassword']);
-			Router::post('/resetPassword', 'LoginController@saveNewPassword');
+			Router::get('/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
+			Router::post('/resetPassword', 'AuthenticatorController@saveNewPassword');
 			
 		} else if(url()->contains("/forgotPassword")) {
 
-			Router::get('/forgotPassword', 'LoginController@forgotPassword', ['as' => 'forgotPassword']);
-			Router::post('/forgotPassword', 'LoginController@sendPasswordResetLink');
+			Router::get('/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
+			Router::post('/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
 
 		}else {
 
@@ -75,8 +75,8 @@ class Middleware implements IMiddleware {
 				Router::request()->setMethod('get');
 				Router::request()->setRewriteUrl(url('/'));
 
-				Router::get('/', 'LoginController@login');
-				Router::post('/', 'LoginController@login');
+				Router::get('/', 'AuthenticatorController@getLoginForm');
+				Router::post('/', 'AuthenticatorController@getLoginForm');
 
 			}else {
 				require_once('routes.php');

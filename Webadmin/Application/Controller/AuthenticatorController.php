@@ -2,10 +2,9 @@
 
 namespace Webadmin\Application\Controller;
 
-class LoginController extends \Admin\Application\Controller\LoginController {
+class AuthenticatorController extends \Admin\Application\Controller\AuthenticatorController {
 	
 	private static $_instance = null;
-	var $domain;
 	
 	public static function getInstance () {
         if (self::$_instance === null) {
@@ -16,7 +15,7 @@ class LoginController extends \Admin\Application\Controller\LoginController {
     }
 	
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Admin");
+		parent::__construct();
 		$this->domain = WEBADMIN;
 		return $this;
 	}

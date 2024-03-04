@@ -2,11 +2,11 @@
 
 namespace Admin\Application\Controller;
 
-use \Josantonius\Session\Facades\Session;
+use Josantonius\Session\Facades\Session;
 
 class MessagesController extends \Main\Controller {
 
-	private $doc;
+	public $doc;
 	public $session;
 	
 	private $ws_client;

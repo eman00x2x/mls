@@ -69,8 +69,8 @@ class Middleware implements IMiddleware {
 				Router::request()->setMethod('get');
 				Router::request()->setRewriteUrl(url('/'));
 
-				Router::get('/', 'LoginController@login');
-				Router::post('/', 'LoginController@login');
+				Router::get('/', 'AuthenticatorController@getLoginForm');
+				Router::post('/', 'AuthenticatorController@getLoginForm');
 
 				Router::get('/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
 				
