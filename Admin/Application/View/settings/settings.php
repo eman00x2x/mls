@@ -100,7 +100,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "</label>";
 										$html[] = "</div>";
 
-										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+										/* $html[] = "<div class='mb-5 border rounded-3 p-5'>";
 											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";
 												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>PIN Based Access</h3>";
 												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>If PIN-based access is enabled, users experiencing issues can contact our customer service team and provide their PIN for verification. Upon successful authentication, our representatives will assist users in resolving any account-related issues they encounter.</p>";
@@ -108,7 +108,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 												$html[] = "<input type='checkbox' name='enable_pin_access' class='form-check-input' value='1' ".($data['enable_pin_access'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable PIN Based Access</span>";
 											$html[] = "</label>";
-										$html[] = "</div>";
+										$html[] = "</div>"; */
 
 										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
 											$html[] = "<h3 class='card-title'>Email Address Responder</h3>";
