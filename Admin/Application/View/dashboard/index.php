@@ -76,7 +76,7 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<div class='card mb-3'>";
 					$html[] = "<div class='card-body'>";
 						$html[] = "<h3 class='card-title'>Premium Purchases</h3>";
-						$html[] = "<div id='getChartEarningsThisYear' class='chart-lg'></div>";
+						$html[] = "<div id='getChartEarnings' class='chart-lg'></div>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 			$html[] = "</div>";
@@ -93,7 +93,7 @@ $html[] = "<div class='page-body'>";
 			$html[] = "<div class='col-6'>";
 				$html[] = "<div class='card mb-3'>";
 					$html[] = "<div class='card-header'>";
-						$html[] = "<h3 class='card-title'>Most Visited Pages</h3>";
+						$html[] = "<h3 class='card-title'>Most Visited Property Listings</h3>";
 					$html[] = "</div>";
 
 					$html[] = "<div class='card-table table-responsive'>";

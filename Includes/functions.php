@@ -124,6 +124,30 @@ function convertTime($ms, $seconds = false) {
 
 }
 
+function dateHelper($flag) {
+
+	switch($flag) {
+		case "today":
+			$data['from'] = strtotime(date("Y-m-d"));
+			$data['to'] = strtotime(date("Y-m-d"));
+			break;
+		case "this_month":
+			$data['from'] = strtotime(date("Y-m-01"));
+			$data['to'] = strtotime(date("Y-m-t"));
+			break;
+		case "this_week":
+			$today_day_of_week = date("N");
+			$data['from'] = strtotime(date("Y-m-d", strtotime("-" . ($today_day_of_week - 1) . " days")));
+			$data['to'] = strtotime(date("Y-m-d", strtotime("+" . (7 - $today_day_of_week) . " days")));
+			break;
+		case "this_year":
+			$data['from'] = strtotime(date("Y-01-01"));
+			$data['to'] = strtotime(date("Y-12-31"));
+			break;
+	}
+	return $data;
+}
+
 function convertMillions($num) {
 
     if($num >= 1000000) {
@@ -140,4 +164,25 @@ function strtohex($x) {
     $s='';
     foreach (str_split($x) as $c) $s.=sprintf("%02X",ord($c));
     return($s);
+}
+
+function checkRemoteFile($url) {
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL,$url);
+    // don't download content
+    curl_setopt($ch, CURLOPT_NOBODY, 1);
+    curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+
+    if($result !== FALSE) {
+        return true;
+    } else {
+        return false;
+    }
+    
 }
