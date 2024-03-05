@@ -76,7 +76,7 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<div class='card mb-3'>";
 					$html[] = "<div class='card-body'>";
 						$html[] = "<h3 class='card-title'>Premium Purchases</h3>";
-						$html[] = "<div id='chart-mentions' class='chart-lg'></div>";
+						$html[] = "<div id='getChartEarningsThisYear' class='chart-lg'></div>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 			$html[] = "</div>";
