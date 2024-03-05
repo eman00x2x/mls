@@ -2,7 +2,6 @@
 
 namespace Manage\Application\Controller;
 
-use Josantonius\Session\Facades\Session;
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
@@ -18,7 +17,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
         $this->setTempalteBasePath(ROOT."Manage");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 
-		$this->session = Session::get("user_logged");
+		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 		$this->account_id = $this->session['account_id'];
 
 		if(!isset($this->session['privileges']['mls_access']) && in_array($this->session['account_type'], ["Customer Service"])) {

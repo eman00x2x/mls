@@ -3,7 +3,6 @@
 namespace Admin\Application\Controller;
 
 Use Library\Paypal as Paypal;
-use Josantonius\Session\Facades\Session;
 
 class TransactionsController extends \Main\Controller {
 
@@ -16,7 +15,7 @@ class TransactionsController extends \Main\Controller {
 	function __construct()  {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->session = Session::get("user_logged");
+		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 	}
 
     function index($account_id) {

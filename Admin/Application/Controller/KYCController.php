@@ -2,8 +2,6 @@
 
 namespace Admin\Application\Controller;
 
-use Josantonius\Session\Facades\Session;
-
 class KYCController extends \Main\Controller {
 
 	public $doc;
@@ -12,7 +10,7 @@ class KYCController extends \Main\Controller {
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->session = Session::get("user_logged");
+		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 
 		if(!KYC) {
 			$this->response(404);

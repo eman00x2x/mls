@@ -2,8 +2,6 @@
 
 namespace Admin\Application\Controller;
 
-use Josantonius\Session\Facades\Session;
-
 class AccountSubscriptionController extends \Main\Controller {
 
 	public $doc;
@@ -14,7 +12,7 @@ class AccountSubscriptionController extends \Main\Controller {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 
-		$this->session = Session::get("user_logged");
+		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 	}
 	
 	function index() {
