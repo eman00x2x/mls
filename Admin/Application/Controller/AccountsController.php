@@ -560,7 +560,7 @@ class AccountsController extends \Main\Controller {
 
 	}
 
-	function limitAccountWithExpiredPrivileges($account_id): void {
+	function limitWithExpiredPrivileges($account_id): void {
 
 		$accounts = $this->getModel("Account");
 		$accounts->column['account_id'] = $account_id;
@@ -597,17 +597,19 @@ class AccountsController extends \Main\Controller {
 				->orderBy(" date_added ASC ")
 					->getList();
 
-		$total_post = count($data['listings']);
-		if($data['account']['privileges']['max_post'] >= $total_post) {
-			for($i=0; $i<$total_post; $i++) {
+		if($data['listings']) {
+			$total_post = count($data['listings']);
+			if($data['account']['privileges']['max_post'] >= $total_post) {
+				for($i=0; $i<$total_post; $i++) {
 
-				if($i > ($data['account']['privileges']['max_post'] - 1)) {
-					/** make inactive other users in account */
-					$listings->save($data['listings'][$i]['listing_id'], [
-						"status" => "inactive"
-					]);
+					if($i > ($data['account']['privileges']['max_post'] - 1)) {
+						/** make inactive other users in account */
+						$listings->save($data['listings'][$i]['listing_id'], [
+							"status" => "inactive"
+						]);
+					}
+
 				}
-
 			}
 		}
 

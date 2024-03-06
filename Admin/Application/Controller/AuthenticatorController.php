@@ -2,6 +2,8 @@
 
 namespace Admin\Application\Controller; 
 
+use Admin\Application\Controller\AccountsController as Account;
+
 class AuthenticatorController extends \Main\Controller
 {
 
@@ -294,8 +296,8 @@ class AuthenticatorController extends \Main\Controller
 		$subscription->column['account_id'] = $data['account_id'];
 		$data['privileges'] = $subscription->getSubscription();
 
-		$account = $this->getModel("Account");
-		$account->limitAccountWithExpiredPrivileges($data['account_id']);
+		$account = new Account();
+		$account->limitWithExpiredPrivileges($data['account_id']);
 
 		return $data;
 	}

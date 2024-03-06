@@ -119,3 +119,7 @@ if(PREMIUM) {
 /** INVOICE ROUTES */
 Router::get(ALIAS.'/invoices', 'InvoicesController@index', ['as' => 'deleteInvoice']);
 Router::get(ALIAS.'/invoices/{id}/delete', 'InvoicesController@delete', ['as' => 'deleteInvoice'])->where([ 'id' => '[0-9]+' ]);
+
+
+/** DEBUGGING */
+Router::get('/debug', 'DebugController@debug', ['as' => 'debug']);

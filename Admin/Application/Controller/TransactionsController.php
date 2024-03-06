@@ -3,6 +3,7 @@
 namespace Admin\Application\Controller;
 
 Use Library\Paypal as Paypal;
+use Library\Mailer;
 
 class TransactionsController extends \Main\Controller {
 
@@ -202,7 +203,16 @@ class TransactionsController extends \Main\Controller {
 			}else{ 
 				$data['payment_status_message'] = ""; 
 				$data['transaction_status'] = false;
-			} 
+			}
+
+			$mail = new Mailer();
+			$mail
+				->build($this->mailInvoice($data['transaction']['account_id'], $data['transaction']['transaction_id']))
+					->send([
+						"to" => [
+							$this->session['email']
+						]
+					], "Invoice");
 
 			$this->setTemplate("transactions/paymentStatus.php");
 			return $this->getTemplate($data,$transaction);
@@ -211,6 +221,29 @@ class TransactionsController extends \Main\Controller {
 
 		$this->response(404);
 	
+	}
+
+	function mailInvoice($account_id, $transaction_id) {
+
+		$account = $this->getModel("Account");
+		$account->column['account_id'] = $account_id;
+		$data['account'] = $account->getById();
+
+		$transaction = $this->getModel("Transaction");
+		$transaction->column['transaction_id'] = $transaction_id;
+		$data['transaction'] = $transaction->getById();
+
+		if(VAT) {
+			$data['transaction']['premium_price'] = ($data['transaction']['premium_price'] / 1.12);
+			$data['vat'] = $data['transaction']['premium_price'] * 0.12;
+			$data['total'] = $data['transaction']['premium_price'] + $data['vat'];
+		}else {
+			$data['total'] = $data['transaction']['premium_price'];
+		}
+
+		$this->setTemplate("transactions/MAIL_invoice.php");
+		return $this->getTemplate($data,$transaction);
+
 	}
 
 	function invoices($account_id, $transaction_id) {

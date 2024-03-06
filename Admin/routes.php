@@ -78,6 +78,9 @@ Router::get('/settings/{page}', 'SettingsController@index', ['as' => 'settings']
 Router::get('/web-settings/{page}', 'SettingsController@webSettings', ['as' => 'webSettings'])->where([ 'page' => '[\w\-\=]+' ]);
 Router::post('/settings/saveUpdate', 'SettingsController@saveUpdate', ['as' => 'saveUpdate'])->where([ 'page' => '[\w\-\=]+' ]);
 
-Router::get('/experiment', 'AdministrationController@experiment', ['as' => 'experiment']);
 Router::get('/administration', 'AdministrationController@index', ['as' => 'administration']);
 Router::post('/administration', 'AdministrationController@queryResult', ['as' => 'administration-queryResult']);
+
+
+/** DEBUGGING */
+Router::get('/debug', 'DebugController@debug', ['as' => 'debug']);
