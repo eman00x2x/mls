@@ -28,7 +28,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
-				$html[] = "<div class='d-none d-sm-inline'>";
+				$html[] = "<div class=''>";
 					$html[] = "<div class='btn-list'>";
 						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@handshakedIndex")."'><i class='ti ti-heart-handshake me-2'></i> Handshaked</a>";
 						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@downloadPDFFormat", ["id" => $data['listing']['listing_id']])."'><i class='ti ti-download me-2'></i> Download</a>";
@@ -109,7 +109,7 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 
 					if($data['account']['account_id'] != $_SESSION['user_logged']['account_id']) {
-					    $html[] = "<a class='card-btn ' href='".url("MessagesController@conversation", ["participants" => base64_encode(json_encode(array($data['listing']['account_id'],$_SESSION['user_logged']['account_id'])))], ["listing_id" => $data['listing']['listing_id'], "name" => $data['listing']['title']])."'><i class='ti ti-send me-2'></i> Send Message</a>";
+					    $html[] = "<a class='card-btn bg-primary text-white' href='".url("MessagesController@conversation", ["participants" => base64_encode(json_encode(array($data['listing']['account_id'],$_SESSION['user_logged']['account_id'])))], ["listing_id" => $data['listing']['listing_id'], "name" => $data['listing']['title']])."'><i class='ti ti-send me-2'></i> Send Message</a>";
 					}
 
 				$html[] = "</div>";
@@ -120,8 +120,12 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<div class='card mb-3'>";
 					$html[] = "<div class='card-body'>";
 						$html[] = "<div class='card-title'>Posting Details</div>";
-						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-certificate me-1'></i> Authority:</span> <strong>".$data['listing']['other_details']['authority_type']."</strong></div>";
-						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-license me-1'></i> Commission Share:</span> <strong>".$data['listing']['other_details']['com_share']."%</strong></div>";
+						
+						if($data['handshake'] && in_array($_SESSION['user_logged']['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
+							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-certificate me-1'></i> Authority:</span> <strong>".$data['listing']['other_details']['authority_type']."</strong></div>";
+							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-license me-1'></i> Commission Share:</span> <strong>".$data['listing']['other_details']['com_share']."%</strong></div>";
+						}
+
 						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-status-change me-1'></i> Status:</span> <strong>".$status[$data['listing']['status']]."</strong></div>";
 						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Modified at:</span> <strong>".date("F d, Y",$data['listing']['last_modified'])."</strong></div>";
 					$html[] = "</div>";

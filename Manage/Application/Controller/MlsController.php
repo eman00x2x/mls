@@ -224,6 +224,8 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	function viewListing($id) {
 
+		$this->setTempalteBasePath(ROOT."Admin");
+
 		$this->doc->addStyleDeclaration("
 
 			.btn-wrap {
@@ -581,6 +583,8 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 	}
 
 	function downloadPDFFormat($id)  {
+
+		$this->setTempalteBasePath(ROOT."Admin");
 
 		$listing = $this->getModel("Listing");
 		$listing->column['listing_id'] = $id;

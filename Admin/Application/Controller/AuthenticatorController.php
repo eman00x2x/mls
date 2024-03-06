@@ -13,7 +13,7 @@ class AuthenticatorController extends \Main\Controller
         if (self::$_instance === null) {
             self::$_instance = new self;
         }
-
+		
         return self::$_instance;
     }
 
@@ -100,7 +100,7 @@ class AuthenticatorController extends \Main\Controller
 		if($user) {
 
 			/** check current user session */
-			if($user['session_id'] != $this->session->getId()) {
+			if($user['session_id'] != $data["login_session_id"]) {
 				/** user current session not same */
 				return false;
 			}
@@ -231,7 +231,7 @@ class AuthenticatorController extends \Main\Controller
 
 		if($data = $user->getByEmailAndPassword()) {
 
-			if($this->isBlock($data['status'])) {
+			if($this->isBlock($data)) {
 
 				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",ADMIN)) && $data['account_type'] != "Administrator") {
 					$this->getLibrary("Factory")->setMsg("Only Administrator can login here.","error");
@@ -294,20 +294,24 @@ class AuthenticatorController extends \Main\Controller
 		$subscription->column['account_id'] = $data['account_id'];
 		$data['privileges'] = $subscription->getSubscription();
 
+		$account = $this->getModel("Account");
+		$account->limitAccountWithExpiredPrivileges($data['account_id']);
+
 		return $data;
 	}
 
 	function recordLogin($data) {
 
-		$session_id = session_id();
-		$data['session_id'] = $session_id;
+		/** LOGIN SESSION */
+		$login_session_id = $this->session->getId();
+		$data['login_session_id'] = $login_session_id;
 
 		$client_info = \Library\UserClient::getInstance()->information();
 
 		$user_login = $this->getModel("UserLogin");
 		$user_login->saveNew([
 			"user_id" => $data['user_id'],
-			"session_id" => $session_id,
+			"session_id" => $login_session_id,
 			"status" => 1,
 			"login_at" => DATE_NOW,
 			"login_details" => $client_info
@@ -323,26 +327,36 @@ class AuthenticatorController extends \Main\Controller
 			$_SESSION[$key] = $val;
 		}
 
+		/** REGENERATE session_id FOR LISTING TRAFFIC SESSION */
+		session_regenerate_id();
+
 		return true;
 		
 	}
 	
-	function isBlock($status) {
+	function isBlock($data) {
 
-		switch($status) {
-			case "inactive":
-				$this->getLibrary("Factory")->setMsg("This user has been deactivated due to an expired subscription.","warning");
-				return false;
-				break;
+		switch($data['status']) {
+			
 			case "banned":
-				$this->getLibrary("Factory")->setMsg("You have been blocked by the system administrator.","warning");
+				$this->getLibrary("Factory")->setMsg("This account have been blocked by the system administrator.","warning");
 				return false;
 				break;
 			
 			default:
 				return true;
 		}
-		
+
+		switch($data['user_status']) {
+			case "inactive":
+				$this->getLibrary("Factory")->setMsg("This user has been deactivated due to an expired subscription.","warning");
+				return false;
+				break;
+
+			default:
+				return true;
+		}
+
 	}
 
 	function sendPasswordResetLink() {

@@ -16,7 +16,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
-				$html[] = "<div class='d-none d-sm-inline'>";
+				$html[] = "<div class=''>";
 					$html[] = "<div class='btn-list'>";
 						
 						if($_SESSION['user_logged']['account_type'] == "Administrator") {

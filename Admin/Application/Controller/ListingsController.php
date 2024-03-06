@@ -132,6 +132,7 @@ class ListingsController extends \Main\Controller {
 
 			$this->setTemplate("listings/add.php");
 			return $this->getTemplate($data, $listing);
+			
 		}
 		
 	}
@@ -172,7 +173,7 @@ class ListingsController extends \Main\Controller {
 
 			$handshake = $this->getModel("Handshake");
 			$handshake->column['requestor_account_id'] = $_SESSION['user_logged']['account_id'];
-			$handshake->and(" listing_id = ".$listing_id." AND handshake_status NOT IN('done','cancel')");
+			$handshake->and(" listing_id = ".$listing_id." AND handshake_status NOT IN('done','cancel','denied')");
 			$data['handshake'] = $handshake->getByRequestorAccountId();
 
 			if($data['listing']['account_id'] !== $this->session['account_id']) {
@@ -245,9 +246,26 @@ class ListingsController extends \Main\Controller {
 	}
 	
 	function saveUpdate($id) {
-		
+
 		parse_str(file_get_contents('php://input'), $_POST);
 
+		if($_POST['status'] == "available") {
+			$listing = $this->getModel("Listing");
+			$listing->select(" COUNT(listing_id) ")->where(" account_id = $account_id AND status = 'available' ");
+			$total_listing = $listing->getList();
+
+			if($total_listing > $_SESSION['user_logged']['privileges']['max_post']) {
+				$this->getLibrary("Factory")->setMsg("This account has already reached the maximum number of listings; therefore, the property cannot activate", "warning");
+
+				return json_encode(
+					array(
+						"status" => $response['status'],
+						"message" => getMsg()
+					)
+				);
+			}
+		}
+		
 		$_POST['name'] = sanitize($_POST['title']);
 		$_POST['last_modified'] = DATE_NOW;
 		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."images/listings/".$_POST['thumb_img'] : null;

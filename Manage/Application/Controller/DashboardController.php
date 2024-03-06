@@ -11,7 +11,9 @@ class DashboardController extends \Admin\Application\Controller\DashboardControl
 
     function index() {
 
-        $this->getTrafficChart();
+        $this->getTrafficChart($this->session['account_id'], "this_year");
+        $this->getTrafficChart($this->session['account_id'], "this_week");
+        $this->getTrafficChart($this->session['account_id'], "this_month");
         
         $data['max_post'] = $this->session['privileges']['max_post'];
         $data['handshake_participants'] = $this->getHandshakeParticipants($this->session['account_id']);

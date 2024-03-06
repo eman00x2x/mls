@@ -88,6 +88,23 @@ $html[] = "<form id='form' action='' method='POST'>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 							$html[] = "</div>";
+
+							$html[] = "<div class='mb-3'>";
+								$html[] = "<div class='row'>";
+									$html[] = "<div class='col-3'>";
+										$html[] = "<label class='text-muted form-label mt-2 text-end'>Status</label>";
+									$html[] = "</div>";
+									$html[] = "<div class='col-9'>";
+										$html[] = "<select class='form-select' name='user_status'>";
+											foreach(["active" => "Activate", "inactive" => "Deactivate"] as $val => $label) {
+												$sel = $data['user_status'] == $val ? "selected" : "";
+												$html[] = "<option value='$val' $sel>$label</option>";
+											}
+										$html[] = "</select>";
+										$html[] = "<small class='form-hint'>This user is ".ucwords($data['user_status'])." </small>";
+									$html[] = "</div>";
+								$html[] = "</div>";
+							$html[] = "</div>";
 							
 						$html[] = "</div>";
 					$html[] = "</div>";

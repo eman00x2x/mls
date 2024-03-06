@@ -20,8 +20,6 @@ class AccountSubscriptionModel extends \Main\Model {
 
 		$data = $this->getList();
 
-		
-
 		if($data) {
 			for($i=0; $i<count($data); $i++) {
 				foreach($data[$i]['script'] as $key => $val) {

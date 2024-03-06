@@ -113,11 +113,29 @@ $html[] = "<div class='page-body'>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 
-			$html[] = "<div class='col-6'>";
+			$html[] = "<div class='col-md-4 col-12'>";
 				$html[] = "<div class='card mb-3'>";
 					$html[] = "<div class='card-body'>";
-						$html[] = "<h3 class='card-title'>Property Listings Traffic</h3>";
-						$html[] = "<div id='getTrafficChart' class='chart-lg'></div>";
+						$html[] = "<h3 class='card-title'>Property Listings Traffic This Week</h3>";
+						$html[] = "<div id='getTrafficChart_this_week' class='chart-sm'></div>";
+					$html[] = "</div>";
+				$html[] = "</div>";
+			$html[] = "</div>";
+
+			$html[] = "<div class='col-md-4 col-12'>";
+				$html[] = "<div class='card mb-3'>";
+					$html[] = "<div class='card-body'>";
+						$html[] = "<h3 class='card-title'>Property Listings Traffic This Month</h3>";
+						$html[] = "<div id='getTrafficChart_this_month' class='chart-sm'></div>";
+					$html[] = "</div>";
+				$html[] = "</div>";
+			$html[] = "</div>";
+
+			$html[] = "<div class='col-md-4 col-12'>";
+				$html[] = "<div class='card mb-3'>";
+					$html[] = "<div class='card-body'>";
+						$html[] = "<h3 class='card-title'>Property Listings Traffic This Year</h3>";
+						$html[] = "<div id='getTrafficChart_this_year' class='chart-sm'></div>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 			$html[] = "</div>";

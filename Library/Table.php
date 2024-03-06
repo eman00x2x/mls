@@ -118,7 +118,7 @@ class Table {
 
 	function getById() {
 
-		$query = "SELECT ".($this->select != "" ? $this->select : "*")." FROM #__".$this->table." ".$this->join." WHERE ".$this->primary_key." = ".$this->column[$this->primary_key]." ".$this->and." ".$this->orderby." ".$this->groupby;
+		$query = "SELECT ".($this->select != "" ? $this->select : "*")." FROM #__".$this->table." ".$this->join." WHERE ".$this->primary_key." = ".$this->column[$this->primary_key]." ".$this->and." ".$this->groupby." ".$this->orderby;
 		$result = $this->DBO->query($query);
 
 		$this->initiateFields($result);
@@ -134,7 +134,7 @@ class Table {
 
 		$this->setPagina($this->page['current'], $this->page['limit']);
 
-		$query = "SELECT ".($this->select != "" ? $this->select : "*")." FROM #__".$this->table." ".$this->join." ".$this->where." ".$this->and." ".$this->orderby." ".$this->groupby;
+		$query = "SELECT ".($this->select != "" ? $this->select : "*")." FROM #__".$this->table." ".$this->join." ".$this->where." ".$this->and." ".$this->groupby." ".$this->orderby;
 		$query .= " LIMIT ". $this->page['starting_number'] .",". $this->page['limit'];
 		$result = $this->DBO->query($query);
 
@@ -142,7 +142,7 @@ class Table {
 
 		if($this->DBO->numRows($result) > 0) {
 
-			$query = "SELECT ".($this->select != "" ? $this->select : "*").", COUNT(".$this->primary_key.") AS total_row FROM #__".$this->table." ".$this->join." ".$this->where." ".$this->and." ".$this->orderby;
+			$query = "SELECT ".($this->select != "" ? $this->select : "*").", COUNT(".$this->primary_key.") AS total_row FROM #__".$this->table." ".$this->join." ".$this->where." ".$this->and." ".$this->groupby." ".$this->orderby;
 			$line = $this->DBO->queryUniqueValue($query);
 			$this->rows = $line['total_row'];
 

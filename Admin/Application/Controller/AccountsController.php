@@ -559,5 +559,58 @@ class AccountsController extends \Main\Controller {
 		return $this->getTemplate($data,$accounts);
 
 	}
+
+	function limitAccountWithExpiredPrivileges($account_id): void {
+
+		$accounts = $this->getModel("Account");
+		$accounts->column['account_id'] = $account_id;
+		$data['account'] = $accounts->getById();
+
+		$subscriptions = $this->getModel("AccountSubscription");
+		$subscriptions->column['account_id'] = $account_id;
+		$data['account']['privileges'] = $subscriptions->getSubscription();
+
+		$users = $this->getModel("User");
+		$users->page['limit'] = 9999;
+		$users->column['account_id'] = $account_id;
+		$data['users'] = $users->where(" user_status = 'active' ")->orderBy(" date_added ASC ")->getByAccountId();
+
+		$total_users = count($data['users']);
+		if($data['account']['privileges']['max_users'] >= $total_users) {
+			for($i=0; $i<$total_users; $i++) {
+
+				if($i > ($data['account']['privileges']['max_users'] - 1)) {
+					/** make inactive other users in account */
+					$users->save($data['users'][$i]['user_id'], [
+						"user_status" => "inactive"
+					]);
+				}
+
+			}
+		}
+
+		$listings = $this->getModel("Listing");
+		$listings->page['limit'] = 99999;
+
+		$data['listings'] = $listings
+			->where(" account_id = $account_id AND status = 'available' ")
+				->orderBy(" date_added ASC ")
+					->getList();
+
+		$total_post = count($data['listings']);
+		if($data['account']['privileges']['max_post'] >= $total_post) {
+			for($i=0; $i<$total_post; $i++) {
+
+				if($i > ($data['account']['privileges']['max_post'] - 1)) {
+					/** make inactive other users in account */
+					$listings->save($data['listings'][$i]['listing_id'], [
+						"status" => "inactive"
+					]);
+				}
+
+			}
+		}
+
+	}
 	
 }

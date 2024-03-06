@@ -20,6 +20,7 @@
 		</div>
 
 		<div class='page'>
+
 			<header class="navbar navbar-expand-md navbar-overlap d-print-none"  data-bs-theme="dark">
 				
 				<div class="container-xl">
@@ -82,7 +83,7 @@
 					</div>
 
 					<div class="navbar-nav flex-row order-md-last">
-						<div class="d-none d-md-flex">
+						<div class="mt-2 d-md-flex">
 
 							<div class="nav-item dropdown d-none d-md-flex me-3 notifications-container">
 								

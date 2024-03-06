@@ -186,7 +186,23 @@ class UsersController extends \Main\Controller {
 
 		if($user_id) {
 
-			$user = $this->getModel("User");
+			if($_POST['user_status'] == "active") {
+				$user = $this->getModel("User");
+				$user->select(" COUNT(user_id) ")->where(" account_id = $account_id AND user_status = 'active' ");
+				$total_users = $user->getList();
+
+				if($total_users > $_SESSION['user_logged']['privileges']['max_users']) {
+					$this->getLibrary("Factory")->setMsg("This account has already reached the maximum number of users; therefore, the user cannot activate it", "warning");
+
+					return json_encode(
+						array(
+							"status" => $response['status'],
+							"message" => getMsg()
+						)
+					);
+				}
+			}
+
 			$user->column['user_id'] = $user_id;
 			$user->where(" account_id = $account_id ");
 			$data = $user->getById();

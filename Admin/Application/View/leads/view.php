@@ -19,7 +19,7 @@ $html[] = "<div class='row justify-content-center'>";
                     $html[] = "</div>";
 
                     $html[] = "<div class='col-auto ms-auto d-print-none'>";
-                        $html[] = "<div class='d-none d-sm-inline'>";
+                        $html[] = "<div class=''>";
                             $html[] = "<div class='btn-list'>";
                                 $html[] = "<a class='ajax btn btn-dark' href='".url("LeadsController@edit",["id" => $data['lead_id']])."'><i class='ti ti-user-edit me-2'></i> Update Lead Information</a>";
                             $html[] = "</div>";

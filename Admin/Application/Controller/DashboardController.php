@@ -197,10 +197,25 @@ class DashboardController extends \Main\Controller {
 		$filter[] = " created_at >= ".$date_helper['from']." ";
 		$filter[] = " created_at <= ".$date_helper['to']." ";
 
-		$traffic
-			->select(" FROM_UNIXTIME(created_at, '%Y-%m') as date, COUNT(session_id) as count ")
-				->where( implode(" AND ", $filter) )
-					->groupBy(" date ");
+		switch($flag) {
+			case 'this_year':
+				$traffic->select(" FROM_UNIXTIME(created_at, '%Y-%m') as date, COUNT(session_id) as count ");
+				break;
+
+			case 'this_month':
+				$traffic->select(" FROM_UNIXTIME(created_at, '%Y-%m-%d') as date, COUNT(session_id) as count ");
+				break;
+
+			case 'this_week':
+				$traffic->select(" FROM_UNIXTIME(created_at, '%Y-%m-%d') as date, COUNT(session_id) as count ");
+				break;
+
+		}
+
+		
+		$traffic->where( implode(" AND ", $filter) )
+					->groupBy(" date ")
+						->orderBy(" created_at ASC ");
 
         $data = $traffic->getList();
 
@@ -214,9 +229,11 @@ class DashboardController extends \Main\Controller {
 			$chart_data['labels'] = json_encode($chart['labels']);
 			$chart_data['series'] = json_encode($chart['series']);
 
+			$this->getLibrary("Charts")->getLineChart($chart_data, "getTrafficChart_$flag", "Traffic");
+
 		}
 
-		$this->getLibrary("Charts")->getLineChart($chart_data, "getTrafficChart", "Traffic");
+		
 
 	}
 
