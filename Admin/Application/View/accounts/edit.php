@@ -39,9 +39,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 				$html[] = "<form id='form' action='' method='POST'>";
 
-					$html[] = "<input type='hidden' name='message_keys[publicKey]' id='publicKey' value='' />";
-					$html[] = "<input type='hidden' name='message_keys[privateKey]' id='privateKey' value='' />";
-
 					if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
 						$html[] = "<div class='card mb-3'>";
 							$html[] = "<div class='card-status bg-orange'></div>";

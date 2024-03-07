@@ -125,6 +125,8 @@ class MessagesController extends \Main\Controller {
 		$data['thread'] = $thread->getByParticipants($participants);
 
 		$this->doc->addScript(CDN."js/chat-attachment-uploader.js");
+		$this->doc->addScript(CDN."js/encryption.js");
+
 		$this->doc->setTitle("Conversation");
 
 		if(CONFIG['chat_is_websocket'] == 1) {
@@ -511,7 +513,7 @@ class MessagesController extends \Main\Controller {
 			$(document).on('click', '.btn-send-message', function() { sendMessage(); });
 			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ $('.btn-send-message').trigger('click'); } });
 
-			function sendMessage(){
+			function sendMessage() {
 				
 				var type = $('#type').val();
 				var message = $('#message').val();
@@ -519,8 +521,34 @@ class MessagesController extends \Main\Controller {
 				if((type == 'text' && message != '') || (type == 'image')) {
 
 					$('.btn-send').removeClass('btn-send-message');
+
+					const formData = new FormData()
+
+					let links = [];
 					
-					$.post('".url("MessagesController@saveNewMessage")."',  $('#form').serialize(), function(data) {
+					if($(\"input[name='info[links][]']\") !== undefined) {
+						$(\"input[name='info[links][]']\").each(function() {
+							links.push($(this).val());
+						});
+					}
+
+					if (Array.isArray(links) || links.length) {
+						formData.append('info', links);
+					}
+
+					content = {
+						\"type\": type,
+						\"message\": message,
+						\"info\": links
+					};
+
+					encryptData(JSON.stringify(content), publicKey, privateKey);
+
+					formData.append('content', data);
+
+					console.log(formData.get('content'));
+					
+					/* $.post('".url("MessagesController@saveNewMessage")."',  $('#form').serialize(), function(data) {
 						response = JSON.parse(data);
 
 						websocket.send(JSON.stringify(response.data));
@@ -535,7 +563,7 @@ class MessagesController extends \Main\Controller {
 						$('.chat-bubbles').append( buildMessage( response.data ) );
 
 						$('.btn-send').addClass('btn-send-message');
-					});
+					}); */
 				}
 
 			}

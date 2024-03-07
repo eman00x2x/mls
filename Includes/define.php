@@ -18,6 +18,7 @@ define("ADMIN","http://localhost/mls/admin/");
 define("MANAGE","http://localhost/mls/manage/");
 
 
+define("ADMIN_ALIAS","/mls/admin");
 define("ALIAS","/mls/manage");
 
 /* define("API","http://192.168.254.250/mls/Api/");

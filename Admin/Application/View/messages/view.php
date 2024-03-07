@@ -176,6 +176,7 @@ $html[] = "<div class='row justify-content-center'>";
 					}
 
 					$html[] = "<form id='form' action='' method='POST'>";
+						
 						$html[] = "<input type='hidden' name='participants' id='participants' class='participants' value='".json_encode($data['participants_id'])."' />";
 						$html[] = "<input type='hidden' name='thread_id' id='thread_id' class='thread_id' value='$thread_id' />";
 						$html[] = "<input type='hidden' name='type' id='type' value='text' />";

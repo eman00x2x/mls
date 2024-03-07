@@ -111,7 +111,7 @@ function removeImage(id,filename) {
 
 function createElements(response) {
 	html = "<div class='file-container " + response[i].id + "'>";
-		html += "<input type='hidden' name='info[links][]' value='" + response[i].url + "' />";
+	html += "<input type='hidden' name='info[links][]' value='" + response[i].url + "' />";
 		/* html += "<div class='avatar avatar-xl' style=\"position:relative; background-image:url('" + response[i].temp_url + "'); \">"; 
 			html += "<span style='position:absolute; top:0; right:0;' class='cursor-pointer bg-red text-white rounded btn-remove-image' title='Remove image' onclick=\"removeImage('." + response[i].id + "','" + response[i].filename + "')\"><i class='ti ti-trash'></i></span>";
 		html += "</div>"; */
