@@ -64,11 +64,15 @@ class KYCController extends \Main\Controller {
 		$kyc = $this->getModel("KYC");
 		$kyc->column['kyc_id'] = $id;
 		$kyc->join(" k JOIN #__accounts a ON k.account_id=a.account_id ");
-		$kyc->and(" kyc_status = 0 "); 
+		/* $kyc->and(" kyc_status = 0 ");  */
 		$data = $kyc->getById();
 
-		$this->setTemplate("kyc/verify.php");
-		return $this->getTemplate($data,$kyc);
+		if($data) {
+			$this->setTemplate("kyc/verify.php");
+			return $this->getTemplate($data,$kyc);
+		}
+
+		$this->response(404);
 
 	}
 	
@@ -84,20 +88,29 @@ class KYCController extends \Main\Controller {
 		if($data) {
 			$this->setTemplate("kyc/pending.php");
 		}else {
-			$this->doc->setTitle("KYC Verification");
-			$this->doc->addScript(CDN."js/kyc.js");
 
-			$account = $this->getModel("Account");
-			$account->column['account_id'] = $account_id;
-			$data = $account->getById();
+			$kyc->and(" kyc_status = 1 ");
+			$data = $kyc->getList();
 
-			if(isset($_REQUEST['step']) && $_REQUEST['step'] == 2) {
-				$this->setTemplate("kyc/identity.php");
-			}else if(isset($_REQUEST['step']) && $_REQUEST['step'] == 3) {
-				$this->setTemplate("kyc/final.php");
+			if($data) {
+				$this->setTemplate("kyc/verified.php");
 			}else {
-				$this->setTemplate("kyc/step1.php");
+				$this->doc->setTitle("KYC Verification");
+				$this->doc->addScript(CDN."js/kyc.js");
+
+				$account = $this->getModel("Account");
+				$account->column['account_id'] = $account_id;
+				$data = $account->getById();
+
+				if(isset($_REQUEST['step']) && $_REQUEST['step'] == 2) {
+					$this->setTemplate("kyc/identity.php");
+				}else if(isset($_REQUEST['step']) && $_REQUEST['step'] == 3) {
+					$this->setTemplate("kyc/final.php");
+				}else {
+					$this->setTemplate("kyc/step1.php");
+				}
 			}
+
 		}
 
 		return $this->getTemplate($data);

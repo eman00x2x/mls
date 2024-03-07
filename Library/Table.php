@@ -4,24 +4,24 @@ namespace Library;
 
 class Table {
 
-	var $DBO;
-	var $pagina;
+	public $DBO;
+	public $pagina;
 	
-	var $table;
-	var $select;
-	var $join;
-	var $where;
-	var $and;
-	var $orderby;
-	var $groupby;
+	public $table;
+	public $select;
+	public $join;
+	public $where;
+	public $and;
+	public $orderby;
+	public $groupby;
 
-	var $primary_key;
-	var $fields;
-	var $column = [];
-	var $rows = 0;
-	var $results = [];
+	public $primary_key;
+	public $fields;
+	public $column = [];
+	public $rows = 0;
+	public $results = [];
 
-	var $page = [
+	public $page = [
 		"adjacents" => null,
 		"limit" => 20,
 		"current" => null,
@@ -30,7 +30,7 @@ class Table {
 		"starting_number" => null
 	];
 
-	var $pagination;
+	public $pagination;
 
 
 	function init() {

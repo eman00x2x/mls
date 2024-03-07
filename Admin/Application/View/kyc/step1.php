@@ -27,6 +27,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-body'>";
 
+
 							$html[] = "<h1 class='display-5'>Let's get you verified!</h1>";
 							$html[] = "<p><i class='ti ti-checklist'></i> Complete the following steps to verify your account.</p>";
 
