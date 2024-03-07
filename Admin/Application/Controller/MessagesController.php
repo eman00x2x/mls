@@ -149,6 +149,12 @@ class MessagesController extends \Main\Controller {
 				$account->column['account_id'] = $participant_account_id;
 				$data['participants'][$participant_account_id] = $account->getById();
 
+				if($participant_account_id == $this->session['account_id']) {
+					$privateKey = json_encode($data['participants'][$participant_account_id]['message_keys']['privateKey']);
+				}else {
+					$publicKey = json_encode($data['participants'][$participant_account_id]['message_keys']['publicKey']);
+				}
+
 				foreach($unset_account_data as $column) {
 					unset($data['participants'][$participant_account_id][$column]);
 				}
@@ -159,6 +165,13 @@ class MessagesController extends \Main\Controller {
 		}
 
 		if($data['thread']) {
+
+			$this->doc->addScriptDeclaration("
+
+				let privateKey = '$privateKey';
+				let publicKey = '$publicKey';
+
+			");
 
 			$data['participants_id'] = $participants;
 
@@ -194,7 +207,7 @@ class MessagesController extends \Main\Controller {
 		
 	}
 
-	function getMessages($participants,$lastMessageId) {
+	function getMessages($participants,$lastMessageId = 0) {
 
 		$thread = $this->getModel("Thread");
 		$data['thread'] = $thread->getByParticipants(base64_decode($participants));
@@ -460,7 +473,7 @@ class MessagesController extends \Main\Controller {
 		    var wsUri = '".$this->websocketAddress."?name=" . (str_replace(" ","+",$_SESSION['user_logged']['name'])) ."';
 			var websocket = new WebSocket(wsUri);
 			var thread_id = 0;
-
+			
 			$(document).ready(function() {
 				var div = $('.card-body');
 				div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
@@ -471,10 +484,7 @@ class MessagesController extends \Main\Controller {
 
 				websocket.onmessage = function(ev) {
 					var response	= JSON.parse(ev.data);
-					if(thread_id == response.thread_id) {
-						html = buildMessage(response);
-						$('.chat-bubbles').append(html);
-					}
+					console.log(response);
 					div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
 				};
 
@@ -493,6 +503,8 @@ class MessagesController extends \Main\Controller {
 						keyboard: false
 					});
 				};
+
+				getMessages();
 
 			});
 
@@ -517,6 +529,11 @@ class MessagesController extends \Main\Controller {
 						$('#thread_id').val(response.data['thread_id']);
 						thread_id = response.data['thread_id'];
 
+						$('.last_message_id').val(response.id)
+						lastMessageId = response.id;
+
+						$('.chat-bubbles').append( buildMessage( response.data ) );
+
 						$('.btn-send').addClass('btn-send-message');
 					});
 				}
@@ -525,7 +542,7 @@ class MessagesController extends \Main\Controller {
 
 			function buildMessage(response) {
 
-				var id = $_SESSION[user_logged][user_id];
+				var id = ".$this->session['user_id'].";
 				
 				if(response.user_id == id) {
 				
@@ -544,7 +561,7 @@ class MessagesController extends \Main\Controller {
 									html += \"</div>\";
 								html += \"</div>\";
 								html += \"<div class='chat-bubble-body'>\";
-									html += \"<p>\" + atob(response.user_message) + \"</p>\";
+									html += \"<p>\" + (response.user_message) + \"</p>\";
 								html += \"</div>\";
 							html += \"</div>\";
 						html += \"</div>\";
@@ -573,7 +590,7 @@ class MessagesController extends \Main\Controller {
 									html += \"</div>\";
 								html += \"</div>\";
 								html += \"<div class='chat-bubble-body'>\";
-									html += \"<p>\" + atob(response.user_message) + \"</p>\";
+									html += \"<p>\" + (response.user_message) + \"</p>\";
 								html += \"</div>\";
 							html += \"</div>\";
 						html += \"</div>\";
@@ -582,6 +599,20 @@ class MessagesController extends \Main\Controller {
 				}
 
 				return html;
+			}
+
+			function getMessages() {
+
+				var participants = $('#participants').val();
+				
+				$.get(MANAGE + 'threads/' + btoa(participants) + '/getMessages/0', function(data) {
+					if(data != '') {
+						$('.chat-bubbles').prepend(data);
+						firstMessageId = $('.first_message_id').val();
+						lastMessageId = $('.last_message_id').val();
+					}
+				});
+
 			}
 
 		");

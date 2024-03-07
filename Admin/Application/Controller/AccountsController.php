@@ -231,6 +231,21 @@ class AccountsController extends \Main\Controller {
 		if($account_id) {
 
 			$this->doc->addScript(CDN."js/photo-uploader.js");
+			$this->doc->addScript(CDN."js/encryption.js");
+
+			$this->doc->addScriptDeclaration("
+
+				$(document).ready(function() {
+
+					(async () => {
+						var keys = await generateKey();
+						$('#publicKey').val(JSON.stringify(keys.publicKey));
+						$('#privateKey').val(JSON.stringify(keys.privateKey));
+					})();
+
+				});
+
+			");
 			
 			$accounts = $this->getModel("Account");
 			$accounts->column['account_id'] = $account_id;
@@ -286,6 +301,10 @@ class AccountsController extends \Main\Controller {
 					$_POST['reference_id'] = $response['data']['reference_id'];
 				}
 			}
+		}
+
+		foreach($_POST['message_keys'] as $key => $val) {
+			$_POST['message_keys'][$key] = json_decode($val, true);
 		}
 
 		$accounts = $this->getModel("Account");
@@ -399,6 +418,10 @@ class AccountsController extends \Main\Controller {
 					}
 				}
 
+			}
+
+			foreach($_POST['message_keys'] as $key => $val) {
+				$_POST['message_keys'][$key] = json_decode($val, true);
 			}
 
 			$response = $accounts->save($account_id,$_POST);

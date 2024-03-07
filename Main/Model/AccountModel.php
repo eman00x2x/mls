@@ -60,6 +60,12 @@ class AccountModel extends \Main\Model {
 			);
 		}else {
 
+			if(isset($data['message_keys'])) {
+				$data['message_keys'] = json_encode($data['message_keys']);
+			}else {
+				$this->column['message_keys'] = json_encode($this->column['message_keys']);
+			}
+
 			foreach($data as $key => $val) {
 				$this->column[$key] = $val;
 			}
@@ -108,6 +114,12 @@ class AccountModel extends \Main\Model {
 					$data['privileges'] = json_encode($data['privileges']);
 				}else {
 					$this->column['privileges'] = json_encode($this->column['privileges']);
+				}
+
+				if(isset($data['message_keys'])) {
+					$data['message_keys'] = json_encode($data['message_keys']);
+				}else {
+					$this->column['message_keys'] = json_encode($this->column['message_keys']);
 				}
 
 				if(isset($data['uploads'])) {

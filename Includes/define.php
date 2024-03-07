@@ -7,13 +7,18 @@ define("DATE_NOW",strtotime("Now"));
 define("LIST_LIMIT",20);
 
 define("API","http://api.mls/");
-define("ADMIN","http://admin.mls/");
+/* define("ADMIN","http://admin.mls/"); */
 define("WEBADMIN","http://webadmin.mls/");
 define("CS","http://cs.mls/");
-define("MANAGE","http://manage.mls/");
+/* define("MANAGE","http://manage.mls/"); */
 define("WEBDOMAIN","http://mls");
 define("CDN","http://cdn.mls/");
-define("ALIAS","");
+
+define("ADMIN","http://localhost/mls/admin/");
+define("MANAGE","http://localhost/mls/manage/");
+
+
+define("ALIAS","/mls/manage");
 
 /* define("API","http://192.168.254.250/mls/Api/");
 define("ADMIN","http://192.168.254.250/mls/Admin/");
@@ -126,13 +131,13 @@ define("WEBADMIN_PERMISSIONS",[
 ]);
 
 define("ACCOUNT_PRIVILEGES",[
-    "max_post" => 20,
-    "max_users" => 1,
-    "mls_access" => 0,
-    "chat_access" => 1,
-    "display_ads" => 0,
-    "featured_ads" => 0,
-    "handshake_limit" => 1
+    "max_post" => (int) 20,
+    "max_users" => (int) 1,
+    "mls_access" => (int) 0,
+    "chat_access" => (int) 1,
+    "display_ads" => (int) 0,
+    "featured_ads" => (int) 0,
+    "handshake_limit" => (int) 1
 ]);
 
 define("PREMIUM_SCRIPTS",[

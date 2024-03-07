@@ -74,7 +74,7 @@ $html[] = "<div class='page-body'>";
 									if($data['last_message']) {
 
 										if($data['last_message']['body']['type'] == "text") {
-											$message =nicetrim( $data['last_message']['body']['message'], 50);
+											$message = nicetrim( $data['last_message']['body']['message'], 50);
 										}else {
 											$message = "sent an image";
 										}
