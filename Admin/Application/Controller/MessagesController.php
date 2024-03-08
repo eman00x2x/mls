@@ -163,8 +163,9 @@ class MessagesController extends \Main\Controller {
 		if($data['thread']) {
 
 			$this->doc->addScriptDeclaration("
-				let privateKey = '$privateKey';
-				let publicKey = '$publicKey';
+				let user_id = ".$this->session['user_id'].";
+				let privateKey = '';
+				let publicKey = '';
 			");
 
 			if(CONFIG['chat_is_websocket'] == 1) {
@@ -217,9 +218,14 @@ class MessagesController extends \Main\Controller {
 			$account->column['account_id'] = $participant_account_id;
 			$data['participants'][$participant_account_id] = $account->getById();
 
-			if($participant_account_id == $this->session['account_id']) {
+			/* if($participant_account_id == $this->session['account_id']) {
 				$privateKey = $data['participants'][$participant_account_id]['message_keys']['privateKey'];
 			}else {
+				$publicKey = $data['participants'][$participant_account_id]['message_keys']['publicKey'];
+			} */
+
+			if($participant_account_id == $this->session['account_id']) {
+				$privateKey = $data['participants'][$participant_account_id]['message_keys']['privateKey'];
 				$publicKey = $data['participants'][$participant_account_id]['message_keys']['publicKey'];
 			}
 		}
@@ -249,135 +255,39 @@ class MessagesController extends \Main\Controller {
 			}
 
 			$data['messages'] = $message->execute(" SELECT * 
-				FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread']['thread_id']." ".$message->and." ORDER BY created_at DESC LIMIT 20) as sub 
-				ORDER BY created_at ASC
+				FROM (SELECT message_id, u.user_id, u.photo, u.name as user_name, content as user_message, m.created_at as user_sent_time, iv FROM #__messages m JOIN #__users u ON m.user_id=u.user_id WHERE thread_id = ".$data['thread']['thread_id']." ".$message->and." ORDER BY m.created_at DESC LIMIT 20) as sub 
+				ORDER BY user_sent_time ASC
 			");
 
-			/* if($data['messages']) {
-				$user = $this->getModel("User");
-				for($i=0; $i<count($data['messages']); $i++) {
-
-					if($data['messages'][$i]['user_id'] != $this->session['user_id'] && $data['messages'][$i]['is_read'] == 0) {
-						$message->save($data['messages'][$i]['message_id'], [
-							"is_read" => 1
-						]);
-					}
-
-					$user->column['user_id'] = $data['messages'][$i]['user_id'];
-					$data['messages'][$i]['user'] = $user->getById();
-					$data['messages'][$i]['content'] = $data['messages'][$i]['content'];
-
-				}
-
-				$this->setTemplate("messages/getMessages.php");
-				return $this->getTemplate($data);
-			} */
-
 			$account = $this->getModel("Account");
+			$account->select("account_id, message_keys");
 			$participants = json_decode(base64_decode($participants), true);
+
+			$data['participants'] = [];
 
 			foreach($participants as $participant_account_id) {
 				$account->column['account_id'] = $participant_account_id;
-				$data['participants'][$participant_account_id] = $account->getById();
-
+				$response = $account->getById();
+	
 				if($participant_account_id == $this->session['account_id']) {
-					$privateKey = $data['participants'][$participant_account_id]['message_keys']['privateKey'];
+					$data['participants']['me']['keys']['privateKey'] = $response['message_keys']['privateKey'];
+					$data['participants']['me']['keys']['publicKey'] = $response['message_keys']['publicKey'];
 				}else {
-					$publicKey = $data['participants'][$participant_account_id]['message_keys']['publicKey'];
+					$data['participants']['you']['keys']['privateKey'] = $response['message_keys']['privateKey'];
+					$data['participants']['you']['keys']['publicKey'] = $response['message_keys']['publicKey'];
 				}
+
 			}
 
-			echo json_encode($data['messages']);
+			echo json_encode([
+				"status" => 1,
+				"type" => "success",
+				"thread_id" => $data['thread']['thread_id'],
+				"data" => $data
+			]);
 			exit();
 
 		}
-
-	}
-
-	function saveNewMessage_OLD() {
-
-		parse_str(file_get_contents('php://input'), $_POST);
-
-		$thread = $this->getModel("Thread");
-		$data['thread'] = $thread->getByParticipants($_POST['participants']);
-
-		if($data['thread']) {
-			$thread_id = $data['thread']['thread_id'];
-		}else {
-			$thread = $this->getModel("Thread");
-            $response = $thread->saveNew(array(
-				"participants" => $_POST['participants'],
-				"created_by" => $this->session['user_id'],
-				"created_at" => DATE_NOW
-			));
-
-			$thread_id = $response['id'];
-		}
-
-		$message = $this->getModel("Message");
-		
-		$content = [
-			"type" => $_POST['type'],
-			"message" => $_POST['message'],
-			"info" => isset($_POST['info']) ? $_POST['info'] : null
-		];
-
-		$message_response = $message->saveNew(
-			array(
-				"user_id" => $this->session['user_id'],
-				"thread_id" => $thread_id,
-				"content" =>  $content,
-				"is_read" => 0,
-				"created_at" => DATE_NOW
-			)
-		);
-
-		if (($key = array_search($this->session['account_id'], $data['thread']['participants'])) !== false) {
-			unset($data['thread']['participants'][$key]);
-		}
-
-		$recipient_account_id = implode("", $data['thread']['participants']);
-		$notification = $this->getModel("Notification");
-		$notification->saveNew(
-			array(
-				"account_id" => $recipient_account_id,
-				"status" => 1,
-				"created_at" => DATE_NOW,
-				"content" => array(
-					"title" => $this->session['name'],
-					"message" => "Sent you a message",
-					"url" => MANAGE."threads/".base64_encode($_POST['participants'])
-				)
-			)
-		);
-
-		return json_encode(
-			array(
-				"status" => 1,
-				"type" => "success",
-				"id" => $message_response['id'],
-				"thread_id" => $thread_id,
-				"data" => array(
-					"thread_id" => $thread_id,
-					"user_id" => $this->session['user_id'],
-					"photo" => $this->session['photo'],
-					"user_name" => $this->session['name'],
-					"user_message" => $message->encrypt(json_encode($content)),
-					"user_sent_time" => date("M d, Y h:ia", DATE_NOW),
-				)
-			)
-		);
-
-	}
-
-	function getSentMessage($id) {
-
-		$message = $this->getModel("Message");
-		$message->column['message_id'] = $id;
-		$data = $message->getById();
-
-		echo json_encode($data);
-		exit();
 
 	}
 
@@ -408,6 +318,7 @@ class MessagesController extends \Main\Controller {
 			"thread_id" => $thread_id,
 			"content" =>  $_POST['content'],
 			"is_read" => 0,
+			"iv" => $_POST['iv'],
 			"created_at" => DATE_NOW
 		]);
 
@@ -430,22 +341,21 @@ class MessagesController extends \Main\Controller {
 			)
 		);
 
-		echo json_encode(
-			array(
-				"status" => 1,
-				"type" => "success",
-				"id" => $message_response['id'],
+		echo json_encode([
+			"status" => 1,
+			"type" => "success",
+			"id" => $message_response['id'],
+			"thread_id" => $thread_id,
+			"data" => array(
 				"thread_id" => $thread_id,
-				"data" => array(
-					"thread_id" => $thread_id,
-					"user_id" => $this->session['user_id'],
-					"photo" => $this->session['photo'],
-					"user_name" => $this->session['name'],
-					"user_message" => $_POST['content'],
-					"user_sent_time" => date("M d, Y h:ia", DATE_NOW),
-				)
+				"iv" => $_POST['iv'],
+				"user_id" => $this->session['user_id'],
+				"photo" => $this->session['photo'],
+				"user_name" => $this->session['name'],
+				"user_message" => $_POST['content'],
+				"user_sent_time" => DATE_NOW,
 			)
-		);
+		]);
 
 		exit();
 	}
@@ -607,10 +517,13 @@ class MessagesController extends \Main\Controller {
 
 				websocket.onmessage = function(ev) {
 					var response	= JSON.parse(ev.data);
-					console.log(response);
 					
 					if(thread_id == response.thread_id) {
-						$('.chat-bubbles').append( buildMessage(response.data) );
+						decrypt(response.data, publicKey, privateKey)
+						.then(data => {
+							response.data.user_message = data.message;
+							$('.chat-bubbles').append(buildMessage(response.data));
+						});
 					}
 
 					div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
@@ -647,9 +560,9 @@ class MessagesController extends \Main\Controller {
 				const formData = new FormData();
 				let links = [];
 				
-				var type = $('#type').val();
-				var message = $('#message').val();
-				var participants = $('#participants').val();
+				let type = $('#type').val();
+				let message = $('#message').val();
+				let participants = $('#participants').val();
 
 				if((type == 'text' && message != '') || (type == 'image')) {
 
@@ -671,17 +584,17 @@ class MessagesController extends \Main\Controller {
 						.then(response => {
 							return response.json();
 						}) .then(data => {
-
+							
 							publicKey = data.publicKey
 							privateKey = data.privateKey
 
-							encryptData({
-								\"type\": type,
-								\"message\": message,
-								\"info\": links
-							}, publicKey, privateKey).then(
+							encrypt(JSON.stringify({
+								'type': type,
+								'message': message,
+								'info': links
+							}), publicKey, privateKey).then(
 								data => {
-									formData.append('content', btoa(data.encrypted));
+									formData.append('content', data.encrypted);
 									formData.append('iv', data.iv);
 
 									fetch('".url("MessagesController@saveNewMessage")."', { 
@@ -717,32 +630,34 @@ class MessagesController extends \Main\Controller {
 
 			function buildMessage(response) {
 
-				var id = ".$this->session['user_id'].";
-				
-				if(response.user_id == id) {
-				
+				const time = timeSince(response.user_sent_time);
+
+				if(response.user_id == user_id) {
+
 					html = \"<div class='row align-items-end justify-content-end '>\";
 						html += \"<div class='col col-lg-6'>\";
 							html += \"<div class='chat-bubble chat-bubble-me'>\";
 								
 								html += \"<div class='chat-bubble-title'>\";
-									html += \"<div class='row'>\";
-										html += \"<div class='col chat-bubble-author'>\";
-											html += response.user_name;
-										html += \"</div>\";
-										html += \"<div class='col-auto chat-bubble-date'>\";
-											html += response.user_sent_time;
-										html += \"</div>\";
+									html += \"<div class='chat-bubble-author'>\";
+										html += response.user_name;
 									html += \"</div>\";
 								html += \"</div>\";
 								html += \"<div class='chat-bubble-body'>\";
 									html += \"<p>\" + (response.user_message) + \"</p>\";
 								html += \"</div>\";
 							html += \"</div>\";
+
 						html += \"</div>\";
 						html += \"<div class='col-auto'>\";
 							html += \"<span class='avatar' style='background-image: url(\"+response.photo+\")'></span>\";
 						html += \"</div>\";
+					html += \"</div>\";
+
+					html += \"<div class='text-end' style='margin-top: -0.9rem; margin-right: 3.5rem;'>\";
+						html += \"<span class='text-muted fs-11'>\"
+							html += time;
+						html += \"</span>\";
 					html += \"</div>\";
 	
 				}else {
@@ -755,13 +670,8 @@ class MessagesController extends \Main\Controller {
 							html += \"<div class='chat-bubble'>\";
 								
 								html += \"<div class='chat-bubble-title'>\";
-									html += \"<div class='row'>\";
-										html += \"<div class='col chat-bubble-author'>\";
-											html += response.user_name;
-										html += \"</div>\";
-										html += \"<div class='col-auto chat-bubble-date'>\";
-											html += response.user_sent_time;
-										html += \"</div>\";
+									html += \"<div class='chat-bubble-author'>\";
+										html += response.user_name;
 									html += \"</div>\";
 								html += \"</div>\";
 								html += \"<div class='chat-bubble-body'>\";
@@ -771,6 +681,12 @@ class MessagesController extends \Main\Controller {
 						html += \"</div>\";
 					html += \"</div>\";
 
+					html += \"<div class='text-end' style='margin-top: -0.9rem; margin-right: 3.5rem;'>\";
+						html += \"<span class='text-muted fs-11'>\"
+							html += time;
+						html += \"</span>\";
+					html += \"</div>\";
+
 				}
 
 				return html;
@@ -778,29 +694,47 @@ class MessagesController extends \Main\Controller {
 
 			async function getMessages() {
 
+				let publicKey = '';
+				let privateKey = '';
 				let participants = $('#participants').val();
 				
 				fetch(MANAGE + 'threads/' + btoa(participants) + '/getMessages/0')
 					.then(response => response.json())
 					.then(data => {
 
-						let count = Object.keys(data).length;
+						const messages = data['data']['messages'];
+						let count = Object.keys(messages).length;
 
-						console.log(data);
 						if(count > 0) {
 
-							firstMessageId = data[0].message_id;
-							lastMessageId = data[ (count - 1) ].message_id;
+							firstMessageId = messages[0].message_id;
+							lastMessageId = messages[ (count - 1) ].message_id;
 
 							$('#first_message_id').val(firstMessageId);
 							$('#last_message_id').val(lastMessageId);
 							
-                            for (let key in data) {
-								if (data.hasOwnProperty(key)) {
+                            for (let key in messages) {
+								if (messages.hasOwnProperty(key)) {
 
+									if(user_id == messages[key].user_id) {
+										publicKey = data['data'].participants.me.keys.publicKey;
+										privateKey = data['data'].participants.me.keys.privateKey;
+									}/* else {
+										publicKey = data['data'].participants.you.keys.publicKey;
+										privateKey = data['data'].participants.you.keys.privateKey;
+									} */
 
-
-									$('.chat-bubbles').prepend(data[key].content);
+									decrypt(messages[key], publicKey, privateKey)
+									.then(response => {
+										$('.chat-bubbles').prepend(buildMessage({
+											user_id: messages[key].user_id,
+											photo: messages[key].photo,
+											user_name: messages[key].user_name,
+											user_message: response.message,
+											user_sent_time: messages[key].user_sent_time
+										}));
+									});
+									
 								}
 							}
 

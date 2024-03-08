@@ -57,13 +57,11 @@ class MessageModel extends \Main\Model {
 			);
 		}else {
 
-			if(isset($data['content']['info']['links']) && is_array($data['content']['info']['links'])) {
+			/* if(isset($data['content']['info']['links']) && is_array($data['content']['info']['links'])) {
 				for($i=0; $i<count($data['content']['info']['links']); $i++) {
 					$data['content']['info']['links'][$i] = $this->moveUploadedAttachment(basename($data['content']['info']['links'][$i]));
 				}
-			}
-
-			$data['content'] = $this->encrypt(json_encode($data['content']));
+			} */
 
 			foreach($data as $key => $val) {
 				$this->column[$key] = $val;
