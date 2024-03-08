@@ -65,7 +65,7 @@ try {
         /* echo "> [{$connection->getRemoteName()}] Received [{$message->getOpcode()}] {$message->getContent()}\n"; */
 
         $f_client = json_decode("{$message->getContent()}", true);
-        echo "> [{$connection->getRemoteName()}] Received From ".$f_client['user_name']." -> ".$f_client['user_message']." on ".$f_client['user_sent_time']."\n";
+        echo "> [{$connection->getRemoteName()}] Received From ".$f_client['data']['user_name']." -> ".$f_client['data']['user_message']." on ".$f_client['data']['user_sent_time']."\n";
 
         switch ($message->getContent()) {
             // Connection commands

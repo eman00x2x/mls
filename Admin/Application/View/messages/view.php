@@ -77,96 +77,13 @@ $html[] = "<div class='row justify-content-center'>";
 						$html[] = "<div class='chat'>";
 							$html[] = "<div class='chat-bubbles'>";
 								
-								/* if($data['messages']) {
-									for($i=0; $i<count($data['messages']); $i++) { $mes = [];
-										
-										$content = $data['messages'][$i]['content'];
-
-										if($content['type'] === 'text') {
-											$mes[] = "<p>".$content['message']."</p>";
-										}else {
-											if($content['info'] == "") {
-												$mes[] = "<p>".$content['message']."</p>";
-											}else {
-												$links = $content['info']['links'];
-												$mes[] = "<div class='images_container row'>";
-													for($x=0; $x<count($links); $x++) {
-														$mes[] = "<div class='col-auto'>";
-															$mes[] = "<div class='avatar avatar-xl' style='background-image: url(".$links[$x].")'></div>";
-														$mes[] = "</div>";
-													}
-												$mes[] = "</div>";
-											}
-										}
-
-										$message = implode("",$mes);
-
-										$html[] = "<div  class='chat-item'>";
-											
-											if($data['messages'][$i]['user_id'] == $_SESSION['user_logged']['user_id']) {
-												$html[] = "<div class='row align-items-end justify-content-end'>";
-													$html[] = "<div class='col col-md-8'>";
-														$html[] = "<div class='chat-bubble chat-bubble-me'>";
-															
-															$html[] = "<div class='chat-bubble-title'>";
-																$html[] = "<div class='row'>";
-																	$html[] = "<div class='col chat-bubble-author'>";
-																		$html[] = $data['messages'][$i]['user']['name'];
-																	$html[] = "</div>";
-																	$html[] = "<div class='col-auto chat-bubble-date'>";
-																		$html[] = "<span class='fs-11'>".date("M d, Y h:ia",$data['messages'][$i]['created_at'])."</span>";
-																	$html[] = "</div>";
-																$html[] = "</div>";
-															$html[] = "</div>";
-															$html[] = "<div class='chat-bubble-body'>";
-																$html[] = $message;
-															$html[] = "</div>";
-														$html[] = "</div>";
-													$html[] = "</div>";
-													$html[] = "<div class='col-auto'>";
-														$html[] = "<span class='avatar' style='background-image: url(".$data['messages'][$i]['user']['photo'].")'></span>";
-													$html[] = "</div>";
-												$html[] = "</div>";
-											}else {
-												$html[] = "<div class='row align-items-end'>";
-													$html[] = "<div class='col-auto'>";
-														$html[] = "<span class='avatar' style='background-image: url(".$data['messages'][$i]['user']['photo'].")'></span>";
-													$html[] = "</div>";
-													$html[] = "<div class='col col-md-8'>";
-														$html[] = "<div class='chat-bubble '>";
-															
-															$html[] = "<div class='chat-bubble-title'>";
-																$html[] = "<div class='row'>";
-																	$html[] = "<div class='col chat-bubble-author'>";
-																		$html[] = $data['messages'][$i]['user']['name'];
-																	$html[] = "</div>";
-																	$html[] = "<div class='col-auto chat-bubble-date'>";
-																		$html[] = "<span class='fs-11'>".date("M d, Y h:ia",$data['messages'][$i]['created_at'])."</span>";
-																	$html[] = "</div>";
-																$html[] = "</div>";
-															$html[] = "</div>";
-															$html[] = "<div class='chat-bubble-body'>";
-																$html[] = $message;
-															$html[] = "</div>";
-														$html[] = "</div>";
-													$html[] = "</div>";
-												$html[] = "</div>";
-											}
-										$html[] = "</div>";
-									}
-								}
-
-								if(isset($i) && $i > 0) {
-									$last_message_id = $data['messages'][($i-1)]['message_id'];
-								}else {
-									$last_message_id = 0;
-								} */
-
+								
 							$html[] = "</div>";
 						$html[] = "</div>";
 
 					$html[] = "</div>";
 
+					$html[] = "<input type='hidden' name='first_message_id' id='first_message_id' class='first_message_id' value='0' />";
 					$html[] = "<input type='hidden' name='last_message_id' id='last_message_id' class='last_message_id' value='0' />";
 
 					if(isset($data['thread']['thread_id'])) {

@@ -23,7 +23,7 @@ class MessagesController extends \Main\Controller {
 		
 		$deleted_thread = $this->getModel("DeletedThread");
 		$deleted_thread->select(" GROUP_CONCAT(thread_id) as thread_ids ");
-		$deleted_thread->column['account_id'] = $_SESSION['user_logged']['account_id'];
+		$deleted_thread->column['account_id'] = $this->session['account_id'];
 		$data['deletedThreads'] = $deleted_thread->getByAccountId();
 		
 		if(isset($_REQUEST['search'])) {
@@ -31,7 +31,7 @@ class MessagesController extends \Main\Controller {
 			$uri['search'] = $_REQUEST['search'];
 		}
 		
-		$filters[] = " JSON_CONTAINS(participants, '".$_SESSION['user_logged']['account_id']."', '$')";
+		$filters[] = " JSON_CONTAINS(participants, '".$this->session['account_id']."', '$')";
 		
 		if($data['deletedThreads']['thread_ids']) {
 			$filters[] = " thread_id NOT IN(".$data['deletedThreads']['thread_ids'].")";
@@ -129,12 +129,6 @@ class MessagesController extends \Main\Controller {
 
 		$this->doc->setTitle("Conversation");
 
-		if(CONFIG['chat_is_websocket'] == 1) {
-			$this->webSocketChatScript();
-		}else {
-			$this->ajaxChatScript();
-		}
-
 		$unset_account_data = explode(",","account_type,preferences,privileges,uploads");
 		$unset_user_data = explode(",","user_id,password,user_level,permissions,two_factor_authentication,two_factor_authentication_aps");
 
@@ -169,23 +163,27 @@ class MessagesController extends \Main\Controller {
 		if($data['thread']) {
 
 			$this->doc->addScriptDeclaration("
-
 				let privateKey = '$privateKey';
 				let publicKey = '$publicKey';
-
 			");
+
+			if(CONFIG['chat_is_websocket'] == 1) {
+				$this->webSocketChatScript();
+			}else {
+				$this->ajaxChatScript();
+			}
 
 			$data['participants_id'] = $participants;
 
 			$message = $this->getModel("Message");
-			$message->DBO->query("UPDATE #__messages SET is_read = 1 WHERE thread_id = ".$data['thread']['thread_id']." AND user_id != ".$_SESSION['user_logged']['user_id']."");
+			$message->DBO->query("UPDATE #__messages SET is_read = 1 WHERE thread_id = ".$data['thread']['thread_id']." AND user_id != ".$this->session['user_id']."");
 
 			$data['messages'] = $message->execute(" SELECT * 
 				FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread']['thread_id']." ORDER BY created_at DESC LIMIT 20) as sub 
 				ORDER BY created_at ASC
 			");
 
-			if($data['messages']) {
+			/* if($data['messages']) {
 				$user = $this->getModel("User");
 				for($i=0; $i<count($data['messages']); $i++) {
 					$user->column['user_id'] = $data['messages'][$i]['user_id'];
@@ -198,7 +196,7 @@ class MessagesController extends \Main\Controller {
 					}
 				}
 
-			}
+			} */
 
 		}else {
 			$data['messages'] = false;
@@ -209,7 +207,33 @@ class MessagesController extends \Main\Controller {
 		
 	}
 
-	function getMessages($participants,$lastMessageId = 0) {
+	function getKeys($participants) {
+
+		$participants = base64_decode($participants);
+		$account = $this->getModel("Account");
+		$participants = json_decode($participants, true);
+
+		foreach($participants as $participant_account_id) {
+			$account->column['account_id'] = $participant_account_id;
+			$data['participants'][$participant_account_id] = $account->getById();
+
+			if($participant_account_id == $this->session['account_id']) {
+				$privateKey = $data['participants'][$participant_account_id]['message_keys']['privateKey'];
+			}else {
+				$publicKey = $data['participants'][$participant_account_id]['message_keys']['publicKey'];
+			}
+		}
+
+		echo json_encode([
+			"publicKey" => $publicKey,
+			"privateKey" => $privateKey
+		]);
+
+		exit();
+
+	}
+
+	function getMessages($participants, $lastMessageId = 0) {
 
 		$thread = $this->getModel("Thread");
 		$data['thread'] = $thread->getByParticipants(base64_decode($participants));
@@ -224,19 +248,16 @@ class MessagesController extends \Main\Controller {
 				$message->page['limit'] = 20;
 			}
 
-			/* $message->orderBy(" created_at ASC ");
-			$data['messages'] = $message->getByThreadId($data['thread']['thread_id']); */
-
 			$data['messages'] = $message->execute(" SELECT * 
 				FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread']['thread_id']." ".$message->and." ORDER BY created_at DESC LIMIT 20) as sub 
 				ORDER BY created_at ASC
 			");
 
-			if($data['messages']) {
+			/* if($data['messages']) {
 				$user = $this->getModel("User");
 				for($i=0; $i<count($data['messages']); $i++) {
 
-					if($data['messages'][$i]['user_id'] != $_SESSION['user_logged']['user_id'] && $data['messages'][$i]['is_read'] == 0) {
+					if($data['messages'][$i]['user_id'] != $this->session['user_id'] && $data['messages'][$i]['is_read'] == 0) {
 						$message->save($data['messages'][$i]['message_id'], [
 							"is_read" => 1
 						]);
@@ -244,20 +265,36 @@ class MessagesController extends \Main\Controller {
 
 					$user->column['user_id'] = $data['messages'][$i]['user_id'];
 					$data['messages'][$i]['user'] = $user->getById();
-
-					$data['messages'][$i]['content'] = json_decode($message->decrypt($data['messages'][$i]['content']), true);
+					$data['messages'][$i]['content'] = $data['messages'][$i]['content'];
 
 				}
 
 				$this->setTemplate("messages/getMessages.php");
 				return $this->getTemplate($data);
+			} */
+
+			$account = $this->getModel("Account");
+			$participants = json_decode(base64_decode($participants), true);
+
+			foreach($participants as $participant_account_id) {
+				$account->column['account_id'] = $participant_account_id;
+				$data['participants'][$participant_account_id] = $account->getById();
+
+				if($participant_account_id == $this->session['account_id']) {
+					$privateKey = $data['participants'][$participant_account_id]['message_keys']['privateKey'];
+				}else {
+					$publicKey = $data['participants'][$participant_account_id]['message_keys']['publicKey'];
+				}
 			}
+
+			echo json_encode($data['messages']);
+			exit();
 
 		}
 
 	}
 
-	function saveNewMessage() {
+	function saveNewMessage_OLD() {
 
 		parse_str(file_get_contents('php://input'), $_POST);
 
@@ -270,7 +307,7 @@ class MessagesController extends \Main\Controller {
 			$thread = $this->getModel("Thread");
             $response = $thread->saveNew(array(
 				"participants" => $_POST['participants'],
-				"created_by" => $_SESSION['user_logged']['user_id'],
+				"created_by" => $this->session['user_id'],
 				"created_at" => DATE_NOW
 			));
 
@@ -287,7 +324,7 @@ class MessagesController extends \Main\Controller {
 
 		$message_response = $message->saveNew(
 			array(
-				"user_id" => $_SESSION['user_logged']['user_id'],
+				"user_id" => $this->session['user_id'],
 				"thread_id" => $thread_id,
 				"content" =>  $content,
 				"is_read" => 0,
@@ -295,7 +332,7 @@ class MessagesController extends \Main\Controller {
 			)
 		);
 
-		if (($key = array_search($_SESSION['user_logged']['account_id'], $data['thread']['participants'])) !== false) {
+		if (($key = array_search($this->session['account_id'], $data['thread']['participants'])) !== false) {
 			unset($data['thread']['participants'][$key]);
 		}
 
@@ -307,7 +344,7 @@ class MessagesController extends \Main\Controller {
 				"status" => 1,
 				"created_at" => DATE_NOW,
 				"content" => array(
-					"title" => $_SESSION['user_logged']['name'],
+					"title" => $this->session['name'],
 					"message" => "Sent you a message",
 					"url" => MANAGE."threads/".base64_encode($_POST['participants'])
 				)
@@ -322,15 +359,95 @@ class MessagesController extends \Main\Controller {
 				"thread_id" => $thread_id,
 				"data" => array(
 					"thread_id" => $thread_id,
-					"user_id" => $_SESSION['user_logged']['user_id'],
-					"photo" => $_SESSION['user_logged']['photo'],
-					"user_name" => $_SESSION['user_logged']['name'],
+					"user_id" => $this->session['user_id'],
+					"photo" => $this->session['photo'],
+					"user_name" => $this->session['name'],
 					"user_message" => $message->encrypt(json_encode($content)),
 					"user_sent_time" => date("M d, Y h:ia", DATE_NOW),
 				)
 			)
 		);
 
+	}
+
+	function getSentMessage($id) {
+
+		$message = $this->getModel("Message");
+		$message->column['message_id'] = $id;
+		$data = $message->getById();
+
+		echo json_encode($data);
+		exit();
+
+	}
+
+	function saveNewMessage() {
+
+		parse_str(file_get_contents('php://input'), $_POST);
+
+		$thread = $this->getModel("Thread");
+		$data['thread'] = $thread->getByParticipants($_POST['participants']);
+
+		if($data['thread']) {
+			$thread_id = $data['thread']['thread_id'];
+		}else {
+			$thread = $this->getModel("Thread");
+            $response = $thread->saveNew(array(
+				"participants" => $_POST['participants'],
+				"created_by" => $this->session['user_id'],
+				"created_at" => DATE_NOW
+			));
+
+			$thread_id = $response['id'];
+		}
+
+		$message = $this->getModel("Message");
+		
+		$message_response = $message->saveNew([
+			"user_id" => $this->session['user_id'],
+			"thread_id" => $thread_id,
+			"content" =>  $_POST['content'],
+			"is_read" => 0,
+			"created_at" => DATE_NOW
+		]);
+
+		if (($key = array_search($this->session['account_id'], $data['thread']['participants'])) !== false) {
+			unset($data['thread']['participants'][$key]);
+		}
+
+		$recipient_account_id = implode("", $data['thread']['participants']);
+		$notification = $this->getModel("Notification");
+		$notification->saveNew(
+			array(
+				"account_id" => $recipient_account_id,
+				"status" => 1,
+				"created_at" => DATE_NOW,
+				"content" => array(
+					"title" => $this->session['name'],
+					"message" => "Sent you a message",
+					"url" => MANAGE."threads/".base64_encode($_POST['participants'])
+				)
+			)
+		);
+
+		echo json_encode(
+			array(
+				"status" => 1,
+				"type" => "success",
+				"id" => $message_response['id'],
+				"thread_id" => $thread_id,
+				"data" => array(
+					"thread_id" => $thread_id,
+					"user_id" => $this->session['user_id'],
+					"photo" => $this->session['photo'],
+					"user_name" => $this->session['name'],
+					"user_message" => $_POST['content'],
+					"user_sent_time" => date("M d, Y h:ia", DATE_NOW),
+				)
+			)
+		);
+
+		exit();
 	}
 	
 	function saveDeletedThread($id) {
@@ -344,10 +461,10 @@ class MessagesController extends \Main\Controller {
 
 				$deleted_thread = $this->getModel("DeletedThread");
 				$response = $deleted_thread->saveNew(array(
-					"account_id" => $_SESSION['user_logged']['account_id'],
-					"user_id" => $_SESSION['user_logged']['user_id'],
+					"account_id" => $this->session['account_id'],
+					"user_id" => $this->session['user_id'],
 					"thread_id" => $id,
-					"deleted_by" => $_SESSION['user_logged']['name'],
+					"deleted_by" => $this->session['name'],
 					"deleted_at" => DATE_NOW
 				));
 
@@ -472,11 +589,15 @@ class MessagesController extends \Main\Controller {
 
 		$this->doc->addScriptDeclaration("
 
-		    var wsUri = '".$this->websocketAddress."?name=" . (str_replace(" ","+",$_SESSION['user_logged']['name'])) ."';
+		    var wsUri = '".$this->websocketAddress."?name=" . (str_replace(" ","+",$this->session['name'])) ."';
 			var websocket = new WebSocket(wsUri);
 			var thread_id = 0;
-			
+			let lastMessageId = 0;
+			let firstMessageId = 0;
+
 			$(document).ready(function() {
+
+				thread_id = parseInt($('#thread_id').val());
 				var div = $('.card-body');
 				div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
 
@@ -487,10 +608,15 @@ class MessagesController extends \Main\Controller {
 				websocket.onmessage = function(ev) {
 					var response	= JSON.parse(ev.data);
 					console.log(response);
+					
+					if(thread_id == response.thread_id) {
+						$('.chat-bubbles').append( buildMessage(response.data) );
+					}
+
 					div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
 				};
 
-				websocket.onerror	= function(ev) { 
+				websocket.onerror	= function(ev) {
 					console.log('Error Occurred - ' + ev.data);
 					$('#serverErrorModal').show({
 						backdrop: 'static',
@@ -506,26 +632,29 @@ class MessagesController extends \Main\Controller {
 					});
 				};
 
-				getMessages();
+				(async () => {
+					await getMessages();
+				})();
 
 			});
+
 
 			$(document).on('click', '.btn-send-message', function() { sendMessage(); });
 			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ $('.btn-send-message').trigger('click'); } });
 
 			function sendMessage() {
+
+				const formData = new FormData();
+				let links = [];
 				
 				var type = $('#type').val();
 				var message = $('#message').val();
+				var participants = $('#participants').val();
 
 				if((type == 'text' && message != '') || (type == 'image')) {
 
 					$('.btn-send').removeClass('btn-send-message');
 
-					const formData = new FormData()
-
-					let links = [];
-					
 					if($(\"input[name='info[links][]']\") !== undefined) {
 						$(\"input[name='info[links][]']\").each(function() {
 							links.push($(this).val());
@@ -536,34 +665,52 @@ class MessagesController extends \Main\Controller {
 						formData.append('info', links);
 					}
 
-					content = {
-						\"type\": type,
-						\"message\": message,
-						\"info\": links
-					};
+					formData.append('participants', participants);
 
-					encryptData(JSON.stringify(content), publicKey, privateKey);
+					fetch(MANAGE + 'threads/getKeys/' + btoa(participants))
+						.then(response => {
+							return response.json();
+						}) .then(data => {
 
-					formData.append('content', data);
+							publicKey = data.publicKey
+							privateKey = data.privateKey
 
-					console.log(formData.get('content'));
-					
-					/* $.post('".url("MessagesController@saveNewMessage")."',  $('#form').serialize(), function(data) {
-						response = JSON.parse(data);
+							encryptData({
+								\"type\": type,
+								\"message\": message,
+								\"info\": links
+							}, publicKey, privateKey).then(
+								data => {
+									formData.append('content', btoa(data.encrypted));
+									formData.append('iv', data.iv);
 
-						websocket.send(JSON.stringify(response.data));
-						$('#message').val('');
+									fetch('".url("MessagesController@saveNewMessage")."', { 
+										method: 'POST', 
+										body: new URLSearchParams(formData).toString(),
+										headers: {
+											'Content-type': 'application/x-www-form-urlencoded'
+										}  
+									})
+										.then(response => response.json())
+											.then(response => {
 
-						$('#thread_id').val(response.data['thread_id']);
-						thread_id = response.data['thread_id'];
+												websocket.send(JSON.stringify(response));
+												$('#message').val('');
 
-						$('.last_message_id').val(response.id)
-						lastMessageId = response.id;
+												$('#thread_id').val(response.data['thread_id']);
+												thread_id = response.data['thread_id'];
 
-						$('.chat-bubbles').append( buildMessage( response.data ) );
+												$('.last_message_id').val(response.id)
+												lastMessageId = response.id;
 
-						$('.btn-send').addClass('btn-send-message');
-					}); */
+												$('.btn-send').addClass('btn-send-message');
+
+											});
+
+								}
+							);
+						});
+
 				}
 
 			}
@@ -629,17 +776,36 @@ class MessagesController extends \Main\Controller {
 				return html;
 			}
 
-			function getMessages() {
+			async function getMessages() {
 
-				var participants = $('#participants').val();
+				let participants = $('#participants').val();
 				
-				$.get(MANAGE + 'threads/' + btoa(participants) + '/getMessages/0', function(data) {
-					if(data != '') {
-						$('.chat-bubbles').prepend(data);
-						firstMessageId = $('.first_message_id').val();
-						lastMessageId = $('.last_message_id').val();
-					}
-				});
+				fetch(MANAGE + 'threads/' + btoa(participants) + '/getMessages/0')
+					.then(response => response.json())
+					.then(data => {
+
+						let count = Object.keys(data).length;
+
+						console.log(data);
+						if(count > 0) {
+
+							firstMessageId = data[0].message_id;
+							lastMessageId = data[ (count - 1) ].message_id;
+
+							$('#first_message_id').val(firstMessageId);
+							$('#last_message_id').val(lastMessageId);
+							
+                            for (let key in data) {
+								if (data.hasOwnProperty(key)) {
+
+
+
+									$('.chat-bubbles').prepend(data[key].content);
+								}
+							}
+
+                        }
+					});
 
 			}
 
@@ -651,11 +817,11 @@ class MessagesController extends \Main\Controller {
 
 		$this->doc->addScriptDeclaration("
 
-		    var div;
-			var idleTime = 0;
-			var thread_id;
-			var lastMessageId = 0;
-			var firstMessageId = 0;
+		    let div;
+			let idleTime = 0;
+			let thread_id;
+			let lastMessageId = 0;
+			let firstMessageId = 0;
 
 			$(document).ready(function() {
 				div = $('.card-body');

@@ -89,6 +89,7 @@ Router::get(ALIAS.'/threads/{participants}', 'MessagesController@conversation', 
 Router::get(ALIAS.'/threads/{participants}/getMessages/{lastMessageId}', 'MessagesController@getMessages', ['as' => 'getMessages'])->where([ 'participants' => '[\w\-\=]+', 'lastMessageId' => '[0-9]+' ]);
 Router::get(ALIAS.'/threads/getThreadInfoByParticipants/{participants}', 'MessagesController@getThreadInfoByParticipants', ['as' => 'showMessages'])->where([ 'participants' => '[\w\-\=]+' ]);
 
+Router::get(ALIAS.'/threads/getKeys/{participants}', 'MessagesController@getKeys', ['as' => 'showMessages'])->where([ 'participants' => '[\w\-\=]+' ]);
 
 /** MESSAGES ROUTES */
 Router::get(ALIAS.'/messages/{thread_id}/removeMessage', 'MessagesController@saveDeletedThread', ['as' => 'saveDeletedThread'])->where([ 'thread_id' => '[0-9]+' ]);

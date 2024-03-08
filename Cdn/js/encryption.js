@@ -44,7 +44,7 @@ async function encryptData(data, publicKey, privateKey) {
 	)
 
 	const encodedText = encodeText(data);
-	const generatedIv = generateIv();
+	const generatedIv = await generateIv();
 	const encryptedData = await window.crypto.subtle.encrypt(
 		{ name: "AES-GCM", iv: generatedIv },
 		derivedKey,
@@ -54,7 +54,12 @@ async function encryptData(data, publicKey, privateKey) {
 	const uintArray = new Uint8Array(encryptedData);
 	const string = String.fromCharCode.apply(null, uintArray);
 	const base64Data = btoa(string);
-	const b64encodedIv = btoa(new TextDecoder("utf8").decode(generatedIv))
+	const b64encodedIv = (new TextDecoder("utf8").decode(generatedIv))
+
+	return {
+		"encrypted": base64Data,
+		"iv": b64encodedIv
+	};
 
 }
 
