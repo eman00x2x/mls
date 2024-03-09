@@ -1,5 +1,7 @@
 <?php
 
+header('Cache-Control: no-cache');
+
 use Admin\Application\Controller\AuthenticatorController as Authenticator;
 use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Request as Request;

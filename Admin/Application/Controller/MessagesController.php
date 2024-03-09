@@ -145,12 +145,6 @@ class MessagesController extends \Main\Controller {
 				$account->column['account_id'] = $participant_account_id;
 				$data['participants'][$participant_account_id] = $account->getById();
 
-				if($participant_account_id == $this->session['account_id']) {
-					$privateKey = json_encode($data['participants'][$participant_account_id]['message_keys']['privateKey']);
-				}else {
-					$publicKey = json_encode($data['participants'][$participant_account_id]['message_keys']['publicKey']);
-				}
-
 				foreach($unset_account_data as $column) {
 					unset($data['participants'][$participant_account_id][$column]);
 				}
@@ -162,49 +156,19 @@ class MessagesController extends \Main\Controller {
 
 		if($data['thread']) {
 
-			$this->doc->addScriptDeclaration("
-				let user_id = ".$this->session['user_id'].";
-				let privateKey = '';
-				let publicKey = '';
-			");
-
-			if(CONFIG['chat_is_websocket'] == 1) {
-				$this->webSocketChatScript();
-			}else {
-				$this->ajaxChatScript();
-			}
+			$this->chatScript();
 
 			$data['participants_id'] = $participants;
 
 			$message = $this->getModel("Message");
 			$message->DBO->query("UPDATE #__messages SET is_read = 1 WHERE thread_id = ".$data['thread']['thread_id']." AND user_id != ".$this->session['user_id']."");
 
-			$data['messages'] = $message->execute(" SELECT * 
-				FROM (SELECT * FROM #__messages WHERE thread_id = ".$data['thread']['thread_id']." ORDER BY created_at DESC LIMIT 20) as sub 
-				ORDER BY created_at ASC
-			");
+			$this->setTemplate("messages/view.php");
+			return $this->getTemplate($data);
 
-			/* if($data['messages']) {
-				$user = $this->getModel("User");
-				for($i=0; $i<count($data['messages']); $i++) {
-					$user->column['user_id'] = $data['messages'][$i]['user_id'];
-					$data['messages'][$i]['user'] = $user->getById();
-
-					$data['messages'][$i]['content'] = json_decode($message->decrypt($data['messages'][$i]['content']), true);
-
-					foreach($unset_user_data as $column) {
-						unset($data['messages'][$i]['user'][$column]);
-					}
-				}
-
-			} */
-
-		}else {
-			$data['messages'] = false;
 		}
 
-		$this->setTemplate("messages/view.php");
-		return $this->getTemplate($data);
+		
 		
 	}
 
@@ -218,16 +182,12 @@ class MessagesController extends \Main\Controller {
 			$account->column['account_id'] = $participant_account_id;
 			$data['participants'][$participant_account_id] = $account->getById();
 
-			/* if($participant_account_id == $this->session['account_id']) {
+			if($participant_account_id == $this->session['account_id']) {
 				$privateKey = $data['participants'][$participant_account_id]['message_keys']['privateKey'];
 			}else {
 				$publicKey = $data['participants'][$participant_account_id]['message_keys']['publicKey'];
-			} */
-
-			if($participant_account_id == $this->session['account_id']) {
-				$privateKey = $data['participants'][$participant_account_id]['message_keys']['privateKey'];
-				$publicKey = $data['participants'][$participant_account_id]['message_keys']['publicKey'];
 			}
+
 		}
 
 		echo json_encode([
@@ -239,7 +199,30 @@ class MessagesController extends \Main\Controller {
 
 	}
 
+	function messageStream($participants, $lastMessageId = 0) {
+
+		header('Content-Type: text/event-stream; charset=utf-8');
+		header('Cache-Control: no-cache');
+
+		$response = $this->messageCollections($participants, $lastMessageId);
+
+		if($response['data']['messages']) {
+			echo "data: " . json_encode($response) . "\n\n";
+		}
+
+		exit();
+
+	}
+
 	function getMessages($participants, $lastMessageId = 0) {
+
+		$response = $this->messageCollections($participants, $lastMessageId);
+		echo json_encode($response);
+		exit();
+
+	}
+
+	private function messageCollections($participants, $lastMessageId = 0) {
 
 		$thread = $this->getModel("Thread");
 		$data['thread'] = $thread->getByParticipants(base64_decode($participants));
@@ -279,15 +262,16 @@ class MessagesController extends \Main\Controller {
 
 			}
 
-			echo json_encode([
+			return [
 				"status" => 1,
 				"type" => "success",
 				"thread_id" => $data['thread']['thread_id'],
 				"data" => $data
-			]);
-			exit();
-
+			];
+			
 		}
+
+		return false;
 
 	}
 
@@ -499,18 +483,10 @@ class MessagesController extends \Main\Controller {
 
 		$this->doc->addScriptDeclaration("
 
-		    var wsUri = '".$this->websocketAddress."?name=" . (str_replace(" ","+",$this->session['name'])) ."';
-			var websocket = new WebSocket(wsUri);
-			var thread_id = 0;
-			let lastMessageId = 0;
-			let firstMessageId = 0;
-
 			$(document).ready(function() {
 
 				thread_id = parseInt($('#thread_id').val());
-				var div = $('.card-body');
-				div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
-
+				
 				websocket.onopen = function(ev) { // connection is open 
 					console.log(' Server Open ');
 				}
@@ -519,14 +495,17 @@ class MessagesController extends \Main\Controller {
 					var response	= JSON.parse(ev.data);
 					
 					if(thread_id == response.thread_id) {
-						decrypt(response.data, publicKey, privateKey)
-						.then(data => {
-							response.data.user_message = data.message;
-							$('.chat-bubbles').append(buildMessage(response.data));
-						});
+						(() => {
+							decrypt(response.data, publicKey, privateKey)
+							.then(data => {
+								response.data.user_message = data.message;
+								$('.chat-bubbles').append(buildMessage(response.data));
+								
+								scrollToBottom('.card-body');
+							});
+						})();
 					}
 
-					div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
 				};
 
 				websocket.onerror	= function(ev) {
@@ -546,11 +525,128 @@ class MessagesController extends \Main\Controller {
 				};
 
 				(async () => {
-					await getMessages();
+					await getMessages( 'bottom' );
 				})();
+				
+			});
+
+
+			
+
+		");
+
+	}
+
+	function ajaxChatScript() {
+
+		$this->doc->addScriptDeclaration("
+
+			let eventSource;
+
+			$(document).ready(function() {
+				
+				div = $('.card-body');
+				thread_id = parseInt($('#thread_id').val());
+				participants = $('#participants').val();
+
+				firstMessageId = parseInt($('#first_message_id').val());
+				lastMessageId = parseInt($('#last_message_id').val());
+	
+				(async () => {
+
+					await getMessages( 'bottom' )
+					.then( () => {
+
+						setTimeout( (() => {
+
+							eventSource = new EventSource(MANAGE + 'message/stream/' + btoa(participants) + '/' + lastMessageId);
+							/* eventSource = new EventSource(MANAGE + 'message/stream/' + btoa(participants) + '/17'); */
+
+							eventSource.addEventListener('message', function(ev) {
+								var response	= JSON.parse(ev.data);
+								decryptMessages(response);
+							}, false);
+
+						}), 1000);
+
+					});
+
+				})();
+
+				
+				/* div.bind('scroll', fetchMore);
+				setInterval(fetchMore, 8000); */
 
 			});
 
+			fetchMore = () => {
+				(async () => {
+					await getMessages( 'bottom' );
+				})();
+			};
+
+			/* fetchMore = function() {
+				
+				if(thread_id > 0) {
+					div.unbind('scroll', fetchMore);
+					(async () => {
+						await getMessages( 'bottom' );
+					})();
+				}
+				
+			};
+
+			fetchBackMore = function() {
+				
+				if(thread_id > 0) {
+					(async () => {
+						await getMessages( 'bottom' );
+					})();
+				}
+				
+			}; */
+
+			
+		");
+
+	}
+
+	function chatScript() {
+		if(CONFIG['chat_is_websocket'] == 1) {
+
+			$this->doc->addScriptDeclaration("
+			const wsUri = '".$this->websocketAddress."?name=" . (str_replace(" ","+",$this->session['name'])) ."';
+			const websocket = new WebSocket(wsUri);");
+
+		}
+
+		$this->doc->addScriptDeclaration("
+			const user_id = ".$this->session['user_id'].";
+			const is_websocket = ".CONFIG['chat_is_websocket'].";
+
+			const scrollToBottom = (id) => {
+				const element = document.querySelector(id);
+				element.scrollTop = element.scrollHeight;
+			}
+
+			let div;
+			let idleTime = 0;
+			let thread_id;
+			let participants;
+			let lastMessageId;
+			let firstMessageId;
+			let privateKey;
+			let publicKey;
+
+		");
+
+		if(CONFIG['chat_is_websocket'] == 1) {
+			$this->webSocketChatScript();
+		}else {
+			$this->ajaxChatScript();
+		}
+
+		$this->doc->addScriptDeclaration("
 
 			$(document).on('click', '.btn-send-message', function() { sendMessage(); });
 			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ $('.btn-send-message').trigger('click'); } });
@@ -562,7 +658,6 @@ class MessagesController extends \Main\Controller {
 				
 				let type = $('#type').val();
 				let message = $('#message').val();
-				let participants = $('#participants').val();
 
 				if((type == 'text' && message != '') || (type == 'image')) {
 
@@ -607,7 +702,12 @@ class MessagesController extends \Main\Controller {
 										.then(response => response.json())
 											.then(response => {
 
-												websocket.send(JSON.stringify(response));
+												if(is_websocket == 1) {
+													websocket.send(JSON.stringify(response));
+												}else {
+													eval('('+fetchMore+')()');
+												}
+
 												$('#message').val('');
 
 												$('#thread_id').val(response.data['thread_id']);
@@ -618,13 +718,81 @@ class MessagesController extends \Main\Controller {
 
 												$('.btn-send').addClass('btn-send-message');
 
+						
 											});
 
 								}
 							);
 						});
-
 				}
+
+				scrollToBottom('.card-body');
+
+			}
+
+			async function getMessages( direction = 'bottom' ) {
+
+				message_id = lastMessageId;
+				if(direction == 'top') {
+					message_id = firstMessageId;
+				}
+				
+				fetch(MANAGE + 'threads/' + btoa(participants) + '/getMessages/' + message_id)
+					.then(response => response.json())
+					.then(data => {
+						decryptMessages(data);
+					});
+
+			}
+
+			async function decryptMessages(data, direction = 'bottom') {
+
+				const messages = data['data']['messages'];
+				let count = Object.keys(messages).length;
+
+				if(count > 0) {
+
+					firstMessageId = messages[0].message_id;
+					lastMessageId = messages[ (count - 1) ].message_id;
+
+					$('#first_message_id').val(firstMessageId);
+					$('#last_message_id').val(lastMessageId);
+					
+                    for (let key in messages) {
+						if (messages.hasOwnProperty(key)) {
+
+							if(user_id == messages[key].user_id) {
+								publicKey = data['data'].participants.you.keys.publicKey;
+								privateKey = data['data'].participants.me.keys.privateKey;
+							}else {
+								publicKey = data['data'].participants.me.keys.publicKey;
+								privateKey = data['data'].participants.you.keys.privateKey;
+							}
+
+							decrypt(messages[key], publicKey, privateKey)
+							.then(response => {
+
+								message_data = {
+									user_id: messages[key].user_id,
+									photo: messages[key].photo,
+									user_name: messages[key].user_name,
+									user_message: response.message,
+									user_sent_time: messages[key].user_sent_time
+								};
+
+								if(direction == 'top') {
+									$('.chat-bubbles').prepend(buildMessage(message_data));
+								}else {
+									$('.chat-bubbles').append(buildMessage(message_data));
+								}
+							});
+							
+						}
+					}
+
+					scrollToBottom('.card-body');
+
+                }
 
 			}
 
@@ -691,152 +859,6 @@ class MessagesController extends \Main\Controller {
 
 				return html;
 			}
-
-			async function getMessages() {
-
-				let publicKey = '';
-				let privateKey = '';
-				let participants = $('#participants').val();
-				
-				fetch(MANAGE + 'threads/' + btoa(participants) + '/getMessages/0')
-					.then(response => response.json())
-					.then(data => {
-
-						const messages = data['data']['messages'];
-						let count = Object.keys(messages).length;
-
-						if(count > 0) {
-
-							firstMessageId = messages[0].message_id;
-							lastMessageId = messages[ (count - 1) ].message_id;
-
-							$('#first_message_id').val(firstMessageId);
-							$('#last_message_id').val(lastMessageId);
-							
-                            for (let key in messages) {
-								if (messages.hasOwnProperty(key)) {
-
-									if(user_id == messages[key].user_id) {
-										publicKey = data['data'].participants.me.keys.publicKey;
-										privateKey = data['data'].participants.me.keys.privateKey;
-									}/* else {
-										publicKey = data['data'].participants.you.keys.publicKey;
-										privateKey = data['data'].participants.you.keys.privateKey;
-									} */
-
-									decrypt(messages[key], publicKey, privateKey)
-									.then(response => {
-										$('.chat-bubbles').prepend(buildMessage({
-											user_id: messages[key].user_id,
-											photo: messages[key].photo,
-											user_name: messages[key].user_name,
-											user_message: response.message,
-											user_sent_time: messages[key].user_sent_time
-										}));
-									});
-									
-								}
-							}
-
-                        }
-					});
-
-			}
-
-		");
-
-	}
-
-	function ajaxChatScript() {
-
-		$this->doc->addScriptDeclaration("
-
-		    let div;
-			let idleTime = 0;
-			let thread_id;
-			let lastMessageId = 0;
-			let firstMessageId = 0;
-
-			$(document).ready(function() {
-				div = $('.card-body');
-				thread_id = parseInt($('#thread_id').val());
-				
-				fetchMore();
-
-				div.bind('scroll', fetchMore);
-				setInterval(fetchMore, 8000);
-			});
-
-			fetchMore = function() {
-				
-				var participants = $('#participants').val();
-				
-				if(thread_id > 0) {
-					div.unbind('scroll', fetchMore);
-					$.get(MANAGE+'threads/' + btoa(participants) + '/getMessages/' + lastMessageId, function(data) {
-						if(data != '') {
-							$('.last_message_id').remove();
-							$('.chat-bubbles').append(data);
-							div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
-							lastMessageId = $('.last_message_id').val();
-						}
-						/* div.bind('scroll',fetchMore); */
-					});
-				}
-				
-			};
-
-			fetchBackMore = function() {
-				
-				var participants = $('#participants').val();
-				
-				if(thread_id > 0) {
-					div.unbind('scroll', fetchMore);
-					$.get(MANAGE+'threads/' + btoa(participants) + '/getMessages/' + firstMessageId, function(data) {
-						if(data != '') {
-							$('.first_message_id').remove();
-							$('.chat-bubbles').prepend(data);
-							firstMessageId = $('.first_message_id').val();
-						}
-						/* div.bind('scroll',fetchMore); */
-					});
-				}
-				
-			};
-
-			$(document).on('click', '.btn-send-message', function() { sendMessage(); });
-			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ $('.btn-send-message').trigger('click'); } });
-
-			function sendMessage() {
-
-				var type = $('#type').val();
-				var message = $('#message').val();
-				
-				if((type == 'text' && message != '') || (type == 'image')) {
-
-					$('.btn-send').removeClass('btn-send-message');
-
-					$.post('".url("MessagesController@saveNewMessage")."', $('#form').serialize(), function(data) {
-
-						console.log(data);
-						
-						response = JSON.parse(data);
-
-						eval('('+fetchMore+')()');
-						$('#message').val('');
-						div.scrollTop(div[0].scrollHeight - div[0].clientHeight);
-
-						$('#thread_id').val(response.data['thread_id']);
-						thread_id = response.data['thread_id'];
-
-						$('.btn-send').addClass('btn-send-message');
-						
-					});
-
-				}
-
-			}
-			
 		");
 
 	}
