@@ -42,12 +42,12 @@ $html[] = "<div class='page-body'>";
 					if($data['threads']) { $c=$model->page['starting_number'];
 						$html[] = "<div class='table-responsive'>";
 							
-							$html[] = "<table class='table table-hover table-outline'>";
+							$html[] = "<table class='table table-hover table-outline' style='width:78rem;'>";
 							$html[] = "<thead>";
 								$html[] = "<tr>";
 									$html[] = "<th class='text-center w-1'>#</th>";
-									$html[] = "<th>Participants</th>";
-									$html[] = "<th>Last Message</th>";
+									$html[] = "<th >Participants</th>";
+									$html[] = "<th >Last Message</th>";
 									$html[] = "<th>Date Started</th>";
 									$html[] = "<th class='text-center'><i class='icon-settings'></i></th>";
 								$html[] = "</tr>";
@@ -56,37 +56,40 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<tbody>";
 							for($i=0; $i<count($data['threads']); $i++) { $c++;
 
-								$html[] = "<tr class='row_listings_".$data['threads'][$i]['thread_id']."'>";
+								$html[] = "<tr class='row_threads_".$data['threads'][$i]['thread_id']."'>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
 									
                                     $html[] = "<td><a href='".url("MessagesController@conversation", ["participants" => base64_encode(json_encode($data['threads'][$i]['participants']))])."'>";
-                                        for($x=0; $x<count($data['threads'][$i]['accounts']); $x++) {
-                                            if($data['threads'][$i]['accounts'][$x]['account_id'] != $_SESSION['user_logged']['account_id']) {
+										foreach($data['threads'][$i]['accounts'] as $account_id => $account_data) {
+											 if($account_data['account_id'] != $_SESSION['user_logged']['account_id']) {
                                                 $html[] = "<div class='d-flex gap-2'>";
-                                                	$html[] = "<span class='avatar me-2' style='background-image: url(".$data['threads'][$i]['accounts'][$x]['logo'].")'></span>";
-                                                	$html[] = "<span class='align-middle d-block float-end lh-base'>".$data['threads'][$i]['accounts'][$x]['firstname']." ".$data['threads'][$i]['accounts'][$x]['lastname']." <span class='d-block text-muted small'>".$data['threads'][$i]['accounts'][$x]['profession']."</span></span>";
+                                                	$html[] = "<span class='avatar ' style='background-image: url(".$account_data['logo'].")'></span>";
+                                                	$html[] = "<span class='align-middle d-block float-end lh-base'>".$account_data['name']."<span class='d-block text-muted small'>".$account_data['profession']."</span></span>";
                                                 $html[] = "</div>";
                                             }
-                                        }
+										}
                                     $html[] = "</a></td>";
                                     
                                     $html[] = "<td class='align-middle cursor-pointer' onclick='window.location.href=\"".url("MessagesController@conversation", ["participants" => base64_encode(json_encode($data['threads'][$i]['participants']))])."\"'>";
-									/* if($data['last_message']) {
+									
+										if($data['threads'][$i]['last_message']) {
+											$html[] = "<div class='d-flex gap-2'>";
 
-										if($data['last_message']['body']['type'] == "text") {
-											$message = nicetrim( $data['last_message']['body']['message'], 50);
-										}else {
-											$message = "sent an image";
+												$html[] = "<span class='avatar' style='background-image: url(".$data['threads'][$i]['last_message']['sender']['photo'].")'></span>";
+
+												$html[] = "<span class='align-middle d-block float-end lh-base'>";
+													if($data['threads'][$i]['last_message']['sender']['user_id'] == $_SESSION['user_logged']['user_id']) {
+														$html[] = "<span class='text-muted'>me: </span> ";
+													}else {
+														$html[] = "<span class='text-muted'>".$data['threads'][$i]['last_message']['sender']['name'].": </span>";
+													}
+
+													$html[] = "<span class='last-message-container_".$data['threads'][$i]['thread_id']."'>".niceTrim($data['threads'][$i]['last_message']['user_message'], 10)."</span>";
+													$html[] = "<span class='small d-block text-muted'>".date("M d, Y g:ia",$data['threads'][$i]['last_message']['created_at'])."</span>";
+												$html[] = "</span>";
+
+											$html[] = "</div>";
 										}
-
-										if($data['last_message']['user_id'] == $_SESSION['user_logged']['user_id']) {
-											$html[] = "<span class=''><span class='text-muted'>me:</span> ".$message."</span>";
-										}else {
-											$html[] = "<span class=''><span class='text-muted'>".$data['last_message']['from']['name'].":</span> ".$message."</span>";
-										}
-
-										$html[] = "<span class='fs-11 d-block text-muted'>".date("M d, Y g:ia",$data['last_message']['created_at'])."</span>";
-									} */
 
 									$html[] = "</td>";
                                     $html[] = "<td class='align-middle'>".date("M d, Y g:ia",$data['threads'][$i]['created_at'])."</td>";

@@ -54,42 +54,96 @@ class MessagesController extends \Main\Controller {
 		
 		if($data['threads']) {
 
+			$messages_list = [];
+
 			$account = $this->getModel("Account");
 			$message = $this->getModel("Message");
 			$user = $this->getModel("User");
-			
+
 			for($i=0; $i<count($data['threads']); $i++) {
 
 				for($x=0; $x<count($data['threads'][$i]['participants']); $x++) {
 					
+					$account->select(" account_id, logo, CONCAT(firstname,' ',lastname) as name, profession, message_keys ");
 					$account->column['account_id'] = $data['threads'][$i]['participants'][$x];
 					$accountData = $account->getById();
 
-					unset($accountData['account_type']);
-					unset($accountData['tin']);
-					unset($accountData['preferences']);
-					unset($accountData['privileges']);
+					if($accountData['account_id'] == $this->session['account_id']) {
+						$a = $this->session['account_id'];
+					}else {
+						$a = "recipient";
+					}
 
-					$data['threads'][$i]['accounts'][$x] = $accountData;
+					$data['threads'][$i]['accounts'][ $a ] = $accountData;
 
 				}
 
-				$account->column['account_id'] = $data['threads'][$i]['created_by'];
-				$accountData = $account->getById();
+				$user->select(" account_id, user_id, photo, name, email ");
+				$user->column['user_id'] = $data['threads'][$i]['created_by'];
+				$data['threads'][$i]['created_by'] = $user->getById();
 
-				$data['threads'][$i]['created_by'] = $accountData;
-				$data['last_message'] = $message->getLastMessage($data['threads'][$i]['thread_id']);
+				$message->select(" message_id, thread_id, user_id, content, iv, created_at ");
+				$data['threads'][$i]['last_message'] = $message->getLastMessage($data['threads'][$i]['thread_id']);
 
-				if($data['last_message']) {
-					$user->select(" user_id, name, email ");
-					$user->column['user_id'] = $data['last_message']['user_id'];
-					$data['last_message']['from'] = $user->getById();
+				if($data['threads'][$i]['last_message']) {
+					$data['threads'][$i]['last_message']['user_message'] = $data['threads'][$i]['last_message']['content'];
 
-					$data['last_message']['body'] = $data['last_message']['content'];
+					$user->column['user_id'] = $data['threads'][$i]['last_message']['user_id'];
+					$data['threads'][$i]['last_message']['sender'] = $user->getById();
+					$data['threads'][$i]['last_message']['publicKey'] = $data['threads'][$i]['accounts']['recipient']['message_keys']['publicKey'];
+					$data['threads'][$i]['last_message']['privateKey'] = $data['threads'][$i]['accounts'][ $this->session['account_id'] ]['message_keys']['privateKey'];
+					
+					unset($data['threads'][$i]['last_message']['content']);
+					unset($data['threads'][$i]['last_message']['user_id']);
+					unset($data['threads'][$i]['accounts'][ $this->session['account_id'] ]['message_keys']);
+					unset($data['threads'][$i]['accounts']['recipient']['message_keys']);
+					unset($data['threads'][$i]['accounts'][ $data['threads'][$i]['last_message']['sender']['account_id'] ]['message_keys']);
+
+					$messages_list[] = $data['threads'][$i]['last_message'];
 				}
 
 			}
+
+			$last_messages = json_encode($messages_list);
+			$this->doc->addScriptDeclaration("			const last_messages = $last_messages;");
+
 		}
+
+		$this->doc->addScript(CDN."js/encryption.js");
+		$this->doc->addScriptDeclaration("
+			( async => {
+				for (let key in last_messages) {
+					if (last_messages.hasOwnProperty(key)) {
+
+						let thread_id = last_messages[key].thread_id;
+
+						$('.last-message-container_' + thread_id).html(\"<img src='".CDN."images/loader.png' /> decrypting... \");
+
+						decrypt(last_messages[key], last_messages[key].publicKey, last_messages[key].privateKey)
+						.then( response => {
+
+							switch(response.type) {
+								case 'text':
+									message = (response.message).substring(0, 47) + '...';
+									break;
+								case 'image':
+									message = ' sent an image ';
+									break;
+								case 'link':
+									message = ' sent a link ';
+									break;
+								default:
+									message = '';
+									break;
+							}
+
+							$('.last-message-container_' + thread_id).text( message );
+						});
+					}
+				}
+			})();
+		");
+		
 
 		$this->setTemplate("messages/messages.php");
 		return $this->getTemplate($data,$thread);
@@ -844,7 +898,7 @@ class MessagesController extends \Main\Controller {
 						html += \"</div>\";
 					html += \"</div>\";
 
-					html += \"<div class='text-end' style='margin-top: -0.9rem; margin-right: 3.5rem;'>\";
+					html += \"<div class='text-start' style='margin-top: -0.9rem; margin-left: 3.5rem;'>\";
 						html += \"<span class='text-muted fs-11'>\"
 							html += time;
 						html += \"</span>\";
