@@ -26,7 +26,9 @@ class ThreadModel extends \Main\Model {
 				$this->where( implode(" AND ", $filter) );
 				$data = $this->getList();
 
-				return $data[0];
+				if($data) {
+					return $data[0];
+				}
 
 			}
 			

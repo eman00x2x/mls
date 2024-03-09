@@ -71,7 +71,7 @@ $html[] = "<div class='page-body'>";
                                     $html[] = "</a></td>";
                                     
                                     $html[] = "<td class='align-middle cursor-pointer' onclick='window.location.href=\"".url("MessagesController@conversation", ["participants" => base64_encode(json_encode($data['threads'][$i]['participants']))])."\"'>";
-									if($data['last_message']) {
+									/* if($data['last_message']) {
 
 										if($data['last_message']['body']['type'] == "text") {
 											$message = nicetrim( $data['last_message']['body']['message'], 50);
@@ -86,7 +86,7 @@ $html[] = "<div class='page-body'>";
 										}
 
 										$html[] = "<span class='fs-11 d-block text-muted'>".date("M d, Y g:ia",$data['last_message']['created_at'])."</span>";
-									}
+									} */
 
 									$html[] = "</td>";
                                     $html[] = "<td class='align-middle'>".date("M d, Y g:ia",$data['threads'][$i]['created_at'])."</td>";
