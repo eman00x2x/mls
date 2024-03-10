@@ -17,7 +17,7 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 	e.preventDefault();
 	var formData = new FormData(this);
 	$('.btn-browse').hide();
-	
+
 	$.ajax({
 		type:'POST',
 		url: $(this).attr('action'),
@@ -30,12 +30,14 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 			console.log(data);
 		}
 	}).done(function(data) {
-		var response = JSON.parse(data);
+		let response = JSON.parse(data);
 
 		let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
 		localStorage.setItem('items', JSON.stringify(itemsArray));
 		
-		html = "";
+		let html = "";
+		let err = 0;
+
 		for (i = 0; i < response.length; i++) {
 			
 			if (response[i].status == 2) {
@@ -43,7 +45,7 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 			}
 
 			if(response[i].status == 2) {
-				html += "<div class='avatar avatar-xl' style=\"background-image:url('" + CDN + "images/warning_48.png'); \"> Error Uploading</div>";
+				err++;
 			} else {
 				
 				items = { id: response[i].id, temp_url: response[i].temp_url, url: response[i].url, filename: response[i].filename };
@@ -58,9 +60,11 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 		$('.btn-browse').show();
 		$('.upload-container').prepend(html);
 		$('#ImageBrowse').val('');
-		$('#type').val('image');
 
-		$('.btn-send-message').trigger('click');
+		if (response.length > 1 || (err == 0 && response.length == 1)) {
+			$('#message').val('sent an image');
+			$('.btn-send-message').trigger('click');
+		}
 		
 		$('#type').val('text');
 		$('.file-container').remove();
@@ -74,12 +78,14 @@ $(document).on("change", "#ImageBrowse", function () {
 	$('.undefined').remove();
 	$('.upload-response').html('');
 	
-	var $fileUpload = $("input[type='file']");
+	/* var $fileUpload = $("input[type='file']");
 	if (parseInt($fileUpload.get(0).files.length) >= 5) {
 		$('.upload-response').append("Select 5 or less images per upload!");
 		$('#ImageBrowse').val('');
 		return false;
-	}
+	} */
+
+	$('#type').val('image');
 
 	$('.upload-loader').html('<img src="' + CDN + 'images/loader.gif" /> Uploading please wait...');
 	$("#imageUploadForm").submit();

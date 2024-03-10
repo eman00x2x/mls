@@ -160,7 +160,7 @@ class MessageModel extends \Main\Model {
 			$new_dir = ROOT.DS."Cdn".DS."public".DS."chat".DS.$new_filename;
 			rename($old_dir,$new_dir);
 
-			return CDN."public/chat/".$new_filename;
+			return $new_filename;
 		}
 
 	}
@@ -210,15 +210,17 @@ class MessageModel extends \Main\Model {
 				$handle->Process(ROOT."Cdn/public/temporary/"); 
 				
 				if ($handle->processed) {
+
+					$new_filename = $this->moveUploadedAttachment($handle->file_dst_name);
 				
 					$uploadedImages[] = array(
 						"status" => 1,
 						"id" => rand(1000,10000).time(),
 						"temp_url" => CDN."public/temporary/".$handle->file_dst_name,
-						"url" => CDN."public/chat/".$handle->file_dst_name,
-						"filename" => $handle->file_dst_name
+						"url" => CDN."public/chat/".$new_filename,
+						"filename" => $new_filename
 					);
-				
+
 				}else {
 
 					\Library\Factory::setMsg("There was an error uploading your file \"".$file['name']."\". Only image are allowed and less than 2MB file sizes are allowed, Please check your image file size before uploading.","wrong");

@@ -15,6 +15,7 @@ class MessagesController extends \Main\Controller {
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
+
 	}
 	
 	function index() {
@@ -121,23 +122,7 @@ class MessagesController extends \Main\Controller {
 
 						decrypt(last_messages[key], last_messages[key].publicKey, last_messages[key].privateKey)
 						.then( response => {
-
-							switch(response.type) {
-								case 'text':
-									message = (response.message).substring(0, 47) + '...';
-									break;
-								case 'image':
-									message = ' sent an image ';
-									break;
-								case 'link':
-									message = ' sent a link ';
-									break;
-								default:
-									message = '';
-									break;
-							}
-
-							$('.last-message-container_' + thread_id).text( message );
+							$('.last-message-container_' + thread_id).text( (response.message).substring(0, 47) + '...' );
 						});
 					}
 				}
@@ -180,6 +165,7 @@ class MessagesController extends \Main\Controller {
 
 		$this->doc->addScript(CDN."js/chat-attachment-uploader.js");
 		$this->doc->addScript(CDN."js/encryption.js");
+		$this->doc->addScript(CDN."tabler/dist/libs/fslightbox/index.js");
 		$this->chatScript();
 
 		$this->doc->setTitle("Conversation");
@@ -534,6 +520,76 @@ class MessagesController extends \Main\Controller {
 		return $message->removeAttachment($filename);
 	}
 
+	function scrapeUrl() {
+
+		header("Content-type: text/html; charset=utf-8");
+
+		parse_str(file_get_contents('php://input'), $_POST);
+
+			// Extract HTML using curl
+			$ch = curl_init();
+			
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_URL, $_POST["url"]);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			
+			$data = curl_exec($ch);
+			curl_close($ch);
+			
+			if($data) {
+
+				$url = trim(parse_url($_POST["url"], PHP_URL_SCHEME).'://'.parse_url($_POST["url"], PHP_URL_HOST), '/');
+
+				// Load HTML to DOM Object
+				$dom = new \DOMDocument();
+				@$dom->loadHTML($data);
+				
+				$docs_info = [];
+				
+				// Parse DOM to get Title
+				$nodes = $dom->getElementsByTagName('title');
+
+				$string = $nodes->item(0)->nodeValue;
+				$docs_info['title'] = htmlentities(utf8_decode($string));
+
+				// Parse DOM to get Meta Description
+				$metas = $dom->getElementsByTagName('meta');
+				
+				for ($i = 0; $i < $metas->length; $i ++) {
+					$meta = $metas->item($i);
+					if ($meta->getAttribute('name') == 'description') {
+						$docs_info['description'] = htmlentities(utf8_decode($meta->getAttribute('content')));
+					}else if($meta->getAttribute('property') == 'og:image') {
+						$docs_info['image'] = $meta->getAttribute('content');
+					}else if($meta->getAttribute('itemprop') == 'image') {
+						$docs_info['image'] = $meta->getAttribute('content');
+					}
+				}
+
+				if(isset($docs_info['image'])) {
+					if(filter_var($docs_info['image'], FILTER_VALIDATE_URL) === false) {
+						$docs_info['image'] = $url.'/'.$docs_info['image'];
+					}
+				}
+
+				if(!isset($docs_info['image'])) {
+					$xpath = new \DOMXPath($dom);    
+					$images = $xpath->query ('//img/@src');
+					$img = [];
+					foreach ( $images as $image) {
+						$docs_info['image'] = $url.'/'.$image->nodeValue;
+						break;
+					}
+				}
+
+				echo json_encode($docs_info);
+			}else { echo json_encode([]); }
+
+		exit();
+
+	}
+
 	function webSocketChatScript() {
 
 		/** 
@@ -559,7 +615,7 @@ class MessagesController extends \Main\Controller {
 					if(thread_id == response.thread_id) {
 						decrypt(response.data, publicKey, privateKey)
 							.then(data => {
-								response.data.user_message = data.message;
+								response.data.user_message = data;
 								$('.chat-bubbles').append(buildMessage(response.data));
 								scrollToBottom('.card-body');
 							});
@@ -604,7 +660,6 @@ class MessagesController extends \Main\Controller {
 				eventSource.addEventListener('message', function(event) {
 					var response = JSON.parse(event.data);
 					decryptMessages(response);
-					scrollToBottom('.card-body');
 				});
 				
 
@@ -679,6 +734,8 @@ class MessagesController extends \Main\Controller {
 			let participants;
 			let lastMessageId = 0;
 			let firstMessageId = 0;
+			let messages = [];
+			let links = [];
 			let privateKey;
 			let publicKey;
 
@@ -698,7 +755,6 @@ class MessagesController extends \Main\Controller {
 			function sendMessage() {
 
 				const formData = new FormData();
-				let links = [];
 				
 				let type = $('#type').val();
 				let message = $('#message').val();
@@ -712,6 +768,8 @@ class MessagesController extends \Main\Controller {
 							links.push($(this).val());
 						});
 					}
+
+					textContainedLinks(message);
 
 					if (Array.isArray(links) || links.length) {
 						formData.append('info', links);
@@ -751,7 +809,7 @@ class MessagesController extends \Main\Controller {
 												}else {
 													decrypt(response.data, publicKey, privateKey)
 													.then(data => {
-														response.data.user_message = data.message;
+														response.data.user_message = data;
 														$('.chat-bubbles').append(buildMessage(response.data));
 														scrollToBottom('.card-body');
 													});
@@ -767,12 +825,24 @@ class MessagesController extends \Main\Controller {
 
 												$('.btn-send').addClass('btn-send-message');
 
+												links = [];
+
 											});
 
 								}
 							);
 						});
 				}
+
+			}
+
+			function getOldestMessages() {}
+
+			function getLatestMessages() {}
+
+			async function loadMessages() {
+
+
 
 			}
 
@@ -819,7 +889,7 @@ class MessagesController extends \Main\Controller {
 											user_id: messages[key].user_id,
 											photo: messages[key].photo,
 											user_name: messages[key].user_name,
-											user_message: response.message,
+											user_message: response,
 											user_sent_time: messages[key].user_sent_time
 										};
 
@@ -828,6 +898,9 @@ class MessagesController extends \Main\Controller {
 										}else {
 											$('.chat-bubbles').append(buildMessage(message_data));
 										}
+
+										scrollToBottom('.card-body');
+
 									});
 								}
 
@@ -845,6 +918,16 @@ class MessagesController extends \Main\Controller {
 
 			}
 
+			function textContainedLinks(text) {
+				
+				var urlRegex = /((?:(http|https|Http|Https|rtsp|Rtsp):\/\/(?:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,64}(?:\:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,25})?\@)?)?((?:(?:[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}\.)+(?:(?:aero|arpa|asia|a[cdefgilmnoqrstuwxz])|(?:biz|b[abdefghijmnorstvwyz])|(?:cat|com|coop|c[acdfghiklmnoruvxyz])|d[ejkmoz]|(?:edu|e[cegrstu])|f[ijkmor]|(?:gov|g[abdefghilmnpqrstuwy])|h[kmnrtu]|(?:info|int|i[delmnoqrst])|(?:jobs|j[emop])|k[eghimnrwyz]|l[abcikrstuvy]|(?:mil|mobi|museum|m[acdghklmnopqrstuvwxyz])|(?:name|net|n[acefgilopruz])|(?:org|om)|(?:pro|p[aefghklmnrstwy])|qa|r[eouw]|s[abcdeghijklmnortuvyz]|(?:tel|travel|t[cdfghjklmnoprtvwz])|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw]))|(?:(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[0-9])))(?:\:\d{1,5})?)(\/(?:(?:[a-zA-Z0-9\;\/\?\:\@\&\=\#\~\-\.\+\!\*\'\(\)\,\_])|(?:\%[a-fA-F0-9]{2}))*)?(?:\b|$)/gi;
+				return text.replace(urlRegex, function(url) {
+					links.push(url);
+					return \"<a target='_blank' href='\" + url + \"'>\" + url + \"</a>\";
+				});
+
+			}
+
 			function buildMessage(response) {
 
 				const time = timeSince(response.user_sent_time);
@@ -852,7 +935,7 @@ class MessagesController extends \Main\Controller {
 				if(response.user_id == user_id) {
 
 					html = \"<div class='row align-items-end justify-content-end '>\";
-						html += \"<div class='col col-lg-6'>\";
+						html += \"<div class='col col-lg-8'>\";
 							html += \"<div class='chat-bubble chat-bubble-me'>\";
 								
 								html += \"<div class='chat-bubble-title'>\";
@@ -861,7 +944,7 @@ class MessagesController extends \Main\Controller {
 									html += \"</div>\";
 								html += \"</div>\";
 								html += \"<div class='chat-bubble-body'>\";
-									html += \"<p>\" + (response.user_message) + \"</p>\";
+									html += formatMessage(response.user_message);
 								html += \"</div>\";
 							html += \"</div>\";
 
@@ -883,7 +966,7 @@ class MessagesController extends \Main\Controller {
 						html += \"<div class='col-auto'>\";
 							html += \"<span class='avatar' style='background-image: url(\"+response.photo+\")'></span>\";
 						html += \"</div>\";
-						html += \"<div class='col col-lg-6'>\";
+						html += \"<div class='col col-lg-8'>\";
 							html += \"<div class='chat-bubble'>\";
 								
 								html += \"<div class='chat-bubble-title'>\";
@@ -892,7 +975,7 @@ class MessagesController extends \Main\Controller {
 									html += \"</div>\";
 								html += \"</div>\";
 								html += \"<div class='chat-bubble-body'>\";
-									html += \"<p>\" + (response.user_message) + \"</p>\";
+									html += formatMessage(response.user_message);
 								html += \"</div>\";
 							html += \"</div>\";
 						html += \"</div>\";
@@ -907,6 +990,115 @@ class MessagesController extends \Main\Controller {
 				}
 
 				return html;
+			}
+
+			function formatMessage(data) {
+
+				let html = '';
+
+				if(data.type == 'image') {
+
+					const image_info = data.info;
+					const total_size = image_info.length;
+					let column;
+
+					if(total_size == 1) {
+						column = 12;
+					}else {
+						column = 6;
+					}
+
+					html += \"<div class=''>\";
+						html += \"<div class='row'>\";
+							for (let key in image_info) {
+								if (image_info.hasOwnProperty(key)) {
+									html += \"<div class='col-md-\" + column + \" mb-2'>\";
+										html += \"<a data-fslightbox href='\" + image_info[key] + \"'>\"
+											html += \"<img src='\" + image_info[key] + \"' class='img-fluid' />\";
+										html += \"</a>\";
+									html += \"</div>\";
+								}
+							}
+						html += \"</div>\";
+					html += \"</div>\";
+
+					return html;
+				}
+
+				if(data.type == 'text') {
+
+					const link_info = data.info;
+
+					if(link_info.length > 0) {
+						for (let key in link_info) {
+							if (link_info.hasOwnProperty(key)) {
+
+								const d = new Date();
+								let time = d.getTime();
+								let container = time + key;
+
+								getUrlInfo(link_info[key], container);
+
+								html += \"<a class='text-decoration-none' style='color: inherit' href='\" + link_info[key] + \"' target='_blank'>\";
+									html += \"<div class='link_container wrapper_\" + container + \"'>\";
+										html += \"<div class='link-media w-100'></div> \";
+										html += \"<div class='my-2'>\";
+											html += \"<span class='link-title d-block fw-bold fs-14'></span>\";
+											html += \"<span class='link-url fst-italic fs-12'></span>\";
+										html += \"</div>\";
+									html += \"</div>\";
+								html += \"</a>\";
+								
+
+							}
+						}
+					}
+
+					html += '<p>' + textContainedLinks(data.message) + '</p>';
+
+					links = [];
+					return html;
+				}
+
+				function getUrlInfo(url, container) {
+
+					const formData = new FormData();
+
+					formData.append('url', url);
+					fetch('".url("MessagesController@scrapeUrl")."', { 
+							method: 'POST', 
+							body: new URLSearchParams(formData).toString(),
+							headers: {
+								'Content-type': 'application/x-www-form-urlencoded'
+							}  
+						})
+					.then( response => response.json() )
+					.then( data => {
+
+						if(data != '') {
+							if(data.image != undefined) {
+								$('.wrapper_' + container + ' .link-media').addClass('avatar');
+								$('.wrapper_' + container + ' .link-media').css({
+									'height': '200px',
+									'background-image': 'url(' + data.image + ')'
+								});
+							}
+							
+							$('.wrapper_' + container + ' .link-title').text(data.title);
+
+							if(data.description != undefined) {
+								$('.wrapper_' + container + ' .link-url').text(data.description);
+							}else {
+								$('.wrapper_' + container + ' .link-url').text(url);
+							}
+
+							$('.wrapper_' + container).addClass('p-2');
+						}
+
+					});
+
+				}
+
 			}
 		");
 

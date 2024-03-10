@@ -96,6 +96,7 @@ Router::get(ALIAS.'/threads/getKeys/{participants}', 'MessagesController@getKeys
 Router::get(ALIAS.'/messages/{thread_id}/removeMessage', 'MessagesController@saveDeletedThread', ['as' => 'saveDeletedThread'])->where([ 'thread_id' => '[0-9]+' ]);
 Router::get(ALIAS.'/messages/upload/{filename}/removeAttachment', 'MessagesController@removeAttachment', ['as' => 'removeAttachment'])->where([ 'filename' => '[\w\-\=\.]+' ]);
 
+Router::post(ALIAS.'/messages/scrapeUrl', 'MessagesController@scrapeUrl', ['as' => 'scrapeUrl']);
 Router::post(ALIAS.'/messages/saveNewMessage', 'MessagesController@saveNewMessage', ['as' => 'saveNewMessage']);
 Router::post(ALIAS.'/messages/upload', 'MessagesController@uploadAttachment', ['as' => 'uploadMessageAttachment']);
 

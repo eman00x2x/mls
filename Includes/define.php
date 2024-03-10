@@ -12,10 +12,11 @@ define("WEBADMIN","http://webadmin.mls/");
 define("CS","http://cs.mls/");
 /* define("MANAGE","http://manage.mls/"); */
 define("WEBDOMAIN","http://mls");
-define("CDN","http://cdn.mls/");
+/* define("CDN","http://cdn.mls/"); */
 
 define("ADMIN","http://localhost/mls/admin/");
 define("MANAGE","http://localhost/mls/manage/");
+define("CDN","http://localhost/mls/cdn/");
 
 
 define("ADMIN_ALIAS","/mls/admin");
