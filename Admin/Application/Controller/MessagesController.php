@@ -276,7 +276,7 @@ class MessagesController extends \Main\Controller {
 			if($lastMessageId > 0) {
 				$filter[] = " message_id > $lastMessageId ";
 			}else {
-				$message->page['limit'] = 20;
+				$message->page['limit'] = 5;
 			}
 
 			$filter[] = " thread_id = ".$data['thread']['thread_id'];
@@ -284,7 +284,7 @@ class MessagesController extends \Main\Controller {
 			$message->where( implode(" AND ", $filter) );
 
 			$data['messages'] = $message->execute(" SELECT * 
-				FROM (SELECT message_id, u.user_id, u.photo, u.name as user_name, content as user_message, m.created_at as user_sent_time, iv FROM #__messages m JOIN #__users u ON m.user_id=u.user_id ".$message->where." ORDER BY m.created_at DESC LIMIT 20) as sub 
+				FROM (SELECT message_id, u.user_id, u.photo, u.name as user_name, content as user_message, m.created_at as user_sent_time, iv FROM #__messages m JOIN #__users u ON m.user_id=u.user_id ".$message->where." ORDER BY m.created_at DESC LIMIT 5) as sub 
 				ORDER BY user_sent_time ASC
 			");
 
@@ -578,7 +578,15 @@ class MessagesController extends \Main\Controller {
 					$images = $xpath->query ('//img/@src');
 					$img = [];
 					foreach ( $images as $image) {
-						$docs_info['image'] = $url.'/'.$image->nodeValue;
+
+						$docs_info['image'] = $image->nodeValue;
+
+						$src = $image->nodeValue;
+						if(filter_var($src, FILTER_VALIDATE_URL) === false) {
+							$docs_info['image'] = $url.'/'.$image->nodeValue;
+						}
+
+						
 						break;
 					}
 				}
@@ -609,16 +617,19 @@ class MessagesController extends \Main\Controller {
 					console.log(' Server Open ');
 				}
 
-				websocket.onmessage = function(ev) {
-					var response	= JSON.parse(ev.data);
+				websocket.onmessage = function(event) {
+					var response	= JSON.parse(event.data);
 					
 					if(thread_id == response.thread_id) {
 						decrypt(response.data, publicKey, privateKey)
 							.then(data => {
 								response.data.user_message = data;
 								$('.chat-bubbles').append(buildMessage(response.data));
+								links = [];
+								getUrlInfo();
 								scrollToBottom('.card-body');
 							});
+
 					}
 
 				};
@@ -639,11 +650,8 @@ class MessagesController extends \Main\Controller {
 					});
 				};
 
-				getMessages( 'bottom' ).then(() => {
-					scrollToBottom('.card-body');
-				});
+				await getLatestMessages();
 
-				
 			});
 
 		");
@@ -658,8 +666,16 @@ class MessagesController extends \Main\Controller {
 				
 				eventSource = new EventSource(MANAGE + 'message/stream/' + btoa(participants) + '/0');
 				eventSource.addEventListener('message', function(event) {
-					var response = JSON.parse(event.data);
-					decryptMessages(response);
+
+					collections = JSON.parse(event.data);
+					count = collections.data.messages.length;
+					collectionLastMessageId = collections.data.messages[ (count - 1) ].message_id;
+
+					if(collectionLastMessageId > lastMessageId) {
+						prepareMessages()
+						.then( () => { showMessages() });
+					}
+
 				});
 				
 
@@ -671,14 +687,10 @@ class MessagesController extends \Main\Controller {
 				thread_id = parseInt($('#thread_id').val());
 				participants = $('#participants').val();
 
-				firstMessageId = parseInt($('#first_message_id').val());
-				lastMessageId = parseInt($('#last_message_id').val());
-	
-				getMessages( 'bottom' )
+				getLatestMessages()
 					.then( () => {
 						setTimeout( (() => {
 							listenToServer(lastMessageId);
-							scrollToBottom('.card-body');
 						}), 1000);
 					});
 
@@ -690,7 +702,7 @@ class MessagesController extends \Main\Controller {
 				if(thread_id > 0) {
 					div.unbind('scroll', fetchMore);
 					(async () => {
-						await getMessages( 'bottom' );
+						await getLatestMessages();
 					})();
 				}
 				
@@ -729,13 +741,23 @@ class MessagesController extends \Main\Controller {
 			}
 
 			let div;
-			let idleTime = 0;
 			let thread_id;
 			let participants;
 			let lastMessageId = 0;
 			let firstMessageId = 0;
+
+			// data fetch from the server 
+			let collections;
+			
+			// decrypted messages 
 			let messages = [];
+
+			// text link from decrypted messages
 			let links = [];
+
+			// messages to transform
+			let messageToTransform = [];
+
 			let privateKey;
 			let publicKey;
 
@@ -751,6 +773,53 @@ class MessagesController extends \Main\Controller {
 
 			$(document).on('click', '.btn-send-message', function() { sendMessage(); });
 			$( document ).on( 'keydown', '#message', function( e ) { if(e.which == 13){ $('.btn-send-message').trigger('click'); } });
+
+			function getOldestMessages() {
+
+			}
+
+			async function getLatestMessages() {
+
+				loadMessages( lastMessageId )
+				.then( () => {  prepareMessages()
+					.then( () => { showMessages() }); 
+				});
+
+			}
+
+			function showMessages() {
+				for (let key in messages) {
+					if (messages.hasOwnProperty(key)) { 
+						$('.chat-bubbles').append(buildMessage(messages[key]));
+					}
+				}
+				links = [];
+				getUrlInfo();
+			}
+
+			async function prepareMessages() {
+
+				count = (collections.data.messages).length;
+
+				firstMessageId = collections.data.messages[0].message_id;
+				lastMessageId = collections.data.messages[ (count - 1) ].message_id;
+
+				$('#first_message_id').val(firstMessageId);
+				$('#last_message_id').val(lastMessageId);
+				
+				await decryptMessages(collections.data);
+
+			}
+
+			async function loadMessages(messageId) {
+
+				collections = await fetch(MANAGE + 'threads/' + btoa(participants) + '/getMessages/' + messageId)
+					.then(response => response.json())
+					.then(data => {
+						return data;
+					});
+
+			}
 
 			function sendMessage() {
 
@@ -809,9 +878,15 @@ class MessagesController extends \Main\Controller {
 												}else {
 													decrypt(response.data, publicKey, privateKey)
 													.then(data => {
+
 														response.data.user_message = data;
 														$('.chat-bubbles').append(buildMessage(response.data));
+														
+														links = [];
+														getUrlInfo();
+
 														scrollToBottom('.card-body');
+
 													});
 												}
 
@@ -825,8 +900,6 @@ class MessagesController extends \Main\Controller {
 
 												$('.btn-send').addClass('btn-send-message');
 
-												links = [];
-
 											});
 
 								}
@@ -836,95 +909,43 @@ class MessagesController extends \Main\Controller {
 
 			}
 
-			function getOldestMessages() {}
+			async function decryptMessages(data) {
 
-			function getLatestMessages() {}
-
-			async function loadMessages() {
-
-
-
-			}
-
-			async function getMessages( direction = 'bottom' ) {
-
-				message_id = lastMessageId;
-				if(direction == 'top') {
-					message_id = firstMessageId;
-				}
-				
-				fetch(MANAGE + 'threads/' + btoa(participants) + '/getMessages/' + message_id)
-					.then(response => response.json())
-					.then(data => {
-						decryptMessages(data);
-					});
-
-			}
-
-			async function decryptMessages(data, direction = 'bottom') {
-				
 				if(data !== false) {
 				
-					const messages = data['data']['messages'];
-					let count = Object.keys(messages).length;
+					const message_data = data.messages;
+					let count = Object.keys(message_data).length;
 
 					if(count > 0) {
 
-						for (let key in messages) {
-							if (messages.hasOwnProperty(key)) {
+						for (let key in message_data) {
+							if (message_data.hasOwnProperty(key)) {
 
-								if(messages[key].message_id > lastMessageId) {
-									if(user_id == messages[key].user_id) {
-										publicKey = data['data'].participants.you.keys.publicKey;
-										privateKey = data['data'].participants.me.keys.privateKey;
-									}else {
-										publicKey = data['data'].participants.me.keys.publicKey;
-										privateKey = data['data'].participants.you.keys.privateKey;
-									}
-
-									decrypt(messages[key], publicKey, privateKey)
-									.then(response => {
-
-										message_data = {
-											user_id: messages[key].user_id,
-											photo: messages[key].photo,
-											user_name: messages[key].user_name,
-											user_message: response,
-											user_sent_time: messages[key].user_sent_time
-										};
-
-										if(direction == 'top') {
-											$('.chat-bubbles').prepend(buildMessage(message_data));
-										}else {
-											$('.chat-bubbles').append(buildMessage(message_data));
-										}
-
-										scrollToBottom('.card-body');
-
-									});
+								if(user_id == message_data[key].user_id) {
+									publicKey = data.participants.you.keys.publicKey;
+									privateKey = data.participants.me.keys.privateKey;
+								}else {
+									publicKey = data.participants.me.keys.publicKey;
+									privateKey = data.participants.you.keys.privateKey;
 								}
+
+								await decrypt(message_data[key], publicKey, privateKey)
+								.then( message => {
+									messages.push({
+										user_id: message_data[key].user_id,
+										photo: message_data[key].photo,
+										user_name: message_data[key].user_name,
+										user_message: message,
+										user_sent_time: message_data[key].user_sent_time
+									});
+								});
 
 							}
 						}
 
-						firstMessageId = messages[0].message_id;
-						lastMessageId = messages[ (count - 1) ].message_id;
-
-						$('#first_message_id').val(firstMessageId);
-						$('#last_message_id').val(lastMessageId);
-
 					}
+
 				}
-
-			}
-
-			function textContainedLinks(text) {
-				
-				var urlRegex = /((?:(http|https|Http|Https|rtsp|Rtsp):\/\/(?:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,64}(?:\:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,25})?\@)?)?((?:(?:[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}\.)+(?:(?:aero|arpa|asia|a[cdefgilmnoqrstuwxz])|(?:biz|b[abdefghijmnorstvwyz])|(?:cat|com|coop|c[acdfghiklmnoruvxyz])|d[ejkmoz]|(?:edu|e[cegrstu])|f[ijkmor]|(?:gov|g[abdefghilmnpqrstuwy])|h[kmnrtu]|(?:info|int|i[delmnoqrst])|(?:jobs|j[emop])|k[eghimnrwyz]|l[abcikrstuvy]|(?:mil|mobi|museum|m[acdghklmnopqrstuvwxyz])|(?:name|net|n[acefgilopruz])|(?:org|om)|(?:pro|p[aefghklmnrstwy])|qa|r[eouw]|s[abcdeghijklmnortuvyz]|(?:tel|travel|t[cdfghjklmnoprtvwz])|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw]))|(?:(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[0-9])))(?:\:\d{1,5})?)(\/(?:(?:[a-zA-Z0-9\;\/\?\:\@\&\=\#\~\-\.\+\!\*\'\(\)\,\_])|(?:\%[a-fA-F0-9]{2}))*)?(?:\b|$)/gi;
-				return text.replace(urlRegex, function(url) {
-					links.push(url);
-					return \"<a target='_blank' href='\" + url + \"'>\" + url + \"</a>\";
-				});
 
 			}
 
@@ -1035,9 +1056,12 @@ class MessagesController extends \Main\Controller {
 
 								const d = new Date();
 								let time = d.getTime();
-								let container = time + key;
+								let container = Math.floor(Math.random() * 10000) * (new Date().getTime());
 
-								getUrlInfo(link_info[key], container);
+								messageToTransform.push({
+									container: container,
+									link: link_info[key]
+								});
 
 								html += \"<a class='text-decoration-none' style='color: inherit' href='\" + link_info[key] + \"' target='_blank'>\";
 									html += \"<div class='link_container wrapper_\" + container + \"'>\";
@@ -1055,49 +1079,73 @@ class MessagesController extends \Main\Controller {
 					}
 
 					html += '<p>' + textContainedLinks(data.message) + '</p>';
-
-					links = [];
 					return html;
 				}
 
-				function getUrlInfo(url, container) {
+			}
+
+			function getUrlInfo() {
+
+				if(messageToTransform.length > 0) {
 
 					const formData = new FormData();
+					const urls = messageToTransform.reverse();
 
-					formData.append('url', url);
-					fetch('".url("MessagesController@scrapeUrl")."', { 
-							method: 'POST', 
-							body: new URLSearchParams(formData).toString(),
-							headers: {
-								'Content-type': 'application/x-www-form-urlencoded'
-							}  
-						})
-					.then( response => response.json() )
-					.then( data => {
+					messageToTransform = [];
 
-						if(data != '') {
-							if(data.image != undefined) {
-								$('.wrapper_' + container + ' .link-media').addClass('avatar');
-								$('.wrapper_' + container + ' .link-media').css({
-									'height': '200px',
-									'background-image': 'url(' + data.image + ')'
-								});
+					for(let i = 0; i < urls.length; i++) {
+
+						formData.append('url', urls[i].link);
+
+						fetch('".url("MessagesController@scrapeUrl")."', { 
+								method: 'POST', 
+								body: new URLSearchParams(formData).toString(),
+								headers: {
+									'Content-type': 'application/x-www-form-urlencoded'
+								}  
+							})
+						.then( response => response.json() )
+						.then( data => {
+
+							container = urls[i].container;
+
+							if(data != '') {
+								if(data.image != undefined) {
+									$('.wrapper_' + container + ' .link-media').addClass('avatar');
+									$('.wrapper_' + container + ' .link-media').css({
+										'height': '200px',
+										'background-image': 'url(' + data.image + ')'
+									});
+								}
+								
+								$('.wrapper_' + container + ' .link-title').text(data.title);
+
+								if(data.description != undefined) {
+									$('.wrapper_' + container + ' .link-url').text(data.description);
+								}else {
+									$('.wrapper_' + container + ' .link-url').text( urls[i].link );
+								}
+
+								$('.wrapper_' + container).addClass('p-2');
+
+								scrollToBottom('.card-body');
 							}
-							
-							$('.wrapper_' + container + ' .link-title').text(data.title);
 
-							if(data.description != undefined) {
-								$('.wrapper_' + container + ' .link-url').text(data.description);
-							}else {
-								$('.wrapper_' + container + ' .link-url').text(url);
-							}
+						});
 
-							$('.wrapper_' + container).addClass('p-2');
-						}
-
-					});
+					}
 
 				}
+
+			}
+
+			function textContainedLinks(text) {
+				
+				var urlRegex = /((?:(http|https|Http|Https|rtsp|Rtsp):\/\/(?:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,64}(?:\:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,25})?\@)?)?((?:(?:[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}\.)+(?:(?:aero|arpa|asia|a[cdefgilmnoqrstuwxz])|(?:biz|b[abdefghijmnorstvwyz])|(?:cat|com|coop|c[acdfghiklmnoruvxyz])|d[ejkmoz]|(?:edu|e[cegrstu])|f[ijkmor]|(?:gov|g[abdefghilmnpqrstuwy])|h[kmnrtu]|(?:info|int|i[delmnoqrst])|(?:jobs|j[emop])|k[eghimnrwyz]|l[abcikrstuvy]|(?:mil|mobi|museum|m[acdghklmnopqrstuvwxyz])|(?:name|net|n[acefgilopruz])|(?:org|om)|(?:pro|p[aefghklmnrstwy])|qa|r[eouw]|s[abcdeghijklmnortuvyz]|(?:tel|travel|t[cdfghjklmnoprtvwz])|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw]))|(?:(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[0-9])))(?:\:\d{1,5})?)(\/(?:(?:[a-zA-Z0-9\;\/\?\:\@\&\=\#\~\-\.\+\!\*\'\(\)\,\_])|(?:\%[a-fA-F0-9]{2}))*)?(?:\b|$)/gi;
+				return text.replace(urlRegex, function(url) {
+					links.push(url);
+					return \"<a target='_blank' href='\" + url + \"'>\" + url + \"</a>\";
+				});
 
 			}
 		");
