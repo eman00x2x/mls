@@ -10,9 +10,10 @@ $(document).ready(function () {
 		$('.upload-container').prepend(html);
 
 	}
+
 });
 
-$(document).on('submit', '#imageUploadForm', (function (e) {
+$(document).on('submit', '#imageUploadForm, #pdfUploadForm', (function (e) {
 	
 	e.preventDefault();
 	var formData = new FormData(this);
@@ -25,9 +26,20 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 		cache:false,
 		contentType: false,
 		processData: false,
-		beforeSubmit:function(e){},
+		beforeSubmit: function (e) { 
+			console.log(e);
+		},
 		error: function (data) {
+
 			console.log(data);
+
+			$('.upload-loader').html('');
+			$('.btn-browse').show();
+			$('#ImageBrowse').val('');
+			$('#PdfBrowse').val('');
+			$('.btn-send').addClass('btn-send-message');
+			$('.upload-response').append();
+
 		}
 	}).done(function(data) {
 		let response = JSON.parse(data);
@@ -61,6 +73,7 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 		$('.btn-browse').show();
 		$('.upload-container').prepend(html);
 		$('#ImageBrowse').val('');
+		$('#PdfBrowse').val('');
 
 		if (response.length > 1 || (err == 0 && response.length == 1)) {
 			if ($('#type').val() == "pdf") {
@@ -69,6 +82,7 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 				$('#message').val('sent an image');
 			}
 
+			$('.btn-send').addClass('btn-send-message');
 			$('.btn-send-message').trigger('click');
 		}
 		
@@ -79,32 +93,34 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 	});
 }));
 
+$(document).on("change", "#PdfBrowse", function () {
+
+	$('.undefined').remove();
+	$('.upload-response').html('');
+	$('.btn-send').removeClass('btn-send-message');
+	$('#type').val('pdf');
+
+	$('.upload-loader').html('<img src="' + CDN + 'images/loader.gif" /> Uploading please wait...');
+	$("#pdfUploadForm").submit();
+});
+
 $(document).on("change", "#ImageBrowse", function () {
 
 	$('.undefined').remove();
 	$('.upload-response').html('');
+	$('.btn-send').removeClass('btn-send-message');
+	$('#type').val('image');
 	
-	/* var $fileUpload = $("input[type='file']");
-	if (parseInt($fileUpload.get(0).files.length) >= 5) {
-		$('.upload-response').append("Select 5 or less images per upload!");
-		$('#ImageBrowse').val('');
-		return false;
-	} */
-
 	$('.upload-loader').html('<img src="' + CDN + 'images/loader.gif" /> Uploading please wait...');
 	$("#imageUploadForm").submit();
 });
 
-$(document).on("click", ".btn-browse-image", function () { 
-	$('#type').val('image');
-});
-
-$(document).on("click", ".btn-browse-pdf", function () {
-	$('#type').val('pdf');
-});
-
-$(document).on('click', '.btn-file-browse, .btn-browse', function () {
+$(document).on('click', '.btn-browse-image', function () {
 	$('#ImageBrowse').click();
+});
+
+$(document).on('click', '.btn-browse-pdf', function () {
+	$('#PdfBrowse').click();
 });
 
 function removeImage(id,filename) {

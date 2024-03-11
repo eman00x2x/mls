@@ -518,7 +518,7 @@ class MessagesController extends \Main\Controller {
 
 		/* parse_str(file_get_contents('php://input'), $_FILES); */
 
-		if(!isset($_FILES['ImageBrowse'])) {
+		if(!isset($_FILES) || empty($_FILES['ImageBrowse'])) {
 			$this->getLibrary("Factory")->setMsg("There was an error uploading your file. Only less than 5MB file sizes are allowed, Please check your file size before uploading.","error");
 			return json_encode([
 				"status" => 2,
@@ -874,7 +874,7 @@ class MessagesController extends \Main\Controller {
 
 				$('#message').prop('disabled', true);
 
-				if((type == 'text' && message != '') || (type == 'image')) {
+				if((type == 'text' && message != '') || (type == 'image') || (type == 'pdf')) {
 
 					$('.btn-send').removeClass('btn-send-message');
 
@@ -896,7 +896,7 @@ class MessagesController extends \Main\Controller {
 						.then(response => {
 							return response.json();
 						}) .then(data => {
-							
+
 							publicKey = data.publicKey
 							privateKey = data.privateKey
 
@@ -906,6 +906,7 @@ class MessagesController extends \Main\Controller {
 								'info': links
 							}), publicKey, privateKey).then(
 								data => {
+
 									formData.append('content', data.encrypted);
 									formData.append('iv', data.iv);
 
@@ -946,7 +947,7 @@ class MessagesController extends \Main\Controller {
 
 												$('#message').prop('disabled', false);
 												$('.btn-send').addClass('btn-send-message');
-
+												
 											});
 
 								}
@@ -1129,6 +1130,36 @@ class MessagesController extends \Main\Controller {
 
 					html += '<p>' + textContainedLinks(data.message) + '</p>';
 					return html;
+				}
+
+				if(data.type == 'pdf') {
+					filename = data.info[0].replace(/^.*[\\/]/, '');
+					
+					html += \"<div class='border rounded p-2 bg-white'>\";
+						html += \"<a href='\" + data.info[0] + \"' target='_blank' class='text-decoration-none text-inherit'>\";
+							html += \"<div class='d-flex gap-2'>\";
+								html += \"<div class='avatar avatar-xl'>\";
+									html += \"<svg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-file-type-pdf' width='100' height='100' viewBox='0 0 24 24' stroke-width='1.5' stroke='#597e8d' fill='none' stroke-linecap='round' stroke-linejoin='round'>\";
+										html += \"<path stroke='none' d='M0 0h24v24H0z' fill='none'/>\";
+										html += \"<path d='M14 3v4a1 1 0 0 0 1 1h4' />\";
+										html += \"<path d='M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4' />\";
+										html += \"<path d='M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6' />\";
+										html += \"<path d='M17 18h2' />\";
+										html += \"<path d='M20 15h-3v6' />\";
+										html += \"<path d='M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z' />\";
+									html += \"</svg>\";
+								html += \"</div>\";
+								html += \"<div class='lh-2 overflow-hidden'>\";
+									html += \"<div class='overflow-hidden text-dark'>\";
+										html += filename;
+									html += \"</div>\";
+								html += \"</div>\";
+							html += \"</div>\";
+						html += \"</a>\";
+					html += \"</div>\";
+
+					return html;
+
 				}
 
 			}

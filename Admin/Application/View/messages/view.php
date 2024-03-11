@@ -6,9 +6,16 @@ $html[] = "<div class='container-xl'>";
 	$html[] = "</div>";
 $html[] = "</div>";
 
+
+$html[] = "<form action='".url("MessagesController@uploadAttachment")."' id='pdfUploadForm' method='POST' enctype='multipart/form-data'>";
+	$html[] = "<center>";
+		$html[] = "<input type='file' name='ImageBrowse[]' id='PdfBrowse' accept='application/pdf' />";
+	$html[] = "</center>";
+$html[] = "</form>";
+
 $html[] = "<form action='".url("MessagesController@uploadAttachment")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 	$html[] = "<center>";
-		$html[] = "<input type='file' name='ImageBrowse[]' id='ImageBrowse' multiple='multiple' accept='image/jpg,image/jpeg,image/gif,image/png,application/pdf' />";
+		$html[] = "<input type='file' name='ImageBrowse[]' id='ImageBrowse' multiple='multiple' accept='image/jpg,image/jpeg,image/gif,image/png' />";
 	$html[] = "</center>";
 $html[] = "</form>";
 
@@ -107,8 +114,8 @@ $html[] = "<div class='row justify-content-center'>";
 
 							$html[] = "<div class='input-group input-group-flat'>";
 								$html[] = "<span class='input-group-text'>";
-									$html[] = "<span class='link-secondary ms-2 cursor-pointer btn-browse btn-browse-pdf' title='Upload PDF File' data-bs-toggle='tooltip' data-bs-original-title='Upload PDF File' aria-label='Upload File'><i class='ti ti-file-type-pdf'></i></span>";
-									$html[] = "<span class='link-secondary ms-2 cursor-pointer btn-browse btn-browse-image' title='Upload Photo' data-bs-toggle='tooltip' data-bs-original-title='Upload Photo' aria-label='Upload Photo'><i class='ti ti-photo-plus'></i></span>";
+									$html[] = "<span class='link-secondary ms-2 cursor-pointer btn-browse-pdf' title='Upload PDF File' data-bs-toggle='tooltip' data-bs-original-title='Upload PDF File' aria-label='Upload File'><i class='ti ti-file-type-pdf'></i></span>";
+									$html[] = "<span class='link-secondary ms-2 cursor-pointer btn-browse-image' title='Upload Photo' data-bs-toggle='tooltip' data-bs-original-title='Upload Photo' aria-label='Upload Photo'><i class='ti ti-photo-plus'></i></span>";
 								$html[] = "</span>";
 								$html[] = "<input type='text' name='message' id='message' value='' class='form-control' placeholder='Type message' autocomplete='off' maxlength='2000' />";
 								$html[] = "<span class='input-group-text'>";

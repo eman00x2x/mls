@@ -147,20 +147,22 @@ class MessageModel extends \Main\Model {
 			$name = explode(".",$filename);
 			$ext = array_pop($name);
 
-			$length = 50;
-			$new_name = '';
-			$chars = range(0, 9);
+			if($ext != 'pdf') {
+				$length = 50;
+				$new_name = '';
+				$chars = range(0, 9);
 
-			for ($x = 0; $x < $length; $x++) {
-				$new_name .= $chars[array_rand($chars)];
+				for ($x = 0; $x < $length; $x++) {
+					$new_name .= $chars[array_rand($chars)];
+				}
+
+				$filename = $new_name."_".md5(time()).".".$ext;
 			}
-
-			$new_filename = $new_name."_".md5(time()).".".$ext;
-		
-			$new_dir = ROOT.DS."Cdn".DS."public".DS."chat".DS.$new_filename;
+			
+			$new_dir = ROOT.DS."Cdn".DS."public".DS."chat".DS.$filename;
 			rename($old_dir,$new_dir);
 
-			return $new_filename;
+			return $filename;
 		}
 
 	}
@@ -186,7 +188,7 @@ class MessageModel extends \Main\Model {
 			
 				$handle->file_safe_name = true;
 
-				$handle->file_max_size = '2048000';
+				$handle->file_max_size = '6000000'; // 6MB
 				$handle->allowed = array('image/*','application/pdf');
 				
 				if($handle->image_src_x > 800) {
@@ -195,6 +197,17 @@ class MessageModel extends \Main\Model {
 					$handle->image_ratio_y = true;
 				}
 				
+				$file_size = $handle->file_src_size;
+
+				if($file_size >= $handle->file_max_size) {
+					\Library\Factory::setMsg("There was an error uploading your file \"".$file['name']."\". Only image and pdf are allowed and less than 5MB file sizes are allowed, Please check your file size before uploading.","wrong");
+					
+					$uploadedImages[] = array(
+						"status" => 2,
+						"message" => getMsg()
+					);
+				}
+
 				$handle->Process(ROOT."Cdn/public/temporary/"); 
 				
 				if ($handle->processed) {
@@ -211,7 +224,7 @@ class MessageModel extends \Main\Model {
 
 				}else {
 
-					\Library\Factory::setMsg("There was an error uploading your file \"".$file['name']."\". Only image are allowed and less than 2MB file sizes are allowed, Please check your image file size before uploading.","wrong");
+					\Library\Factory::setMsg("There was an error uploading your file \"".$file['name']."\". Only image and pdf are allowed and less than 5MB file sizes are allowed, Please check your file size before uploading.","wrong");
 					
 					$uploadedImages[] = array(
 						"status" => 2,
@@ -220,7 +233,7 @@ class MessageModel extends \Main\Model {
 					
 				}
 			}else {
-				\Library\Factory::setMsg("There was an error uploading your file \"".$file['name']."\". Only image are allowed and less than 2MB file sizes are allowed, Please check your image file size before uploading.","wrong");
+				\Library\Factory::setMsg("There was an error uploading your file \"".$file['name']."\". Only image and pdf are allowed and less than 5MB file sizes are allowed, Please check your file size before uploading.","wrong");
 				$uploadedImages[] = array(
 					"status" => 2,
 					"message" => getMsg()
