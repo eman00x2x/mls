@@ -515,6 +515,17 @@ class MessagesController extends \Main\Controller {
 	}
 
 	function uploadAttachment() {
+
+		/* parse_str(file_get_contents('php://input'), $_FILES); */
+
+		if(!isset($_FILES['ImageBrowse'])) {
+			$this->getLibrary("Factory")->setMsg("There was an error uploading your file. Only less than 5MB file sizes are allowed, Please check your file size before uploading.","error");
+			return json_encode([
+				"status" => 2,
+				"message" => getMsg()
+            ]);
+		}
+
 		$message = $this->getModel("Message");
 		return $message->uploadAttachment($_FILES['ImageBrowse']);
 	}
@@ -861,6 +872,8 @@ class MessagesController extends \Main\Controller {
 				let type = $('#type').val();
 				let message = $('#message').val();
 
+				$('#message').prop('disabled', true);
+
 				if((type == 'text' && message != '') || (type == 'image')) {
 
 					$('.btn-send').removeClass('btn-send-message');
@@ -931,6 +944,7 @@ class MessagesController extends \Main\Controller {
 												$('.last_message_id').val(response.id)
 												lastMessageId = response.id;
 
+												$('#message').prop('disabled', false);
 												$('.btn-send').addClass('btn-send-message');
 
 											});

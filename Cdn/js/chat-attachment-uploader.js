@@ -52,6 +52,7 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 				itemsArray.push(items);
 				localStorage.setItem('items', JSON.stringify(itemsArray));
 				html += createElements(response);
+				
 			}
 			
 		}
@@ -62,7 +63,12 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 		$('#ImageBrowse').val('');
 
 		if (response.length > 1 || (err == 0 && response.length == 1)) {
-			$('#message').val('sent an image');
+			if ($('#type').val() == "pdf") {
+				$('#message').val('sent a pdf file');
+			} else {
+				$('#message').val('sent an image');
+			}
+
 			$('.btn-send-message').trigger('click');
 		}
 		
@@ -85,10 +91,16 @@ $(document).on("change", "#ImageBrowse", function () {
 		return false;
 	} */
 
-	$('#type').val('image');
-
 	$('.upload-loader').html('<img src="' + CDN + 'images/loader.gif" /> Uploading please wait...');
 	$("#imageUploadForm").submit();
+});
+
+$(document).on("click", ".btn-browse-image", function () { 
+	$('#type').val('image');
+});
+
+$(document).on("click", ".btn-browse-pdf", function () {
+	$('#type').val('pdf');
 });
 
 $(document).on('click', '.btn-file-browse, .btn-browse', function () {

@@ -167,17 +167,6 @@ class MessageModel extends \Main\Model {
 
 	function uploadAttachment($data) {
 
-		if(count($data['name']) > 5) {
-			
-			\Library\Factory::setMsg("Select 5 or less images per upload!","wrong");
-			$uploadedImages[] = array(
-				"status" => 2,
-				"message" => getMsg()
-			);
-
-			return json_encode($uploadedImages);
-		}
-		
 		require_once(ROOT.DS."vendor".DS."upload".DS."upload.php");
 		
 		$files = array();
@@ -198,8 +187,7 @@ class MessageModel extends \Main\Model {
 				$handle->file_safe_name = true;
 
 				$handle->file_max_size = '2048000';
-				$handle->allowed = array('image/*');
-				$handle->forbidden = array('application/*');
+				$handle->allowed = array('image/*','application/pdf');
 				
 				if($handle->image_src_x > 800) {
 					$handle->image_resize = true;
