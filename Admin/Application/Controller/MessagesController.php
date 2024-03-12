@@ -436,47 +436,120 @@ class MessagesController extends \Main\Controller {
 
 	function downloadThreadMessages($id) {
 
+		$this->doc->setTitle("Download Thread Scripts");
+
 		$thread = $this->getModel("Thread");
 		$thread->column['thread_id'] = $id;
 		$data['thread'] = $thread->getById();
 
 		if($data['thread']) {
 
-			$text[] = "Downloaded at ".MANAGE." ".date("Y-m-d g:ia", DATE_NOW)."\r";
-			$text[] = "Thread started at ".date("Y-m-d g:ia", $data['thread']['created_at'])."";
-			$text[] = "Participants: ";
+			$messages_list = [];
 
-			for($i=0; $i<count($data['thread']['participants']); $i++) {
-				$user = $this->getModel("User");
-				$user->select(" user_id, account_id, email, name ");
-				$user->column['user_id'] = $data['thread']['participants'][$i];
-				$data['thread']['users'][ $data['thread']['participants'][$i] ] = $user->getById();
-
-				$text[] = "\t".$data['thread']['users'][ $data['thread']['participants'][$i] ]['name'];
-			}
-
-			$text[] = "\r";
-
+			$account = $this->getModel("Account");
 			$message = $this->getModel("Message");
-			$message->page['limit'] = 10000000;
-			$message->orderBy(" created_at DESC ");
-			$data['messages'] = $message->getByThreadId($data['thread']['thread_id']);
+			$user = $this->getModel("User");
 
-			if($data['messages']) { 
-				for($i=0; $i<count($data['messages']); $i++) { $con = '';
-					$con .= "-".date("Y-m-d g:ia", $data['messages'][$i]['created_at'])."\t".$data['thread']['users'][ $data['messages'][$i]['user_id'] ]['name'].":\t";
+			for($x=0; $x<count($data['thread']['participants']); $x++) {
+				
+				$account->select(" account_id, logo, CONCAT(firstname,' ',lastname) as name, profession, message_keys ");
+				$account->column['account_id'] = $data['thread']['participants'][$x];
+				$accountData = $account->getById();
 
-					$content = json_decode($message->decrypt($data['messages'][$i]['content']), true);
-
-					if($content['type'] == "text") {
-						$con .= $content['message'];
-					}else {
-						$con .= "sent an image ".implode(", ", $content['info']['links']);
-					}
-
-					$text[] = $con;
+				if($accountData['account_id'] == $this->session['account_id']) {
+					$a = $this->session['account_id'];
+				}else {
+					$a = "recipient";
 				}
+
+				$data['thread']['accounts'][ $a ] = $accountData;
+
 			}
+
+			$data['thread']['publicKey'] = $data['thread']['accounts']['recipient']['message_keys']['publicKey'];
+			$data['thread']['privateKey'] = $data['thread']['accounts'][ $this->session['account_id'] ]['message_keys']['privateKey'];
+
+			$user->select(" photo, name, email ");
+			$user->column['user_id'] = $data['thread']['created_by'];
+			$data['thread']['created_by'] = $user->getById();
+
+			$message->page['limit'] = 1000000;
+			$message->select(" message_id, user_id, content, iv, created_at ");
+			$data['thread']['messages'] = $message->getList();
+
+			if($data['thread']['messages']) {
+
+				for($i=0; $i<count($data['thread']['messages']); $i++) {
+					$data['thread']['messages'][$i]['user_message'] = $data['thread']['messages'][$i]['content'];
+					$user->column['user_id'] = $data['thread']['messages'][$i]['user_id'];
+					$data['thread']['messages'][$i]['sender'] = $user->getById();
+
+				}
+
+				$messages = json_encode($data['thread']['messages']);
+
+				$this->doc->addScriptDeclaration("
+					const messages = $messages;
+					const publicKey = JSON.parse('".json_encode($data['thread']['publicKey'])."');
+					const privateKey = JSON.parse('".json_encode($data['thread']['privateKey'])."');
+				");
+
+				$this->doc->addScript(CDN."js/encryption.js");
+				$this->doc->addScriptDeclaration("
+					( async => {
+						decryptThreadMessages()
+						.then(() => {
+							$('#encrypted_messages').val( btoa($('.downloadable-content-container').text()) );
+							$('.btn-save').removeClass('d-none');
+						});
+					})();
+
+					async function decryptThreadMessages() {
+						for (let key in messages) {
+							if (messages.hasOwnProperty(key)) {
+
+								let message_id = messages[key].message_id;
+
+								$('.message-container-' + message_id).html(\"<img src='".CDN."images/loader.gif' /> decrypting... \");
+
+								await decrypt(messages[key], publicKey, privateKey)
+								.then( response => {
+									let text = '';
+
+									text += response.message;
+
+									if(response.info.length > 0) {
+										for(let i = 0; i < response.info.length; i++) {
+											text += ' ' + response.info[i] + ' ';
+										}
+									}
+
+									$('.message-container-' + message_id).text( text );
+								});
+							}
+						}
+					}
+				");
+			
+			}
+
+
+			$this->setTemplate("messages/download.php");
+			return $this->getTemplate($data);
+
+		}
+
+		$this->response(404);
+
+	}
+
+	function createDownloadFile() {
+
+		if(isset($_POST['encrypted_messages'])) {
+
+			$messages = base64_decode($_POST['encrypted_messages']);
+			$thread_id = $_POST['thread_id'];
+			$created_at = $_POST['created_at'];
 
 			$local_path = "../Cdn/public/threads/";
 			$files = glob($local_path.'*'); // get all file names
@@ -486,40 +559,47 @@ class MessagesController extends \Main\Controller {
 				}
 			}
 
-			$filename = "mls_thread_messages_".$data['thread']['thread_id']."".date("Ymd",$data['thread']['created_at']).".txt";
+			$filename = "mls_thread_messages_".$thread_id."".date("Ymd",$created_at).".txt";
 			$file_url = CDN."public/threads/$filename";
 
 			$handle = fopen("../Cdn/public/threads/".$filename, "w");
-			fwrite($handle, implode("\r",$text));
+			fwrite($handle, str_replace("** ","\n", $messages));
 			fclose($handle);
 
-			header("Content-Description: File Transfer");
-			header('Content-Type: application/octet-stream');
-			header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\""); 
-			header('Expires: 0');
-    		header('Cache-Control: must-revalidate');
-    		header('Pragma: public');
-			header("Content-length: ".filesize($local_path."/".$filename));
+			$this->getLibrary("Factory")->setMsg("Your Thread Script is ready to download. <a href='".url("MessagesController@downloadMessages", null, ["url" => $file_url])."'>Click here to download</a>", "success");
 
-			ob_clean();
-			ob_flush();
-			flush();
+			return json_encode([
+				"status" => 1,
+				"message" => getMsg()
+			]);
 
-			readfile($file_url);
-
-			exit();
 		}
 
-		$this->response(404);
+	}
+
+	function downloadMessages() {
+
+		$url = $_GET['url'];
+		$filename = basename($url);
+		$local_path = "../Cdn/public/threads/";
+
+		header("Content-Description: File Transfer");
+		header('Content-Type: application/octet-stream');
+		header("Content-disposition: attachment; filename=\"" . $filename . "\""); 
+		header('Expires: 0');
+    	header('Cache-Control: must-revalidate');
+    	header('Pragma: public');
+		header("Content-length: ".filesize($local_path."/".$filename));
+
+		readfile($url); 
+		exit();
 
 	}
 
 	function uploadAttachment() {
 
-		/* parse_str(file_get_contents('php://input'), $_FILES); */
-
 		if(!isset($_FILES) || empty($_FILES['ImageBrowse'])) {
-			$this->getLibrary("Factory")->setMsg("There was an error uploading your file. Only less than 5MB file sizes are allowed, Please check your file size before uploading.","error");
+			$this->getLibrary("Factory")->setMsg("There was an error uploading your file. Only images and pdf's less than 5MB file sizes are allowed, Please check your file before uploading.","error");
 			return json_encode([
 				"status" => 2,
 				"message" => getMsg()

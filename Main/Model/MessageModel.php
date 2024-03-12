@@ -167,12 +167,18 @@ class MessageModel extends \Main\Model {
 
 	}
 
-	function uploadAttachment($data) {
+	/**
+	 * Upload an attachment
+	 *
+	 * @param array $file
+	 * @return array
+	 */
+	function uploadAttachment($file) {
 
 		require_once(ROOT.DS."vendor".DS."upload".DS."upload.php");
 		
 		$files = array();
-		foreach ($data as $k => $l) {
+		foreach ($file as $k => $l) {
 			foreach ($l as $i => $v) {
 				if (!array_key_exists($i, $files))
 					$files[$i] = array();
@@ -189,7 +195,13 @@ class MessageModel extends \Main\Model {
 				$handle->file_safe_name = true;
 
 				$handle->file_max_size = '6000000'; // 6MB
-				$handle->allowed = array('image/*','application/pdf');
+				$handle->allowed = [
+					'image/jpg',
+					'image/jpeg',
+					'image/png',
+					'image/gif',
+					'application/pdf'
+				];
 				
 				if($handle->image_src_x > 800) {
 					$handle->image_resize = true;

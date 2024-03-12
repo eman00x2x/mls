@@ -90,15 +90,17 @@ Router::get(ALIAS.'/threads/{participants}/getMessages/{lastMessageId}', 'Messag
 Router::get(ALIAS.'/threads/getThreadInfoByParticipants/{participants}', 'MessagesController@getThreadInfoByParticipants', ['as' => 'showMessages'])->where([ 'participants' => '[\w\-\=]+' ]);
 
 Router::get(ALIAS.'/message/stream/{participants}/{lastMessageId}', 'MessagesController@messageStream', ['as' => 'messageStream'])->where([ 'participants' => '[\w\-\=]+', 'lastMessageId' => '[0-9]+' ]);
-Router::get(ALIAS.'/threads/getKeys/{participants}', 'MessagesController@getKeys', ['as' => 'showMessages'])->where([ 'participants' => '[\w\-\=]+' ]);
+Router::get(ALIAS.'/threads/getKeys/{participants}', 'MessagesController@getKeys', ['as' => 'getKeys'])->where([ 'participants' => '[\w\-\=]+' ]);
 
 /** MESSAGES ROUTES */
 Router::get(ALIAS.'/messages/{thread_id}/removeMessage', 'MessagesController@saveDeletedThread', ['as' => 'saveDeletedThread'])->where([ 'thread_id' => '[0-9]+' ]);
 Router::get(ALIAS.'/messages/upload/{filename}/removeAttachment', 'MessagesController@removeAttachment', ['as' => 'removeAttachment'])->where([ 'filename' => '[\w\-\=\.]+' ]);
+Router::get(ALIAS.'/downloadFile', 'MessagesController@downloadMessages', ['as' => 'downloadFile']);
 
 Router::post(ALIAS.'/messages/scrapeUrl', 'MessagesController@scrapeUrl', ['as' => 'scrapeUrl']);
 Router::post(ALIAS.'/messages/saveNewMessage', 'MessagesController@saveNewMessage', ['as' => 'saveNewMessage']);
 Router::post(ALIAS.'/messages/upload', 'MessagesController@uploadAttachment', ['as' => 'uploadMessageAttachment']);
+Router::post(ALIAS.'/createDownloadFile', 'MessagesController@createDownloadFile', ['as' => 'createDownloadFile']);
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get(ALIAS.'/subscriptions', 'AccountSubscriptionController@index', ['as' => 'subscriptions']);
