@@ -67,7 +67,6 @@ class Middleware implements IMiddleware {
 		
 			if($request->user['status'] == 0) {
 
-				Router::request()->setMethod('get');
 				Router::request()->setRewriteUrl(url('/'));
 
 				Router::get('/', 'AuthenticatorController@getLoginForm');

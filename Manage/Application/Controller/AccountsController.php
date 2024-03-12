@@ -15,7 +15,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 	
 	function index() {
 
-        $this->limitAccountWithExpiredPrivileges($this->session['account_id']);
+        $this->limitWithExpiredPrivileges($this->session['account_id']);
 
         if(!isset($_SESSION['user_logged']['permissions']['accounts']['access'])) {
             $this->getLibrary("Factory")->setMsg("You do not have enough permissions to access the account details","error");
@@ -53,6 +53,14 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$this->setTemplate("accounts/account.php");
 		return $this->getTemplate($data,$account);
 
+	}
+
+    function saveUpdate($account_id = null) {
+        return parent::saveUpdate($this->account_id);
+    }
+
+    function uploadPhoto() {
+		return parent::uploadPhoto();
 	}
 
     function accountProfile() {

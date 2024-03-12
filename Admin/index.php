@@ -45,9 +45,9 @@ class Middleware implements IMiddleware {
     public function handle(Request $request): void 
     {
 
-		$request->user = Authenticator::getInstance()->monitor();
 		Router::router()->reset();
-
+		$request->user = Authenticator::getInstance()->monitor();
+		
 		$template = "templates/login.template.php";
 		
 		if(url()->contains("/2-step-verification-code")) {
@@ -68,13 +68,11 @@ class Middleware implements IMiddleware {
 		
 			if($request->user['status'] == 0) {
 
-				Router::request()->setMethod('get');
 				Router::request()->setRewriteUrl(url('/'));
 
 				Router::get('/', 'AuthenticatorController@getLoginForm');
 				Router::post('/', 'AuthenticatorController@getLoginForm');
 
-				Router::get('/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
 				
 			}else {
 				require_once('routes.php');

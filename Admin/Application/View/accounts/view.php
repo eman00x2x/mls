@@ -82,50 +82,58 @@ $html[] = "<div class='page-body'>";
 
 						$html[] = "<div class='mb-3 pb-3 border-bottom'>";
 							$html[] = "<h6 class='mb-1 fw-bold'>Account Holder</h6>";
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>Company Name</label></div>";
-								$html[] = "<div class=''><span>".$data['company_name']."</span></div>";
-							$html[] = "</div>";
 
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>Profession</label></div>";
-								$html[] = "<div class=''><span>".$data['profession']."</span></div>";
-							$html[] = "</div>";
+							if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+								$html[] = "<div class='d-flex'>";
+									$html[] = "<div class='me-3'><label class='text-muted'>Company Name</label></div>";
+									$html[] = "<div class=''><span>".$data['company_name']."</span></div>";
+								$html[] = "</div>";
 
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>PRC License ID Number</label></div>";
-								$html[] = "<div class=''><span>".$data['real_estate_license_number']."</span></div>";
-							$html[] = "</div>";
+								$html[] = "<div class='d-flex'>";
+									$html[] = "<div class='me-3'><label class='text-muted'>Profession</label></div>";
+									$html[] = "<div class=''><span>".$data['profession']."</span></div>";
+								$html[] = "</div>";
 
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>TIN</label></div>";
-								$html[] = "<div class=''><span>".$data['tin']."</span></div>";
-							$html[] = "</div>";
+								$html[] = "<div class='d-flex'>";
+									$html[] = "<div class='me-3'><label class='text-muted'>PRC License ID Number</label></div>";
+									$html[] = "<div class=''><span>".$data['real_estate_license_number']."</span></div>";
+								$html[] = "</div>";
+
+								$html[] = "<div class='d-flex'>";
+									$html[] = "<div class='me-3'><label class='text-muted'>TIN</label></div>";
+									$html[] = "<div class=''><span>".$data['tin']."</span></div>";
+								$html[] = "</div>";
+							}
 
 							$html[] = "<div class='d-flex'>";
 								$html[] = "<div class='me-3'><label class='text-muted'>Name</label></div>";
 								$html[] = "<div class=''><span>".$data['firstname']." ".$data['lastname']."</span></div>";
 							$html[] = "</div>";
 
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>Birth Date</label></div>";
-								$html[] = "<div class=''><span>".date("M/d/Y",strtotime($data['birthdate']))."</span></div>";
-							$html[] = "</div>";
+							if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+								$html[] = "<div class='d-flex'>";
+									$html[] = "<div class='me-3'><label class='text-muted'>Birth Date</label></div>";
+									$html[] = "<div class=''><span>".date("M/d/Y",strtotime($data['birthdate']))."</span></div>";
+								$html[] = "</div>";
 
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>Mobile Number</label></div>";
-								$html[] = "<div class=''><span>".$data['mobile_number']."</span></div>";
-							$html[] = "</div>";
+								$html[] = "<div class='d-flex'>";
+									$html[] = "<div class='me-3'><label class='text-muted'>Mobile Number</label></div>";
+									$html[] = "<div class=''><span>".$data['mobile_number']."</span></div>";
+								$html[] = "</div>";
+							}
 
 							$html[] = "<div class='d-flex'>";
 								$html[] = "<div class='me-3'><label class='text-muted'>Email</label></div>";
 								$html[] = "<div class=''><span>".$data['email']."</span></div>";
 							$html[] = "</div>";
 
-							$html[] = "<div class='d-flex '>";
-								$html[] = "<div class='me-3'><label class='text-muted'>Address</label></div>";
-								$html[] = "<div class=''><span>".$data['street']." ".$data['city']." ".$data['province']."</span></div>";
-							$html[] = "</div>";
+							if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+								$html[] = "<div class='d-flex '>";
+									$html[] = "<div class='me-3'><label class='text-muted'>Address</label></div>";
+									$html[] = "<div class=''><span>".$data['street']." ".$data['city']." ".$data['province']."</span></div>";
+								$html[] = "</div>";
+							}
+
 						$html[] = "</div>";
 
 						$html[] = "<div class='mb-3 pb-3 border-bottom'>";
@@ -221,7 +229,7 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 
-				if(PREMIUM) {
+				if(PREMIUM && !in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-header'>";
 							$html[] = "<h4 class='text-blue card-title mb-0'>Account Subscriptions</h4>";

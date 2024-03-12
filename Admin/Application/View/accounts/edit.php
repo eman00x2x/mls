@@ -87,7 +87,25 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 						$html[] = "<div class='card-body'>";
 
-							
+							if(in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+								$html[] = "<div class='row justify-content-center'>";
+									$html[] = "<div class='col-lg-4 col-md-4 col-12'>";
+										$html[] = "<div class='text-center mb-3 '>";
+											$html[] = "<input type='hidden' name='logo' class='photo' id='logo' class='form-control' value='".$data['logo']."' />";
+											if($data['logo'] != "") {
+												$html[] = "<span class='avatar photo-preview mb-1 w-100 mb-3' style='background-image: url(".$data['logo'].")'></span>";
+											}else {
+												$html[] = "<span class='avatar photo-preview mb-1 w-100 mb-3' style='background-image: url(".CDN."images/blank-profile.png)'></span>";
+											}
+											
+											/* $html[] = "<div class='photo-preview mb-1 w-100 bg-white'></div>"; */
+											$html[] = "<small>Click to Upload Logo / Photo</small>";
+											$html[] = "<span class='photo-upload-loader d-block'></span>";
+										$html[] = "</div>";
+									$html[] = "</div>";
+								$html[] = "</div>";
+							}
+
 							$html[] = "<div class='row mb-3'>";
 								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Account Type</label>";
 								$html[] = "<div class='col-sm-9'>";

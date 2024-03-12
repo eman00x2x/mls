@@ -420,8 +420,10 @@ class AccountsController extends \Main\Controller {
 
 			}
 
-			foreach($_POST['message_keys'] as $key => $val) {
-				$_POST['message_keys'][$key] = json_decode($val, true);
+			if(isset($_POST['message_keys'])) {
+				foreach($_POST['message_keys'] as $key => $val) {
+					$_POST['message_keys'][$key] = json_decode($val, true);
+				}
 			}
 
 			$response = $accounts->save($account_id,$_POST);
@@ -511,76 +513,12 @@ class AccountsController extends \Main\Controller {
 
 		$this->setTemplate("accounts/delete.php");
 		return $this->getTemplate($data);
-			
-	
+		
 	}
 	
 	function uploadPhoto() {
 		$accounts = $this->getModel("Account");
 		return $accounts->uploadPhoto($_FILES['ImageBrowse']);
-	}
-
-	function kycVerificationForm($account_id) {
-
-		$this->doc->setTitle("KYC Verification");
-		$this->doc->addScript(CDN."js/kyc.js");
-
-		$account = $this->getModel("Account");
-		$account->column['account_id'] = $account_id;
-		$data = $account->getById();
-
-		if(isset($_REQUEST['step']) && $_REQUEST['step'] == 2) {
-			$this->setTemplate("accounts/kyc/identity.php");
-		}else if(isset($_REQUEST['step']) && $_REQUEST['step'] == 3) {
-			$this->setTemplate("accounts/kyc/final.php");
-		}else {
-			$this->setTemplate("accounts/kyc/step1.php");
-		}
-
-		return $this->getTemplate($data);
-
-	}
-
-	function kycDocsUpload($id) {
-		$accounts = $this->getModel("Account");
-		return $accounts->uploadPhoto($_FILES['ImageBrowse'], "/public/kyc/$id");
-	}
-
-	function kycVerificationProcessIndex($data) {
-
-		if(!$this->session['permissions']['accounts']['access']) {
-			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
-			response()->redirect(url("DashboardController@index"));
-		}
-
-		$this->doc->setTitle("Accounts");
-		
-		if(isset($_REQUEST['search'])) {
-			$filters[] = " (firstname LIKE '%".$_REQUEST['search']."%' OR lastname LIKE '%".$_REQUEST['search']."%' OR email LIKE '%".$_REQUEST['search']."%')";
-			$uri['search'] = $_REQUEST['search'];
-		}
-
-		$filters[] = " kyc_verified = 0 ";
-		
-		if(isset($filters)) {
-			$clause[] = implode(" AND ",$filters);
-		}
-		
-		$accounts = $this->getModel("Account");
-		$accounts
-		->where(isset($clause) ? implode(" ",$clause) : null)
-		->orderBy(" registration_date DESC ");
-
-		$accounts->page['limit'] = 20;
-		$accounts->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$accounts->page['target'] = url("AccountsController@kycVerificationProcessIndex");
-		$accounts->page['uri'] = (isset($uri) ? $uri : []);
-
-		$data = $accounts->getList();
-
-		$this->setTemplate("accounts/accountList.php");
-		return $this->getTemplate($data,$accounts);
-
 	}
 
 	function limitWithExpiredPrivileges($account_id): void {
@@ -591,7 +529,11 @@ class AccountsController extends \Main\Controller {
 
 		$subscriptions = $this->getModel("AccountSubscription");
 		$subscriptions->column['account_id'] = $account_id;
-		$data['account']['privileges'] = $subscriptions->getSubscription();
+		$privileges = $subscriptions->getSubscription();
+
+		if($privileges) {
+			$data['account']['privileges'] = $privileges;
+		}
 
 		$users = $this->getModel("User");
 		$users->page['limit'] = 9999;
@@ -626,7 +568,7 @@ class AccountsController extends \Main\Controller {
 				for($i=0; $i<$total_post; $i++) {
 
 					if($i > ($data['account']['privileges']['max_post'] - 1)) {
-						/** make inactive other users in account */
+						/** make inactive property listings in account */
 						$listings->save($data['listings'][$i]['listing_id'], [
 							"status" => "inactive"
 						]);

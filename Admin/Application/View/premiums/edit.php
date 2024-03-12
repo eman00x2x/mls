@@ -75,7 +75,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<label class='col-sm-3 col-form-label'>Category</label>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select class='form-select' name='category'>";
-										foreach(["package","individual"] as $value) {
+										foreach(["package","add-on"] as $value) {
 											$sel = $value == $data['category'] ? "selected" : "";
 											$html[] = "<option value='$value' $sel>".ucwords(str_replace("_"," ",$value))."</option>";
 										}
@@ -87,7 +87,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<label class='col-sm-3 col-form-label'>Type</label>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select class='form-select' name='type'>";
-										foreach(["permanent","limited_time"] as $value) {
+										foreach([/* "permanent", */"limited_time"] as $value) {
 											$sel = $value == $data['type'] ? "selected" : "";
 											$html[] = "<option value='$value' $sel>".ucwords(str_replace("_"," ",$value))."</option>";
 										}

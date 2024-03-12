@@ -34,6 +34,7 @@ Router::get(ADMIN_ALIAS.'/accounts/{id}/user/{user_id}/delete', 'UsersController
 
 Router::post(ADMIN_ALIAS.'/accounts/{id}/user/saveNew', 'UsersController@saveNew', ['as' => 'usersSaveNew'])->where([ 'id' => '[0-9]+' ]);
 Router::post(ADMIN_ALIAS.'/accounts/{id}/user/{user_id}/edit/saveUpdate', 'UsersController@saveUpdate', ['as' => 'usersSaveUpdate'])->where([ 'id' => '[0-9]+', 'user_id' => '[0-9]+' ]);
+Router::post(ADMIN_ALIAS.'/accounts/user/uploadPhoto', 'UsersController@uploadPhoto', ['as' => 'uploadPhoto']);
 
 /** USERS ADMIN_ALIAS ROUTES */
 Router::get(ADMIN_ALIAS.'/user/{id}/edit', 'UsersController@userEdit', ['as' => 'userADMIN_ALIASEdit'])->where([ 'id' => '[0-9]+' ]);

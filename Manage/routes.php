@@ -18,14 +18,14 @@ Router::get(ALIAS.'/account', 'AccountsController@index', ['as' => 'accounts']);
 Router::get(ALIAS.'/account', 'AccountsController@view', ['as' => 'accountView']);
 Router::get(ALIAS.'/account/profile', 'AccountsController@accountProfile', ['as' => 'profile']);
 
-Router::post(ALIAS.'/account/{id}/saveUpdate', 'AccountsController@saveUpdate', ['as' => 'accountsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
+Router::post(ALIAS.'/account/saveUpdate', 'AccountsController@saveUpdate', ['as' => 'accountsSaveUpdate']);
 Router::post(ALIAS.'/account/uploadPhoto', 'AccountsController@uploadPhoto', ['as' => 'accountsUploadPhoto']);
 
 /** KYC ROUTES */
-Router::get('/kyc', 'KYCController@kycVerificationForm', ['as' => 'kycVerificationForm']);
+Router::get(ALIAS.'/kyc', 'KYCController@kycVerificationForm', ['as' => 'kycVerificationForm']);
 
-Router::post('/kyc/{id}/kycVerificationForm', 'KYCController@saveNew', ['as' => 'saveNewKYC'])->where([ 'id' => '[0-9]+' ]);
-Router::post('/kyc/{id}/kycDocsUpload', 'KYCController@kycDocsUpload', ['as' => 'kycDocsUpload'])->where([ 'id' => '[0-9]+' ]);
+Router::post(ALIAS.'/kyc/{id}/kycVerificationForm', 'KYCController@saveNew', ['as' => 'saveNewKYC'])->where([ 'id' => '[0-9]+' ]);
+Router::post(ALIAS.'/kyc/{id}/kycDocsUpload', 'KYCController@kycDocsUpload', ['as' => 'kycDocsUpload'])->where([ 'id' => '[0-9]+' ]);
 
 /** USERS ROUTES */
 Router::get(ALIAS.'/account/users', 'UsersController@index', ['as' => 'users']);

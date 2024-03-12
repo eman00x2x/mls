@@ -65,11 +65,9 @@ class UsersController extends \Main\Controller {
 	
 	function add($id) {
 
-		
-		$this->doc->addScript(CDN."js/photo-uploader.js");
-
 		$this->doc->setTitle("Add New User");
-
+		$this->doc->addScript(CDN."js/photo-uploader.js");
+		
 		$accounts = $this->getModel("Account");
 		$accounts->select(" *, (SELECT COUNT(*) FROM #__users WHERE account_id = $id) as total_users");
 		$accounts->column['account_id'] = $id;
@@ -186,27 +184,45 @@ class UsersController extends \Main\Controller {
 
 		if($user_id) {
 
+			$accounts = $this->getModel("Account");
+			$accounts->select(" *, (SELECT COUNT(*) FROM #__users WHERE account_id = $account_id) as total_users");
+			$accounts->column['account_id'] = $account_id;
+			$data = $accounts->getById();
+
 			if($_POST['user_status'] == "active") {
+
 				$user = $this->getModel("User");
 				$user->select(" COUNT(user_id) ")->where(" account_id = $account_id AND user_status = 'active' ");
 				$total_users = $user->getList();
 
-				if($total_users > $_SESSION['user_logged']['privileges']['max_users']) {
-					$this->getLibrary("Factory")->setMsg("This account has already reached the maximum number of users; therefore, the user cannot activate it", "warning");
+				if(!in_array($data['account_type'],["Administrator","Customer Service", "Web Admin"])) {
+					$subscription = $this->getModel("AccountSubscription");
+					$subscription->column['account_id'] = $account_id;
+					$privileges = $subscription->getSubscription();
 
-					return json_encode(
-						array(
-							"status" => $response['status'],
-							"message" => getMsg()
-						)
-					);
+					if($privileges) {
+						$data['privileges'] = $privileges;
+					}
+					
+					if($total_users > $data['privileges']['max_users']) {
+						$this->getLibrary("Factory")->setMsg("This account has already reached the maximum number of users; therefore, the user cannot activate it", "warning");
+
+						return json_encode(
+							array(
+								"status" => 2,
+								"message" => getMsg()
+							)
+						);
+					}
+
 				}
 			}
 
+			$user->select("");
 			$user->column['user_id'] = $user_id;
 			$user->where(" account_id = $account_id ");
 			$data = $user->getById();
-			
+
 			if(isset($_POST['permissions'])) {
 				foreach($_POST['permissions'] as $key => $arr) {
 					foreach($arr as $arrkey => $val) {
@@ -230,6 +246,7 @@ class UsersController extends \Main\Controller {
 			}
 
 			$response = $user->save($user_id,$_POST);
+
 
 			$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 

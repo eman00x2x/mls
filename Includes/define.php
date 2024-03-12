@@ -7,20 +7,23 @@ define("DATE_NOW",strtotime("Now"));
 define("LIST_LIMIT",20);
 
 define("API","http://api.mls/");
-/* define("ADMIN","http://admin.mls/"); */
 define("WEBADMIN","http://webadmin.mls/");
 define("CS","http://cs.mls/");
-/* define("MANAGE","http://manage.mls/"); */
 define("WEBDOMAIN","http://mls");
-/* define("CDN","http://cdn.mls/"); */
 
-define("ADMIN","http://localhost/mls/admin/");
+define("ADMIN","http://admin.mls/");
+define("MANAGE","http://manage.mls/");
+define("CDN","http://cdn.mls/");
+
+define("ADMIN_ALIAS","");
+define("ALIAS","");
+
+/* define("ADMIN","http://localhost/mls/admin/");
 define("MANAGE","http://localhost/mls/manage/");
 define("CDN","http://localhost/mls/cdn/");
 
-
 define("ADMIN_ALIAS","/mls/admin");
-define("ALIAS","/mls/manage");
+define("ALIAS","/mls/manage"); */
 
 /* define("API","http://192.168.254.250/mls/Api/");
 define("ADMIN","http://192.168.254.250/mls/Admin/");
@@ -117,6 +120,10 @@ define("ADMIN_PERMISSIONS",[
 	],
 	"kyc" => [
 		"access" => (boolean) true
+	],
+	"leads" => [
+		"access" => (boolean) true,
+		"delete" => (boolean) true
 	]
 ]);
 

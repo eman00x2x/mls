@@ -2,7 +2,7 @@
 
 define("DEFINITION", [
     /** USER PERMISSIONS */
-    "account" => [
+    "accounts" => [
         "access" => "Allow this user to update the account details."
     ],
     "users" => [
@@ -31,8 +31,8 @@ define("DEFINITION", [
     /** PRIVILIGES */
     "max_post" => "The total number of postings this account can add.",
     "max_users" => "Total number of users this account can add.",
-    "mls_access" => "Gives the user access to MLS (Multiple Listing Service)",
-    "chat_access" => "Gives the user access to Chat Platform",
+    "mls_access" => "Gives the account an access to MLS (Multiple Listing Service)",
+    "chat_access" => "Gives the account an access to Chat Platform",
     "display_ads" => "Total number of display ad this account can create.",
     "featured_ads" => "Total number of featured ad this account can create.",
     "handshake_limit" => "Maximum number of handshake can initiate.",

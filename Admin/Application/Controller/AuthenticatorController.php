@@ -123,16 +123,22 @@ class AuthenticatorController extends \Main\Controller
 
 		$account = $this->getModel("Account");
 		$account->column['account_id'] = $session['account_id'];
+		$accountData = $account->getById();
 		
 		$user = $this->getModel("User");
 		$user->column['user_id'] = $session['user_id'];
-		
-		$data = array_merge($account->getById(), $user->getById());
+		$userData = $user->getById();
+
+		$data = array_merge($accountData, $userData);
 
 		$subscription = $this->getModel("AccountSubscription");
 		$subscription->column['account_id'] = $session['account_id'];
 		$data['privileges'] = $subscription->getSubscription();
 
+		if($data['privileges'] === false) {
+			$data['privileges'] = $accountData['privileges'];
+		}
+		
 		foreach($data as $key => $val) {
 			$_SESSION['user_logged'][$key] = $val;
 		}
@@ -294,7 +300,13 @@ class AuthenticatorController extends \Main\Controller
 
 		$subscription = $this->getModel("AccountSubscription");
 		$subscription->column['account_id'] = $data['account_id'];
-		$data['privileges'] = $subscription->getSubscription();
+		$privileges = $subscription->getSubscription();
+
+		if($data['privileges'] === false) {
+			$data['privileges'] = $data['privileges'];
+		}else {
+			$data['privileges'] = $privileges;
+		}
 
 		$account = new Account();
 		$account->limitWithExpiredPrivileges($data['account_id']);

@@ -1,8 +1,8 @@
 <?php
 
-$html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveUpdate",["id" => $_SESSION['user_logged']['account_id']])."' />";
+$html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveUpdate")."' />";
 
-if(isset($_SESSION['user_logged']['permissions']['account']['access'])) {
+if(isset($_SESSION['user_logged']['permissions']['accounts']['access'])) {
 	$html[] = "<input type='hidden' id='photo_uploader' value='accounts' />";
 	$html[] = "<form action='".url("AccountsController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 		$html[] = "<center>";
