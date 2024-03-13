@@ -7,6 +7,7 @@
 <!-- CSS -->
 <link href="<?php echo CDN; ?>tabler/dist/css/tabler.min.css" rel="stylesheet" />
 <link href="<?php echo CDN; ?>tabler/dist/css/tabler-vendors.min.css?1695847769" rel="stylesheet" />
+<link href="<?php echo CDN; ?>css/global.style.css" rel="stylesheet" />
 <link href="<?php echo CDN; ?>css/site.style.css" rel="stylesheet" />
 
 <!-- JAVASCRIPT -->

@@ -6,6 +6,8 @@
 	</head>
 		<body>
 
+			<div class='offcanvas offcanvas-end' tabindex='-1' id='offcanvasEnd' aria-labelledby='offcanvasEndLabel' aria-modal='true' role='dialog'></div>
+
 			<?php require_once("menu.php"); ?>
 
 			<div class="page-wrapper">

@@ -205,7 +205,7 @@ $html[] = "<div class='page-body'>";
 
 												$html[] = "<div class='row'>";
 													$html[] = "<div class='col-md'>";
-														$html[] = "<div class=' list-inline list-inline-dots mb-0 text-secondary d-sm-block'>";
+														$html[] = "<div class=' list-inline list-inline-dots mb-0 text-secondary'>";
 															if($data['listings'][$i]['bedroom'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Bedroom</span> <i class='ti ti-bed me-1'></i> ".$data['listings'][$i]['bedroom']."</div>"; }
 															if($data['listings'][$i]['bathroom'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Bathroom</span> <i class='ti ti-bath me-1'></i> ".$data['listings'][$i]['bathroom']."</div>"; }
 															if($data['listings'][$i]['floor_area'] > 0) { $html[] = "<div class='list-inline-item me-4'>	<span class='d-block mb-1 fs-10 text-muted'>Floor Area</span> <i class='ti ti-ruler me-1'></i> ".number_format($data['listings'][$i]['floor_area'],0)." sqm</div>"; }
@@ -214,13 +214,14 @@ $html[] = "<div class='page-body'>";
 														$html[] = "</div>";
 
 														/** MOBILE DESIGN */
-														/* $html[] = "<div class='mt-3 list mb-0 text-secondary d-block d-sm-none'>";
+														/* $html[] = "<div class='mt-3 list mb-0 text-secondary d-none d-sm-block'>";
 															if($data['listings'][$i]['bedroom'] > 0) { $html[] = "<div class='list-inline'><i class='ti ti-bed me-1'></i>".$data['listings'][$i]['bedroom']."</div>"; }
 															if($data['listings'][$i]['bathroom'] > 0) { $html[] = "<div class='list-inline'><i class='ti ti-bath me-1'></i>".$data['listings'][$i]['bathroom']."</div>"; }
 															if($data['listings'][$i]['floor_area'] > 0) { $html[] = "<div class='list-inline'><i class='ti ti-ruler me-1'></i>".number_format($data['listings'][$i]['floor_area'],0)." sqm</div>"; }
 															if($data['listings'][$i]['lot_area'] > 0) { $html[] = "<div class='list-inline'><i class='ti ti-maximize me-1'></i> ".number_format($data['listings'][$i]['lot_area'],0)." sqm</div>"; }
 															if($data['listings'][$i]['parking'] > 0) { $html[] = "<div class='list-inline'><i class='ti ti-car-garage me-1'></i>".$data['listings'][$i]['parking']."</div>"; }
 														$html[] = "</div>"; */
+														
 													$html[] = "</div>";
 
 													if($data['listings'][$i]['tags']) {

@@ -2,25 +2,21 @@
 
 namespace Website\Application\Controller;
 
-use Library\SessionHandler;
-use Library\Encrypt;
-
 class ListingsController extends \Main\Controller {
 
 	private $doc;
-	private $session;
 	
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Website");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-
-		$this->session = SessionHandler::getInstance();
 	}
 
-	function buy() { return $this->index(); }
-	function rent() { return $this->index(); }
+	function buy() { return $this->index("buy"); }
+	function rent() { return $this->index("rent"); }
 
-	function index() {
+	function index($offer = "buy") {
+
+		$this->doc->setTitle("Property Listings");
 
 		$this->doc->setFacebookMetaData("og:url", url());
 		$this->doc->setFacebookMetaData("og:title", "");
@@ -29,26 +25,70 @@ class ListingsController extends \Main\Controller {
 		$this->doc->setFacebookMetaData("og:description", "");
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
-		if(url()->contains("/buy")) {
+		if($offer == "buy") {
 			$filters[] = " offer = 'for sale'";
 		}
 
-		if(url()->contains("/rent")) {
+		if($offer == "rent") {
 			$filters[] = " offer = 'for rent'";
 		}
 
+		$filters[] = " status = 1";
+		$filters[] = " display = 1";
+		$filters[] = " is_website = 1";
+
+		if(isset($_GET['type'])) {
+			$uri['type'] = $_GET['type'];
+			$search[] = $_GET['type'];
+		}
+
+		if(isset($_GET['tags'])) {
+			$uri['tags'] = $_GET['tags'];
+			$filters[] = " tags LIKE '%".$_GET['tags']."%'";
+			$search[] = implode(" ", explode(",", $_GET['tags']));
+		}
+
+		if(isset($_GET['category'])) {
+			$uri['category'] = $_GET['category'];
+			$filters[] = " category LIKE '%".$_GET['category']."%'";
+			$search[] = $_GET['category'];
+		}
+
+		if(isset($_GET['address'])) {
+			$uri['address'] = $_GET['address'];
+			$filters[] = " address LIKE '%".$_GET['address']."%'";
+			$search[] = $_GET['address'];
+		}
+
+		if(isset($_GET['amenities'])) {
+			$uri['amenities'] = $_GET['amenities'];
+			$filters[] = " amenities LIKE '%".$_GET['amenities']."%'";
+			$search[] = implode(" ", explode(",", $_GET['amenities']));
+		}
+
 		$listings = $this->getModel("Listing");
-		$listings->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" last_modified DESC ");
+
+		if(isset($_GET['type']) || isset($_GET['tags']) || isset($_GET['category']) || isset($_GET['address']) || isset($_GET['amenities'])) {
+			$listings->select("
+				listing_id, account_id, is_website, offer, foreclosed, name, price, floor_area, lot_area, unit_area, bedroom, bathroom, parking, thumb_img, last_modified, status, display, type, title, tags, long_desc, category, address, amenities,
+				MATCH( type, title, tags, long_desc, category, address, amenities )
+				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS score
+			")->orderby(" score DESC ");
+		}else {
+			$listings->orderby(" last_modified DESC ");
+		}
+
+		$listings->where((isset($filters) ? implode(" AND ",$filters) : null));
 
 		$listings->page['limit'] = 20;
 		$listings->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$listings->page['target'] = url("ListingsController@index");
+		$listings->page['target'] = url();
 		$listings->page['uri'] = (isset($uri) ? $uri : []);
 
-		$data = $listings->getList();
-		
+		$data['listings'] = $listings->getList();
+
 		$this->setTemplate("listings/index.php");
-		return $this->getTemplate($data,$listings);
+		return $this->getTemplate($data, $listings);
 
 	}
 
@@ -56,16 +96,26 @@ class ListingsController extends \Main\Controller {
 
 		$listing = $this->getModel("Listing");
 		$listing->column['name'] = $name;
+		$listing->where(" status = 1 ");
+		$listing->and(" display = 1 AND is_website = 1 ");
 		$data = $listing->getByName();
 
-		$this->doc->setFacebookMetaData("og:url", url());
-		$this->doc->setFacebookMetaData("og:title", $data['title']);
-		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", $data['thumb_img']);
-		$this->doc->setFacebookMetaData("og:description", "P".number_format($data['price'],0)." ".$data['type']." ".$data['category']." in ".$data['address']['municipality']." ".$data['address']['province']." with land area of ".$data['lot_area']);
-		$this->doc->setFacebookMetaData("og:updated_time", $data['last_modified']);
-
 		if($data) {
+
+			$title = $data['title'];
+			$description = "P".number_format($data['price'],0)." ".$data['type']." ".$data['category']." in ".$data['address']['municipality']." ".$data['address']['province']." with land area of ".$data['lot_area'];
+			$image = $data['thumb_img'];
+
+			$this->doc->setTitle($title);
+			$this->doc->setDescription($description);
+			$this->doc->setMetaData("keywords", $description);
+
+			$this->doc->setFacebookMetaData("og:url", url());
+			$this->doc->setFacebookMetaData("og:title", $title);
+			$this->doc->setFacebookMetaData("og:type", "website");
+			$this->doc->setFacebookMetaData("og:image", $image);
+			$this->doc->setFacebookMetaData("og:description", $description);
+			$this->doc->setFacebookMetaData("og:updated_time", $data['last_modified']);
 			
 			$this->saveListingView($data);
 
@@ -74,20 +124,22 @@ class ListingsController extends \Main\Controller {
 
 		}
 
+		$this->response(404);
+
 	}
 	
 	private function saveListingView($data) {
 
 		$traffic = $this->getModel("ListingView");
-		$traffic->column['session_id'] = $this->session->get("id");
+		$traffic->column['session_id'] = $this->getLibrary("SessionHandler")->get("id");
 		
 		if(!$traffic->getBySessionId()) {
 			$traffic->saveNew(array(
-				"listing_id" => $data['listing_id'],
-				"account_id" => $data['account_id'],
-				"session_id" => $this->session->get("id"),
+				"listing_id" => $data['listing']['listing_id'],
+				"account_id" => $data['account']['account_id'],
+				"session_id" => $this->getLibrary("SessionHandler")->get("id"),
 				"created_at" => DATE_NOW,
-				"user_agent" => json_encode($this->session->get("user_agent"))
+				"user_agent" => json_encode($this->getLibrary("SessionHandler")->get("user_agent"))
 			));
 		}
 
