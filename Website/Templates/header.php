@@ -13,7 +13,6 @@
 <!-- JAVASCRIPT -->
 <script src="<?php echo CDN; ?>tabler/dist/js/tabler.min.js"></script>
 <script type="text/javascript" src="<?php echo CDN; ?>js/jquery.js"></script>
-<script type="text/javascript" src="<?php echo CDN; ?>js/script.js"></script>
 
 <script type="text/javascript">
     var DOMAIN = '<?php echo WEBDOMAIN; ?>';

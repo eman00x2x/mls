@@ -25,50 +25,149 @@ class ListingsController extends \Main\Controller {
 		$this->doc->setFacebookMetaData("og:description", "");
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
+		$this->doc->addStyleDeclaration("
+			.btn-filter-holder {
+				position: fixed;
+				bottom: 0;
+			}
+		");
+
+		$this->doc->addScriptDeclaration("
+
+			$(document).ready(function() {
+
+			});
+
+			$(document).on('click', '.btn-filter', function() {
+				/* let formData = new FormData(document.querySelector('#filter-form')); let object = {};
+				formData.forEach((value, key) => {
+					if(!Reflect.has(object, key)){ object[key] = value;return; }
+					if(!Array.isArray(object[key])){ object[key] = [object[key]]; }
+					object[key].push(value);
+				}); let json = JSON.stringify(object); window.location = '?' + btoa(json); */
+				
+				formData = $('#filter-form').serialize();
+				window.location = '?' + formData;
+			});
+
+		");
+
+		if(isset($_GET[0])) {
+			$get = array_keys($_GET);
+			$_GET = json_decode(base64_decode($get[0]), true);
+			debug($_GET);
+		}
+
 		if($offer == "buy") {
 			$filters[] = " offer = 'for sale'";
+			$uri['offer'] = "for sale";
 		}
 
 		if($offer == "rent") {
 			$filters[] = " offer = 'for rent'";
+			$uri['offer'] = "for rent";
 		}
 
 		$filters[] = " status = 1";
 		$filters[] = " display = 1";
 		$filters[] = " is_website = 1";
 
-		if(isset($_GET['type'])) {
+		if(isset($_GET['price']) && $_GET['price'] != "") {
+			$uri['price'] = $_GET['price'];
+
+			$price = explode("-", $uri['price']);
+
+			if($price[1] == "00") {
+				$filters[] = "price >= ".$price[0]."";
+			}else {
+				$filters[] = "(price BETWEEN ".$price[0]." AND ".$price[1].")";
+			}
+			
+		}
+
+
+		if(isset($_GET['lot_area']) && $_GET['lot_area'] != "") {
+			$uri['lot_area'] = $_GET['lot_area'];
+
+			$lot_area = explode("-", $uri['lot_area']);
+
+			if($lot_area[1] == "00") {
+				$filters[] = "lot_area >= ".$lot_area[0]."";
+			}else {
+				$filters[] = "(lot_area BETWEEN ".$lot_area[0]." AND ".$lot_area[1].")";
+			}
+			
+		}
+
+		if(isset($_GET['floor_area']) && $_GET['floor_area'] != "") {
+			$uri['floor_area'] = $_GET['floor_area'];
+
+			$floor_area = explode("-", $uri['floor_area']);
+
+			if($floor_area[1] == "00") {
+				$filters[] = "floor_area >= ".$floor_area[0]."";
+			}else {
+				$filters[] = "(floor_area BETWEEN ".$floor_area[0]." AND ".$floor_area[1].")";
+			}
+			
+		}
+
+		if(isset($_GET['bedroom']) && $_GET['bedroom'] != "") {
+			$uri['bedroom'] = $_GET['bedroom'];
+
+			if($_GET['bedroom'] == 6) {
+				$filters[] = " bedroom >= ".$_GET['bedroom'];
+			}else {
+				$filters[] = " bedroom = '".$_GET['bedroom']."'";
+			}
+		}
+
+		if(isset($_GET['bathroom']) && $_GET['bathroom'] != "") {
+			$uri['bathroom'] = $_GET['bathroom'];
+
+			if($_GET['bathroom'] == 6) {
+				$filters[] = " bathroom >= ".$_GET['bathroom'];
+			}else {
+				$filters[] = " bathroom = '".$_GET['bathroom']."'";
+			}
+		}
+
+		if(isset($_GET['type']) && $_GET['type'] != "") {
 			$uri['type'] = $_GET['type'];
 			$search[] = $_GET['type'];
 		}
 
-		if(isset($_GET['tags'])) {
+		if(isset($_GET['tags']) && $_GET['tags'] != "") {
 			$uri['tags'] = $_GET['tags'];
-			$filters[] = " tags LIKE '%".$_GET['tags']."%'";
-			$search[] = implode(" ", explode(",", $_GET['tags']));
+			$search[] = implode(" ", $_GET['tags']);
 		}
 
-		if(isset($_GET['category'])) {
+		if(isset($_GET['category']) && $_GET['category'] != "") {
 			$uri['category'] = $_GET['category'];
 			$filters[] = " category LIKE '%".$_GET['category']."%'";
 			$search[] = $_GET['category'];
 		}
 
-		if(isset($_GET['address'])) {
+		if(isset($_GET['address']) && $_GET['address'] != "") {
 			$uri['address'] = $_GET['address'];
 			$filters[] = " address LIKE '%".$_GET['address']."%'";
 			$search[] = $_GET['address'];
 		}
 
-		if(isset($_GET['amenities'])) {
+		if(isset($_GET['amenities']) && $_GET['amenities'] != "") {
 			$uri['amenities'] = $_GET['amenities'];
-			$filters[] = " amenities LIKE '%".$_GET['amenities']."%'";
-			$search[] = implode(" ", explode(",", $_GET['amenities']));
+			$search[] = implode(" ", $_GET['amenities']);
 		}
 
 		$listings = $this->getModel("Listing");
 
-		if(isset($_GET['type']) || isset($_GET['tags']) || isset($_GET['category']) || isset($_GET['address']) || isset($_GET['amenities'])) {
+		if(
+			(isset($_GET['type']) && $_GET['type'] != "") || 
+			(isset($_GET['tags']) && $_GET['tags'] != "") || 
+			(isset($_GET['category']) && $_GET['category'] != "") || 
+			(isset($_GET['address']) && $_GET['address'] != "") || 
+			(isset($_GET['amenities']) && $_GET['amenities'] != "")
+		) {
 			$listings->select("
 				listing_id, account_id, is_website, offer, foreclosed, name, price, floor_area, lot_area, unit_area, bedroom, bathroom, parking, thumb_img, last_modified, status, display, type, title, tags, long_desc, category, address, amenities,
 				MATCH( type, title, tags, long_desc, category, address, amenities )
