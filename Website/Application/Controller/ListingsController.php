@@ -50,6 +50,22 @@ class ListingsController extends \Main\Controller {
 				window.location = '?' + formData;
 			});
 
+			$(document).on('show.bs.offcanvas', '#offcanvasEnd', function() {
+				let form = $('.filter-box');
+				$(this).addClass('px-4 pt-4 pb-1');
+				
+				$(this).append(\"<div class='d-flex justify-content-end'><span class='btn-close text-reset' data-bs-dismiss='offcanvas' aria-label='Close'></span></div>\");
+				$(this).append(form.clone());
+				form.remove();
+			});
+
+			$(document).on('hide.bs.offcanvas', '#offcanvasEnd', function() {
+				let form = $('#offcanvasEnd .filter-box');
+				$(this).removeClass('px-4 pt-4');
+				$('.sidebar').html(form.clone());
+				$(this).html('');
+			});
+
 		");
 
 		if(isset($_GET[0])) {
@@ -161,6 +177,8 @@ class ListingsController extends \Main\Controller {
 
 		$listings = $this->getModel("Listing");
 
+		$order = isset($_GET['order']) ? $_GET['order'] : " DESC";
+		
 		if(
 			(isset($_GET['type']) && $_GET['type'] != "") || 
 			(isset($_GET['tags']) && $_GET['tags'] != "") || 
@@ -168,13 +186,15 @@ class ListingsController extends \Main\Controller {
 			(isset($_GET['address']) && $_GET['address'] != "") || 
 			(isset($_GET['amenities']) && $_GET['amenities'] != "")
 		) {
+			$sort = isset($_GET['sort']) ? $_GET['sort'] : " score";
 			$listings->select("
 				listing_id, account_id, is_website, offer, foreclosed, name, price, floor_area, lot_area, unit_area, bedroom, bathroom, parking, thumb_img, last_modified, status, display, type, title, tags, long_desc, category, address, amenities,
 				MATCH( type, title, tags, long_desc, category, address, amenities )
 				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS score
 			")->orderby(" score DESC ");
 		}else {
-			$listings->orderby(" last_modified DESC ");
+			$sort = isset($_GET['sort']) ? ($_GET['sort'] == "score") ? "last_modified" : $_GET['sort'] : " last_modified";
+			$listings->orderby(" $sort $order ");
 		}
 
 		$listings->where((isset($filters) ? implode(" AND ",$filters) : null));

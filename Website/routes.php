@@ -24,7 +24,6 @@ Router::get('/rent', 'ListingsController@rent');
 Router::get('/rent/{category}', 'ListingsController@rent')->where([  'category' => '[\w\-]+' ]);
 Router::get('/rent/{category}/{type}', 'ListingsController@rent')->where([  'category' => '[\w\-]+', 'type' => '[\w\-]+' ]);
 
-
 Router::get('/p-{name}', 'ListingsController@view')->where([ 'name' => '[\w\-]+' ]);
 
 Router::post('/send-message-{id}', 'ListingsController@sendMessage')->where([ 'id' => '[0-9]+' ]);

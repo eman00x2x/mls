@@ -54,3 +54,7 @@
     height: 300px;
     width: 100%;
 }
+
+.featured-post {
+    background-color: #ffffe8;
+}
