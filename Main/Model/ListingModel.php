@@ -200,19 +200,20 @@ class ListingModel extends \Main\Model {
 
 	function categories() {
 	
-		return array(
-			"Warehouse" => array("Warehouse"),
-			"Building" => array("Retail","Offices","Serviced Office"),
-			"Land" => array("Beach Lot","Farm Lot","Subdivision Lot","Agricultural Lot","Land Only","Island","Memorial"),
-			"House" => array("House and Lot","Beach House","Bungalow","Multiple Storey House","Cabin"),
-			"Townhouse" => array("Townhouse","Rowhouse","Duplex House"),
-			"Resorts" => array("Resorts"),
-			"Condominium" => array("Condominium","Studio Type","Loft Type","Penthouse","Condotel","Apartments")
-		);
+		return [
+			"Warehouse" => ["Warehouse"],
+			"Building" => ["Retail","Offices","Serviced Office"],
+			"Land" => ["Beach Lot","Farm Lot","Subdivision Lot","Agricultural Lot","Land Only","Island","Memorial"],
+			"House" => ["House and Lot","Beach House","Bungalow","Multiple Storey House","Cabin"],
+			"Townhouse" => ["Townhouse","Rowhouse","Duplex House"],
+			"Resorts" => ["Resorts"],
+			"Condominium" => ["Condominium","Studio Type","Loft Type","Penthouse","Condotel","Apartments"]
+		];
 		
 	}
 	
 	function categorySelection($currentValue = null) {
+		
 		$html[] = "<select name='category' id='category' class='form-select cursor-pointer'>";
 		$html[] = "<option value=''></option>";
 		foreach($this->categories() as $key => $mainCategory) {
@@ -229,13 +230,13 @@ class ListingModel extends \Main\Model {
 	}
 
 	function amenities() {
-		return array(
+		return [
 			"Lap Pool","Swimming Pool","Jaccuzi","Tennis Court","Bowling Room","Basket Ball Court","Pet-Friendly Residences",
 			"Movie Rooms","Game rooms","Libraries and study rooms","Chapels","Clinics","Day care centers","Lobby","Children's Play Area",
 			"Club House","Function Halls","Fitness Center","Spas",
 			"Perimeter Fence","Centralized Water System","Eco-friendly and Energy-efficient Homes","24 Hours Security","Guard House","Gated Community","Working Waste Disposal System","Power Backup","Fire Alarms and Suppression System","CCTV Cameras",
-			"Proximity to Public Transport","Near Malls","Near Hospitals","Near Public Markets","Near in Churches","Near in Schools","Shuttles",
-		);
+			"Proximity to Public Transport","Near Malls","Near Hospitals","Near Public Markets","Near in Churches","Near in Schools","Shuttles"
+		];
 	}
 
 }

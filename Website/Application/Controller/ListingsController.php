@@ -213,6 +213,11 @@ class ListingsController extends \Main\Controller {
 
 	function view($name) {
 
+		/* $this->doc->addScript(CDN."js/fslightbox/fslightbox.js");
+		$this->doc->addScriptDeclaration("
+			
+		"); */
+
 		$listing = $this->getModel("Listing");
 		$listing->column['name'] = $name;
 		$listing->where(" status = 1 ");
@@ -220,6 +225,11 @@ class ListingsController extends \Main\Controller {
 		$data = $listing->getByName();
 
 		if($data) {
+
+			$images = $this->getModel("ListingImage");
+			$images->page['limit'] = 50;
+			$images->column['listing_id'] = $data['listing_id'];
+			$data['images'] = $images->getList();
 
 			$title = $data['title'];
 			$description = "P".number_format($data['price'],0)." ".$data['type']." ".$data['category']." in ".$data['address']['municipality']." ".$data['address']['province']." with land area of ".$data['lot_area'];
@@ -239,7 +249,7 @@ class ListingsController extends \Main\Controller {
 			$this->saveListingView($data);
 
 			$this->setTemplate("listings/view.php");
-			return $this->getTemplate($data,$listing);
+			return $this->getTemplate($data, $listing);
 
 		}
 
@@ -254,8 +264,8 @@ class ListingsController extends \Main\Controller {
 		
 		if(!$traffic->getBySessionId()) {
 			$traffic->saveNew(array(
-				"listing_id" => $data['listing']['listing_id'],
-				"account_id" => $data['account']['account_id'],
+				"listing_id" => $data['listing_id'],
+				"account_id" => $data['account_id'],
 				"session_id" => $this->getLibrary("SessionHandler")->get("id"),
 				"created_at" => DATE_NOW,
 				"user_agent" => json_encode($this->getLibrary("SessionHandler")->get("user_agent"))
