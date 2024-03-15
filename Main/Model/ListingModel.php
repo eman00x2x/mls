@@ -201,13 +201,20 @@ class ListingModel extends \Main\Model {
 	function categories() {
 	
 		return [
-			"Warehouse" => ["Warehouse"],
-			"Building" => ["Retail","Offices","Serviced Office"],
+			"Residential" => ["House and Lot", "Apartment", "Townhouse", "Condominium", "Condotel", "Residential Lot"],
+			"Commercial" => ["Office/Building", "Retail Space", "Hotel", "Commercial Lot"],
+			"Industrial" => ["Warehouse", "Factory (Plant)", "Commisary"],
+			"Agricultural" => ["Agriculture Lot"],
+			"Leisure" => ["Island", "Resort"],
+			"Shares" => ["Golf Shares", "Club/Resort Shares"],
+			"Others" => ["Memorial Lot", "Columbarium", "Parking Space", "Storage Units"]
+			
+			/* "Building" => ["Retail","Offices","Serviced Office"],
 			"Land" => ["Beach Lot","Farm Lot","Subdivision Lot","Agricultural Lot","Land Only","Island","Memorial"],
 			"House" => ["House and Lot","Beach House","Bungalow","Multiple Storey House","Cabin"],
 			"Townhouse" => ["Townhouse","Rowhouse","Duplex House"],
-			"Resorts" => ["Resorts"],
-			"Condominium" => ["Condominium","Studio Type","Loft Type","Penthouse","Condotel","Apartments"]
+			"Leisures" => ["Resorts", "Hotel"],
+			"Condominium" => ["Condominium","Studio Type","Loft Type","Penthouse","Condotel","Apartments"] */
 		];
 		
 	}

@@ -42,6 +42,11 @@ $html[] = "<div class='page-body'>";
 						$html[] = "</div>";
 						$html[] = "<form id='filter-form' action='' method='POST'>";
 							$html[] = "<div class='mb-4'>";
+								$html[] = "<div class='form-label'>Address</div>";
+								$html[] = $model->address;
+								$html[] = "</div>";
+
+							$html[] = "<div class='mb-4'>";
 								$html[] = "<div class='form-label'>Category</div>";
 								$html[] = $model->categorySelection((isset($model->page['uri']['category']) ? $model->page['uri']['category'] : null));
 							$html[] = "</div>";
@@ -140,7 +145,7 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<div class='form-label'>Features & Amenities</div>";
 							$html[] = "<div class='mb-4'>";
 								$html[] = "<div class='overflow-auto border p-3 bg-white' style='min-height:100px; max-height:200px;'>";
-									foreach(AMENITIES as $amenities) {
+									foreach($model->amenities() as $amenities) {
 										$checked = isset($model->page['uri']['amenities']) && in_array($amenities, $model->page['uri']['amenities']) ? "checked" : "";										
 										$html[] = "<label class='form-check cursor-pointer'>";
 											$html[] = "<input type='checkbox' class='form-check-input' name='amenities[]' value='$amenities' $checked />";

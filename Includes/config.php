@@ -3,6 +3,9 @@
 use Admin\Application\Controller\SettingsController;
 define("CONFIG", SettingsController::getInstance()->getConfig());
 
+/* define("SITE_NAME", CONFIG['site_name']); */
+define("SITE_NAME", "MLS");
+
 /** Set the Email Address to use by the system to send email notifications to users */
 define("EMAIL_ADDRESS_RESPONDER", CONFIG['email_address_responder']);
 
@@ -16,7 +19,6 @@ define("KYC", CONFIG['enable_kyc_verification']);
 define("VAT", CONFIG['show_vat']);
 
 define("PROPERTY_TAGS", CONFIG['property_tags']);
-define("AMENITIES", ["Swimming Pool", "Guard House", "Gym"]);
 
 define("PAYPAL_CLIENT_ID", CONFIG['paypal_credentials']['client_id']);
 define("PAYPAL_CLIENT_SECRET", CONFIG['paypal_credentials']['client_secret']);

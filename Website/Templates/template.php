@@ -14,8 +14,8 @@
 				<?php echo $content; ?>
 			</div>
 
-			<div class='main-footer p-4 pb-2 bg-blue text-white'>
-				<div class='container-xl'>
+			<div class='main-footer p-4 pb-5 bg-blue text-white mb-5 d-print-none'>
+				<div class='container-xl mb-5 pb-5'>
 					<div class='row'>
 						<div class='col-md-4 col-12'>
 							<h3>Main</h3>

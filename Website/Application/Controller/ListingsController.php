@@ -175,7 +175,9 @@ class ListingsController extends \Main\Controller {
 			$search[] = implode(" ", $_GET['amenities']);
 		}
 
+		$address = $this->getModel("Address");
 		$listings = $this->getModel("Listing");
+		$listings->address = $address->addressSelection();
 
 		$order = isset($_GET['order']) ? $_GET['order'] : " DESC";
 		
@@ -214,11 +216,30 @@ class ListingsController extends \Main\Controller {
 	function view($name) {
 
 		$this->doc->addScript(CDN."js/encryption.js");
+		$this->doc->addScript(CDN."js/amortization.js");
 
 		$this->doc->addScriptDeclaration("
 
 		    let privateKey;
 		    let publicKey;
+
+			$(document).ready(function() {
+				$('.barangay-selection').remove();
+
+				result = getAmortization();
+				$('.monthly_dp').html('&#8369; ' + result.monthly_payment_formated);
+			});
+
+			$(document).on('change', '#mortgage-downpayment-selection, #mortgage-interest-selection, #mortgage-years-selection', function() {
+				
+				result = getAmortization();
+				$('.monthly_dp').html('&#8369; ' + result.monthly_payment_formated);
+				
+			});
+
+			$(document).on('focus', '#name, #email', function() {
+				$('.hidden-fields').removeClass('d-none');
+			});
 
 			$(document).on('click', '.btn-description-toggle', function() {
 				$('.description').css('height', 'auto');
@@ -303,6 +324,32 @@ class ListingsController extends \Main\Controller {
 				$('.send-message-agent-container .property-agent-container').remove();
 			});
 
+			function getAmortization() {
+
+				let selling_price = parseInt($('#selling_price').val());
+				let dp_percent = parseInt($('#mortgage-downpayment-selection').val());
+				let dp = selling_price * (dp_percent / 100);
+
+				let loan_amount = selling_price - dp;
+				let interest_rate = parseFloat($('#mortgage-interest-selection').val());
+				let years = parseInt($('#mortgage-years-selection').val()) + 1;
+				let payments_per_year = 12;
+
+				console.log(loan_amount, interest_rate, years);
+
+				monthly_payment = pmt((interest_rate/100) / payments_per_year, payments_per_year * years, -loan_amount);
+				monthly_payment_formated = parseFloat(monthly_payment.toFixed(2)).toLocaleString();
+
+				schedule = computeSchedule(loan_amount, interest_rate, payments_per_year, years, monthly_payment);
+
+				return {
+					'monthly_payment': monthly_payment,
+					'monthly_payment_formated': monthly_payment_formated,
+					'schedule': schedule
+				};
+
+			}
+
 		");
 
 		$listing = $this->getModel("Listing");
@@ -330,19 +377,19 @@ class ListingsController extends \Main\Controller {
 			$images->column['listing_id'] = $data['listing_id'];
 			$data['images'] = $images->getList();
 
-			$title = $data['title'];
-			$description = "P".number_format($data['price'],0)." ".$data['type']." ".$data['category']." in ".$data['address']['municipality']." ".$data['address']['province']." with land area of ".$data['lot_area'];
-			$image = $data['thumb_img'];
+			$data['page_title'] = $data['title'];
+			$data['page_description'] = "P".number_format($data['price'],0)." ".$data['type']." ".$data['category']." in ".$data['address']['municipality']." ".$data['address']['province']." with land area of ".$data['lot_area'];
+			$data['page_image'] = $data['thumb_img'];
 
-			$this->doc->setTitle($title);
-			$this->doc->setDescription($description);
-			$this->doc->setMetaData("keywords", $description);
+			$this->doc->setTitle($data['page_title']);
+			$this->doc->setDescription($data['page_description']);
+			$this->doc->setMetaData("keywords", $data['page_description']);
 
 			$this->doc->setFacebookMetaData("og:url", url());
-			$this->doc->setFacebookMetaData("og:title", $title);
+			$this->doc->setFacebookMetaData("og:title", $data['page_title']);
 			$this->doc->setFacebookMetaData("og:type", "website");
-			$this->doc->setFacebookMetaData("og:image", $image);
-			$this->doc->setFacebookMetaData("og:description", $description);
+			$this->doc->setFacebookMetaData("og:image", $data['page_image']);
+			$this->doc->setFacebookMetaData("og:description", $data['page_description']);
 			$this->doc->setFacebookMetaData("og:updated_time", $data['last_modified']);
 			
 			$this->saveListingView($data);
