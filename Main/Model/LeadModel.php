@@ -48,7 +48,7 @@ class LeadModel extends \Main\Model {
 			return array(
 				"status" => 2,
 				"type" => "error",
-				"message" => "<h4 class='font-weight-bold'>Error</h4> * ".$v->listErrors('<br/> * ')
+				"message" => "* ".$v->listErrors('<br/> * ')
 			);
 		}else {
 

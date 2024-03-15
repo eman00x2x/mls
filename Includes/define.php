@@ -9,14 +9,18 @@ define("LIST_LIMIT",20);
 define("API","http://api.mls/");
 define("WEBADMIN","http://webadmin.mls/");
 define("CS","http://cs.mls/");
-define("WEBDOMAIN","http://mls");
+/* define("WEBDOMAIN","http://mls"); */
 
 define("ADMIN","http://admin.mls/");
 define("MANAGE","http://manage.mls/");
-define("CDN","http://cdn.mls/");
+/* define("CDN","http://cdn.mls/"); */
 
 define("ADMIN_ALIAS","");
-define("ALIAS","");
+define("MANAGE_ALIAS","");
+define("ALIAS","/mls/website");
+
+define("CDN","http://localhost/mls/cdn/");
+define("WEBDOMAIN","http://localhost/mls/website/");
 
 /* define("ADMIN","http://localhost/mls/admin/");
 define("MANAGE","http://localhost/mls/manage/");

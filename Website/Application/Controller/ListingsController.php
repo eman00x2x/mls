@@ -213,10 +213,97 @@ class ListingsController extends \Main\Controller {
 
 	function view($name) {
 
-		/* $this->doc->addScript(CDN."js/fslightbox/fslightbox.js");
+		$this->doc->addScript(CDN."js/encryption.js");
+
 		$this->doc->addScriptDeclaration("
-			
-		"); */
+
+		    let privateKey;
+		    let publicKey;
+
+			$(document).on('click', '.btn-description-toggle', function() {
+				$('.description').css('height', 'auto');
+				$('.description').removeClass('border-bottom');
+				$('.btn-description-toggle').remove();
+			});
+
+			$(document).on('click', '.btn-send-message', function() {
+
+				$('.error-message').addClass('d-none');
+				$('.security-message').addClass('d-none');
+				$('.success-message').addClass('d-none');
+
+				let name = $('#name').val();
+				let email = $('#email').val();
+				let mobile_no = $('#mobile_no').val();
+				let message = $('#message').val();
+				let input_security_code = $('#input_security_code').val();
+				let code = $('#input_security_code').data('code');
+
+				if(name == '' || email == '' || mobile_no == '' || message == '') {
+					$('.error-message').removeClass('d-none');
+				}else if(input_security_code != code) {
+					$('.security-message').removeClass('d-none');
+				}else {
+
+					let form = $('#inquiry-form');
+					let url = form.attr('action');
+					let formData = new FormData(document.querySelector('#inquiry-form'));
+					
+					setKeys()
+						.then( () => {
+							encrypt(JSON.stringify({
+								'name': formData.get('name'),
+								'message': formData.get('message'),
+								'mobile_no': formData.get('mobile_no'),
+								'email': formData.get('email')
+							}), publicKey, privateKey)
+								.then( data => {
+									formData.append('content', data.encrypted);
+									formData.append('iv', data.iv);
+
+									fetch(url, { 
+										method: 'POST', 
+										body: new URLSearchParams(formData).toString()
+									}).then(response => response.json())
+										.then(response => {
+											$('.success-message').removeClass('d-none');
+											form.trigger('reset');
+											$('#input_security_code').val('');
+											console.log(response);
+										});
+
+									
+								});
+						});
+
+				}
+				
+					
+			});
+
+			$(document).on('show.bs.offcanvas', '#offcanvasEnd', function() {
+				let form = $('.inquiry-form-container');
+				$(this).addClass('px-4 pt-4 pb-1');
+				
+				$(this).append(\"<div class='d-flex justify-content-end'><span class='btn-close text-reset' data-bs-dismiss='offcanvas' aria-label='Close'></span></div>\");
+				$(this).append(form.clone());
+				form.remove();
+
+				agent = $('.property-agent-container');
+				$('.send-message-agent-container').html(agent.clone());
+				$('.send-message-agent-container .property-agent-container').addClass('mb-3 pb-3 border-bottom');
+			});
+
+			$(document).on('hide.bs.offcanvas', '#offcanvasEnd', function() {
+				let form = $('#offcanvasEnd .inquiry-form-container');
+				$(this).removeClass('px-4 pt-4');
+				$('.sidebar .card-body').html(form.clone());
+				$(this).html('');
+
+				$('.send-message-agent-container .property-agent-container').remove();
+			});
+
+		");
 
 		$listing = $this->getModel("Listing");
 		$listing->column['name'] = $name;
@@ -225,6 +312,18 @@ class ListingsController extends \Main\Controller {
 		$data = $listing->getByName();
 
 		if($data) {
+
+			$account = $this->getModel("Account");
+			$account->column['account_id'] = $data['account_id'];
+			$data['account'] = $account->getById();
+
+			$this->doc->addScriptDeclaration("
+				async function setKeys() {
+					let keys = await generateKey();
+					privateKey = keys.privateKey;
+					publicKey = ".json_encode($data['account']['message_keys']['publicKey']).";
+				}
+			");
 
 			$images = $this->getModel("ListingImage");
 			$images->page['limit'] = 50;
@@ -299,41 +398,32 @@ class ListingsController extends \Main\Controller {
 
 		parse_str(file_get_contents('php://input'), $_POST);
 
-		$_POST['inquired_at'] = DATE_NOW;
+		$_POST['inquire_at'] = DATE_NOW;
+		$_POST['preferences'] = json_encode($_POST['preferences']);
 
-		$listing = $this->getModel("Listing");
-		$listing->column['listing_id'] = $listing_id;
-		$data = $listing->getById();
-
-		$_POST['name'] = Encrypt::getInstance()->encrypt($_POST['name']);
-		$_POST['email'] = Encrypt::getInstance()->encrypt($_POST['email']);
-		$_POST['mobile_no'] = Encrypt::getInstance()->encrypt($_POST['mobile_no']);
-		$_POST['message'] = Encrypt::getInstance()->encrypt( $_POST['message']);
-
-		$message = $this->getModel("Lead");
 		$leads = $this->getModel("Lead");
 		$response = $leads->saveNew($_POST);
 
 		$notification = $this->getModel("Notification");
-		$notification->saveNew(
-			array(
-				"account_id" => $data['account_id'],
-				"status" => 1,
-				"created_at" => DATE_NOW,
-				"content" => array(
-					"title" => "New Leads",
-					"message" => $_POST['name']." inquired about ".$data['title'],
-					"url" => MANAGE."leads/".$response['id']
-				)
-			)
-		);
+		$notification->saveNew([
+			"account_id" => $_POST['account_id'],
+			"status" => 1,
+			"created_at" => DATE_NOW,
+			"content" => [
+				"title" => "New Leads",
+				"message" => $_POST['name']." inquired about ".$_POST['title'],
+				"url" => MANAGE."leads/".$response['id']
+			]
+		]);
 
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 
-		return json_encode(array(
+		echo json_encode(array(
 			"status" => $response['status'],
 			"message" => getMsg()
 		));
+
+		exit();
 
 	}
 
