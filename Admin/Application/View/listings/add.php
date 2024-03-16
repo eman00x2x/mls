@@ -457,6 +457,15 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 									$html[] = "<div class='row justify-content-center py-3'>";
 										$html[] = "<div class='col-md-8 col-lg-8 col-12'>";
 
+											$html[] = "<div class='mb-5'>";		
+												$html[] = "<label class='form-label text-muted'>Youtube Url</label>";
+												$html[] = "<div class='input-group mb-3'>";
+													$html[] = "<span class='input-group-text' id='basic-addon1'><i class='ti ti-brand-youtube'></i></span>";
+													$html[] = "<input type='text' name='video' id='youtube_url' class='form-control' placeholder='https://www.youtube.com/watch?v=uiZVssPtPr4' aria-label='Youtube Url' aria-describedby='basic-addon1'>";
+												$html[] = "</div>";
+												$html[] = "<span class='form-hint'>Sample Youtube Url: <span class='p-2 border border-red fst-italic ms-2'>https://www.youtube.com/watch?v=uiZVssPtPr4</span></span>";
+											$html[] = "</div>";
+
 											$html[] = "<div class='mb-3'>";
 												$html[] = "<label class='form-label text-muted'>Property Status</label>";
 												$html[] = "<div class='input-icon '>";

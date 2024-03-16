@@ -88,6 +88,7 @@ class ListingsController extends \Main\Controller {
 		$filters[] = " display = 1";
 		$filters[] = " is_website = 1";
 
+		
 		if(isset($_GET['price']) && $_GET['price'] != "") {
 			$uri['price'] = $_GET['price'];
 
@@ -100,7 +101,6 @@ class ListingsController extends \Main\Controller {
 			}
 			
 		}
-
 
 		if(isset($_GET['lot_area']) && $_GET['lot_area'] != "") {
 			$uri['lot_area'] = $_GET['lot_area'];
@@ -166,8 +166,22 @@ class ListingsController extends \Main\Controller {
 
 		if(isset($_GET['address']) && $_GET['address'] != "") {
 			$uri['address'] = $_GET['address'];
-			$filters[] = " address LIKE '%".$_GET['address']."%'";
-			$search[] = $_GET['address'];
+
+			if($_GET['address']['region'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."'  ";
+				$search[] = $_GET['address']['region'];
+			}
+
+			if($_GET['address']['province'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['address']['province']."'  ";
+				$search[] = $_GET['address']['province'];
+			}
+
+			if($_GET['address']['municipality'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['address']['municipality']."'  ";
+				$search[] = $_GET['address']['municipality'];
+			}
+
 		}
 
 		if(isset($_GET['amenities']) && $_GET['amenities'] != "") {
@@ -177,7 +191,7 @@ class ListingsController extends \Main\Controller {
 
 		$address = $this->getModel("Address");
 		$listings = $this->getModel("Listing");
-		$listings->address = $address->addressSelection();
+		$listings->address = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));
 
 		$order = isset($_GET['order']) ? $_GET['order'] : " DESC";
 		
@@ -217,6 +231,8 @@ class ListingsController extends \Main\Controller {
 
 		$this->doc->addScript(CDN."js/encryption.js");
 		$this->doc->addScript(CDN."js/amortization.js");
+		$this->doc->addScript(CDN."tabler/dist/libs/plyr/dist/plyr.min.js");
+		$this->doc->addStylesheet(CDN."tabler/dist/libs/plyr/dist/plyr.css");
 
 		$this->doc->addScriptDeclaration("
 
@@ -231,10 +247,8 @@ class ListingsController extends \Main\Controller {
 			});
 
 			$(document).on('change', '#mortgage-downpayment-selection, #mortgage-interest-selection, #mortgage-years-selection', function() {
-				
 				result = getAmortization();
 				$('.monthly_dp').html('&#8369; ' + result.monthly_payment_formated);
-				
 			});
 
 			$(document).on('focus', '#name, #email', function() {
@@ -350,6 +364,10 @@ class ListingsController extends \Main\Controller {
 
 			}
 
+			document.addEventListener('DOMContentLoaded', function () {
+				window.Plyr && (new Plyr('#player-youtube'));
+			});
+
 		");
 
 		$listing = $this->getModel("Listing");
@@ -380,6 +398,9 @@ class ListingsController extends \Main\Controller {
 			$data['page_title'] = $data['title'];
 			$data['page_description'] = "P".number_format($data['price'],0)." ".$data['type']." ".$data['category']." in ".$data['address']['municipality']." ".$data['address']['province']." with land area of ".$data['lot_area'];
 			$data['page_image'] = $data['thumb_img'];
+
+			
+			$listing->related_results = $this->relatedProperties($data);
 
 			$this->doc->setTitle($data['page_title']);
 			$this->doc->setDescription($data['page_description']);
@@ -474,4 +495,106 @@ class ListingsController extends \Main\Controller {
 
 	}
 
+	function relatedProperties(array $listing_data = []) {
+
+		if($listing_data['offer'] == "buy") {
+			$filters[] = " offer = 'for sale'";
+			$uri['offer'] = "for sale";
+		}
+
+		if($listing_data['offer'] == "rent") {
+			$filters[] = " offer = 'for rent'";
+			$uri['offer'] = "for rent";
+		}
+
+		$filters[] = " listing_id != ".$listing_data['listing_id'];
+		$filters[] = " status = 1";
+		$filters[] = " display = 1";
+		$filters[] = " is_website = 1";
+
+		
+		if(isset($listing_data['price']) && $listing_data['price'] != "") {
+			$uri['price'] = $listing_data['price'];
+			$filters[] = "price >= ".$listing_data['price']."";
+		}
+
+		if(isset($listing_data['lot_area']) && $listing_data['lot_area'] != "") {
+			$uri['lot_area'] = $listing_data['lot_area'];
+			$filters[] = "lot_area >= ".$listing_data['lot_area']."";
+		}
+
+		if(isset($listing_data['floor_area']) && $listing_data['floor_area'] != "") {
+			$uri['floor_area'] = $listing_data['floor_area'];
+			$filters[] = "floor_area >= ".$listing_data['floor_area']."";
+		}
+
+		if(isset($listing_data['bedroom']) && $listing_data['bedroom'] != "") {
+			$uri['bedroom'] = $listing_data['bedroom'];
+			$filters[] = " bedroom >= ".$listing_data['bedroom'];
+			
+		}
+
+		if(isset($listing_data['bathroom']) && $listing_data['bathroom'] != "") {
+			$uri['bathroom'] = $listing_data['bathroom'];
+			$filters[] = " bathroom >= ".$listing_data['bathroom'];
+		}
+
+		if(isset($listing_data['type']) && $listing_data['type'] != "") {
+			$uri['type'] = $listing_data['type'];
+			$search[] = $listing_data['type'];
+		}
+
+		if(isset($listing_data['tags']) && $listing_data['tags'] != "") {
+			$uri['tags'] = $listing_data['tags'];
+			$search[] = implode(" ", $listing_data['tags']);
+		}
+
+		if(isset($listing_data['category']) && $listing_data['category'] != "") {
+			$uri['category'] = $listing_data['category'];
+			$filters[] = " category LIKE '%".$listing_data['category']."%'";
+			$search[] = $listing_data['category'];
+		}
+
+		if(isset($listing_data['address']) && $listing_data['address'] != "") {
+			$uri['address'] = $listing_data['address'];
+
+			if($listing_data['address']['region'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.region') = '".$listing_data['address']['region']."'  ";
+				$search[] = $listing_data['address']['region'];
+			}
+
+			if($listing_data['address']['province'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.province') = '".$listing_data['address']['province']."'  ";
+				$search[] = $listing_data['address']['province'];
+			}
+
+			if($listing_data['address']['municipality'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.municipality') = '".$listing_data['address']['municipality']."'  ";
+				$search[] = $listing_data['address']['municipality'];
+			}
+
+		}
+
+		if(isset($listing_data['amenities']) && $listing_data['amenities'] != "") {
+			$uri['amenities'] = $listing_data['amenities'];
+			$search[] = $listing_data['amenities'];
+		}
+
+		$listings = $this->getModel("Listing");
+
+		$order = isset($_GET['order']) ? $_GET['order'] : " DESC";
+		
+		$listings->select("
+			listing_id, account_id, is_website, offer, foreclosed, name, price, floor_area, lot_area, unit_area, bedroom, bathroom, parking, thumb_img, last_modified, status, display, type, title, tags, long_desc, category, address, amenities,
+			MATCH( type, title, tags, long_desc, category, address, amenities )
+			AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS score
+		")->orderby(" score DESC ");
+		
+		$listings->where((isset($filters) ? implode(" AND ",$filters) : null));
+		$listings->page['limit'] = 10;
+		$data = $listings->getList();
+
+		return $data;
+
+	}
 }

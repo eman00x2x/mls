@@ -114,6 +114,13 @@ $html[] = "<div class='page-body mb-0'>";
 				$html[] = "<div class='col-md-8'>";
 					$html[] = "<div class='mt-2 mb-4'>";
 
+					    $video_id = str_replace("https://www.youtube.com/watch?v=", "", $data['video']);
+
+						$html[] = "<div class='video mb-4'>";
+							$html[] = "<h3><i class='ti ti-brand-youtube me-1'></i> Video</h3>";
+							$html[] = "<div id='player-youtube' data-plyr-provider='youtube' data-plyr-embed-id='$video_id'></div>";
+						$html[] = "</div>";
+
 						$html[] = "<div class='mb-2 description border-bottom' style='height: 300px; overflow: hidden;'>";
 							$html[] = "<h3><i class='ti ti-file-description me-1'></i> Description</h3>";
 							$html[] = $data['long_desc'];
@@ -379,6 +386,76 @@ $html[] = "<div class='page-body mb-0'>";
 
 		$html[] = "</div>";
 	$html[] = "</div>";
+	
+	$html[] = "<div class='py-4'>";
+		$html[] = "<div class='container-xl'>";
+
+			$html[] = "<div class='row gap-2'>";
+				$html[] = "<div class='col-md-8'>";
+			
+					if($model->related_results) {
+						
+						$c = 0;
+						for($i=0; $i<count($model->related_results); $i++) { $c++;
+							$html[] = "<div class='card row_listings_".$model->related_results[$i]['listing_id']."'>";
+								$html[] = "<div class='row g-5'>";
+									$html[] = "<div class='col-md-3 col-sm-auto'>";
+										$html[] = "<div class='card-body'>";
+											$html[] = "<a href='".url("ListingsController@view", ["name" => $model->related_results[$i]['name']])."'>";
+												$html[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$model->related_results[$i]['thumb_img'].")'></div>";
+											$html[] = "</a>";
+										$html[] = "</div>";
+									$html[] = "</div>";
+									$html[] = "<div class='col-md-9 col-sm-auto'>";
+										$html[] = "<div class='card-body'>";
+											$html[] = "<div class='row'>";
+												$html[] = "<div class='col-md-8 col-8'>";
+													$html[] = "<a href='".url("ListingsController@view", ["name" => $model->related_results[$i]['name']])."' style='text-decoration: none;' class='text-dark'><h3 class='mb-0'>".$model->related_results[$i]['title']." <small class='d-block fw-normal'><i class='ti ti-map-pin me-1'></i> ".$model->related_results[$i]['address']['municipality'].", ".$model->related_results[$i]['address']['province']."</small></h3></a>";
+												$html[] = "</div>";
+												
+												$html[] = "<div class='col-md-4 col-4 text-end'>";
+													$html[] = "<span class='fs-18 text-green fw-bold'><i class='ti ti-tag'></i> &#8369;".number_format($model->related_results[$i]['price'],0)."</span>";
+												$html[] = "</div>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='row'>";
+												$html[] = "<div class='col-md'>";
+													$html[] = "<div class='mt-3 list list-inline mb-0 text-secondary '>";
+														if($model->related_results[$i]['bedroom'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Bedroom</span> <i class='ti ti-bed me-1'></i> ".$model->related_results[$i]['bedroom']."</div>"; }
+														if($model->related_results[$i]['bathroom'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Bathroom</span> <i class='ti ti-bath me-1'></i> ".$model->related_results[$i]['bathroom']."</div>"; }
+														if($model->related_results[$i]['floor_area'] > 0) { $html[] = "<div class='list-inline-item me-4'>	<span class='d-block mb-1 fs-10 text-muted'>Floor Area</span> <i class='ti ti-ruler me-1'></i> ".number_format($model->related_results[$i]['floor_area'],0)." sqm</div>"; }
+														if($model->related_results[$i]['lot_area'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Land Area</span> <i class='ti ti-maximize me-1'></i> ".number_format($model->related_results[$i]['lot_area'],0)." sqm</div>"; }
+														if($model->related_results[$i]['parking'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Garage</span> <i class='ti ti-car-garage me-1'></i> ".$model->related_results[$i]['parking']."</div>"; }
+													$html[] = "</div>";
+												$html[] = "</div>";
+
+												if($model->related_results[$i]['tags']) {
+													$html[] = "<div class='col-md-auto'>";
+														$html[] = "<div class='mt-3 badges'>";
+															foreach($model->related_results[$i]['tags'] as $tag) {
+																$html[] = "<span class='badge badge-outline text-secondary fw-normal badge-pill mx-1'>$tag</span>";
+															}
+														$html[] = "</div>";
+													$html[] = "</div>";
+												}
+											$html[] = "</div>";
+
+										$html[] = "</div>";
+									$html[] = "</div>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+						}
+
+					}else {
+						$html[] = "<p>No related properties.</p>";
+					}
+
+				$html[] = "</div>";
+			$html[] = "</div>";
+
+		$html[] = "</div>";										
+	$html[] = "</div>";										
+
 $html[] = "</div>";
 
 $html[] = "<div class='bottom-wrap d-sm-block d-md-none d-print-none'>";
