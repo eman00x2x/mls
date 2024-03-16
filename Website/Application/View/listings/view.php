@@ -7,37 +7,62 @@ $html[] = "<div class='page-body mb-0'>";
 			$html[] = "<div class='row gap-2 justify-content-center'>";
 				$html[] = "<div class='col-md-5 col-12'>";
 
-					$html[] = "<div class=''>";
-						$html[] = "<a data-fslightbox data-type='image' href='".$data['thumb_img']."'>";
+					$html[] = "<div id='photos'>";
+
+						if($data['thumb_img'] != "") {
 							$html[] = "<div class='mb-2 img-responsive rounded border' style='position: relative; height: 300px; background-image: url(".$data['thumb_img'].")'>";
 								$html[] = "<span style='position: absolute; top:-1px; left: -1px;' class='fw-bold bg-white text-dark p-2'><i class='ti ti-photo'></i> +".count($data['images'])."</span>";
+								$html[] = "<a data-fslightbox data-type='image' href='".$data['thumb_img']."' class='stretched-link'></a>";
 							$html[] = "</div>";
-						$html[] = "</a>";
-
+						}else {
+							$html[] = "<div class='mb-2 img-responsive rounded border' style='position: relative; height: 300px; background-color:#FFF; background-image: url(".CDN."images/item_default.jpg); background-size: auto;'>";
+							$html[] = "</div>";
+						}
+						
 						$html[] = "<div class='mb-3'>";
 							if($data['images']) {
 								$html[] = "<div class='d-flex gap-2 justify-content-center overflow-auto'>";
-								for($i=0; $i<count($data['images']); $i++) {
-									if($i <= 6) {
-										if($data['thumb_img'] != $data['images'][$i]['url']) {
-											$html[] = "<a data-fslightbox data-type='image' href='".$data['images'][$i]['url']."'>";
-												$html[] = "<div class='avatar avatar-xl' style='position:relative; background-image: url(".$data['images'][$i]['url'].")'>";
-													
-													if($i == 5) {
-														$html[] = "<div class='overlay d-md-none d-sm-block' style='z-index: 1; position:absolute; background-color: rgba(0, 0, 0, 0.5); height: 100%; width: 100%;'>";
-															$html[] = "<span class='text-white d-block mt-4' style='z-index: 2;'>+".(count($data['images']) - 5)."</span>";
-														$html[] = "</div>";
-													}
-												
-													if($i == 6) {
-														$html[] = "<div class='overlay d-none d-md-block' style='z-index: 1; position:absolute; background-color: rgba(0, 0, 0, 0.5); height: 100%; width: 100%;'>";
-															$html[] = "<span class='text-white d-block mt-4' style='z-index: 2;'>+".(count($data['images']) - 6)."</span>";
-														$html[] = "</div>";
-													}
 
-												$html[] = "</div>";
-											$html[] = "</a>";
+								$limit = 6;
+								if($data['video'] != "") {
+									$video_id = str_replace("https://www.youtube.com/watch?v=", "", $data['video']);
+									$html[] = "<div><a data-fslightbox href='".$data['video']."' id='youtube_video'>";
+										$html[] = "<div class='avatar avatar-xl p-2 bg-white-lt' style='background-image: url(http://img.youtube.com/vi/$video_id/sddefault.jpg)'><i class='ti ti-brand-youtube me-1 fs-36'></i></div>";
+									$html[] = "</a></div>";
+									$limit = 5;
+								}
+
+								$total_image = count($data['images']);
+
+								for($i=0; $i<$total_image; $i++) {
+									if($i < $limit) { $hide = "";
+
+										if($i > ($limit - 3)) {
+											$hide = "d-none d-md-block";
 										}
+										
+										$html[] = "<div class='$hide'><a data-fslightbox data-type='image' href='".$data['images'][$i]['url']."'>";
+											$html[] = "<div class='avatar avatar-xl' style='position:relative; background-image: url(".$data['images'][$i]['url'].")'>";
+												
+												if($i == ($limit - 3)) {
+													if(($total_image - 3) > $i) {
+														$html[] = "<div class='overlay d-md-none d-sm-block' style='z-index: 1; position:absolute; background-color: rgba(0, 0, 0, 0.5); height: 100%; width: 100%;'>";
+															$html[] = "<span class='text-white d-block mt-4' style='z-index: 2;'>+".($total_image - ($limit - 1))."</span>";
+														$html[] = "</div>";
+													}
+												}
+											
+												if($i == ($limit - 1)) {
+													if(($total_image - 1) > $i) {
+														$html[] = "<div class='overlay d-none d-md-block' style='z-index: 1; position:absolute; background-color: rgba(0, 0, 0, 0.5); height: 100%; width: 100%;'>";
+															$html[] = "<span class='text-white d-block mt-4' style='z-index: 2;'>+".($total_image - $limit)."</span>";
+														$html[] = "</div>";
+													}
+												}
+
+											$html[] = "</div>";
+										$html[] = "</a></div>";
+										
 									}else {
 										$html[] = "<a data-fslightbox data-type='image' class='d-none' href='".$data['images'][$i]['url']."'></a>";
 									}
@@ -107,29 +132,34 @@ $html[] = "<div class='page-body mb-0'>";
 
 	$html[] = "</div>";
 
-	$html[] = "<div class='bg-white pt-5 border-top mt-4 px-2  pb-4'>";
+	$html[] = "<div class='bg-white pt-3 border-top mt-4 px-2 pb-4'>";
 		$html[] = "<div class='container-xl'>";
 			
 			$html[] = "<div class='row'>";
 				$html[] = "<div class='col-md-8'>";
-					$html[] = "<div class='mt-2 mb-4'>";
 
-					    $video_id = str_replace("https://www.youtube.com/watch?v=", "", $data['video']);
-
-						$html[] = "<div class='video mb-4'>";
-							$html[] = "<h3><i class='ti ti-brand-youtube me-1'></i> Video</h3>";
-							$html[] = "<div id='player-youtube' data-plyr-provider='youtube' data-plyr-embed-id='$video_id'></div>";
+					$html[] = "<div class='sticky-top bg-white py-2 px-0 mx-0 mb-4 border-bottom'>";
+						$html[] = "<div class='d-flex overflow-auto'>";
+							if($data['thumb_img'] != "" && $data['images']) { $html[] = "<a class='btn btn-outline-secondary border-0 d-block' href='#photos'><i class='ti ti-photo me-1'></i> Photos</a>"; }
+							if($data['video'] != "") { $html[] = "<a class='btn btn-outline-secondary border-0 d-block' href='javascript:document.querySelector(\"#youtube_video\").click()'><i class='ti ti-brand-youtube me-1'></i> Video</a>"; }
+							$html[] = "<a class='btn btn-outline-secondary border-0 d-block' href='#description'><i class='ti ti-file-description me-1'></i> Description</a>";
+							$html[] = "<a class='btn btn-outline-secondary border-0 d-block' href='#amenities'><i class='ti ti-home-shield me-1'></i> Amenities</a>";
+							$html[] = "<a class='btn btn-outline-secondary border-0 d-block' href='#payment_details'><i class='ti ti-wallet me-1'></i> Payment Details</a>";
+							$html[] = "<a class='btn btn-outline-secondary border-0 d-block' href='#mortgage_calculator'><i class='ti ti-calculator me-1'></i> Mortgage Claculator</a>";
 						$html[] = "</div>";
+					$html[] = "</div>";
 
-						$html[] = "<div class='mb-2 description border-bottom' style='height: 300px; overflow: hidden;'>";
-							$html[] = "<h3><i class='ti ti-file-description me-1'></i> Description</h3>";
+					$html[] = "<div class=' mb-4'>";
+
+						$html[] = "<div class='mb-2 description ' style='max-height: 300px; overflow: hidden;'>";
+							$html[] = "<h3 id='description'><i class='ti ti-file-description me-1'></i> Description</h3>";
 							$html[] = $data['long_desc'];
 						$html[] = "</div>";
-						$html[] = "<span class='btn btn-description-toggle'>Show more...</span>";
+						$html[] = "<span class='btn btn-description-toggle d-none'>Show more...</span>";
 
 						/** AMENITIES */
 						$html[] = "<div class='amenities mt-5'>";
-							$html[] = "<h3><i class='ti ti-home-shield me-1'></i> Amenities</h3>";
+							$html[] = "<h3 id='amenities'><i class='ti ti-home-shield me-1'></i> Amenities</h3>";
 							$html[] = "<ul class='m-0 p-0' style='list-style: none; columns: 2; -webkit-columns: 2; -moz-columns: 2;'>";
 								$amenities = explode(",",$data['amenities']);
 								for($i=0; $i<count($amenities); $i++) {
@@ -143,7 +173,7 @@ $html[] = "<div class='page-body mb-0'>";
 
 						/** PAYMENT DETAILS */
 						$html[] = "<div class='price mt-5'>";
-							$html[] = "<h3><i class='ti ti-wallet me-1'></i> Payment Details</h3>";
+							$html[] = "<h3 id='payment_details'><i class='ti ti-wallet me-1'></i> Payment Details</h3>";
 							$html[] = "<table class='table'>";
 							$html[] = "<tr>";
 								$html[] = "<td class='w-50'>Selling Price</td>";
@@ -154,35 +184,16 @@ $html[] = "<div class='page-body mb-0'>";
 								$html[] = "<td>&#8369;".number_format($data['reservation'],0)."</td>";
 							$html[] = "</tr>";
 
-							/* $html[] = "<tr>";
-								$html[] = "<td>Option Money Duration</td>";
-								$html[] = "<td>".$data['payment_details']['option_money_duration']." days</td>";
-							$html[] = "</tr>";
-
-							$html[] = "<tr>";
-								$html[] = "<td>Mode of Payment</td>";
-								$html[] = "<td>".$data['payment_details']['payment_mode']."</td>";
-							$html[] = "</tr>";
-
-							$html[] = "<tr>";
-								$html[] = "<td>Allocation of Taxes</td>";
-								$html[] = "<td>".$data['payment_details']['tax_allocation']."</td>";
-							$html[] = "</tr>"; */
-
 							$html[] = "<tr>";
 								$html[] = "<td>Eligible for Bank Loan</td>";
-								$html[] = "<td>".($data['payment_details']['bank_loan'] == 1 ? "Yes" : "No")."</td>";
+								$html[] = "<td>".((isset($data['payment_details']['bank_loan']) ? $data['payment_details']['bank_loan'] : 0) == 1 ? "Yes" : "No")."</td>";
 							$html[] = "</tr>";
 
 							$html[] = "<tr>";
 								$html[] = "<td>Eligible for Pag-Ibig Housing Loan</td>";
-								$html[] = "<td>".($data['payment_details']['pagibig_loan'] == 1 ? "Yes" : "No")."</td>";
+								$html[] = "<td>".((isset($data['payment_details']['pagibig_loan']) ? $data['payment_details']['pagibig_loan'] : 0) == 1 ? "Yes" : "No")."</td>";
 							$html[] = "</tr>";
 
-							/* $html[] = "<tr>";
-								$html[] = "<td>Assume Balance</td>";
-								$html[] = "<td>".($data['payment_details']['assume_balance'] == 1 ? "Yes" : "No")."</td>";
-							$html[] = "</tr>"; */
 							$html[] = "</table>";
 							
 						$html[] = "</div>";
@@ -193,7 +204,7 @@ $html[] = "<div class='page-body mb-0'>";
 						$html[] = "<div class='mortgage-calculator mt-5 p-3 bg-cyan-lt border'>";
 							
 							$html[] = "<input type='hidden' id='selling_price' value='".$data['price']."' />";
-							$html[] = "<h3 class='mb-2 text-dark'><i class='ti ti-calculator'></i> Mortgage Calculator</h3>";
+							$html[] = "<h3 id='mortgage_calculator' class='mb-2 text-dark'><i class='ti ti-calculator'></i> Mortgage Calculator</h3>";
 							$html[] = "<p class='mb-2 text-dark'>With the current price of <b>&#8369;".number_format($data['price'],0)."</b> and mortgage rates as stated below, expect to have a monthly payment of:</p>";
 							
 							$html[] = "<div class='p-4 border bg-white'>";
@@ -378,8 +389,16 @@ $html[] = "<div class='page-body mb-0'>";
 								$html[] = "</div>";
 
 							$html[] = "</div>";
-
 						$html[] = "</div>";
+
+						/*** ADS CONTAINER */
+						$html[] = "<div class='card bg-dark-lt mt-2 rounded-0  d-print-none' style='height:250px;'>";
+							$html[] = "<div class='card-body'>";
+								$html[] = "<span class='d-block text-center text-muted'>ADS CONTAINER</span>";
+							$html[] = "</div>";
+						$html[] = "</div>";
+						/*** END ADS CONTAINER */
+
 					$html[] = "</div>";
 				$html[] = "</div>";
 			$html[] = "</div>";
@@ -390,65 +409,21 @@ $html[] = "<div class='page-body mb-0'>";
 	$html[] = "<div class='py-4'>";
 		$html[] = "<div class='container-xl'>";
 
-			$html[] = "<div class='row gap-2'>";
+			$html[] = "<div class='row'>";
 				$html[] = "<div class='col-md-8'>";
-			
-					if($model->related_results) {
-						
-						$c = 0;
-						for($i=0; $i<count($model->related_results); $i++) { $c++;
-							$html[] = "<div class='card row_listings_".$model->related_results[$i]['listing_id']."'>";
-								$html[] = "<div class='row g-5'>";
-									$html[] = "<div class='col-md-3 col-sm-auto'>";
-										$html[] = "<div class='card-body'>";
-											$html[] = "<a href='".url("ListingsController@view", ["name" => $model->related_results[$i]['name']])."'>";
-												$html[] = "<div class='avatar avatar-xxxl' style='background-image: url(".$model->related_results[$i]['thumb_img'].")'></div>";
-											$html[] = "</a>";
-										$html[] = "</div>";
-									$html[] = "</div>";
-									$html[] = "<div class='col-md-9 col-sm-auto'>";
-										$html[] = "<div class='card-body'>";
-											$html[] = "<div class='row'>";
-												$html[] = "<div class='col-md-8 col-8'>";
-													$html[] = "<a href='".url("ListingsController@view", ["name" => $model->related_results[$i]['name']])."' style='text-decoration: none;' class='text-dark'><h3 class='mb-0'>".$model->related_results[$i]['title']." <small class='d-block fw-normal'><i class='ti ti-map-pin me-1'></i> ".$model->related_results[$i]['address']['municipality'].", ".$model->related_results[$i]['address']['province']."</small></h3></a>";
-												$html[] = "</div>";
-												
-												$html[] = "<div class='col-md-4 col-4 text-end'>";
-													$html[] = "<span class='fs-18 text-green fw-bold'><i class='ti ti-tag'></i> &#8369;".number_format($model->related_results[$i]['price'],0)."</span>";
-												$html[] = "</div>";
-											$html[] = "</div>";
 
-											$html[] = "<div class='row'>";
-												$html[] = "<div class='col-md'>";
-													$html[] = "<div class='mt-3 list list-inline mb-0 text-secondary '>";
-														if($model->related_results[$i]['bedroom'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Bedroom</span> <i class='ti ti-bed me-1'></i> ".$model->related_results[$i]['bedroom']."</div>"; }
-														if($model->related_results[$i]['bathroom'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Bathroom</span> <i class='ti ti-bath me-1'></i> ".$model->related_results[$i]['bathroom']."</div>"; }
-														if($model->related_results[$i]['floor_area'] > 0) { $html[] = "<div class='list-inline-item me-4'>	<span class='d-block mb-1 fs-10 text-muted'>Floor Area</span> <i class='ti ti-ruler me-1'></i> ".number_format($model->related_results[$i]['floor_area'],0)." sqm</div>"; }
-														if($model->related_results[$i]['lot_area'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Land Area</span> <i class='ti ti-maximize me-1'></i> ".number_format($model->related_results[$i]['lot_area'],0)." sqm</div>"; }
-														if($model->related_results[$i]['parking'] > 0) { $html[] = "<div class='list-inline-item me-4'>		<span class='d-block mb-1 fs-10 text-muted'>Garage</span> <i class='ti ti-car-garage me-1'></i> ".$model->related_results[$i]['parking']."</div>"; }
-													$html[] = "</div>";
-												$html[] = "</div>";
+					$html[] = "<div class='related-properties-container'></div>";
 
-												if($model->related_results[$i]['tags']) {
-													$html[] = "<div class='col-md-auto'>";
-														$html[] = "<div class='mt-3 badges'>";
-															foreach($model->related_results[$i]['tags'] as $tag) {
-																$html[] = "<span class='badge badge-outline text-secondary fw-normal badge-pill mx-1'>$tag</span>";
-															}
-														$html[] = "</div>";
-													$html[] = "</div>";
-												}
-											$html[] = "</div>";
-
-										$html[] = "</div>";
-									$html[] = "</div>";
-								$html[] = "</div>";
-							$html[] = "</div>";
-						}
-
-					}else {
-						$html[] = "<p>No related properties.</p>";
-					}
+				$html[] = "</div>";
+				$html[] = "<div class='col-md-4'>";
+					
+					/*** ADS CONTAINER */
+					$html[] = "<div class='card bg-dark-lt rounded-0 d-print-none' style='height:350px;'>";
+						$html[] = "<div class='card-body'>";
+							$html[] = "<span class='d-block text-center text-muted'>ADS CONTAINER</span>";
+						$html[] = "</div>";
+					$html[] = "</div>";
+					/*** END ADS CONTAINER */
 
 				$html[] = "</div>";
 			$html[] = "</div>";

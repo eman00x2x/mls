@@ -310,7 +310,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<label class='form-label text-muted'>Option Money Days Durations</label>";
 												$html[] = "<select name='payment_details[option_money_duration]' id='option_money_duration' class='form-select'>";
 												    foreach(range(15, 90, 15) as $duration) {
-														$sel = $duration == $data['listing']['payment_details']['option_money_duration']? "selected" : "";
+														$sel = $duration == (isset($data['listing']['payment_details']['option_money_duration']) ? $data['listing']['payment_details']['option_money_duration'] : "") ? "selected" : "";
 														$html[] = "<option value='$duration' $sel>$duration days</option>";
 													}
 												$html[] = "</select>";
@@ -321,7 +321,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<label class='form-label text-muted'>Mode of Payment</label>";
 												$html[] = "<select name='payment_details[payment_mode]' id='payment_mode' class='form-select'>";
 												    foreach(["Installment", "Cash"] as $mode) {
-														$sel = $mode == $data['listing']['payment_details']['payment_mode']? "selected" : "";
+														$sel = $mode == (isset($data['listing']['payment_details']['payment_mode']) ? $data['listing']['payment_details']['payment_mode'] : "") ? "selected" : "";
 														$html[] = "<option value='$mode' $sel>$mode</option>";
 													}
 												$html[] = "</select>";
@@ -332,7 +332,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<label class='form-label text-muted'>Allocation of Taxes</label>";
 												$html[] = "<select name='payment_details[tax_allocation]' id='tax_allocation' class='form-select'>";
 													foreach(["Seller Agrees to Pay Capital Gains Tax and Buyer Pays Transfer Tax", "Buyer Pays Capital Gains Tax, Transfer Tax and Broker Commission"] as $schedule) {
-														$sel = $schedule == $data['listing']['payment_details']['tax_allocation'] ? "selected" : "";
+														$sel = $schedule == (isset($data['listing']['payment_details']['tax_allocation']) ? $data['listing']['payment_details']['tax_allocation'] : "") ? "selected" : "";
 														$html[] = "<option value='$schedule' $sel>$schedule</option>";
 													}
 												$html[] = "</select>";
@@ -341,21 +341,21 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 											$html[] = "<div class='form-group mb-4'>";
 												$html[] = "<label class='form-check form-switch cursor-pointer'>";
-													$html[] = "<input class='form-check-input' type='checkbox' name='payment_details[bank_loan]' value='1' id='bank_loan' ".($data['listing']['payment_details']['bank_loan'] == 1 ? "checked" : "")." />";
+													$html[] = "<input class='form-check-input' type='checkbox' name='payment_details[bank_loan]' value='1' id='bank_loan' ".((isset($data['listing']['payment_details']['bank_loan']) ? $data['listing']['payment_details']['bank_loan'] : 0) == 1 ? "checked" : "")." />";
 													$html[] = "<span class='form-check-label' for='bank_loan'>Is the property eligible for a Bank loan?</span>";
 												$html[] = "</label>";
 											$html[] = "</div>";
 
 											$html[] = "<div class='form-group mb-4'>";
 												$html[] = "<label class='form-check form-switch cursor-pointer'>";
-													$html[] = "<input class='form-check-input' type='checkbox' name='payment_details[pagibig_loan]' value='1' id='pagibig_loan' ".($data['listing']['payment_details']['pagibig_loan'] == 1 ? "checked" : "")." />";
+													$html[] = "<input class='form-check-input' type='checkbox' name='payment_details[pagibig_loan]' value='1' id='pagibig_loan' ".((isset($data['listing']['payment_details']['pagibig_loan']) ? $data['listing']['payment_details']['pagibig_loan'] : 0) == 1 ? "checked" : "")." />";
 													$html[] = "<span class='form-check-label' for='pagibig_loan'>Is the property eligible for a Pag-IBIG housing loan?</span>";
 												$html[] = "</label>";
 											$html[] = "</div>";
 
 											$html[] = "<div class='form-group mb-4'>";
 												$html[] = "<label class='form-check form-switch cursor-pointer'>";
-													$html[] = "<input class='form-check-input' type='checkbox' name='payment_details[assume_balance]' value='1' id='assume_balance' ".($data['listing']['payment_details']['assume_balance'] == 1 ? "checked" : "")." />";
+													$html[] = "<input class='form-check-input' type='checkbox' name='payment_details[assume_balance]' value='1' id='assume_balance' ".((isset($data['listing']['payment_details']['assume_balance']) ? $data['listing']['payment_details']['assume_balance'] : 0) == 1 ? "checked" : "")." />";
 													$html[] = "<span class='form-check-label' for='assume_balance'>Will the buyer assume the remaining loan balance? \"Assume Balance\"</span>";
 													$html[] = "<span class='form-hint'>Buyer takes over the seller's existing mortgage instead of getting a new one</span>";
 												$html[] = "</label>";

@@ -25,6 +25,7 @@ Router::get( ALIAS . '/rent/{category}', 'ListingsController@rent')->where([  'c
 Router::get( ALIAS . '/rent/{category}/{type}', 'ListingsController@rent')->where([  'category' => '[\w\-]+', 'type' => '[\w\-]+' ]);
 
 Router::get( ALIAS . '/p-{name}', 'ListingsController@view')->where([ 'name' => '[\w\-]+' ]);
+Router::get( ALIAS . '/related-properties', 'ListingsController@relatedProperties');
 
 Router::post(ALIAS . '/send-message-{id}', 'ListingsController@sendMessage')->where([ 'id' => '[0-9]+' ]);
 
