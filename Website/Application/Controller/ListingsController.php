@@ -375,7 +375,7 @@ class ListingsController extends \Main\Controller {
 			$images = $this->getModel("ListingImage");
 			$images->page['limit'] = 50;
 			$images->column['listing_id'] = $data['listing_id'];
-			$data['images'] = $images->getList();
+			$data['images'] = $images->getByListingId();
 
 			$data['page_title'] = $data['title'];
 			$data['page_description'] = "P".number_format($data['price'],0)." ".$data['type']." ".$data['category']." in ".$data['address']['municipality']." ".$data['address']['province']." with land area of ".$data['lot_area'];

@@ -291,21 +291,78 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 											$html[] = "<div class='form-group mb-3'>";
 												$html[] = "<label class='form-label text-muted'>Price</label>";
-												$html[] = "<div class='input-icon mb-3'>";
+												$html[] = "<div class='input-icon mb-1'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-currency-peso'></i></span>";
 													$html[] = "<input type='number' name='price' id='price' value='".$data['listing']['price']."' step='0.05' class='form-control' placeholder='Price' />";
 												$html[] = "</div>";
 											$html[] = "</div>";
-											
-											$html[] = "<div class='form-group mb-3'>";
-												$html[] = "<label class='form-label text-muted'>Reservation</label>";
-												$html[] = "<div class='input-icon mb-3'>";
+
+											$html[] = "<div class='form-group mb-4'>";
+												$html[] = "<label class='form-label text-muted'>Reservation Fee / Option Money</label>";
+												$html[] = "<div class='input-icon mb-1'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-currency-peso'></i></span>";
 													$html[] = "<input type='number' name='reservation' id='reservation' value='".$data['listing']['reservation']."' step='0.05' class='form-control' placeholder='Reservation' />";
 												$html[] = "</div>";
+												$html[] = "<span class='form-hint'>Option money is a payment made by a buyer to secure the exclusive right to purchase a property within a set timeframe</span>";
 											$html[] = "</div>";
+
+											$html[] = "<div class='form-group mb-4'>";
+												$html[] = "<label class='form-label text-muted'>Option Money Days Durations</label>";
+												$html[] = "<select name='payment_details[option_money_duration]' id='option_money_duration' class='form-select'>";
+												    foreach(range(15, 90, 15) as $duration) {
+														$sel = $duration == $data['listing']['payment_details']['option_money_duration']? "selected" : "";
+														$html[] = "<option value='$duration' $sel>$duration days</option>";
+													}
+												$html[] = "</select>";
+												$html[] = "<span class='form-hint'>Duration of exclusive right to purchase</span>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='form-group mb-4'>";
+												$html[] = "<label class='form-label text-muted'>Mode of Payment</label>";
+												$html[] = "<select name='payment_details[payment_mode]' id='payment_mode' class='form-select'>";
+												    foreach(["Installment", "Cash"] as $mode) {
+														$sel = $mode == $data['listing']['payment_details']['payment_mode']? "selected" : "";
+														$html[] = "<option value='$mode' $sel>$mode</option>";
+													}
+												$html[] = "</select>";
+												$html[] = "<span class='form-hint'>The mode of payment refers to the method or manner in which a financial transaction is completed, such as cash or installment payment.</span>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='form-group mb-5'>";
+												$html[] = "<label class='form-label text-muted'>Allocation of Taxes</label>";
+												$html[] = "<select name='payment_details[tax_allocation]' id='tax_allocation' class='form-select'>";
+													foreach(["Seller Agrees to Pay Capital Gains Tax and Buyer Pays Transfer Tax", "Buyer Pays Capital Gains Tax, Transfer Tax and Broker Commission"] as $schedule) {
+														$sel = $schedule == $data['listing']['payment_details']['tax_allocation'] ? "selected" : "";
+														$html[] = "<option value='$schedule' $sel>$schedule</option>";
+													}
+												$html[] = "</select>";
+												$html[] = "<span class='form-hint'>Agreement between the seller and the buyer regarding who is responsible for paying which taxes.</span>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='form-group mb-4'>";
+												$html[] = "<label class='form-check form-switch cursor-pointer'>";
+													$html[] = "<input class='form-check-input' type='checkbox' name='payment_details[bank_loan]' value='1' id='bank_loan' ".($data['listing']['payment_details']['bank_loan'] == 1 ? "checked" : "")." />";
+													$html[] = "<span class='form-check-label' for='bank_loan'>Is the property eligible for a Bank loan?</span>";
+												$html[] = "</label>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='form-group mb-4'>";
+												$html[] = "<label class='form-check form-switch cursor-pointer'>";
+													$html[] = "<input class='form-check-input' type='checkbox' name='payment_details[pagibig_loan]' value='1' id='pagibig_loan' ".($data['listing']['payment_details']['pagibig_loan'] == 1 ? "checked" : "")." />";
+													$html[] = "<span class='form-check-label' for='pagibig_loan'>Is the property eligible for a Pag-IBIG housing loan?</span>";
+												$html[] = "</label>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='form-group mb-4'>";
+												$html[] = "<label class='form-check form-switch cursor-pointer'>";
+													$html[] = "<input class='form-check-input' type='checkbox' name='payment_details[assume_balance]' value='1' id='assume_balance' ".($data['listing']['payment_details']['assume_balance'] == 1 ? "checked" : "")." />";
+													$html[] = "<span class='form-check-label' for='assume_balance'>Will the buyer assume the remaining loan balance? \"Assume Balance\"</span>";
+													$html[] = "<span class='form-hint'>Buyer takes over the seller's existing mortgage instead of getting a new one</span>";
+												$html[] = "</label>";
+											$html[] = "</div>";
+																	
 											
-											$html[] = "<div class='form-group mb-3'>";
+											/* $html[] = "<div class='form-group mb-3'>";
 												$html[] = "<label class='form-label text-muted'>Monthly Down Payment</label>";
 												$html[] = "<div class='input-icon mb-3'>";
 														$html[] = "<span class='input-icon-addon'><i class='ti ti-currency-peso'></i></span>";
@@ -319,7 +376,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-currency-peso'></i></span>";
 													$html[] = "<input type='number' name='monthly_amortization' id='monthly_amortization' value='".$data['listing']['monthly_amortization']."' step='0.05' class='form-control' placeholder='Monthly Amortization' />";
 												$html[] = "</div>";
-											$html[] = "</div>";
+											$html[] = "</div>"; */
 
 										$html[] = "</div>";
 									$html[] = "</div>";
@@ -441,7 +498,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 													$html[] = "<span class='form-check-label cursor-pointer' for='is_website'>Publish this property listing on the website.</span>";
 												$html[] = "</label>";
 											$html[] = "</div>";
-
 
 											$html[] = "<div class='mb-3'>";
 												$html[] = "<label class='form-label text-muted'>Commission Sharing Details</label>";

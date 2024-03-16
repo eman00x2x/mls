@@ -65,20 +65,26 @@ $html[] = "<div class='page-body mb-0'>";
 						$html[] = "<p class='fs-16'><span><i class='ti ti-category'></i> ".$data['category']."</span></p>";
 
 						$html[] = "<div class='mb-3 d-flex gap-5 align-items-center'>";
-							$html[] = "<div class='fs-24 fw-bold'>";
-								$html[] = "<small class='fw-normal fs-12 d-block text-muted'> Land Area:</small>";
-								$html[] = "<span><i class='ti ti-maximize'></i> ".$data['lot_area']."sqm</span>";
-							$html[] = "</div>";
-							$html[] = "<div class='fs-24 fw-bold'>";
-								$html[] = "<small class='fw-normal fs-12 d-block text-muted'> Floor Area:</small>";
-								$html[] = "<span><i class='ti ti-maximize'></i> ".$data['floor_area']."sqm</span>";
-							$html[] = "</div>";
+
+							if($data['lot_area'] > 0) {
+								$html[] = "<div class='fs-24 fw-bold'>";
+									$html[] = "<small class='fw-normal fs-12 d-block text-muted'> Land Area:</small>";
+									$html[] = "<span><i class='ti ti-maximize'></i> ".$data['lot_area']."sqm</span>";
+								$html[] = "</div>";
+							}
+
+							if($data['floor_area'] > 0) {
+								$html[] = "<div class='fs-24 fw-bold'>";
+									$html[] = "<small class='fw-normal fs-12 d-block text-muted'> Floor Area:</small>";
+									$html[] = "<span><i class='ti ti-maximize'></i> ".$data['floor_area']."sqm</span>";
+								$html[] = "</div>";
+							}
 						$html[] = "</div>";
 
 						$html[] = "<div class='mb-3 d-flex gap-5 align-items-center'>";
-							$html[] = "<div class='fw-bold'><i class='ti ti-bed'></i> ".$data['bedroom']."<span class='d-block fw-normal text-muted fs-12'>Bedroom</span></div>";
-							$html[] = "<div class='fw-bold'><i class='ti ti-bath'></i> ".$data['bathroom']."<span class='d-block fw-normal text-muted fs-12'>Bathroom</span></div>";
-							$html[] = "<div class='fw-bold'><i class='ti ti-car-garage'></i> ".$data['parking']."<span class='d-block fw-normal text-muted fs-12'>Car Space</span></div>";
+							if($data['bedroom'] != "" && $data['bedroom'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-bed'></i> ".$data['bedroom']."<span class='d-block fw-normal text-muted fs-12'>Bedroom</span></div>"; }
+							if($data['bathroom'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-bath'></i> ".$data['bathroom']."<span class='d-block fw-normal text-muted fs-12'>Bathroom</span></div>"; }
+							if($data['parking'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-car-garage'></i> ".$data['parking']."<span class='d-block fw-normal text-muted fs-12'>Car Space</span></div>"; }
 						$html[] = "</div>";
 
 						/* $html[] = "<div class='mb-2 d-flex gap-5'>";
@@ -128,12 +134,52 @@ $html[] = "<div class='page-body mb-0'>";
 						$html[] = "</div>";
 						/** AMENITIES END */
 
-						/** PRICES */
+						/** PAYMENT DETAILS */
 						$html[] = "<div class='price mt-5'>";
 							$html[] = "<h3><i class='ti ti-wallet me-1'></i> Payment Details</h3>";
+							$html[] = "<table class='table'>";
+							$html[] = "<tr>";
+								$html[] = "<td class='w-50'>Selling Price</td>";
+								$html[] = "<td>&#8369;".number_format($data['price'],0)."</td>";
+							$html[] = "</tr>";
+							$html[] = "<tr>";
+								$html[] = "<td>Reservation Fee / Option Money</td>";
+								$html[] = "<td>&#8369;".number_format($data['reservation'],0)."</td>";
+							$html[] = "</tr>";
+
+							/* $html[] = "<tr>";
+								$html[] = "<td>Option Money Duration</td>";
+								$html[] = "<td>".$data['payment_details']['option_money_duration']." days</td>";
+							$html[] = "</tr>";
+
+							$html[] = "<tr>";
+								$html[] = "<td>Mode of Payment</td>";
+								$html[] = "<td>".$data['payment_details']['payment_mode']."</td>";
+							$html[] = "</tr>";
+
+							$html[] = "<tr>";
+								$html[] = "<td>Allocation of Taxes</td>";
+								$html[] = "<td>".$data['payment_details']['tax_allocation']."</td>";
+							$html[] = "</tr>"; */
+
+							$html[] = "<tr>";
+								$html[] = "<td>Eligible for Bank Loan</td>";
+								$html[] = "<td>".($data['payment_details']['bank_loan'] == 1 ? "Yes" : "No")."</td>";
+							$html[] = "</tr>";
+
+							$html[] = "<tr>";
+								$html[] = "<td>Eligible for Pag-Ibig Housing Loan</td>";
+								$html[] = "<td>".($data['payment_details']['pagibig_loan'] == 1 ? "Yes" : "No")."</td>";
+							$html[] = "</tr>";
+
+							/* $html[] = "<tr>";
+								$html[] = "<td>Assume Balance</td>";
+								$html[] = "<td>".($data['payment_details']['assume_balance'] == 1 ? "Yes" : "No")."</td>";
+							$html[] = "</tr>"; */
+							$html[] = "</table>";
 							
 						$html[] = "</div>";
-						/** AMENITIES END */
+						/** PAYMENT DETAILS END */
 
 
 						/** MORTGAGE CALCULATOR */
@@ -258,7 +304,7 @@ $html[] = "<div class='page-body mb-0'>";
 											
 											$html[] = "<div class='mb-3'>";
 												$html[] = "<div class='form-floating mb-3'>";
-													$html[] = "<input type='number' name='mobile_no' id='mobile_no' value='' class='form-control' placeholder='Mobile Number' />";
+													$html[] = "<input type='number' name='mobile_no' id='mobile_no' value='' class='form-control' placeholder='(0000) 000-0000' data-mask='(0000) 000-0000' data-mask-visible='true' />";
 													$html[] = "<label for='mobile_no'>Mobile Number</label>";
 												$html[] = "</div>";
 											$html[] = "</div>";

@@ -58,6 +58,16 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 										$html[] = "<h2 class='mb-4'>System Settings</h2>";
 
 										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+											$html[] = "<h3 class='card-title'>Website Name</h3>";
+											$html[] = "<p class='card-subtitle'>Please provide the name of your website, this will appear to all content including Terms and Condition and Data Privacy.</p>";
+											$html[] = "<div class='row g-2'>";
+												$html[] = "<div class='col-md'>";
+													$html[] = "<input type='text' name='site_name' class='form-control' value='".$data['site_name']."' placeholder='Email website name' />";
+												$html[] = "</div>";
+											$html[] = "</div>";
+										$html[] = "</div>";
+
+										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
 											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";
 												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>KYC Verification</h3>";
 												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>Upon activation of KYC Verification, users will be prompted to authenticate their identity by submitting a <b>Real Estate Broker identification document</b> along with a corresponding self-portrait. This step ensures compliance with regulatory standards and enhances the security and credibility of our platform.</p>";
@@ -120,7 +130,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 
-										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+										/* $html[] = "<div class='mb-5 border rounded-3 p-5'>";
 											$html[] = "<h3 class='card-title'>Property Tags</h3>";
 											$html[] = "<p class='card-subtitle'>Please specify the tags that can be used to categorize or assign attributes to a property.<br/>Tags must be separated by commas.</p>";
 											$html[] = "<div class='row g-2'>";
@@ -128,7 +138,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 													$html[] = "<textarea name='property_tags' class='form-control' placeholder='Property Tags' style='width:100%; height:200px;'>".implode(", ",$data['property_tags'])."</textarea>";
 												$html[] = "</div>";
 											$html[] = "</div>";
-										$html[] = "</div>";
+										$html[] = "</div>"; */
 
 										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
 											$html[] = "<h3 class='card-title'>Default Privileges</h3>";

@@ -168,6 +168,7 @@ class ListingsController extends \Main\Controller {
 			$data['account'] = $account->getById();
 
 			$listingImage = $this->getModel("ListingImage");
+			$listingImage->page['limit'] = 100;
 			$listingImage->column['listing_id'] = $listing_id;
 			$data['listing']['images'] = $listingImage->getByListingId();
 
@@ -272,11 +273,20 @@ class ListingsController extends \Main\Controller {
 		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? $_POST['foreclosed'] : "0";
 		$_POST['is_mls'] = isset($_POST['is_mls']) ? $_POST['is_mls'] : "0";
 		$_POST['is_website'] = isset($_POST['is_website']) ? $_POST['is_website'] : "0";
+
+		$_POST['payment_details'] = json_encode([
+			"option_money_duration" => $_POST['payment_details']['option_money_duration'],
+			"payment_mode" => $_POST['payment_details']['payment_mode'],
+			"tax_allocation" => $_POST['payment_details']['tax_allocation'],
+			"bank_loan" => isset($_POST['payment_details']['bank_loan']) ? $_POST['payment_details']['bank_loan'] : "0",
+			"pagibig_loan" => isset($_POST['payment_details']['pagibig_loan']) ? $_POST['payment_details']['pagibig_loan'] : "0",
+			"assume_balance" => isset($_POST['payment_details']['assume_balance']) ? $_POST['payment_details']['assume_balance'] : "0"
+		]);
 		
-		$_POST['other_details'] = json_encode(array(
+		$_POST['other_details'] = json_encode([
 			"authority_type" => $_POST['authority_type'],
 			"com_share" => $_POST['com_share']
-		));
+		]);
 
 		if(isset($_POST['address'])) { $_POST['address'] = json_encode($_POST['address']); }
 		if(isset($_POST['tags'])) { $_POST['tags'] = json_encode($_POST['tags']); }

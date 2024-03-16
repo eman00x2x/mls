@@ -140,6 +140,18 @@ $html[] = "<div class='page-body'>";
 										}
 									$html[] = "</select>";
 								$html[] = "</div>";
+
+								$html[] = "<div class='mb-4'>";
+									$html[] = "<div class='form-label'>Garage</div>";
+									$html[] = "<select name='parking' id='parking' class='form-select'>";
+										$html[] = "<option value=''></option>";
+										foreach(["1 Car Space", "2 Car Space", "3 Car Space", "4 Car Space", "5 Car Space", "6 and more Car Space"] as $space) {
+											$parking = trim(str_replace(["Car Space", "and more"],["",""], $space));
+											$sel = isset($model->page['uri']['parking']) && $model->page['uri']['parking'] == $parking ? "selected" : "";
+											$html[] = "<option value='".$parking."' $sel>$space</option>";
+										}
+									$html[] = "</select>";
+								$html[] = "</div>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='form-label'>Features & Amenities</div>";
