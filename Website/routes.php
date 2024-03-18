@@ -13,6 +13,7 @@ Router::get( ALIAS . '/terms', 'PagesController@terms');
 
 Router::get( ALIAS . '/featuredPost', 'HomeController@featuredPost');
 Router::get( ALIAS . '/latestArticles', 'HomeController@latestArticles');
+Router::get( ALIAS . '/popularLocations', 'HomeController@popularLocations');
 
 /** ARTICLES ROUTES */
 Router::get( ALIAS . '/articles', 'ArticlesController@index');

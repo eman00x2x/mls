@@ -31,15 +31,21 @@ class HomeController extends \Main\Controller {
 		$this->doc->addScriptDeclaration("
 			(async () => {
 
-				await fetch('".url("HomeController@featuredPost")."')
+				await fetch('".url("HomeController@popularLocations")."')
 					.then( response => response.json() )
 						.then( data => { 
-							$('.featured-post-container').html(data.content);
+							$('.popular-location-container').html(data.content);
 
-							fetch('".url("HomeController@latestArticles")."')
+							fetch('".url("HomeController@featuredPost")."')
 								.then( response => response.json() )
 									.then( data => {
-										$('.latest-articles-container').html(data.content);
+										$('.featured-post-container').html(data.content);
+
+											fetch('".url("HomeController@latestArticles")."')
+												.then( response => response.json() )
+													.then( data => {
+														$('.latest-articles-container').html(data.content);
+													});
 									});
 
 						});
@@ -49,9 +55,29 @@ class HomeController extends \Main\Controller {
 		
 		");
 
-
 		$this->setTemplate("home/index.php");
 		return $this->getTemplate();
+	}
+
+	function popularLocations() {
+	
+		$listings = $this->getModel("Listing");
+		$listings->page['limit'] = 10;
+		$listings->select(" COUNT(JSON_EXTRACT(address, '$.municipality')) as total, JSON_EXTRACT(address, '$.municipality') as city, JSON_EXTRACT(address, '$.region') as region, JSON_EXTRACT(address, '$.province') as province ");
+		/* $listings->where(" is_website = 1 "); */
+		$listings->groupBy(" city ");
+		$data = $listings->getList();
+
+		$this->setTemplate("home/popularLocations.php");
+		$data = $this->getTemplate($data, $listings);
+
+		echo json_encode([
+			"status" => "success",
+			"content" => $data
+		]);
+
+		exit();
+
 	}
 
 	function featuredPost() {

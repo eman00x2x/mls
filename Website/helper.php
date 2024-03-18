@@ -35,15 +35,15 @@ function listingList($data) {
 						$html[] = "</div>";
 						
 						$html[] = "<div class='col-sm-4 col-md-12 col-lg-4 text-lg-end'>";
-							$html[] = "<span class='fs-18 text-highlight fw-bold'><i class='ti ti-tag'></i> &#8369;".number_format($data['price'],0)."</span>";
+							$html[] = "<span class='fs-18 text-highlight fw-bold'>&#8369;".number_format($data['price'],0)."</span>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 
 					$html[] = "<div class='row'>";
 						$html[] = "<div class='col-sm-12 col-md-12 col-lg-auto'>";
-							$html[] = "<div class='d-flex flex-wrap gap-2 text-muted mt-2'>";
+							$html[] = "<div class='d-flex flex-wrap gap-3 text-muted mt-2'>";
                                 if($data['lot_area'] > 0) {     $html[] = "<div class=''>		<span class='d-block mb-1 fs-10 text-muted'>Land Area</span> <i class='ti ti-maximize me-1'></i> ".number_format($data['lot_area'],0)." sqm</div>"; }
-								if($data['floor_area'] > 0) {   $html[] = "<div class=''>	<span class='d-block mb-1 fs-10 text-muted'>Floor Area</span> <i class='ti ti-ruler me-1'></i> ".number_format($data['floor_area'],0)." sqm</div>"; }
+								if($data['floor_area'] > 0) {   $html[] = "<div class=''>	    <span class='d-block mb-1 fs-10 text-muted'>Floor Area</span> <i class='ti ti-ruler me-1'></i> ".number_format($data['floor_area'],0)." sqm</div>"; }
 								if($data['parking'] > 0) {      $html[] = "<div class=''>		<span class='d-block mb-1 fs-10 text-muted'>Garage</span> <i class='ti ti-car-garage me-1'></i> ".$data['parking']."</div>"; }
                                 if($data['bedroom'] > 0) {      $html[] = "<div class=''>		<span class='d-block mb-1 fs-10 text-muted'>Bedroom</span> <i class='ti ti-bed me-1'></i> ".$data['bedroom']."</div>"; }
 								if($data['bathroom'] > 0) {     $html[] = "<div class=''>		<span class='d-block mb-1 fs-10 text-muted'>Bathroom</span> <i class='ti ti-bath me-1'></i> ".$data['bathroom']."</div>"; }
@@ -52,8 +52,8 @@ function listingList($data) {
 						$html[] = "</div>";
 
 						if($data['tags']) {
-							$html[] = "<div class='col-sm-12 col-md-12 col-lg-auto'>";
-								$html[] = "<div class='mt-3 badges'>";
+							$html[] = "<div class='col-sm-12 col-md-12 col-lg-auto '>";
+								$html[] = "<div class='mt-3 badges '>";
 									foreach($data['tags'] as $tag) {
 										$html[] = "<span class='badge badge-outline text-secondary fw-normal badge-pill mx-1'>$tag</span>";
 									}

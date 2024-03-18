@@ -54,12 +54,23 @@ $html[] = "<div class=''>";
 		$html[] = "</div>";
 	$html[] = "</div>";
 
-	
+	$html[] = "<div class='bg-white'>";
+		$html[] = "<div class='container-xl'>";
+			$html[] = "<div class='mb-3 py-5 px-3'>";
+
+				$html[] = "<div class='popular-location-container text-center'>";
+					$html[] = "<p class='text-center mb-0'><img src='".CDN."images/loader.gif' /> loading popular locations, please wait...</p>";
+				$html[] = "</div>";
+
+			$html[] = "</div>";
+		$html[] = "</div>";
+	$html[] = "</div>";
+
 
 	$html[] = "<div class='container-xl'>";
 		$html[] = "<div class='my-3 py-5 px-3'>";
 			$html[] = "<div class='featured-post-container'>";
-				$html[] = "<p class='text-center mb-0'><img src='".CDN."images/loader.gif' /> loading content, please wait...</p>";
+				$html[] = "<p class='text-center mb-0'><img src='".CDN."images/loader.gif' /> loading featured properties, please wait...</p>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 	$html[] = "</div>";
@@ -81,7 +92,7 @@ $html[] = "<div class=''>";
 	$html[] = "<div class='container-xl'>";
 		$html[] = "<div class='my-3 py-5 px-3'>";
 			$html[] = "<div class='latest-articles-container'>";
-				$html[] = "<p class='text-center mb-0'><img src='".CDN."images/loader.gif' /> loading content, please wait...</p>";
+				$html[] = "<p class='text-center mb-0'><img src='".CDN."images/loader.gif' /> loading articles, please wait...</p>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 	$html[] = "</div>";
