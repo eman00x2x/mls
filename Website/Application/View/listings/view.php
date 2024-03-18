@@ -5,7 +5,7 @@ $html[] = "<div class='page-body mb-0'>";
 
 		$html[] = "<div class='my-3 p-2'>";
 			$html[] = "<div class='row gap-2 justify-content-center'>";
-				$html[] = "<div class='col-sm-5 col-md-5'>";
+				$html[] = "<div class='col-sm-6 col-md-5 col-lg-5'>";
 
 					$html[] = "<div id='photos'>";
 
@@ -73,7 +73,7 @@ $html[] = "<div class='page-body mb-0'>";
 					$html[] = "</div>";
 
 				$html[] = "</div>";
-				$html[] = "<div class='col-md-4 col-sm-5'>";
+				$html[] = "<div class='col-sm-6 col-md-6 col-lg-4'>";
 				
 					$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Modified on ";
 						if($data['last_modified'] > 0) {
@@ -86,7 +86,7 @@ $html[] = "<div class='page-body mb-0'>";
 					$html[] = "<div class='mb-4'>";
 						$html[] = "<h1>".$data['title']."</h1>";
 						$html[] = "<p><i class='ti ti-map-pin'></i> ".$data['address']['barangay']." ".$data['address']['municipality']." ".$data['address']['province']."</p>";
-						$html[] = "<p class='display-5 fw-bold text-green'>&#8369;".number_format($data['price'], 0)."</p>";
+						$html[] = "<p class='display-5 fw-bold text-highlight'>&#8369;".number_format($data['price'], 0)."</p>";
 						$html[] = "<p class='fs-16'><span><i class='ti ti-category'></i> ".$data['category']."</span></p>";
 
 						$html[] = "<div class='mb-3 d-flex gap-5 align-items-center'>";
@@ -140,12 +140,12 @@ $html[] = "<div class='page-body mb-0'>";
 
 					$html[] = "<div class='sticky-top bg-white py-2 px-0 mx-0 mb-4 border-bottom'>";
 						$html[] = "<div class='d-flex overflow-auto'>";
-							if($data['thumb_img'] != "" && $data['images']) { $html[] = "<a class='btn btn-outline-secondary border-0 d-block' href='#photos'><i class='ti ti-photo me-1'></i> Photos</a>"; }
-							if($data['video'] != "") { $html[] = "<a class='btn btn-outline-secondary border-0 d-block' href='javascript:document.querySelector(\"#youtube_video\").click()'><i class='ti ti-brand-youtube me-1'></i> Video</a>"; }
-							$html[] = "<a class='btn btn-outline-secondary border-0 d-block' href='#description'><i class='ti ti-file-description me-1'></i> Description</a>";
-							$html[] = "<a class='btn btn-outline-secondary border-0 d-block' href='#amenities'><i class='ti ti-home-shield me-1'></i> Amenities</a>";
-							$html[] = "<a class='btn btn-outline-secondary border-0 d-block' href='#payment_details'><i class='ti ti-wallet me-1'></i> Payment Details</a>";
-							$html[] = "<a class='btn btn-outline-secondary border-0 d-block' href='#mortgage_calculator'><i class='ti ti-calculator me-1'></i> Mortgage Claculator</a>";
+							if($data['thumb_img'] != "" && $data['images']) { $html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#photos'><i class='ti ti-photo me-1'></i> Photos</a>"; }
+							if($data['video'] != "") { $html[] = "<a class='btn btn-outline-primary border-0 d-block' href='javascript:document.querySelector(\"#youtube_video\").click()'><i class='ti ti-brand-youtube me-1'></i> Video</a>"; }
+							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#description'><i class='ti ti-file-description me-1'></i> Description</a>";
+							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#amenities'><i class='ti ti-home-shield me-1'></i> Amenities</a>";
+							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#payment_details'><i class='ti ti-wallet me-1'></i> Payment Details</a>";
+							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#mortgage_calculator'><i class='ti ti-calculator me-1'></i> Mortgage Claculator</a>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 
@@ -210,7 +210,7 @@ $html[] = "<div class='page-body mb-0'>";
 							$html[] = "<div class='p-4 border bg-white'>";
 								$html[] = "<div class='row align-items-center justify-content-center'>";
 									$html[] = "<div class='col-md-6'>";
-										$html[] = "<div class='text-center text-dark mb-3'>";
+										$html[] = "<div class='text-center text-highlight mb-3'>";
 											$html[] = "<span class='d-block mb-2'>Monthly Payment of</span>";
 											$html[] = "<span class='fs-36 fw-bold monthly_dp'></span>";
 										$html[] = "</div>";
@@ -273,7 +273,7 @@ $html[] = "<div class='page-body mb-0'>";
 									$html[] = "<h2 class='card-title text-center'><i class='ti ti-message'></i> Send Message</h2>";
 
 									$html[] = "<div class='row justify-content-center'>";
-										$html[] = "<div class='col-md-8 col-10'>";
+										$html[] = "<div class='col-lg-8 col-sm-12'>";
 											$html[] = "<div class='d-flex py-1 mb-4 align-items-center'>";
 												$html[] = "<span class='avatar avatar-xl me-2 rounded-circle' style='background-image: url(".$data['account']['logo'].")'></span>";
 												$html[] = "<div class='flex-fill'>";

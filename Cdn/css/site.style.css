@@ -30,7 +30,7 @@
 
 .p-description {
     position: relative;
-    height: 160px;
+    height: 185px;
 }
 
 .p-tech-details {
@@ -44,7 +44,7 @@
 }
 
 .p-price {
-    font-size: 28px;
+    font-size: 26px;
 }
 
 .banner {
@@ -60,20 +60,32 @@
 }
 
 .black-gradient {
+    position: relative;
     height:100%;
     width:100%;
     background: rgb(0, 0, 0);
     background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 40%);
+    font-size:12px;
 }
 
-.bottom-right {
+.black-gradient i {
+    font-size: 14px;
+}
+
+.black-gradient .bottom-right {
     position: absolute;
     bottom: 10px;
     right: 10px;
+    text-align: left;
 }
 
-.bottom-left {
+.black-gradient .bottom-left {
     position: absolute;
     bottom: 10px;
     left: 10px;
+    text-align: left;
+}
+
+.text-highlight {
+    color: #0054a6 !important;
 }

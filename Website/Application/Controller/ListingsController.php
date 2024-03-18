@@ -234,7 +234,12 @@ class ListingsController extends \Main\Controller {
 
 				$images->column['listing_id'] = $data['listings'][$i]['listing_id'];
 				$total_image = $images->getByListingId();
-				$data['listings'][$i]['total_images'] = count($total_image);
+				
+				$data['listings'][$i]['total_images'] = 0;
+
+				if($total_image) {
+					$data['listings'][$i]['total_images'] = count($total_image);
+				}
 				
 
 			}
@@ -617,6 +622,29 @@ class ListingsController extends \Main\Controller {
 		$listings->where((isset($filters) ? implode(" AND ",$filters) : null));
 		$listings->page['limit'] = 5;
 		$data = $listings->getList();
+
+		if($data) {
+
+			$total_listing = count($data);
+
+			for($i=0; $i<$total_listing; $i++) {
+
+				$images = $this->getModel("ListingImage");
+				$images->page['limit'] = 50;
+
+				$images->column['listing_id'] = $data[$i]['listing_id'];
+				$total_image = $images->getByListingId();
+				
+				$data[$i]['total_images'] = 0;
+
+				if($total_image) {
+					$data[$i]['total_images'] = count($total_image);
+				}
+				
+
+			}
+
+		}
 
 		$this->setTemplate("listings/related.php");
 		return $this->getTemplate($data, $listings);

@@ -54,38 +54,12 @@ $html[] = "<div class=''>";
 		$html[] = "</div>";
 	$html[] = "</div>";
 
+	
+
 	$html[] = "<div class='container-xl'>";
 		$html[] = "<div class='my-3 py-5 px-3'>";
-			$html[] = "<h2>Featured Properties</h2>";
-			$html[] = "<div class='p-featured'>";
-				$html[] = "<div class='row row-deck row-cards flex-nowrap'>";
-					if($data['listings']) {
-						for($i=0; $i<count($data['listings']); $i++) {
-							$html[] = "<div class='col-md-3 col-auto '>";
-								$html[] = "<div class='card property-container' title='".$data['listings'][$i]['title']."'>";
-									$html[] = "<div class='p-image img-responsive img-responsive-21x9 card-img-top' style='background-image: url(".$data['listings'][$i]['thumb_img'].");'></div>";
-									$html[] = "<div class='card-body mb-0 pb-2'>";
-										$html[] = "<div class='p-description'>";
-											$html[] = "<h3 class='p-title card-title mb-1' title=''>".nicetrim($data['listings'][$i]['title'], 55)."</h3>";
-											$html[] = "<p class='p-location mb-2 p-0'><i class='ti ti-map-pin'></i> ".$data['listings'][$i]['address']['municipality']." ".$data['listings'][$i]['address']['province']."</p>";
-											$html[] = "<div class='p-tech-details '>";
-												$html[] = "<div class='d-flex gap-3 text-muted mb-2'>";
-													$html[] = "<span class='d-block '><i class='ti ti-maximize me-1'></i>".$data['listings'][$i]['lot_area']." sq.m <span class='small d-block p-tech-label'>Land Area</span></span>";
-													$html[] = "<span class='d-block '><i class='ti ti-bed me-1'></i>".$data['listings'][$i]['bedroom']." <span class='small d-block p-tech-label'>Room</span></span>";
-													$html[] = "<span class='d-block '><i class='ti ti-car-garage me-1'></i>".$data['listings'][$i]['parking']." <span class='small d-block p-tech-label'>Car Garage</span></span>";
-												$html[] = "</div>";
-												$html[] = "<div class='p-price fw-bold '>&#8369; ".number_format($data['listings'][$i]['price'],0)."</div>";
-											$html[] = "</div>";
-										$html[] = "</div>";
-									$html[] = "</div>";
-									$html[] = "<div class='card-footer pt-0 mt-0 border-0'>";
-										$html[] = "<a href='".url("ListingsController@view", ["name" => $data['listings'][$i]['name']])."' class='btn btn-md btn-primary stretched-link w-100'>View Details</a>";
-									$html[] = "</div>";
-								$html[] = "</div>";
-							$html[] = "</div>";
-						}
-					}
-				$html[] = "</div>";
+			$html[] = "<div class='featured-post-container'>";
+				$html[] = "<p class='text-center mb-0'><img src='".CDN."images/loader.gif' /> loading content, please wait...</p>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 	$html[] = "</div>";
@@ -106,32 +80,9 @@ $html[] = "<div class=''>";
 	
 	$html[] = "<div class='container-xl'>";
 		$html[] = "<div class='my-3 py-5 px-3'>";
-			$html[] = "<h2>Articles</h2>";
-			$html[] = "<div class='p-featured'>";
-				$html[] = "<div class='row row-deck row-cards flex-nowrap'>";
-					if($data['articles']) {
-						for($i=0; $i<count($data['articles']); $i++) {
-							$html[] = "<div class='col-md-3 col-auto '>";
-								$html[] = "<div class='card property-container' title='".$data['articles'][$i]['title']."'>";
-									$html[] = "<div class='p-image img-responsive img-responsive-21x9 card-img-top' style='background-image: url(".$data['articles'][$i]['banner'].");'></div>";
-									$html[] = "<div class='card-body mb-0 pb-2'>";
-										$html[] = "<div class='p-description' style='height:130px;'>";
-											$html[] = "<h3 class='p-title card-title mb-1' title=''>".nicetrim($data['articles'][$i]['title'], 55)."</h3>";
-											$html[] = "<div class='p-tech-details'>";
-												$html[] = "<p>".nicetrim(strip_tags($data['articles'][$i]['content']),100)."</p>";
-											$html[] = "</div>";
-										$html[] = "</div>";
-									$html[] = "</div>";
-									$html[] = "<div class='card-footer pt-0 mt-0 border-0'>";
-										$html[] = "<a href='".url("ArticlesController@view", ["name" => $data['articles'][$i]['name']])."' class='btn btn-md btn-primary stretched-link w-100'>Read</a>";
-									$html[] = "</div>";
-								$html[] = "</div>";
-							$html[] = "</div>";
-						}
-					}
-				$html[] = "</div>";
+			$html[] = "<div class='latest-articles-container'>";
+				$html[] = "<p class='text-center mb-0'><img src='".CDN."images/loader.gif' /> loading content, please wait...</p>";
 			$html[] = "</div>";
 		$html[] = "</div>";
-
 	$html[] = "</div>";
 $html[] = "</div>";

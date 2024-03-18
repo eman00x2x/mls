@@ -42,6 +42,7 @@ function autoloader($class) {
 spl_autoload_register('autoloader');
 
 require_once(ROOT."/Includes/config.php");
+require_once(BASE."/helper.php");
 
 class Middleware implements IMiddleware {
 

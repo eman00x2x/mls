@@ -5,11 +5,14 @@ use Pecee\SimpleRouter\SimpleRouter as Router;
 Router::enableMultiRouteRendering(false);
 
 /** PAGES ROUTES */
-Router::get( ALIAS . '/', 'PagesController@index');
+Router::get( ALIAS . '/', 'HomeController@index');
 Router::get( ALIAS . '/about', 'PagesController@about');
 Router::get( ALIAS . '/contact', 'PagesController@contact');
 Router::get( ALIAS . '/data-privacy', 'PagesController@privacy');
 Router::get( ALIAS . '/terms', 'PagesController@terms');
+
+Router::get( ALIAS . '/featuredPost', 'HomeController@featuredPost');
+Router::get( ALIAS . '/latestArticles', 'HomeController@latestArticles');
 
 /** ARTICLES ROUTES */
 Router::get( ALIAS . '/articles', 'ArticlesController@index');
