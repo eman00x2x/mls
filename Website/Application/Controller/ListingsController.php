@@ -222,6 +222,25 @@ class ListingsController extends \Main\Controller {
 
 		$data['listings'] = $listings->getList();
 
+
+		if($data['listings']) {
+
+			$total_listing = count($data['listings']);
+
+			for($i=0; $i<$total_listing; $i++) {
+
+				$images = $this->getModel("ListingImage");
+				$images->page['limit'] = 50;
+
+				$images->column['listing_id'] = $data['listings'][$i]['listing_id'];
+				$total_image = $images->getByListingId();
+				$data['listings'][$i]['total_images'] = count($total_image);
+				
+
+			}
+
+		}
+
 		$this->setTemplate("listings/index.php");
 		return $this->getTemplate($data, $listings);
 

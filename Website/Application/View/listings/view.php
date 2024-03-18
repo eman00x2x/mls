@@ -5,7 +5,7 @@ $html[] = "<div class='page-body mb-0'>";
 
 		$html[] = "<div class='my-3 p-2'>";
 			$html[] = "<div class='row gap-2 justify-content-center'>";
-				$html[] = "<div class='col-md-5 col-12'>";
+				$html[] = "<div class='col-sm-5 col-md-5'>";
 
 					$html[] = "<div id='photos'>";
 
@@ -73,7 +73,7 @@ $html[] = "<div class='page-body mb-0'>";
 					$html[] = "</div>";
 
 				$html[] = "</div>";
-				$html[] = "<div class='col-md-4 col-12'>";
+				$html[] = "<div class='col-md-4 col-sm-5'>";
 				
 					$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Modified on ";
 						if($data['last_modified'] > 0) {
