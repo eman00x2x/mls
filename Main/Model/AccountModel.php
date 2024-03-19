@@ -50,8 +50,8 @@ class AccountModel extends \Main\Model {
 		$v->validateGeneral($data['real_estate_license_number'],"Real Estate License Number");
 
 		$name = json_decode($data['account_name'],true);
-		$v->validateGeneral($data['name']['firstname'],"First Name");
-		$v->validateGeneral($data['name']['lastname'],"Last Name");
+		$v->validateGeneral($name['firstname'],"First Name");
+		$v->validateGeneral($name['lastname'],"Last Name");
 		$v->validateEmail($data['email'],"Email Address");
 		
 		if($v->foundErrors()) {
