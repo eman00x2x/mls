@@ -39,11 +39,15 @@ class ListingModel extends \Main\Model {
 		$v->validateGeneral($data['offer'],"offer is blank.");
 		$v->validateGeneral($data['tags'],"no selected tags.");
 
-		$obj = json_decode($data['address'],true);
+		$other_details = json_decode($data['other_details'],true);
+		$v->validateNumber($other_details['com_share'],"Commission share is required.");
+		$v->validateDate($other_details['authority_to_sell_expiration'],"Authority to Sell Expiration Date is required.");
 
-		$v->validateGeneral($obj['region'],"Region is blank.");
-		$v->validateGeneral($obj['province'],"Province is blank.");
-		$v->validateGeneral($obj['municipality'],"Municipality is blank.");
+		$address = json_decode($data['address'],true);
+
+		$v->validateGeneral($address['region'],"Region is blank.");
+		$v->validateGeneral($address['province'],"Province is blank.");
+		$v->validateGeneral($address['municipality'],"Municipality is blank.");
 
 		if($v->foundErrors()) {
 			return array(
@@ -83,11 +87,15 @@ class ListingModel extends \Main\Model {
 			$v->validateGeneral($data['offer'],"offer is blank.");
 			$v->validateGeneral($data['tags'],"no selected tags.");
 
-			$obj = json_decode($data['address'],true);
+			$other_details = json_decode($data['other_details'],true);
+			$v->validateNumber($other_details['com_share'],"Commission share is required.");
+			$v->validateDate($other_details['authority_to_sell_expiration'],"Authority to Sell Expiration Date is required.");
 
-			$v->validateGeneral($obj['region'],"Region is blank.");
-			$v->validateGeneral($obj['province'],"Province is blank.");
-			$v->validateGeneral($obj['municipality'],"Municipality is blank.");
+			$address = json_decode($data['address'],true);
+
+			$v->validateGeneral($address['region'],"Region is blank.");
+			$v->validateGeneral($address['province'],"Province is blank.");
+			$v->validateGeneral($address['municipality'],"Municipality is blank.");
 
 			if($v->foundErrors()) {
 				return array(
@@ -222,7 +230,6 @@ class ListingModel extends \Main\Model {
 	function categorySelection($currentValue = null) {
 		
 		$html[] = "<select name='category' id='category' class='form-select cursor-pointer'>";
-		$html[] = "<option value=''></option>";
 		foreach($this->categories() as $key => $mainCategory) {
 			$html[] = "<optgroup label='$key'>";
 			foreach($mainCategory as $subCategory) {

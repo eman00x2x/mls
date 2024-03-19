@@ -78,7 +78,13 @@ class UsersController extends \Main\Controller {
 			if(!in_array($data['account_type'],["Administrator","Customer Service", "Web Admin"])) {
 				$subscription = $this->getModel("AccountSubscription");
 				$subscription->column['account_id'] = $id;
-				$data['privileges'] = $subscription->getSubscription();
+				$privileges = $subscription->getSubscription();
+
+				if($privileges === false) {
+					$data['privileges'] = $data['privileges'];
+				}else {
+					$data['privileges'] = $privileges;
+				}
 
 				if($data['total_users'] >= $data['privileges']['max_users']) {
 					$this->getLibrary("Factory")->setMsg("The maximum number of users for this account has been reached.","error");
@@ -246,7 +252,6 @@ class UsersController extends \Main\Controller {
 			}
 
 			$response = $user->save($user_id,$_POST);
-
 
 			$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 

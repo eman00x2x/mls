@@ -178,11 +178,21 @@ class AddressModel extends \Main\Model {
 				$html[] = "</select>";
 			$html[] = "</div>";
 
-			$html[] = "<div class='mb-3 barangay-selection d-none'>";
+			$html[] = "<div class='mb-3 barangay-selection'>";
 				$html[] = "<label class='form-label text-muted'>Barangay</label>";
 				$html[] = "<select id='barangay' class='form-select'>";
 					$html[] = "<option value=''></option>";
 				$html[] = "</select>";
+			$html[] = "</div>";
+
+			$html[] = "<div class='mb-3 street-input'>";
+				$html[] = "<label class='form-label text-muted'>Street</label>";
+				$html[] = "<input type='text' name='address[street]' id='street' value='' class='form-control' />";
+			$html[] = "</div>";
+
+			$html[] = "<div class='mb-3 village-input'>";
+				$html[] = "<label class='form-label text-muted'>Village / Building</label>";
+				$html[] = "<input type='text' name='address[village]' id='village' value='' class='form-control' />";
 			$html[] = "</div>";
 
 		$html[] = "</div>";

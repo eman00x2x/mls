@@ -110,37 +110,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 									$html[] = "<div class='row py-3'>";
 										$html[] = "<div class='col-lg-8 col-md-8 col-12 m-auto'>";
 
-											$html[] = "<div class='row border mb-4 p-3 bg-azure-lt'>";
-												$html[] = "<div class='col-lg-6 col-md-6'>";
-
-													$html[] = "<label class='form-label text-muted mb-2'>Foreclosure Property</label>";
-													$html[] = "<div class='form-group'>";
-														$html[] = "<label class='form-check form-switch cursor-pointer'>";
-															$html[] = "<input class='form-check-input' type='checkbox' name='foreclosed' value='1' id='foreclosure'  />";
-															$html[] = "<span class='form-check-label' for='foreclosure'>Is this foreclosure property?</span>";
-														$html[] = "</label>";
-													$html[] = "</div>";
-													
-												$html[] = "</div>";
-												$html[] = "<div class='col-lg-6 col-md-6'>";
-
-													$html[] = "<div class=''>";
-														$html[] = "<label class='form-label text-muted'>Property Status</label>";
-														$html[] = "<div class='input-icon '>";
-															$html[] = "<span class='input-icon-addon'><i class='ti ti-status-change'></i></span>";
-															$html[] = "<select name='status' id='status' class='form-select'>";
-																$statuses = array(1=>"Available",2=>"Sold");
-																foreach($statuses as $key => $val) {
-																	$html[] = "<option value='$key'>$val</option>";
-																}
-															$html[] = "</select>";
-															$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
-														$html[] = "</div>";
-													$html[] = "</div>";
-													
-												$html[] = "</div>";
-											$html[] = "</div>";
-
 											$html[] = "<div class='row'>";
 												$html[] = "<div class='col-lg-6 col-md-6'>";
 										
@@ -457,6 +426,20 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 									$html[] = "<div class='row justify-content-center py-3'>";
 										$html[] = "<div class='col-md-8 col-lg-8 col-12'>";
 
+											$html[] = "<div class='mb-3'>";
+												$html[] = "<label class='form-label text-muted'>Posting Duration</label>";
+												$html[] = "<div class='input-icon '>";
+													$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
+													$html[] = "<select name='duration' id='duration' class='form-select'>";
+														$durations = array(15, 30, 60, 90);
+														foreach($durations as $days) {
+															$html[] = "<option value='".strtotime("+".$days, DATE_NOW)."'>$days days</option>";
+														}
+													$html[] = "</select>";
+													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+												$html[] = "</div>";
+											$html[] = "</div>";
+
 											$html[] = "<div class='mb-5'>";		
 												$html[] = "<label class='form-label text-muted'>Youtube Url</label>";
 												$html[] = "<div class='input-group mb-3'>";
@@ -471,7 +454,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<div class='input-icon '>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-status-change'></i></span>";
 													$html[] = "<select name='status' id='status' class='form-select'>";
-														$statuses = array(1=>"Available",2=>"Sold");
+														$statuses = array(1=>"Available");
 														foreach($statuses as $key => $val) {
 															$html[] = "<option value='$key' >$val</option>";
 														}
@@ -486,7 +469,14 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 													$html[] = "<span class='form-check-label' for='foreclosure'>Is this property a foreclosure?</span>";
 												$html[] = "</label>";
 											$html[] = "</div>";
-													
+												
+											$html[] = "<div class='form-group mb-4'>";
+												$html[] = "<label class='form-check form-switch cursor-pointer'>";
+													$html[] = "<input class='form-check-input cursor-pointer' name='is_website' type='checkbox' value='1' id='is_website' checked   />";
+													$html[] = "<span class='form-check-label cursor-pointer' for='is_website'>Publish this property listing on the website.</span>";
+												$html[] = "</label>";
+											$html[] = "</div>";
+
 											$html[] = "<div class='form-group mb-3'>";
 												$html[] = "<label class='form-check form-switch cursor-pointer'>";
 													$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls' checked  />";
@@ -494,11 +484,29 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "</label>";
 											$html[] = "</div>";
 
-											$html[] = "<div class='form-group mb-4'>";
-												$html[] = "<label class='form-check form-switch cursor-pointer'>";
-													$html[] = "<input class='form-check-input cursor-pointer' name='is_website' type='checkbox' value='1' id='is_website' checked   />";
-													$html[] = "<span class='form-check-label cursor-pointer' for='is_website'>Publish this property listing on the website.</span>";
-												$html[] = "</label>";
+											$html[] = "<div class='px-3 mb-4'>";
+
+												$html[] = "<div class='form-group mb-2'>";
+													$html[] = "<label class='form-check form-switch cursor-pointer'>";
+														$html[] = "<input class='form-check-input cursor-pointer' name='is_mls_option[local_board]' type='checkbox' value='1' id='is_mls_local_board'  />";
+														$html[] = "<span class='form-check-label cursor-pointer' for='mls_local_board'>Display this property listing on <b>Local Board's MLS</b></span>";
+													$html[] = "</label>";
+												$html[] = "</div>";
+
+												$html[] = "<div class='form-group mb-2'>";
+													$html[] = "<label class='form-check form-switch cursor-pointer'>";
+														$html[] = "<input class='form-check-input cursor-pointer' name='is_mls_option[local_region]' type='checkbox' value='1' id='is_mls_local_region'  />";
+														$html[] = "<span class='form-check-label cursor-pointer' for='mls_local_region'>Display this property listing on your <b>Local Board Region's MLS</b></span>";
+													$html[] = "</label>";
+												$html[] = "</div>";
+
+												$html[] = "<div class='form-group mb-2'>";
+													$html[] = "<label class='form-check form-switch cursor-pointer'>";
+														$html[] = "<input class='form-check-input cursor-pointer' name='is_mls_option[all]' type='checkbox' value='1' id='is_mls_all'  />";
+														$html[] = "<span class='form-check-label cursor-pointer' for='is_mls_all'>Display this property listing on <b>PAREB MLS Nation wide</b></span>";
+													$html[] = "</label>";
+												$html[] = "</div>";
+
 											$html[] = "</div>";
 
 											$html[] = "<div class='mb-3'>";
@@ -522,6 +530,15 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
 												$html[] = "</div>";
 												$html[] = "<span class='form-hint'>The legal permission granted to an individual or entity to sell a property on behalf of the owner(s)</span>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='mb-3'>";
+												$html[] = "<label class='form-label text-muted'>Authority to Sell Expiration Date</label>";
+												$html[] = "<div class='input-icon mb-2'>";
+													$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
+													$html[] = "<input type='date' name='authority_to_sell_expiration' id='authority_to_sell_expiration' value='' step='0.5' class='form-control' placeholder='Authority to Sell Expiration Date' />";
+												$html[] = "</div>";
+												$html[] = "<span class='form-hint'>Please specify the expiration of your Authority to Sell for this property.</span>";
 											$html[] = "</div>";
 
 										$html[] = "</div>";

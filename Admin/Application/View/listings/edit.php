@@ -463,6 +463,21 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 									$html[] = "<div class='row justify-content-center py-3'>";
 										$html[] = "<div class='col-md-8 col-lg-8 col-12'>";
 
+											$html[] = "<div class='mb-3'>";
+												$html[] = "<label class='form-label text-muted'>Posting Duration</label>";
+												$html[] = "<div class='input-icon '>";
+													$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
+													$html[] = "<select name='duration' id='duration' class='form-select'>";
+														$durations = array(15, 30, 60, 90);
+														foreach($durations as $days) {
+															$sel = $days == $data['listing']['duration'] ? "selected" : "";
+															$html[] = "<option value='".strtotime("+".$days, DATE_NOW)."' $sel>$days days</option>";
+														}
+													$html[] = "</select>";
+													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+												$html[] = "</div>";
+											$html[] = "</div>";
+
 											$html[] = "<div class='mb-5'>";		
 												$html[] = "<label class='form-label text-muted'>Youtube Url</label>";
 												$html[] = "<div class='input-group mb-3'>";
@@ -472,7 +487,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<span class='form-hint'>Sample Youtube Url: <span class='p-2 border border-red fst-italic ms-2'>https://www.youtube.com/watch?v=uiZVssPtPr4</span></span>";
 											$html[] = "</div>";
 
-											$html[] = "<div class='mb-3'>";
+											$html[] = "<div class='mb-4'>";
 												$html[] = "<label class='form-label text-muted'>Property Status</label>";
 												$html[] = "<div class='input-icon '>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-status-change'></i></span>";
@@ -486,6 +501,16 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
 												$html[] = "</div>";
 											$html[] = "</div>";
+											
+												$html[] = "<div class='px-4 py-3 bg-yellow-lt border mb-5 sold-price-input d-none'>";
+													$html[] = "<label class='form-label text-muted'>Sold Price</label>";
+													$html[] = "<div class='input-icon mb-2'>";
+														$html[] = "<span class='input-icon-addon'><i class='ti ti-currency-peso'></i></span>";
+														$html[] = "<input type='number' name='sold_price' id='sold_price' value='".($data['listing']['sold_price'] == 0 ? $data['listing']['price'] : $data['listing']['sold_price'])."' class='form-control' placeholder='Sold Price' />";
+													$html[] = "</div>";
+													$html[] = "<span class='form-hint'>Please specify the amount at which the property was sold.</span>";
+												$html[] = "</div>";
+											
 
 											$html[] = "<div class='form-group mb-3'>";
 												$html[] = "<label class='form-check form-switch cursor-pointer'>";
@@ -494,13 +519,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "</label>";
 											$html[] = "</div>";
 													
-											$html[] = "<div class='form-group mb-3'>";
-												$html[] = "<label class='form-check form-switch cursor-pointer'>";
-													$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls' ".($data['listing']['is_mls'] == 1 ? "checked" : "")." />";
-													$html[] = "<span class='form-check-label cursor-pointer' for='is_mls'>Display this property listing on the Multiple Listing Service (MLS)</span>";
-												$html[] = "</label>";
-											$html[] = "</div>";
-
 											$html[] = "<div class='form-group mb-4'>";
 												$html[] = "<label class='form-check form-switch cursor-pointer'>";
 													$html[] = "<input class='form-check-input cursor-pointer' name='is_website' type='checkbox' value='1' id='is_website' ".($data['listing']['is_website'] == 1 ? "checked" : "")."  />";
@@ -508,7 +526,39 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "</label>";
 											$html[] = "</div>";
 
-											$html[] = "<div class='mb-3'>";
+											$html[] = "<div class='form-group mb-2'>";
+												$html[] = "<label class='form-check form-switch cursor-pointer'>";
+													$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls' ".($data['listing']['is_mls'] == 1 ? "checked" : "")." />";
+													$html[] = "<span class='form-check-label cursor-pointer' for='is_mls'>Display this property listing on the Multiple Listing Service (MLS)</span>";
+												$html[] = "</label>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='px-3 mb-4'>";
+
+												$html[] = "<div class='form-group mb-2'>";
+													$html[] = "<label class='form-check form-switch cursor-pointer'>";
+														$html[] = "<input class='form-check-input cursor-pointer' name='mls_local_board' type='checkbox' value='1' id='is_mls_local_board' ".((isset($data['listing']['is_mls_option']['local_board']) ? $data['listing']['is_mls_option']['local_board'] : 0) == 1 ? "checked" : "")." />";
+														$html[] = "<span class='form-check-label cursor-pointer' for='mls_local_board'>Display this property listing on <b>Local Board's MLS</b></span>";
+													$html[] = "</label>";
+												$html[] = "</div>";
+
+												$html[] = "<div class='form-group mb-2'>";
+													$html[] = "<label class='form-check form-switch cursor-pointer'>";
+														$html[] = "<input class='form-check-input cursor-pointer' name='mls_local_region' type='checkbox' value='1' id='is_mls_local_region' ".((isset($data['listing']['is_mls_option']['local_region']) ? $data['listing']['is_mls_option']['local_region'] : 0) == 1 ? "checked" : "")." />";
+														$html[] = "<span class='form-check-label cursor-pointer' for='mls_local_region'>Display this property listing on your <b>Local Board Region's MLS</b></span>";
+													$html[] = "</label>";
+												$html[] = "</div>";
+
+												$html[] = "<div class='form-group mb-2'>";
+													$html[] = "<label class='form-check form-switch cursor-pointer'>";
+														$html[] = "<input class='form-check-input cursor-pointer' name='mls_all' type='checkbox' value='1' id='is_mls_all' ".((isset($data['listing']['is_mls_option']['all']) ? $data['listing']['is_mls_option']['all'] : 0) == 1 ? "checked" : "")." />";
+														$html[] = "<span class='form-check-label cursor-pointer' for='is_mls_all'>Display this property listing on <b>PAREB MLS Nation wide</b></span>";
+													$html[] = "</label>";
+												$html[] = "</div>";
+
+											$html[] = "</div>";
+
+											$html[] = "<div class='mb-4'>";
 												$html[] = "<label class='form-label text-muted'>Commission Sharing Details</label>";
 												$html[] = "<div class='input-icon mb-2'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-percentage'></i></span>";
@@ -517,7 +567,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<span class='form-hint'>Please specify the percentage of commission you are prepared to distribute.</span>";
 											$html[] = "</div>";
 
-											$html[] = "<div class='mb-3'>";
+											$html[] = "<div class='mb-4'>";
 												$html[] = "<label class='form-label text-muted'>What type of authority do you hold for this property?</label>";
 												$html[] = "<div class='input-icon mb-3'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-certificate'></i></span>";
@@ -530,6 +580,15 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
 												$html[] = "</div>";
 												$html[] = "<span class='form-hint'>The legal permission granted to an individual or entity to sell a property on behalf of the owner(s)</span>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='mb-3'>";
+												$html[] = "<label class='form-label text-muted'>Authority to Sell Expiration Date</label>";
+												$html[] = "<div class='input-icon mb-2'>";
+													$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
+													$html[] = "<input type='date' name='authority_to_sell_expiration' id='authority_to_sell_expiration' value='".(isset($data['listing']['other_details']["authority_to_sell_expiration"]) ? $data['listing']['other_details']["authority_to_sell_expiration"] : null)."' step='0.5' class='form-control' placeholder='Authority to Sell Expiration Date' />";
+												$html[] = "</div>";
+												$html[] = "<span class='form-hint'>Please specify the expiration of your Authority to Sell for this property.</span>";
 											$html[] = "</div>";
 
 										$html[] = "</div>";

@@ -57,6 +57,20 @@ class ListingsController extends \Main\Controller {
 					localStorage.clear();
 				}
 			});
+			
+			$(document).on('change', '#is_mls_local_board, #is_mls_local_region, #is_mls_all', function() {
+				if(this.checked) {
+					$('#is_mls').prop('checked', true);
+				}
+			})
+
+			$(document).on('change', '#status', function() {
+				if($('#status option:selected').val() == 2) {
+					$('.sold-price-input').removeClass('d-none');
+				}else {
+					$('.sold-price-input').addClass('d-none');
+				}
+			});
 
 			$(document).on('click','.selection-tab',function() {
 				link = $(this).data('link');
@@ -103,6 +117,12 @@ class ListingsController extends \Main\Controller {
 					localStorage.clear();
 				}
 			});
+
+			$(document).on('change', '#is_mls_local_board, #is_mls_local_region, #is_mls_all', function() {
+				if(this.checked) {
+					$('#is_mls').prop('checked', true);
+				}
+			})
 		");
 
 		$account = $this->getModel("Account");
@@ -117,7 +137,13 @@ class ListingsController extends \Main\Controller {
 
 		$subscription = $this->getModel("AccountSubscription");
 		$subscription->column['account_id'] = $account_id;
-		$data['privileges'] = $subscription->getSubscription();
+		$privileges = $subscription->getSubscription();
+
+		if($privileges === false) {
+			$data['privileges'] = $data['privileges'];
+		}else {
+			$data['privileges'] = $privileges;
+		}
 
 		if($data['privileges']['max_post'] <= $data['listings'][0]['total']) {
 			$this->getLibrary("Factory")->setMsg("Maximum postings have been reached. You cannot add any more property listings. Subscribe to our premium package to increase your maximum postings allowance", "warning");
@@ -209,10 +235,19 @@ class ListingsController extends \Main\Controller {
 		$_POST['date_added'] = DATE_NOW;
 		$_POST['last_modified'] = DATE_NOW;
 		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."/images/listings/".$_POST['thumb_img'] : null;
-		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? $_POST['foreclosed'] : "0";
-		$_POST['is_mls'] = isset($_POST['is_mls']) ? $_POST['is_mls'] : "0";
-		$_POST['is_website'] = isset($_POST['is_website']) ? $_POST['is_website'] : "0";
+		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? $_POST['foreclosed'] : 0;
+		$_POST['is_mls'] = isset($_POST['is_mls']) ? $_POST['is_mls'] : 0;
+		$_POST['is_website'] = isset($_POST['is_website']) ? $_POST['is_website'] : 0;
 		
+		$_POST['payment_details'] = json_encode([
+			"option_money_duration" => $_POST['payment_details']['option_money_duration'],
+			"payment_mode" => $_POST['payment_details']['payment_mode'],
+			"tax_allocation" => $_POST['payment_details']['tax_allocation'],
+			"bank_loan" => isset($_POST['payment_details']['bank_loan']) ? 1 : 0,
+			"pagibig_loan" => isset($_POST['payment_details']['pagibig_loan']) ? 1 : 0,
+			"assume_balance" => isset($_POST['payment_details']['assume_balance']) ? 1 : 0
+		]);
+
 		$_POST['other_details'] = json_encode(array(
 			"authority_type" => $_POST['authority_type'],
 			"com_share" => $_POST['com_share']
@@ -221,6 +256,12 @@ class ListingsController extends \Main\Controller {
 		if(isset($_POST['address'])) { $_POST['address'] = json_encode($_POST['address']); }
 		if(isset($_POST['tags'])) { $_POST['tags'] = json_encode($_POST['tags']); }
 		if(isset($_POST['amenities'])) {$_POST['amenities'] = implode(",",$_POST['amenities']); }
+
+		$_POST['is_mls_option'] = json_encode([
+			"local_board" => isset($_POST['mls_local_board']) ? 1 : 0,
+			"local_region" => isset($_POST['mls_local_region']) ? 1 : 0,
+			"mls_all" => isset($_POST['mls_all']) ? 1 : 0
+		]);
 	
 		$listing = $this->getModel("Listing");
 		$response = $listing->saveNew($_POST);
@@ -270,22 +311,29 @@ class ListingsController extends \Main\Controller {
 		$_POST['name'] = sanitize($_POST['title']);
 		$_POST['last_modified'] = DATE_NOW;
 		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."images/listings/".$_POST['thumb_img'] : null;
-		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? $_POST['foreclosed'] : "0";
-		$_POST['is_mls'] = isset($_POST['is_mls']) ? $_POST['is_mls'] : "0";
-		$_POST['is_website'] = isset($_POST['is_website']) ? $_POST['is_website'] : "0";
+		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? 1 : 0;
+		$_POST['is_mls'] = isset($_POST['is_mls']) ? 1 : 0;
+		$_POST['is_website'] = isset($_POST['is_website']) ? 1 : 0;
 
 		$_POST['payment_details'] = json_encode([
 			"option_money_duration" => $_POST['payment_details']['option_money_duration'],
 			"payment_mode" => $_POST['payment_details']['payment_mode'],
 			"tax_allocation" => $_POST['payment_details']['tax_allocation'],
-			"bank_loan" => isset($_POST['payment_details']['bank_loan']) ? $_POST['payment_details']['bank_loan'] : "0",
-			"pagibig_loan" => isset($_POST['payment_details']['pagibig_loan']) ? $_POST['payment_details']['pagibig_loan'] : "0",
-			"assume_balance" => isset($_POST['payment_details']['assume_balance']) ? $_POST['payment_details']['assume_balance'] : "0"
+			"bank_loan" => isset($_POST['payment_details']['bank_loan']) ? 1 : 0,
+			"pagibig_loan" => isset($_POST['payment_details']['pagibig_loan']) ? 1 : 0,
+			"assume_balance" => isset($_POST['payment_details']['assume_balance']) ? 1 : 0
 		]);
 		
 		$_POST['other_details'] = json_encode([
 			"authority_type" => $_POST['authority_type'],
+			"authority_to_sell_expiration" => $_POST['authority_to_sell_expiration'],
 			"com_share" => $_POST['com_share']
+		]);
+
+		$_POST['is_mls_option'] = json_encode([
+			"local_board" => isset($_POST['mls_local_board']) ? 1 : 0,
+			"local_region" => isset($_POST['mls_local_region']) ? 1 : 0,
+			"all" => isset($_POST['mls_all']) ? 1 : 0
 		]);
 
 		if(isset($_POST['address'])) { $_POST['address'] = json_encode($_POST['address']); }

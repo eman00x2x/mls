@@ -302,7 +302,7 @@ class AuthenticatorController extends \Main\Controller
 		$subscription->column['account_id'] = $data['account_id'];
 		$privileges = $subscription->getSubscription();
 
-		if($data['privileges'] === false) {
+		if($privileges === false) {
 			$data['privileges'] = $data['privileges'];
 		}else {
 			$data['privileges'] = $privileges;

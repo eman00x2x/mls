@@ -74,14 +74,16 @@ $html[] = "<div class='page-body mb-0'>";
 
 				$html[] = "</div>";
 				$html[] = "<div class='col-sm-6 col-md-6 col-lg-4'>";
-				
-					$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Modified on ";
-						if($data['last_modified'] > 0) {
-							$html[] = date("d M Y", $data['last_modified']);
-						}else {
+					
+					$html[] = "<div class='d-flex justify-content-between'>";
+						$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Posted since ";
 							$html[] = date("d M Y", $data['date_added']);
-						}
-					$html[] = "</span>";
+						$html[] = "</span>";
+
+						$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Modified on ";
+							$html[] = date("d M Y", $data['last_modified']);
+						$html[] = "</span>";
+					$html[] = "</div>";
 						
 					$html[] = "<div class='mb-4'>";
 						$html[] = "<h1>".$data['title']."</h1>";
