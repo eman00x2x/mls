@@ -40,6 +40,23 @@ define("ALIAS","managemls"); */
 
 define("VRSN","v1.0");
 
+define("BOARD_REGIONS", [
+	"NORTH LUZON",
+	"SOUTH LUZON",
+	"CENTRAL LUZON",
+	"NCR",
+	"VISAYAS",
+	"MINDANAO"
+]);
+
+define("LOCAL_BOARDS", [
+	"(PRB) PASIG REAL ESTATE BOARD, INC.",
+	"(PMRB) PASAY-MAKATI REALTY BOARD, INC.",
+	"(MCRB) MANDALUYONG CITY REAL ESTATE BOARD, INC.",
+	"(QCRB) QUEZON CITY REAL ESTATE BOARD, INC.",
+	"(ACREB) ANTIPOLO CITY REAL ESTATE BOARD, INC."
+]);
+
 define("USER_PERMISSIONS",[
 	"accounts" => [
 		"access" => (boolean) true

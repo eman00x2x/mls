@@ -33,7 +33,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<div class='btn-list text-end'>";
 									$html[] = "<a class='ajax btn btn-light' href='".url("AccountsController@view", ["id" => $data['account_id']])."'>";
 										$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['logo'].")'></span>";
-										$html[] = $data['firstname']." ".$data['lastname']." account";
+										$html[] = $data['account_name']['firstname']." ".$data['account_name']['lastname']." account";
 									$html[] = "</a>";
 								$html[] = "</div>";
 							}

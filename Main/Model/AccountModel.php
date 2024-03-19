@@ -48,8 +48,10 @@ class AccountModel extends \Main\Model {
 		$v = $this->getValidator();
 
 		$v->validateGeneral($data['real_estate_license_number'],"Real Estate License Number");
-		$v->validateGeneral($data['firstname'],"First Name");
-		$v->validateGeneral($data['lastname'],"Last Name");
+
+		$name = json_decode($data['account_name'],true);
+		$v->validateGeneral($data['name']['firstname'],"First Name");
+		$v->validateGeneral($data['name']['lastname'],"Last Name");
 		$v->validateEmail($data['email'],"Email Address");
 		
 		if($v->foundErrors()) {
@@ -90,13 +92,9 @@ class AccountModel extends \Main\Model {
 
 			$v = $this->getValidator();
 
-			if(isset($data['firstname'])) {
-				$v->validateGeneral($data['firstname'],"First Name");
-			}
-
-			if(isset($data['lastname'])) {
-				$v->validateGeneral($data['lastname'],"Last Name");
-			}
+			$name = json_decode($data['account_name'],true);
+			$v->validateGeneral($name['firstname'],"First Name");
+			$v->validateGeneral($name['lastname'],"Last Name");
 
 			if(isset($data['email'])) {
 				$v->validateEmail($data['email'],"Email Address");

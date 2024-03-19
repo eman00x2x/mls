@@ -229,8 +229,12 @@ class AccountsController extends \Main\Controller {
 
 		");
 
+		$data['board_regions'] = BOARD_REGIONS;
+		$data['local_boards'] = LOCAL_BOARDS;
+		sort($data['local_boards']);
+
 		$this->setTemplate("accounts/add.php");
-		return $this->getTemplate();
+		return $this->getTemplate($data);
 
 	}
 	
@@ -251,6 +255,10 @@ class AccountsController extends \Main\Controller {
 			$accounts->column['account_id'] = $account_id;
 
 			if($data = $accounts->getById()) {
+
+				$data['board_regions'] = BOARD_REGIONS;
+				$data['local_boards'] = LOCAL_BOARDS;
+				sort($data['local_boards']);
 
 				if($data['reference_id'] != 0) {
 					$reference = $this->getModel("LicenseReference");
@@ -291,6 +299,14 @@ class AccountsController extends \Main\Controller {
 		$_POST['account_type'] = "Real Estate Practitioner";
 		$_POST['user_level'] = 1;
 		$_POST['reference_id'] = 0;
+
+		$_POST['account_name'] = json_encode([
+			"prefix" => (isset($_POST['prefix']) ? $_POST['prefix'] : ''),
+			"firstname" => $_POST['firstname'],
+			"middlename" => (isset($_POST['middlename']) ? $_POST['middlename'] : ''),
+			"lastname" => $_POST['lastname'],
+			"suffix" => (isset($_POST['suffix']) ? $_POST['suffix'] : ''),
+		]);
 
 		if($_POST['broker_prc_license_id'] != 1) {
 			$reference = $this->getModel("LicenseReference");
@@ -425,6 +441,14 @@ class AccountsController extends \Main\Controller {
 					$_POST['message_keys'][$key] = json_decode($val, true);
 				}
 			}
+
+			$_POST['account_name'] = json_encode([
+				"prefix" => $_POST['prefix'],
+				"firstname" => $_POST['firstname'],
+				"middlename" => $_POST['middlename'],
+				"lastname" => $_POST['lastname'],
+				"suffix" => $_POST['suffix'],
+			]);
 
 			$response = $accounts->save($account_id,$_POST);
 			

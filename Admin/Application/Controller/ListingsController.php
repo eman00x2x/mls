@@ -248,10 +248,11 @@ class ListingsController extends \Main\Controller {
 			"assume_balance" => isset($_POST['payment_details']['assume_balance']) ? 1 : 0
 		]);
 
-		$_POST['other_details'] = json_encode(array(
+		$_POST['other_details'] = json_encode([
 			"authority_type" => $_POST['authority_type'],
+			"authority_to_sell_expiration" => strtotime($_POST['authority_to_sell_expiration']),
 			"com_share" => $_POST['com_share']
-		));
+		]);
 		
 		if(isset($_POST['address'])) { $_POST['address'] = json_encode($_POST['address']); }
 		if(isset($_POST['tags'])) { $_POST['tags'] = json_encode($_POST['tags']); }
@@ -326,7 +327,7 @@ class ListingsController extends \Main\Controller {
 		
 		$_POST['other_details'] = json_encode([
 			"authority_type" => $_POST['authority_type'],
-			"authority_to_sell_expiration" => $_POST['authority_to_sell_expiration'],
+			"authority_to_sell_expiration" => strtotime($_POST['authority_to_sell_expiration']),
 			"com_share" => $_POST['com_share']
 		]);
 

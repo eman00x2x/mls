@@ -479,7 +479,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 											$html[] = "</div>";
 
 											$html[] = "<div class='mb-5'>";		
-												$html[] = "<label class='form-label text-muted'>Youtube Url</label>";
+												$html[] = "<label class='form-label text-muted'>Video (Youtube Url)</label>";
 												$html[] = "<div class='input-group mb-3'>";
 													$html[] = "<span class='input-group-text' id='basic-addon1'><i class='ti ti-brand-youtube'></i></span>";
 													$html[] = "<input type='text' name='video' id='youtube_url' class='form-control' value='".$data['listing']['video']."' placeholder='https://www.youtube.com/watch?v=uiZVssPtPr4' aria-label='Youtube Url' aria-describedby='basic-addon1'>";
@@ -586,9 +586,9 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<label class='form-label text-muted'>Authority to Sell Expiration Date</label>";
 												$html[] = "<div class='input-icon mb-2'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
-													$html[] = "<input type='date' name='authority_to_sell_expiration' id='authority_to_sell_expiration' value='".(isset($data['listing']['other_details']["authority_to_sell_expiration"]) ? $data['listing']['other_details']["authority_to_sell_expiration"] : null)."' step='0.5' class='form-control' placeholder='Authority to Sell Expiration Date' />";
+													$html[] = "<input type='date' name='authority_to_sell_expiration' id='authority_to_sell_expiration' value='".(isset($data['listing']['other_details']["authority_to_sell_expiration"]) ? date("Y-m-d", $data['listing']['other_details']["authority_to_sell_expiration"]) : null)."' step='0.5' class='form-control' placeholder='Authority to Sell Expiration Date' />";
 												$html[] = "</div>";
-												$html[] = "<span class='form-hint'>Please specify the expiration of your Authority to Sell for this property.</span>";
+												$html[] = "<span class='form-hint'>Please specify the expiration date of your Authority to Sell for this property.</span>";
 											$html[] = "</div>";
 
 										$html[] = "</div>";

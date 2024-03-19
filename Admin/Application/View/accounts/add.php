@@ -143,6 +143,39 @@ $html[] = "<form id='form' action='' method='POST'>";
 					$html[] = "</div>";
 
 					$html[] = "<div class='card mb-3'>";
+						$html[] = "<div class='card-header'>";
+							$html[] = "<h3 class='card-title text-blue mb-0'>Local Board Details</h3>";
+						$html[] = "</div>";
+
+						$html[] = "<div class='card-body'>";
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Board Region</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<select name='board_region' class='form-select' id='board_region'>";
+										foreach ($data['board_regions'] as $region) {
+											$html[] = "<option value='".$region."' >$region</option>";
+										}
+									$html[] = "</select>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Local Board Name</label>";
+								$html[] = "<div class='col-sm-9'>";
+									$html[] = "<select name='local_board_name' class='form-select' id='local_board_name'>";
+										foreach ($data['local_boards'] as $name) {
+											$html[] = "<option value='".$name."'>$name</option>";
+										}
+									$html[] = "</select>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+						$html[] = "</div>";
+
+					$html[] = "</div>";
+
+					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-status bg-orange'></div>";
 						$html[] = "<div class='card-header'>";
 							$html[] = "<h3 class='card-title text-blue mb-0'>Account Holder</h3>";
@@ -169,18 +202,45 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
-							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>First Name</label>";
+							$html[] = "<div class='row'>";
+								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Name</label>";
 								$html[] = "<div class='col-sm-9'>";
-									$html[] = "<input type='text' name='firstname' id='firstname' value='' class='form-control'  />";
-								$html[] = "</div>";
-							$html[] = "</div>";
+									$html[] = "<div class='mb-3'>";
+										$html[] = "<div class='form-floating mb-3 '>";
+											$html[] = "<input type='text' name='prefix' id='prefix' value='' class='form-control'  />";
+											$html[] = "<label for='prefix'>Prefix</label>";
+										$html[] = "</div>";
+									$html[] = "</div>";
 
-							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Last Name</label>";
-								$html[] = "<div class='col-sm-9'>";
-									$html[] = "<input type='text' name='lastname' id='lastname' value='' class='form-control'  />";
+									$html[] = "<div class='mb-3'>";
+										$html[] = "<div class='form-floating mb-3'>";
+											$html[] = "<input type='text' name='firstname' id='firstname' value='' class='form-control'  />";
+											$html[] = "<label for='firstname'>First Name</label>";
+										$html[] = "</div>";
+									$html[] = "</div>";
+
+									$html[] = "<div class='mb-3'>";
+										$html[] = "<div class='form-floating mb-3'>";
+											$html[] = "<input type='text' name='middlename' id='middlename' value='' class='form-control'  />";
+											$html[] = "<label for='middlename'>Middle Name</label>";
+										$html[] = "</div>";
+									$html[] = "</div>";
+
+									$html[] = "<div class='mb-3'>";
+										$html[] = "<div class='form-floating mb-3'>";
+											$html[] = "<input type='text' name='lastname' id='lastname' value='' class='form-control'  />";
+											$html[] = "<label for='lastname'>Last Name</label>";
+										$html[] = "</div>";
+									$html[] = "</div>";
+
+									$html[] = "<div class='mb-3'>";
+										$html[] = "<div class='form-floating mb-3'>";
+											$html[] = "<input type='text' name='suffix' id='suffix' value='' class='form-control'  />";
+											$html[] = "<label for='mb-3'>Suffix</label>";
+										$html[] = "</div>";
+									$html[] = "</div>";
 								$html[] = "</div>";
+
 							$html[] = "</div>";
 
 							$html[] = "<div class='row mb-3'>";

@@ -63,7 +63,7 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
 									$html[] = "<td class='align-middle'><div class='avatar' style='background-image: url(".$data[$i]['logo'].")'></div></td>";
 									$html[] = "<td class='align-middle'><a href='".url("AccountsController@view",["id" => $data[$i]['account_id']])."' class='ajax text-inherit text-decoration-none'>";
-										$html[] = $data[$i]['firstname']." ".$data[$i]['lastname']." <small class='text-muted d-block'>".$data[$i]['email']."</small>";
+										$html[] = $data[$i]['account_name']['firstname']." ".$data[$i]['account_name']['lastname']." <small class='text-muted d-block'>".$data[$i]['email']."</small>";
 									$html[] = "</a></td>";
 									$html[] = "<td class='align-middle'><a href='".url("AccountsController@view",["id" => $data[$i]['account_id']])."' class='text-decoration-none'>".$data[$i]['account_type']."</a></td>";
 									$html[] = "<td class='align-middle'>".($data[$i]['status'] == 'active' ? "<span class='text-success '>Active</span>" : "<span class='text-danger'>Banned</span>")."</td>";

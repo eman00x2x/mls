@@ -117,7 +117,7 @@ class DashboardController extends \Main\Controller {
 		$handshakes->page['limit'] = 100000;
 
 		$handshakes
-			->select(" handshake_id, requestor_details, requestee_account_id, logo, CONCAT(firstname, ' ', lastname) as name, CONCAT(LEFT(firstname, 1), '', LEFT(lastname, 1)) as initials")
+			->select(" handshake_id, requestor_details, requestee_account_id, logo, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(a.account_name, '$.firstname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(a.account_name, '$.lastname'))) as name, CONCAT(LEFT(JSON_UNQUOTE(JSON_EXTRACT(a.account_name, '$.firstname')), 1), '', LEFT(JSON_UNQUOTE(JSON_EXTRACT(a.account_name, '$.lastname')), 1)) as initials")
 				->join(" h JOIN #__accounts a ON a.account_id=h.requestee_account_id ")
 					->where(" handshake_status = 'active' ");
 
@@ -164,7 +164,7 @@ class DashboardController extends \Main\Controller {
         $traffic->page['limit'] = 5;
 
 		$traffic
-		->select(" t.listing_id, title, CONCAT(a.firstname, ' ', a.lastname) as posted_by, COUNT(session_id) as count ")
+		->select(" t.listing_id, title, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(a.name, '$.firstname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(a.name, '$.lastname'))) as posted_by, COUNT(session_id) as count ")
 			->join(" t JOIN #__listings l ON t.listing_id=l.listing_id JOIN #__accounts a ON a.account_id=t.account_id ")
 				->where(" created_at >= ".$date_helper['from']." AND created_at <= ".$date_helper['to']." ")
 					->groupBy(" t.listing_id ");
