@@ -191,34 +191,32 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$filters[] = " display = 1";
 
 		if(isset($_GET['region']) && $_GET['region'] != "") {
-			$filters[] = " board_region = ".$_GET['region'];
+			$filters[] = " board_region = '".$_GET['region']."'";
 			$uri['region'] = $_GET['region'];
 		}else {
 
 			$uri['region'] = "";
 
 			if($this->session['board_region'] != "") {
-				$filters[] = " region = ".$this->session['board_region'];
+				$filters[] = " board_region = '".$this->session['board_region']."'";
 				$uri['region'] = $this->session['board_region'];
 			}
 
 		}
 
 		if(isset($_GET['local']) && $_GET['local'] != "") {
-			$filters[] = " local_board_name = ".$_GET['local'];
+			$filters[] = " local_board_name = '".$_GET['local']."'";
 			$uri['local'] = $_GET['local'];
 		}else {
 
 			$uri['local'] = "";
 
 			if($this->session['local_board_name'] != "") {
-				$filters[] = " local_board_name = ".$this->session['local_board_name'];
+				$filters[] = " local_board_name = '".$this->session['local_board_name']."'";
 				$uri['local'] = $this->session['local_board_name'];
 			}
 			
 		}
-
-		
 
 		$address = $this->getModel("Address");
 		$listings = $this->getModel("Listing");
@@ -236,15 +234,14 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 				listing_id, l.account_id, is_website, offer, foreclosed, name, price, floor_area, lot_area, unit_area, bedroom, bathroom, parking, thumb_img, last_modified, l.status, display, type, title, tags, long_desc, category, address, amenities,
 				MATCH( type, title, tags, long_desc, category, address, amenities )
 				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS score
-			")
-				->join(" l JOIN #__accounts a ON a.account_id = l.account_id ")
-					->orderby(" score DESC ");
+			")->orderby(" score DESC ");
+
 		}else {
-			$listings->join(" l ");
 			/* $sort = isset($_GET['sort']) ? ($_GET['sort'] == "score") ? "last_modified" : $_GET['sort'] : " last_modified";
 			$listings->orderby(" $sort $order "); */
 		}
 
+		$listings->join(" l JOIN #__accounts a ON a.account_id = l.account_id ");
 		$listings->where((isset($filters) ? implode(" AND ",$filters) : null));
 		
 		$listings->page['limit'] = 20;
@@ -647,24 +644,55 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$this->doc->setTitle("MLS System - Comparative Analysis Table");
 		
 		$total = isset($_SESSION['compare']['listings']) ? count($_SESSION['compare']['listings']) : 0;
-		
+
 		if($total > 0) {
-			$ids = implode(",", array_keys($_SESSION['compare']['listings']));
-
+	
+			$ids = array_keys($_SESSION['compare']['listings']);
+			
 			$listing = $this->getModel("Listing");
-
 			$listing->page['limit'] = 20;
-			$listing->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-			$listing->page['target'] = url("MlsController@index");
-			$listing->page['uri'] = (isset($uri) ? $uri : []);
+			$data['listing'] = $listing->where(" listing_id IN(".implode(",", $ids).") ")->getList();
 
-			$data['listing'] = $listing->where(" listing_id IN($ids) ")->getList();
-			$data['share_link'] = WEBDOMAIN . "/comparative-analysis/" . base64_encode($ids);
+			$this->doc->addScriptDeclaration("
 
-		}else { $data = false; $listing = false; }
+				let ids = '".json_encode($ids)."';
+				let base_url = '".WEBDOMAIN."comparative-analysis/';
+				let html = '';
 
-		$this->setTemplate("mls/compare.php");
-		return $this->getTemplate($data,$listing);
+				$(document).on('click', '.btn-create-url', function() {
+
+					let expiration_date = $('#expiration_date option:selected').val();
+					let uri = '&expiration=' + expiration_date;
+					url = base_url + btoa('id=' + ids + uri);
+
+					let title = 'Compare Analysis Table';
+					let description = 'A detailed comparative of different real estate properties';
+					let img = '';
+
+					let share_link_fb = 'https://www.facebook.com/sharer/sharer.php?u=' + url;
+					let share_link_twitter = 'https://twitter.com/intent/tweet?text=' + title + '&url=' + url + '&via=TWITTER-HANDLE';
+					let share_link_linkedin = 'https://www.linkedin.com/shareArticle?mini=true&url=' + url + '&title=' + title + '&summary=' + description + '&source=' + url;
+					let share_link_pinterest = 'https://pinterest.com/pin/create/button/?url=' + url + '&description=' + description + '&media=' + img;
+
+					$('.share-fb').attr('href', share_link_fb);
+					$('.share-twitter').attr('href', share_link_twitter);
+					$('.share-linkedin').attr('href', share_link_linkedin);
+					$('.share-pinterest').attr('href', share_link_pinterest);
+					$('.share-link-input').val(url);
+
+					$('.create-url-form').addClass('d-none');
+					$('.share-link-container').removeClass('d-none');
+
+				});
+
+			");
+			
+			$this->setTemplate("mls/compare.php");
+			return $this->getTemplate($data,$listing);
+
+		}
+
+		$this->response(404);
 
 	}
 

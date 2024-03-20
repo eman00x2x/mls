@@ -230,7 +230,8 @@ $html[] = "<div class='page-body'>";
 						}
 
 						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-status-change me-1'></i> Status:</span> <strong>".$status[$data['listing']['status']]."</strong></div>";
-						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Modified at:</span> <strong>".date("F d, Y",$data['listing']['last_modified'])."</strong></div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Posted since:</span> <strong>".date("F d, Y", $data['listing']['date_added'])."</strong></div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Modified at:</span> <strong>".date("F d, Y", $data['listing']['last_modified'])."</strong></div>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 

@@ -18,8 +18,7 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<td class='text-center col-avatar' style='width:150px !important;'>Image</td>";
 						for($i=0; $i<count($data); $i++) {
 							$html[] = "<td class='text-center col-avatar'>";
-								$html[] = "<div class='avatar avatar-xl' style='background-image: url(".$data['listing'][$i]['thumb_img'].")'></div>";
-								/* $html[] = "<span class='d-block text-muted mt-2'>".$data['listing'][$i]['title']."</span>"; */
+								$html[] = "<div class='avatar avatar-xl' style='background-image: url(".$data[$i]['thumb_img'].")'></div>";
 							$html[] = "</td>";
 						}
 					$html[] = "</tr>";
@@ -35,15 +34,15 @@ $html[] = "<div class='page-body'>";
 								
 								switch($col) {
 									case 'address':
-										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data['listing'][$x]["address"]['municipality']." ".$data['listing'][$x]["address"]['province']."</td>";
+										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data[$x]["address"]['municipality']." ".$data[$x]["address"]['province']."</td>";
 										break;
 									
 									case 'price':
-										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>&#8369;".number_format($data['listing'][$x]['price'],0)."</td>";
+										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>&#8369;".number_format($data[$x]['price'],0)."</td>";
 										break;
 
 									default:
-										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data['listing'][$x][$col]."</td>";
+										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data[$x][$col]."</td>";
 								}
 
 							}

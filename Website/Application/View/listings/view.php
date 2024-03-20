@@ -80,7 +80,7 @@ $html[] = "<div class='page-body mb-0'>";
 							$html[] = date("d M Y", $data['date_added']);
 						$html[] = "</span>";
 
-						$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Modified on ";
+						$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Modified at ";
 							$html[] = date("d M Y", $data['last_modified']);
 						$html[] = "</span>";
 					$html[] = "</div>";
@@ -113,11 +113,6 @@ $html[] = "<div class='page-body mb-0'>";
 							if($data['bathroom'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-bath'></i> ".$data['bathroom']."<span class='d-block fw-normal text-muted fs-12'>Bathroom</span></div>"; }
 							if($data['parking'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-car-garage'></i> ".$data['parking']."<span class='d-block fw-normal text-muted fs-12'>Car Space</span></div>"; }
 						$html[] = "</div>";
-
-						/* $html[] = "<div class='mb-2 d-flex gap-5'>";
-							$html[] = "<span class='d-block text-muted fs-12'><i class='ti ti-calendar'></i> ".date("d M Y", $data['date_added'])."<br/> Listed on </span>";
-							$html[] = "<span class='d-block text-muted fs-12'><i class='ti ti-calendar'></i> ".date("d M Y", $data['last_modified'])."<br/> Modified on</span>";
-						$html[] = "</div>"; */
 
 						$html[] = \Library\Helper::socialMediadShareButtons([
 							"title" => $data['page_title'],

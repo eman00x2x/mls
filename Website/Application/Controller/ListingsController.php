@@ -474,19 +474,26 @@ class ListingsController extends \Main\Controller {
 
 	function comparativeAnalysis($uri) {
 
+		parse_str(urldecode(base64_decode($uri)), $_GET);
 		$this->doc->setTitle("MLS System - Comparative Analysis Table");
-
-		$uri = base64_decode($uri);
 		
-		$total = isset($_SESSION['compare']['listings']) ? count($_SESSION['compare']['listings']) : 0;
-		
-		if($total > 0) {
-			
-			$listing = $this->getModel("Listing");
-			$listing->page['limit'] = 4;
+		$total = 0;
+		if(isset($_GET['id']) && isset($_GET['expiration'])) {
+			$_GET['id'] = json_decode($_GET['id'], true);
+			$total = count($_GET['id']);
+		}
 
-			$data = $listing->where(" listing_id IN(".$uri['ids'].") ")->getList();
-		}else { $data = false; $listing = false; }
+		if(\DateTime::createFromFormat('Y-m-d', $_GET['expiration']) !== false || $total <= 0) {
+			$this->response(404);
+		}
+
+		if(DATE_NOW < $_GET['expiration']) {
+			$this->response(404);
+		}
+
+		$listing = $this->getModel("Listing");
+		$listing->page['limit'] = 20;
+		$data = $listing->where(" listing_id IN(".implode(",", $_GET['id']).") ")->getList();
 
 		$this->setTemplate("listings/comparative.php");
 		return $this->getTemplate($data,$listing);

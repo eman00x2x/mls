@@ -109,16 +109,50 @@ $html[] = "<div class='page-body'>";
 		$html[] = "</div>";
 
 		$html[] = "<div class='mt-4 text-center'>";
-			$html[] = "<div class='fb-share-button' data-href='https://www.your-domain.com/your-page.html'  data-layout='button' data-size='large'></div>";
 
-			$html[] = "<div class='row justify-content-center mt-4'>";
-				$html[] = "<div class='col-md-4'>";
-					$html[] = "<div class='input-group input-group'>";
-						$html[] = "<span class='input-group-text'>Share link</span>";
-						$html[] = "<input type='text' class='form-control' value='".$data['share_link']."' readonly />";
+			$html[] = "<div class='row justify-content-center'>";
+				$html[] = "<div class='col-lg-4 col-md-6 col-12'>";
+
+					$html[] = "<div class='create-url-form'>";
+						$html[] = "<h3>Create Share Url</h3>";
+						$html[] = "<form id='share-form' action='' method='POST'>";
+							$html[] = "<div class='form-floating mb-3'>";
+								$html[] = "<select name='expiration_date' id='expiration_date' class='form-select'>";
+								foreach([7, 15, 30] as $day) {
+									$html[] = "<option value='".strtotime("+$day", DATE_NOW)."'>$day days</option>";
+								}
+								$html[] = "</select>";
+								$html[] = "<label for='expiration_date'>URL Expiration</label>";
+							$html[] = "</div>";
+
+							$html[] = "<span class='btn btn-primary btn-create-url'>Create URL</span>";
+						$html[] = "</form>";
 					$html[] = "</div>";
+
+					$html[] = "<div class='share-link-container text-center d-none'>";
+						$html[] = "<div class='row justify-content-center mb-4'>";
+							$html[] = "<div class='col-lg-4 col-md-6 col-4'>";
+								$html[] = \Library\Helper::socialMediadShareButtons([
+									"title" => "Compare Analysis Table",
+									"description" => "A detailed comparative of different real estate properties",
+									"img" => "",
+									"url" => '',
+								]);
+							$html[] = "</div>";
+						$html[] = "</div>";
+
+						$html[] = "<div class='input-group input-group'>";
+							$html[] = "<span class='input-group-text'>Share link</span>";
+							$html[] = "<input type='text' class='form-control share-link-input' value='' readonly />";
+						$html[] = "</div>";
+					$html[] = "</div>";
+
+
 				$html[] = "</div>";
 			$html[] = "</div>";
+
+			
+
 		$html[] = "</div>";
 
 	$html[] = "</div>";

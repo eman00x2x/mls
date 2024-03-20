@@ -9,10 +9,10 @@ class Helper {
 		$html[] = "<div class='social-medi-share-buttons'>";
 			$html[] = "<span class='text-muted fs-12'>Share this post</span>";
 			$html[] = "<div class='mt-1 d-flex gap-1'>";
-				$html[] = "<a target='_blank' href='https://www.facebook.com/sharer/sharer.php?u=".$data['url']."'><img src='".CDN."images/social/facebook.png' /></a>";
-				$html[] = "<a target='_blank' href='https://twitter.com/intent/tweet?text=".$data['title']."&url=".$data['url']."&via=TWITTER-HANDLE'><img src='".CDN."images/social/twitter.png' /></a>";
-				$html[] = "<a target='_blank' href='https://www.linkedin.com/shareArticle?mini=true&url=".$data['url']."&title=".$data['title']."&summary=".$data['description']."&source=".$data['url']."'><img src='".CDN."images/social/linkedin.png' /></a>";
-				$html[] = "<a target='_blank' href='https://pinterest.com/pin/create/button/?url=".$data['url']."&description=".$data['description']."&media=".$data['img']."'><img src='".CDN."images/social/pinterest.png' /></a>";
+				$html[] = "<a class='share-fb' target='_blank' href='https://www.facebook.com/sharer/sharer.php?u=".$data['url']."'><img src='".CDN."images/social/facebook.png' /></a>";
+				$html[] = "<a class='share-twitter' target='_blank' href='https://twitter.com/intent/tweet?text=".$data['title']."&url=".$data['url']."&via=TWITTER-HANDLE'><img src='".CDN."images/social/twitter.png' /></a>";
+				$html[] = "<a class='share-linkedin' target='_blank' href='https://www.linkedin.com/shareArticle?mini=true&url=".$data['url']."&title=".$data['title']."&summary=".$data['description']."&source=".$data['url']."'><img src='".CDN."images/social/linkedin.png' /></a>";
+				$html[] = "<a class='share-pinterest' target='_blank' href='https://pinterest.com/pin/create/button/?url=".$data['url']."&description=".$data['description']."&media=".$data['img']."'><img src='".CDN."images/social/pinterest.png' /></a>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 
