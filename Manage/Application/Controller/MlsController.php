@@ -442,7 +442,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 				"status" => 1,
 				"created_at" => DATE_NOW,
 				"content" => array(
-					"title" => $data['requestee']['firstname']." ".$data['requestee']['lastname']." accepted your handshake request",
+					"title" => $data['requestee']['account_name']['firstname']." ".$data['requestee']['account_name']['lastname']." accepted your handshake request",
 					"message" => $data['listing']['title'],
 					"url" => MANAGE."mls/handshaked"
 				)
@@ -485,7 +485,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 				"status" => 1,
 				"created_at" => DATE_NOW,
 				"content" => array(
-					"title" => $data['requestee']['firstname']." ".$data['requestee']['lastname']." denied your handshake request",
+					"title" => $data['requestee']['account_name']['firstname']." ".$data['requestee']['account_name']['lastname']." accepted your handshake request",
 					"message" => $data['listing']['title'],
 					"url" => MANAGE."mls/".$data['listing_id']
 				)
@@ -524,7 +524,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 				"status" => 1,
 				"created_at" => DATE_NOW,
 				"content" => array(
-					"title" => $this->session['firstname']." ".$this->session['lastname']." mark done a handshake",
+					"title" => $this->session['account_name']['firstname']." ".$this->session['account_name']['lastname']." mark done a handshake",
 					"message" => $data['listing']['title'],
 					"url" => MANAGE."mls/".$data['listing_id']
 				)
@@ -564,7 +564,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 					"status" => 1,
 					"created_at" => DATE_NOW,
 					"content" => array(
-						"title" => $this->session['firstname']." ".$this->session['lastname']." canceled a handshake",
+						"title" => $this->session['account_name']['firstname']." ".$this->session['account_name']['lastname']." canceled a handshake",
 						"message" => $data['listing']['title'],
 						"url" => MANAGE."mls/".$data['listing_id']
 					)
@@ -631,6 +631,11 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	function comparePreview() {
 
+		if(!isset($this->session['privileges']['comparaive_analysis_access']) && in_array($this->session['account_type'], ["Customer Service"])) {
+			$this->getLibrary("Factory")->setMsg("Access to the MLS Comparative Analysis Table requires premium privileges. Upgrade your subscription or subscribe to a premium to gain access.", "warning");
+			return getMsg();
+		}
+
 		$data['listings'] = $_SESSION['compare']['listings'];
 		$data['count'] = count($_SESSION['compare']['listings']);
 
@@ -640,6 +645,11 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 	}
 
 	function compareListings() {
+
+		if(!isset($this->session['privileges']['comparaive_analysis_access']) && in_array($this->session['account_type'], ["Customer Service"])) {
+			$this->getLibrary("Factory")->setMsg("Access to the MLS Comparative Analysis Table requires premium privileges. Upgrade your subscription or subscribe to a premium to gain access.", "warning");
+			response()->redirect(url("MlsController@MLSIndex"));
+		}
 
 		$this->doc->setTitle("MLS System - Comparative Analysis Table");
 		
@@ -747,6 +757,10 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
         exit();
 		
+	}
+
+	function related() {
+		return parent::related();
 	}
 	
 }

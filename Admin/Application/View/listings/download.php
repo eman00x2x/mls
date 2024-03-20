@@ -35,22 +35,23 @@ $html[] = "</div>";
 $html[] = "<page style=''>";
     $html[] = "<div style='line-height:1.5;'>";
 
-		$html[] = "<div style='border-bottom:2px solid #e1e1e1; margin-bottom:20px; color:#aeaeae;'>";
+		$html[] = "<div style='border-bottom:2px solid #e1e1e1; margin-bottom:5px; color:#aeaeae;'>";
 			$html[] = "<table style='width:100%;'>";
 			$html[] = "<tr>";
 				$html[] = "<td style='width:150px;'><img src='".CDN."images/logo.png' style='width:150px' /></td>";
 				$html[] = "<td>";
-					$html[] = "<h1 style='padding:0; margin:0 0 0 15px;'>MLS System</h1>";
+					$html[] = "<h1 style='padding:0; margin:0 0 0 15px;'>".CONFIG['site_name']."</h1>";
 				$html[] = "</td>";
 			$html[] = "</tr>";
 			$html[] = "</table>";
 
 			$html[] = "<div style='position:absolute; top:20px; right:10px;'>";
-				$html[] = "<qrcode value='".WEBDOMAIN."' ec='Q' style='padding:1px; border: 1px solid #e1e1e1; width: 30mm;'></qrcode>";
+				$html[] = "<qrcode value='".url("ListingsController@view", ["name" => $data['listing']['name']], ["mls" => "1"])."' ec='Q' style='padding:1px; border: 1px solid #e1e1e1; width: 30mm;'></qrcode>";
 				$html[] = "<br/><span style='font-size:10px; margin-top:5px;'>Scan QR to visit the page</span>";
 			$html[] = "</div>";
 
 		$html[] = "</div>";
+		$html[] = "<span style=' margin-bottom:20px; color:#aaa; font-style: italic; font-size: 12px;'><img src='".CDN."images/icons/world.png' style='width:12px; color: #aaa;' /> ".url("ListingsController@mls", ["name" => $data['listing']['name']], ["mls" => "1"])."</span>";
 		
 		$html[] = "<h1 style='margin:0; padding:0; font-size:18px;'>[Id: ".$data['listing']['listing_id']."] ".$data['listing']['title']."</h1>";
 		$html[] = "<p style='margin:0; padding:0;'><span><img src='".CDN."images/icons/map-pin.png' style='width:24px;' /> ".$data['listing']['address']['municipality'].", ".$data['listing']['address']['province']."</span></p>";

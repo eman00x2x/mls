@@ -163,7 +163,8 @@ define("ACCOUNT_PRIVILEGES",[
     "chat_access" => (int) 1,
     "display_ads" => (int) 0,
     "featured_ads" => (int) 0,
-    "handshake_limit" => (int) 1
+    "handshake_limit" => (int) 1,
+	"comparaive_analysis_access" => (int) 0
 ]);
 
 define("PREMIUM_SCRIPTS",[
@@ -173,5 +174,6 @@ define("PREMIUM_SCRIPTS",[
     "chat_access" => 0,
     "display_ads" => 0,
     "featured_ads" => 0,
-	"handshake_limit" => 1
+	"handshake_limit" => 1,
+	"comparaive_analysis_access" => 0
 ]);

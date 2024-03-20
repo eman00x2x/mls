@@ -275,7 +275,7 @@ $html[] = "<div class='page-body mb-0'>";
 												$html[] = "<span class='avatar avatar-xl me-2 rounded-circle' style='background-image: url(".$data['account']['logo'].")'></span>";
 												$html[] = "<div class='flex-fill'>";
 													$html[] = "<div class='font-weight-medium'>";
-														$html[] = $data['account']['firstname']." ".$data['account']['lastname'];
+														$html[] = $data['account']['account_name']['prefix']." ".$data['account']['account_name']['firstname']." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix'];
 													$html[] = "</div>";
 													$html[] = "<div class='text-muted'>".$data['account']['profession']."</div>";
 													if($data['account']['company_name'] != "") { $html[] = "<div class='text-muted'>".$data['account']['company_name']."</div>"; }

@@ -117,6 +117,8 @@ $(document).on('click', '.btn-denied-handshake, .btn-done-handshake, .btn-cancel
 		response = JSON.parse(data);
 		$('.response').html(response.message);
 		$('.' + row).remove();
+		$('.btn-accept-handshake').remove();
+		$('.btn-denied-handshake').remove();
 	});
 });
 
@@ -275,4 +277,28 @@ function timeSince(date) {
 		return Math.floor(interval) + " minutes";
 	}
 	return Math.floor(seconds) + " seconds";
+}
+
+function getAmortization() {
+
+	let selling_price = parseInt($('#selling_price').val());
+	let dp_percent = parseInt($('#mortgage-downpayment-selection').val());
+	let dp = selling_price * (dp_percent / 100);
+
+	let loan_amount = selling_price - dp;
+	let interest_rate = parseFloat($('#mortgage-interest-selection').val());
+	let years = parseInt($('#mortgage-years-selection').val()) + 1;
+	let payments_per_year = 12;
+
+	monthly_payment = pmt((interest_rate / 100) / payments_per_year, payments_per_year * years, -loan_amount);
+	monthly_payment_formated = parseFloat(monthly_payment.toFixed(2)).toLocaleString();
+
+	schedule = computeSchedule(loan_amount, interest_rate, payments_per_year, years, monthly_payment);
+
+	return {
+		'monthly_payment': monthly_payment,
+		'monthly_payment_formated': monthly_payment_formated,
+		'schedule': schedule
+	};
+
 }

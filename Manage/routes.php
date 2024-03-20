@@ -64,6 +64,7 @@ Router::get(MANAGE_ALIAS.'/mls/handshaked/{id}/acceptRequest', 'MlsController@ac
 Router::get(MANAGE_ALIAS.'/mls/handshaked/{id}/deniedRequest', 'MlsController@deniedRequest', ['as' => 'deniedRequest'])->where([ 'id' => '[0-9]+' ]);
 Router::get(MANAGE_ALIAS.'/mls/handshaked/{id}/doneHandshake', 'MlsController@doneHandshake', ['as' => 'doneHandshake'])->where([ 'id' => '[0-9]+' ]);
 Router::get(MANAGE_ALIAS.'/mls/handshaked/{listing_id}/cancelHandshake', 'MlsController@cancelHandshake', ['as' => 'cancelHandshake'])->where([ 'listing_id' => '[0-9]+' ]);
+Router::get( MANAGE_ALIAS . '/related-properties', 'MlsController@relatedProperties');
 
 /** DOWNLOAD MLS LISTING URL */
 Router::get(MANAGE_ALIAS.'/mls/{id}/download', 'MlsController@downloadPDFFormat', ['as' => 'listingsView'])->where([ 'id' => '[0-9]+' ]);

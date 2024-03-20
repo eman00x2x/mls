@@ -43,7 +43,7 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<table class='table mt-3'>";
 				
 				for($i=0; $i<count($data); $i++) { $c++;
-					$html[] = "<tr>";
+					$html[] = "<tr class='row_listings_".$data[$i]['handshake_id']."'>";
 						$html[] = "<td class='align-middle w-1 bg-dark text-white'>";
 							$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-white text-decoration-none'><span class='avatar avatar-lg' style='background-image: url(".$data[$i]['listing']['thumb_img'].")'></span></a>";
 					    $html[] = "</td>";
@@ -67,7 +67,7 @@ $html[] = "<div class='page-body'>";
 					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Registered Since</span> ".date("F d, Y", $data[$i]['requestor_details']['registration_date'])."</a>";
 					    $html[] = "</td>";
 					$html[] = "</tr>";
-					$html[] = "<tr>";
+					$html[] = "<tr class='row_listings_".$data[$i]['handshake_id']."'>";
 						$html[] = "<td class='align-middle' colspan='7'>";
 							$html[] = "<div class='btn-list'>";
 							if($data[$i]['requestor_account_id'] == $_SESSION['user_logged']['account_id']) {
@@ -85,7 +85,7 @@ $html[] = "<div class='page-body'>";
                                         $html[] = "<span class='btn btn-light '>Done since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
                                         break;
 									case 'denied':
-                                        $html[] = "<span class='btn btn-light '>Deined at: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+                                        $html[] = "<span class='btn btn-light '>Denied at: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
                                         break;
                                 }
                             }
@@ -103,7 +103,7 @@ $html[] = "<div class='page-body'>";
                                         $html[] = "<span class='btn btn-light '>Done since: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
                                         break;
 									case 'denied':
-                                        $html[] = "<span class='btn btn-light '>Deined at: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
+                                        $html[] = "<span class='btn btn-light '>Denied at: ".date("F d, Y",$data[$i]['handshake_status_date'])."</span>";
                                         break;
                                 }
                             }

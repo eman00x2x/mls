@@ -2,11 +2,10 @@
 
 namespace Website\Application\Controller;
 
-class ListingsController extends \Main\Controller {
+class ListingsController extends \Admin\Application\Controller\ListingsController {
 
-	private $doc;
-	
 	function __construct() {
+		parent::__construct();
 		$this->setTempalteBasePath(ROOT."Website");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 	}
@@ -253,11 +252,12 @@ class ListingsController extends \Main\Controller {
 	function view($name) {
 
 		$this->doc->addScript(CDN."js/encryption.js");
+		$this->doc->addScript(CDN."js/script.js");
 		$this->doc->addScript(CDN."js/amortization.js");
 		$this->doc->addScript(CDN."tabler/dist/libs/plyr/dist/plyr.min.js");
 		$this->doc->addStylesheet(CDN."tabler/dist/libs/plyr/dist/plyr.css");
 
-		$this->doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
 		    let privateKey;
 		    let publicKey;
@@ -354,40 +354,21 @@ class ListingsController extends \Main\Controller {
 				$('.send-message-agent-container .property-agent-container').remove();
 			});
 
-			function getAmortization() {
-
-				let selling_price = parseInt($('#selling_price').val());
-				let dp_percent = parseInt($('#mortgage-downpayment-selection').val());
-				let dp = selling_price * (dp_percent / 100);
-
-				let loan_amount = selling_price - dp;
-				let interest_rate = parseFloat($('#mortgage-interest-selection').val());
-				let years = parseInt($('#mortgage-years-selection').val()) + 1;
-				let payments_per_year = 12;
-
-				monthly_payment = pmt((interest_rate/100) / payments_per_year, payments_per_year * years, -loan_amount);
-				monthly_payment_formated = parseFloat(monthly_payment.toFixed(2)).toLocaleString();
-
-				schedule = computeSchedule(loan_amount, interest_rate, payments_per_year, years, monthly_payment);
-
-				return {
-					'monthly_payment': monthly_payment,
-					'monthly_payment_formated': monthly_payment_formated,
-					'schedule': schedule
-				};
-
-			}
-
 			document.addEventListener('DOMContentLoaded', function () {
 				window.Plyr && (new Plyr('#player-youtube'));
 			});
 
-		");
+		"));
 
 		$listing = $this->getModel("Listing");
 		$listing->column['name'] = $name;
 		$listing->where(" status = 1 ");
-		$listing->and(" display = 1 AND is_website = 1 ");
+		
+		if(isset($_GET['mls'])) {
+			$listing->and(" display = 1 AND is_mls = 1 ");
+		}else {
+			$listing->and(" display = 1 AND is_website = 1 ");
+		}
 		$data = $listing->getByName();
 
 		if($data) {
@@ -550,126 +531,9 @@ class ListingsController extends \Main\Controller {
 	}
 
 	function relatedProperties() {
-
-		if($_GET['offer'] == "buy") {
-			$filters[] = " offer = 'for sale'";
-			$uri['offer'] = "for sale";
-		}
-
-		if($_GET['offer'] == "rent") {
-			$filters[] = " offer = 'for rent'";
-			$uri['offer'] = "for rent";
-		}
-
-		$filters[] = " listing_id != ".$_GET['listing_id'];
-		$filters[] = " status = 1";
-		$filters[] = " display = 1";
-		$filters[] = " is_website = 1";
-
-		
-		if(isset($_GET['price']) && $_GET['price'] != "") {
-			$uri['price'] = $_GET['price'];
-			$filters[] = "price >= ".$_GET['price']."";
-		}
-
-		if(isset($_GET['lot_area']) && $_GET['lot_area'] != "") {
-			$uri['lot_area'] = $_GET['lot_area'];
-			$filters[] = "lot_area >= ".$_GET['lot_area']."";
-		}
-
-		if(isset($_GET['floor_area']) && $_GET['floor_area'] != "") {
-			$uri['floor_area'] = $_GET['floor_area'];
-			$filters[] = "floor_area >= ".$_GET['floor_area']."";
-		}
-
-		if(isset($_GET['bedroom']) && $_GET['bedroom'] != "") {
-			$uri['bedroom'] = $_GET['bedroom'];
-			$filters[] = " bedroom >= ".$_GET['bedroom'];
-		}
-
-		if(isset($_GET['bathroom']) && $_GET['bathroom'] != "") {
-			$uri['bathroom'] = $_GET['bathroom'];
-			$filters[] = " bathroom >= ".$_GET['bathroom'];
-		}
-
-		if(isset($_GET['type']) && $_GET['type'] != "") {
-			$uri['type'] = $_GET['type'];
-			$search[] = $_GET['type'];
-		}
-
-		if(isset($_GET['tags']) && $_GET['tags'] != "") {
-			$uri['tags'] = $_GET['tags'];
-			$search[] = implode(" ", $_GET['tags']);
-		}
-
-		if(isset($_GET['category']) && $_GET['category'] != "") {
-			$uri['category'] = $_GET['category'];
-			$filters[] = " category LIKE '%".$_GET['category']."%'";
-			$search[] = $_GET['category'];
-		}
-
-		if(isset($_GET['address']) && $_GET['address'] != "") {
-			$uri['address'] = $_GET['address'];
-
-			if($_GET['address']['region'] != "") {
-				$filters[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."'  ";
-				$search[] = $_GET['address']['region'];
-			}
-
-			if($_GET['address']['province'] != "") {
-				$filters[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['address']['province']."'  ";
-				$search[] = $_GET['address']['province'];
-			}
-
-			if($_GET['address']['municipality'] != "") {
-				$filters[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['address']['municipality']."'  ";
-				$search[] = $_GET['address']['municipality'];
-			}
-
-		}
-
-		if(isset($_GET['amenities']) && $_GET['amenities'] != "") {
-			$uri['amenities'] = $_GET['amenities'];
-			$search[] = $_GET['amenities'];
-		}
-
-		$listings = $this->getModel("Listing");
-
-		$listings->select("
-			listing_id, account_id, is_website, offer, foreclosed, name, price, floor_area, lot_area, unit_area, bedroom, bathroom, parking, thumb_img, last_modified, status, display, type, title, tags, long_desc, category, address, amenities,
-			MATCH( type, title, tags, long_desc, category, address, amenities )
-			AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS score
-		")->orderby(" score DESC ");
-		
-		$listings->where((isset($filters) ? implode(" AND ",$filters) : null));
-		$listings->page['limit'] = 5;
-		$data = $listings->getList();
-
-		if($data) {
-
-			$total_listing = count($data);
-
-			for($i=0; $i<$total_listing; $i++) {
-
-				$images = $this->getModel("ListingImage");
-				$images->page['limit'] = 50;
-
-				$images->column['listing_id'] = $data[$i]['listing_id'];
-				$total_image = $images->getByListingId();
-				
-				$data[$i]['total_images'] = 0;
-
-				if($total_image) {
-					$data[$i]['total_images'] = count($total_image);
-				}
-				
-
-			}
-
-		}
-
-		$this->setTemplate("listings/related.php");
-		return $this->getTemplate($data, $listings);
-
+		$this->setTempalteBasePath(ROOT."Manage");
+		return parent::relatedProperties();
 	}
+
+	
 }

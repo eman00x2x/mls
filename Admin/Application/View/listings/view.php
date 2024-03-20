@@ -42,158 +42,267 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 $html[] = "</div>";
 
 $html[] = "<div class='page-body'>";
-	$html[] = "<div class='container-xl'>";
+	
+	$html[] = "<div class='container-xl bg-white border'>";
+		$html[] = "<div class='py-5 mt-3'>";
+			$html[] = "<div class='row gap-2 justify-content-center'>";
+				$html[] = "<div class='col-sm-6 col-md-5 col-lg-5'>";
 
-		$html[] = "<div class='row'>";
+					$html[] = "<div id='photos'>";
 
-			$html[] = "<div class='col-md-9 col-12'>";
-                $html[] = "<div class='box-container mb-3'>";
-
-                    $html[] = "<h2 class='mt-0'>[Id: ".$data['listing']['listing_id']."] ".$data['listing']['title']." <small class='d-block fw-normal'><i class='ti ti-map-pin me-1'></i> ".$data['listing']['address']['municipality'].", ".$data['listing']['address']['province']."</small></h2>";
-
-					$html[] = "<div class='my-3 p-2'>";
-						$html[] = "<div class='row gap-2 justify-content-center'>";
-							$html[] = "<div class='col-md-8 col-12'>";
-
-								$html[] = "<div class=''>";
-									$html[] = "<a data-fslightbox data-type='image' href='".$data['listing']['thumb_img']."'>";
-										$html[] = "<div class='mb-2 img-responsive rounded border' style='position: relative; height: 300px; background-image: url(".$data['listing']['thumb_img'].")'>";
-											$html[] = "<span style='position: absolute; top:-1px; left: -1px;' class='fw-bold bg-white text-dark p-2'><i class='ti ti-photo'></i> +".count($data['listing']['images'])."</span>";
-										$html[] = "</div>";
-									$html[] = "</a>";
-
-									$html[] = "<div class='mb-3'>";
-										if($data['listing']['images']) {
-											$html[] = "<div class='d-flex gap-2 justify-content-center overflow-auto'>";
-											for($i=0; $i<count($data['listing']['images']); $i++) {
-												if($i <= 8) {
-													if($data['listing']['thumb_img'] != $data['listing']['images'][$i]['url']) {
-														$html[] = "<a data-fslightbox data-type='image' href='".$data['listing']['images'][$i]['url']."'>";
-															$html[] = "<div class='avatar avatar-xl' style='position:relative; background-image: url(".$data['listing']['images'][$i]['url'].")'>";
-																
-																if($i == 5) {
-																	$html[] = "<div class='overlay d-md-none d-sm-block' style='z-index: 1; position:absolute; background-color: rgba(0, 0, 0, 0.5); height: 100%; width: 100%;'>";
-																		$html[] = "<span class='text-white d-block mt-4' style='z-index: 2;'>+".(count($data['listing']['images']) - 5)."</span>";
-																	$html[] = "</div>";
-																}
-															
-																if($i == 6) {
-																	$html[] = "<div class='overlay d-none d-md-block' style='z-index: 1; position:absolute; background-color: rgba(0, 0, 0, 0.5); height: 100%; width: 100%;'>";
-																		$html[] = "<span class='text-white d-block mt-4' style='z-index: 2;'>+".(count($data['listing']['images']) - 6)."</span>";
-																	$html[] = "</div>";
-																}
-
-															$html[] = "</div>";
-														$html[] = "</a>";
-													}
-												}else {
-													$html[] = "<a data-fslightbox data-type='image' class='d-none' href='".$data['listing']['images'][$i]['url']."'></a>";
-												}
-											}
-											$html[] = "</div>";
-										}
-									$html[] = "</div>";
-								$html[] = "</div>";
-
+						if($data['listing']['thumb_img'] != "") {
+							$html[] = "<div class='mb-2 img-responsive rounded border' style='position: relative; height: 300px; background-image: url(".$data['listing']['thumb_img'].")'>";
+								$html[] = "<span style='position: absolute; top:-1px; left: -1px;' class='fw-bold bg-white text-dark p-2'><i class='ti ti-photo'></i> +".count($data['listing']['images'])."</span>";
+								$html[] = "<a data-fslightbox data-type='image' href='".$data['listing']['thumb_img']."' class='stretched-link'></a>";
 							$html[] = "</div>";
+						}else {
+							$html[] = "<div class='mb-2 img-responsive rounded border' style='position: relative; height: 300px; background-color:#FFF; background-image: url(".CDN."images/item_default.jpg); background-size: auto;'>";
+							$html[] = "</div>";
+						}
+						
+						$html[] = "<div class='mb-3'>";
+							if($data['listing']['images']) {
+								$html[] = "<div class='d-flex gap-2 justify-content-center overflow-auto'>";
+
+								$limit = 6;
+								if($data['listing']['video'] != "") {
+									$video_id = str_replace("https://www.youtube.com/watch?v=", "", $data['listing']['video']);
+									$html[] = "<div><a data-fslightbox href='".$data['listing']['video']."' id='youtube_video'>";
+										$html[] = "<div class='avatar avatar-xl p-2 bg-white-lt' style='background-image: url(http://img.youtube.com/vi/$video_id/sddefault.jpg)'><i class='ti ti-brand-youtube me-1 fs-36'></i></div>";
+									$html[] = "</a></div>";
+									$limit = 5;
+								}
+
+								$total_image = count($data['listing']['images']);
+
+								for($i=0; $i<$total_image; $i++) {
+									if($i < $limit) { $hide = "";
+
+										if($i > ($limit - 3)) {
+											$hide = "d-none d-md-block";
+										}
+										
+										$html[] = "<div class='$hide'><a data-fslightbox data-type='image' href='".$data['listing']['images'][$i]['url']."'>";
+											$html[] = "<div class='avatar avatar-xl' style='position:relative; background-image: url(".$data['listing']['images'][$i]['url'].")'>";
+												
+												if($i == ($limit - 3)) {
+													if(($total_image - 3) > $i) {
+														$html[] = "<div class='overlay d-md-none d-sm-block' style='z-index: 1; position:absolute; background-color: rgba(0, 0, 0, 0.5); height: 100%; width: 100%;'>";
+															$html[] = "<span class='text-white d-block mt-4' style='z-index: 2;'>+".($total_image - ($limit - 1))."</span>";
+														$html[] = "</div>";
+													}
+												}
+											
+												if($i == ($limit - 1)) {
+													if(($total_image - 1) > $i) {
+														$html[] = "<div class='overlay d-none d-md-block' style='z-index: 1; position:absolute; background-color: rgba(0, 0, 0, 0.5); height: 100%; width: 100%;'>";
+															$html[] = "<span class='text-white d-block mt-4' style='z-index: 2;'>+".($total_image - $limit)."</span>";
+														$html[] = "</div>";
+													}
+												}
+
+											$html[] = "</div>";
+										$html[] = "</a></div>";
+										
+									}else {
+										$html[] = "<a data-fslightbox data-type='image' class='d-none' href='".$data['listing']['images'][$i]['url']."'></a>";
+									}
+								}
+								$html[] = "</div>";
+							}
 						$html[] = "</div>";
 					$html[] = "</div>";
 
-                    $html[] = "<div class='mb-3'>";
-                        $html[] = "<div class='row'>";
-                            $html[] = "<div class='col-4'>";
-                                $html[] = "<table>";
-                                $html[] = "<tr><td colspan='2'>".$data['listing']['category']."</td></tr>";
-								if($data['listing']['floor_area'] > 0) { $html[] = "<tr><td style='width:120px;'>Floor Area</td>	<td><i class='ti ti-maximize me-2'></i> ".number_format($data['listing']['floor_area'],0)." sqm</td></tr>"; }
-                                if($data['listing']['lot_area'] > 0) { $html[] = "<tr><td style='width:120px;'>Lot Area</td>		<td><i class='ti ti-maximize me-2'></i> ".number_format($data['listing']['lot_area'],0)." sqm</td></tr>"; }
-                                if($data['listing']['unit_area'] > 0) { $html[] = "<tr><td style='width:120px;'>Unit Area</td>		<td><i class='ti ti-maximize me-2'></i> ".number_format($data['listing']['unit_area'],0)." sqm</td></tr>"; }
-                                if($data['listing']['bedroom'] != "" && $data['listing']['bedroom'] != 0) { $html[] = "<tr><td style='width:120px;'>Bedroom</td>		<td><i class='ti ti-bed me-2'></i> ".$data['listing']['bedroom']."</td></tr>"; }
-                                if($data['listing']['bathroom'] != "" && $data['listing']['bathroom'] != 0) { $html[] = "<tr><td style='width:120px;'>Bathroom</td>		<td><i class='ti ti-bath me-2'></i> ".$data['listing']['bathroom']."</td></tr>"; }
-                                if($data['listing']['parking'] > 0) { $html[] = "<tr><td style='width:120px;'>Car Garage</td>		<td><i class='ti ti-car-garage me-2'></i> ".($data['listing']['parking'] > 0 ? $data['listing']['parking'] : "No Parking")."</td></tr>"; }
-                                $html[] = "</table>";
-                            $html[] = "</div>";
+				$html[] = "</div>";
+				$html[] = "<div class='col-sm-6 col-md-6 col-lg-4'>";
+					
+					$html[] = "<div class='d-flex justify-content-between'>";
+						$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Posted since ";
+							$html[] = date("d M Y", $data['listing']['date_added']);
+						$html[] = "</span>";
 
-							$html[] = "<div class='col-8'>";
-								$html[] = "<h3 class='mb-0'><i class='ti ti-home-shield me-2'></i> Amenities</h3>";
-                    			$html[] = "<p class='mb-2'>".str_replace(",",", ", ucwords($data['listing']['amenities']))."</p>";
-								$html[] = "<p class=''><i class='ti ti-tags me-2'></i> Tags: ".implode(", ",$data['listing']['tags'])."</p>";
+						$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Modified at ";
+							$html[] = date("d M Y", $data['listing']['last_modified']);
+						$html[] = "</span>";
+					$html[] = "</div>";
+						
+					$html[] = "<div class='mb-4'>";
+						$html[] = "<h1>".$data['listing']['title']."</h1>";
+						$html[] = "<p><i class='ti ti-map-pin'></i> ".$data['listing']['address']['barangay']." ".$data['listing']['address']['municipality']." ".$data['listing']['address']['province']."</p>";
+						$html[] = "<p class='display-5 fw-bold text-highlight'>&#8369;".number_format($data['listing']['price'], 0)."</p>";
+						$html[] = "<p class='fs-16'><span><i class='ti ti-category'></i> ".$data['listing']['category']."</span></p>";
 
-								$html[] = "<div class='mb-3'>";
-									$html[] = "<span class='text-muted d-block'>Selling Price</span>";
-									$html[] = "<p class='p-0 m-0 fw-bold fs-30'><img src='".CDN."images/icons/currency-peso.png' style='width:32px;' />".number_format($data['listing']['price'],0)."</p>";
+						$html[] = "<div class='mb-3 d-flex gap-5 align-items-center'>";
+
+							if($data['listing']['lot_area'] > 0) {
+								$html[] = "<div class='fs-24 fw-bold'>";
+									$html[] = "<small class='fw-normal fs-12 d-block text-muted'> Land Area:</small>";
+									$html[] = "<span><i class='ti ti-maximize'></i> ".$data['listing']['lot_area']."sqm</span>";
 								$html[] = "</div>";
+							}
 
-                            $html[] = "</div>";
-                        $html[] = "</div>";
-                    $html[] = "</div>";
+							if($data['listing']['floor_area'] > 0) {
+								$html[] = "<div class='fs-24 fw-bold'>";
+									$html[] = "<small class='fw-normal fs-12 d-block text-muted'> Floor Area:</small>";
+									$html[] = "<span><i class='ti ti-maximize'></i> ".$data['listing']['floor_area']."sqm</span>";
+								$html[] = "</div>";
+							}
+						$html[] = "</div>";
+
+						$html[] = "<div class='mb-3 d-flex gap-5 align-items-center'>";
+							if($data['listing']['bedroom'] != "" && $data['listing']['bedroom'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-bed'></i> ".$data['listing']['bedroom']."<span class='d-block fw-normal text-muted fs-12'>Bedroom</span></div>"; }
+							if($data['listing']['bathroom'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-bath'></i> ".$data['listing']['bathroom']."<span class='d-block fw-normal text-muted fs-12'>Bathroom</span></div>"; }
+							if($data['listing']['parking'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-car-garage'></i> ".$data['listing']['parking']."<span class='d-block fw-normal text-muted fs-12'>Car Space</span></div>"; }
+						$html[] = "</div>";
+
+					$html[] = "</div>";
+
+				$html[] = "</div>";
+			$html[] = "</div>";
+		$html[] = "</div>";
+	$html[] = "</div>";
+
+	$html[] = "<div class='container-xl my-3 px-0'>";
+		$html[] = "<div class='row'>";
+			$html[] = "<div class='col-md-9 col-12'>";
+                $html[] = "<div class='bg-white border px-4 pb-4 '>";
+
+					$html[] = "<div class='sticky-top bg-white py-2 px-0 mx-0 mb-4 border-bottom'>";
+						$html[] = "<div class='d-flex overflow-auto'>";
+							if($data['listing']['thumb_img'] != "" && $data['listing']['images']) { $html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#photos'><i class='ti ti-photo me-1'></i> Photos</a>"; }
+							if($data['listing']['video'] != "") { $html[] = "<a class='btn btn-outline-primary border-0 d-block' href='javascript:document.querySelector(\"#youtube_video\").click()'><i class='ti ti-brand-youtube me-1'></i> Video</a>"; }
+							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#description'><i class='ti ti-file-description me-1'></i> Description</a>";
+							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#amenities'><i class='ti ti-home-shield me-1'></i> Amenities</a>";
+							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#payment_details'><i class='ti ti-wallet me-1'></i> Payment Details</a>";
+							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#mortgage_calculator'><i class='ti ti-calculator me-1'></i> Mortgage Claculator</a>";
+						$html[] = "</div>";
+					$html[] = "</div>";
+
+                    $html[] = "<div class='mb-2 description ' style='max-height: 300px; overflow: hidden;'>";
+						$html[] = "<h3 id='description'><i class='ti ti-file-description me-1'></i> Description</h3>";
+						$html[] = $data['listing']['long_desc'];
+					$html[] = "</div>";
+					$html[] = "<span class='btn btn-description-toggle d-none'>Show more...</span>";
 
 					/** AMENITIES */
-						$html[] = "<div class='amenities mt-5'>";
-							$html[] = "<h3><i class='ti ti-home-shield me-1'></i> Amenities</h3>";
-							$html[] = "<ul class='m-0 p-0' style='list-style: none; columns: 2; -webkit-columns: 2; -moz-columns: 2;'>";
-								$amenities = explode(",",$data['listing']['amenities']);
-								for($i=0; $i<count($amenities); $i++) {
-									$html[] = "<li class='m-0 p-0'>";
-										$html[] = "<i class='ti ti-check'></i> ".$amenities[$i];
-									$html[] = "</li>";
-								}
-							$html[] = "</ul>";
-						$html[] = "</div>";
-						/** AMENITIES END */
+					$html[] = "<div class='amenities mt-5'>";
+						$html[] = "<h3><i class='ti ti-home-shield me-1'></i> Amenities</h3>";
+						$html[] = "<ul class='m-0 p-0' style='list-style: none; columns: 2; -webkit-columns: 2; -moz-columns: 2;'>";
+							$amenities = explode(",",$data['listing']['amenities']);
+							for($i=0; $i<count($amenities); $i++) {
+								$html[] = "<li class='m-0 p-0'>";
+									$html[] = "<i class='ti ti-check'></i> ".$amenities[$i];
+								$html[] = "</li>";
+							}
+						$html[] = "</ul>";
+					$html[] = "</div>";
+					/** AMENITIES END */
 
 					/** PAYMENT DETAILS */
-						$html[] = "<div class='price mt-5'>";
-							$html[] = "<h3><i class='ti ti-wallet me-1'></i> Payment Details</h3>";
-							$html[] = "<table class='table'>";
-							$html[] = "<tr>";
-								$html[] = "<td>Selling Price</td>";
-								$html[] = "<td>&#8369;".number_format($data['listing']['price'],0)."</td>";
-							$html[] = "</tr>";
-							$html[] = "<tr>";
-								$html[] = "<td>Reservation Fee / Option Money</td>";
-								$html[] = "<td>&#8369;".number_format($data['listing']['reservation'],0)."</td>";
-							$html[] = "</tr>";
+					$html[] = "<div class='price mt-5'>";
+						$html[] = "<h3><i class='ti ti-wallet me-1'></i> Payment Details</h3>";
+						$html[] = "<table class='table'>";
+						$html[] = "<tr>";
+							$html[] = "<td>Selling Price</td>";
+							$html[] = "<td>&#8369;".number_format($data['listing']['price'],0)."</td>";
+						$html[] = "</tr>";
+						$html[] = "<tr>";
+							$html[] = "<td>Reservation Fee / Option Money</td>";
+							$html[] = "<td>&#8369;".number_format($data['listing']['reservation'],0)."</td>";
+						$html[] = "</tr>";
 
-							$html[] = "<tr>";
-								$html[] = "<td>Option Money Duration</td>";
-								$html[] = "<td>".$data['listing']['payment_details']['option_money_duration']." days</td>";
-							$html[] = "</tr>";
+						$html[] = "<tr>";
+							$html[] = "<td>Option Money Duration</td>";
+							$html[] = "<td>".$data['listing']['payment_details']['option_money_duration']." days</td>";
+						$html[] = "</tr>";
 
-							$html[] = "<tr>";
-								$html[] = "<td>Mode of Payment</td>";
-								$html[] = "<td>".$data['listing']['payment_details']['payment_mode']."</td>";
-							$html[] = "</tr>";
+						$html[] = "<tr>";
+							$html[] = "<td>Mode of Payment</td>";
+							$html[] = "<td>".$data['listing']['payment_details']['payment_mode']."</td>";
+						$html[] = "</tr>";
 
-							$html[] = "<tr>";
-								$html[] = "<td>Allocation of Taxes</td>";
-								$html[] = "<td>".$data['listing']['payment_details']['tax_allocation']."</td>";
-							$html[] = "</tr>";
+						$html[] = "<tr>";
+							$html[] = "<td>Allocation of Taxes</td>";
+							$html[] = "<td>".$data['listing']['payment_details']['tax_allocation']."</td>";
+						$html[] = "</tr>";
 
-							$html[] = "<tr>";
-								$html[] = "<td>Eligible for Bank Loan</td>";
-								$html[] = "<td>".($data['listing']['payment_details']['bank_loan'] == 1 ? "Yes" : "No")."</td>";
-							$html[] = "</tr>";
+						$html[] = "<tr>";
+							$html[] = "<td>Eligible for Bank Loan</td>";
+							$html[] = "<td>".($data['listing']['payment_details']['bank_loan'] == 1 ? "Yes" : "No")."</td>";
+						$html[] = "</tr>";
 
-							$html[] = "<tr>";
-								$html[] = "<td>Eligible for Pag-Ibig Housing Loan</td>";
-								$html[] = "<td>".($data['listing']['payment_details']['pagibig_loan'] == 1 ? "Yes" : "No")."</td>";
-							$html[] = "</tr>";
+						$html[] = "<tr>";
+							$html[] = "<td>Eligible for Pag-Ibig Housing Loan</td>";
+							$html[] = "<td>".($data['listing']['payment_details']['pagibig_loan'] == 1 ? "Yes" : "No")."</td>";
+						$html[] = "</tr>";
 
-							$html[] = "<tr>";
-								$html[] = "<td>Assume Balance</td>";
-								$html[] = "<td>".($data['listing']['payment_details']['assume_balance'] == 1 ? "Yes" : "No")."</td>";
-							$html[] = "</tr>";
-							$html[] = "</table>";
-							
+						$html[] = "<tr>";
+							$html[] = "<td>Assume Balance</td>";
+							$html[] = "<td>".($data['listing']['payment_details']['assume_balance'] == 1 ? "Yes" : "No")."</td>";
+						$html[] = "</tr>";
+						$html[] = "</table>";
+						
+					$html[] = "</div>";
+					/** PAYMENT DETAILS END */
+
+					/** MORTGAGE CALCULATOR */
+					$html[] = "<div class='mortgage-calculator mt-5 p-3 bg-cyan-lt border'>";
+						
+						$html[] = "<input type='hidden' id='selling_price' value='".$data['listing']['price']."' />";
+						$html[] = "<h3 id='mortgage_calculator' class='mb-2 text-dark'><i class='ti ti-calculator'></i> Mortgage Calculator</h3>";
+						$html[] = "<p class='mb-2 text-dark'>With the current price of <b>&#8369;".number_format($data['listing']['price'],0)."</b> and mortgage rates as stated below, expect to have a monthly payment of:</p>";
+						
+						$html[] = "<div class='p-4 border bg-white'>";
+							$html[] = "<div class='row align-items-center justify-content-center'>";
+								$html[] = "<div class='col-md-6'>";
+									$html[] = "<div class='text-center text-highlight mb-3'>";
+										$html[] = "<span class='d-block mb-2'>Monthly Payment of</span>";
+										$html[] = "<span class='fs-36 fw-bold monthly_dp'></span>";
+									$html[] = "</div>";
+								$html[] = "</div>";
+
+								$html[] = "<div class='col-md-6'>";
+
+									$html[] = "<div class='d-flex gap-2 justify-content-center'>";
+										$html[] = "<div class='form-floating flex-fill'>";
+											$html[] = "<select id='mortgage-downpayment-selection' class='form-select'>";
+											foreach(range(10, 90, 10) as $dp) {
+												$sel = 20 == $dp ? "selected" : "";
+												$html[] = "<option value='$dp' $sel>$dp%</option>";
+											}
+											$html[] = "</select>";
+											$html[] = "<label for='mortgage-downpayment-selection'>Down Payment</label>";
+										$html[] = "</div>";
+
+										$html[] = "<div class='form-floating flex-fill'>";
+											$html[] = "<select id='mortgage-interest-selection' class='form-select'>";
+											foreach(range(0, 20, 0.25) as $interest) {
+												$sel = 3.75 == $interest ? "selected" : "";
+												$html[] = "<option value='".($interest)."' $sel >".number_format($interest,2)."%</option>";
+											}
+											$html[] = "</select>";
+											$html[] = "<label for='mortgage-interest-selection'>Interest Rate</label>";
+										$html[] = "</div>";
+
+										$html[] = "<div class='form-floating flex-fill'>";
+											$html[] = "<select id='mortgage-years-selection' class='form-select'>";
+											for($i=0; $i<=29; $i++) {
+												$sel = $i == 2 ? "selected" : "";
+												$html[] = "<option value='".$i."' $sel>".($i + 1)." Years</option>";
+											}
+											$html[] = "</select>";
+											$html[] = "<label for='mortgage-years-selection'>Years</label>";
+										$html[] = "</div>";
+									$html[] = "</div>";
+
+									$html[] = "<p class='fs-12 text-muted m-0 mt-2'>You can use the mortgage calculator to estimate the monthly payment with different values.</p>";
+									
+								$html[] = "</div>";
+							$html[] = "</div>";
 						$html[] = "</div>";
-						/** PAYMENT DETAILS END */
-
-                    $html[] = "<div class='mb-5 pb-5'>";
-                        $html[] = "<h3 class='mt-3 mb-2'>Description</h3>";
-                        $html[] = "<div class='mt-2'>";
-                            $html[] = $data['listing']['long_desc'];
-                        $html[] = "</div>";
-                    $html[] = "</div>";
+						$html[] = "<p class='mt-2 mb-0 p-0 text-muted fs-12'>* The accuracy and applicability of this calculator are not guaranteed.</p>";
+					$html[] = "</div>";
+					/** MORTGAGE CALCULATOR END */
 
                 $html[] = "</div>";
             $html[] = "</div>";
@@ -244,7 +353,7 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<div class='d-flex lh-1 text-reset p-0'>";
 									$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['handshake']['requestor_details']['logo'].")'></span>";
 									$html[] = "<div class='ms-2'>";
-										$html[] = "<div class='fw-bold'>".$data['handshake']['requestor_details']['account']['prefix']." ".$data['handshake']['requestor_details']['account']['firstname']." ".$data['handshake']['requestor_details']['account']['lastname']." ".$data['handshake']['requestor_details']['account']['suffix']."</div>";
+										$html[] = "<div class='fw-bold'>".$data['handshake']['requestor_details']['account_name']['prefix']." ".$data['handshake']['requestor_details']['account_name']['firstname']." ".$data['handshake']['requestor_details']['account_name']['lastname']." ".$data['handshake']['requestor_details']['account_name']['suffix']."</div>";
 										$html[] = "<div class='mt-1 small'>".$data['handshake']['requestor_details']['profession']."</div>";
 									$html[] = "</div>";
 								$html[] = "</div>";
@@ -273,6 +382,23 @@ $html[] = "<div class='page-body'>";
         $html[] = "</div>";
 
     $html[] = "</div>";
+
+	
+	$html[] = "<div class='container-xl'>";
+		$html[] = "<div class='py-4'>";
+
+			$html[] = "<div class='row'>";
+				$html[] = "<div class='col-lg-9'>";
+					$html[] = "<div class='related-properties-container mb-3'></div>";
+				$html[] = "</div>";
+				$html[] = "<div class='col-lg-3'>";
+					
+				$html[] = "</div>";
+			$html[] = "</div>";
+
+		$html[] = "</div>";										
+	$html[] = "</div>";	
+
 $html[] = "</div>";
 
 $html[] = "<div class='btn-wrap fixed-bottom d-sm-block d-md-none'>";

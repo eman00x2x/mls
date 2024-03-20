@@ -4,11 +4,11 @@ $html[] = "<h3><i class='ti ti-building'></i> Related Properties</h3>";
 $html[] = "<div class='row row-cards'>";
 	$html[] = "<div class='space-y'>";
 
-		if($data) {
-		
+		if($model->listingRows) {
+
 			$c = 0;
-			for($i=0; $i<count($data); $i++) { $c++;
-				$html[] = $html[] = listingList($data[$i]);
+			for($i=0; $i<count($model->listingRows); $i++) { $c++;
+				$html[] = $model->listingRows[$i];
 			}
 
 		}else {

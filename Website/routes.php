@@ -34,7 +34,7 @@ Router::get( WEB_ALIAS . '/related-properties', 'ListingsController@relatedPrope
 Router::post(WEB_ALIAS . '/send-message-{id}', 'ListingsController@sendMessage')->where([ 'id' => '[0-9]+' ]);
 
 /** MLS PUBLIC ROUTES */
-Router::get( WEB_ALIAS . '/mls/{id}', 'ListingsController@mls')->where([ 'id' => '[0-9]+' ]);
+Router::get( WEB_ALIAS . '/mls/{name}', 'ListingsController@view')->where([ 'name' => '[\w\-]+' ]);
 Router::get( WEB_ALIAS . '/comparative-analysis/{uri}', 'ListingsController@comparativeAnalysis')->where([ 'uri' => '[\w\-\=]+' ]);
 
 /** PROFILE ROUTES */
