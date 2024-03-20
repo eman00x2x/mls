@@ -476,6 +476,17 @@ class ListingsController extends \Main\Controller {
 
 		parse_str(urldecode(base64_decode($uri)), $_GET);
 		$this->doc->setTitle("MLS System - Comparative Analysis Table");
+
+		$this->doc->addStyleDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+			.page-body {
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+		"));
 		
 		$total = 0;
 		if(isset($_GET['id']) && isset($_GET['expiration'])) {
@@ -491,9 +502,14 @@ class ListingsController extends \Main\Controller {
 			$this->response(404);
 		}
 
+		$account = $this->getModel("Account");
+		$account->select(" account_id, account_name, board_region, local_board_name, email, mobile_number, profession, real_estate_license_number, logo, company_name, registration_date ");
+		$account->column['account_id'] = $_GET['account_id'];
+		$data['account'] = $account->getById();
+
 		$listing = $this->getModel("Listing");
 		$listing->page['limit'] = 20;
-		$data = $listing->where(" listing_id IN(".implode(",", $_GET['id']).") ")->getList();
+		$data['listing'] = $listing->where(" listing_id IN(".implode(",", $_GET['id']).") ")->getList();
 
 		$this->setTemplate("listings/comparative.php");
 		return $this->getTemplate($data,$listing);

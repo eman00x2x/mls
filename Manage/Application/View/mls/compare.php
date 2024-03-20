@@ -66,41 +66,70 @@ $html[] = "<div class='page-body'>";
 			$html[] = "<div class='table-responsive'>";
 				$html[] = "<table class='table table-vcenter table-bordered card-table caption-top'>";
 				$html[] = "<thead>";
+
 					$html[] = "<tr>";
-						$html[] = "<td class='text-center col-avatar' style='width:150px !important;'>Image</td>";
-						for($i=0; $i<count($data); $i++) {
-							$html[] = "<td class='text-center col-avatar'>";
-								$html[] = "<div class='avatar avatar-xl' style='background-image: url(".$data['listing'][$i]['thumb_img'].")'></div>";
-								/* $html[] = "<span class='d-block text-muted mt-2'>".$data['listing'][$i]['title']."</span>"; */
-							$html[] = "</td>";
+						$html[] = "<th class='text-center col-avatar'>Image</th>";
+						$export['header'][] = "Image";
+						foreach($columns as $col) {
+							$html[] = "<th class='text-center col-$col'>".ucwords(str_replace("_"," ",$col))."</th>";
+							$export['header'][] = ucwords(str_replace("_"," ",$col));
 						}
-					$html[] = "</tr>";
+					$html[] = "<tr>";
+					
 				$html[] = "</thead>";
 
 				$html[] = "<tbody>";
 
-					foreach($columns as $col) {
-						$html[] = "<tr>";
-							$html[] = "<td class='text-center col-$col'>".ucwords(str_replace("_"," ",$col))."</td>";
+					for($i=0; $i<count($data['listing']); $i++) {
 
-							for($x=0; $x<count($data); $x++) {
-								
+						$export['rows'][$i][] = $data['listing'][$i]['thumb_img'];
+
+						$html[] = "<tr>";
+							$html[] = "<td class='text-center col-avatar'>";
+								$html[] = "<div class='avatar avatar-xl' style='background-image: url(".$data['listing'][$i]['thumb_img'].")'></div>";
+							$html[] = "</td>";
+
+							foreach($columns as $col) {
 								switch($col) {
 									case 'address':
-										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data['listing'][$x]["address"]['municipality']." ".$data['listing'][$x]["address"]['province']."</td>";
+
+										$address = [];
+
+										if(isset($data['listing'][$i]["address"]['street'])) {
+											$address[] = $data['listing'][$i]["address"]['street'];
+										}
+
+										if(isset($data['listing'][$i]["address"]['village'])) {
+											$address[] = $data['listing'][$i]["address"]['village'];
+										}
+
+										if(isset($data['listing'][$i]["address"]['barangay'])) {
+											$address[] = $data['listing'][$i]["address"]['barangay'];
+										}
+
+										if(isset($data['listing'][$i]["address"]['municipality'])) {
+											$address[] = $data['listing'][$i]["address"]['municipality'];
+										}
+
+										if(isset($data['listing'][$i]["address"]['province'])) {
+											$address[] = $data['listing'][$i]["address"]['province'];
+										}
+
+										$export['rows'][$i][] = implode(" ", $address);
+										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data['listing'][$i]["address"]['municipality']." ".$data['listing'][$i]["address"]['province']."</td>";
 										break;
 									
 									case 'price':
-										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>&#8369;".number_format($data['listing'][$x]['price'],0)."</td>";
+										$export['rows'][$i][] = $data['listing'][$i]['price'];
+										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>&#8369;".number_format($data['listing'][$i]['price'],0)."</td>";
 										break;
 
 									default:
-										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data['listing'][$x][$col]."</td>";
+										$export['rows'][$i][] = $data['listing'][$i][$col];
+										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data['listing'][$i][$col]."</td>";
 								}
-
 							}
-
-						$html[] = "<tr>";
+						$html[] = "</tr>";
 					}
 
 				$html[] = "</tbody>";
@@ -114,7 +143,7 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<div class='col-lg-4 col-md-6 col-12'>";
 
 					$html[] = "<div class='create-url-form'>";
-						$html[] = "<h3>Create Share Url</h3>";
+						$html[] = "<h3>Create Share Link</h3>";
 						$html[] = "<form id='share-form' action='' method='POST'>";
 							$html[] = "<div class='form-floating mb-3'>";
 								$html[] = "<select name='expiration_date' id='expiration_date' class='form-select'>";
@@ -122,10 +151,10 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<option value='".strtotime("+$day", DATE_NOW)."'>$day days</option>";
 								}
 								$html[] = "</select>";
-								$html[] = "<label for='expiration_date'>URL Expiration</label>";
+								$html[] = "<label for='expiration_date'>Share Link Expiration</label>";
 							$html[] = "</div>";
 
-							$html[] = "<span class='btn btn-primary btn-create-url'>Create URL</span>";
+							$html[] = "<span class='btn btn-primary btn-create-url'>Create Share Link</span>";
 						$html[] = "</form>";
 					$html[] = "</div>";
 
@@ -157,3 +186,5 @@ $html[] = "<div class='page-body'>";
 
 	$html[] = "</div>";
 $html[] = "</div>";
+
+$session['export'] = $export;

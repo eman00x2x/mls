@@ -34,7 +34,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 	function MLSIndex() {
 
         $this->doc->setTitle("MLS System");
-		$this->doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 			$(document).on('click','.btn-filter',function() {
 				var formData = $('#filter-form').serialize();
 				window.location = '".url('MlsController@MLSIndex')."?filter=' + btoa(formData);
@@ -62,7 +62,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 				$('.offcanvas-end').html('');
 			});
 
-		"); 
+		")); 
 
 		if(isset($_GET['filter'])) {
 			parse_str(urldecode(base64_decode($_GET['filter'])), $_GET);
@@ -648,13 +648,14 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		if($total > 0) {
 	
 			$ids = array_keys($_SESSION['compare']['listings']);
-			
+
 			$listing = $this->getModel("Listing");
 			$listing->page['limit'] = 20;
 			$data['listing'] = $listing->where(" listing_id IN(".implode(",", $ids).") ")->getList();
 
-			$this->doc->addScriptDeclaration("
+			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
+				let account_id = '".$this->session['account_id']."';
 				let ids = '".json_encode($ids)."';
 				let base_url = '".WEBDOMAIN."comparative-analysis/';
 				let html = '';
@@ -663,11 +664,11 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 					let expiration_date = $('#expiration_date option:selected').val();
 					let uri = '&expiration=' + expiration_date;
-					url = base_url + btoa('id=' + ids + uri);
+					let url = base_url + btoa('id=' + ids + uri + '&account_id=' + account_id);
 
 					let title = 'Compare Analysis Table';
 					let description = 'A detailed comparative of different real estate properties';
-					let img = '';
+					let img = '".CDN."images/470933820.jpg';
 
 					let share_link_fb = 'https://www.facebook.com/sharer/sharer.php?u=' + url;
 					let share_link_twitter = 'https://twitter.com/intent/tweet?text=' + title + '&url=' + url + '&via=TWITTER-HANDLE';
@@ -685,7 +686,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 				});
 
-			");
+			"));
 			
 			$this->setTemplate("mls/compare.php");
 			return $this->getTemplate($data,$listing);
