@@ -25,7 +25,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 			$html[] = "<div class='container-xl'>";
 				$html[] = "<div class='row g-2 '>";
 					$html[] = "<div class='col'>";
-						$html[] = "<div class='page-pretitle'>Manage Property Listing of ".$data['firstname']." ".$data['lastname']."</div>";
+						$html[] = "<div class='page-pretitle'>Manage Property Listing of ".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</div>";
 						$html[] = "<h1 class='page-title'><span class='stamp stamp-md me-1'><i class='ti ti-home me-1'></i></span> Update Property Listing</h1>";
 					$html[] = "</div>";
 					$html[] = "<div class='col-auto ms-auto d-print-none'>";
@@ -35,7 +35,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 								if($data['account_type'] != "Administrator") {
 									$html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@view", ["id" => $data['account_id']])."'>";
 										$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['logo'].")'></span>";
-										$html[] = $data['firstname']." ".$data['lastname']." account";
+										$html[] = $data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']." account";
 									$html[] = "</a>";
 									$html[] = "<a class='btn btn-dark' href='".url("ListingsController@index",["id" => $data['listing']['account_id']])."' title='Listings'><i class='ti ti-list me-1'></i> Property Listings</a>";
 								}else {

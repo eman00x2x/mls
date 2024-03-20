@@ -20,7 +20,7 @@ $html[] = "<div class='row justify-content-center'>";
 								if($_SESSION['user_logged']['account_type'] == "Administrator") {
 									$html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@view", ["id" => $data['account']['account_id']])."'>";
 										$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['account']['logo'].")'></span>";
-										$html[] = $data['account']['firstname']." ".$data['account']['lastname']." account";
+										$html[] = $data['account']['account_name']['prefix']." ".$data['account']['account_name']['firstname']." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix']." account";
 									$html[] = "</a>";
 								}
 								
@@ -45,7 +45,7 @@ $html[] = "<div class='row justify-content-center'>";
 						$html[] = "<div class='d-flex gap-2 justify-content-between'>";
 							$html[] = "<p>";
 								$html[] = "<span class='text-muted fs-11'>Account #".$data['account']['account_id']."</span>";
-								$html[] = "<span class='d-block strong fs-18'>".$data['account']['firstname']." ".$data['account']['lastname']."</span>";
+								$html[] = "<span class='d-block strong fs-18'>".$data['account']['account_name']['prefix']." ".$data['account']['account_name']['firstname']." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix']."</span>";
 								$html[] = "<span class='text-muted'>".$data['account']['email']."</span>";
 							$html[] = "</p>";
 

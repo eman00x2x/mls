@@ -5,38 +5,33 @@ date_default_timezone_set("Asia/Manila");
 
 define("DATE_NOW",strtotime("Now"));
 define("LIST_LIMIT",20);
-
+/* 
 define("API","http://api.mls/");
 define("WEBADMIN","http://webadmin.mls/");
 define("CS","http://cs.mls/");
 define("WEBDOMAIN","http://mls/");
-
 define("ADMIN","http://admin.mls/");
 define("MANAGE","http://manage.mls/");
 define("CDN","http://cdn.mls/");
 
-define("ADMIN_ALIAS","");
-define("MANAGE_ALIAS","");
-define("ALIAS","");
-/* define("ALIAS","/mls/website"); */
-/* 
-define("CDN","http://localhost/mls/cdn/");
-define("WEBDOMAIN","http://localhost/mls/website/"); */
+define("ADMIN_ALIAS","/mls/admin");
+define("WEB_ADMIN_ALIAS","/mls/webadmin");
+define("MANAGE_ALIAS","/mls/manage");
+define("ALIAS","/mls/website");
+ */
 
-/* define("ADMIN","http://localhost/mls/admin/");
-define("MANAGE","http://localhost/mls/manage/");
 define("CDN","http://localhost/mls/cdn/");
+define("WEBDOMAIN","http://localhost/mls/website/");
+define("WEBADMIN","http://localhost/mls/webadmin/");
+define("CS","http://localhost/mls/webadmin/");
+define("ADMIN","http://localhost/mls/admin/");
+define("MANAGE","http://localhost/mls/manage/");
 
 define("ADMIN_ALIAS","/mls/admin");
-define("ALIAS","/mls/manage"); */
+define("WEB_ADMIN_ALIAS","/mls/webadmin");
+define("MANAGE_ALIAS","/mls/manage");
+define("WEB_ALIAS","/mls/website");
 
-/* define("API","http://192.168.254.250/mls/Api/");
-define("ADMIN","http://192.168.254.250/mls/Admin/");
-define("MANAGE","http://192.168.254.250/managemls/");
-define("WEBDOMAIN","http://192.168.254.250/mls/");
-define("CDN","http://192.168.254.250/cdnmls/");
-
-define("ALIAS","managemls"); */
 
 define("VRSN","v1.0");
 

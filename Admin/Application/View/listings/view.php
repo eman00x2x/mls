@@ -205,7 +205,7 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<div class='mb-3'>";
 							$html[] = "<span class='avatar avatar-xxl rounded' style='background-image: url(".$data['account']['logo'].")'></span>";
 						$html[] = "</div>";
-						$html[] = "<div class='card-title mb-0'>".$data['account']['firstname']." ".$data['account']['lastname']."</div>";
+						$html[] = "<div class='card-title mb-0'>".$data['account']['account_name']['prefix']." ".$data['account']['account_name']['firstname']." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix']."</div>";
 						$html[] = "<div class='text-secondary'>".$data['account']['profession']."</div>";
 					$html[] = "</div>";
 
@@ -223,8 +223,10 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<div class='card-title'>Posting Details</div>";
 						
 						if($data['handshake'] && in_array($_SESSION['user_logged']['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
-							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-certificate me-1'></i> Authority:</span> <strong>".$data['listing']['other_details']['authority_type']."</strong></div>";
-							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-license me-1'></i> Commission Share:</span> <strong>".$data['listing']['other_details']['com_share']."%</strong></div>";
+							if($data['handshake']['handshake_status'] == "accepted") {
+								$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-certificate me-1'></i> Authority:</span> <strong>".$data['listing']['other_details']['authority_type']."</strong></div>";
+								$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-license me-1'></i> Commission Share:</span> <strong>".$data['listing']['other_details']['com_share']."%</strong></div>";
+							}
 						}
 
 						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-status-change me-1'></i> Status:</span> <strong>".$status[$data['listing']['status']]."</strong></div>";
@@ -241,7 +243,7 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<div class='d-flex lh-1 text-reset p-0'>";
 									$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['handshake']['requestor_details']['logo'].")'></span>";
 									$html[] = "<div class='ms-2'>";
-										$html[] = "<div class='fw-bold'>".$data['handshake']['requestor_details']['firstname']." ".$data['handshake']['requestor_details']['lastname']."</div>";
+										$html[] = "<div class='fw-bold'>".$data['handshake']['requestor_details']['account']['prefix']." ".$data['handshake']['requestor_details']['account']['firstname']." ".$data['handshake']['requestor_details']['account']['lastname']." ".$data['handshake']['requestor_details']['account']['suffix']."</div>";
 										$html[] = "<div class='mt-1 small'>".$data['handshake']['requestor_details']['profession']."</div>";
 									$html[] = "</div>";
 								$html[] = "</div>";

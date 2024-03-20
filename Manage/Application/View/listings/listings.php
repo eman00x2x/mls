@@ -11,7 +11,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 
 		$html[] = "<div class='row g-2 '>";
 			$html[] = "<div class='col'>";
-				$html[] = "<div class='page-pretitle'>Manage Property Listing of ".$data['firstname']." ".$data['lastname']."</div>";
+				$html[] = "<div class='page-pretitle'>Manage Property Listing of ".$data['account_name']['firstname']." ".$data['account_name']['lastname']."</div>";
 				$html[] = "<h1 class='page-title'><i class='ti ti-building-estate me-2'></i> Property Listings</h1>";
 			$html[] = "</div>";
 

@@ -65,7 +65,7 @@ class MessagesController extends \Main\Controller {
 
 				for($x=0; $x<count($data['threads'][$i]['participants']); $x++) {
 					
-					$account->select(" account_id, logo, CONCAT(firstname,' ',lastname) as name, profession, message_keys ");
+					$account->select(" account_id, logo, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.firstname')),' ',JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.lastname'))) as name, profession, message_keys ");
 					$account->column['account_id'] = $data['threads'][$i]['participants'][$x];
 					$accountData = $account->getById();
 

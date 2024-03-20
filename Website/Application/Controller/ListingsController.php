@@ -222,7 +222,6 @@ class ListingsController extends \Main\Controller {
 
 		$data['listings'] = $listings->getList();
 
-
 		if($data['listings']) {
 
 			$total_listing = count($data['listings']);

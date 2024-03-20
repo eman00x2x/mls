@@ -332,6 +332,7 @@ class AccountsController extends \Main\Controller {
 
 			$user = $this->getModel("User");
 			$_POST['status'] = 1;
+			$_POST['name'] = implode(" ", json_decode($_POST['account_name'], true));
 			$response = $user->saveNew($_POST);
 
 			if($response['status'] == 1) {
@@ -417,7 +418,7 @@ class AccountsController extends \Main\Controller {
 
 				$user->save($data['user']['user_id'],array(
 					"photo" => $_POST['logo'],
-					"name" => $_POST['firstname']." ".$_POST['lastname']
+					"name" => implode(" ", json_decode($data['account_name'], true))
 				));
 			}
 

@@ -11,7 +11,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 
 		$html[] = "<div class='row g-2 '>";
 			$html[] = "<div class='col'>";
-				$html[] = "<div class='page-pretitle'>Subscriptions of ".$data['firstname']." ".$data['lastname']."</div>";
+				$html[] = "<div class='page-pretitle'>Subscriptions of ".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</div>";
 				$html[] = "<h1 class='page-title'><i class='ti ti-layers-union me-2'></i> Subscriptions</h1>";
 			$html[] = "</div>";
 

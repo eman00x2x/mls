@@ -11,7 +11,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 
 		$html[] = "<div class='row g-2 '>";
 			$html[] = "<div class='col'>";
-				$html[] = "<div class='page-pretitle'>Manage Leads of ".$data['firstname']." ".$data['lastname']."</div>";
+				$html[] = "<div class='page-pretitle'>Manage Leads of ".$data['account_name']['firstname']." ".$data['account_name']['lastname']."</div>";
 				$html[] = "<h1 class='page-title'><i class='ti ti-users me-2'></i> Leads</h1>";
 			$html[] = "</div>";
 
@@ -22,7 +22,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 						if($_SESSION['user_logged']['account_type'] == "Administrator") {
 							$html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@view", ["id" => $data['account_id']])."'>";
 								$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['logo'].")'></span>";
-								$html[] = $data['firstname']." ".$data['lastname']." account";
+								$html[] = $data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']." account";
 							$html[] = "</a>";
 						}
 

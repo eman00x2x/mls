@@ -66,7 +66,7 @@ $html[] = "<div class='row justify-content-center'>";
 							$html[] = "<div class='d-flex gap-2'>";
 								$html[] = "<span class='avatar avatar-lg' style='background-image: url(".$data['participants'][$account_data['account_id']]['logo'].")'></span>";
 								$html[] = "<div class=''>";
-									$html[] = "<span class='d-block'>Account of ".$data['participants'][$account_data['account_id']]['firstname']." ".$data['participants'][$account_data['account_id']]['lastname']."</span>";
+									$html[] = "<span class='d-block'>Account of ".$data['participants'][$account_data['account_id']]['account_name']['prefix']." ".$data['participants'][$account_data['account_id']]['account_name']['firstname']." ".$data['participants'][$account_data['account_id']]['account_name']['lastname']." ".$data['participants'][$account_data['account_id']]['account_name']['suffix']."</span>";
 									$html[] = "<span class='d-block'>".$data['participants'][$account_data['account_id']]['profession']."</span>";
 								$html[] = "</div>";
 							$html[] = "</div>";

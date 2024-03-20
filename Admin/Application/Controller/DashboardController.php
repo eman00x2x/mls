@@ -164,7 +164,7 @@ class DashboardController extends \Main\Controller {
         $traffic->page['limit'] = 5;
 
 		$traffic
-		->select(" t.listing_id, title, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(a.name, '$.firstname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(a.name, '$.lastname'))) as posted_by, COUNT(session_id) as count ")
+		->select(" t.listing_id, title, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(a.account_name, '$.firstname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(a.account_name, '$.lastname'))) as posted_by, COUNT(session_id) as count ")
 			->join(" t JOIN #__listings l ON t.listing_id=l.listing_id JOIN #__accounts a ON a.account_id=t.account_id ")
 				->where(" created_at >= ".$date_helper['from']." AND created_at <= ".$date_helper['to']." ")
 					->groupBy(" t.listing_id ");

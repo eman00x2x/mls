@@ -73,7 +73,11 @@ $html[] = "<form id='form' action='' method='POST'>";
 										$html[] = "<label class='text-muted form-label mt-2 text-end'>Name</label>";
 									$html[] = "</div>";
 									$html[] = "<div class='col-9'>";
-										$html[] = "<input type='text' name='name' id='name' value='".$data['name']."' class='form-control' autocomplete='off' style='font-size:16px;' />";
+										if($data['user_level'] == 1) {
+											$html[] = "<input type='text' value='".$data['name']."' class='form-control-plaintext' autocomplete='off' style='font-size:16px;' />";
+										}else {
+											$html[] = "<input type='text' name='name' id='name' value='".$data['name']."' class='form-control' autocomplete='off' style='font-size:16px;' />";
+										}
 									$html[] = "</div>";
 								$html[] = "</div>";
 							$html[] = "</div>";

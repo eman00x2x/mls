@@ -35,9 +35,8 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
         $this->doc->setTitle("MLS System");
 		$this->doc->addScriptDeclaration("
-			$(document).on('click','.btn-filter-result',function() {
+			$(document).on('click','.btn-filter',function() {
 				var formData = $('#filter-form').serialize();
-				
 				window.location = '".url('MlsController@MLSIndex')."?filter=' + btoa(formData);
 			});
 
@@ -65,8 +64,8 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		"); 
 
-		if(isset($_REQUEST['filter'])) {
-			parse_str(urldecode(base64_decode($_REQUEST['filter'])), $_REQUEST);
+		if(isset($_GET['filter'])) {
+			parse_str(urldecode(base64_decode($_GET['filter'])), $_GET);
 		}
 
 		/* $handshake = $this->getModel("Handshake");
@@ -78,107 +77,208 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$filters[] = " listing_id NOT IN(".$handshakeListings['listing_ids'].")";
 		} */
 
-		if(isset($_REQUEST['address'])) {
-			if($_REQUEST['address']['region'] != "") {
-				$filters[] = " JSON_EXTRACT(address, \"$.region\") = '".$_REQUEST['address']['region']."'";
+		if(isset($_GET['offer']) && $_GET['offer'] != "") {
+			$filters[] = " offer = '".$_GET['offer']."'";
+			$uri['offer'] = $_GET['offer'];
+		}else {
+			$filters[] = " offer = 'for sale'";
+			$uri['offer'] = "for sale";
+		}
+
+		if(isset($_GET['price']) && $_GET['price'] != "") {
+			$uri['price'] = $_GET['price'];
+
+			$price = explode("-", $uri['price']);
+
+			if($price[1] == "00") {
+				$filters[] = "price >= ".$price[0]."";
+			}else {
+				$filters[] = "(price BETWEEN ".$price[0]." AND ".$price[1].")";
 			}
 			
-			if($_REQUEST['address']['municipality'] != "") {
-				$filters[] = " JSON_EXTRACT(address, \"$.municipality\") = '".$_REQUEST['address']['municipality']."'";
-			}
+		}
 
-			if($_REQUEST['address']['province'] != "") {
-				$filters[] = " JSON_EXTRACT(address, \"$.province\") = '".$_REQUEST['address']['province']."'";
+		if(isset($_GET['lot_area']) && $_GET['lot_area'] != "") {
+			$uri['lot_area'] = $_GET['lot_area'];
+
+			$lot_area = explode("-", $uri['lot_area']);
+
+			if($lot_area[1] == "00") {
+				$filters[] = "lot_area >= ".$lot_area[0]."";
+			}else {
+				$filters[] = "(lot_area BETWEEN ".$lot_area[0]." AND ".$lot_area[1].")";
 			}
 			
-			if($_REQUEST['address']['barangay'] != "") {
-				$filters[] = " JSON_EXTRACT(address, \"$.barangay\") = '".$_REQUEST['address']['barangay']."'";
+		}
+
+		if(isset($_GET['floor_area']) && $_GET['floor_area'] != "") {
+			$uri['floor_area'] = $_GET['floor_area'];
+
+			$floor_area = explode("-", $uri['floor_area']);
+
+			if($floor_area[1] == "00") {
+				$filters[] = "floor_area >= ".$floor_area[0]."";
+			}else {
+				$filters[] = "(floor_area BETWEEN ".$floor_area[0]." AND ".$floor_area[1].")";
+			}
+			
+		}
+
+		if(isset($_GET['bedroom']) && $_GET['bedroom'] != "") {
+			$uri['bedroom'] = $_GET['bedroom'];
+
+			if($_GET['bedroom'] == 6) {
+				$filters[] = " bedroom >= ".$_GET['bedroom'];
+			}else {
+				$filters[] = " bedroom = '".$_GET['bedroom']."'";
+			}
+		}
+
+		if(isset($_GET['bathroom']) && $_GET['bathroom'] != "") {
+			$uri['bathroom'] = $_GET['bathroom'];
+
+			if($_GET['bathroom'] == 6) {
+				$filters[] = " bathroom >= ".$_GET['bathroom'];
+			}else {
+				$filters[] = " bathroom = '".$_GET['bathroom']."'";
+			}
+		}
+
+		if(isset($_GET['type']) && $_GET['type'] != "") {
+			$uri['type'] = $_GET['type'];
+			$search[] = $_GET['type'];
+		}
+
+		if(isset($_GET['tags']) && $_GET['tags'] != "") {
+			$uri['tags'] = $_GET['tags'];
+			$search[] = implode(" ", $_GET['tags']);
+		}
+
+		if(isset($_GET['category']) && $_GET['category'] != "") {
+			$uri['category'] = $_GET['category'];
+			$filters[] = " category LIKE '%".$_GET['category']."%'";
+			$search[] = $_GET['category'];
+		}
+
+		if(isset($_GET['address']) && $_GET['address'] != "") {
+			$uri['address'] = $_GET['address'];
+
+			if($_GET['address']['region'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."'  ";
+				$search[] = $_GET['address']['region'];
 			}
 
-			$uri['address'] = $_REQUEST['address'];
+			if($_GET['address']['province'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['address']['province']."'  ";
+				$search[] = $_GET['address']['province'];
+			}
+
+			if($_GET['address']['municipality'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['address']['municipality']."'  ";
+				$search[] = $_GET['address']['municipality'];
+			}
+
+		}
+
+		if(isset($_GET['amenities']) && $_GET['amenities'] != "") {
+			$uri['amenities'] = $_GET['amenities'];
+			$search[] = implode(" ", $_GET['amenities']);
 		}
 
 		#$filters[] = " account_id != ".$this->session['account_id'];
 		$filters[] = " is_mls = 1 ";
-		$filters[] = " status = 1 ";
+		$filters[] = " l.status = 1 ";
+		$filters[] = " display = 1";
 
-		if(isset($_REQUEST['search'])) {
-			$filters[] = " (title LIKE '%".$_REQUEST['search']."%')";
-			$uri['search'] = $_REQUEST['search'];
+		if(isset($_GET['region']) && $_GET['region'] != "") {
+			$filters[] = " board_region = ".$_GET['region'];
+			$uri['region'] = $_GET['region'];
+		}else {
+
+			$uri['region'] = "";
+
+			if($this->session['board_region'] != "") {
+				$filters[] = " region = ".$this->session['board_region'];
+				$uri['region'] = $this->session['board_region'];
+			}
+
 		}
 
-		if(isset($_REQUEST['foreclosure'])) {
-			$filters[] = " foreclosed = 1 ";
-			$uri['foreclosure'] = 1;
+		if(isset($_GET['local']) && $_GET['local'] != "") {
+			$filters[] = " local_board_name = ".$_GET['local'];
+			$uri['local'] = $_GET['local'];
+		}else {
+
+			$uri['local'] = "";
+
+			if($this->session['local_board_name'] != "") {
+				$filters[] = " local_board_name = ".$this->session['local_board_name'];
+				$uri['local'] = $this->session['local_board_name'];
+			}
+			
 		}
 
-		if(isset($_REQUEST['offer']) && $_REQUEST['offer'] != "") {
-			$filters[] = " (offer LIKE '%".$_REQUEST['offer']."%')";
-			$uri['offer'] = $_REQUEST['offer'];
-		}
-
-		if(isset($_REQUEST['type']) && $_REQUEST['type'] != "") {
-			$filters[] = " (type LIKE '%".$_REQUEST['type']."%')";
-			$uri['type'] = $_REQUEST['type'];
-		}
-
-		if(isset($_REQUEST['category']) && $_REQUEST['category'] != "") {
-			$filters[] = " (category LIKE '%".$_REQUEST['category']."%')";
-			$uri['category'] = $_REQUEST['category'];
-		}
-
-		if(isset($_REQUEST['bedroom']) && $_REQUEST['bedroom']['from'] != "") {
-			$filters[] = " (bedroom >= '".$_REQUEST['bedroom']['from']."' AND bedroom <= '".$_REQUEST['bedroom']['to']."')";
-			$uri['bedroom']['from'] = $_REQUEST['bedroom']['from'];
-			$uri['bedroom']['to'] = $_REQUEST['bedroom']['to'];
-		}
-
-		if(isset($_REQUEST['bathroom']) && $_REQUEST['bathroom']['from'] != "") {
-			$filters[] = " (bathroom >= '".$_REQUEST['bathroom']['from']."' AND bathroom <= '".$_REQUEST['bathroom']['to']."')";
-			$uri['bathroom']['from'] = $_REQUEST['bathroom']['from'];
-			$uri['bathroom']['to'] = $_REQUEST['bathroom']['to'];
-		}
-
-		if(isset($_REQUEST['parking']) && $_REQUEST['parking']['from'] != "") {
-			$filters[] = " (parking >= '".$_REQUEST['parking']['from']."' AND parking <= '".$_REQUEST['parking']['to']."')";
-			$uri['parking']['from'] = $_REQUEST['parking']['from'];
-			$uri['parking']['to'] = $_REQUEST['parking']['to'];
-		}
-
-		if(isset($_REQUEST['price']) && $_REQUEST['price']['from'] != "") {
-			$filters[] = " (price >= '".$_REQUEST['parking']['from']."' AND price <= '".$_REQUEST['parking']['to']."')";
-			$uri['price']['from'] = $_REQUEST['price']['from'];
-			$uri['price']['to'] = $_REQUEST['price']['to'];
-		}
-
-		$listing = $this->getModel("Listing");
-		$listing->addresses = $this->getModel("Address");
-		$listing->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" last_modified DESC ");
 		
-		$listing->page['limit'] = 20;
-		$listing->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$listing->page['target'] = url("MlsController@index");
-		$listing->page['uri'] = (isset($uri) ? $uri : []);
 
-		$data['listings'] = $listing->getList();
+		$address = $this->getModel("Address");
+		$listings = $this->getModel("Listing");
+		$listings->address = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));
+		
+		if(
+			(isset($_GET['type']) && $_GET['type'] != "") || 
+			(isset($_GET['tags']) && $_GET['tags'] != "") || 
+			(isset($_GET['category']) && $_GET['category'] != "") || 
+			(isset($_GET['address']) && $_GET['address'] != "") || 
+			(isset($_GET['amenities']) && $_GET['amenities'] != "")
+		) {
+			
+			$listings->select("
+				listing_id, l.account_id, is_website, offer, foreclosed, name, price, floor_area, lot_area, unit_area, bedroom, bathroom, parking, thumb_img, last_modified, l.status, display, type, title, tags, long_desc, category, address, amenities,
+				MATCH( type, title, tags, long_desc, category, address, amenities )
+				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS score
+			")
+				->join(" l JOIN #__accounts a ON a.account_id = l.account_id ")
+					->orderby(" score DESC ");
+		}else {
+			$listings->join(" l ");
+			/* $sort = isset($_GET['sort']) ? ($_GET['sort'] == "score") ? "last_modified" : $_GET['sort'] : " last_modified";
+			$listings->orderby(" $sort $order "); */
+		}
+
+		$listings->where((isset($filters) ? implode(" AND ",$filters) : null));
+		
+		$listings->page['limit'] = 20;
+		$listings->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+		$listings->page['target'] = url("MlsController@index");
+		$listings->page['uri'] = (isset($uri) ? $uri : []);
+
+		$data['listings'] = $listings->getList();
 
 		if($data['listings']) {
 
-			$account = $this->getModel("Account");
+			$total_listing = count($data['listings']);
 
-			for($i=0; $i<count($data['listings']); $i++) {
+			for($i=0; $i<$total_listing; $i++) {
+
+				$images = $this->getModel("ListingImage");
+				$images->page['limit'] = 50;
+
+				$images->column['listing_id'] = $data['listings'][$i]['listing_id'];
+				$total_image = $images->getByListingId();
 				
-				$account->column['account_id'] = $data['listings'][$i]['account_id'];
-				$data['listings'][$i]['account'] = $account->getById();
+				$data['listings'][$i]['total_images'] = 0;
 
-				unset($data['listings'][$i]['account_id']);
+				if($total_image) {
+					$data['listings'][$i]['total_images'] = count($total_image);
+				}
+				
 
 			}
 
 		}
 
 		$this->setTemplate("mls/list.php");
-		return $this->getTemplate($data,$listing);
+		return $this->getTemplate($data,$listings);
 
 	}
 

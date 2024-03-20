@@ -107,7 +107,7 @@ $html[] = "<div class='page-body'>";
 
 							$html[] = "<div class='d-flex'>";
 								$html[] = "<div class='me-3'><label class='text-muted'>Name</label></div>";
-								$html[] = "<div class=''><span>".$data['name']['prefix']." ".$data['name']['firstname']." ".$data['name']['lastname']." ".$data['name']['suffix']."</span></div>";
+								$html[] = "<div class=''><span>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</span></div>";
 							$html[] = "</div>";
 
 							if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {

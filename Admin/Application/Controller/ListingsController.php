@@ -189,7 +189,7 @@ class ListingsController extends \Main\Controller {
 		if($data) {
 
 			$account = $this->getModel("Account");
-			$account->select(" account_id, logo, profession, real_estate_license_number, firstname, lastname, mobile_number, email, registration_date");
+			$account->select(" account_id, logo, profession, real_estate_license_number, account_name, mobile_number, email, registration_date");
 			$account->column['account_id'] = $data['listing']['account_id'];
 			$data['account'] = $account->getById();
 
@@ -197,6 +197,10 @@ class ListingsController extends \Main\Controller {
 			$listingImage->page['limit'] = 100;
 			$listingImage->column['listing_id'] = $listing_id;
 			$data['listing']['images'] = $listingImage->getByListingId();
+
+			if(!$data['listing']['images']) {
+				$data['listing']['images'] = [];
+			}
 
 			$handshake = $this->getModel("Handshake");
 			$handshake->column['requestor_account_id'] = $_SESSION['user_logged']['account_id'];
