@@ -442,72 +442,61 @@ class ListingsController extends \Main\Controller {
 
 	}
 
-	function listingRows($data) {
-		$this->setTemplate("listings/listingRows.php");
-		return $this->getTemplate($data);
-	}
+	function listProperties(\Main\Model\ListingModel $model, $filters = []) {
 
-	function relatedProperties() {
-
-		if($_GET['offer'] == "buy") {
+		if(isset($_GET['offer']) && $_GET['offer'] == "buy") {
 			$filters[] = " offer = 'for sale'";
-			$uri['offer'] = "for sale";
+			$model->page['uri']['offer'] = "for sale";
 		}
 
-		if($_GET['offer'] == "rent") {
+		if(isset($_GET['offer']) && $_GET['offer'] == "rent") {
 			$filters[] = " offer = 'for rent'";
-			$uri['offer'] = "for rent";
-		}
-
-		$filters[] = " listing_id != ".$_GET['listing_id'];
-		$filters[] = " status = 1";
-		$filters[] = " display = 1";
-		$filters[] = " is_website = 1";
-
-		
-		if(isset($_GET['price']) && $_GET['price'] != "") {
-			$uri['price'] = $_GET['price'];
-			$filters[] = "price >= ".$_GET['price']."";
-		}
-
-		if(isset($_GET['lot_area']) && $_GET['lot_area'] != "") {
-			$uri['lot_area'] = $_GET['lot_area'];
-			$filters[] = "lot_area >= ".$_GET['lot_area']."";
-		}
-
-		if(isset($_GET['floor_area']) && $_GET['floor_area'] != "") {
-			$uri['floor_area'] = $_GET['floor_area'];
-			$filters[] = "floor_area >= ".$_GET['floor_area']."";
-		}
-
-		if(isset($_GET['bedroom']) && $_GET['bedroom'] != "") {
-			$uri['bedroom'] = $_GET['bedroom'];
-			$filters[] = " bedroom >= ".$_GET['bedroom'];
-		}
-
-		if(isset($_GET['bathroom']) && $_GET['bathroom'] != "") {
-			$uri['bathroom'] = $_GET['bathroom'];
-			$filters[] = " bathroom >= ".$_GET['bathroom'];
-		}
-
-		if(isset($_GET['type']) && $_GET['type'] != "") {
-			$uri['type'] = $_GET['type'];
-			$search[] = $_GET['type'];
-		}
-
-		if(isset($_GET['tags']) && $_GET['tags'] != "") {
-			$uri['tags'] = $_GET['tags'];
-			$search[] = implode(" ", $_GET['tags']);
+			$model->page['uri']['offer'] = "for rent";
 		}
 
 		if(isset($_GET['category']) && $_GET['category'] != "") {
-			$uri['category'] = $_GET['category'];
+			$model->page['uri']['category'] = $_GET['category'];
 			$filters[] = " category LIKE '%".$_GET['category']."%'";
 			$search[] = $_GET['category'];
 		}
 
+		if(isset($_GET['price']) && $_GET['price'] != "") {
+			$model->page['uri']['price'] = $_GET['price'];
+			$filters[] = "price >= ".$_GET['price']."";
+		}
+
+		if(isset($_GET['lot_area']) && $_GET['lot_area'] != "") {
+			$model->page['uri']['lot_area'] = $_GET['lot_area'];
+			$filters[] = "lot_area >= ".$_GET['lot_area']."";
+		}
+
+		if(isset($_GET['floor_area']) && $_GET['floor_area'] != "") {
+			$model->page['uri']['floor_area'] = $_GET['floor_area'];
+			$filters[] = "floor_area >= ".$_GET['floor_area']."";
+		}
+
+		if(isset($_GET['bedroom']) && $_GET['bedroom'] != "") {
+			$model->page['uri']['bedroom'] = $_GET['bedroom'];
+
+			if($_GET['bedroom'] == "Studio") {
+				$filters[] = " bedroom = '".$_GET['bedroom']."'";
+			}else {
+				$filters[] = " bedroom >= ".$_GET['bedroom'];
+			}
+		}
+
+		if(isset($_GET['bathroom']) && $_GET['bathroom'] != "") {
+			$model->page['uri']['bathroom'] = $_GET['bathroom'];
+			$filters[] = " bathroom >= ".$_GET['bathroom'];
+		}
+
+		if(isset($_GET['parking']) && $_GET['parking'] != "") {
+			$model->page['uri']['parking'] = $_GET['parking'];
+			$filters[] = "parking >= ".$_GET['parking']."";
+		}
+
 		if(isset($_GET['address']) && $_GET['address'] != "") {
-			$uri['address'] = $_GET['address'];
+			$model->page['uri']['address'] = $_GET['address'];
 
 			if($_GET['address']['region'] != "") {
 				$filters[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."'  ";
@@ -524,24 +513,56 @@ class ListingsController extends \Main\Controller {
 				$search[] = $_GET['address']['municipality'];
 			}
 
+			if($_GET['address']['street'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.street') = '".$_GET['address']['street']."'  ";
+				$search[] = $_GET['address']['street'];
+			}
+
+			if($_GET['address']['village'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.village') = '".$_GET['address']['village']."'  ";
+				$search[] = $_GET['address']['village'];
+			}
+
 		}
 
 		if(isset($_GET['amenities']) && $_GET['amenities'] != "") {
-			$uri['amenities'] = $_GET['amenities'];
-			$search[] = $_GET['amenities'];
+			
+			if(!is_array($_GET['amenities'])) {
+				$_GET['amenities'] = explode(",", $_GET['amenities']);
+			}
+
+			$model->page['uri']['amenities'] = $_GET['amenities'];
+			$search[] = implode(" ", $_GET['amenities']);
+			
 		}
 
-		$listings = $this->getModel("Listing");
+		if(isset($_GET['tags']) && $_GET['tags'] != "") {
+			$model->page['uri']['tags'] = $_GET['tags'];
+			$search[] = implode(" ", $_GET['tags']);
+		}
 
-		$listings->select("
-			listing_id, account_id, is_website, offer, foreclosed, name, price, floor_area, lot_area, unit_area, bedroom, bathroom, parking, thumb_img, last_modified, status, display, type, title, tags, long_desc, category, address, amenities,
-			MATCH( type, title, tags, long_desc, category, address, amenities )
-			AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS score
-		")->orderby(" score DESC ");
+		$order = isset($_GET['order']) ? $_GET['order'] : " DESC";
+
+		if(
+			(isset($_GET['type']) && $_GET['type'] != "") || 
+			(isset($_GET['tags']) && $_GET['tags'] != "") || 
+			(isset($_GET['category']) && $_GET['category'] != "") || 
+			(isset($_GET['address']) && $_GET['address'] != "") || 
+			(isset($_GET['amenities']) && $_GET['amenities'] != "")
+		) {
+			$model->select("
+				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, unit_area, bedroom, bathroom, parking, thumb_img, last_modified, l.status, display, type, title, tags, long_desc, category, address, amenities,
+				MATCH( type, title, tags, long_desc, category, address, amenities )
+				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS score
+			")->orderby(" score DESC ");
+		}else {
+			$sort = isset($_GET['sort']) ? ($_GET['sort'] == "score") ? "last_modified" : $_GET['sort'] : " last_modified";
+			$model->orderby(" $sort $order ");
+		}
 		
-		$listings->where((isset($filters) ? implode(" AND ",$filters) : null));
-		$listings->page['limit'] = 5;
-		$data = $listings->getList();
+		$model->join(" l JOIN #__accounts a ON a.account_id = l.account_id ");
+		$model->where((isset($filters) ? implode(" AND ",$filters) : null));
+		$data = $model->getList();
 
 		if($data) {
 
@@ -561,14 +582,27 @@ class ListingsController extends \Main\Controller {
 					$data[$i]['total_images'] = count($total_image);
 				}
 				
-				$listings->listingRows[] = $this->listingRows($data[$i]);
-
 			}
 
 		}
 
-		$this->setTemplate("listings/related.php");
-		return $this->getTemplate($data, $listings);
+		return [
+			"data" => $data,
+			"model" => $model
+		];
+
+	}
+
+	function relatedProperties($app = [], $filters = []) {
+
+		$listings = $this->getModel("Listing");
+		$listings->page['limit'] = 5;
+		$listings->app = $app;
+
+		$response = $this->listProperties($listings, $filters);
+		
+		$this->setTemplate("listings/listProperties.php");
+		return $this->getTemplate($response['data'],$response['model']);
 
 	}
 	

@@ -3,6 +3,9 @@
 
 $html[] = "<input type='hidden' id='save_url' value='".url("RegistrationController@saveNew")."' />";
 
+$html[] = "<input type='hidden' name='pin' id='pin' value='' />";
+$html[] = "<input type='hidden' name='api_key' id='api_key' value='' />";
+
 $html[] = "<input type='hidden' name='reference_id' value='".$data['reference_id']."' />";
 $html[] = "<input type='hidden' name='broker_prc_license_id' value='".$data['broker_prc_license_id']."' />";
 

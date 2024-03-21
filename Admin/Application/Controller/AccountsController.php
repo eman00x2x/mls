@@ -108,7 +108,7 @@ class AccountsController extends \Main\Controller {
 
 		if($account_id) {
 
-			$this->doc->addScriptDeclaration("
+			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 				$(document).on('show.bs.modal','#accountModal',function(e) {
 					button = e.relatedTarget;
 					url = button.getAttribute('data-url');
@@ -148,9 +148,8 @@ class AccountsController extends \Main\Controller {
 
 					});
 
-						
 				});
-			");
+			"));
 		
 			$accounts = $this->getModel("Account");
 			$user = $this->getModel("User");
@@ -215,19 +214,17 @@ class AccountsController extends \Main\Controller {
 		$this->doc->addScript(CDN."js/photo-uploader.js");
 		$this->doc->addScript(CDN."js/encryption.js");
 
-		$this->doc->addScriptDeclaration("
-
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 			$(document).ready(function() {
-
 				(async () => {
 					let keys = await generateKey();
 					$('#publicKey').val(JSON.stringify(keys.publicKey));
 					$('#privateKey').val(JSON.stringify(keys.privateKey));
+
+					$('#api_key').val(uuidv4());
 				})();
-
 			});
-
-		");
+		"));
 
 		$data['board_regions'] = BOARD_REGIONS;
 		$data['local_boards'] = LOCAL_BOARDS;
@@ -250,6 +247,15 @@ class AccountsController extends \Main\Controller {
 		if($account_id) {
 
 			$this->doc->addScript(CDN."js/photo-uploader.js");
+
+			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+				$(document).ready(function() {
+					(async () => {
+						$('#api_key').val(uuidv4());
+						$('#pin').val(rcg());
+					})();
+				});
+			"));
 			
 			$accounts = $this->getModel("Account");
 			$accounts->column['account_id'] = $account_id;
@@ -418,7 +424,7 @@ class AccountsController extends \Main\Controller {
 
 				$user->save($data['user']['user_id'],array(
 					"photo" => $_POST['logo'],
-					"name" => implode(" ", json_decode($data['account_name'], true))
+					"name" => implode(" ", $data['account_name'])
 				));
 			}
 

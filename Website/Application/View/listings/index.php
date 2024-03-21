@@ -225,39 +225,8 @@ $html[] = "<div class='page-body'>";
 
 				$html[] = "<div class='mb-3 border rounded featured-post' style='height:250px; '> <!-- FEATURED ADS --> </div>";
 
-				$html[] = "<div class='row row-cards'>";
-					$html[] = "<div class='space-y'>";
-									
-						if($data['listings']) {
+				$html[] = $model->list;
 
-							$c = 0;
-							for($i=0; $i<count($data['listings']); $i++) { $c++;
-
-								if ($i % 4 == 0) {
-									/** Featured ads */
-									$html[] = "<div class='featured-post'>";
-										$html[] = listingList($data['listings'][$i]);
-									$html[] = "</div>";
-									/** End Featured ads */
-								}
-
-								$html[] = listingList($data['listings'][$i]);
-
-							}
-
-						}else {
-							$html[] = "<div class='empty'>";
-								$html[] = "<div class='empty-header'>No Results</div>";
-								$html[] = "<p class='empty-title'>Oops... no results found in your search.</p>";
-								$html[] = "<p class='empty-subtitle'>Clear your filter and try another search</p>";
-								$html[] = "<div class='empty-action'>";
-									$html[] = "<a href='".currentUrl($model)."' class='btn btn-light'>Clear filter</a>";
-								$html[] = "</div>";
-							$html[] = "</div>";
-						}
-						
-					$html[] = "</div>";
-				$html[] = "</div>";
         	$html[] = "</div>";
 		$html[] = "</div>";
 

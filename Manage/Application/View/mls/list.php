@@ -51,8 +51,8 @@ $html[] = "<div class='page-body'>";
 						$html[] = "</div>";
 						$html[] = "<form id='filter-form' action='' method='POST'>";
 
-							$html[] = "<input type='hidden' name='region' value='".$model->page['uri']['region']."' />";
-							$html[] = "<input type='hidden' name='local' value='".$model->page['uri']['local']."' />";
+							$html[] = "<input type='hidden' name='board_region' value='".$model->page['uri']['board_region']."' />";
+							$html[] = "<input type='hidden' name='local_board_name' value='".$model->page['uri']['local_board_name']."' />";
 
 							$html[] = "<div class='mb-4'>";
 								$html[] = "<div class='form-label'>Offer</div>";
@@ -157,7 +157,7 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<select name='bathroom' id='bathroom' class='form-select'>";
 										$html[] = "<option value=''></option>";
 										foreach(["1 Bathroom", "2 Bathroom", "3 Bathroom", "4 Bathroom", "5 Bathroom", "6 and more Bathroom"] as $room) {
-											$bathroom = trim(str_replace(["Bedroom", "and more"],["",""], $room));
+											$bathroom = trim(str_replace(["Bathroom", "and more"],["",""], $room));
 											$sel = isset($model->page['uri']['bathroom']) && $model->page['uri']['bathroom'] == $bathroom ? "selected" : "";
 											$html[] = "<option value='".$bathroom."' $sel>$room</option>";
 										}
@@ -228,14 +228,10 @@ $html[] = "<div class='page-body'>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-md-9 col-12'>";
-				/* $html[] = "<div class='box-container'>";
-					$html[] = "<div class='search-box' style='margin-bottom: -15px;'>";
-						$html[] = "<input type='text' name='search' id='search' value='' placeholder='Search' data-url='".url("MlsController@MLSIndex")."' />";
-						$html[] = "<a href='".url("MlsController@MLSIndex")."' class='btn btn-sm btn-light clearFilter'>CLEAR FILTER</a>";
-					$html[] = "</div>";
-				$html[] = "</div>"; */
+				
+					$html[] = $model->list;
 
-					if($data['listings']) { $c=$model->page['starting_number'];
+					/* if($data['listings']) { $c=$model->page['starting_number'];
 
 						$html[] = "<div class='row row-cards'>";
 							$html[] = "<div class='space-y'>";
@@ -324,7 +320,7 @@ $html[] = "<div class='page-body'>";
 
 					}else {
 						$html[] = "<p class='mt-3'>Does not have listing yet.</p>";
-					}
+					} */
 					
 			$html[] = "</div>";
 		$html[] = "</div>";

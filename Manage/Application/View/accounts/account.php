@@ -41,6 +41,14 @@ $html[] = "<div class='page-body'>";
 
         $html[] = "<form id='form' action='' method='POST'>";
 
+            if($data['api_key'] == "") {
+				$html[] = "<input type='hiddens' name='api_key' id='api_key' value='' />";
+			}
+
+            if($data['pin'] == "") {
+				$html[] = "<input type='hiddens' name='pin' id='pin' value='' />";
+			}
+
             $html[] = "<input type='hidden' name='broker_prc_license_id' value='".$data['broker_prc_license_id']."' />";
 
             $html[] = "<div class='row'>";
@@ -206,7 +214,33 @@ $html[] = "<div class='page-body'>";
                                                 $html[] = "<div class='col-md-9 col-6'><span>".$val."</span></div>";
                                             $html[] = "</div>";
                                         }
+
                                     $html[] = "</div>";
+
+                                    if($data['pin'] != "") {
+                                        $html[] = "<div class='mb-3 pb-3 border-bottom'>";
+                                            $html[] = "<h2 class='text-blue mb-3 fw-bold'>PIN</h6>";
+                                            $html[] = "<div class='mb-3'>";
+                                                $html[] = "<p class='mb-1'><i class='ti ti-number'></i> <span class='pin-container fw-bold fs-22'>".$data['pin']."</span></p>";
+                                                $html[] = "<span class='text-muted fst-italic fs-13'>Account PIN</span>";
+                                            $html[] = "</div>";
+                                        $html[] = "</div>";
+                                    }
+
+                                    if($data['api_key'] != "") {
+                                        $html[] = "<div class='mb-3 pb-3 border-bottom'>";
+                                            $html[] = "<h2 class='text-blue mb-3 fw-bold'>API Key</h6>";
+                                            $html[] = "<div class='mb-3'>";
+                                                $html[] = "<p class='mb-1'><i class='ti ti-square-key'></i> <span class='api-key-container border px-2 py-1 text-muted'>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></p>";
+                                                $html[] = "<span class='text-muted fst-italic fs-13'>Do not share or store your API Key to any storage devices or applications.</span>";
+
+                                                $html[] = "<p class='my-2'><a href='".url("APIController@documentation", [ "version" => "v1" ])."'>Read our documentation</a> on how to use your API Key</p>";
+                                            $html[] = "</div>";
+
+                                            $html[] = "<span class='btn btn-outline-primary btn-reveal-api-key' data-key='".$data['api_key']."'>Reveal API Key</span>";
+
+                                        $html[] = "</div>";
+                                    }
 
                                 $html[] = "</div>";
                             $html[] = "</div>";

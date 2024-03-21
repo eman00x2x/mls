@@ -39,6 +39,14 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 				$html[] = "<form id='form' action='' method='POST'>";
 
+					if($data['api_key'] == "") {
+						$html[] = "<input type='hidden' name='api_key' id='api_key' value='' />";
+					}
+
+					if($data['pin'] == "") {
+						$html[] = "<input type='hiddens' name='pin' id='pin' value='' />";
+					}
+
 					if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
 						$html[] = "<div class='card mb-3'>";
 							$html[] = "<div class='card-status bg-orange'></div>";

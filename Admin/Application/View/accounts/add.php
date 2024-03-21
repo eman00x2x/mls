@@ -17,6 +17,8 @@ $html[] = "</div>";
 
 $html[] = "<form id='form' action='' method='POST'>";
 
+	$html[] = "<input type='hidden' name='pin' id='pin' value='' />";
+	$html[] = "<input type='hidden' name='api_key' id='api_key' value='' />";
 	$html[] = "<input type='hidden' name='message_keys[publicKey]' id='publicKey' value='' />";
 	$html[] = "<input type='hidden' name='message_keys[privateKey]' id='privateKey' value='' />";
 

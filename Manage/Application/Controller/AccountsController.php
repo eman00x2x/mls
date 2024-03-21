@@ -25,14 +25,23 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
         $this->doc->setTitle("My Accounts");
         $this->doc->addScript(CDN."js/photo-uploader.js");
 
-        if((!isset($_SESSION['user_logged']['permissions']['users']['access']))) {
-            $this->doc->addScriptDeclaration("
+        if((!isset($this->session['permissions']['users']['access'])) || $this->session['user_level'] == 1) {
+            $this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
                 $(document).ready(function() {
                     $('input').removeClass('form-control');
                     $('input').addClass('form-control-plaintext');
                     $('input').attr('readonly', true);
+
+                    $('#api_key').val(uuidv4());
+                    $('#pin').val(rcg());
                 });
-            ");
+
+                $(document).on('click', '.btn-reveal-api-key', function() {
+                    key = $(this).data('key');
+                    $('.api-key-container').removeClass('text-muted');
+                    $('.api-key-container').text(key);
+                });
+            "));
         }
 
         $account = $this->getModel("Account");

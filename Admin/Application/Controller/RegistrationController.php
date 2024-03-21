@@ -15,7 +15,15 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 		$doc = $this->getLibrary("Factory")->getDocument();
 		$doc->setTitle("Register Account - MLS");
 
+		$doc->addScript(CDN."js/script.js");
+
 		$doc->addScriptDeclaration("
+
+			$(document).ready(function() {
+				$('#api_key').val(uuidv4());
+				$('#api_key').val(rcg());
+			});
+
 			$(document).on('focusout', '#prc_license_id', function() {
 				var license = $(this).val();
 				newValue = license.replace(/^0+/, '');

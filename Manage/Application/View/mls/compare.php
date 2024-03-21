@@ -31,6 +31,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 					$html[] = "<div class='btn-list'>";
 						
 						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@handshakedIndex")."'><i class='ti ti-heart-handshake me-2'></i> Handshaked</a>";
+						$html[] = "<a class='ajax btn btn-dark' href='".MANAGE."exportToExcel.php'><i class='ti ti-download me-2'></i> Download</a>";
 
 						$html[] = "<div class='btn-group'>";
 							$html[] = "<span class='btn btn-dark filter-btn dropdown-toggle' data-bs-toggle='dropdown'><i class='ti ti-filter me-2'></i> Filter Columns</span>";
@@ -72,8 +73,18 @@ $html[] = "<div class='page-body'>";
 						$export['header'][] = "Image";
 						foreach($columns as $col) {
 							$html[] = "<th class='text-center col-$col'>".ucwords(str_replace("_"," ",$col))."</th>";
-							$export['header'][] = ucwords(str_replace("_"," ",$col));
+
+							if($col == "address") {
+								foreach(explode(",", "street,village,barangay,municipality,province,region") as $address) {
+									$export['header'][] = $address;
+								}
+							}else {
+								$export['header'][] = ucwords(str_replace("_"," ",$col));
+							}
 						}
+
+						$rows[] = implode("|", $export['header']);
+
 					$html[] = "<tr>";
 					
 				$html[] = "</thead>";
@@ -81,8 +92,10 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<tbody>";
 
 					for($i=0; $i<count($data['listing']); $i++) {
+						$export['rows'] = [];
+						$cData = [];
 
-						$export['rows'][$i][] = $data['listing'][$i]['thumb_img'];
+						$cData[$i][] = $data['listing'][$i]['thumb_img'];
 
 						$html[] = "<tr>";
 							$html[] = "<td class='text-center col-avatar'>";
@@ -97,39 +110,56 @@ $html[] = "<div class='page-body'>";
 
 										if(isset($data['listing'][$i]["address"]['street'])) {
 											$address[] = $data['listing'][$i]["address"]['street'];
-										}
+											$cData[$i][] = $data['listing'][$i]["address"]['street'];
+										}else { $cData[$i][] = ""; }
 
 										if(isset($data['listing'][$i]["address"]['village'])) {
 											$address[] = $data['listing'][$i]["address"]['village'];
-										}
+											$cData[$i][] = $data['listing'][$i]["address"]['village'];
+										}else { $cData[$i][] = ""; }
 
 										if(isset($data['listing'][$i]["address"]['barangay'])) {
 											$address[] = $data['listing'][$i]["address"]['barangay'];
-										}
+											$cData[$i][] = $data['listing'][$i]["address"]['barangay'];
+										}else { $cData[$i][] = ""; }
 
 										if(isset($data['listing'][$i]["address"]['municipality'])) {
 											$address[] = $data['listing'][$i]["address"]['municipality'];
-										}
+											$cData[$i][] = $data['listing'][$i]["address"]['municipality'];
+										}else { $cData[$i][] = ""; }
 
 										if(isset($data['listing'][$i]["address"]['province'])) {
 											$address[] = $data['listing'][$i]["address"]['province'];
-										}
+											$cData[$i][] = $data['listing'][$i]["address"]['province'];
+										}else { $cData[$i][] = ""; }
 
-										$export['rows'][$i][] = implode(" ", $address);
+										if(isset($data['listing'][$i]["address"]['province'])) {
+											$cData[$i][] = $data['listing'][$i]["address"]['region'];
+										}else { $cData[$i][] = ""; }
+
 										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data['listing'][$i]["address"]['municipality']." ".$data['listing'][$i]["address"]['province']."</td>";
 										break;
 									
 									case 'price':
-										$export['rows'][$i][] = $data['listing'][$i]['price'];
+										$cData[$i][] = $data['listing'][$i]['price'];
 										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>&#8369;".number_format($data['listing'][$i]['price'],0)."</td>";
 										break;
 
 									default:
-										$export['rows'][$i][] = $data['listing'][$i][$col];
-										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data['listing'][$i][$col]."</td>";
+										if(isset($data['listing'][$i][$col])) {
+											$cData[$i][] = $data['listing'][$i][$col];
+											$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data['listing'][$i][$col]."</td>";
+										}else {
+											$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'></td>";
+										}
 								}
+
 							}
 						$html[] = "</tr>";
+
+						$export['rows'] = implode("|", $cData[$i]);
+						$rows[] = $export['rows'];
+
 					}
 
 				$html[] = "</tbody>";
@@ -180,11 +210,9 @@ $html[] = "<div class='page-body'>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 
-			
-
 		$html[] = "</div>";
 
 	$html[] = "</div>";
 $html[] = "</div>";
 
-$session['export'] = $export;
+$_SESSION['export'] = $rows;

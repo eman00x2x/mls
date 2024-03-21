@@ -408,9 +408,8 @@ $html[] = "<div class='page-body mb-0'>";
 
 			$html[] = "<div class='row'>";
 				$html[] = "<div class='col-md-8'>";
-
+					$html[] = "<h3><i class='ti ti-building'></i> Related Properties</h3>";
 					$html[] = "<div class='related-properties-container'></div>";
-
 				$html[] = "</div>";
 				$html[] = "<div class='col-md-4'>";
 					

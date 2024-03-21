@@ -77,205 +77,45 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$filters[] = " listing_id NOT IN(".$handshakeListings['listing_ids'].")";
 		} */
 
-		if(isset($_GET['offer']) && $_GET['offer'] != "") {
-			$filters[] = " offer = '".$_GET['offer']."'";
-			$uri['offer'] = $_GET['offer'];
-		}else {
-			$filters[] = " offer = 'for sale'";
-			$uri['offer'] = "for sale";
-		}
-
-		if(isset($_GET['price']) && $_GET['price'] != "") {
-			$uri['price'] = $_GET['price'];
-
-			$price = explode("-", $uri['price']);
-
-			if($price[1] == "00") {
-				$filters[] = "price >= ".$price[0]."";
-			}else {
-				$filters[] = "(price BETWEEN ".$price[0]." AND ".$price[1].")";
-			}
-			
-		}
-
-		if(isset($_GET['lot_area']) && $_GET['lot_area'] != "") {
-			$uri['lot_area'] = $_GET['lot_area'];
-
-			$lot_area = explode("-", $uri['lot_area']);
-
-			if($lot_area[1] == "00") {
-				$filters[] = "lot_area >= ".$lot_area[0]."";
-			}else {
-				$filters[] = "(lot_area BETWEEN ".$lot_area[0]." AND ".$lot_area[1].")";
-			}
-			
-		}
-
-		if(isset($_GET['floor_area']) && $_GET['floor_area'] != "") {
-			$uri['floor_area'] = $_GET['floor_area'];
-
-			$floor_area = explode("-", $uri['floor_area']);
-
-			if($floor_area[1] == "00") {
-				$filters[] = "floor_area >= ".$floor_area[0]."";
-			}else {
-				$filters[] = "(floor_area BETWEEN ".$floor_area[0]." AND ".$floor_area[1].")";
-			}
-			
-		}
-
-		if(isset($_GET['bedroom']) && $_GET['bedroom'] != "") {
-			$uri['bedroom'] = $_GET['bedroom'];
-
-			if($_GET['bedroom'] == 6) {
-				$filters[] = " bedroom >= ".$_GET['bedroom'];
-			}else {
-				$filters[] = " bedroom = '".$_GET['bedroom']."'";
-			}
-		}
-
-		if(isset($_GET['bathroom']) && $_GET['bathroom'] != "") {
-			$uri['bathroom'] = $_GET['bathroom'];
-
-			if($_GET['bathroom'] == 6) {
-				$filters[] = " bathroom >= ".$_GET['bathroom'];
-			}else {
-				$filters[] = " bathroom = '".$_GET['bathroom']."'";
-			}
-		}
-
-		if(isset($_GET['type']) && $_GET['type'] != "") {
-			$uri['type'] = $_GET['type'];
-			$search[] = $_GET['type'];
-		}
-
-		if(isset($_GET['tags']) && $_GET['tags'] != "") {
-			$uri['tags'] = $_GET['tags'];
-			$search[] = implode(" ", $_GET['tags']);
-		}
-
-		if(isset($_GET['category']) && $_GET['category'] != "") {
-			$uri['category'] = $_GET['category'];
-			$filters[] = " category LIKE '%".$_GET['category']."%'";
-			$search[] = $_GET['category'];
-		}
-
-		if(isset($_GET['address']) && $_GET['address'] != "") {
-			$uri['address'] = $_GET['address'];
-
-			if($_GET['address']['region'] != "") {
-				$filters[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."'  ";
-				$search[] = $_GET['address']['region'];
-			}
-
-			if($_GET['address']['province'] != "") {
-				$filters[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['address']['province']."'  ";
-				$search[] = $_GET['address']['province'];
-			}
-
-			if($_GET['address']['municipality'] != "") {
-				$filters[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['address']['municipality']."'  ";
-				$search[] = $_GET['address']['municipality'];
-			}
-
-		}
-
-		if(isset($_GET['amenities']) && $_GET['amenities'] != "") {
-			$uri['amenities'] = $_GET['amenities'];
-			$search[] = implode(" ", $_GET['amenities']);
-		}
-
 		#$filters[] = " account_id != ".$this->session['account_id'];
 		$filters[] = " is_mls = 1 ";
 		$filters[] = " l.status = 1 ";
 		$filters[] = " display = 1";
-
-		if(isset($_GET['region']) && $_GET['region'] != "") {
-			$filters[] = " board_region = '".$_GET['region']."'";
-			$uri['region'] = $_GET['region'];
-		}else {
-
-			$uri['region'] = "";
-
-			if($this->session['board_region'] != "") {
-				$filters[] = " board_region = '".$this->session['board_region']."'";
-				$uri['region'] = $this->session['board_region'];
-			}
-
-		}
-
-		if(isset($_GET['local']) && $_GET['local'] != "") {
-			$filters[] = " local_board_name = '".$_GET['local']."'";
-			$uri['local'] = $_GET['local'];
-		}else {
-
-			$uri['local'] = "";
-
-			if($this->session['local_board_name'] != "") {
-				$filters[] = " local_board_name = '".$this->session['local_board_name']."'";
-				$uri['local'] = $this->session['local_board_name'];
-			}
-			
-		}
+		$filters['board_region'] = " a.board_region = '".$this->session['board_region']."'";
+		$filters['local_board_name'] = " a.local_board_name = '".$this->session['local_board_name']."'";
 
 		$address = $this->getModel("Address");
 		$listings = $this->getModel("Listing");
 		$listings->address = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));
-		
-		if(
-			(isset($_GET['type']) && $_GET['type'] != "") || 
-			(isset($_GET['tags']) && $_GET['tags'] != "") || 
-			(isset($_GET['category']) && $_GET['category'] != "") || 
-			(isset($_GET['address']) && $_GET['address'] != "") || 
-			(isset($_GET['amenities']) && $_GET['amenities'] != "")
-		) {
-			
-			$listings->select("
-				listing_id, l.account_id, is_website, offer, foreclosed, name, price, floor_area, lot_area, unit_area, bedroom, bathroom, parking, thumb_img, last_modified, l.status, display, type, title, tags, long_desc, category, address, amenities,
-				MATCH( type, title, tags, long_desc, category, address, amenities )
-				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS score
-			")->orderby(" score DESC ");
 
-		}else {
-			/* $sort = isset($_GET['sort']) ? ($_GET['sort'] == "score") ? "last_modified" : $_GET['sort'] : " last_modified";
-			$listings->orderby(" $sort $order "); */
-		}
-
-		$listings->join(" l JOIN #__accounts a ON a.account_id = l.account_id ");
-		$listings->where((isset($filters) ? implode(" AND ",$filters) : null));
+		$uri['board_region'] = $this->session['board_region'];
+		$uri['local_board_name'] = $this->session['local_board_name'];
+		$uri['offer'] = "for sale";
 		
 		$listings->page['limit'] = 20;
 		$listings->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$listings->page['target'] = url("MlsController@index");
+		$listings->page['target'] = url("MlsController@MLSIndex");
 		$listings->page['uri'] = (isset($uri) ? $uri : []);
 
-		$data['listings'] = $listings->getList();
+		$listings->app = [
+			"handshaked" => true,
+			"comparative" => true,
+			"url_path" => [
+				"path" => "id",
+				"value" => "listing_id",
+				"class_hint" => "MlsController@viewListing"
+			]
+		];
 
-		if($data['listings']) {
+		$response = $this->listProperties($listings, $filters);
+		
+		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTemplate("listings/listProperties.php");
+		$listings->list = $this->getTemplate($response['data'],$response['model']);
 
-			$total_listing = count($data['listings']);
-
-			for($i=0; $i<$total_listing; $i++) {
-
-				$images = $this->getModel("ListingImage");
-				$images->page['limit'] = 50;
-
-				$images->column['listing_id'] = $data['listings'][$i]['listing_id'];
-				$total_image = $images->getByListingId();
-				
-				$data['listings'][$i]['total_images'] = 0;
-
-				if($total_image) {
-					$data['listings'][$i]['total_images'] = count($total_image);
-				}
-				
-
-			}
-
-		}
-
+		$this->setTempalteBasePath(ROOT."Manage");
 		$this->setTemplate("mls/list.php");
-		return $this->getTemplate($data,$listings);
+		return $this->getTemplate($response['data'],$response['model']);
 
 	}
 
@@ -759,8 +599,26 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		
 	}
 
-	function related() {
-		return parent::related();
+	function relatedProperties($app = [], $filters = []) {
+
+		$this->setTempalteBasePath(ROOT."Admin");
+
+		$filters[] = " listing_id != ".$_GET['listing_id'];
+		$filters[] = " is_mls = 1 ";
+		$filters[] = " is_mls = 1 ";
+		$filters[] = " l.status = 1 ";
+		$filters[] = " display = 1";
+
+		return parent::relatedProperties([
+			"handshaked" => true,
+			"comparative" => true,
+			"url_path" => [
+				"path" => "id",
+				"value" => "listing_id",
+				"class_hint" => "MlsController@viewListing"
+			]
+		], $filters);
+
 	}
 	
 }

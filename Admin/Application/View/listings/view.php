@@ -186,7 +186,7 @@ $html[] = "<div class='page-body'>";
 
 					/** AMENITIES */
 					$html[] = "<div class='amenities mt-5'>";
-						$html[] = "<h3><i class='ti ti-home-shield me-1'></i> Amenities</h3>";
+						$html[] = "<h3 id='amenities'><i class='ti ti-home-shield me-1'></i> Amenities</h3>";
 						$html[] = "<ul class='m-0 p-0' style='list-style: none; columns: 2; -webkit-columns: 2; -moz-columns: 2;'>";
 							$amenities = explode(",",$data['listing']['amenities']);
 							for($i=0; $i<count($amenities); $i++) {
@@ -200,7 +200,7 @@ $html[] = "<div class='page-body'>";
 
 					/** PAYMENT DETAILS */
 					$html[] = "<div class='price mt-5'>";
-						$html[] = "<h3><i class='ti ti-wallet me-1'></i> Payment Details</h3>";
+						$html[] = "<h3 id='payment_details'><i class='ti ti-wallet me-1'></i> Payment Details</h3>";
 						$html[] = "<table class='table'>";
 						$html[] = "<tr>";
 							$html[] = "<td>Selling Price</td>";
@@ -389,6 +389,7 @@ $html[] = "<div class='page-body'>";
 
 			$html[] = "<div class='row'>";
 				$html[] = "<div class='col-lg-9'>";
+					$html[] = "<h3><i class='ti ti-building'></i> Related Properties</h3>";
 					$html[] = "<div class='related-properties-container mb-3'></div>";
 				$html[] = "</div>";
 				$html[] = "<div class='col-lg-3'>";

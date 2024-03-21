@@ -47,7 +47,7 @@ class AddressModel extends \Main\Model {
 
 		if($current_value != null) {
 			$current_value = json_encode($current_value);
-		}else { $current_value = '{"region":"","province":"","municipality":"","barangay":""}'; }
+		}else { $current_value = '{"region":"","province":"","municipality":"","barangay":"", "street":"", "village":""}'; }
 
 		$doc = \Library\Factory::getDocument();
 		$doc->addScript(CDN."philippines-addresses/json/table_address.js");
@@ -84,6 +84,8 @@ class AddressModel extends \Main\Model {
 					}
 				}
 
+				$('#address_village').val(current_value.village);
+				$('#address_street').val(current_value.street);
 				$('#address_barangay').val(current_value.barangay);
 				$('#address_municipality').val(current_value.municipality);
 				$('#address_province').val(current_value.province);
@@ -187,12 +189,12 @@ class AddressModel extends \Main\Model {
 
 			$html[] = "<div class='mb-3 street-input'>";
 				$html[] = "<label class='form-label text-muted'>Street</label>";
-				$html[] = "<input type='text' name='address[street]' id='street' value='' class='form-control' />";
+				$html[] = "<input type='text' name='address[street]' id='address_street' value='' class='form-control' />";
 			$html[] = "</div>";
 
 			$html[] = "<div class='mb-3 village-input'>";
 				$html[] = "<label class='form-label text-muted'>Village / Building</label>";
-				$html[] = "<input type='text' name='address[village]' id='village' value='' class='form-control' />";
+				$html[] = "<input type='text' name='address[village]' id='address_village' value='' class='form-control' />";
 			$html[] = "</div>";
 
 		$html[] = "</div>";
