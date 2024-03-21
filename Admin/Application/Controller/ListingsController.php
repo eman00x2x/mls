@@ -221,6 +221,7 @@ class ListingsController extends \Main\Controller {
 			$listingImage = $this->getModel("ListingImage");
 			$listingImage->page['limit'] = 100;
 			$listingImage->column['listing_id'] = $listing_id;
+			$listingImage->and(" filename != '".basename($data['listing']['thumb_img'])."' ");
 			$data['listing']['images'] = $listingImage->getByListingId();
 
 			if(!$data['listing']['images']) {

@@ -23,14 +23,7 @@ $html[] = "<div class='row row-cards'>";
 			}
 
 		}else {
-			$html[] = "<div class='empty bg-white p-5 border'>";
-				$html[] = "<div class='empty-header fw-bold'>No Results</div>";
-				$html[] = "<p class='empty-title'>Oops... no results found in your search.</p>";
-				$html[] = "<p class='empty-subtitle'>Clear your filter and try another search</p>";
-				$html[] = "<div class='empty-action'>";
-					$html[] = "<a href='".url( $model->app['url_path']['class_hint'] )."' class='btn btn-light'>Clear filter</a>";
-				$html[] = "</div>";
-			$html[] = "</div>";
+			$html[] = "<p>No results found.</p>";
 		}
 
 	$html[] = "</div>";

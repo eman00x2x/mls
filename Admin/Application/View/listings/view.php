@@ -1,17 +1,5 @@
 <?php
 
-$buttons = function() use (&$data) {
-    
-    if($data['handshake'] && in_array($_SESSION['user_logged']['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
-		$html[] = "<span class='btn btn-md btn-danger ms-1 mb-2 btn-cancel-handshake row_listings_".$data['listing']['listing_id']."' data-row='row_listings_".$data['listing']['listing_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
-    }else {
-        $html[] = "<span class='btn btn-md btn-primary me-1 btn-requestHandshake row_listings_".$data['listing']['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
-    }  
-
-    return implode("",$html);
-
-};
-
 $html[] = "<div class='container-xl'>";
 	$html[] = "<div class='response'>";
 		$html[] = getMsg();
@@ -31,8 +19,8 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 				$html[] = "<div class=''>";
 					$html[] = "<div class='btn-list'>";
 						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@handshakedIndex")."'><i class='ti ti-heart-handshake me-2'></i> Handshaked</a>";
+						$html[] = "<span class='btn btn-dark btn-compare-table' data-url='".url("MlsController@comparePreview")."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd'><i class='ti ti-layers-difference me-2'></i> Compare Table</span>";
 						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@downloadPDFFormat", ["id" => $data['listing']['listing_id']])."'><i class='ti ti-download me-2'></i> Download</a>";
-						
 					$html[] = "</div>";
 				$html[] = "</div>";
 			$html[] = "</div>";
@@ -48,7 +36,7 @@ $html[] = "<div class='page-body'>";
 			$html[] = "<div class='row gap-2 justify-content-center'>";
 				$html[] = "<div class='col-sm-6 col-md-5 col-lg-5'>";
 
-					$html[] = "<div id='photos'>";
+					$html[] = "<div id='photos' class='px-2'>";
 
 						if($data['listing']['thumb_img'] != "") {
 							$html[] = "<div class='mb-2 img-responsive rounded border' style='position: relative; height: 300px; background-image: url(".$data['listing']['thumb_img'].")'>";
@@ -116,45 +104,47 @@ $html[] = "<div class='page-body'>";
 				$html[] = "</div>";
 				$html[] = "<div class='col-sm-6 col-md-6 col-lg-4'>";
 					
-					$html[] = "<div class='d-flex justify-content-between'>";
-						$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Posted since ";
-							$html[] = date("d M Y", $data['listing']['date_added']);
-						$html[] = "</span>";
+					$html[] = "<div class='px-2'>";
+						$html[] = "<div class='d-flex justify-content-between'>";
+							$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Posted since ";
+								$html[] = date("d M Y", $data['listing']['date_added']);
+							$html[] = "</span>";
 
-						$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Modified at ";
-							$html[] = date("d M Y", $data['listing']['last_modified']);
-						$html[] = "</span>";
-					$html[] = "</div>";
-						
-					$html[] = "<div class='mb-4'>";
-						$html[] = "<h1>".$data['listing']['title']."</h1>";
-						$html[] = "<p><i class='ti ti-map-pin'></i> ".$data['listing']['address']['barangay']." ".$data['listing']['address']['municipality']." ".$data['listing']['address']['province']."</p>";
-						$html[] = "<p class='display-5 fw-bold text-highlight'>&#8369;".number_format($data['listing']['price'], 0)."</p>";
-						$html[] = "<p class='fs-16'><span><i class='ti ti-category'></i> ".$data['listing']['category']."</span></p>";
-
-						$html[] = "<div class='mb-3 d-flex gap-5 align-items-center'>";
-
-							if($data['listing']['lot_area'] > 0) {
-								$html[] = "<div class='fs-24 fw-bold'>";
-									$html[] = "<small class='fw-normal fs-12 d-block text-muted'> Land Area:</small>";
-									$html[] = "<span><i class='ti ti-maximize'></i> ".$data['listing']['lot_area']."sqm</span>";
-								$html[] = "</div>";
-							}
-
-							if($data['listing']['floor_area'] > 0) {
-								$html[] = "<div class='fs-24 fw-bold'>";
-									$html[] = "<small class='fw-normal fs-12 d-block text-muted'> Floor Area:</small>";
-									$html[] = "<span><i class='ti ti-maximize'></i> ".$data['listing']['floor_area']."sqm</span>";
-								$html[] = "</div>";
-							}
+							$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Modified at ";
+								$html[] = date("d M Y", $data['listing']['last_modified']);
+							$html[] = "</span>";
 						$html[] = "</div>";
+							
+						$html[] = "<div class='mb-4'>";
+							$html[] = "<h1>".$data['listing']['title']."</h1>";
+							$html[] = "<p><i class='ti ti-map-pin'></i> ".$data['listing']['address']['barangay']." ".$data['listing']['address']['municipality']." ".$data['listing']['address']['province']."</p>";
+							$html[] = "<p class='display-5 fw-bold text-highlight'>&#8369;".number_format($data['listing']['price'], 0)."</p>";
+							$html[] = "<p class='fs-16'><span><i class='ti ti-category'></i> ".$data['listing']['category']."</span></p>";
 
-						$html[] = "<div class='mb-3 d-flex gap-5 align-items-center'>";
-							if($data['listing']['bedroom'] != "" && $data['listing']['bedroom'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-bed'></i> ".$data['listing']['bedroom']."<span class='d-block fw-normal text-muted fs-12'>Bedroom</span></div>"; }
-							if($data['listing']['bathroom'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-bath'></i> ".$data['listing']['bathroom']."<span class='d-block fw-normal text-muted fs-12'>Bathroom</span></div>"; }
-							if($data['listing']['parking'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-car-garage'></i> ".$data['listing']['parking']."<span class='d-block fw-normal text-muted fs-12'>Car Space</span></div>"; }
+							$html[] = "<div class='mb-3 d-flex gap-5 align-items-center'>";
+
+								if($data['listing']['lot_area'] > 0) {
+									$html[] = "<div class='fs-24 fw-bold'>";
+										$html[] = "<small class='fw-normal fs-12 d-block text-muted'> Land Area:</small>";
+										$html[] = "<span><i class='ti ti-maximize'></i> ".$data['listing']['lot_area']."sqm</span>";
+									$html[] = "</div>";
+								}
+
+								if($data['listing']['floor_area'] > 0) {
+									$html[] = "<div class='fs-24 fw-bold'>";
+										$html[] = "<small class='fw-normal fs-12 d-block text-muted'> Floor Area:</small>";
+										$html[] = "<span><i class='ti ti-maximize'></i> ".$data['listing']['floor_area']."sqm</span>";
+									$html[] = "</div>";
+								}
+							$html[] = "</div>";
+
+							$html[] = "<div class='mb-3 d-flex gap-5 align-items-center'>";
+								if($data['listing']['bedroom'] != "" && $data['listing']['bedroom'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-bed'></i> ".$data['listing']['bedroom']."<span class='d-block fw-normal text-muted fs-12'>Bedroom</span></div>"; }
+								if($data['listing']['bathroom'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-bath'></i> ".$data['listing']['bathroom']."<span class='d-block fw-normal text-muted fs-12'>Bathroom</span></div>"; }
+								if($data['listing']['parking'] > 0) { $html[] = "<div class='fw-bold'><i class='ti ti-car-garage'></i> ".$data['listing']['parking']."<span class='d-block fw-normal text-muted fs-12'>Car Space</span></div>"; }
+							$html[] = "</div>";
+
 						$html[] = "</div>";
-
 					$html[] = "</div>";
 
 				$html[] = "</div>";
@@ -162,6 +152,63 @@ $html[] = "<div class='page-body'>";
 		$html[] = "</div>";
 	$html[] = "</div>";
 
+	if($data['handshake'] && in_array($_SESSION['user_logged']['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
+		$html[] = "<div class='container-xl px-0 handshake-container'>";
+			$html[] = "<div class='card-title mb-2 mt-5'><i class='ti ti-heart-handshake me-1'></i> Handshake Details</div>";
+			$html[] = "<div class='d-flex gap-2 align-items-stretch justify-content-center'>";
+				$html[] = "<div class='card flex-fill'>";
+					$html[] = "<div class='card-body'>";
+						
+						$html[] = "<div class='card-title'><i class='ti ti-user me-1'></i> Requestor</div>";
+						$html[] = "<div class='mb-3'>";
+							$html[] = "<div class='d-flex lh-1 text-reset p-0'>";
+								$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['handshake']['requestor_details']['logo'].")'></span>";
+								$html[] = "<div class='ms-2'>";
+									$html[] = "<div class='fw-bold'>".$data['handshake']['requestor_details']['account_name']['prefix']." ".$data['handshake']['requestor_details']['account_name']['firstname']." ".$data['handshake']['requestor_details']['account_name']['lastname']." ".$data['handshake']['requestor_details']['account_name']['suffix']."</div>";
+									$html[] = "<div class='mt-1 small'>".$data['handshake']['requestor_details']['profession']."</div>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+						$html[] = "</div>";
+						$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-device-mobile me-1'></i> Mobile:</span> <strong>".$data['handshake']['requestor_details']['mobile_number']."</strong></div>";
+						$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-mail me-1'></i> Email:</span> <strong>".$data['handshake']['requestor_details']['email']."</strong></div>";
+						
+					$html[] = "</div>";
+				$html[] = "</div>";
+
+				$html[] = "<div class='card flex-fill'>";
+					$html[] = "<div class='card-body'>";
+						$html[] = "<div class='card-title'><i class='ti ti-heart-handshake me-1'></i> Handshake Status</div>";
+						$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-status-change me-1'></i> Status:</span> <strong>".ucwords($data['handshake']['handshake_status'])."</strong></div>";
+						$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Status Date:</span> <strong>".date("F d, Y", $data['handshake']['handshake_status_date'])."</strong></div>";
+					$html[] = "</div>";
+					
+					$html[] = "<div class='text-center d-md-block d-none mb-3'>";
+						$html[] = "<span class='btn btn-md btn-danger ms-1 mb-2 btn-cancel-handshake row_listings_".$data['listing']['listing_id']."' data-row='row_listings_".$data['listing']['listing_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
+					$html[] = "</div>";
+					
+				$html[] = "</div>";
+
+				if($data['handshake']['handshake_status'] == "accepted") {
+					
+					$html[] = "<div class='card flex-fill'>";
+						$html[] = "<div class='card-body'>";
+							$html[] = "<div class='card-title'><i class='ti ti-file-description me-1'></i> Listing Details</div>";
+								
+								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-certificate me-1'></i> Authority:</span> <strong>".$data['listing']['other_details']['authority_type']."</strong></div>";
+								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-license me-1'></i> Commission Share:</span> <strong>".$data['listing']['other_details']['com_share']."%</strong></div>";
+								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-moneybag me-1'></i> Option Money:</span> <strong>&#8369;".number_format($data['listing']['reservation'],0)." for ".$data['listing']['payment_details']['option_money_duration']." days</strong></div>";
+								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-pig-money me-1'></i> Mode of Payment:</span> <strong>".$data['listing']['payment_details']['payment_mode']."</strong></div>";
+								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-file-description me-1'></i> Allocation of Taxes:</span> <strong>".$data['listing']['payment_details']['tax_allocation']."</strong></div>";
+								
+							$html[] = "</div>";
+						$html[] = "</div>";
+					$html[] = "</div>";
+					
+				}
+
+			$html[] = "</div>";
+		$html[] = "</div>";
+	}
 	$html[] = "<div class='container-xl my-3 px-0'>";
 		$html[] = "<div class='row'>";
 			$html[] = "<div class='col-md-9 col-12'>";
@@ -203,27 +250,12 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<h3 id='payment_details'><i class='ti ti-wallet me-1'></i> Payment Details</h3>";
 						$html[] = "<table class='table'>";
 						$html[] = "<tr>";
-							$html[] = "<td>Selling Price</td>";
+							$html[] = "<td class='w-50'>Selling Price</td>";
 							$html[] = "<td>&#8369;".number_format($data['listing']['price'],0)."</td>";
 						$html[] = "</tr>";
 						$html[] = "<tr>";
-							$html[] = "<td>Reservation Fee / Option Money</td>";
+							$html[] = "<td>Reservation Fee</td>";
 							$html[] = "<td>&#8369;".number_format($data['listing']['reservation'],0)."</td>";
-						$html[] = "</tr>";
-
-						$html[] = "<tr>";
-							$html[] = "<td>Option Money Duration</td>";
-							$html[] = "<td>".$data['listing']['payment_details']['option_money_duration']." days</td>";
-						$html[] = "</tr>";
-
-						$html[] = "<tr>";
-							$html[] = "<td>Mode of Payment</td>";
-							$html[] = "<td>".$data['listing']['payment_details']['payment_mode']."</td>";
-						$html[] = "</tr>";
-
-						$html[] = "<tr>";
-							$html[] = "<td>Allocation of Taxes</td>";
-							$html[] = "<td>".$data['listing']['payment_details']['tax_allocation']."</td>";
 						$html[] = "</tr>";
 
 						$html[] = "<tr>";
@@ -331,13 +363,6 @@ $html[] = "<div class='page-body'>";
 					$html[] = "<div class='card-body'>";
 						$html[] = "<div class='card-title'>Posting Details</div>";
 						
-						if($data['handshake'] && in_array($_SESSION['user_logged']['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
-							if($data['handshake']['handshake_status'] == "accepted") {
-								$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-certificate me-1'></i> Authority:</span> <strong>".$data['listing']['other_details']['authority_type']."</strong></div>";
-								$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-license me-1'></i> Commission Share:</span> <strong>".$data['listing']['other_details']['com_share']."%</strong></div>";
-							}
-						}
-
 						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-status-change me-1'></i> Status:</span> <strong>".$status[$data['listing']['status']]."</strong></div>";
 						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Posted since:</span> <strong>".date("F d, Y", $data['listing']['date_added'])."</strong></div>";
 						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Modified at:</span> <strong>".date("F d, Y", $data['listing']['last_modified'])."</strong></div>";
@@ -345,42 +370,15 @@ $html[] = "<div class='page-body'>";
 				$html[] = "</div>";
 
 				if($data['handshake'] && in_array($_SESSION['user_logged']['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
-					$html[] = "<div class='card mb-3'>";
-						$html[] = "<div class='card-body'>";
-							
-							$html[] = "<div class='card-title'>Requestor</div>";
-							$html[] = "<div class='mb-3'>";
-								$html[] = "<div class='d-flex lh-1 text-reset p-0'>";
-									$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['handshake']['requestor_details']['logo'].")'></span>";
-									$html[] = "<div class='ms-2'>";
-										$html[] = "<div class='fw-bold'>".$data['handshake']['requestor_details']['account_name']['prefix']." ".$data['handshake']['requestor_details']['account_name']['firstname']." ".$data['handshake']['requestor_details']['account_name']['lastname']." ".$data['handshake']['requestor_details']['account_name']['suffix']."</div>";
-										$html[] = "<div class='mt-1 small'>".$data['handshake']['requestor_details']['profession']."</div>";
-									$html[] = "</div>";
-								$html[] = "</div>";
-							$html[] = "</div>";
-							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-device-mobile me-1'></i> Mobile:</span> <strong>".$data['handshake']['requestor_details']['mobile_number']."</strong></div>";
-							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-mail me-1'></i> Email:</span> <strong>".$data['handshake']['requestor_details']['email']."</strong></div>";
-							
-						$html[] = "</div>";
-					$html[] = "</div>";
 
-					$html[] = "<div class='card mb-3'>";
-						$html[] = "<div class='card-body'>";
-							$html[] = "<div class='card-title'>Handshake Details</div>";
-							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-status-change me-1'></i> Status:</span> <strong>".strtoupper($data['handshake']['handshake_status'])."</strong></div>";
-							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Status Date:</span> <strong>".date("F d, Y", $data['handshake']['handshake_status_date'])."</strong></div>";
-						$html[] = "</div>";
+				}else {
+					$html[] = "<div class='text-center'>";
+						$html[] = "<span class='btn btn-md btn-primary me-1 btn-requestHandshake row_listings_".$data['listing']['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
 					$html[] = "</div>";
 				}
-
-				$html[] = "<div class='text-center mb-4 d-md-block d-none'>";
-					$html[] = $buttons();
-				$html[] = "</div>";
 			
             $html[] = "</div>";
-
         $html[] = "</div>";
-
     $html[] = "</div>";
 
 	
@@ -403,8 +401,12 @@ $html[] = "<div class='page-body'>";
 $html[] = "</div>";
 
 $html[] = "<div class='btn-wrap fixed-bottom d-sm-block d-md-none'>";
-	$html[] = "<div class='text-center '>";
-		$html[] = $buttons();
+	$html[] = "<div class='text-center'>";
+		if($data['handshake'] && in_array($_SESSION['user_logged']['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
+			$html[] = "<span class='btn btn-md btn-danger ms-1 mb-2 btn-cancel-handshake row_listings_".$data['listing']['listing_id']."' data-row='row_listings_".$data['listing']['listing_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
+		}else {
+			$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake row_listings_".$data['listing']['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
+		}
 	$html[] = "</div>";
 $html[] = "</div>";
 

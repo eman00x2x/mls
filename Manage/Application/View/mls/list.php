@@ -229,7 +229,19 @@ $html[] = "<div class='page-body'>";
 
 			$html[] = "<div class='col-md-9 col-12'>";
 				
-					$html[] = $model->list;
+					if($model->rows > 0) {
+						$html[] = $model->list;
+					}else {
+						$html[] = "<div class='text-center bg-white p-5 border'>";
+							$html[] = "<div class='empty-header fw-bold'>No Results</div>";
+							$html[] = "<p class='empty-title'>Oops... no results found in your search.</p>";
+							$html[] = "<p class='empty-subtitle'>Clear your filter and try another search</p>";
+							$html[] = "<div class='empty-action'>";
+								$html[] = "<a href='".url( $model->app['url_path']['class_hint'] )."' class='btn btn-outline-primary'>Clear filter</a>";
+							$html[] = "</div>";
+						$html[] = "</div>";
+					}
+						
 
 					/* if($data['listings']) { $c=$model->page['starting_number'];
 

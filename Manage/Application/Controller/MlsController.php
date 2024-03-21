@@ -81,8 +81,8 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$filters[] = " is_mls = 1 ";
 		$filters[] = " l.status = 1 ";
 		$filters[] = " display = 1";
-		$filters['board_region'] = " a.board_region = '".$this->session['board_region']."'";
-		$filters['local_board_name'] = " a.local_board_name = '".$this->session['local_board_name']."'";
+		/* $filters['board_region'] = " a.board_region = '".$this->session['board_region']."'";
+		$filters['local_board_name'] = " a.local_board_name = '".$this->session['local_board_name']."'"; */
 
 		$address = $this->getModel("Address");
 		$listings = $this->getModel("Listing");
@@ -108,7 +108,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		];
 
 		$response = $this->listProperties($listings, $filters);
-		
+
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->setTemplate("listings/listProperties.php");
 		$listings->list = $this->getTemplate($response['data'],$response['model']);
@@ -228,7 +228,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 							"status" => 1,
 							"created_at" => DATE_NOW,
 							"content" => array(
-								"title" => $requestor['firstname']." ".$requestor['lastname']." requested a handshake",
+								"title" => $requestor['account_name']['prefix']." ".$requestor['account_name']['firstname']." ".$requestor['account_name']['lastname']." ".$requestor['account_name']['suffix']." requested a handshake",
 								"message" => $data['title'],
 								"url" => MANAGE."mls/handshaked"
 							)

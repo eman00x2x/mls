@@ -119,6 +119,7 @@ $(document).on('click', '.btn-denied-handshake, .btn-done-handshake, .btn-cancel
 		$('.' + row).remove();
 		$('.btn-accept-handshake').remove();
 		$('.btn-denied-handshake').remove();
+		$('.handshake-container').remove();
 	});
 });
 

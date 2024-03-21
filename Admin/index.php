@@ -1,5 +1,6 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
 header('Cache-Control: no-cache');
 
 use Admin\Application\Controller\AuthenticatorController as Authenticator;
