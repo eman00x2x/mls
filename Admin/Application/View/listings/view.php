@@ -260,17 +260,17 @@ $html[] = "<div class='page-body'>";
 
 						$html[] = "<tr>";
 							$html[] = "<td>Eligible for Bank Loan</td>";
-							$html[] = "<td>".($data['listing']['payment_details']['bank_loan'] == 1 ? "Yes" : "No")."</td>";
+							$html[] = "<td>".((isset($data['listing']['payment_details']['bank_loan']) ? $data['listing']['payment_details']['bank_loan'] : 0) == 1 ? "Yes" : "No")."</td>";
 						$html[] = "</tr>";
 
 						$html[] = "<tr>";
 							$html[] = "<td>Eligible for Pag-Ibig Housing Loan</td>";
-							$html[] = "<td>".($data['listing']['payment_details']['pagibig_loan'] == 1 ? "Yes" : "No")."</td>";
+							$html[] = "<td>".((isset($data['listing']['payment_details']['pagibig_loan']) ? $data['listing']['payment_details']['pagibig_loan'] : 0) == 1 ? "Yes" : "No")."</td>";
 						$html[] = "</tr>";
 
 						$html[] = "<tr>";
 							$html[] = "<td>Assume Balance</td>";
-							$html[] = "<td>".($data['listing']['payment_details']['assume_balance'] == 1 ? "Yes" : "No")."</td>";
+							$html[] = "<td>".((isset($data['listing']['payment_details']['assume_balance']) ? $data['listing']['payment_details']['assume_balance'] : 0) == 1 ? "Yes" : "No")."</td>";
 						$html[] = "</tr>";
 						$html[] = "</table>";
 						
@@ -372,9 +372,11 @@ $html[] = "<div class='page-body'>";
 				if($data['handshake'] && in_array($_SESSION['user_logged']['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
 
 				}else {
-					$html[] = "<div class='text-center'>";
-						$html[] = "<span class='btn btn-md btn-primary me-1 btn-requestHandshake row_listings_".$data['listing']['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
-					$html[] = "</div>";
+					if($_SESSION['user_logged']['account_id'] != $data['account']['account_id']) {
+						$html[] = "<div class='text-center'>";
+							$html[] = "<span class='btn btn-md btn-primary me-1 btn-requestHandshake row_listings_".$data['listing']['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
+						$html[] = "</div>";
+					}
 				}
 			
             $html[] = "</div>";
@@ -405,7 +407,9 @@ $html[] = "<div class='btn-wrap fixed-bottom d-sm-block d-md-none'>";
 		if($data['handshake'] && in_array($_SESSION['user_logged']['account_id'], [$data['handshake']['requestor_account_id'], $data['handshake']['requestee_account_id']])) {
 			$html[] = "<span class='btn btn-md btn-danger ms-1 mb-2 btn-cancel-handshake row_listings_".$data['listing']['listing_id']."' data-row='row_listings_".$data['listing']['listing_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
 		}else {
-			$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake row_listings_".$data['listing']['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
+			if($_SESSION['user_logged']['account_id'] != $data['account']['account_id']) {
+				$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake row_listings_".$data['listing']['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
+			}
 		}
 	$html[] = "</div>";
 $html[] = "</div>";

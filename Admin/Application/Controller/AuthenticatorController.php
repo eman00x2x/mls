@@ -138,6 +138,10 @@ class AuthenticatorController extends \Main\Controller
 		if($data['privileges'] === false) {
 			$data['privileges'] = $accountData['privileges'];
 		}
+
+		unset($data['account_name']['prefix']);
+		unset($data['account_name']['suffix']);
+		unset($data['account_name']['middlename']);
 		
 		foreach($data as $key => $val) {
 			$_SESSION['user_logged'][$key] = $val;
@@ -330,6 +334,10 @@ class AuthenticatorController extends \Main\Controller
 			"login_at" => DATE_NOW,
 			"login_details" => $client_info
 		]);
+
+		unset($data['account_name']['prefix']);
+		unset($data['account_name']['suffix']);
+		unset($data['account_name']['middlename']);
 	
 		$arr = [
 			'user_logged' => $data,

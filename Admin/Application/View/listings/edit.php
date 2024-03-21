@@ -409,7 +409,9 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 														
 															$html[] = "<div class='me-2 mb-3 image_".$data['listing']['images'][$i]['image_id']."'>";
 																
-																$html[] = "<input type='hidden' name='listing_image_filename[]' value='".$data['listing']['images'][$i]['filename']."' />";
+																$html[] = "<input type='hidden' name='listing_image_filename[$i][width]' value='".$data['listing']['images'][$i]['width']."' />";
+																$html[] = "<input type='hidden' name='listing_image_filename[$i][height]' value='".$data['listing']['images'][$i]['height']."' />";
+																$html[] = "<input type='hidden' name='listing_image_filename[$i][name]' value='".$data['listing']['images'][$i]['filename']."' />";
 																$html[] = "<div class='' style=\"background-image:url('".CDN."/images/listings/".$data['listing']['images'][$i]['filename']."'); background-repeat: no-repeat; background-size: cover; width:180px;height:180px; \"></div>";
 																$html[] = "<div class='btn-group mt-2'>";
 																	$html[] = "<span class='btn btn-outline-secondary btn-remove-image' title='Remove image' onclick=\"removeImage('.image_".$data['listing']['images'][$i]['image_id']."','".$data['listing']['images'][$i]['image_id']."','".$data['listing']['images'][$i]['filename']."','listings')\"><i class='ti ti-trash'></i></span>";
@@ -586,7 +588,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<label class='form-label text-muted'>Authority to Sell Expiration Date</label>";
 												$html[] = "<div class='input-icon mb-2'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
-													$html[] = "<input type='date' name='authority_to_sell_expiration' id='authority_to_sell_expiration' value='".(isset($data['listing']['other_details']["authority_to_sell_expiration"]) ? date("Y-m-d", $data['listing']['other_details']["authority_to_sell_expiration"]) : null)."' step='0.5' class='form-control' placeholder='Authority to Sell Expiration Date' />";
+													$html[] = "<input type='date' name='authority_to_sell_expiration' id='authority_to_sell_expiration' value='".(isset($data['listing']['other_details']["authority_to_sell_expiration"]) ? date("Y-m-d", strtotime($data['listing']['other_details']["authority_to_sell_expiration"])) : null)."' step='0.5' class='form-control' placeholder='Authority to Sell Expiration Date' />";
 												$html[] = "</div>";
 												$html[] = "<span class='form-hint'>Please specify the expiration date of your Authority to Sell for this property.</span>";
 											$html[] = "</div>";

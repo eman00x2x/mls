@@ -424,7 +424,7 @@ class AccountsController extends \Main\Controller {
 
 				$user->save($data['user']['user_id'],array(
 					"photo" => $_POST['logo'],
-					"name" => implode(" ", $data['account_name'])
+					"name" => $_POST['firstname']." ".$_POST['lastname']
 				));
 			}
 

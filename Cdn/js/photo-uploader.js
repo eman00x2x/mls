@@ -5,7 +5,7 @@ $(document).ready(function () {
 		html = "";
 		for(i=0; i<storageData.length; i++) {
 			html += "<div class='me-2 mb-3 " + storageData[i].id + "'>";
-			html += createElements(storageData, $('#photo_uploader').val());
+			html += createElements(storageData, $('#photo_uploader').val(), i);
 			html += "</div>";
 		}
 
@@ -68,7 +68,7 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 						items = { id: "image_" + response[i].id, url: response[i].url, filename: response[i].filename, application: "listings" };
 						itemsArray.push(items);
 						localStorage.setItem('items', JSON.stringify(itemsArray));
-						html += createElements(response,$('#photo_uploader').val());
+						html += createElements(response, $('#photo_uploader').val(), i);
 					}
 				html += "</div>";
 			}
@@ -127,7 +127,7 @@ function removeImage(container,image_id,filename,application) {
 	$(container).remove();
 
 	switch(application) {
-		case 'listings': req = "/listingImages/"; break;
+		case 'listings': req = MANAGE + "listingImages/"; break;
 	}
 
 	$.get(req + image_id + "/delete?filename=" + filename, function (data, status) {
@@ -139,8 +139,10 @@ function removeImage(container,image_id,filename,application) {
 
 }
 
-function createElements(response,application = "listings") {
-	html = "<input type='hidden' name='listing_image_filename[]' value='" + response[i].filename + "' />";
+function createElements(response,application = "listings", counter = 0) {
+	html = "<input type='hidden' name='listing_image_filename[" + i + "][height]' value='" + response[i].height + "' />";
+	html += "<input type='hidden' name='listing_image_filename[" + i + "][width]' value='" + response[i].width + "' />";
+	html += "<input type='hidden' name='listing_image_filename[" + i + "][name]' value='" + response[i].filename + "' />";
 	html += "<div class='' style=\"background-image:url('" + CDN + "images/temporary/" + response[i].filename + "'); background-repeat: no-repeat; background-size: cover; width:180px;height:180px; \"></div>";
 	html += "<div class='mt-2'>";
 		html += "<div class='btn-group'>";

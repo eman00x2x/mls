@@ -46,7 +46,7 @@ input {
 
 #ImageBrowse, #PdfBrowse {
 	position: absolute;
-	left: -1000px;
+	left: -100000px;
 	top: 0;
 	opacity: 0;
 }

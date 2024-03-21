@@ -110,7 +110,7 @@ $html[] = "<div class='page-body'>";
 						$html[] = "</div>";
 						
 					}else {
-						$html[] = "<p class='mt-3'>You do not have property listing.</p>";
+						$html[] = "<p class='mt-3'>You do not have messages.</p>";
 					}
 					
 				$html[] = "</div>";

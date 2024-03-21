@@ -133,3 +133,5 @@ $html[] = "<div class='row justify-content-center'>";
 	$html[] = "</div>";
 $html[] = "</div>";
 $html[] = "</div>";
+
+$html[] = "<script type='text/javascript' src='".CDN."js/fslightbox/fslightbox.js'></script>";

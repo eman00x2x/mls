@@ -40,6 +40,8 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
                     key = $(this).data('key');
                     $('.api-key-container').removeClass('text-muted');
                     $('.api-key-container').text(key);
+                    
+                    $(this).remove();
                 });
             "));
         }

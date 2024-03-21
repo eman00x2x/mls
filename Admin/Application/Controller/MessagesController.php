@@ -111,7 +111,7 @@ class MessagesController extends \Main\Controller {
 		}
 
 		$this->doc->addScript(CDN."js/encryption.js");
-		$this->doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 			( async => {
 				for (let key in last_messages) {
 					if (last_messages.hasOwnProperty(key)) {
@@ -127,7 +127,7 @@ class MessagesController extends \Main\Controller {
 					}
 				}
 			})();
-		");
+		"));
 		
 
 		$this->setTemplate("messages/messages.php");
@@ -165,7 +165,6 @@ class MessagesController extends \Main\Controller {
 
 		$this->doc->addScript(CDN."js/chat-attachment-uploader.js");
 		$this->doc->addScript(CDN."js/encryption.js");
-		$this->doc->addScript(CDN."tabler/dist/libs/fslightbox/index.js");
 		$this->chatScript();
 
 		$this->doc->setTitle("Conversation");
@@ -728,6 +727,7 @@ class MessagesController extends \Main\Controller {
 							.then( () => { 
 								showMessages() ;
 								scrollToBottom('.card-body');
+								refreshFsLightbox();
 							}); 
 					}
 
@@ -772,8 +772,11 @@ class MessagesController extends \Main\Controller {
 
 					if(collectionLastMessageId > lastMessageId) {
 						prepareMessages()
-						.then( () => { showMessages() });
-						scrollToBottom('.card-body');
+						.then( () => { 
+							showMessages();
+							refreshFsLightbox();
+							scrollToBottom('.card-body');
+						});
 					}
 
 				});
@@ -867,7 +870,7 @@ class MessagesController extends \Main\Controller {
 			function getOldestMessages() {
 				loadMessages( firstMessageId )
 				.then( () => {  prepareMessages( 'old' )
-					.then( () => { showMessages( 'old' ) }); 
+					.then( () => { showMessages( 'old' ); refreshFsLightbox(); }); 
 				});
 			}
 
@@ -875,7 +878,7 @@ class MessagesController extends \Main\Controller {
 
 				loadMessages( lastMessageId )
 				.then( () => {  prepareMessages()
-					.then( () => { showMessages() }); 
+					.then( () => { showMessages(); refreshFsLightbox(); }); 
 				});
 
 				
@@ -977,8 +980,8 @@ class MessagesController extends \Main\Controller {
 							return response.json();
 						}) .then(data => {
 
-							publicKey = data.publicKey
-							privateKey = data.privateKey
+							publicKey = data.publicKey;
+							privateKey = data.privateKey;
 
 							encrypt(JSON.stringify({
 								'type': type,
@@ -1012,6 +1015,7 @@ class MessagesController extends \Main\Controller {
 														links = [];
 														getUrlInfo();
 
+														refreshFsLightbox();
 														scrollToBottom('.card-body');
 
 													});
@@ -1164,7 +1168,7 @@ class MessagesController extends \Main\Controller {
 							for (let key in image_info) {
 								if (image_info.hasOwnProperty(key)) {
 									html += \"<div class='col-md-\" + column + \" mb-2'>\";
-										html += \"<a data-fslightbox href='\" + image_info[key] + \"'>\";
+										html += \"<a data-fslightbox='gallery' href='\" + image_info[key] + \"'>\";
 											html += \"<img src='\" + image_info[key] + \"' class='img-fluid' />\";
 										html += \"</a>\";
 									html += \"</div>\";

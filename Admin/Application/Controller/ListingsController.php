@@ -514,12 +514,12 @@ class ListingsController extends \Main\Controller {
 				$search[] = $_GET['address']['municipality'];
 			}
 
-			if($_GET['address']['street'] != "") {
+			if(isset($_GET['address']['street']) && $_GET['address']['street'] != "") {
 				$filters[] = " JSON_EXTRACT(address, '$.street') = '".$_GET['address']['street']."'  ";
 				$search[] = $_GET['address']['street'];
 			}
 
-			if($_GET['address']['village'] != "") {
+			if(isset($_GET['address']['village']) && $_GET['address']['village'] != "") {
 				$filters[] = " JSON_EXTRACT(address, '$.village') = '".$_GET['address']['village']."'  ";
 				$search[] = $_GET['address']['village'];
 			}

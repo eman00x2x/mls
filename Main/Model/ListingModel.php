@@ -172,6 +172,8 @@ class ListingModel extends \Main\Model {
 						"status" => 1,
 						"id" => rand(1000,10000).time(),
 						"filename" => $handle->file_dst_name,
+						"width" => $handle->image_dst_x,
+						"height" => $handle->image_dst_y,
 						"application" => "listings"
 					);
 				

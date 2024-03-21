@@ -231,7 +231,7 @@ $html[] = "<div class='page-body'>";
                                         $html[] = "<div class='mb-3 pb-3 border-bottom'>";
                                             $html[] = "<h2 class='text-blue mb-3 fw-bold'>API Key</h6>";
                                             $html[] = "<div class='mb-3'>";
-                                                $html[] = "<p class='mb-1'><i class='ti ti-square-key'></i> <span class='api-key-container border px-2 py-1 text-muted'>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></p>";
+                                                $html[] = "<p class='mb-1'><i class='ti ti-square-key'></i> <span class='api-key-container border px-2 py-1 text-muted fw-bold'>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></p>";
                                                 $html[] = "<span class='text-muted fst-italic fs-13'>Do not share or store your API Key to any storage devices or applications.</span>";
 
                                                 $html[] = "<p class='my-2'><a href='".url("APIController@documentation", [ "version" => "v1" ])."'>Read our documentation</a> on how to use your API Key</p>";
