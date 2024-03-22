@@ -67,6 +67,7 @@ class Middleware implements IMiddleware {
 		}else if(url()->contains("/register")) {
 
 			Router::post(MANAGE_ALIAS . '/register', 'RegistrationController@register');
+			Router::post(MANAGE_ALIAS . '/registerBroker', 'RegistrationController@registerBroker');
 			Router::post(MANAGE_ALIAS . '/registerAccount', 'RegistrationController@registerAccount');
 			Router::post(MANAGE_ALIAS . '/registerAccountSave', 'RegistrationController@saveNew');
 			

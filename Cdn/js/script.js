@@ -47,17 +47,25 @@ $(document).on('click','.btn-save', function(e) {
 			var response = data;
 		} else { var response = JSON.parse(data); }
 
-		if (response.status == 1) {
-			if ($('#reference_url').val() !== undefined) { window.location = $('#reference_url').val(); }
-		}
-
-		$('.response').html(response.message);
 		$(this).css({
 			'cursor': 'pointer',
 			'pointer-events': 'auto'
 		});
 
 		$(this).show();
+
+		if (response.status == 1) {
+			if ($('#reference_url').val() !== undefined) {
+
+				message = " <p class='bg-white border mt-3 p-3'><img src='" + MANAGE + "images/loader.gif' />Please wait while you are redirecting...</p>";
+
+				setTimeout(function () {
+					window.location = $('#reference_url').val();
+				}, 3000);
+			}
+		}
+
+		$('.response').html(response.message + message);
 
 	});
 

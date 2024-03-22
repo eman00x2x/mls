@@ -11,7 +11,7 @@ $html[] = "<div class='page-body mb-0'>";
 
 						if($data['thumb_img'] != "") {
 							$html[] = "<div class='mb-2 img-responsive rounded border' style='position: relative; height: 300px; background-image: url(".$data['thumb_img'].")'>";
-								$html[] = "<span style='position: absolute; top:-1px; left: -1px;' class='fw-bold bg-white text-dark p-2'><i class='ti ti-photo'></i> +".count($data['images'])."</span>";
+								$html[] = "<span style='position: absolute; top:-1px; left: -1px;' class='fw-bold bg-white text-dark p-2'><i class='ti ti-photo'></i> ".($data['images'] ? count($data['images']) : 0)."</span>";
 								$html[] = "<a data-fslightbox data-type='image' href='".$data['thumb_img']."' class='stretched-link'></a>";
 							$html[] = "</div>";
 						}else {
@@ -136,13 +136,14 @@ $html[] = "<div class='page-body mb-0'>";
 				$html[] = "<div class='col-md-8'>";
 
 					$html[] = "<div class='sticky-top bg-white py-2 px-0 mx-0 mb-4 border-bottom'>";
-						$html[] = "<div class='d-flex overflow-auto'>";
+						$html[] = "<div class='d-flex overflow-auto' style=' ::-webkit-scrollbar {display: none;} '>";
 							if($data['thumb_img'] != "" && $data['images']) { $html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#photos'><i class='ti ti-photo me-1'></i> Photos</a>"; }
 							if($data['video'] != "") { $html[] = "<a class='btn btn-outline-primary border-0 d-block' href='javascript:document.querySelector(\"#youtube_video\").click()'><i class='ti ti-brand-youtube me-1'></i> Video</a>"; }
 							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#description'><i class='ti ti-file-description me-1'></i> Description</a>";
 							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#amenities'><i class='ti ti-home-shield me-1'></i> Amenities</a>";
 							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#payment_details'><i class='ti ti-wallet me-1'></i> Payment Details</a>";
 							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#mortgage_calculator'><i class='ti ti-calculator me-1'></i> Mortgage Claculator</a>";
+							$html[] = "<a class='btn btn-outline-primary border-0 d-block' href='#currency_converter'><i class='ti ti-coins me-1'></i> Currency Converter</a>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 
@@ -255,6 +256,46 @@ $html[] = "<div class='page-body mb-0'>";
 							$html[] = "<p class='mt-2 mb-0 p-0 text-muted fs-12'>* The accuracy and applicability of this calculator are not guaranteed.</p>";
 						$html[] = "</div>";
 						/** MORTGAGE CALCULATOR END */
+
+						/** CURRENCY CONVERTER */
+						$html[] = "<div class='currency-converter mt-5 p-3 bg-cyan-lt border'>";
+							$html[] = "<h3 id='currency_converter' class='mb-2 text-dark'><i class='ti ti-coins'></i> Currency Converter</h3>";
+							$html[] = "<div class='p-4 border bg-white'>";
+								
+								$html[] = "<div class='row align-items-center justify-content-center'>";
+									$html[] = "<div class='col-md-6 col-lg-6 col-sm-12 col-12'>";
+										$html[] = "<div class='text-center text-highlight mb-3'>";
+											$html[] = "<span class='d-block mb-2'>Selling Price</span>";
+											$html[] = "<span class='fs-36 fw-bold selling-price' data-price='".$data['price']."'>".number_format($data['price'],0)."</span>";
+										$html[] = "</div>";
+									$html[] = "</div>";
+
+									$html[] = "<div class='col-md-6 col-lg-6 col-sm-12 col-12'>";
+
+										$html[] = "<div class='d-flex gap-2 justify-content-center flex-wrap'>";
+											
+											$html[] = "<div class='form-floating flex-fill'>";
+												$html[] = "<select id='currency-code-selection' class='form-select'>";
+												$html[] = "</select>";
+												$html[] = "<label for='currency-code-selection'>Currency Code</label>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='form-floating flex-fill'>";
+												$html[] = "<span class='d-block base-currency text-muted fs-12'>PHP against <span class='currency-code'>USD</span></span>";
+												$html[] = "<span class='d-block mt-1 base-currency-value p-2 border fw-bold'></span>";
+											$html[] = "</div>";
+
+										$html[] = "</div>";
+
+										$html[] = "<p class='text-muted mt-2 fs-12'>Last update at <span class='last-updated-at'></span></p>";
+
+									$html[] = "</div>";
+
+								$html[] = "</div>";
+
+							$html[] = "</div>";
+							$html[] = "<p class='mt-2 mb-0 p-0 text-muted fs-12'>* The accuracy and applicability of this currency converter are not guaranteed.</p>";
+						$html[] = "</div>";
 						
 						$html[] = "<p class='text-muted fs-12 my-4'>Disclaimer: The information found herein are subject to change without prior notice. Interested parties are requested to verify all information relating to the property prior to purchase.</p>";
 					$html[] = "</div>";

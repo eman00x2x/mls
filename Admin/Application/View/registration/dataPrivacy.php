@@ -20,7 +20,7 @@ $html[] = "<div class='page page-center'>";
 							$html[] = "<input type='hidden' name='pin' id='pin' value='' />";
 							$html[] = "<input type='hidden' name='api_key' id='api_key' value='' />";
 
-							$html[] = "<input type='hidden' id='save_url' value='".url("RegistrationController@register")."' />";
+							$html[] = "<input type='hidden' id='save_url' value='".url("RegistrationController@registerBroker")."' />";
 
 							$html[] = "<h1>Privacy Policy</h1>";
 							$html[] = "<div class='overflow-auto mb-4 py-3 px-2 border-top border-bottom' style='height:380px;'>";

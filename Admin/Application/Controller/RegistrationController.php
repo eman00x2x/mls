@@ -15,7 +15,6 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->doc->setTitle("Register Account - MLS");
 
-		$this->doc->addScript(CDN."js/script.js");
 		$this->doc->addScript(CDN."js/encryption.js");
 
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
@@ -78,18 +77,19 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 			});
 		");
 
-		if(!isset($_POST['policy_agree'])) {
-			$data['data_privacy'] = CONFIG['data_privacy'];
+		$data['data_privacy'] = CONFIG['data_privacy'];
 
-			$this->setTemplate("registration/dataPrivacy.php");
-			return $this->getTemplate($data);
-		}else {
+		$this->setTemplate("registration/dataPrivacy.php");
+		return $this->getTemplate($data);
+		
+	}
 
-			parse_str(file_get_contents('php://input'), $_POST);
+	function registerBroker() {
 
-			$this->setTemplate("registration/broker_license.php");
-			return $this->getTemplate($_POST);
-		}
+		parse_str(file_get_contents('php://input'), $_POST);
+
+		$this->setTemplate("registration/broker_license.php");
+		return $this->getTemplate($_POST);
 
 	}
 

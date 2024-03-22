@@ -118,9 +118,62 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		    let privateKey;
 		    let publicKey;
 
+			let currencies;
+			let currency_code;
+			let monthly_dp;
+
+			if(sessionStorage['currencies'] === undefined) {
+
+				currency_codes = '&currencies[]=EUR&currencies[]=USD&currencies[]=PHP&currencies[]=JPY&currencies[]=AUD';
+				currency_codes += '&currencies[]=BHD&currencies[]=CAD&currencies[]=ILS&currencies[]=KRW&currencies[]=KWD';
+				currency_codes += '&currencies[]=SGD&currencies[]=THB&currencies[]=AED&currencies[]=GBP&currencies[]=CNY';
+				
+				fetch('https://api.currencyapi.com/v3/latest?base_currency=PHP' + currency_codes, {
+					method: 'GET',
+					headers: {
+						'apikey': 'cur_live_va2sfTCkkZypiRPLMmH3vJy5tG7rd2POwtSfLY6R'
+					}
+				})
+					.then( res => res.json() )
+						.then( data => {
+							/* localStorage.setItem('currencies', JSON.Stringify(data)); */
+
+							sessionStorage.currencies = JSON.stringify(data);
+							currencies = data.data;
+							init(data);
+						});
+				
+			}else {
+				console.log('session data loaded successfully!');
+				let data = JSON.parse(sessionStorage['currencies']);
+				currencies = data.data;
+				setTimeout(() => {
+					init(data);
+				}, 10);
+			}
+
+			document.addEventListener('DOMContentLoaded', function () {
+				window.Plyr && (new Plyr('#player-youtube'));
+			});
+
+			$(document).on('change', '#currency-code-selection', function() {
+				
+				currency_code = $('#currency-code-selection option:selected').val();
+				let price = parseInt($('.selling-price').data('price'));
+				let rate = (1 / currencies[currency_code]['value']);
+
+				let converterPrice = ( price / rate );
+				$('.selling-price').html('<span class=\"fs-12\">' + currencies[currency_code]['code'] + '</span> ' + parseFloat(converterPrice.toFixed(2)).toLocaleString() );
+				$('.currency-code').text( currencies[currency_code]['code'] );
+				$('.base-currency-value').html('' + currencies[currency_code]['code'] + ' ' + ( 1 / currencies[currency_code]['value']) );
+
+				convertAmortization();
+			});
+
 			$(document).on('change', '#mortgage-downpayment-selection, #mortgage-interest-selection, #mortgage-years-selection', function() {
 				result = getAmortization();
-				$('.monthly_dp').html('&#8369; ' + result.monthly_payment_formated);
+				monthly_dp = result.monthly_payment;
+				convertAmortization();
 			});
 
 			$(document).on('focus', '#name, #email', function() {
@@ -210,9 +263,37 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				$('.send-message-agent-container .property-agent-container').remove();
 			});
 
-			document.addEventListener('DOMContentLoaded', function () {
-				window.Plyr && (new Plyr('#player-youtube'));
-			});
+			async function init(data) {
+
+				let date = new Date(data.meta.last_updated_at);
+
+				let html = '';
+				for (let key in currencies) {
+					if (currencies.hasOwnProperty(key)) {
+						sel = currencies[key].code == 'PHP' ? 'selected' : '';
+						html += \"<option value='\" + currencies[key].code + \"' \" + sel + \">\" + currencies[key].code + \"</option>\";
+					}
+				}
+
+				$('#currency-code-selection').append(html);
+				$('.last-updated-at').html( date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) );
+				$('.base-currency-value').html('' + currencies.PHP['code'] + ' ' + ( 1 / currencies.USD['value']) );
+
+				currency_code = $('#currency-code-selection option:selected').val();
+				let price = parseInt($('.selling-price').data('price'));
+
+				let converterPrice = ( price / ( 1 / currencies[currency_code]['value']) );
+				$('.selling-price').html('<span class=\"fs-12\">' + currency_code + '</span> ' + parseFloat(converterPrice.toFixed(2)).toLocaleString() );
+
+				result = getAmortization();
+				monthly_dp = result.monthly_payment;
+				convertAmortization();
+			}
+
+			function convertAmortization() {
+				let converted_dp = (monthly_dp / (1 / currencies[currency_code]['value']));
+				$('.monthly_dp').html('<span class=\"fs-12\">' + currency_code + '</span> ' + parseFloat((converted_dp.toFixed(2))).toLocaleString()  );
+			}
 
 		"));
 
