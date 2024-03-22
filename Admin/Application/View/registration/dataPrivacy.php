@@ -14,6 +14,12 @@ $html[] = "<div class='page page-center'>";
 
 						$html[] = "<div class='registration_form'>";
 
+							$html[] = "<input type='hidden' name='message_keys[publicKey]' id='publicKey' value='' />";
+							$html[] = "<input type='hidden' name='message_keys[privateKey]' id='privateKey' value='' />";
+
+							$html[] = "<input type='hidden' name='pin' id='pin' value='' />";
+							$html[] = "<input type='hidden' name='api_key' id='api_key' value='' />";
+
 							$html[] = "<input type='hidden' id='save_url' value='".url("RegistrationController@register")."' />";
 
 							$html[] = "<h1>Privacy Policy</h1>";
@@ -51,7 +57,7 @@ $html[] = "<div class='page page-center'>";
 			$html[] = "</form>";
 
 			$html[] = "<div class='text-center text-secondary mt-3'>";
-			$html[] = "Already have account? <a href='".url("/")."' tabindex='-1'>Sign in</a>";
+			$html[] = "Already have account? <a href='".url(MANAGE_ALIAS . "/")."' tabindex='-1'>Sign in</a>";
 			$html[] = "</div>";
 
 	$html[] = "</div>";

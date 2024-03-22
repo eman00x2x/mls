@@ -25,7 +25,7 @@ $html[] = "<div class='d-flex flex-column'>";
 						$html[] = "<div class='mb-3'>";
 							$html[] = "<label class='form-label'>";
 								$html[] = "<span><i class='ti ti-key'></i> Password</span>";
-								$html[] = "<span class='form-label-description'><a href='".url("/forgotPassword")."' class='text-decoration-none' title='Send Password Reset Link'><i class='ti ti-user-question'></i> I forgot my password</a></span>";
+								$html[] = "<span class='form-label-description'><a href='".url("AuthenticatorController@getForgotPasswordForm")."' class='text-decoration-none' title='Send Password Reset Link'><i class='ti ti-user-question'></i> I forgot my password</a></span>";
 							$html[] = "</label>";
 							$html[] = "<div class='input-group input-group-flat'>";
 								$html[] = "<input type='password' class='form-control' name='password' placeholder='Password' tabindex='2'>";
@@ -43,7 +43,7 @@ $html[] = "<div class='d-flex flex-column'>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='text-center text-secondary mt-3'>";
-				$html[] = "Don't have account yet? <a href='".url("/register")."' tabindex='-1'>Sign up</a>";
+				$html[] = "Don't have account yet? <a href='".url("RegistrationController@register")."' tabindex='-1'>Sign up</a>";
 			$html[] = "</div>";
 
 		$html[] = "</div>";

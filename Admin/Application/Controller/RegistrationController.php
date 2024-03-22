@@ -4,20 +4,33 @@ namespace Admin\Application\Controller;
 
 class RegistrationController extends \Admin\Application\Controller\AccountsController {
 	
+	public $doc;
+
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Admin");
-		$this->domain = ADMIN;
-		return $this;
+		parent::__construct();
 	}
 	
 	function register() {
 
-		$doc = $this->getLibrary("Factory")->getDocument();
-		$doc->setTitle("Register Account - MLS");
+		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->doc->setTitle("Register Account - MLS");
 
-		$doc->addScript(CDN."js/script.js");
+		$this->doc->addScript(CDN."js/script.js");
+		$this->doc->addScript(CDN."js/encryption.js");
 
-		$doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+			$(document).ready(function() {
+				(async () => {
+					let keys = await generateKey();
+					$('#publicKey').val(JSON.stringify(keys.publicKey));
+					$('#privateKey').val(JSON.stringify(keys.privateKey));
+
+					$('#api_key').val(uuidv4());
+				})();
+			});
+		"));
+		
+		$this->doc->addScriptDeclaration("
 
 			$(document).ready(function() {
 				$('#api_key').val(uuidv4());
@@ -71,8 +84,11 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 			$this->setTemplate("registration/dataPrivacy.php");
 			return $this->getTemplate($data);
 		}else {
+
+			parse_str(file_get_contents('php://input'), $_POST);
+
 			$this->setTemplate("registration/broker_license.php");
-			return $this->getTemplate();
+			return $this->getTemplate($_POST);
 		}
 
 	}
@@ -81,8 +97,8 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 
 		parse_str(file_get_contents('php://input'), $_POST);
 
-		$doc = $this->getLibrary("Factory")->getDocument();
-		$doc->setTitle("Register Account - MLS");
+		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->doc->setTitle("Register Account - MLS");
 
 		$reference = $this->getModel("LicenseReference");
 		$response =	$reference->getByLicenseId($_POST['broker_prc_license_id']);
@@ -92,6 +108,16 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 			if($response['data']['reference_id'] == 0) {
 				$response['data']['broker_prc_license_id'] = $_POST['broker_prc_license_id'];
 			}
+
+			$response['data']['message_keys']['publicKey'] = $_POST['message_keys']['publicKey'];
+			$response['data']['message_keys']['privateKey'] = $_POST['message_keys']['privateKey'];
+
+			$response['data']['pin'] = $_POST['pin'];
+			$response['data']['api_key'] = $_POST['api_key'];
+
+			$response['data']['board_regions'] = BOARD_REGIONS;
+			$response['data']['local_boards'] = LOCAL_BOARDS;
+			sort($response['data']['local_boards']);
 				
 			$this->setTemplate("registration/register.php");
 			return $this->getTemplate($response['data']);

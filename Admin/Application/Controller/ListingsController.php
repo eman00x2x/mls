@@ -179,43 +179,41 @@ class ListingsController extends \Main\Controller {
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
 			let currencies;
+			let currency_code;
+			let monthly_dp;
 
-			( async () => {
-				fetch('https://api.currencyapi.com/v3/latest?currencies[]=EUR&currencies[]=USD&currencies[]=PHP&base_currency=PHP', {
+			if(sessionStorage['currencies'] === undefined) {
+
+				currency_codes = '&currencies[]=EUR&currencies[]=USD&currencies[]=PHP&currencies[]=JPY&currencies[]=AUD';
+				currency_codes += '&currencies[]=BHD&currencies[]=CAD&currencies[]=ILS&currencies[]=KRW&currencies[]=KWD';
+				currency_codes += '&currencies[]=SGD&currencies[]=THB&currencies[]=AED&currencies[]=GBP&currencies[]=CNY';
+				
+				fetch('https://api.currencyapi.com/v3/latest?base_currency=PHP' + currency_codes, {
 					method: 'GET',
-                    headers: {
-                        'apikey': 'cur_live_va2sfTCkkZypiRPLMmH3vJy5tG7rd2POwtSfLY6R'
-                    }
+					headers: {
+						'apikey': 'cur_live_va2sfTCkkZypiRPLMmH3vJy5tG7rd2POwtSfLY6R'
+					}
 				})
-				    .then( res => res.json() )
+					.then( res => res.json() )
 						.then( data => {
+							/* localStorage.setItem('currencies', JSON.Stringify(data)); */
 
+							sessionStorage.currencies = JSON.stringify(data);
 							currencies = data.data;
-							let html = '';
-
-							for (let key in currencies) {
-   								if (currencies.hasOwnProperty(key)) {
-									sel = currencies[key].code == 'USD' ? 'selected' : '';
-									html += \"<option value='\" + currencies[key].code + \"' \" + sel + \">\" + currencies[key].code + \"</option>\";
-								}
-							}
-
-							$('#currency-code-selection').append(html);
-							$('.last-updated-at').html( data.meta.last_updated_at );
-							$('.base-currency-value').html('' + currencies.PHP['code'] + ' ' + ( 1 / currencies.USD['value']) );
-
-							let price = parseInt($('.selling-price').data('price'));
-							let converterPrice = ( price / ( 1 / currencies.USD['value']) );
-							$('.selling-price').html('<span class=\"fs-12\">USD</span> ' + parseFloat(converterPrice.toFixed(2)).toLocaleString() );
-
+							init(data);
 						});
-			})();
+				
+			}else {
+				console.log('session data loaded successfully!');
+				let data = JSON.parse(sessionStorage['currencies']);
+				currencies = data.data;
+				setTimeout(() => {
+					init(data);
+				}, 10);
+			}
 
 			$(document).ready(function() {
 				
-				result = getAmortization();
-				$('.monthly_dp').html('&#8369; ' + result.monthly_payment_formated);
-
 				if($('.description').height() > 300) {
 					$('.description').addClass('border-bottom');
 					$('.btn-description-toggle').removeClass('d-none');
@@ -229,11 +227,16 @@ class ListingsController extends \Main\Controller {
 
 			$(document).on('change', '#currency-code-selection', function() {
 				
-				let currency_code = $('#currency-code-selection option:selected').val();
+				currency_code = $('#currency-code-selection option:selected').val();
+				let price = parseInt($('.selling-price').data('price'));
 				let rate = (1 / currencies[currency_code]['value']);
 
-				console.log(rate);
+				let converterPrice = ( price / rate );
+				$('.selling-price').html('<span class=\"fs-12\">' + currencies[currency_code]['code'] + '</span> ' + parseFloat(converterPrice.toFixed(2)).toLocaleString() );
+				$('.currency-code').text( currencies[currency_code]['code'] );
+				$('.base-currency-value').html('' + currencies[currency_code]['code'] + ' ' + ( 1 / currencies[currency_code]['value']) );
 
+				convertAmortization();
 			});
 			
 			document.addEventListener('DOMContentLoaded', function () {
@@ -242,7 +245,8 @@ class ListingsController extends \Main\Controller {
 
 			$(document).on('change', '#mortgage-downpayment-selection, #mortgage-interest-selection, #mortgage-years-selection', function() {
 				result = getAmortization();
-				$('.monthly_dp').html('&#8369; ' + result.monthly_payment_formated);
+				monthly_dp = result.monthly_payment;
+				convertAmortization();
 			});
 
 			$(document).on('click', '.btn-description-toggle', function() {
@@ -250,6 +254,38 @@ class ListingsController extends \Main\Controller {
 				$('.description').removeClass('border-bottom');
 				$('.btn-description-toggle').remove();
 			});
+
+			async function init(data) {
+
+				let date = new Date(data.meta.last_updated_at);
+
+				let html = '';
+				for (let key in currencies) {
+					if (currencies.hasOwnProperty(key)) {
+						sel = currencies[key].code == 'PHP' ? 'selected' : '';
+						html += \"<option value='\" + currencies[key].code + \"' \" + sel + \">\" + currencies[key].code + \"</option>\";
+					}
+				}
+
+				$('#currency-code-selection').append(html);
+				$('.last-updated-at').html( date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) );
+				$('.base-currency-value').html('' + currencies.PHP['code'] + ' ' + ( 1 / currencies.USD['value']) );
+
+				currency_code = $('#currency-code-selection option:selected').val();
+				let price = parseInt($('.selling-price').data('price'));
+
+				let converterPrice = ( price / ( 1 / currencies[currency_code]['value']) );
+				$('.selling-price').html('<span class=\"fs-12\">' + currency_code + '</span> ' + parseFloat(converterPrice.toFixed(2)).toLocaleString() );
+
+				result = getAmortization();
+				monthly_dp = result.monthly_payment;
+				convertAmortization();
+			}
+
+			function convertAmortization() {
+				let converted_dp = (monthly_dp / (1 / currencies[currency_code]['value']));
+				$('.monthly_dp').html('<span class=\"fs-12\">' + currency_code + '</span> ' + parseFloat((converted_dp.toFixed(2))).toLocaleString()  );
+			}
 
 		"));
 		
@@ -333,7 +369,7 @@ class ListingsController extends \Main\Controller {
 		$_POST['is_mls_option'] = json_encode([
 			"local_board" => isset($_POST['mls_local_board']) ? 1 : 0,
 			"local_region" => isset($_POST['mls_local_region']) ? 1 : 0,
-			"mls_all" => isset($_POST['mls_all']) ? 1 : 0
+			"all" => isset($_POST['mls_all']) ? 1 : 0
 		]);
 	
 		$listing = $this->getModel("Listing");
@@ -351,9 +387,9 @@ class ListingsController extends \Main\Controller {
 
 		}
 
-		$listing->save($response['id'],[
-			"posting_score" => $this->computeScore($_POST)
-		]);
+		$_POST["posting_score"] = $this->computeScore($_POST);
+
+		$listing->save($response['id'], $_POST);
 
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 
@@ -602,9 +638,9 @@ class ListingsController extends \Main\Controller {
 				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, last_modified, l.status, display, type, title, tags, long_desc, category, address, amenities,
 				MATCH( type, title, tags, long_desc, category, address, amenities )
 				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
-			")->orderby(" match_score DESC, posting_score DESC ");
+			")->orderby(" match_score DESC, post_score DESC ");
 		}else {
-			$sort = isset($_GET['sort']) ? $_GET['sort'] : "posting_score";
+			$sort = isset($_GET['sort']) ? $_GET['sort'] : "post_score";
 			$model->orderby(" $sort $order ");
 		}
 		

@@ -1,11 +1,19 @@
 <?php
 
 $html[] = "<input type='hidden' id='save_url' value='".url("RegistrationController@registerAccount")."' />";
+
+$html[] = "<input type='hidden' name='message_keys[publicKey]' id='publicKey' value='".$data['message_keys']['publicKey']."' />";
+$html[] = "<input type='hidden' name='message_keys[privateKey]' id='privateKey' value='".$data['message_keys']['privateKey']."' />";
+
+$html[] = "<input type='hidden' name='pin' id='pin' value='".$data['pin']."' />";
+$html[] = "<input type='hidden' name='api_key' id='api_key' value='".$data['api_key']."' />";
+
 $html[] = "<div class='response'></div>";
 $html[] = "<div class='mb-4'>";
 	$html[] = "<h2 class='card-title'><i class='ti ti-email'></i> Enter your Real Estate Broker PRC License Number</h2>";
 	$html[] = "<input type='number' class='form-control' name='broker_prc_license_id' id='broker_prc_license_id'  placeholder='Enter Real Estate Broker PRC License Number' autocomplete='off' tabindex='1'>";
 $html[] = "</div>";
+
 
 $html[] = "<div class='row align-items-center mt-5' style='height:40px;'>";
 	$html[] = "<div class='col-4'>";

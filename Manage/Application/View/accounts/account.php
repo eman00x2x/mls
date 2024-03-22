@@ -2,7 +2,7 @@
 
 $html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveUpdate")."' />";
 
-if(isset($_SESSION['user_logged']['permissions']['accounts']['access'])) {
+if(!isset($_SESSION['user_logged']['permissions']['accounts']['access'])) {
 	$html[] = "<input type='hidden' id='photo_uploader' value='accounts' />";
 	$html[] = "<form action='".url("AccountsController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 		$html[] = "<center>";
@@ -80,6 +80,35 @@ $html[] = "<div class='page-body'>";
                                         $html[] = "<span class='avatar photo-preview mb-1 w-100 mb-3' style='background-image: url(".$data['logo'].")'></span>";
                                         $html[] = "<small>Click to Upload Logo / Photo</small>";
 										$html[] = "<span class='photo-upload-loader d-block'></span>";
+                                    $html[] = "</div>";
+
+                                    $html[] = "<div class='mb-3 pb-3 border-bottom mt-5'>";
+                                        $html[] = "<h2 class='text-blue mb-1 fw-bold'>Local Board Details</h6>";
+
+                                        $html[] = "<div class='row g-3 align-items-center mb-3'>";
+                                            $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Local Board Region</label></div>";
+                                            $html[] = "<div class='col-md-9 col-6'>";
+                                                $html[] = "<select name='board_region' class='form-select' id='board_region'>";
+                                                    foreach ($data['board_regions'] as $region) {
+                                                        $sel = $data['board_region'] == $region ? "selected" : "";
+                                                        $html[] = "<option value='".$region."' $sel>$region</option>";
+                                                    }
+                                                $html[] = "</select>";
+                                            $html[] = "</div>";
+                                        $html[] = "</div>";
+
+                                        $html[] = "<div class='row g-3 align-items-center mb-3'>";
+                                            $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Local Board Name</label></div>";
+                                            $html[] = "<div class='col-sm-9'>";
+                                                $html[] = "<select name='local_board_name' class='form-select' id='local_board_name'>";
+                                                    foreach ($data['local_boards'] as $name) {
+                                                        $sel = $data['local_board_name'] == $name ? "selected" : "";
+                                                        $html[] = "<option value='".$name."' $sel>$name</option>";
+                                                    }
+                                                $html[] = "</select>";
+                                            $html[] = "</div>";
+                                        $html[] = "</div>";
+                                        
                                     $html[] = "</div>";
 
                                     $html[] = "<div class='mb-3 pb-3 border-bottom'>";
@@ -262,7 +291,7 @@ $html[] = "<div class='btn-save-container fixed-bottom bg-white py-3 border-top'
 		$html[] = "<div class='col-lg-12 col-md-12 col-sm-12 col-12'>";
 			$html[] = "<div class='container-xl'>";
 				$html[] = "<div class='text-end'>";
-					if((!isset($_SESSION['user_logged']['permissions']['accounts']['access']))) {
+					if(!isset($_SESSION['user_logged']['permissions']['accounts']['access'])) {
 						$html[] = "<p class='text-info'>Permission is required to update account details</p>";
 					}else {
 						$html[] = "<span class='btn btn-outline-primary btn-save'><i class='ti ti-device-floppy me-2'></i> Save Account Details</span>";

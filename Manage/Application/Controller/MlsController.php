@@ -95,7 +95,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_board') = 1";
 		}
 
-		if(!is_null($args)) {
+		if(is_null($args) && !isset($args['local_board']) && !isset($args['region'])) {
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.all') = 1";
 		}
 

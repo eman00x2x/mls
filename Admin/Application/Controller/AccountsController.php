@@ -301,7 +301,7 @@ class AccountsController extends \Main\Controller {
 		$_POST['registration_date'] = $time;
 		$_POST['created_at'] = $time;
 		$_POST['permissions'] = json_encode(USER_PERMISSIONS);
-		$_POST['privileges'] = (isset($_POST['privileges']) ? json_encode($_POST['privileges']) : CONFIG['privileges']);
+		$_POST['privileges'] = json_encode(isset($_POST['privileges']) ? $_POST['privileges'] : CONFIG['privileges']);
 		$_POST['account_type'] = "Real Estate Practitioner";
 		$_POST['user_level'] = 1;
 		$_POST['reference_id'] = 0;

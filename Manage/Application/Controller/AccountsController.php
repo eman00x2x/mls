@@ -25,12 +25,14 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
         $this->doc->setTitle("My Accounts");
         $this->doc->addScript(CDN."js/photo-uploader.js");
 
-        if((!isset($this->session['permissions']['users']['access'])) || $this->session['user_level'] == 1) {
+        if((!isset($this->session['permissions']['users']['access']))) {
             $this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
                 $(document).ready(function() {
                     $('input').removeClass('form-control');
                     $('input').addClass('form-control-plaintext');
                     $('input').attr('readonly', true);
+
+                    $('select').attr('disabled', true);
 
                     $('#api_key').val(uuidv4());
                     $('#pin').val(rcg());
@@ -60,6 +62,10 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
         }
 
         $data['privileges'] = $_SESSION['user_logged']['privileges'];
+
+        $data['board_regions'] = BOARD_REGIONS;
+		$data['local_boards'] = LOCAL_BOARDS;
+		sort($data['local_boards']);
 
 		$this->setTemplate("accounts/account.php");
 		return $this->getTemplate($data,$account);
