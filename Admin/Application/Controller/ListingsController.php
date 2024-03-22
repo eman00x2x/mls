@@ -301,13 +301,17 @@ class ListingsController extends \Main\Controller {
 
 			if(isset($_POST['listing_image_filename'])) {
 				$listingImage = $this->getModel("ListingImage");
-				$listingImage->saveImages($response['id'],$_POST['listing_image_filename']);
+				$_POST['image_score'] = $listingImage->saveImages($response['id'],$_POST['listing_image_filename']);
 				
 				unset($_POST['listing_image_url']);
 				unset($_POST['listing_image_filename']);
 			}
 
 		}
+
+		$listing->save($response['id'],[
+			"posting_score" => $this->computeScore($_POST)
+		]);
 
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 
@@ -371,13 +375,15 @@ class ListingsController extends \Main\Controller {
 		if(isset($_POST['tags'])) { $_POST['tags'] = json_encode($_POST['tags']); }
 		if(isset($_POST['amenities'])) {$_POST['amenities'] = implode(",",$_POST['amenities']); }
 
-		$listing = $this->getModel("Listing");
-		$response = $listing->save($id,$_POST);
-		
 		if(isset($_POST['listing_image_filename'])) {
 			$listingImage = $this->getModel("ListingImage");
-			$listingImage->saveImages($id,$_POST['listing_image_filename']);
+			$_POST['image_score'] = $listingImage->saveImages($id,$_POST['listing_image_filename']);
 		}
+
+		$_POST['posting_score'] = $this->computeScore($_POST);
+
+		$listing = $this->getModel("Listing");
+		$response = $listing->save($id,$_POST);
 
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 
@@ -399,7 +405,6 @@ class ListingsController extends \Main\Controller {
 				"status" => 2,
 				"message" => getMsg()
 			);
-
 			return json_encode($uploadedImages);
 		}
 		
@@ -554,10 +559,10 @@ class ListingsController extends \Main\Controller {
 			$model->select("
 				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, unit_area, bedroom, bathroom, parking, thumb_img, last_modified, l.status, display, type, title, tags, long_desc, category, address, amenities,
 				MATCH( type, title, tags, long_desc, category, address, amenities )
-				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS score
-			")->orderby(" score DESC ");
+				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
+			")->orderby(" match_score DESC, posting_score DESC ");
 		}else {
-			$sort = isset($_GET['sort']) ? ($_GET['sort'] == "score") ? "last_modified" : $_GET['sort'] : " last_modified";
+			$sort = isset($_GET['sort']) ? $_GET['sort'] : "posting_score";
 			$model->orderby(" $sort $order ");
 		}
 		
@@ -604,6 +609,65 @@ class ListingsController extends \Main\Controller {
 		
 		$this->setTemplate("listings/listProperties.php");
 		return $this->getTemplate($response['data'],$response['model']);
+
+	}
+
+	private function computeScore($data) {
+
+		$fields_with_score = [
+			"title", "tags", "long_desc", "category", "address", "price", "reservation", 
+			"payment_details", "lot_area", "thumb_img", "video", "amenities ", "other_details ", "last_modified" 
+		];
+
+		$score = $data['image_score'];
+		$field_score = 0;
+
+		foreach($data as $field => $value) {
+			switch($field) {
+				case 'amenities':
+					if(strripos($value, ",") !== false) {
+						$amenities = explode(",",$value);
+						$field_score += count($amenities) / 10;
+					}
+					break;
+
+				case 'address':
+					$address = json_decode($value, true);
+					if($address['municipality'] != "") { $field_score += (1 / 7); }
+					if($address['barangay'] != "") { $field_score += (1 / 7); }
+					if($address['street'] != "") { $field_score += (1 / 7); }
+					if($address['village'] != "") { $field_score += (1 / 7); }
+
+					/** region and province are not scoreable */
+					break;
+
+				case 'payment_details':
+					$payment_details = json_decode($value, true);
+					if($payment_details['option_money_duration'] != "" || $payment_details['option_money_duration'] > 0) { $field_score += (1 / 3); }
+					if($payment_details['payment_mode'] != "") { $field_score += (1 / 3); }
+					if($payment_details['tax_allocation'] != "") { $field_score += (1 / 3); }
+
+					/** bank_loan, pagibig_loan, assume_balance are not scoreable */
+					break;
+
+				case 'other_details':
+					$other_details = json_decode($value, true);
+					if($other_details['authority_type'] != "") { $field_score += (1 / 3); }
+					if($other_details['authority_to_sell_expiration'] != "") { $field_score += (1 / 3); }
+					if($other_details['com_share'] != "") { $field_score += (1 / 3); }
+					break;
+
+				default:
+                    if(in_array($field, $fields_with_score)) {
+						if($value != "") { 
+							$field_score += (1 / 10);
+						}
+                    }
+                    break;
+			}
+		}
+
+		return $score + $field_score;
 
 	}
 	

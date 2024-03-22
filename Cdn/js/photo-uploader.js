@@ -65,7 +65,7 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 					if(response[i].status == 2) {
 						html += "<div class='' style=\"background-image:url('" + CDN + "images/warning_48.png'); background-repeat: no-repeat; background-size: cover; width:150px;height:150px; \"> Error Uploading</div>";
 					}else {
-						items = { id: "image_" + response[i].id, url: response[i].url, filename: response[i].filename, application: "listings" };
+						items = { id: "image_" + response[i].id, url: response[i].url, filename: response[i].filename, width: response[i].width, height: response[i].height, application: "listings" };
 						itemsArray.push(items);
 						localStorage.setItem('items', JSON.stringify(itemsArray));
 						html += createElements(response, $('#photo_uploader').val(), i);
@@ -140,9 +140,9 @@ function removeImage(container,image_id,filename,application) {
 }
 
 function createElements(response,application = "listings", counter = 0) {
-	html = "<input type='hidden' name='listing_image_filename[" + i + "][height]' value='" + response[i].height + "' />";
-	html += "<input type='hidden' name='listing_image_filename[" + i + "][width]' value='" + response[i].width + "' />";
-	html += "<input type='hidden' name='listing_image_filename[" + i + "][name]' value='" + response[i].filename + "' />";
+	html = "<input type='hidden' name='listing_image_filename[" + ( i + 300) + "][height]' value='" + response[i].height + "' />";
+	html += "<input type='hidden' name='listing_image_filename[" + ( i + 300) + "][width]' value='" + response[i].width + "' />";
+	html += "<input type='hidden' name='listing_image_filename[" + ( i + 300) + "][name]' value='" + response[i].filename + "' />";
 	html += "<div class='' style=\"background-image:url('" + CDN + "images/temporary/" + response[i].filename + "'); background-repeat: no-repeat; background-size: cover; width:180px;height:180px; \"></div>";
 	html += "<div class='mt-2'>";
 		html += "<div class='btn-group'>";

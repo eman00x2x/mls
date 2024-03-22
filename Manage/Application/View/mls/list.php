@@ -51,9 +51,6 @@ $html[] = "<div class='page-body'>";
 						$html[] = "</div>";
 						$html[] = "<form id='filter-form' action='' method='POST'>";
 
-							$html[] = "<input type='hidden' name='board_region' value='".$model->page['uri']['board_region']."' />";
-							$html[] = "<input type='hidden' name='local_board_name' value='".$model->page['uri']['local_board_name']."' />";
-
 							$html[] = "<div class='mb-4'>";
 								$html[] = "<div class='form-label'>Offer</div>";
 								$html[] = "<select name='offer' id='offer' class='form-select'>";

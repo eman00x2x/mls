@@ -30,8 +30,18 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		}
 
 	}
+
+	function MLSRegional($region) {
+		$r['region'] = $region;
+		return $this->MLSIndex($r);
+	}
+
+	function MLSLocalBoard($local_board) {
+		$board['local_board'] = $local_board;
+		return $this->MLSIndex($board);
+	}
 	
-	function MLSIndex() {
+	function MLSIndex($args = null) {
 
         $this->doc->setTitle("MLS System");
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
@@ -68,28 +78,31 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			parse_str(urldecode(base64_decode($_GET['filter'])), $_GET);
 		}
 
-		/* $handshake = $this->getModel("Handshake");
-		$handshake->column['requestor_account_id'] = $this->session['account_id'];
-		$handshake->select("GROUP_CONCAT(listing_id) as listing_ids")->and(" handshake_status IN('pending','active')");
-		$handshakeListings = $handshake->getByRequestorAccountId();
-		
-		if($handshakeListings['listing_ids'] != "") {
-			$filters[] = " listing_id NOT IN(".$handshakeListings['listing_ids'].")";
-		} */
-
 		#$filters[] = " account_id != ".$this->session['account_id'];
 		$filters[] = " is_mls = 1 ";
 		$filters[] = " l.status = 1 ";
 		$filters[] = " display = 1";
-		/* $filters['board_region'] = " a.board_region = '".$this->session['board_region']."'";
-		$filters['local_board_name'] = " a.local_board_name = '".$this->session['local_board_name']."'"; */
+
+		if(!is_null($args) && isset($args['region'])) {
+			$region = str_replace("_", " ", trim($args['region']));
+			$filters[] = " a.board_region = '".$region."' ";
+			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_region') = 1";
+		}
+		
+		if(!is_null($args) && isset($args['local_board'])) {
+			$local_board = str_replace("_", " ", trim($args['local_board']));
+			$filters[] = " a.local_board_name = '".$local_board."' ";
+			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_board') = 1";
+		}
+
+		if(!is_null($args)) {
+			$filters[] = " JSON_EXTRACT(is_mls_option, '$.all') = 1";
+		}
 
 		$address = $this->getModel("Address");
 		$listings = $this->getModel("Listing");
 		$listings->address = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));
 
-		$uri['board_region'] = $this->session['board_region'];
-		$uri['local_board_name'] = $this->session['local_board_name'];
 		$uri['offer'] = "for sale";
 		
 		$listings->page['limit'] = 20;

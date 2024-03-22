@@ -57,6 +57,9 @@ Router::get(MANAGE_ALIAS.'/listingImages/{id}/delete', 'ListingImagesController@
 
 /** MLS ROUTES */
 Router::get(MANAGE_ALIAS.'/mls', 'MlsController@MLSIndex', ['as' => 'mls']);
+Router::get(MANAGE_ALIAS.'/mls/region/{region}', 'MlsController@MLSRegional', ['as' => 'MLSRegional'])->where([ 'region' => '[\w\-\=]+' ]);
+Router::get(MANAGE_ALIAS.'/mls/board/{local_board}', 'MlsController@MLSLocalBoard', ['as' => 'MLSLocalBoard'])->where([ 'local_board' => '[\w\-\=]+' ]);
+
 Router::get(MANAGE_ALIAS.'/mls/handshaked', 'MlsController@handshakedIndex', ['as' => 'handshakedIndex']);
 Router::get(MANAGE_ALIAS.'/mls/compare', 'MlsController@compareListings', ['as' => 'compareListings']);
 Router::get(MANAGE_ALIAS.'/mls/comparePreview', 'MlsController@comparePreview', ['as' => 'comparePreview']);
@@ -64,7 +67,7 @@ Router::get(MANAGE_ALIAS.'/mls/handshaked/{id}/acceptRequest', 'MlsController@ac
 Router::get(MANAGE_ALIAS.'/mls/handshaked/{id}/deniedRequest', 'MlsController@deniedRequest', ['as' => 'deniedRequest'])->where([ 'id' => '[0-9]+' ]);
 Router::get(MANAGE_ALIAS.'/mls/handshaked/{id}/doneHandshake', 'MlsController@doneHandshake', ['as' => 'doneHandshake'])->where([ 'id' => '[0-9]+' ]);
 Router::get(MANAGE_ALIAS.'/mls/handshaked/{listing_id}/cancelHandshake', 'MlsController@cancelHandshake', ['as' => 'cancelHandshake'])->where([ 'listing_id' => '[0-9]+' ]);
-Router::get( MANAGE_ALIAS . '/related-properties', 'MlsController@relatedProperties');
+Router::get(MANAGE_ALIAS.'/related-properties', 'MlsController@relatedProperties');
 
 /** DOWNLOAD MLS LISTING URL */
 Router::get(MANAGE_ALIAS.'/mls/{id}/download', 'MlsController@downloadPDFFormat', ['as' => 'listingsView'])->where([ 'id' => '[0-9]+' ]);

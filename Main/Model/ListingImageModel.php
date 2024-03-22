@@ -20,40 +20,45 @@ class ListingImageModel extends \Main\Model {
 	function saveImages($listing_id,$data) {
 
 		$images = [];
+		$score = 0;
 	
-		for($i=0; $i<count($data); $i++) {
-			if(isset($data[$i])) {
-				$old_filename = ROOT.DS."Cdn".DS."images".DS."temporary".DS.$data[$i]['name'];
-				if(file_exists($old_filename)) {
-					
-					$name = explode(".",$data[$i]['name']);
-					$ext = array_pop($name);
-					
-					$length = 50;
-					$new_name = '';
-					$chars = range(0, 9);
-
-					for ($x = 0; $x < $length; $x++) {
-						$new_name .= $chars[array_rand($chars)];
-					}
-					
-					$new_name = $new_name."_".md5(time().time()).".".$ext;
+		foreach($data as $image) {
+			
+			$old_filename = ROOT.DS."Cdn".DS."images".DS."temporary".DS.$image['name'];
+			if(file_exists($old_filename)) {
 				
-					$new_filename = ROOT.DS."Cdn".DS."images".DS."listings".DS.$new_name;
-					rename($old_filename,$new_filename);
-					
-					$this->column['listing_id'] = $listing_id;
-					$this->column['url'] = CDN."images/listings/".$new_name;
-					$this->column['filename'] = $new_name;
-					$this->column['width'] = $data[$i]['width'];
-					$this->column['height'] = $data[$i]['height'];
-					$this->column['img_sort'] = 0;
-					$this->insert();
+				$name = explode(".",$image['name']);
+				$ext = array_pop($name);
+				
+				$length = 50;
+				$new_name = '';
+				$chars = range(0, 9);
 
+				for ($x = 0; $x < $length; $x++) {
+					$new_name .= $chars[array_rand($chars)];
 				}
+				
+				$new_name = $new_name."_".md5(time().time()).".".$ext;
+			
+				$new_filename = ROOT.DS."Cdn".DS."images".DS."listings".DS.$new_name;
+				rename($old_filename,$new_filename);
+				
+				$this->column['listing_id'] = $listing_id;
+				$this->column['url'] = CDN."images/listings/".$new_name;
+				$this->column['filename'] = $new_name;
+				$this->column['width'] = $image['width'];
+				$this->column['height'] = $image['height'];
+				$this->column['img_sort'] = 0;
+				$this->insert();
+
 			}
+
+			$score += ($image['width'] / 1000) + ($image['height'] / 1000);
+			
 		}
 
+		/** MINIMUM IMAGE COUNT 10 */
+		return ($score / 10);
 
 	}
 	

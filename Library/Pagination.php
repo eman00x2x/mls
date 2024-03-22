@@ -9,11 +9,13 @@ class Pagination {
 
 	function build(Table $table, $targetPage = "", $uriQuery = []) { 
 
+		$rows = ($table->rows >= 1000) ? 1000 : $table->rows;
+
 		/* Setup page vars for display. */
 		if ($table->page['current'] == 0) $table->page['current'] = 1;					//if no page var is given, default to 1.
 		$prev = $table->page['current'] - 1;							//previous page is page - 1
 		$next = $table->page['current'] + 1;							//next page is page + 1
-		$lastpage = ceil($table->rows/$table->page['limit']);		//lastpage is = total pages / items per page, rounded up.
+		$lastpage = ceil($rows/$table->page['limit']);		//lastpage is = total pages / items per page, rounded up.
 		$lpm1 = $lastpage - 1;						//last page minus 1
 		$pagination = "";
 
