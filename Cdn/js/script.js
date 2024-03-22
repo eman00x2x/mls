@@ -291,10 +291,10 @@ function getAmortization() {
 	let years = parseInt($('#mortgage-years-selection').val()) + 1;
 	let payments_per_year = 12;
 
-	monthly_payment = pmt((interest_rate / 100) / payments_per_year, payments_per_year * years, -loan_amount);
-	monthly_payment_formated = parseFloat(monthly_payment.toFixed(2)).toLocaleString();
+	let monthly_payment = pmt((interest_rate / 100) / payments_per_year, payments_per_year * years, -loan_amount);
+	let monthly_payment_formated = parseFloat(monthly_payment.toFixed(2)).toLocaleString();
 
-	schedule = computeSchedule(loan_amount, interest_rate, payments_per_year, years, monthly_payment);
+	let schedule = computeSchedule(loan_amount, interest_rate, payments_per_year, years, monthly_payment);
 
 	return {
 		'monthly_payment': monthly_payment,

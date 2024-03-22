@@ -336,6 +336,46 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 					/** MORTGAGE CALCULATOR END */
 
+					/** CURRENCY CONVERTER */
+					$html[] = "<div class='currency-converter mt-5 p-3 bg-cyan-lt border'>";
+						$html[] = "<h3 id='currency_converter' class='mb-2 text-dark'><i class='ti ti-converter'></i> Currency Converter</h3>";
+						$html[] = "<div class='p-4 border bg-white'>";
+							
+							$html[] = "<div class='row align-items-center justify-content-center'>";
+								$html[] = "<div class='col-md-6 col-lg-6 col-sm-12 col-12'>";
+									$html[] = "<div class='text-center text-highlight mb-3'>";
+										$html[] = "<span class='d-block mb-2'>Selling Price converted to <span class='currency-code'>USD</span></span>";
+										$html[] = "<span class='fs-36 fw-bold selling-price' data-price='".$data['listing']['price']."'>".number_format($data['listing']['price'],0)."</span>";
+									$html[] = "</div>";
+								$html[] = "</div>";
+
+								$html[] = "<div class='col-md-6 col-lg-6 col-sm-12 col-12'>";
+
+									$html[] = "<div class='d-flex gap-2 justify-content-center flex-wrap'>";
+										
+										$html[] = "<div class='form-floating flex-fill'>";
+											$html[] = "<select id='currency-code-selection' class='form-select'>";
+											$html[] = "</select>";
+											$html[] = "<label for='currency-code-selection'>Currency Code</label>";
+										$html[] = "</div>";
+
+										$html[] = "<div class='form-floating flex-fill'>";
+											$html[] = "<span class='d-block base-currency text-muted fs-12'>PH Peso against US Dollar</span>";
+											$html[] = "<span class='d-block mt-1 base-currency-value p-2 border fw-bold'></span>";
+										$html[] = "</div>";
+
+									$html[] = "</div>";
+
+									$html[] = "<p class='text-muted mt-2 fs-12'>Last update at: <span class='last-updated-at'></span></p>";
+
+								$html[] = "</div>";
+
+							$html[] = "</div>";
+
+						$html[] = "</div>";
+						$html[] = "<p class='mt-2 mb-0 p-0 text-muted fs-12'>* The accuracy and applicability of this currency converter are not guaranteed.</p>";
+              		$html[] = "</div>";
+
                 $html[] = "</div>";
             $html[] = "</div>";
 

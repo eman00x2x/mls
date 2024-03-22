@@ -176,7 +176,40 @@ class ListingsController extends \Main\Controller {
 		
 		$data['listing'] = $listing->getById();
 
-		$this->doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+
+			let currencies;
+
+			( async () => {
+				fetch('https://api.currencyapi.com/v3/latest?currencies[]=EUR&currencies[]=USD&currencies[]=PHP&base_currency=PHP', {
+					method: 'GET',
+                    headers: {
+                        'apikey': 'cur_live_va2sfTCkkZypiRPLMmH3vJy5tG7rd2POwtSfLY6R'
+                    }
+				})
+				    .then( res => res.json() )
+						.then( data => {
+
+							currencies = data.data;
+							let html = '';
+
+							for (let key in currencies) {
+   								if (currencies.hasOwnProperty(key)) {
+									sel = currencies[key].code == 'USD' ? 'selected' : '';
+									html += \"<option value='\" + currencies[key].code + \"' \" + sel + \">\" + currencies[key].code + \"</option>\";
+								}
+							}
+
+							$('#currency-code-selection').append(html);
+							$('.last-updated-at').html( data.meta.last_updated_at );
+							$('.base-currency-value').html('' + currencies.PHP['code'] + ' ' + ( 1 / currencies.USD['value']) );
+
+							let price = parseInt($('.selling-price').data('price'));
+							let converterPrice = ( price / ( 1 / currencies.USD['value']) );
+							$('.selling-price').html('<span class=\"fs-12\">USD</span> ' + parseFloat(converterPrice.toFixed(2)).toLocaleString() );
+
+						});
+			})();
 
 			$(document).ready(function() {
 				
@@ -191,6 +224,15 @@ class ListingsController extends \Main\Controller {
 				$.get('".url("MlsController@relatedProperties")."', ".json_encode($data['listing']).", function(data) {
 					$('.related-properties-container').html(data);
 				})
+
+			});
+
+			$(document).on('change', '#currency-code-selection', function() {
+				
+				let currency_code = $('#currency-code-selection option:selected').val();
+				let rate = (1 / currencies[currency_code]['value']);
+
+				console.log(rate);
 
 			});
 			
@@ -209,7 +251,7 @@ class ListingsController extends \Main\Controller {
 				$('.btn-description-toggle').remove();
 			});
 
-		");
+		"));
 		
 		if($data) {
 
@@ -557,7 +599,7 @@ class ListingsController extends \Main\Controller {
 			(isset($_GET['amenities']) && $_GET['amenities'] != "")
 		) {
 			$model->select("
-				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, unit_area, bedroom, bathroom, parking, thumb_img, last_modified, l.status, display, type, title, tags, long_desc, category, address, amenities,
+				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, last_modified, l.status, display, type, title, tags, long_desc, category, address, amenities,
 				MATCH( type, title, tags, long_desc, category, address, amenities )
 				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
 			")->orderby(" match_score DESC, posting_score DESC ");
