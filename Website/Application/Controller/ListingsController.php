@@ -78,7 +78,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		$listings->address = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));
 
 		$listings->page['limit'] = 20;
-		$listings->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+		$listings->page['current'] = isset($_REQUEST['page']) && is_int($_REQUEST['page']) ? $_REQUEST['page'] : 1;
 		$listings->page['target'] = url("ListingsController@$offer");
 		$listings->page['uri'] = (isset($uri) ? $uri : []);
 

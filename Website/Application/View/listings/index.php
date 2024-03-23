@@ -118,7 +118,7 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<select name='bathroom' id='bathroom' class='form-select'>";
 										$html[] = "<option value=''></option>";
 										foreach(["1 Bathroom", "2 Bathroom", "3 Bathroom", "4 Bathroom", "5 Bathroom", "6 and more Bathroom"] as $room) {
-											$bathroom = trim(str_replace(["Bedroom", "and more"],["",""], $room));
+											$bathroom = trim(str_replace(["Bathroom", "and more"],["",""], $room));
 											$sel = isset($model->page['uri']['bathroom']) && $model->page['uri']['bathroom'] == $bathroom ? "selected" : "";
 											$html[] = "<option value='".$bathroom."' $sel>$room</option>";
 										}

@@ -3,15 +3,44 @@
 }
 
 .hero-image .bg-big {
-    background-size: 70%;
+    position: relative !important;
+    background-size: cover;
     background-position: center right;
     background-repeat: no-repeat;
-    height: 500px;
+    height: 600px;
     width:100%;
+    z-index: 1;
+}
+
+.hero-image-mask {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.3);
+    height: 100%;
+    width:100%;
+    top:0;
+    left:0;
+    z-index: -11;
 }
 
 .search-filter {
-   margin-top: 200px;
+    z-index: -8;
+}
+
+.search-filter select, .search-filter input {
+    border: 0 !important;
+    border-radius: 0;
+    outline: none !important;
+}
+
+.search-filter select:focus,
+.search-filter input:focus {
+    outline-width: 0 !important;
+    outline: none !important;
+}
+
+.filter-container {
+    position: relative;
+    z-index:9;
 }
 
 .p-featured {

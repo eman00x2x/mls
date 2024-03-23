@@ -29,34 +29,77 @@ class HomeController extends \Main\Controller {
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
 		$this->doc->addScriptDeclaration("
-			(async () => {
 
-				await fetch('".url("HomeController@popularLocations")."')
-					.then( response => response.json() )
-						.then( data => { 
-							$('.popular-location-container').html(data.content);
+			$(document).ready(function() {
 
-							fetch('".url("HomeController@featuredPost")."')
-								.then( response => response.json() )
-									.then( data => {
-										$('.featured-post-container').html(data.content);
+			});
 
-											fetch('".url("HomeController@latestArticles")."')
-												.then( response => response.json() )
-													.then( data => {
-														$('.latest-articles-container').html(data.content);
-													});
-									});
+			$(document).on('click', '.btn-filter', function() {
 
-						});
-				
-			})();
-				
+				if($('#offer-1').prop('checked') === true) {
+					page = 'buy';
+				}
+
+				if($('#offer-2').prop('checked') === true) {
+					page = 'rent';
+				}
+
+				formData = $('#filter-form').serialize();
+				window.location = page + '?' + formData;
+			});
+
+			$(document).on('click', '.btn-toggle-filter-box' ,function() {
+				$('.filter-container').removeClass('d-none');
+				$('.full-link').removeClass('stretched-link');
+				$('.inner-filter').addClass('d-block');
+				$('.outer-filter').addClass('d-none');
+			});
+
+			$(document).on('click', '.filter-container .btn-close' ,function() {
+				$('.filter-container').addClass('d-none');
+				$('.full-link').addClass('stretched-link');
+				$('.inner-filter').removeClass('d-block');
+				$('.outer-filter').removeClass('d-none');
+			});
+
+			const popularLocations = async () => {
+				const response = await fetch('".url("HomeController@popularLocations")."');
+				return response.json();
+			};
+
+			const featuredPost = async () => {
+				const response = await fetch('".url("HomeController@featuredPost")."');
+				return response.json();
+			};
+
+			const latestArticles = async () => {
+				const response = await fetch('".url("HomeController@latestArticles")."');
+				return response.json();
+			};
+
+			popularLocations().then( response => {
+				$('.popular-location-container').html(response.content);
+			});
+
+			featuredPost().then( response => {
+				$('.featured-post-container').html(response.content);
+			});
+
+			latestArticles().then( response => {
+				$('.latest-articles-container').html(response.content);
+			});
+			
 		
 		");
 
+		$listings = $this->getModel("listing");
+
+		$model = [
+			"listings" => $listings
+		];
+
 		$this->setTemplate("home/index.php");
-		return $this->getTemplate();
+		return $this->getTemplate(null, $model);
 	}
 
 	function popularLocations() {

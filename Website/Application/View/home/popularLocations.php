@@ -17,7 +17,7 @@ $html[] = "<div class='pb-5 my-5'>";
 							"address[municipality]" => $data[$i]['city'],
 							"address[province]" => $data[$i]['province'],
 							"address[region]" => $data[$i]['region']
-						])."' class='stretched-link'></a>";
+						])."' class='stretched-link full-link'></a>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 			}

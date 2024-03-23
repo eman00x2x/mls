@@ -44,7 +44,7 @@ $html[] = "<div class='pb-5 my-5'>";
 									$html[] = "<div class='d-flex gap-2 align-items-center small'>";
 										$html[] = "<span class='avatar avatar-sm rounded-circle' style='background-image: url(".$data['listings'][$i]['logo'].")'></span>";
 										$html[] = "<div class=''>";
-											$html[] = "<span class='d-block'>".$data['listings'][$i]['firstname']." ".$data['listings'][$i]['lastname']."</span>";
+											$html[] = "<span class='d-block'>".$data['listings'][$i]['account_name']['firstname']." ".$data['listings'][$i]['account_name']['lastname']." ".$data['listings'][$i]['account_name']['suffix']."</span>";
 											$html[] = "<span class='d-block text-muted'>".$data['listings'][$i]['profession']."</span>";
 										$html[] = "</div>";
 									$html[] = "</div>";
@@ -52,7 +52,7 @@ $html[] = "<div class='pb-5 my-5'>";
 										$html[] = "<span class='small fs-11 text-muted'>Last Update<span class='d-block fs-12 text-dark'><i class='ti ti-calendar fs-14'></i> ".date("d M Y", $data['listings'][$i]['last_modified'])."</span></span>";
 									$html[] = "</div>";
 								$html[] = "</div>";
-								$html[] = "<a href='".url("ListingsController@view", ["name" => $data['listings'][$i]['name']])."' class='stretched-link'></a>";
+								$html[] = "<a href='".url("ListingsController@view", ["name" => $data['listings'][$i]['name']])."' class='stretched-link full-link'></a>";
 								/* $html[] = "<a href='".url("ListingsController@view", ["name" => $data['listings'][$i]['name']])."' class='btn btn-md btn-primary stretched-link w-100'>View Details</a>"; */
 							$html[] = "</div>";
 						$html[] = "</div>";
