@@ -32,12 +32,6 @@
     outline: none !important;
 }
 
-.search-filter select:focus,
-.search-filter input:focus {
-    outline-width: 0 !important;
-    outline: none !important;
-}
-
 .filter-container {
     position: relative;
     z-index:9;

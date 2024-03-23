@@ -305,7 +305,7 @@ $html[] = "<div class='page-body mb-0'>";
 					$html[] = "<div class='sidebar d-none d-md-block sticky-top d-print-none'>";
 						$html[] = "<div class='card'>";
 
-							$html[] = "<div class='card-body'>";
+							$html[] = "<div class='card-body agent-form'>";
 
 								$html[] = "<div class='inquiry-form-container'>";
 									$html[] = "<h2 class='card-title text-center'><i class='ti ti-message'></i> Send Message</h2>";

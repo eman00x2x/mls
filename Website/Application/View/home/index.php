@@ -11,10 +11,14 @@ $html[] = "<div class=''>";
 
 						$html[] = "<form id='filter-form' action='' method='POST'>";
 							$html[] = "<div class='search-filter'>";
+								
+								/** SPACER */
 								$html[] = "<div class='mt-5 pt-5'></div>";
 								$html[] = "<div class='mt-5 pt-5 d-md-block d-none'></div>";
-								$html[] = "<div class='mt-5 pt-5 d-md-block d-none'></div>";
-								$html[] = "<h1 class='display-4 text-white fw-bold'>Find the best investment!</h1>";
+								$html[] = "<div class='mt-5 pt-5 d-lg-block d-none'></div>";
+								/** SPACER */
+
+								$html[] = "<h1 class='display-4 text-white fw-bold'>Find the best investment! <span class='d-block fs-16 '>Only @ PAREB MLS</span></h1>";
 								
 								$html[] = "<div class=''>";
 									$html[] = "<div class='btn-group bg-white rounded-0'>";
@@ -27,9 +31,9 @@ $html[] = "<div class=''>";
 
 								$html[] = "<div class=''>";
 
-									$html[] = "<div class='d-flex justify-content-between align-items-center flex-wrap'>";
+									$html[] = "<div class='d-flex justify-content-between align-items-center flex-wrap '>";
 										$html[] = "<div class='flex-lg-grow-0 flex-grow-1 '>";
-											$html[] = "<div class='form-floating rounded-0 border-0'>";
+											$html[] = "<div class='form-floating rounded-0 border-0' >";
 												$html[] = $model['listings']->categorySelection();
 												$html[] = "<label for='category'>Category</label>";
 											$html[] = "</div>";
@@ -41,12 +45,12 @@ $html[] = "<div class=''>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 										$html[] = "<div class='bg-white'>";
-											$html[] = "<div class='cursor-pointer btn-toggle-filter-box' style='padding: 1.1rem'>";
+											$html[] = "<div class='cursor-pointer btn-toggle-filter-box' style='padding: 1.1rem 1.1rem 1.09rem 1.1rem'>";
 												$html[] = "<span class=''><i class='ti ti-adjustments-horizontal'></i></span>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 										$html[] = "<div class='d-none d-md-block'>";
-											$html[] = "<span class='btn btn-danger btn-filter border-0 rounded-0 ' type='button' style='padding: 1.2rem;'><i class='ti ti-search me-2'></i> Search</span>";
+											$html[] = "<span class='btn btn-danger btn-filter border-0 rounded-0 ' type='button' style='padding: 1.19rem 1.19rem 1.18rem 1.19rem;'><i class='ti ti-search me-2'></i> Search</span>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 

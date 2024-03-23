@@ -641,7 +641,7 @@ class ListingsController extends \Main\Controller {
 				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
 			")->orderby(" match_score DESC, post_score DESC ");
 		}else {
-			$sort = isset($_GET['sort']) ? $_GET['sort'] : "post_score";
+			$sort = isset($_GET['sort']) ? ($_GET['sort'] == "match_score" ? "post_score" : $_GET['sort']) : "post_score";
 			$model->orderby(" $sort $order ");
 		}
 		

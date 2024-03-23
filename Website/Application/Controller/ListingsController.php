@@ -71,14 +71,16 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		$filters[] = " l.status = 1 ";
 		$filters[] = " display = 1 ";
 
+		$_GET['offer'] = $offer;
+
 		$uri['offer'] = $offer;
 
 		$address = $this->getModel("Address");
 		$listings = $this->getModel("Listing");
 		$listings->address = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));
 
-		$listings->page['limit'] = 20;
-		$listings->page['current'] = isset($_REQUEST['page']) && is_int($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+		$listings->page['limit'] = 1;
+		$listings->page['current'] = isset($_GET['page']) ? $_GET['page'] : 1;
 		$listings->page['target'] = url("ListingsController@$offer");
 		$listings->page['uri'] = (isset($uri) ? $uri : []);
 
@@ -257,7 +259,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			$(document).on('hide.bs.offcanvas', '#offcanvasEnd', function() {
 				let form = $('#offcanvasEnd .inquiry-form-container');
 				$(this).removeClass('px-4 pt-4');
-				$('.sidebar .card-body').html(form.clone());
+				$('.sidebar .agent-form').html(form.clone());
 				$(this).html('');
 
 				$('.send-message-agent-container .property-agent-container').remove();

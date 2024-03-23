@@ -211,7 +211,8 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "price", "order" => "ASC"]) )."' class='dropdown-item'>By Price</a></li>";
 								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "lot_area", "order" => "ASC"]) )."' class='dropdown-item'>By Land Area</a></li>";
 								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "floor_area", "order" => "ASC"]) )."' class='dropdown-item'>By Floor Area</a></li>";
-								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "score", "order" => "DESC"]) )."' class='dropdown-item'>By Relevance</a></li>";
+								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "match_score", "order" => "DESC"]) )."' class='dropdown-item'>By Relevance</a></li>";
+								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "post_score", "order" => "DESC"]) )."' class='dropdown-item'>By Rank</a></li>";
 							$html[] = "</ul>";
 						$html[] = "</div>";
 
@@ -227,12 +228,14 @@ $html[] = "<div class='page-body'>";
 
 				$html[] = $model->list;
 
+				if(!empty($model)) {
+					$html[] = "<div class='mt-4'>";
+						$html[] = $model->pagination;
+					$html[] = "</div>";
+				}
+
         	$html[] = "</div>";
 		$html[] = "</div>";
-
-		if(!empty($model)) {
-			$html[] = $model->pagination;
-		}
 
 	$html[] = "</div>";
 $html[] = "</div>";

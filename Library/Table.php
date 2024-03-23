@@ -228,13 +228,15 @@ class Table {
 
 		$this->page['limit'] = $limit;
 		$this->page['adjacents'] = $adjacents;
-		$this->page['current'] = $page;
+		$this->page['current'] = (in_array($page, range(0, 10000)) ? $page : 10000000);
 
 		if($this->page['current']) {
-			$this->page['starting_number'] = ($page - 1) * $limit; 
+			$this->page['starting_number'] = ($this->page['current'] - 1) * $limit; 
 		} else {
 			$this->page['starting_number'] = 0;			
 		}
+
+		
 
 	}
 
