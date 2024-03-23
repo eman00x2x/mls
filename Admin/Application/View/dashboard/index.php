@@ -72,7 +72,7 @@ $html[] = "<div class='page-body'>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 
-			$html[] = "<div class='col-6'>";
+			$html[] = "<div class='col-lg-4 col-md-6 col-sm-6 col-12'>";
 				$html[] = "<div class='card mb-3'>";
 					$html[] = "<div class='card-body'>";
 						$html[] = "<h3 class='card-title'>Premium Purchases</h3>";
@@ -81,7 +81,7 @@ $html[] = "<div class='page-body'>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 
-			$html[] = "<div class='col-6'>";
+			$html[] = "<div class='col-lg-4 col-md-6 col-sm-6 col-12'>";
 				$html[] = "<div class='card mb-3'>";
 					$html[] = "<div class='card-body'>";
 						$html[] = "<h3 class='card-title'>Property Listings Traffic This Year</h3>";
@@ -90,7 +90,7 @@ $html[] = "<div class='page-body'>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 
-			$html[] = "<div class='col-6'>";
+			$html[] = "<div class='col-lg-4 col-md-6 col-sm-6 col-12'>";
 				$html[] = "<div class='card mb-3'>";
 					$html[] = "<div class='card-header'>";
 						$html[] = "<h3 class='card-title'>Most Visited Property Listings</h3>";

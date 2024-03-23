@@ -265,7 +265,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 			async function init(data) {
 
-				let date = new Date(data.meta.last_updated_at);
+				let date = new Date(data.meta.last_updated_at).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' });
 
 				let html = '';
 				for (let key in currencies) {
@@ -276,7 +276,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				}
 
 				$('#currency-code-selection').append(html);
-				$('.last-updated-at').html( date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) );
+				$('.last-updated-at').html( date );
 				$('.base-currency-value').html('' + currencies.PHP['code'] + ' ' + ( 1 / currencies.USD['value']) );
 
 				currency_code = $('#currency-code-selection option:selected').val();
@@ -467,15 +467,11 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 	}
 
-	function relatedProperties($app = [], $filters = []) {
-		
-		$filters[] = " listing_id != ".$_GET['listing_id'];
-		$filters[] = " l.status = 1";
-		$filters[] = " display = 1";
-		$filters[] = " is_website = 1";
+	function relatedProperties() {
 
-		$this->setTempalteBasePath(ROOT."Admin");
-		return parent::relatedProperties([
+		$listings = $this->getModel("Listing");
+		$listings->page['limit'] = 5;
+		$listings->app = [
 			"handshaked" => false,
 			"comparative" => false,
 			"url_path" => [
@@ -483,8 +479,19 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				"value" => "name",
 				"class_hint" => "ListingsController@view"
 			]
-		], $filters);
+		];
 		
+		$filters[] = " listing_id != ".$_GET['listing_id'];
+		$filters[] = " l.status = 1";
+		$filters[] = " display = 1";
+		$filters[] = " is_website = 1";
+
+		$response = parent::listProperties($listings, $filters);
+
+		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTemplate("listings/listProperties.php");
+		return $this->getTemplate($response['data'],$response['model']);
+
 	}
 
 	

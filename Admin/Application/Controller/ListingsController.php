@@ -164,7 +164,7 @@ class ListingsController extends \Main\Controller {
 	}
 
 	function view($listing_id) {
-		
+
 		$this->doc->setTitle("View Property Listing");
 
 		$this->doc->addScript(CDN."js/amortization.js");
@@ -257,8 +257,8 @@ class ListingsController extends \Main\Controller {
 
 			async function init(data) {
 
-				let date = new Date(data.meta.last_updated_at);
-
+				let date = new Date(data.meta.last_updated_at).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' });
+				
 				let html = '';
 				for (let key in currencies) {
 					if (currencies.hasOwnProperty(key)) {
@@ -268,7 +268,8 @@ class ListingsController extends \Main\Controller {
 				}
 
 				$('#currency-code-selection').append(html);
-				$('.last-updated-at').html( date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) );
+
+				$('.last-updated-at').html( date );
 				$('.base-currency-value').html('' + currencies.PHP['code'] + ' ' + ( 1 / currencies.USD['value']) );
 
 				currency_code = $('#currency-code-selection option:selected').val();
@@ -674,19 +675,6 @@ class ListingsController extends \Main\Controller {
 			"data" => $data,
 			"model" => $model
 		];
-
-	}
-
-	function relatedProperties($app = [], $filters = []) {
-
-		$listings = $this->getModel("Listing");
-		$listings->page['limit'] = 5;
-		$listings->app = $app;
-
-		$response = $this->listProperties($listings, $filters);
-		
-		$this->setTemplate("listings/listProperties.php");
-		return $this->getTemplate($response['data'],$response['model']);
 
 	}
 

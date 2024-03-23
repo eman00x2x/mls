@@ -105,16 +105,7 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<div class='col-sm-6 col-md-6 col-lg-4'>";
 					
 					$html[] = "<div class='px-2'>";
-						$html[] = "<div class='d-flex justify-content-between'>";
-							$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Posted since ";
-								$html[] = date("d M Y", $data['listing']['date_added']);
-							$html[] = "</span>";
-
-							$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Modified at ";
-								$html[] = date("d M Y", $data['listing']['last_modified']);
-							$html[] = "</span>";
-						$html[] = "</div>";
-							
+						
 						$html[] = "<div class='mb-4'>";
 							$html[] = "<h1>".$data['listing']['title']."</h1>";
 							$html[] = "<p><i class='ti ti-map-pin'></i> ".$data['listing']['address']['barangay']." ".$data['listing']['address']['municipality']." ".$data['listing']['address']['province']."</p>";
@@ -405,8 +396,8 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<div class='card-title'>Posting Details</div>";
 						
 						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-status-change me-1'></i> Status:</span> <strong>".$status[$data['listing']['status']]."</strong></div>";
-						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Posted since:</span> <strong>".date("F d, Y", $data['listing']['date_added'])."</strong></div>";
-						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Modified at:</span> <strong>".date("F d, Y", $data['listing']['last_modified'])."</strong></div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Posted since:</span> <strong>".date("d M Y", $data['listing']['date_added'])."</strong></div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Modified at:</span> <strong>".date("d M Y", $data['listing']['last_modified'])."</strong></div>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 

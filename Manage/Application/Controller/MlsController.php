@@ -583,7 +583,9 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$data['listing'] = $listing->getById();
 
 		$listingImage = $this->getModel("ListingImage");
+		$listingImage->page['limit'] = 6;
 		$listingImage->column['listing_id'] = $id;
+		$listingImage->and(" filename != '".basename($data['listing']['thumb_img'])."' ");
 		$data['listing']['images'] = $listingImage->getByListingId();
 
 		$this->setTemplate("listings/download.php");
@@ -612,17 +614,11 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		
 	}
 
-	function relatedProperties($app = [], $filters = []) {
+	function relatedProperties() {
 
-		$this->setTempalteBasePath(ROOT."Admin");
-
-		$filters[] = " listing_id != ".$_GET['listing_id'];
-		$filters[] = " is_mls = 1 ";
-		$filters[] = " is_mls = 1 ";
-		$filters[] = " l.status = 1 ";
-		$filters[] = " display = 1";
-
-		return parent::relatedProperties([
+		$listings = $this->getModel("Listing");
+		$listings->page['limit'] = 5;
+		$listings->app = [
 			"handshaked" => true,
 			"comparative" => true,
 			"url_path" => [
@@ -630,7 +626,26 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 				"value" => "listing_id",
 				"class_hint" => "MlsController@viewListing"
 			]
-		], $filters);
+		];
+
+		$filters[] = " listing_id != ".$_GET['listing_id'];
+		$filters[] = " is_mls = 1 ";
+		$filters[] = " l.status = 1 ";
+		$filters[] = " display = 1";
+
+		$filters[] = " a.local_board_name = '".$this->session['local_board_name']."' ";
+		$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_board') = 1";
+		
+		$filters[] = " a.board_region = '".$this->session['board_region']."' ";
+		$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_region') = 1";
+
+		$filters[] = " JSON_EXTRACT(is_mls_option, '$.all') = ".$_GET['is_mls_option']['all']."";
+		
+		$response = parent::listProperties($listings, $filters);
+		
+		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTemplate("listings/listProperties.php");
+		return $this->getTemplate($response['data'],$response['model']);
 
 	}
 	
