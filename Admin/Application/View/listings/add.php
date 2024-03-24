@@ -34,7 +34,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 								if($data['account_type'] != "Administrator") {
 									$html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@view", ["id" => $data['account_id']])."'>";
 										$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['logo'].")'></span>";
-										$html[] = $data['firstname']." ".$data['lastname']." account";
+										$html[] = $data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']." account";
 									$html[] = "</a>";
 									$html[] = "<a class='btn btn-dark' href='".url("ListingsController@index",["id" => $data['account_id']])."' title='Listings'><i class='ti ti-list me-1'></i> Property Listings</a>";
 								}else {
@@ -251,19 +251,21 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 											$amenities = $model->amenities();
 											$amenities_data = explode(", ","24 Hours Security, Near in Churches, Near in Schools, Near Malls, Near Hospitals, Gated Community, CCTV Cameras, Near Public Markets, Guard House, Club House");
 											
-											$html[] = "<div class='row p-4 border  bg-yellow-lt text-dark'>";
-												for($i=0; $i<count($amenities); $i++) {
-												
-													$check = in_array($amenities[$i],$amenities_data) ? "checked" : "";
-												
-													$html[] = "<div class='col-3'>";
-														$html[] = "<label class='form-check'>";
-															$html[] = "<input type='checkbox' class='form-check-input' id='customCheck_$i' name='amenities[]' value='".$amenities[$i]."' $check>";
-															$html[] = "<span class='form-check-label' for='customCheck_$i'>".$amenities[$i]."</span>";
-														$html[] = "</label>";
-													$html[] = "</div>";
+											$html[] = "<div class=' p-4 border  bg-yellow-lt text-dark'>";
+												$html[] = "<div class='row'>";
+													for($i=0; $i<count($amenities); $i++) {
+													
+														$check = in_array($amenities[$i],$amenities_data) ? "checked" : "";
+													
+														$html[] = "<div class='col-lg-3 col-md-4 col-sm-6 col-6'>";
+															$html[] = "<label class='form-check cursor-pointer'>";
+																$html[] = "<input type='checkbox' class='form-check-input' id='customCheck_$i' name='amenities[]' value='".$amenities[$i]."' $check>";
+																$html[] = "<span class='form-check-label' for='customCheck_$i'>".$amenities[$i]."</span>";
+															$html[] = "</label>";
+														$html[] = "</div>";
 
-												}
+													}
+												$html[] = "</div>";
 											$html[] = "</div>";
 											
 										$html[] = "</div>";

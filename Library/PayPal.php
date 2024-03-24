@@ -20,6 +20,14 @@ class PayPal {
 
     function createOrder($data, $validation_url, $payment_status_url) {
 
+		switch($data['duration']) {
+			case '365': $quantity = 12;		break;
+			case '730': $quantity = 24;		break;
+			default: $quantity = $data['duration'] / 30; break;
+		}
+
+		$data['total'] = $data['cost'] * $quantity;
+
         $this->doc->addScript("https://www.paypal.com/sdk/js?client-id=".$this->client_id."&currency=".$this->currency."&intent=capture&commit=false&vault=false");
 		$this->doc->addScriptDeclaration("
 
@@ -43,9 +51,25 @@ class PayPal {
 							\"purchase_units\": [{
 								\"reference_id\": \"".$data["premium_id"]."\",
 								\"description\": \"".nicetrim("[".$data["name"]."] ".$data["details"],100)."\",
+								\"items\": [{
+									\"name\": \"".$data['name']."\",
+									\"description\": \"".nicetrim("[".$data["name"]."] ".$data["details"],100)."\",
+									\"quantity\": $quantity,
+									\"unit_amount\": {
+										\"currency_code\": \"PHP\",
+										\"value\": ".$data['cost']."
+									},
+									\"category\": \"DIGITAL_GOODS\"
+								}],
 								\"amount\": {
 									\"currency_code\": \"".$this->currency."\",
-									\"value\": ".$data["cost"]."
+									\"value\": ".$data["total"].",
+									\"breakdown\": {
+										\"item_total\": {
+											\"currency_code\": \"PHP\",
+											\"value\": ".$data['total']."
+										}
+									}
 								}
 							}]
 						});
@@ -65,7 +89,7 @@ class PayPal {
 							})
 							.then((response) => response.json())
 							.then((result) => {
-
+								
 								if(result.status == 1){
 									window.location.href = '".$payment_status_url."?checkout_ref_id='+result.payment_id;
 								}else{
@@ -127,7 +151,7 @@ class PayPal {
 			}
 
 			if(!empty($order_response)) {
-				
+
 				$intent = $order_response['data']['intent'];
 				$order_status = $order_response['data']['status'];
 
@@ -138,6 +162,14 @@ class PayPal {
 		
 					$new_data['premium_id'] = $purchase_unit['reference_id'];
 					$new_data['premium_description'] = $purchase_unit['description'];
+					
+					$new_data['quantity'] = $purchase_unit['items'][0]['quantity'];
+
+					switch($new_data['quantity']) {
+						case 1: $new_data['duration'] = 30; break;
+						case 6: $new_data['duration'] = 180; break;
+						case 12: $new_data['duration'] = 365; break;
+					}
 					
 					if(!empty($purchase_unit['amount'])){
 						$new_data['premium_price'] = $purchase_unit['amount']['value'];

@@ -41,7 +41,7 @@ $html[] = "<div class='page-body'>";
 
 						$html[] = "<p class='text-center'>";
 							$html[] = "<span class='d-block text-muted'>Total Amount Paid</span>";
-							$html[] = "<span class='fs-22'>".$data['transaction']['premium_price']."</span>";
+							$html[] = "<span class='fs-22'>".number_format($data['transaction']['premium_price'],2)."</span>";
 						$html[] = "</p>";
 
 						$html[] = "<p class='text-center my-5'>";

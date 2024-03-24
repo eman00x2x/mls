@@ -263,19 +263,21 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 											$amenities = $model->amenities();
 											$amenities_data = explode(",",$data['listing']['amenities']);
 											
-											$html[] = "<div class='row p-4 border  bg-yellow-lt text-dark'>";
-												for($i=0; $i<count($amenities); $i++) {
-												
-													$check = in_array($amenities[$i],$amenities_data) ? "checked" : "";
-												
-													$html[] = "<div class='col-3'>";
-														$html[] = "<label class='form-check'>";
-															$html[] = "<input type='checkbox' class='form-check-input' id='customCheck_$i' name='amenities[]' value='".$amenities[$i]."' $check>";
-															$html[] = "<span class='form-check-label' for='customCheck_$i'>".$amenities[$i]."</span>";
-														$html[] = "</label>";
-													$html[] = "</div>";
+											$html[] = "<div class=' p-4 border  bg-yellow-lt text-dark'>";
+												$html[] = "<div class='row'>";
+													for($i=0; $i<count($amenities); $i++) {
+													
+														$check = in_array($amenities[$i],$amenities_data) ? "checked" : "";
+													
+														$html[] = "<div class='col-lg-3 col-md-4 col-sm-6 col-6'>";
+															$html[] = "<label class='form-check cursor-pointer'>";
+																$html[] = "<input type='checkbox' class='form-check-input' id='customCheck_$i' name='amenities[]' value='".$amenities[$i]."' $check>";
+																$html[] = "<span class='form-check-label' for='customCheck_$i'>".$amenities[$i]."</span>";
+															$html[] = "</label>";
+														$html[] = "</div>";
 
-												}
+													}
+												$html[] = "</div>";
 											$html[] = "</div>";
 											
 										$html[] = "</div>";

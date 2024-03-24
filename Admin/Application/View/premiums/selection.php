@@ -47,7 +47,7 @@ if(!isset($_REQUEST['premium_id'])) {
 		$html[] = "<div class='card-header'>";
 			$html[] = "<h3 class='card-title'>".$data['premium']['name']."</h3>";
 			$html[] = "<div class='card-actions'>";
-				$html[] = "<span class='fw-bold text-success'>&#8369; ".number_format($data['premium']['cost'],2)."</span>";
+				$html[] = "<span class='fw-bold text-success fs-22'>&#8369; <span class='cost' data-value='".$data['premium']['cost']."'>".number_format($data['premium']['cost'],2)."</span></span>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 		$html[] = "<div class='card-body'>";
@@ -56,20 +56,28 @@ if(!isset($_REQUEST['premium_id'])) {
 	$html[] = "</div>";
 
 	$html[] = "<input type='hidden' name='save_url' id='save_url' value='".url("AccountSubscriptionController@saveNew")."' />";
-	$html[] = "<form id='form'>";
+	$html[] = "<form id='form' action='' method='POST'>";
 		$html[] = "<input type='hidden' name='_method' id='_method' value='post' />";
 		$html[] = "<input type='hidden' name='account_id' id='account_id' value='".$data['account_id']."' />";
 		$html[] = "<input type='hidden' name='premium_id' id='premium_id' value='".$data['premium']['premium_id']."' />";
 		$html[] = "<input type='hidden' name='subscription_date' id='subscription_date' value='".DATE_NOW."' />";
-		$html[] = "<input type='hidden' name='duration' id='duration' value='".$data['premium']['duration']."' />";
 		
 		/** TRANSACTION */
 		$html[] = "<input type='hidden' name='premium_description' id='premium_description' value='[".$data['premium']['name']."] ".$data['premium']['details']."' />";
 		$html[] = "<input type='hidden' name='premium_price' id='premium_price' value='".$data['premium']['cost']."' />";
 		
-		$html[] = "<div class='mb-3'>";
-			$html[] = "<label class='form-label'>When will this subscription start?</label>";
+		$html[] = "<div class='form-floating mb-3'>";
+            $html[] = "<select name='duration' id='duration' class='form-select'>";
+            foreach($data['premium']['duration'] as $days) {
+                $html[] = "<option value='$days'>$days days</option>";
+            }
+            $html[] = "</select>";
+            $html[] = "<label for='duration'>Subscription Duration</label>";
+        $html[] = "</div>";
+
+		$html[] = "<div class='form-floating mb-3'>";
 			$html[] = "<input type='datetime-local' name='subscription_start_date' id='subscription_start_date' value='".date("Y-m-d H:i:s",DATE_NOW)."' class='form-control' />";
+			$html[] = "<label for='subscription_start_date'>When will this subscription start?</label>";
 		$html[] = "</div>";
 
 		$html[] = "<div class='card'>";
@@ -81,31 +89,36 @@ if(!isset($_REQUEST['premium_id'])) {
 
 				$html[] = "<div class='row mb-3'>";
 					$html[] = "<div class='col-6'>";
-						$html[] = "<div class='form-group'>";
-							$html[] = "<label class='form-label'>Given Name</label>";
-							$html[] = "<input type='text' name='payer[name][given_name]' id='given_name' value='".$data['account']['firstname']."' class='form-control' />";
+						$html[] = "<div class='form-floating'>";
+							$html[] = "<input type='text' name='payer[name][given_name]' id='given_name' value='".$data['account']['account_name']['firstname']."' class='form-control' />";
+							$html[] = "<label for='given_name'>Given Name</label>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 					$html[] = "<div class='col-6'>";
-						$html[] = "<div class='form-group'>";
-							$html[] = "<label class='form-label'>Surname</label>";
-							$html[] = "<input type='text' name='payer[name][surname]' id='surname' value='".$data['account']['lastname']."' class='form-control' />";
+						$html[] = "<div class='form-floating'>";
+							$html[] = "<input type='text' name='payer[name][surname]' id='surname' value='".$data['account']['account_name']['lastname']."' class='form-control' />";
+							$html[] = "<label for='surname'>Surname</label>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 
-				$html[] = "<div class='mb-3'>";
-					$html[] = "<label class='form-label'>Email</label>";
+				$html[] = "<div class='form-floating mb-3'>";
 					$html[] = "<input type='text' name='payer[email_address]' id='email_address' value='".$data['account']['email']."' class='form-control' />";
+					$html[] = "<label for='email_address'>Email</label>";
 				$html[] = "</div>";
 
-				$html[] = "<div class='mb-3'>";
-					$html[] = "<label class='form-label'>Payment Type</label>";
+				$html[] = "<div class='form-floating mb-3'>";
 					$html[] = "<select name='payment_source' id='payment_source' class='form-select'>";
 						foreach(["post-dated check","bank deposit","online transfer"] as $source) {
 							$html[] = "<option value='$source'>".strtoupper($source)."</option>";
 						}
 					$html[] = "</select>";
+					$html[] = "<label for='payment_source'>Payment Type</label>";
+				$html[] = "</div>";
+
+				$html[] = "<div class='form-floating mb-3'>";
+					$html[] = "<textarea name='payer[transaction_number]' id='check_numbers' class='form-control' style='width:100%; height:100px;'></textarea>";
+					$html[] = "<label for='check_numbers'>Check Numbers / Transaction Number / Reference Numbers (separated by coma)</label>";
 				$html[] = "</div>";
 
 			$html[] = "</div>";

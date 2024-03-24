@@ -93,7 +93,7 @@ $html[] = "<div class='row justify-content-center'>";
 							$html[] = "<tr>";
 								$html[] = "<th class='w-1'></th>";
 								$html[] = "<th>Product</th>";
-								$html[] = "<th class='text-center'>Qty</th>";
+								$html[] = "<th class='text-center'>Duration</th>";
 								$html[] = "<th class='text-end'>Amount</th>";
 							$html[] = "</tr>";
 						$html[] = "</thead>";
@@ -101,7 +101,7 @@ $html[] = "<div class='row justify-content-center'>";
 						$html[] = "<tr>";
 							$html[] = "<td class='text-muted text-center'>1</td>";
 							$html[] = "<td>".$data['transaction']['premium_description']."</td>";
-							$html[] = "<td class='text-center w-1'>1</td>";
+							$html[] = "<td class='text-center w-1'>".$data['transaction']['duration']." days</td>";
 							$html[] = "<td class='text-end'>&#8369;".number_format($data['transaction']['premium_price'],2)."</td>";
 						$html[] = "</tr>";
 

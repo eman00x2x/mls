@@ -149,6 +149,21 @@ class AccountsController extends \Main\Controller {
 					});
 
 				});
+
+				$(document).on('change', '#duration', function() {
+					let duration = $(this).val();
+					let cost = parseInt($('.cost').data('value'));
+					
+					switch(duration) {
+						case '365': total = cost * 12; break;
+						case '730': total = cost * 24; break;
+						default: total = (cost / 30) * duration; break;
+					}
+						
+					$('#premium_price').val( total );
+					$('.cost').text( parseFloat(total.toFixed(2)).toLocaleString() );
+				});
+
 			"));
 		
 			$accounts = $this->getModel("Account");

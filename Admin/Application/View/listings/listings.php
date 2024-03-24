@@ -43,7 +43,7 @@ $html[] = "<div class='page-body'>";
 			$html[] = "<div class='col-12'>";
 				$html[] = "<div class='box-container mb-3'>";
 				
-					$html[] = "<div class='search-box'>";
+					$html[] = "<div class='search-box d-print-none'>";
 						$html[] = "<input type='text' name='search' id='search' value='' placeholder='Search' data-url='".url("ListingsController@index", ["id" => $data['account_id']])."' />";
 						$html[] = "<a href='".url("ListingsController@index", ["id" => $data['account_id']])."' class='clearFilter'>CLEAR FILTER</a>";
 					$html[] = "</div>";
@@ -63,7 +63,7 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<th>Address</th>";
 									$html[] = "<th class='text-end'>Price</th>";
 									$html[] = "<th>Status</th>";
-									$html[] = "<th class='text-center'><i class='icon-settings'></i></th>";
+									$html[] = "<th class='text-center'></th>";
 								$html[] = "</tr>";
 							$html[] = "</thead>";
 							

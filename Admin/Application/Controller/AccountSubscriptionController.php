@@ -29,40 +29,42 @@ class AccountSubscriptionController extends \Main\Controller {
 
 		if(isset($_POST['subscription_start_date'])) {
 			$_POST['subscription_start_date'] = strtotime($_POST['subscription_start_date']);
-			$_POST['subscription_end_date'] = strtotime("+".$_POST['duration'], $_POST['subscription_start_date']);
+			$_POST['subscription_end_date'] = strtotime("+".$_POST['duration']." days", $_POST['subscription_start_date']);
 		}
 
 		$_POST['susbcription_status'] = 1;
-
-		$account_subscription = $this->getModel("AccountSubscription");
-		$response = $account_subscription->saveNew($_POST);
+		$_POST['payer']['payment_source'] = $_POST['payment_source'];
 
 		$transaction = $this->getModel("Transaction");
-		$transaction->saveNew([
+		$response = $transaction->saveNew([
 			"account_id" => $_POST['account_id'],
 			"premium_id" => $_POST['premium_id'],
 			"premium_description" => $_POST['premium_description'],
 			"premium_price" => $_POST['premium_price'],
+			"duration" => $_POST['duration'],
 			"payer" => json_encode($_POST['payer']),
 			"payment_transaction_id" => DATE_NOW,
 			"payment_source" => $_POST['payment_source'],
 			"payment_status" => "COMPLETED",
-			"transaction_details" => json_encode(
-				array(
-					"status" => "COMPLETED",
-					"transaction" => array(
-						"account_id" => $_SESSION['account_id'],
-						"account_type" => $_SESSION['account_type'],
-						"account_permissions" => $_SESSION['permissions'],
-						"name" => $_SESSION['name'],
-						"created_at" => DATE_NOW
-					),
-					"create_time" => date("Y-m-d H:i:s",DATE_NOW)
-				)
-			),
+			"transaction_details" => json_encode([
+				"status" => "COMPLETED",
+				"transaction" => [
+					"account_id" => $this->session['account_id'],
+					"account_type" => $this->session['account_type'],
+					"account_permissions" => $this->session['permissions'],
+					"name" => $this->session['name'],
+					"created_at" => DATE_NOW
+				],
+				"create_time" => date("Y-m-d H:i:s",DATE_NOW)
+			]),
 			"created_at" => DATE_NOW,
 			"modified_at" => 0
 		]);
+
+		$_POST['transaction_id'] = $response['id'];
+
+		$account_subscription = $this->getModel("AccountSubscription");
+		$response = $account_subscription->saveNew($_POST);
 		
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 		

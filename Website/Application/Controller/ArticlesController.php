@@ -2,6 +2,8 @@
 
 namespace Website\Application\Controller;
 
+use Library\Helper;
+
 class ArticlesController extends \Main\Controller {
 
 	private $doc;
@@ -57,12 +59,21 @@ class ArticlesController extends \Main\Controller {
 		$this->doc->setDescription($description);
 		$this->doc->setMetaData("keywords", $description);
 
-		$this->doc->setFacebookMetaData("og:url", WEBDOMAIN.url("ArticlesController@view", ["name" => $name]));
+		$data['url'] = rtrim(WEBDOMAIN, '/') . url("ArticlesController@view", ["name" => $name]);
+
+		$this->doc->setFacebookMetaData("og:url", $data['url']);
 		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
 		$this->doc->setFacebookMetaData("og:image", $data['banner']);
 		$this->doc->setFacebookMetaData("og:description", $description);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
+
+		$data['share_buttons'] = Helper::socialMediadShareButtons([
+			"url" => $data['url'],
+			"title" => $data['title'],
+			"description" => $description,
+			"img" => $data['banner'],
+		]);
 		
 		$this->setTemplate("articles/view.php");
 		return $this->getTemplate($data, $articles);

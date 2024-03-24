@@ -7,7 +7,7 @@ $html[] = "<div class='page-body'>";
 
             $html[] = "<div class='col-md-8 col-12'>";
 			
-				$html[] = "<div class='article bg-white p-4'>";
+				$html[] = "<div class='article p-4'>";
 					$html[] = "<h1 class='mb-1'>".$data['title']."</h1>";
 					$html[] = "<p class='m-0 p-0 fs-12 text-muted'><i class='ti ti-clock fs-14'></i> ".date("F d, Y", $data['created_at'])."</p>";
 
@@ -16,7 +16,7 @@ $html[] = "<div class='page-body'>";
 						$html[] = $data['content'];
 
 						$html[] = "<div class='share-buttons'>";
-							
+							$html[] = $data['share_buttons'];
 						$html[] = "</div>";
 
 					$html[] = "</div>";

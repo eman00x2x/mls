@@ -117,11 +117,12 @@ if(PREMIUM) {
 
     /** TRANSACTIONS ROUTES */
     Router::get(MANAGE_ALIAS.'/transactions', 'TransactionsController@transactions', ['as' => 'transactions']);
-    Router::get(MANAGE_ALIAS.'/transactions/{id}', 'TransactionsController@index', ['as' => 'transactions'])->where([ 'id' => '[0-9]+' ]);
-    Router::get(MANAGE_ALIAS.'/transactions/checkout/{premium_id}', 'TransactionsController@checkout', ['as' => 'checkout'])->where([ 'premium_id' => '[0-9]+' ]);
+    Router::get(MANAGE_ALIAS.'/transactions/{id}', 'TransactionsController@index', ['as' => 'transactionsPremium'])->where([ 'id' => '[0-9]+' ]);
+    Router::get(MANAGE_ALIAS.'/transactions/cart/{premium_id}', 'TransactionsController@mycart', ['as' => 'cart'])->where([ 'premium_id' => '[0-9]+' ]);
     Router::get(MANAGE_ALIAS.'/transactions/paymentStatus', 'TransactionsController@paymentStatus', ['as' => 'paymentStatus']);
     Router::get(MANAGE_ALIAS.'/transactions/{id}/invoice', 'TransactionsController@invoice', ['as' => 'invoice'])->where([ 'id' => '[0-9]+' ]);
 
+    Router::post(MANAGE_ALIAS.'/transactions/checkout/{premium_id}', 'TransactionsController@checkout', ['as' => 'checkout'])->where([ 'premium_id' => '[0-9]+' ]);
     Router::post(MANAGE_ALIAS.'/transactions/validateCheckOut', 'TransactionsController@validateCheckOut', ['as' => 'validateCheckOut']);
 }
 

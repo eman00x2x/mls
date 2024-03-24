@@ -100,8 +100,8 @@ class Mailer
 
 			/** FOOTER */
 			$html[] = "<div style='background-color:#F2F1EF;font-size:13px;text-align:center;padding:10px 20px;color:#6C7A89;border-top:1px solid #ECECEC;'>";
-				$html[] = "<p>You received this email, because you are registered in <a href='".WEBDOMAIN."'>".WEBDOMAIN."</a>.</p>";
-				$html[] = "<p>This email message is automated, please do not reply, thus no one will received your message.</p>";
+				$html[] = "<br/><p>You received this email, because you are registered in <a href='".WEBDOMAIN."'>".WEBDOMAIN."</a>.</p>";
+				$html[] = "<p>This email message is automated, please do not reply, thus no one will received your message. </p><br/>";
 			$html[] = "</div>";
 
 		$html[] = "</div>";

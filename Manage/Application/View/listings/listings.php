@@ -16,7 +16,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
-				$html[] = "<div class='d-none d-sm-inline'>";
+				$html[] = "<div class='d-sm-inline'>";
 					$html[] = "<div class='btn-list'>";
 						$html[] = "<a class='ajax btn btn-dark' href='".url("ListingsController@addListing")."'><i class='ti ti-user-plus me-2'></i> New Listing</a>";
 					$html[] = "</div>";
@@ -53,7 +53,7 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<th>Address</th>";
 									$html[] = "<th class='text-end'>Price</th>";
 									$html[] = "<th>Status</th>";
-									$html[] = "<th class='text-center'><i class='icon-settings'></i></th>";
+									$html[] = "<th class='text-center'></th>";
 								$html[] = "</tr>";
 							$html[] = "</thead>";
 							

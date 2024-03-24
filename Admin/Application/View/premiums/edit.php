@@ -54,7 +54,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='mb-3'>";
-								$html[] = "<label class='form-label'>Cost</label>";
+								$html[] = "<label class='form-label'>Cost per 30 days</label>";
 								$html[] = "<div class='input-group'>";
 									$html[] = "<span class='input-group-text'>&#8369;</span>";
 									$html[] = "<input type='number' name='cost' value='".$data['cost']."' step='1' class='form-control' />";
@@ -75,7 +75,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<label class='col-sm-3 col-form-label'>Category</label>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select class='form-select' name='category'>";
-										foreach(["package","add-on"] as $value) {
+										foreach(["package"/* ,"add-on" */] as $value) {
 											$sel = $value == $data['category'] ? "selected" : "";
 											$html[] = "<option value='$value' $sel>".ucwords(str_replace("_"," ",$value))."</option>";
 										}
@@ -96,14 +96,16 @@ $html[] = "<form id='form' action='' method='POST'>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='mb-3 row'>";
-								$html[] = "<label class='col-sm-3 col-form-label'>Duration</label>";
+								$html[] = "<label class='col-sm-3 col-form-label'>Duration Selection</label>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select class='form-select' name='duration'>";
-										foreach(["Permanent","10 days","15 days","30 days","40 days","60 days","90 days","120 days"] as $value) {
-											$sel = $value == $data['duration'] ? "selected" : "";
-											$html[] = "<option value='$value' $sel>".$value."</option>";
+										foreach(["30,90,180,365", "30,90", "30,90,180", "30", "90", "180", "365"] as $value) {
+											$list = json_encode(explode(",", $value));
+											$sel = $list == json_encode($data['duration']) ? "selected" : "";
+											$html[] = "<option value='$list' $sel>".$value." days</option>";
 										}
 									$html[] = "</select>";
+									$html[] = "<span class='form-hint fs-12'>Members can select their subscription duration</span>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
@@ -116,6 +118,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 											$html[] = "<option value='$value' $sel>".($value == 1 ? "Show" : "Hide")."</option>";
 										}
 									$html[] = "</select>";
+									$html[] = "<span class='form-hint fs-12'>Select \"Show\" to allow members to choose this premium; otherwise, hide it</span>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 								
@@ -131,7 +134,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 							
 							foreach(PREMIUM_SCRIPTS as $premium => $val) {
 								$html[] = "<div class='mb-3 row'>";
-									$html[] = "<label class='col-sm-3 col-form-label'>$premium</label>";
+									$html[] = "<label class='col-sm-3 col-form-label'>".ucwords(str_replace("_"," ", $premium))."</label>";
 									$html[] = "<div class='col-sm-9'>";
 										$html[] = "<input type='number' name='script[$premium]' value='".(isset($data['script'][$premium]) ? $data['script'][$premium] : null)."' class='form-control' />";
 									$html[] = "</div>";

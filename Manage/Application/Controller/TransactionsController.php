@@ -23,9 +23,19 @@ class TransactionsController extends \Admin\Application\Controller\TransactionsC
 		return parent::index($this->account_id);
 	}
 
+	function mycart($premium_id) {
+
+		if($this->session['permissions']['premiums']['process_subscription'] == 0) {
+			$this->getLibrary("Factory")->setMsg("You do not have enough permissions to purchase a premium for this account","error");
+			response()->redirect(url("DashboardController@index"));
+		}
+
+		return parent::cart($this->account_id, $premium_id);
+	}
+
 	function checkout($premium_id) {
 
-		if(!isset($_SESSION['user_logged']['permissions']['subscriptions'])) {
+		if($this->session['permissions']['premiums']['process_subscription'] == 0) {
 			$this->getLibrary("Factory")->setMsg("You do not have enough permissions to purchase a premium for this account","error");
 			response()->redirect(url("DashboardController@index"));
 		}

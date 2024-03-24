@@ -29,7 +29,7 @@ $html[] = "<div class='page-body'>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='col-2 '>";
-								$html[] = "<p class='fw-bold text-end'>".$data['duration']."</p>";
+								$html[] = "<p class='fw-bold text-end'>".$data['duration']." days</p>";
 							$html[] = "</div>";
 							
 							$html[] = "<div class='col-2 '>";
@@ -43,13 +43,7 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 
 					$html[] = "<div class='card-footer'>";
-
 						$html[] = "<span id='paypal-button-container'></span>";
-
-						$html[] = "<div class='d-flex gap-3 justify-content-between d-none'>";
-							$html[] = "<a href='".url("PurchasePremiumsController@index")."' class='btn btn-light text-muted'>Cancel</a>";
-							$html[] = "<span class='btn btn-success btn-checkout'>Proceed to Checkout</span>";
-						$html[] = "</div>";
 					$html[] = "</div>";
 
 				$html[] = "</div>";

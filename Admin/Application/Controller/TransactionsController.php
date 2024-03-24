@@ -101,16 +101,51 @@ class TransactionsController extends \Main\Controller {
 		
     }
 
+	function cart($account_id, $premium_id) {
+
+		$this->doc->setTitle("Cart");
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+			$(document).on('change', '#duration', function() {
+				let duration = $(this).val();
+				let cost = parseInt($('.amount').data('cost'));
+				let total = 0;
+
+				switch(duration) {
+					case '365': total = cost * 12; break;
+					case '730': total = cost * 24; break;
+					default: total = (cost / 30) * duration; break;
+				}
+
+				$('.amount').text( parseFloat(total.toFixed(2)).toLocaleString() );
+				$('#cost').val( total );
+				$('#duration').val( duration );
+			});
+
+		"));
+
+		$premium = $this->getModel("Premium");
+		$premium->column['premium_id'] = $premium_id;
+		$data = $premium->getById();
+
+		$this->doc->setTitle("Cart");
+
+		$this->setTemplate("transactions/cart.php");
+		return $this->getTemplate($data,$premium);
+
+	}
+
     function selectedPremium($account_id, $premium_id) {
 
-		/* $_REQUEST['order_id'] = "81P68441X8030654W";
-		$_REQUEST['paypal_order_check'] = 1;
-		$this->checkoutValidate($account_id);
+		/* $paypal = new PayPal();
+		$response = $paypal->validatePayment("81Y91742TA749304S");
+		debug($response);
 		exit(); */
 
 		$premium = $this->getModel("Premium");
 		$premium->column['premium_id'] = $premium_id;
 		$data = $premium->getById();
+
+		$data['duration'] = $_POST['duration'];
 
 		$this->doc->setTitle("Checkout Premiums");
         
@@ -121,6 +156,7 @@ class TransactionsController extends \Main\Controller {
 			($this->payment_status_url != "" ? $this->payment_status_url : url("TransactionsController@paymentStatus"))
 		);
         
+		$data['cost'] = $_POST['cost'];
         $this->setTemplate("transactions/checkouts.php");
 		return $this->getTemplate($data,$premium);
 
@@ -170,8 +206,17 @@ class TransactionsController extends \Main\Controller {
 					"premium_id" => $premium_data['premium_id'],
 					"subscription_date" => $new_data['created_at'],
 					"subscription_start_date" => $new_data['created_at'],
-					"subscription_end_date" => strtotime("+".$premium_data['duration'], $new_data['created_at'])
+					"subscription_end_date" => strtotime("+".$new_data['duration']." days", $new_data['created_at'])
 				]);
+
+				$mail = new Mailer();
+				$mail
+					->build($this->mailInvoice($account_id, $data['transaction']['transaction_id']))
+						->send([
+							"to" => [
+								$this->session['email']
+							]
+						], CONFIG['site_name'] . " Premium Subscription Invoice - Transaction ID ". $new_data['payment_transaction_id']);
 
 			}
 
@@ -204,15 +249,6 @@ class TransactionsController extends \Main\Controller {
 				$data['payment_status_message'] = ""; 
 				$data['transaction_status'] = false;
 			}
-
-			$mail = new Mailer();
-			$mail
-				->build($this->mailInvoice($data['transaction']['account_id'], $data['transaction']['transaction_id']))
-					->send([
-						"to" => [
-							$this->session['email']
-						]
-					], "Invoice");
 
 			$this->setTemplate("transactions/paymentStatus.php");
 			return $this->getTemplate($data,$transaction);
