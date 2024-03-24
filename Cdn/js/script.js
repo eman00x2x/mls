@@ -54,6 +54,7 @@ $(document).on('click','.btn-save', function(e) {
 
 		$(this).show();
 
+		message = '';
 		if (response.status == 1) {
 			if ($('#reference_url').val() !== undefined) {
 

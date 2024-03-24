@@ -128,7 +128,7 @@ class ArticlesController extends \Main\Controller {
 				@unlink($file);
 			}
 			
-			$_POST['banner'] = $user->moveUploadedImage($_POST['banner']);
+			$_POST['banner'] = $article->moveUploadedImage($_POST['banner']);
 		}
 
 		$response = $article->save($id,$_POST);

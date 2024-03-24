@@ -7,16 +7,16 @@ $html[] = "<div class='page-body'>";
 
             $html[] = "<div class='col-md-8 col-12'>";
 			
-				$html[] = "<div class='article'>";
+				$html[] = "<div class='article bg-white p-4'>";
 					$html[] = "<h1 class='mb-1'>".$data['title']."</h1>";
-					$html[] = "<p class='m-0 p-0'><i class='ti ti-clock'></i> ".date("F d, Y", $data['created_at'])."</p>";
+					$html[] = "<p class='m-0 p-0 fs-12 text-muted'><i class='ti ti-clock fs-14'></i> ".date("F d, Y", $data['created_at'])."</p>";
 
 					$html[] = "<div class='mt-4'>";
-						$html[] = "<div class='banner mb-3' style='background-image: url(".$data['banner'].")'></div>";
+						$html[] = "<div class='avatar mb-3 w-100' style='height: 300px; background-image: url(".$data['banner'].")'></div>";
 						$html[] = $data['content'];
 
 						$html[] = "<div class='share-buttons'>";
-							$html[] = "";
+							
 						$html[] = "</div>";
 
 					$html[] = "</div>";

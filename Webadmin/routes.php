@@ -16,10 +16,10 @@ Router::get(WEB_ADMIN_ALIAS.'/articles/{id}/delete', 'ArticlesController@delete'
 
 Router::post(WEB_ADMIN_ALIAS.'/articles/{id}/save', 'ArticlesController@saveUpdate', ['as' => 'saveUpdate'])->where([ 'id' => '[0-9]+' ]);
 Router::post(WEB_ADMIN_ALIAS.'/articles/saveNew', 'ArticlesController@saveNew', ['as' => 'accountSubscriptionSaveNew']);
+Router::post(WEB_ADMIN_ALIAS.'/articles/upload', 'ArticlesController@uploadPhoto', ['as' => 'uploadPhoto']);
 
-
-Router::get('/settings/{page}', 'SettingsController@webSettings', ['as' => 'webSettings'])->where([ 'page' => '[\w\-\=]+' ]);
-Router::post('/settings/saveUpdate', 'SettingsController@saveUpdate', ['as' => 'saveUpdate']);
+Router::get(WEB_ADMIN_ALIAS.'/settings/{page}', 'SettingsController@webSettings', ['as' => 'webSettings'])->where([ 'page' => '[\w\-\=]+' ]);
+Router::post(WEB_ADMIN_ALIAS.'/settings/saveUpdate', 'SettingsController@saveUpdate', ['as' => 'saveUpdate']);
 
 Router::get(WEB_ADMIN_ALIAS.'/account/user/changePassword', 'UsersController@changePassword', ['as' => 'changePassword']);
 Router::post(WEB_ADMIN_ALIAS.'/account/{id}/user/{user_id}/edit/saveUpdate', 'UsersController@saveUpdate', ['as' => 'usersSaveUpdate'])->where([ 'id' => '[0-9]+', 'user_id' => '[0-9]+' ]);

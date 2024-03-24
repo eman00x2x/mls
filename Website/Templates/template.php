@@ -20,14 +20,14 @@
 						<div class='col-md-4 col-12'>
 							<h3>Main</h3>
 							<ul class='list-style-none'>
-								<li><a href='<?=url("/");?>' class='text-white text-decoration-none'>Home</a></li>
-								<li><a href='<?=url("/buy");?>' class='text-white text-decoration-none'>Buy Property</a></li>
-								<li><a href='<?=url("/rent");?>' class='text-white text-decoration-none'>Rent Property</a></li>
-								<li><a href='<?=url("/articles");?>' class='text-white text-decoration-none'>Articles</a></li>
-								<li><a href='<?=url("/about");?>' class='text-white text-decoration-none'>About</a></li>
-								<li><a href='<?=url("/contact");?>' class='text-white text-decoration-none'>Contact</a></li>
-								<li><a href='<?=url("/terms");?>' class='text-white text-decoration-none'>Terms</a></li>
-								<li><a href='<?=url("/data-privacy");?>' class='text-white text-decoration-none'>Data Privacy</a></li>
+								<li><a href='<?=url(WEB_ALIAS . "/");?>' class='text-white text-decoration-none'>Home</a></li>
+								<li><a href='<?=url(WEB_ALIAS . "/buy");?>' class='text-white text-decoration-none'>Buy Property</a></li>
+								<li><a href='<?=url(WEB_ALIAS . "/rent");?>' class='text-white text-decoration-none'>Rent Property</a></li>
+								<li><a href='<?=url(WEB_ALIAS . "/articles");?>' class='text-white text-decoration-none'>Articles</a></li>
+								<li><a href='<?=url(WEB_ALIAS . "/about");?>' class='text-white text-decoration-none'>About</a></li>
+								<li><a href='<?=url(WEB_ALIAS . "/contact");?>' class='text-white text-decoration-none'>Contact</a></li>
+								<li><a href='<?=url(WEB_ALIAS . "/terms");?>' class='text-white text-decoration-none'>Terms</a></li>
+								<li><a href='<?=url(WEB_ALIAS . "/data-privacy");?>' class='text-white text-decoration-none'>Data Privacy</a></li>
 							</ul>
 						</div>
 						<div class='col-md-4 col-12'>

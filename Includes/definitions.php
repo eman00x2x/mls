@@ -36,6 +36,7 @@ define("DEFINITION", [
     "display_ads" => "Total number of display ad this account can create.",
     "featured_ads" => "Total number of featured ad this account can create.",
     "handshake_limit" => "Maximum number of handshake can initiate.",
+    "comparative_analysis_access" => "Allow this user to access comparative analysis table.",
 
     /** USER PERMISSIONS */
     "ADMIN" => [
@@ -68,7 +69,7 @@ define("DEFINITION", [
             "access" => "Allow this user to access the WEB Settings of the website.",
             "edit" => "Allow this user to update the WEB Settings of the website."
         ],
-         "articles" => [
+        "articles" => [
             "access" => "Allow this user to access and create Articles and post to website.",
             "edit" => "Allow this user to update the Articles posted in website.",
             "delete" => "Allow this user to permanently delete an Articles posted in website."

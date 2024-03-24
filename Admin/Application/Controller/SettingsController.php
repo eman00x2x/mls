@@ -49,6 +49,7 @@ class SettingsController extends \Main\Controller {
 		}
 
 		$this->doc->setTitle("Site Settings");
+		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
 
 		$settings = $this->getModel("Setting");
 		$settings->column['id'] = 1;

@@ -39,7 +39,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 										$html[] = "</a>";
 									$html[] = "</div>";
 
-									$html[] = "<p class='fs-18'>".$data['firstname']." ".$data['lastname']." is already verified!</p>";
+									$html[] = "<p class='fs-18'>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']." is already verified!</p>";
 
 								$html[] = "</div>";
 							}else {
@@ -54,7 +54,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 													$html[] = "<table class='table table-sm table-borderless'>";
 													$html[] = "<tr>";
 														$html[] = "<td>Full Name</td>";
-														$html[] = "<td class='fw-bold'>".$data['firstname']." ".$data['lastname']."</td>";
+														$html[] = "<td class='fw-bold'>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</td>";
 													$html[] = "</tr>";
 													$html[] = "<tr>";
 														$html[] = "<td>Birth Date</td>";

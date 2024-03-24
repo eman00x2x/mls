@@ -128,12 +128,20 @@ class UserClient
             //we will have two since we are not using 'other' argument yet
             //see if version is before or after the name
             if (strripos($this->user_agent,"Version") < strripos($this->user_agent,$browser)){
-                $version= $matches['version'][0];
+                if(isset($matches['version'][0])) {
+                    $version = $matches['version'][0];
+                }else { $version = null; }
             }else {
-                $version= $matches['version'][1];
+                if(isset($matches['version'][1])) {
+                    $version = $matches['version'][1];
+                }else {
+                    $version = null;
+                }
             }
         }else {
-            $version= $matches['version'][0];
+            if(isset($matches['version'][0])) {
+                $version = $matches['version'][0];
+            }else { $version = null; }
         }
 
         // check if we have a number

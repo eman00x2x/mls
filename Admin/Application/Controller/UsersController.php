@@ -198,8 +198,8 @@ class UsersController extends \Main\Controller {
 			if($_POST['user_status'] == "active") {
 
 				$user = $this->getModel("User");
-				$user->select(" COUNT(user_id) ")->where(" account_id = $account_id AND user_status = 'active' ");
-				$total_users = $user->getList();
+				$user->select(" COUNT(user_id) as counted ")->where(" account_id = $account_id AND user_status = 'active' ");
+				$total_user = $user->getList();
 
 				if(!in_array($data['account_type'],["Administrator","Customer Service", "Web Admin"])) {
 					$subscription = $this->getModel("AccountSubscription");
@@ -210,7 +210,7 @@ class UsersController extends \Main\Controller {
 						$data['privileges'] = $privileges;
 					}
 					
-					if($total_users > $data['privileges']['max_users']) {
+					if($total_user[0]['counted'] > $data['privileges']['max_users']) {
 						$this->getLibrary("Factory")->setMsg("This account has already reached the maximum number of users; therefore, the user cannot activate it", "warning");
 
 						return json_encode(

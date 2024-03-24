@@ -146,7 +146,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											
 											foreach(ACCOUNT_PRIVILEGES as $privileges => $val) {
 												$html[] = "<div class='row g-2 mb-3'>";
-													$html[] = "<label class='col-form-label col-3 mb-0 text-end'>$privileges</label>";
+													$html[] = "<label class='col-form-label col-3 mb-0 text-end pe-3'>".ucwords(str_replace("_"," ",$privileges))."</label>";
 													$html[] = "<div class='col'>";
 														$html[] = "<input type='text' name='privileges[$privileges]' class='form-control' value='".(isset($data['privileges'][$privileges]) ? $data['privileges'][$privileges] : null)."' placeholder='".DEFINITION[$privileges]."' />";
 														$html[] = "<small class='form-hint'>".DEFINITION[$privileges]."</small>";

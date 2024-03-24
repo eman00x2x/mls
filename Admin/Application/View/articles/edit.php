@@ -1,6 +1,6 @@
 <?php
 
-$html[] = "<input type='hidden' id='photo_uploader' value='article' />";
+$html[] = "<input type='hidden' id='photo_uploader' value='articles' />";
 $html[] = "<form action='".url("ArticlesController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 	$html[] = "<center>";
 		$html[] = "<input type='file' name='ImageBrowse' id='ImageBrowse' />";
@@ -53,8 +53,8 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 						$html[] = "<div class='card-body'>";
 
 							$html[] = "<div class='text-center bg-white mb-5'>";
-								$html[] = "<input type='hidden' name='banner' class='banner' id='banner' class='form-control' value='".$data['banner']."' />";
-								$html[] = "<span class='avatar photo-preview  mb-1 w-100 mb-3' style='background-image: url(".($data['banner'] != "" ? $data['banner'] : CDN."images/blank-profile.png").")'></span>";
+								$html[] = "<input type='hidden' name='banner' class='banner' id='photo' class='form-control' value='".$data['banner']."' />";
+								$html[] = "<span class='avatar photo-preview  mb-1 w-100 mb-3' style='background-image: url(".($data['banner'] != "" ? $data['banner'] : CDN."images/item_default.jpg").")'></span>";
 								$html[] = "<small>Click to Upload Banner</small>";
 								$html[] = "<span class='photo-upload-loader d-block'></span>";
 							$html[] = "</div>";

@@ -119,7 +119,7 @@ class ArticleModel extends \Main\Model {
 
 	function moveUploadedImage($filename) {
 
-        $old_dir = ROOT.DS."Cdn".DS."images".DS."temporary".DS.$filename;
+        $old_dir = ROOT."Cdn/images/temporary/".$filename;
 
 		if(file_exists($old_dir)) {
 
@@ -136,10 +136,10 @@ class ArticleModel extends \Main\Model {
 
 			$new_filename = $new_name."_".md5(time()).".".$ext;
 		
-			$new_dir = ROOT.DS."Cdn".DS."images".DS."artciles".DS.$new_filename;
+			$new_dir = ROOT."Cdn/images/articles/".$new_filename;
 			rename($old_dir,$new_dir);
 
-			return CDN."images/artciles/".$new_filename;
+			return CDN."images/articles/".$new_filename;
 		}
 
 	}
@@ -166,7 +166,7 @@ class ArticleModel extends \Main\Model {
 					"message" => "Logo uploaded successfully",
 					"filename" => $handle->file_dst_name,
 					"temp_url" => CDN."/images/temporary/".$handle->file_dst_name,
-					"url" => CDN."/images/artciles/".$handle->file_dst_name
+					"url" => CDN."/images/articles/".$handle->file_dst_name
 				));
 			}
 
@@ -176,7 +176,7 @@ class ArticleModel extends \Main\Model {
 
 	function removePhoto($filename) {
 
-		$file = ROOT.DS."Cdn".DS."images".DS."articles".DS.$filename;
+		$file = ROOT."Cdn/images/articles/".$filename;
 		
 		/* check file if exists in main folder */
 		if(file_exists($file)) {

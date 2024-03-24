@@ -13,62 +13,63 @@ class PagesController extends \Main\Controller {
 
 	function about() {
 
-		$title = "MLS";
-		$description = "MLS";
-		$image = "";
+		$data['title'] = "About ".CONFIG['site_name'];
+		$data['description]'] = "MLS";
+		$data['image'] = "";
 
-		$this->doc->setTitle($title);
-		$this->doc->setDescription($description);
-		$this->doc->setMetaData("keywords", $description);
+		$this->doc->setTitle($data['title']);
+		$this->doc->setDescription($data['description]']);
+		$this->doc->setMetaData("keywords", $data['description]']);
 
 		$this->doc->setFacebookMetaData("og:url", url());
-		$this->doc->setFacebookMetaData("og:title", $title);
+		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
 		$this->doc->setFacebookMetaData("og:image", $image);
-		$this->doc->setFacebookMetaData("og:description", $description);
+		$this->doc->setFacebookMetaData("og:description", $data['description]']);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
+		$data['about'] = CONFIG['about'];
 		$this->setTemplate("pages/about.php");
-		return $this->getTemplate();
+		return $this->getTemplate($data);
 	}
 
 	function contact() {
 
-		$title = "MLS";
-		$description = "MLS";
-		$image = "";
+		$data['title'] = "Contact ".CONFIG['site_name'];
+		$data['description'] = "MLS";
+		$data['image'] = "";
 
-		$this->doc->setTitle($title);
-		$this->doc->setDescription($description);
-		$this->doc->setMetaData("keywords", $description);
+		$this->doc->setTitle($data['title']);
+		$this->doc->setDescription($data['description']);
+		$this->doc->setMetaData("keywords", $data['description']);
 
 		$this->doc->setFacebookMetaData("og:url", url());
-		$this->doc->setFacebookMetaData("og:title", $title);
+		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", $image);
-		$this->doc->setFacebookMetaData("og:description", $description);
+		$this->doc->setFacebookMetaData("og:image", $data['image']);
+		$this->doc->setFacebookMetaData("og:description", $data['description']);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
 		$data['contact_info'] = CONFIG['contact_info'];
 		$this->setTemplate("pages/contact.php");
-		return $this->getTemplate();
+		return $this->getTemplate($data);
 	}
 
 	function articles() {
 
-		$title = "MLS";
-		$description = "MLS";
-		$image = "";
+		$data['title'] = "MLS";
+		$data['description'] = "MLS";
+		$data['image'] = "";
 
-		$this->doc->setTitle($title);
-		$this->doc->setDescription($description);
-		$this->doc->setMetaData("keywords", $description);
+		$this->doc->setTitle($data['title']);
+		$this->doc->setDescription($data['description']);
+		$this->doc->setMetaData("keywords", $data['description']);
 
 		$this->doc->setFacebookMetaData("og:url", url());
-		$this->doc->setFacebookMetaData("og:title", $title);
+		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", $image);
-		$this->doc->setFacebookMetaData("og:description", $description);
+		$this->doc->setFacebookMetaData("og:image", $data['image']);
+		$this->doc->setFacebookMetaData("og:description", $data['description']);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
 		$this->setTemplate("pages/articles.php");
@@ -77,19 +78,19 @@ class PagesController extends \Main\Controller {
 
 	function privacy() {
 
-		$title = "MLS";
-		$description = "MLS";
-		$image = "";
+		$data['title'] = "Data Privacy";
+		$data['description'] = "MLS";
+		$data['image'] = "";
 
-		$this->doc->setTitle($title);
-		$this->doc->setDescription($description);
-		$this->doc->setMetaData("keywords", $description);
+		$this->doc->setTitle($data['title']);
+		$this->doc->setDescription($data['description']);
+		$this->doc->setMetaData("keywords", $data['description']);
 
 		$this->doc->setFacebookMetaData("og:url", url());
-		$this->doc->setFacebookMetaData("og:title", $title);
+		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", $image);
-		$this->doc->setFacebookMetaData("og:description", $description);
+		$this->doc->setFacebookMetaData("og:image", $data['image']);
+		$this->doc->setFacebookMetaData("og:description", $data['description']);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
 		$data['data_privacy'] = CONFIG['data_privacy'];
@@ -99,19 +100,19 @@ class PagesController extends \Main\Controller {
 
 	function terms() {
 
-		$title = "MLS";
-		$description = "MLS";
-		$image = "";
+		$data['title'] = "Terms and Conditions";
+		$data['description'] = "MLS";
+		$data['image'] = "";
 
-		$this->doc->setTitle($title);
-		$this->doc->setDescription($description);
-		$this->doc->setMetaData("keywords", $description);
+		$this->doc->setTitle($data['title']);
+		$this->doc->setDescription($data['description']);
+		$this->doc->setMetaData("keywords", $data['description']);
 
 		$this->doc->setFacebookMetaData("og:url", url());
-		$this->doc->setFacebookMetaData("og:title", $title);
+		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", $image);
-		$this->doc->setFacebookMetaData("og:description", $description);
+		$this->doc->setFacebookMetaData("og:image", $data['image']);
+		$this->doc->setFacebookMetaData("og:description", $data['description']);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 		
 		$data['terms'] = CONFIG['terms'];

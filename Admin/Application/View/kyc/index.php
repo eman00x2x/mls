@@ -62,7 +62,7 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<tr>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
 									$html[] = "<td class='align-middle text-center'><a class='text-decoration-none' href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."'>".$data[$i]['account_id']."</a></td>";
-									$html[] = "<td class='align-middle'><a class='text-decoration-none' href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."' class='ajax text-inherit'>".$data[$i]['firstname']." ".$data[$i]['lastname']."</a></td>";
+									$html[] = "<td class='align-middle'><a class='text-decoration-none' href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."' class='ajax text-inherit'>".$data[$i]['account_name']['prefix']." ".$data[$i]['account_name']['firstname']." ".$data[$i]['account_name']['middlename']." ".$data[$i]['account_name']['lastname']." ".$data[$i]['account_name']['suffix']."</a></td>";
 									
 									$html[] = "<td class='align-middle'>".
 										($data[$i]['kyc_status'] == 1 ? "<span class='text-success '>Active</span>" : "<span class='text-warning'>Pending</span>")."</td>";

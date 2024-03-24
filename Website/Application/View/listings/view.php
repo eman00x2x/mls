@@ -266,7 +266,7 @@ $html[] = "<div class='page-body mb-0'>";
 									$html[] = "<div class='col-md-6 col-lg-6 col-sm-12 col-12'>";
 										$html[] = "<div class='text-center text-highlight mb-3'>";
 											$html[] = "<span class='d-block mb-2'>Selling Price</span>";
-											$html[] = "<span class='fs-36 fw-bold selling-price' data-price='".$data['price']."'>".number_format($data['price'],0)."</span>";
+											$html[] = "<span class='fs-36 fw-bold selling-price' data-price='".$data['price']."'><span class='currency-code'>PHP</span> ".number_format($data['price'],0)."</span>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 

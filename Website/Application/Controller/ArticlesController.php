@@ -51,7 +51,6 @@ class ArticlesController extends \Main\Controller {
 		$articles->column['name'] = $name;
 		$data = $articles->getByName();
 
-
 		$description = nicetrim(strip_tags($data['content']), 200);
 
 		$this->doc->setTitle($data['title']);

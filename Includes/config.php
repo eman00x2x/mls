@@ -4,7 +4,7 @@ use Admin\Application\Controller\SettingsController;
 define("CONFIG", SettingsController::getInstance()->getConfig());
 
 /* define("SITE_NAME", CONFIG['site_name']); */
-define("SITE_NAME", "MLS");
+define("SITE_NAME", CONFIG['site_name']);
 
 /** Set the Email Address to use by the system to send email notifications to users */
 define("EMAIL_ADDRESS_RESPONDER", CONFIG['email_address_responder']);
