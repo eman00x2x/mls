@@ -30,10 +30,21 @@ class PremiumsController extends \Admin\Application\Controller\PremiumsControlle
 		if($data) {
 			for($i=0; $i<count($data); $i++) {
 				$list[$data[$i]['category']][] = $data[$i];
+
+				if($data[$i]['category'] == "package") {
+					$package_id[] = $data[$i]['premium_id'];
+				}
+					
 			}
         }
 		
 		$data['premiums'] = $list;
+
+		$subscription = $this->getModel("AccountSubscription");
+		$subscription->join(" s JOIN #__premiums p ON p.premium_id = s.premium_id JOIN #__transactions t ON t.transaction_id = s.transaction_id");
+		$subscription->where(" s.premium_id IN(".implode(",", $package_id).") ");
+		$subscription->and(" s.account_id = ".$this->session['account_id']);
+		$data['subscription'] = $subscription->getList();
 
 		$this->setTemplate("premiums/premiums.php");
 		return $this->getTemplate($data,$premium);

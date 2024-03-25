@@ -530,37 +530,39 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "</label>";
 											$html[] = "</div>";
 
-											$html[] = "<div class='form-group mb-2'>";
-												$html[] = "<label class='form-check form-switch cursor-pointer'>";
-													$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls' ".($data['listing']['is_mls'] == 1 ? "checked" : "")." />";
-													$html[] = "<span class='form-check-label cursor-pointer' for='is_mls'>Display this property listing on the Multiple Listing Service (MLS)</span>";
-												$html[] = "</label>";
-											$html[] = "</div>";
-
-											$html[] = "<div class='px-3 mb-4'>";
-
+											if(isset($this->session['privileges']['mls_access']) && $this->session['privileges']['mls_access'] >= 1) {
 												$html[] = "<div class='form-group mb-2'>";
 													$html[] = "<label class='form-check form-switch cursor-pointer'>";
-														$html[] = "<input class='form-check-input cursor-pointer' name='mls_local_board' type='checkbox' value='1' id='is_mls_local_board' ".((isset($data['listing']['is_mls_option']['local_board']) ? $data['listing']['is_mls_option']['local_board'] : 0) == 1 ? "checked" : "")." />";
-														$html[] = "<span class='form-check-label cursor-pointer' for='mls_local_board'>Display this property listing on <b>Local Board's MLS</b></span>";
+														$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls' ".($data['listing']['is_mls'] == 1 ? "checked" : "")." />";
+														$html[] = "<span class='form-check-label cursor-pointer' for='is_mls'>Display this property listing on the Multiple Listing Service (MLS)</span>";
 													$html[] = "</label>";
 												$html[] = "</div>";
 
-												$html[] = "<div class='form-group mb-2'>";
-													$html[] = "<label class='form-check form-switch cursor-pointer'>";
-														$html[] = "<input class='form-check-input cursor-pointer' name='mls_local_region' type='checkbox' value='1' id='is_mls_local_region' ".((isset($data['listing']['is_mls_option']['local_region']) ? $data['listing']['is_mls_option']['local_region'] : 0) == 1 ? "checked" : "")." />";
-														$html[] = "<span class='form-check-label cursor-pointer' for='mls_local_region'>Display this property listing on your <b>Local Board Region's MLS</b></span>";
-													$html[] = "</label>";
-												$html[] = "</div>";
+												$html[] = "<div class='px-3 mb-4'>";
 
-												$html[] = "<div class='form-group mb-2'>";
-													$html[] = "<label class='form-check form-switch cursor-pointer'>";
-														$html[] = "<input class='form-check-input cursor-pointer' name='mls_all' type='checkbox' value='1' id='is_mls_all' ".((isset($data['listing']['is_mls_option']['all']) ? $data['listing']['is_mls_option']['all'] : 0) == 1 ? "checked" : "")." />";
-														$html[] = "<span class='form-check-label cursor-pointer' for='is_mls_all'>Display this property listing on <b>PAREB MLS Nation wide</b></span>";
-													$html[] = "</label>";
-												$html[] = "</div>";
+													$html[] = "<div class='form-group mb-2'>";
+														$html[] = "<label class='form-check form-switch cursor-pointer'>";
+															$html[] = "<input class='form-check-input cursor-pointer' name='mls_local_board' type='checkbox' value='1' id='is_mls_local_board' ".((isset($data['listing']['is_mls_option']['local_board']) ? $data['listing']['is_mls_option']['local_board'] : 0) == 1 ? "checked" : "")." />";
+															$html[] = "<span class='form-check-label cursor-pointer' for='mls_local_board'>Display this property listing on <b>Local Board's MLS</b></span>";
+														$html[] = "</label>";
+													$html[] = "</div>";
 
-											$html[] = "</div>";
+													$html[] = "<div class='form-group mb-2'>";
+														$html[] = "<label class='form-check form-switch cursor-pointer'>";
+															$html[] = "<input class='form-check-input cursor-pointer' name='mls_local_region' type='checkbox' value='1' id='is_mls_local_region' ".((isset($data['listing']['is_mls_option']['local_region']) ? $data['listing']['is_mls_option']['local_region'] : 0) == 1 ? "checked" : "")." />";
+															$html[] = "<span class='form-check-label cursor-pointer' for='mls_local_region'>Display this property listing on your <b>Local Board Region's MLS</b></span>";
+														$html[] = "</label>";
+													$html[] = "</div>";
+
+													$html[] = "<div class='form-group mb-2'>";
+														$html[] = "<label class='form-check form-switch cursor-pointer'>";
+															$html[] = "<input class='form-check-input cursor-pointer' name='mls_all' type='checkbox' value='1' id='is_mls_all' ".((isset($data['listing']['is_mls_option']['all']) ? $data['listing']['is_mls_option']['all'] : 0) == 1 ? "checked" : "")." />";
+															$html[] = "<span class='form-check-label cursor-pointer' for='is_mls_all'>Display this property listing on <b>PAREB MLS Nation wide</b></span>";
+														$html[] = "</label>";
+													$html[] = "</div>";
+
+												$html[] = "</div>";
+											}
 
 											$html[] = "<div class='mb-4'>";
 												$html[] = "<label class='form-label text-muted'>Commission Sharing Details</label>";

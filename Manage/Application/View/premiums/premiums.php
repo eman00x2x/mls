@@ -26,11 +26,85 @@ $html[] = "</div>";
 $html[] = "<div class='page-body'>";
 	$html[] = "<div class='container-xl'>";
 
-        $html[] = "<h3 class='text-center text-white'>Available Package</h3>";
+		if($data['subscription']) {
 
-			$html[] = "<div class='mb-5' style='overflow:auto; white-space: nowrap;'>";
-				$html[] = "<div class='d-flex flex-row flex-nowrap justify-content-center '>";
-					if($data['premiums']['package']) {
+			$subscription = $data['subscription'][0];
+
+			$html[] = "<div class='row row-deck row-cards'>";
+
+				$html[] = "<div class='col-lg-4 col-md-4 col-sm-12 col-12'>";
+					$html[] = "<div class='card'>";
+						$html[] = "<div class='card-body'>";
+
+							$html[] = "<h3 class='card-title'>Current Privileges</h3>";
+							$html[] = "<table class='table'>";
+							foreach($subscription['script'] as $key => $script) {
+								$html[] = "<tr>";
+									$html[] = "<td><span>".ucwords(str_replace("_"," ",$key))."</span></td>";
+									$html[] = "<td class='text-center fw-bold'>";
+										$html[] = $script == 0 ? " - " : "+ ".$script;
+									$html[] = "</td>";
+								$html[] = "</tr>";
+							}
+							$html[] = "</table>";
+
+						$html[] = "</div>";
+					$html[] = "</div>";
+				$html[] = "</div>";
+			
+				$html[] = "<div class='col-lg-8 col-md-8 col-sm-12 col-12'>";
+
+					$html[] = "<div class='card'>";
+						$html[] = "<div class='card-body'>";
+
+							$html[] = "<h3 class='card-title'>Current Subscription</h3>";
+
+							$html[] = "<p>";
+								$html[] = "<span class='fs-13 text-muted d-block'>Name</span>";
+								$html[] = $subscription['name'];
+							$html[] = "</p>";
+
+							$html[] = "<p>";
+								$html[] = "<span class='fs-13 text-muted d-block'>Details</span>";
+								$html[] = $subscription['details'];
+							$html[] = "</p>";
+
+							$html[] = "<p>";
+								$html[] = "<span class='fs-13 text-muted d-block'>Premium Cost</span>";
+								$html[] = "&#8369; ".$subscription['premium_price'];
+							$html[] = "</p>";
+
+							$html[] = "<div class='d-flex gap-5'>";
+
+								$html[] = "<p>";
+									$html[] = "<span class='fs-13 text-muted d-block'>Subscription Duration</span>";
+									$html[] = $subscription['duration']." days";
+								$html[] = "</p>";
+
+								$html[] = "<p>";
+									$html[] = "<span class='fs-13 text-muted d-block'>Subscription Started</span>";
+									$html[] = date("d M Y", $subscription['subscription_start_date']);
+								$html[] = "</p>";
+
+								$html[] = "<p>";
+									$html[] = "<span class='fs-13 text-muted d-block'>Subscription End</span>";
+									$html[] = date("d M Y", $subscription['subscription_end_date']);
+								$html[] = "</p>";
+
+							$html[] = "</div>";
+						$html[] = "</div>";
+					$html[] = "</div>";
+
+				$html[] = "</div>";
+
+			$html[] = "</div>";
+
+		}else {
+
+			if((isset($data['premiums']['package']) && $data['premiums']['package']) && $data['subscription'] === false) {
+				$html[] = "<h3 class='text-center text-white'>Available Package</h3>";
+				$html[] = "<div class='mb-5' style='overflow:auto; white-space: nowrap;'>";
+					$html[] = "<div class='d-flex flex-row flex-nowrap justify-content-center '>";
 						for($i=0; $i<count($data['premiums']['package']); $i++) {
 							
 							$html[] = "<div class='mx-2' style='width:300px; white-space: wrap;'>";
@@ -60,16 +134,17 @@ $html[] = "<div class='page-body'>";
 							$html[] = "</div>";
 							
 						}
-					}
+					$html[] = "</div>";
 				$html[] = "</div>";
-			$html[] = "</div>";
+			}
 		
-
-        $html[] = "<h3 class='text-center'>Available Add-On</h3>";
-
-		$html[] = "<div class='mb-5' style='overflow:auto; white-space: nowrap;'>";
-            $html[] = "<div class='d-flex flex-row flex-nowrap justify-content-center '>";
-				if($data['premiums']['individual']) {
+		}
+		
+		if(isset($data['premiums']['individual']) && $data['premiums']['individual']) {
+			$html[] = "<h3 class='text-center'>Available Add-On</h3>";
+			$html[] = "<div class='mb-5' style='overflow:auto; white-space: nowrap;'>";
+				$html[] = "<div class='d-flex flex-row flex-nowrap justify-content-center '>";
+					
 					for($i=0; $i<count($data['premiums']['individual']); $i++) {
 
 						$html[] = "<div class='mx-2' style='width:300px; white-space: wrap;'>";
@@ -95,11 +170,10 @@ $html[] = "<div class='page-body'>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 						$html[] = "</div>";
-						
 					}
-				}
+				$html[] = "</div>";
 			$html[] = "</div>";
-		$html[] = "</div>";
+		}
 
     $html[] = "</div>";
 $html[] = "</div>";
