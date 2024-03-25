@@ -329,6 +329,7 @@ $html[] = "<div class='page-body mb-0'>";
 									$html[] = "<form id='inquiry-form' action='".url("ListingsController@sendMessage", ["id" => $data['listing_id']])."' method='POST'>";
 
 										$html[] = "<input type='hidden' name='title' value='".$data['title']."' />";
+										$html[] = "<input type='hidden' name='account_email' value='".$data['email']."' />";
 										$html[] = "<input type='hidden' name='account_id' value='".$data['account_id']."' />";
 										$html[] = "<input type='hidden' name='listing_id' value='".$data['listing_id']."' />";
 										$html[] = "<input type='hidden' name='preferences[type]' value='".$data['type']."' />";

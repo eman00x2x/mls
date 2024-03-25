@@ -42,19 +42,19 @@ $html[] = "<div class='row justify-content-center'>";
                         $html[] = "<table class='table'>";
                         $html[] = "<tr>";
                             $html[] = "<td class='pt-0 w-20'>Name</td>";
-                            $html[] = "<td class='pt-0'>".$data['name']."</td>";
+                            $html[] = "<td class='pt-0'><span class='name-container'><img src='".CDN."images/loader.gif' /> decrypting</span></td>";
                         $html[] = "</tr>";
                         $html[] = "<tr>";
                             $html[] = "<td>Mobile Number</td>";
-                            $html[] = "<td>".$data['mobile_no']."</td>";
+                            $html[] = "<td><span class='mobile-number-container'><img src='".CDN."images/loader.gif' /> decrypting</span></td>";
                         $html[] = "</tr>";
                         $html[] = "<tr>";
                             $html[] = "<td>Email</td>";
-                            $html[] = "<td>".$data['email']."</td>";
+                            $html[] = "<td><span class='email-container'><img src='".CDN."images/loader.gif' /> decrypting</span></td>";
                         $html[] = "</tr>";
                         $html[] = "<tr>";
                             $html[] = "<td>Message</td>";
-                            $html[] = "<td>".$data['message']."</td>";
+                            $html[] = "<td><span class='message-container'><img src='".CDN."images/loader.gif' /> decrypting</span></td>";
                         $html[] = "</tr>";
                         $html[] = "<tr>";
                             $html[] = "<td>Inquire At</td>";
@@ -84,8 +84,7 @@ $html[] = "<div class='row justify-content-center'>";
 									$html[] = "<a href='".url("ListingsController@view",["id" => $data['listing']['listing_id']])."' class='btn btn-primary'>View Listing</a>";
 								$html[] = "</td>";
 							$html[] = "</tr>";
-
-
+                            $html[] = "</table>";
 
                         $html[] = "</div>";
                     $html[] = "</div>";

@@ -336,8 +336,9 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				});
 
 				async function setKeys() {
-					let keys = await generateKey();
-					privateKey = keys.privateKey;
+					/* let keys = await generateKey(); */
+					/* privateKey = keys.privateKey; */
+					privateKey = ".json_encode($data['account']['message_keys']['privateKey']).";
 					publicKey = ".json_encode($data['account']['message_keys']['publicKey']).";
 				}
 
@@ -458,6 +459,15 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			]
 		]);
 
+		$mail = new Mailer();
+			$mail
+				->build($this->mailLeads($_POST))
+					->send([
+						"to" => [
+							$_POST['account_email']
+						]
+					], "You have new leads " - CONFIG['site_name']);
+
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 
 		echo json_encode(array(
@@ -467,6 +477,12 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 		exit();
 
+	}
+
+	function mailLeads($data) {
+
+		$this->setTemplate("listings/MAIL_leads.php");
+		return $this->getTemplate($data);
 	}
 
 	function relatedProperties() {

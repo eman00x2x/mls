@@ -15,7 +15,6 @@ class MessagesController extends \Main\Controller {
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
-
 	}
 	
 	function index() {
@@ -118,7 +117,7 @@ class MessagesController extends \Main\Controller {
 
 						let thread_id = last_messages[key].thread_id;
 
-						$('.last-message-container_' + thread_id).html(\"<img src='".CDN."images/loader.png' /> decrypting... \");
+						$('.last-message-container_' + thread_id).html(\"<img src='".CDN."images/loader.gif' /> decrypting... \");
 
 						decrypt(last_messages[key], last_messages[key].publicKey, last_messages[key].privateKey)
 						.then( response => {
