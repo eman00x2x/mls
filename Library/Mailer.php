@@ -86,7 +86,7 @@ class Mailer
 
 	function build($message) {
 
-		$html[] = "<div style='font-family:calibri; line-height:1.5; max-width: 767px; margin:0 auto;color:#323232; font-size:14px;'>";
+		$html[] = "<div style='font-family:calibri; line-height:1.5; max-width: 767px; margin:0 auto;color:#323232; font-size:14px; background-color:#F2F1EF;'>";
 
 			/** HEADER */
 			$html[] = "<div style='text-align:center;padding:20px;border-bottom:1px solid #ECECEC;background-color:#F2F1EF;'>";
@@ -94,7 +94,7 @@ class Mailer
 			$html[] = "</div>";
 
 			/** BODY */
-			$html[] = "<div style='padding:20px;width:90%;margin:0 auto;'>";
+			$html[] = "<div style='padding:20px;width:90%;margin:0 auto; background-color:#FFF;'>";
 				$html[] = $message;
 			$html[] = "</div>";
 

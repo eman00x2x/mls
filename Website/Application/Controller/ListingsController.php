@@ -178,8 +178,9 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				convertAmortization();
 			});
 
-			$(document).on('focus', '#name, #email', function() {
+			$(document).on('focus', '#name, #email, #mobile_no, #message', function() {
 				$('.hidden-fields').removeClass('d-none');
+				$('#inquiry-form .btn-close').trigger('click');
 			});
 
 			$(document).on('click', '.btn-description-toggle', function() {
@@ -190,57 +191,63 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 			$(document).on('click', '.btn-send-message', function() {
 
-				$('.error-message').addClass('d-none');
-				$('.security-message').addClass('d-none');
-				$('.success-message').addClass('d-none');
+				let form = $('#inquiry-form');
+				let url = form.attr('action');
+				let formData = new FormData(document.querySelector('#inquiry-form'));
+				let code = $('#security_code').val();
 
-				let name = $('#name').val();
-				let email = $('#email').val();
-				let mobile_no = $('#mobile_no').val();
-				let message = $('#message').val();
-				let input_security_code = $('#input_security_code').val();
-				let code = $('#input_security_code').data('code');
+				formData.append('security_code', code);
 
-				if(name == '' || email == '' || mobile_no == '' || message == '') {
-					$('.error-message').removeClass('d-none');
-				}else if(input_security_code != code) {
-					$('.security-message').removeClass('d-none');
-				}else {
+				$('.loader-container').removeClass('d-none');
+				$('#inquiry-form').hide();
 
-					let form = $('#inquiry-form');
-					let url = form.attr('action');
-					let formData = new FormData(document.querySelector('#inquiry-form'));
-					
-					setKeys()
-						.then( () => {
-							encrypt(JSON.stringify({
-								'name': formData.get('name'),
-								'message': formData.get('message'),
-								'mobile_no': formData.get('mobile_no'),
-								'email': formData.get('email')
-							}), publicKey, privateKey)
-								.then( data => {
-									formData.append('content', data.encrypted);
-									formData.append('iv', data.iv);
+				fetch('".url("ListingsController@validateMessageInput")."', {
+					method: 'POST',
+					body: new URLSearchParams(formData).toString()
+				}).then( response => response.json() )
+				.then( response => {
 
-									fetch(url, { 
-										method: 'POST', 
-										body: new URLSearchParams(formData).toString()
-									}).then(response => response.json())
-										.then(response => {
-											$('.success-message').removeClass('d-none');
-											form.trigger('reset');
-											$('#input_security_code').val('');
-											console.log(response);
-										});
+					if(response.status == 1) {
 
-									
-								});
-						});
+						setKeys()
+							.then( () => {
+								encrypt(JSON.stringify({
+									'name': formData.get('name'),
+									'message': formData.get('message'),
+									'mobile_no': formData.get('mobile_no'),
+									'email': formData.get('email')
+								}), publicKey, privateKey)
+									.then( data => {
+										formData.append('content', data.encrypted);
+										formData.append('iv', data.iv);
 
-				}
-				
-					
+										fetch(url, { 
+											method: 'POST', 
+											body: new URLSearchParams(formData).toString()
+										}).then(response => response.json())
+											.then(response => {
+
+												form.trigger('reset');
+												$('.response').html(response.message);
+
+												$('.loader-container').addClass('d-none');
+												$('.hidden-fields').addClass('d-none');
+												$('#inquiry-form').show();
+
+												rng = random(1000, 9999);
+												$('#security_code').val( rng );
+												$('.valid-security-code').text( rng );
+											});
+
+										
+									});
+							});
+
+					}else {
+						$('.response').html(response.message);
+					}
+
+				});
 			});
 
 			$(document).on('show.bs.offcanvas', '#offcanvasEnd', function() {
@@ -437,6 +444,37 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 	}
 
+	function validateMessageInput() {
+
+		parse_str(file_get_contents('php://input'), $_POST);
+
+		$v = $this->getLibrary("Validator");
+
+		$v->validateGeneral($_POST['name'], "Your name is required.");
+		$v->validateEmail($_POST['email'], "Provide a valid email address.");
+		$v->validateMobileNumber($_POST['mobile_no'], "Provide a valid Philippine mobile number.");
+		$v->validateGeneral($_POST['message'], "Your message is required.");
+		$v->confirmPassword($_POST['input_security_code'], $_POST['security_code'], "Invalid Security Code");
+
+		if($v->foundErrors()) {
+			$message = "<br/> ". $v->listErrors("<br/> ");
+
+			$this->getLibrary("Factory")->setMsg($message, "error");
+
+			echo json_encode(array(
+				"status" => (int) 2,
+				"message" => getMsg()
+			));
+		}else {
+			echo json_encode(array(
+				"status" => (int) 1
+			));
+		}
+
+		exit();
+
+	}
+
 	function sendMessage($listing_id) {
 
 		parse_str(file_get_contents('php://input'), $_POST);
@@ -458,17 +496,18 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				"url" => MANAGE."leads/".$response['id']
 			]
 		]);
-
-		$mail = new Mailer();
+		
+		$mail = $this->getLibrary("Mailer");
 			$mail
 				->build($this->mailLeads($_POST))
 					->send([
 						"to" => [
 							$_POST['account_email']
 						]
-					], "You have new leads " - CONFIG['site_name']);
+					], "You have new leads - " . CONFIG['site_name']);
 
-		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
+		
+		$this->getLibrary("Factory")->setMsg("<br/>Your message has been sent!", $response['type']);
 
 		echo json_encode(array(
 			"status" => $response['status'],
@@ -480,7 +519,6 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 	}
 
 	function mailLeads($data) {
-
 		$this->setTemplate("listings/MAIL_leads.php");
 		return $this->getTemplate($data);
 	}

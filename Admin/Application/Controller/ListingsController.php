@@ -196,8 +196,6 @@ class ListingsController extends \Main\Controller {
 				})
 					.then( res => res.json() )
 						.then( data => {
-							/* localStorage.setItem('currencies', JSON.Stringify(data)); */
-
 							sessionStorage.currencies = JSON.stringify(data);
 							currencies = data.data;
 							init(data);

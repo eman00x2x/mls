@@ -111,8 +111,8 @@ class Validator {
 	// Validate BOOLEAN
     function validateBoolean($theinput,$description = ''){
         if (($theinput) === false) {
-            return false; 
 			$this->errors[] = $description; // Value not numeric! Add error description to list of errors
+            return false; 
         }else{
             return true; 
         }
@@ -138,7 +138,14 @@ class Validator {
             return true; 
         }
     }
-    
+
+    function validateMobileNumber($theinput, $description) {
+        if(!preg_match('/^[0-9]{11}+$/', $theinput)) {
+            $this->errors[] = $description;
+            return false;
+        }else { return true; }
+    }
+
     // Check whether any errors have been found (i.e. validation has returned false)
     // since the object was created
     function foundErrors() {

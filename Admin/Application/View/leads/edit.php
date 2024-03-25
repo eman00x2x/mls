@@ -37,6 +37,9 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 
                 $html[] = "<form id='form' action='' method='POST'>";
 					$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";
+					$html[] = "<input name='content' id='content' type='hidden' value='' />";
+					$html[] = "<input name='iv' id='iv' type='hidden' value='' />";
+					$html[] = "<input name='message' id='message' type='hidden' value='' />";
 					
                     $html[] = "<div class='card mb-3'>";
                         $html[] = "<div class='card-header'>";
@@ -45,23 +48,23 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 
                         $html[] = "<div class='card-body'>";
                             $html[] = "<div class='row mb-3'>";
-                                $html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Name</label>";
+                                $html[] = "<label class='text-muted col-sm-3 col-form-label'>Name</label>";
                                 $html[] = "<div class='col-sm-9'>";
-                                    $html[] = "<input type='text' name='name' id='name' value='".$data['name']."' class='form-control' />";
+                                    $html[] = "<input type='text' name='name' id='name' value='' class='form-control' placeholder='decrypting...' />";
                                 $html[] = "</div>";
                             $html[] = "</div>";
 
                             $html[] = "<div class='row mb-3'>";
-                                $html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Mobile Number</label>";
+                                $html[] = "<label class='text-muted col-sm-3 col-form-label'>Mobile Number</label>";
                                 $html[] = "<div class='col-sm-9'>";
-                                    $html[] = "<input type='text' name='mobile_no' id='mobile_no' value='".$data['mobile_no']."' class='form-control' />";
+                                    $html[] = "<input type='text' name='mobile_no' id='mobile_no' value='' class='form-control' placeholder='decrypting...' />";
                                 $html[] = "</div>";
                             $html[] = "</div>";
 
                             $html[] = "<div class='row mb-3'>";
-                                $html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Email Address</label>";
+                                $html[] = "<label class='text-muted col-sm-3 col-form-label'>Email Address</label>";
                                 $html[] = "<div class='col-sm-9'>";
-                                    $html[] = "<input type='email' name='email' id='email' value='".$data['email']."' class='form-control' />";
+                                    $html[] = "<input type='email' name='email' id='email' value='' class='form-control' placeholder='decrypting...' />";
                                 $html[] = "</div>";
                             $html[] = "</div>";
                         $html[] = "</div>";
@@ -165,7 +168,7 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 
                             $html[] = "<div class='form-group mb-3'>";
                                 $html[] = "<label class='form-label text-muted'>Address</label>";
-                                $html[] = $model->addresses->addressSelection((isset($data['preferences']['address'])));
+                                $html[] = $model->addresses->addressSelection($data['preferences']['address']);
                             $html[] = "</div>";
 
                         $html[] = "</div>";
@@ -185,7 +188,8 @@ $html[] = "<div class='btn-save-container fixed-bottom bg-white py-3 border-top'
 
 			$html[] = "<div class='container-xl'>";
 				$html[] = "<div class='text-end'>";
-					$html[] = "<span class='btn btn-outline-primary btn-save'><i class='ti ti-device-floppy me-2'></i> Save Lead Information</span>";
+					$html[] = "<span class='btn btn-outline-primary btn-save-lead'><i class='ti ti-device-floppy me-2'></i> Save Lead Information</span>";
+					$html[] = "<span class='btn-save d-none'></span>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 

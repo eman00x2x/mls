@@ -324,3 +324,7 @@ function rcg() {
 		(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
 	);
 }
+
+function random(start, end) {
+	return Math.floor(Math.random() * (end - start + 1)) + start;
+}

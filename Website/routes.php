@@ -31,6 +31,7 @@ Router::get( WEB_ALIAS . '/rent/{category}/{type}', 'ListingsController@rent')->
 Router::get( WEB_ALIAS . '/p-{name}', 'ListingsController@view')->where([ 'name' => '[\w\-]+' ]);
 Router::get( WEB_ALIAS . '/related-properties', 'ListingsController@relatedProperties');
 
+Router::post(WEB_ALIAS . '/validate-message', 'ListingsController@validateMessageInput');
 Router::post(WEB_ALIAS . '/send-message-{id}', 'ListingsController@sendMessage')->where([ 'id' => '[0-9]+' ]);
 
 /** MLS PUBLIC ROUTES */

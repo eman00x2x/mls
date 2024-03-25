@@ -73,6 +73,9 @@ class LeadsController extends \Main\Controller {
 								$('.row_leads_' + lead_id + ' .name-container').html( (response.name).substring(0, 47) + '...' );
 								$('.row_leads_' + lead_id + ' .email-container').html( (response.email).substring(0, 47) + '...' );
 								$('.row_leads_' + lead_id + ' .mobile-number-container').html( (response.mobile_no).substring(0, 47) + '...' );
+
+								let content = {name: response.name, email: response.email, mobile_no: response.mobile_no };
+								$('.row_leads_' + lead_id + ' .btn-delete').attr('data-content', JSON.stringify(content));
 							});
 						
 					}
@@ -95,7 +98,64 @@ class LeadsController extends \Main\Controller {
 		$lead->where(" account_id = ".$this->account_id);
 		$data = $lead->getById();
 
+		$data['user_message'] = $data['content'];
+
 		if($data) {
+
+			$this->doc->addScript(CDN."js/encryption.js");
+			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+
+				const data = ".json_encode($data).";
+				let privateKey;
+		    	let publicKey;
+				
+				( async => {
+
+					let lead_id = data.lead_id;
+
+					setKeys()
+						.then( () => {
+							decrypt(data, publicKey, privateKey)
+								.then(  response => {
+									$('#name').val( response.name );
+									$('#email').val( response.email );
+									$('#mobile_no').val( response.mobile_no );
+									$('#message').val( response.message );
+								});
+						});
+
+				})();
+
+				$(document).on('click', '.btn-save-lead', function() {
+
+					let formData = new FormData(document.querySelector('#form'));
+
+					setKeys()
+						.then( () => {
+							encrypt(JSON.stringify({
+								'name': formData.get('name'),
+								'message': formData.get('message'),
+								'mobile_no': formData.get('mobile_no'),
+								'email': formData.get('email')
+							}), publicKey, privateKey)
+								.then( data => {
+
+									$('#content').val( data.encrypted );
+									$('#iv').val( data.iv );
+
+									$('.btn-save').trigger('click');
+
+								});
+						});
+
+				});
+
+				async function setKeys() {
+					privateKey = ".json_encode($this->session['message_keys']['privateKey']).";
+					publicKey = ".json_encode($this->session['message_keys']['publicKey']).";
+				}
+
+			"));
 
 			$listing = $this->getModel("Listing");
 			$listing->column['listing_id'] = $data['listing_id'];
@@ -188,6 +248,16 @@ class LeadsController extends \Main\Controller {
 		$data = $lead->getById();
 		
 		if($data) {
+
+			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+				var id = ".$data['lead_id'].";
+
+				var detail = $('.row_leads_' + id + ' .btn-delete').data('content');
+				$('.delete-name-container').text( detail.name );
+				$('.delete-email-container').text( detail.email );
+				$('.delete-mobile-number-container').text( detail.mobile_no );
+
+			"));
 
 			if(isset($_REQUEST['delete'])) {
 

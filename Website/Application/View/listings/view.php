@@ -326,12 +326,20 @@ $html[] = "<div class='page-body mb-0'>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 
+									$html[] = "<div class='loader-container text-center d-none'>";
+										$html[] = "<div class='d-flex gap-3 align-items-center justify-content-center'>";
+											$html[] = "<span class='loader'></span>";
+											$html[] = "<p class='p-0 m-0'>Sending message, please wait...</p>";
+										$html[] = "</div>";
+									$html[] = "</div>";
+
 									$html[] = "<form id='inquiry-form' action='".url("ListingsController@sendMessage", ["id" => $data['listing_id']])."' method='POST'>";
 
 										$html[] = "<input type='hidden' name='title' value='".$data['title']."' />";
-										$html[] = "<input type='hidden' name='account_email' value='".$data['email']."' />";
+										$html[] = "<input type='hidden' name='account_email' value='".$data['account']['email']."' />";
 										$html[] = "<input type='hidden' name='account_id' value='".$data['account_id']."' />";
 										$html[] = "<input type='hidden' name='listing_id' value='".$data['listing_id']."' />";
+										$html[] = "<input type='hidden' name='listing_name' value='".$data['name']."' />";
 										$html[] = "<input type='hidden' name='preferences[type]' value='".$data['type']."' />";
 										$html[] = "<input type='hidden' name='preferences[bedroom]' value='".$data['bedroom']."' />";
 										$html[] = "<input type='hidden' name='preferences[bathroom]' value='".$data['bathroom']."' />";
@@ -376,54 +384,28 @@ $html[] = "<div class='page-body mb-0'>";
 											$html[] = "<div class='mb-3'>";
 												$security_code = rand(1000, 9999);
 												$html[] = "<div class='mb-1'>";
-													$html[] = "<p class='m-0 p-0'>Enter security code: <span class='fw-bold'>".$security_code."</span></p>";
+													$html[] = "<p class='m-0 p-0'>Enter security code: <span class='fw-bold valid-security-code'>".$security_code."</span></p>";
 												$html[] = "</div>";
 
+												$html[] = "<input type='hidden' name='security_code' id='security_code' value='".$security_code."' />";
+
 												$html[] = "<div class='form-floating mb-3'>";
-													$html[] = "<input type='text' name='input_security_code' id='input_security_code' value='' data-code='$security_code' class='form-control' placeholder='Enter security code' />";
+													$html[] = "<input type='text' name='input_security_code' id='input_security_code' value='' class='form-control' placeholder='Enter security code' />";
 													$html[] = "<label class='input_security_code'>Security Code</label>";
 												$html[] = "</div>";
 											$html[] = "</div>";
 
 										$html[] = "</div>";
 
+										$html[] = "<div class='response'>";
+											$html[] = getMsg();
+										$html[] = "</div>";			
+
+										$html[] = "<p class='mt-4 text-muted fs-12'>By clicking send message, you are accepting ".SITE_NAME." <a href='".url("PagesController@terms")."'>Terms and Condition</a> and <a href='".url("PagesController@privacy")."'>Privacy Policy</a> page.</p>";
+										$html[] = "<span class='mb-3 btn btn-primary btn-send-message w-100'><i class='ti ti-send me-1'></i> Send Message</span>";
+										
+
 									$html[] = "</form>";
-
-									$html[] = "<div class='error-message mb-4 d-none'>";
-										$html[] = "<div class='message alert  alert-danger'>";
-											$html[] = "<div class='d-flex'>";
-												$html[] = "<div class=''><i class='ti ti-alert-triangle me-2' aria-hidden='true'></i></div>";
-												$html[] = "<div class=''>";
-													$html[] = "<p class='p-0 m-0'>Error! All fields are required!</p>";
-												$html[] = "</div>";
-											$html[] = "</div>";
-										$html[] = "</div>";
-									$html[] = "</div>";
-
-									$html[] = "<div class='success-message mb-4 d-none'>";
-										$html[] = "<div class='message alert  alert-success '>";
-											$html[] = "<div class='d-flex'>";
-												$html[] = "<div class=''><i class='ti ti-alert-triangle me-2' aria-hidden='true'></i></div>";
-												$html[] = "<div class=''>";
-													$html[] = "<p class='p-0 m-0'>Done! Message sent!</p>";
-												$html[] = "</div>";
-											$html[] = "</div>";
-										$html[] = "</div>";
-									$html[] = "</div>";
-
-									$html[] = "<div class='security-message mb-4 d-none'>";
-										$html[] = "<div class='message alert  alert-warning'>";
-											$html[] = "<div class='d-flex'>";
-												$html[] = "<div class=''><i class='ti ti-alert-triangle me-2' aria-hidden='true'></i></div>";
-												$html[] = "<div class=''>";
-													$html[] = "<p class='p-0 m-0'>Warning! wrong security code!</p>";
-												$html[] = "</div>";
-											$html[] = "</div>";
-										$html[] = "</div>";
-									$html[] = "</div>";
-
-									$html[] = "<p class='mt-4 text-muted fs-12'>By clicking send message, you are accepting ".SITE_NAME." <a href='".url("PagesController@terms")."'>Terms and Condition</a> and <a href='".url("PagesController@privacy")."'>Privacy Policy</a> page.</p>";
-									$html[] = "<span class='mb-3 btn btn-primary btn-send-message w-100'><i class='ti ti-send me-1'></i> Send Message</span>";
 									
 								$html[] = "</div>";
 

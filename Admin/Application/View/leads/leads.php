@@ -79,9 +79,9 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<td class='align-middle'><span class='email-container'><img src='".CDN."images/loader.gif' /> decrypting...</span></td>";
 									$html[] = "<td class='align-middle'><span class='mobile-number-container'><img src='".CDN."images/loader.gif' /> decrypting...</span></td>";
 									$html[] = "<td class='text-center'>";
-										$html[] = "<a class='btn btn-primary' href='".url("LeadsController@view",["id" => $data['leads'][$i]['lead_id']])."'>Open</a>";
+										$html[] = "<a class='btn btn-primary me-2' href='".url("LeadsController@view",["id" => $data['leads'][$i]['lead_id']])."'>View</a>";
 										if($_SESSION['user_logged']['permissions']['leads']['delete']) {
-											$html[] = "<span class='btn btn-danger btn-delete' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("LeadsController@delete",["id" => $data['leads'][$i]['lead_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
+											$html[] = "<span class='btn btn-danger btn-delete' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("LeadsController@delete",["id" => $data['leads'][$i]['lead_id']])."' data-content=''><i class='ti ti-trash me-2'></i> Delete</span>";
 										}
 									$html[] = "</td>";
 									
