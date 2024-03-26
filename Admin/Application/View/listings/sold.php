@@ -43,6 +43,8 @@ if($data) {
 
 			$html[] = "<div class='response'></div>";
 
+			$html[] = "<p>Are you sure you want to mark this property as sold? Once marked, this property will be hidden and inaccessible.</p>";
+
 			$html[] = "<div class='btn-controls'>";
 				$html[] = "<div class='btn-list'>";
 					$html[] = "<span class='btn text-dark bg-transparent' data-bs-dismiss='offcanvas'><i class='ti ti-x me-2'></i> Cancel</span>";

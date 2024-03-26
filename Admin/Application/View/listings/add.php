@@ -479,7 +479,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "</label>";
 											$html[] = "</div>";
 
-											if(isset($this->session['privileges']['mls_access']) && $this->session['privileges']['mls_access'] >= 1) {
+											if(isset($_SESSION['user_logged']['privileges']['mls_access']) && $_SESSION['user_logged']['privileges']['mls_access'] >= 1) {
 												$html[] = "<div class='form-group mb-3'>";
 													$html[] = "<label class='form-check form-switch cursor-pointer'>";
 														$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls' checked  />";
@@ -515,9 +515,14 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 											$html[] = "<div class='mb-3'>";
 												$html[] = "<label class='form-label text-muted'>Commission Sharing Details</label>";
-												$html[] = "<div class='input-icon mb-2'>";
-													$html[] = "<span class='input-icon-addon'><i class='ti ti-percentage'></i></span>";
-													$html[] = "<input type='number' name='com_share' id='com_share' value='1.5' step='0.5' class='form-control' placeholder='Commission Share' />";
+												$html[] = "<div class='input-group mb-2'>";
+													$html[] = "<span class='input-group-text'><i class='ti ti-percentage'></i></span>";
+													$html[] = "<select name='com_share' id='com_share' class='form-select'>";
+														foreach([25, 50, 75] as $sharing) {
+															$sel = $sharing == 50 ? "selected" : "";
+															$html[] = "<option value='$sharing' $sel>$sharing</option>";
+														}
+													$html[] = "</select>";
 												$html[] = "</div>";
 												$html[] = "<span class='form-hint'>Please specify the percentage of commission you are prepared to distribute.</span>";
 											$html[] = "</div>";
