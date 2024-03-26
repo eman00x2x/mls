@@ -46,35 +46,26 @@ class Middleware implements IMiddleware {
     public function handle(Request $request): void 
     {
 
-		Router::router()->reset();
+		Router::enableMultiRouteRendering(false);
 		$request->user = Authenticator::getInstance()->monitor();
 		
+		Router::get(ADMIN_ALIAS . '/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
+		Router::get(ADMIN_ALIAS . '/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
+
 		$template = "templates/login.template.php";
 		
 		if(url()->contains("/2-step-verification-code")) {
-
-			Router::get('/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeFrom');
-			
+			Router::get(ADMIN_ALIAS . '/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeFrom');
 		}else if(url()->contains("/resetPassword")) {
-
-			Router::get('/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
-			Router::post('/resetPassword', 'AuthenticatorController@saveNewPassword');
-			
+			Router::post(ADMIN_ALIAS . '/resetPassword', 'AuthenticatorController@saveNewPassword');
 		} else if(url()->contains("/forgotPassword")) {
-
-			Router::get('/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
-			Router::post('/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
-
+			Router::post(ADMIN_ALIAS . '/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
 		}else {
 		
 			if($request->user['status'] == 0) {
-
-				Router::request()->setRewriteUrl(url('/'));
-
-				Router::get('/', 'AuthenticatorController@getLoginForm');
-				Router::post('/', 'AuthenticatorController@getLoginForm');
-
-				
+				Router::get(ADMIN_ALIAS . '/', 'AuthenticatorController@getLoginForm');
+				Router::post(ADMIN_ALIAS . '/checkCredentials', 'AuthenticatorController@checkCredentials');
+				$template = "templates/login.template.php";
 			}else {
 				require_once('routes.php');
 				$template = "templates/template.php";

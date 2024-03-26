@@ -58,7 +58,7 @@ $(document).on('click','.btn-save', function(e) {
 		if (response.status == 1) {
 			if ($('#reference_url').val() !== undefined) {
 
-				message = " <p class='bg-white border mt-3 p-3'><img src='" + MANAGE + "images/loader.gif' />Please wait while you are redirecting...</p>";
+				message = " <p class='bg-white border mt-3 p-3 mb-3'><img src='" + CDN + "images/loader.gif' />Please wait while you are redirecting...</p>";
 
 				setTimeout(function () {
 					window.location = $('#reference_url').val();

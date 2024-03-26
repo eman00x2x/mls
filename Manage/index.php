@@ -53,15 +53,16 @@ class Middleware implements IMiddleware {
     public function handle(Request $request): void 
     {
 
-		Router::router()->reset();
+		Router::enableMultiRouteRendering(false);
+
 		$request->user = Authenticator::getInstance()->monitor();
 		
-		$template = "templates/login.template.php";
-
 		Router::get(MANAGE_ALIAS . '/register', 'RegistrationController@register');
 		Router::get(MANAGE_ALIAS . '/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
 		Router::get(MANAGE_ALIAS . '/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
 		
+		$template = "templates/login.template.php";
+
 		if(url()->contains("/2-step-verification-code")) {
 			Router::get('/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeForm');
 		}else if(url()->contains("/register")) {
@@ -72,22 +73,17 @@ class Middleware implements IMiddleware {
 			Router::post(MANAGE_ALIAS . '/registerAccountSave', 'RegistrationController@saveNew');
 			
 		}else if(url()->contains("/resetPassword")) {
-
 			Router::post(MANAGE_ALIAS . '/resetPassword', 'AuthenticatorController@saveNewPassword');
-			
 		} else if(url()->contains("/forgotPassword")) {
-
 			Router::post(MANAGE_ALIAS . '/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
-
 		}else {
 
 			if($request->user['status'] == 0) {
 				Router::get(MANAGE_ALIAS . '/', 'AuthenticatorController@getLoginForm');
-				Router::post(MANAGE_ALIAS . '/', 'AuthenticatorController@getLoginForm');
+				Router::post(MANAGE_ALIAS . '/checkCredentials', 'AuthenticatorController@checkCredentials');
+				$template = "templates/login.template.php";
 			}else {
-
 				SessionHandler::getInstance()->init();
-
 				require_once('routes.php');
 				$template = "templates/template.php";
 			}

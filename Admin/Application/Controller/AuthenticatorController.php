@@ -153,16 +153,52 @@ class AuthenticatorController extends \Main\Controller
 
 		$doc = $this->getLibrary("Factory")->getDocument();
 	
-		if($_SERVER['REQUEST_METHOD'] == "POST") {
+		/* if($_SERVER['REQUEST_METHOD'] == "POST") {
 			if($this->checkCredentials($_POST['email'],md5($_POST['password']))) {
 				header("LOCATION: ".$this->domain."");
 			}
-		}
+		} */
 
 		$doc->addScriptDeclaration("
 			$(document).ready(function(e) {
 				height = $(document).height();
 				$('.login-container').css('height',(height - 200));
+			});
+
+			$(document).on('click','.btn-login', function(e) {
+
+				if ($('#save_url').val() === undefined) {
+					alert('Save Url not define');
+					return false;
+				}
+
+				$('#form').hide();
+
+				$('.response').html(\"<img src='" . CDN . "images/loader.gif' /> Logging In... \");
+
+				$.post($('#save_url').val(), $('#form').serialize(), function (data, status) {
+
+					var response = JSON.parse(data);
+					
+					if (response.status == 1) {
+						if ($('#reference_url').val() !== undefined) {
+							$('.response').html(\"<img src='" . CDN . "images/loader.gif' /> Please wait while you are redirecting...\");
+							window.location = $('#reference_url').val();
+							exit();
+						}
+					}
+
+					$('#form').show();
+					$('.response').html(response.message);
+
+				});
+
+			});
+
+			$(document).on('keypress', '#email, #password', function(e) {
+				if(e.which == 13 || e.keyCode == 13) {
+					$('.btn-login').trigger('click');
+				}
 			});
 		");
 
@@ -235,11 +271,13 @@ class AuthenticatorController extends \Main\Controller
 		return $this->getTemplate();
 	}
 
-	function checkCredentials($email,$password) {
+	function checkCredentials() {
+
+		parse_str(file_get_contents('php://input'), $_POST);
 
 		$user = $this->getModel('User');
-		$user->column['email'] = $email;
-		$user->column['password'] = $password;
+		$user->column['email'] = $_POST['email'];
+		$user->column['password'] = md5($_POST['password']);
 
 		if($data = $user->getByEmailAndPassword()) {
 
@@ -247,37 +285,67 @@ class AuthenticatorController extends \Main\Controller
 
 				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",ADMIN)) && $data['account_type'] != "Administrator") {
 					$this->getLibrary("Factory")->setMsg("Only Administrator can login here.","error");
-					return false;
+					$response = [
+						"status" => 2,
+						"type" => "error",
+						"message" => getMsg()
+					];
 				}
 
 				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",WEBADMIN)) && !in_array($data['account_type'], ["Web Admin", "Administrator"]) ) {
 					$this->getLibrary("Factory")->setMsg("Only Web Administrator can login here.","error");
-					return false;
+					$response = [
+						"status" => 2,
+						"type" => "error",
+						"message" => getMsg()
+					];
 				}
 
 				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",CS)) && !in_array($data['account_type'], ["Customer Service", "Administrator"]) ) {
 					$this->getLibrary("Factory")->setMsg("Only Customer Service can login here.","error");
-					return false;
+					$response = [
+						"status" => 2,
+						"type" => "error",
+						"message" => getMsg()
+					];
 				}
 
 				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",MANAGE)) && !in_array($data['account_type'], ["Real Estate Practitioner", "Administrator"]) ) {
 					$this->getLibrary("Factory")->setMsg("Only Real Estate Practitioner can login here.","error");
-					return false;
+					$response = [
+						"status" => 2,
+						"type" => "error",
+						"message" => getMsg()
+					];
 				}
 
 				if(!$this->checkLoggedUser($data)) {
-					return false;
+					$response = [
+						"status" => 2,
+						"type" => "error",
+						"message" => getMsg()
+					];
 				}
 
 				$this->recordLogin($this->setPrivileges($data));
 
-				return true;
+				$response = [
+					"status" => 1,
+					"message" => ""
+				];
+
 			}
+		}else {
+			$this->getLibrary("Factory")->setMsg("Invalid Username or Password.","error");
+			$response = [
+				"status" => 2,
+				"type" => "error",
+				"message" => getMsg()
+			];
 		}
 
-		$this->getLibrary("Factory")->setMsg("Invalid Username or Password.","error");
-		return false;
-		
+		return json_encode($response);
+
 	}
 
 	function checkLoggedUser($data) {

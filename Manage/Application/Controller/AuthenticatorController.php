@@ -29,4 +29,8 @@ class AuthenticatorController extends \Admin\Application\Controller\Authenticato
 		
 	}
 
+	function checkCredentials() {
+		return parent::checkCredentials();
+	}
+
 }
