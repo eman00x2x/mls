@@ -28,6 +28,7 @@ class ListingsController extends \Main\Controller {
 		$data = $account->getById();
 
 		$filters[] = " account_id = $account_id ";
+		$filters[] = " status = 1 ";
 		
 		$listing = $this->getModel("Listing");
 		$listing->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" last_modified DESC ");
@@ -133,6 +134,7 @@ class ListingsController extends \Main\Controller {
 		
 		$listing->select(" COUNT(listing_id) AS total ");
 		$listing->column['account_id'] = $account_id;
+		$listing->and(" status = 1 ");
 		$data['listings'] = $listing->getByAccountId();
 
 		$subscription = $this->getModel("AccountSubscription");
@@ -403,12 +405,12 @@ class ListingsController extends \Main\Controller {
 
 		parse_str(file_get_contents('php://input'), $_POST);
 
-		if($_POST['status'] == "available") {
+		if($_POST['status'] == 1) {
 			$listing = $this->getModel("Listing");
-			$listing->select(" COUNT(listing_id) ")->where(" account_id = $account_id AND status = 'available' ");
+			$listing->select(" COUNT(listing_id) ")->where(" account_id = $account_id AND status = 1 ");
 			$total_listing = $listing->getList();
 
-			if($total_listing > $_SESSION['user_logged']['privileges']['max_post']) {
+			if($total_listing >= $_SESSION['user_logged']['privileges']['max_post']) {
 				$this->getLibrary("Factory")->setMsg("This account has already reached the maximum number of listings; therefore, the property cannot activate", "warning");
 
 				return json_encode(
@@ -460,6 +462,7 @@ class ListingsController extends \Main\Controller {
 		$_POST['posting_score'] = $this->computeScore($_POST);
 
 		$listing = $this->getModel("Listing");
+		unset($_POST['listing_image_filename']);
 		$response = $listing->save($id,$_POST);
 
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
@@ -522,6 +525,120 @@ class ListingsController extends \Main\Controller {
 
 		$this->setTemplate("listings/delete.php");
 		return $this->getTemplate($data);
+
+	}
+
+	function setFeatured($id) {
+
+		$listing = $this->getModel("Listing");
+		$listing->column['listing_id'] = $id;
+		$data = $listing->getById();
+		
+		if($data) {
+
+			if(isset($_GET['is_featured'])) {
+
+				$listing = $this->getModel("Listing");
+				$listing->select(" COUNT(*) as total ");
+				$listing->where(" account_id = ".$data['account_id']." ");
+				$listing->and(" status = 1 AND featured = 1 ");
+				$total = $listing->getList();
+
+				if($this->session['privileges']['featured_ads'] > $total[0]['total']) {
+					$response = [
+						"type" => "error",
+						"message" => " Maximum Featured Ads has been reached, you cannot continue setting this as featured ads "
+					];
+				}else {
+
+					$listing = $this->getModel("Listing");
+					$listing->save($id, [
+						"name" => $data['name'],
+						"category" => $data['category'],
+						"type" => $data['type'],
+						"offer" => $data['offer'],
+						"other_details" => json_encode($data['other_details']),
+						"address" => json_encode($data['address']),
+						"featured" => $_GET['is_featured']
+					]);
+
+					$response = [
+						"type" => "success",
+						"message" => "Listing featured setting successfully save!"
+					];
+				}
+
+				$this->getLibrary("Factory")->setMsg($response['message'], $response['type']);
+
+				return json_encode([
+					"status" => 1,
+					"featured" => $_GET['is_featured'],
+					"message" => getMsg()
+				]);
+
+			}
+
+		}else {
+			$this->getLibrary("Factory")->setMsg("Property listing not found.","warning");
+		}
+
+		$this->setTemplate("listings/featured.php");
+		return $this->getTemplate($data);
+
+	}
+
+	function soldSettings($id) {
+
+		$listing = $this->getModel("Listing");
+		$listing->column['listing_id'] = $id;
+		$data = $listing->getById();
+		
+		if($data) {
+
+			$this->setTemplate("listings/sold.php");
+			return $this->getTemplate($data);
+
+		}else {
+			$this->getLibrary("Factory")->setMsg("Property listing not found.","warning");
+			
+			return json_encode([
+				"status" => 1,
+				"message" => getMsg()
+			]);
+
+		}
+
+	}
+
+	function setSold($id) {
+
+		parse_str(file_get_contents('php://input'), $_POST);
+
+		$listing = $this->getModel("Listing");
+		$listing->column['listing_id'] = $id;
+		$data = $listing->getById();
+
+		$response = $listing->save($id,[
+			"name" => $data['name'],
+			"category" => $data['category'],
+			"type" => $data['type'],
+			"offer" => $data['offer'],
+			"other_details" => json_encode($data['other_details']),
+			"address" => json_encode($data['address']),
+			"sold_price" => $_POST['sold_price'],
+			"status" => 2,
+			"featured" => 0,
+			"is_website" => 0,
+			"is_mls" => 0,
+			"last_modified" => DATE_NOW
+		]);
+
+		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
+
+		return json_encode(array(
+			"status" => $response['status'],
+			"message" => getMsg()
+		));
 
 	}
 

@@ -85,9 +85,9 @@ class ListingModel extends \Main\Model {
 			$v->validateGeneral($data['category'],"category is blank.");
 			$v->validateGeneral($data['type'],"type is blank.");
 			$v->validateGeneral($data['offer'],"offer is blank.");
-			$v->validateGeneral($data['tags'],"no selected tags.");
 
 			$other_details = json_decode($data['other_details'],true);
+
 			$v->validateNumber($other_details['com_share'],"Commission share is required.");
 			$v->validateDate($other_details['authority_to_sell_expiration'],"Authority to Sell Expiration Date is required.");
 
@@ -105,8 +105,14 @@ class ListingModel extends \Main\Model {
 				);
 			}else {
 
+				if(!isset($data['is_mls_option'])) { $data['is_mls_option'] = json_encode($this->column['is_mls_option']); }
+				if(!isset($data['tags'])) { $data['tags'] = json_encode($this->column['tags']); }
+				if(!isset($data['address'])) { $data['address'] = json_encode($this->column['address']); }
+				if(!isset($data['payment_details'])) { $data['payment_details'] = json_encode($this->column['payment_details']); }
+				if(!isset($data['other_details'])) { $data['other_details'] = json_encode($this->column['other_details']); }
+
 				foreach($data as $key => $val) {
-					$this->column[$key] = $val;
+					$this->column[$key] = escape($val);
 				}
 
 				$this->update();

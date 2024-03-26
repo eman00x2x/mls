@@ -46,9 +46,12 @@ Router::get(MANAGE_ALIAS.'/listings', 'ListingsController@listingIndex', ['as' =
 Router::get(MANAGE_ALIAS.'/listings/new', 'ListingsController@addListing', ['as' => 'listingsAdd']);
 Router::get(MANAGE_ALIAS.'/listings/{id}', 'ListingsController@view', ['as' => 'listingsView'])->where([ 'id' => '[0-9]+' ]);
 Router::get(MANAGE_ALIAS.'/listings/{id}/edit', 'ListingsController@editListing', ['as' => 'listingsEdit'])->where([ 'id' => '[0-9]+' ]);
+Router::get(MANAGE_ALIAS.'/listings/{id}/sold', 'ListingsController@soldSettings', ['as' => 'listingsSoldSettings'])->where([ 'id' => '[0-9]+' ]);
+Router::get(MANAGE_ALIAS.'/listings/{id}/featured', 'ListingsController@setFeatured', ['as' => 'listingsSetFeatured'])->where([ 'id' => '[0-9]+' ]);
 Router::get(MANAGE_ALIAS.'/listings/{id}/delete', 'ListingsController@delete', ['as' => 'listingsDelete'])->where([ 'id' => '[0-9]+' ]);
 
-Router::post(MANAGE_ALIAS.'/listings/{id}/uploadImages', 'ListingsController@uploadImages', ['as' => 'listingsEdit'])->where([ 'id' => '[0-9]+' ]);
+Router::post(MANAGE_ALIAS.'/listings/{id}/setSold', 'ListingsController@setSold', ['as' => 'listingsSetSold'])->where([ 'id' => '[0-9]+' ]);
+Router::post(MANAGE_ALIAS.'/listings/{id}/uploadImages', 'ListingsController@uploadImages', ['as' => 'uploadImages'])->where([ 'id' => '[0-9]+' ]);
 Router::post(MANAGE_ALIAS.'/listings/new/saveNew', 'ListingsController@saveNew', ['as' => 'listingsSaveNew'])->where([ 'id' => '[0-9]+' ]);
 Router::post(MANAGE_ALIAS.'/listings/{id}/edit/saveUpdate', 'ListingsController@saveUpdate', ['as' => 'listingsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 

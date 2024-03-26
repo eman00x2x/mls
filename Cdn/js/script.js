@@ -30,7 +30,7 @@ $(document).on('click','.btn-save', function(e) {
 		$('#snow-container').val(tinymce.get('snow-container').getContent());
 	}
 
-	/* $(this).css({
+	/* $('.btn-save').css({
 		'cursor': 'wait',
 		'pointer-events': 'none'
 	});
@@ -47,12 +47,12 @@ $(document).on('click','.btn-save', function(e) {
 			var response = data;
 		} else { var response = JSON.parse(data); }
 
-		$(this).css({
+		$('.btn-save').css({
 			'cursor': 'pointer',
 			'pointer-events': 'auto'
 		});
 
-		$(this).show();
+		$('.btn-save').show();
 
 		message = '';
 		if (response.status == 1) {
@@ -77,7 +77,7 @@ $(document).on('click','.btn-save', function(e) {
 	return false;
 });
 
-$(document).on('click','.btn-delete, .btn-requestHandshake, .btn-compare-table', function(e) {
+$(document).on('click','.btn-delete, .btn-sold, .btn-requestHandshake, .btn-compare-table, .btn-set-featured', function(e) {
 	url = $(this).data('url');
 	$.get(url, function (data, status) { 
 		$('.offcanvas').html(data);
@@ -145,12 +145,44 @@ $(document).on('click','.btn-view', function(e) {
 	
 });
 
-$(document).on('click','.btn-continue-delete', function(e) {
+$(document).on('click', '.btn-continue-featured', function (e) {
+	url = $(this).data('url');
+	row = $(this).data('row');
+	proceed_url = $(this).data('url-proceed');
+
+	$('.featured-response').html("<img src='" + CDN + "images/loader.gif' /> processing... ");
+	$('.response-body').hide();
+	$('.btn-featured-controls').hide();
+
+	$.get(url, function (data, status) {
+		response = JSON.parse(data);
+
+		if (response.status == 1) {
+			$('.btn-featured-controls').hide();
+		} else {
+			$('.response-body').show();
+		}
+
+		if (response.featured == 1) {
+			html = "<svg  xmlns='http://www.w3.org/2000/svg'  width='24'  height='24'  viewBox='0 0 22 22'  fill='Orange'  class='icon icon-tabler icons-tabler-filled icon-tabler-star'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z' /></svg>";
+		} else {
+			html = "<i class='ti ti-star text-muted'></i>";
+		}
+
+		$('.' + row + ' .featured-indicator-container').html( html );
+
+		$('.featured-response').html(response.message);
+
+	});
+
+});
+
+$(document).on('click','.btn-continue-delete, .btn-sold', function(e) {
 	url = $(this).data('url');
 	row = $(this).data('row');
 	proceed_url = $(this).data('url-proceed');
 	
-	$('.deletion-response').html("<img src='" + CDN + "images/loader.gif' /> deletion in progress... ");
+	$('.deletion-response').html("<img src='" + CDN + "images/loader.gif' /> processing... ");
 	$('.response-body').hide();
 	
 	$.get(url,function(data,status) {
@@ -159,7 +191,7 @@ $(document).on('click','.btn-continue-delete', function(e) {
 		if (response.status == 1) {
 			if (proceed_url != undefined) {
 				window.location = proceed_url;
-			} else { 
+			} else {
 				$('.' + row).remove();
 				bootstrap.Offcanvas.getInstance($('.offcanvas')).hide();
 			}

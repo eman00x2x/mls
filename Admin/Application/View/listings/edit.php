@@ -530,7 +530,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "</label>";
 											$html[] = "</div>";
 
-											if(isset($this->session['privileges']['mls_access']) && $this->session['privileges']['mls_access'] >= 1) {
+											if(isset($_SESSION['user_logged']['privileges']['mls_access']) && $_SESSION['user_logged']['privileges']['mls_access'] >= 1) {
 												$html[] = "<div class='form-group mb-2'>";
 													$html[] = "<label class='form-check form-switch cursor-pointer'>";
 														$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls' ".($data['listing']['is_mls'] == 1 ? "checked" : "")." />";
