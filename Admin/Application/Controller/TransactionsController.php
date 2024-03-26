@@ -19,13 +19,9 @@ class TransactionsController extends \Main\Controller {
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 	}
 
-    function index($account_id) {
+    function index() {
 
 		$this->doc->setTitle("Transactions");
-
-		$account = $this->getModel("Account");
-		$account->column['account_id'] = $account_id;
-		$data['account'] = $account->getById();
 
 		if(isset($_REQUEST['date'])) {
 
@@ -84,22 +80,70 @@ class TransactionsController extends \Main\Controller {
 			$uri['date'] = $_REQUEST['date'];
 		}
 
-		$filters[] = " account_id = ".$account_id;
-
 		$transaction = $this->getModel("Transaction");
+		$transaction->join(" t JOIN #__accounts a ON a.account_id = t.account_id ");
 		$transaction->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" created_at DESC ");
 
 		$transaction->page['limit'] = 10;
 		$transaction->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$transaction->page['target'] = url("TransactionsController@index", ["account_id" => $account_id]);
+		$transaction->page['target'] = url("TransactionsController@index");
 		$transaction->page['uri'] = (isset($uri) ? $uri : []);
 
-		$data['account']['transaction'] = $transaction->getList();
+		$data['transactions'] = $transaction->getList();
+
+		if($data) {
+
+			$data['reports']['total'] = 0;
+			$data['reports']['total_gross_amount'] = 0;
+			$data['reports']['total_tax_amount'] = 0;
+			$data['reports']['total_net_amount'] = 0;
+
+			for($i=0; $i<count($data['transactions']); $i++) {
+				$data['reports']['total']++;
+				
+				$data['reports']['total_gross_amount'] += (isset($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['gross_amount']['value']) ?
+					$data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['gross_amount']['value'] :
+					0
+				);
+
+				$data['reports']['total_tax_amount'] += (isset($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['tax_amount']['value']) ? 
+					isset($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['tax_amount']['value']) :
+					0
+				);
+
+				$data['reports']['total_gross_amount'] += (isset($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['net_amount']['value']) ? 
+					$data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['net_amount']['value'] :
+					0
+				);
+			}
+
+		}
 		
-		$this->setTemplate("transactions/transactions.php");
+		$this->setTemplate("transactions/index.php");
 		return $this->getTemplate($data,$transaction);
 		
     }
+
+	function view($id) {
+
+		$this->doc->setTitle("Transaction");
+
+		$transaction = $this->getModel("Transaction");
+		$transaction->column['transaction_id'] = $id;
+		$data = $transaction->getById();
+
+		if($data) {
+			$account = $this->getModel("Account");
+			$account->column['account_id'] = $data['account_id'];
+			$data['account'] = $account->getById();
+
+			$this->setTemplate("transactions/view.php");
+			return $this->getTemplate($data,$transaction);
+		}
+
+		$this->response(404);
+
+	}
 
 	function cart($account_id, $premium_id) {
 

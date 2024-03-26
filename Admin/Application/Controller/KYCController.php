@@ -32,7 +32,7 @@ class KYCController extends \Main\Controller {
 			$uri['search'] = $_REQUEST['search'];
 		}
 
-		$filters[] = " kyc_status = 0 ";
+		/* $filters[] = " kyc_status = 0 "; */
 		
 		if(isset($filters)) {
 			$clause[] = implode(" AND ",$filters);

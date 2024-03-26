@@ -48,7 +48,7 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<th class='text-center w-1'>#</th>";
 									$html[] = "<th class='text-center w-1'>Account ID</th>";
 									$html[] = "<th>Name</th>";
-									$html[] = "<th>KYC Status</th>";
+									$html[] = "<th class='text-center'>KYC Status</th>";
 									$html[] = "<th>Verified By</th>";
 									$html[] = "<th>Verified at</th>";
 									$html[] = "<th>Created at</th>";
@@ -64,8 +64,8 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<td class='align-middle text-center'><a class='text-decoration-none' href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."'>".$data[$i]['account_id']."</a></td>";
 									$html[] = "<td class='align-middle'><a class='text-decoration-none' href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."' class='ajax text-inherit'>".$data[$i]['account_name']['prefix']." ".$data[$i]['account_name']['firstname']." ".$data[$i]['account_name']['middlename']." ".$data[$i]['account_name']['lastname']." ".$data[$i]['account_name']['suffix']."</a></td>";
 									
-									$html[] = "<td class='align-middle'>".
-										($data[$i]['kyc_status'] == 1 ? "<span class='text-success '>Active</span>" : "<span class='text-warning'>Pending</span>")."</td>";
+									$html[] = "<td class='align-middle text-center'>".
+										($data[$i]['kyc_status'] == 1 ? "<span class='text-success '>Verified</span>" : "<span class='text-warning'>Pending</span>")."</td>";
 										$html[] = "<td class='align-middle'><a class='text-decoration-none' href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."'>".$data[$i]['verified_by']."</a></td>";
 									$html[] = "<td class='align-middle'>".($data[$i]['verified_at'] > 0 ? date("F d, Y", $data[$i]['verified_at']) : '')."</td>";
 									$html[] = "<td class='align-middle'>".date("F d, Y", $data[$i]['created_at'])."</td>";

@@ -35,6 +35,14 @@ class AccountSubscriptionController extends \Main\Controller {
 		$_POST['susbcription_status'] = 1;
 		$_POST['payer']['payment_source'] = $_POST['payment_source'];
 
+		if(VAT) {
+			$vat = ($_POST['premium_price'] / 1.12) * (12 / 100);
+			$net_amount = ($_POST['premium_price'] / 1.12);
+		}else {
+			$vat = 0;
+			$net_amount = $_POST['premium_price'];
+		}
+
 		$transaction = $this->getModel("Transaction");
 		$response = $transaction->saveNew([
 			"account_id" => $_POST['account_id'],
@@ -48,6 +56,20 @@ class AccountSubscriptionController extends \Main\Controller {
 			"payment_status" => "COMPLETED",
 			"transaction_details" => json_encode([
 				"status" => "COMPLETED",
+				"seller_receivable_breakdown" => [
+					"gross_amount" => [
+						"currency_code" => "PHP",
+						"value" => $_POST['premium_price']
+					],
+					"tax_amount" => [
+						"currency_code" => "PHP",
+						"value" => $vat
+					],
+					"net_amount" => [
+						"currency_code" => "PHP",
+						"value" => $net_amount
+					]
+				],
 				"transaction" => [
 					"account_id" => $this->session['account_id'],
 					"account_type" => $this->session['account_type'],

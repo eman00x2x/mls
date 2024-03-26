@@ -30,7 +30,7 @@ $html[] = "<div class='page-body'>";
 
 			$subscription = $data['subscription'][0];
 
-			$html[] = "<div class='row row-deck row-cards'>";
+			$html[] = "<div class='row row-deck row-cards mb-5'>";
 
 				$html[] = "<div class='col-lg-4 col-md-4 col-sm-12 col-12'>";
 					$html[] = "<div class='card'>";

@@ -115,7 +115,7 @@
 									<?php if(PREMIUM) { ?>
 										<a href="<?php echo url("AccountSubscriptionController@index"); ?>" class="dropdown-item"><i class='ti ti-layers-union me-2'></i> My Subscriptions</a>
 										<?php if(isset($_SESSION['user_logged']['permissions']['transactions']['access'])) { ?>
-											<a href="<?php echo url("TransactionsController@index"); ?>" class="dropdown-item"><i class='ti ti-file-invoice me-2'></i> My Transactions</a>
+											<a href="<?php echo url("TransactionsController@transactions"); ?>" class="dropdown-item"><i class='ti ti-file-invoice me-2'></i> My Transactions</a>
 										<?php } ?>
 									<?php } ?>
 

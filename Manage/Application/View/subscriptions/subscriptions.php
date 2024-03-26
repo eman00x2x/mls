@@ -67,13 +67,17 @@ $html[] = "<div class='page-body'>";
 											$html[] = "<td class='align-middle' style='width:300px'>".$data['subscriptions'][$i]['name']." <span class='text-muted small d-block'>".$data['subscriptions'][$i]['details']."</span></td>";
 											$html[] = "<td class='align-middle'>".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_start_date'])."</td>";
                                             $html[] = "<td class='align-middle'>";
-												if($data['subscriptions'][$i]['subscription_end_date'] > 0) {
+												
 													$html[] = "".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_end_date'])."";
-												}else {
-													$html[] = "Permanent";
+												
+											$html[] = "</td>";
+											$html[] = "<td class='align-middle text-center'>";
+												switch($data['subscriptions'][$i]['subscription_status']) {
+													case 0: $html[] = "Suspended"; break;
+													case 1: $html[] = "Active"; break;
+													case 2: $html[] = "Ended"; break;
 												}
 											$html[] = "</td>";
-											$html[] = "<td class='align-middle text-center'>".($data['subscriptions'][$i]['subscription_status'] == 1 ? "Active" : "Suspended")."</td>";
 										$html[] = "</tr>";
 										
 									}

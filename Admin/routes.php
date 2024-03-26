@@ -69,9 +69,13 @@ Router::get(ADMIN_ALIAS.'/premiums/{id}/delete', 'PremiumsController@delete', ['
 Router::post(ADMIN_ALIAS.'/premiums/new/save', 'PremiumsController@saveNew', ['as' => 'premiumsSaveNew']);
 Router::post(ADMIN_ALIAS.'/premiums/{id}/edit/saveUpdate', 'PremiumsController@saveUpdate', ['as' => 'premiumsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 
-/** TRANSACTIONS ROUTES */
-Router::get(ADMIN_ALIAS.'/accounts/{account_id}/transactions', 'TransactionsController@index', ['as' => 'transactionIndex'])->where([ 'account_id' => '[0-9]+' ]);
+/** ACCOUNT TRANSACTIONS */
+Router::get(ADMIN_ALIAS.'/accounts/{account_id}/transactions', 'TransactionsController@transactions', ['as' => 'accountTransactions'])->where([ 'account_id' => '[0-9]+' ]);
 Router::get(ADMIN_ALIAS.'/accounts/{account_id}/transactions/{id}/invoice', 'TransactionsController@invoices', ['as' => 'transactionInvoice'])->where([ 'account_id' => '[0-9]+', 'id' => '[0-9]+' ]);
+
+/** TRANSACTIONS ROUTES */
+Router::get(ADMIN_ALIAS.'/transactions', 'TransactionsController@index', ['as' => 'index']);
+Router::get(ADMIN_ALIAS.'/transactions/{id}', 'TransactionsController@view', ['as' => 'TransactionsControllerView'])->where([ 'id' => '[0-9]+']);
 Router::get(ADMIN_ALIAS.'/transactions/{id}/delete', 'TransactionsController@delete', ['as' => 'deleteTransaction'])->where([ 'id' => '[0-9]+' ]);
 
 /** ADMINISTRATION ROUTES */

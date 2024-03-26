@@ -270,7 +270,7 @@ $html[] = "<div class='page-body'>";
 												$html[] = "<td class='align-middle'>";
 													$html[] = "<div class='btn-list'>";
 														$html[] = "<span class='btn btn-outline-primary btn-update_subscription_status' data-id='".$data['subscriptions'][$i]['account_subscription_id']."' data-url='".url("AccountSubscriptionController@updateStatus", ["id" => $data['subscriptions'][$i]['account_subscription_id']])."'><i class='ti ti-lock-access me-2'></i> <span class='text-label'>".($data['subscriptions'][$i]['subscription_status'] == 1 ? "Deactivate": "Activate")."</span></span>";
-														$html[] = "<span class='btn btn-outline-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountSubscriptionController@delete",["id" => $data['subscriptions'][$i]['account_subscription_id']])."'><i class='ti ti-trash me-1'></i> Delete</span>";
+														/* $html[] = "<span class='btn btn-outline-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountSubscriptionController@delete",["id" => $data['subscriptions'][$i]['account_subscription_id']])."'><i class='ti ti-trash me-1'></i> Delete</span>"; */
 													$html[] = "</div>";
 												$html[] = "</td>";
 											$html[] = "</tr>";
@@ -307,7 +307,7 @@ $html[] = "<div class='page-body'>";
 												$html[] = "<th>Premium</th>";
 												$html[] = "<th class='text-center'>Payment Source</th>";
 												$html[] = "<th class='text-end'>Amount</th>";
-												$html[] = "<th></th>";
+												/* $html[] = "<th></th>"; */
 											$html[] = "</tr>";
 										$html[] = "</thead>";
 										
@@ -320,9 +320,9 @@ $html[] = "<div class='page-body'>";
 												$html[] = "<td class='align-middle' style='width:300px !important'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@invoice", ["account_id" => $data['account_id'], "id" => $data['transaction'][$i]['transaction_id']])."'>".$data['transaction'][$i]['premium_description']."</a></td>";
 												$html[] = "<td class='align-middle text-center'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@invoice", ["account_id" => $data['account_id'], "id" => $data['transaction'][$i]['transaction_id']])."'>".strtoupper($data['transaction'][$i]['payment_source'])."</a></td>";
 												$html[] = "<td class='align-middle text-end'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@invoice", ["account_id" => $data['account_id'], "id" => $data['transaction'][$i]['transaction_id']])."'>&#8369;".number_format($data['transaction'][$i]['premium_price'],2)."</a></td>";
-												$html[] = "<td class='align-middle'>";
+												/* $html[] = "<td class='align-middle'>";
 													$html[] = "<span class='btn btn-outline-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("TransactionsController@delete",["id" => $data['transaction'][$i]['transaction_id']])."'><i class='ti ti-trash me-1'></i> Delete</span>";
-												$html[] = "</td>";
+												$html[] = "</td>"; */
 											$html[] = "</tr>";
 											
 										}

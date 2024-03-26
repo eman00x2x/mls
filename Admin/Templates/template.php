@@ -75,6 +75,12 @@
 										<span class="nav-link-title">Website Settings</span>
 									</a>
                 				</li>
+								<li class="nav-item <?php echo (url()->contains("/transactions")) ? "active" : ""; ?>">
+									<a class="nav-link" href="<?php echo url("TransactionsController@index"); ?>">
+										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-settings-cog'></i></span>
+										<span class="nav-link-title">Transactions</span>
+									</a>
+                				</li>
 							</ul>
 						</div>
 					</div>
@@ -125,7 +131,7 @@
 								</a>
 								<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
 									<a href="<?php echo url("UsersController@userEdit",["id" => $_SESSION['user_logged']['user_id']]); ?>" class="dropdown-item">Update Account</a>
-									<a href="?logout" class="dropdown-item">Logout</a>
+									<a href="<?php echo ADMIN; ?>?logout" class="dropdown-item">Logout</a>
 								</div>
 							</div>
 
