@@ -47,6 +47,7 @@ class Middleware implements IMiddleware {
     {
 
 		Router::enableMultiRouteRendering(false);
+		
 		$request->user = Authenticator::getInstance()->monitor();
 		
 		Router::get(ADMIN_ALIAS . '/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
@@ -65,6 +66,7 @@ class Middleware implements IMiddleware {
 			if($request->user['status'] == 0) {
 				Router::get(ADMIN_ALIAS . '/', 'AuthenticatorController@getLoginForm');
 				Router::post(ADMIN_ALIAS . '/checkCredentials', 'AuthenticatorController@checkCredentials');
+				Router::request()->setRewriteUrl(url(ADMIN_ALIAS . '/'));
 				$template = "templates/login.template.php";
 			}else {
 				require_once('routes.php');

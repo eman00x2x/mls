@@ -77,16 +77,27 @@
                 				</li>
 								<li class="nav-item <?php echo (url()->contains("/transactions")) ? "active" : ""; ?>">
 									<a class="nav-link" href="<?php echo url("TransactionsController@index"); ?>">
-										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-settings-cog'></i></span>
+										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-file-invoice'></i></span>
 										<span class="nav-link-title">Transactions</span>
 									</a>
+                				</li>
+
+								<li class="nav-item <?php echo (url()->contains("/reports")) ? "active" : ""; ?> dropdown">
+									<a class="nav-link dropdown-toggle" href="#extra-link" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-report'></i></span>
+										<span class="nav-link-title">Reports</span>
+									</a>
+									<div class='dropdown-menu'>
+										<a href='<?php echo url("ReportsController@subscribersReport"); ?>' class='dropdown-item'><i class='ti ti-report me-1'></i> Subscribers Report</a>
+										<a href='<?php echo url("ReportsController@transactionsReport"); ?>' class='dropdown-item'><i class='ti ti-report me-1'></i> Transactions Report</a>
+									</div>
                 				</li>
 							</ul>
 						</div>
 					</div>
 
 					<div class="navbar-nav flex-row order-md-last">
-						<div class="d-none d-md-flex">
+						<div class="d-flex">
 
 							<!-- <div class="nav-item dropdown d-none d-md-flex me-3">
 								<a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">

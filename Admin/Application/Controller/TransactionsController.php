@@ -91,7 +91,7 @@ class TransactionsController extends \Main\Controller {
 
 		$data['transactions'] = $transaction->getList();
 
-		if($data) {
+		if($data['transactions']) {
 
 			$data['reports']['total'] = 0;
 			$data['reports']['total_gross_amount'] = 0;

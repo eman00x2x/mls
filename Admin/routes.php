@@ -78,6 +78,10 @@ Router::get(ADMIN_ALIAS.'/transactions', 'TransactionsController@index', ['as' =
 Router::get(ADMIN_ALIAS.'/transactions/{id}', 'TransactionsController@view', ['as' => 'TransactionsControllerView'])->where([ 'id' => '[0-9]+']);
 Router::get(ADMIN_ALIAS.'/transactions/{id}/delete', 'TransactionsController@delete', ['as' => 'deleteTransaction'])->where([ 'id' => '[0-9]+' ]);
 
+/** REPORTS ROUTES */
+Router::get(ADMIN_ALIAS.'/report/subscribers', 'ReportsController@subscribersReport', ['as' => 'subscribersReport']);
+Router::get(ADMIN_ALIAS.'/report/transactions', 'ReportsController@transactionsReport', ['as' => 'transactionsReport']);
+
 /** ADMINISTRATION ROUTES */
 Router::get(ADMIN_ALIAS.'/settings/{page}', 'SettingsController@index', ['as' => 'settings'])->where([ 'page' => '[\w\-\=]+' ]);
 Router::get(ADMIN_ALIAS.'/web-settings/{page}', 'SettingsController@webSettings', ['as' => 'webSettings'])->where([ 'page' => '[\w\-\=]+' ]);
