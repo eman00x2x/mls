@@ -14,7 +14,7 @@ $html[] = "<div class='row justify-content-center'>";
 
                 $html[] = "<div class='row g-2 '>";
                     $html[] = "<div class='col'>";
-                        $html[] = "<div class='page-pretitle'></div>";
+                        $html[] = "<div class='page-pretitle'>Total Monthly Transactions</div>";
                         $html[] = "<h1 class='page-title'><i class='ti ti-report me-2'></i> Transactions Report</h1>";
                     $html[] = "</div>";
 
@@ -25,7 +25,7 @@ $html[] = "<div class='row justify-content-center'>";
                             $html[] = "<div class='dropdown dropstart'>";
                                 $html[] = "<span class='btn btn-dark dropdown-toggle' id='year-selection' data-bs-toggle='dropdown' aria-expanded='false'>Year</span>";
                                 $html[] = "<ul class='dropdown-menu' aria-labelledby='year-selection' style='max-height: 400px; overflow-y: scroll'>";
-                                    $years = range(2024, 2038);
+                                    $years = range(2024, date("Y", strtotime("+5 years")));
                                     foreach($years as $year) {
                                         $html[] = "<li><a class='dropdown-item' href='".url("ReportsController@transactionsReport", null, ["year" => $year])."'>Year $year</a></li>";
                                     }
