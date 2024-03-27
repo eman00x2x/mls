@@ -65,6 +65,7 @@ $html[] = "<div class='row justify-content-center'>";
                                     $html[] = "<tr>";
                                         $html[] = "<th  class=''>Month</th>";
                                         $html[] = "<th  class='text-center'>Gross Earnings</th>";
+                                        $html[] = "<th  class='text-center'>Platform Fee</th>";
                                         $html[] = "<th  class='text-center'>Tax</th>";
                                         $html[] = "<th  class='text-center'>Net Earnings</th>";
                                     $html[] = "</tr>";
@@ -72,6 +73,7 @@ $html[] = "<div class='row justify-content-center'>";
                                 $html[] = "<tbody>";
 
                                 $total_gross = 0;
+                                $platform_fee = 0;
                                 $total_tax = 0;
                                 $total_net = 0;
 
@@ -81,16 +83,19 @@ $html[] = "<div class='row justify-content-center'>";
                                         $html[] = "<tr>";
                                             $html[] = "<td>".$month."</td>";
                                             $html[] = "<td class='text-center'>&#8369; ".number_format($year[$month]['gross_earnings'],2)."</td>";
+                                            $html[] = "<td class='text-center'>&#8369; ".number_format( (int) $year[$month]['platform_fee'],2)."</td>";
                                             $html[] = "<td class='text-center'>&#8369; ".number_format( (int) $year[$month]['tax'],2)."</td>";
                                             $html[] = "<td class='text-center'>&#8369; ".number_format($year[$month]['net_earnings'],2)."</td>";
                                         $html[] = "</tr>";
 
                                         $rows[$key][] = $month;
                                         $rows[$key][] = $year[$month]['gross_earnings'];
+                                        $rows[$key][] = $year[$month]['platform_fee'];
                                         $rows[$key][] = $year[$month]['tax'];
                                         $rows[$key][] = $year[$month]['net_earnings'];
 
                                         $total_gross += (int) $year[$month]['gross_earnings'];
+                                        $platform_fee += (int) $year[$month]['platform_fee'];
                                         $total_tax += (int) $year[$month]['tax'];
                                         $total_net += (int) $year[$month]['net_earnings'];
 
@@ -101,9 +106,11 @@ $html[] = "<div class='row justify-content-center'>";
                                             $html[] = "<td class='text-center'>-</td>";
                                             $html[] = "<td class='text-center'>-</td>";
                                             $html[] = "<td class='text-center'>-</td>";
+                                            $html[] = "<td class='text-center'>-</td>";
                                         $html[] = "</tr>";
 
                                         $rows[$key][] = $month;
+                                        $rows[$key][] = '0';
                                         $rows[$key][] = '0';
                                         $rows[$key][] = '0';
                                         $rows[$key][] = '0';
@@ -118,6 +125,7 @@ $html[] = "<div class='row justify-content-center'>";
                                 $html[] = "<tr>";
                                     $html[] = "<td class='text-muted'>Total</td>";
                                     $html[] = "<td class='text-center fw-bold'>&#8369; ".number_format($total_gross, 2)."</td>";
+                                    $html[] = "<td class='text-center fw-bold'>&#8369; ".number_format($platform_fee, 2)."</td>";
                                     $html[] = "<td class='text-center fw-bold'>&#8369; ".number_format($total_tax, 2)."</td>";
                                     $html[] = "<td class='text-center fw-bold'>&#8369; ".number_format($total_net, 2)."</td>";
                                 $html[] = "</tr>";

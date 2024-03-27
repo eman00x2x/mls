@@ -26,7 +26,17 @@ class PayPal {
 			default: $quantity = $data['duration'] / 30; break;
 		}
 
-		$data['total'] = $data['cost'] * $quantity;
+		$data['tax'] = 0;
+		$data['tax_total'] = 0;
+
+		if(VAT) {
+			$data['cost'] = $data['cost'] / 1.12;
+			$data['tax'] = $data['cost'] * 0.12;
+			$data['tax_total'] = $data['tax'] * $quantity;
+		}
+
+		$data['total_without_tax'] = $data['cost'] * $quantity;
+		$data['total_with_tax'] = ($data['cost'] + $data['tax']) * $quantity;
 
         $this->doc->addScript("https://www.paypal.com/sdk/js?client-id=".$this->client_id."&currency=".$this->currency."&intent=capture&commit=false&vault=false");
 		$this->doc->addScriptDeclaration("
@@ -59,15 +69,23 @@ class PayPal {
 										\"currency_code\": \"PHP\",
 										\"value\": ".$data['cost']."
 									},
+									\"tax\": {
+										\"currency_code\": \"PHP\",
+										\"value\": ".$data['tax']."
+									},
 									\"category\": \"DIGITAL_GOODS\"
 								}],
 								\"amount\": {
 									\"currency_code\": \"".$this->currency."\",
-									\"value\": ".$data["total"].",
+									\"value\": ".$data["total_with_tax"].",
 									\"breakdown\": {
 										\"item_total\": {
 											\"currency_code\": \"PHP\",
-											\"value\": ".$data['total']."
+											\"value\": ".$data['total_without_tax']."
+										},
+										\"tax_total\": {
+											\"currency_code\": \"PHP\",
+											\"value\": ".$data['tax_total']."
 										}
 									}
 								}
@@ -89,7 +107,7 @@ class PayPal {
 							})
 							.then((response) => response.json())
 							.then((result) => {
-								
+
 								if(result.status == 1){
 									window.location.href = '".$payment_status_url."?checkout_ref_id='+result.payment_id;
 								}else{
@@ -181,6 +199,10 @@ class PayPal {
 						$new_data['payment_id'] = $payment_capture['id']; 
 						$new_data['payment_status'] = $payment_capture['status'];
 						$new_data['transaction_details'] = $payment_capture;
+						$new_data['transaction_details']['seller_receivable_breakdown']['platform_fee'] = [
+							"currency_code" => $payment_capture['seller_receivable_breakdown']['paypal_fee']['currency_code'],
+							"value" => $payment_capture['seller_receivable_breakdown']['paypal_fee']['value']
+						];
 					} 
 		
 					if(!empty($purchase_unit['payee'])){ 
@@ -203,27 +225,27 @@ class PayPal {
 
 				if(!empty($order_response['data']['id']) && $order_status == 'COMPLETED') {
 
-					$response = array(
+					$response = [
 						"status" => 1,
 						"msg" => 'Transaction Completed!',
 						"payment_id" => base64_encode($new_data['payment_id']),
 						"processed_data" => $new_data
-					);
+					];
 
 				}
 
 			}else {
-				$response = array(
+				$response = [
 					"status" => 0,
 					"msg" => $api_error
-				);
+				];
 			}
 
 		}else {
-			$response = array(
+			$response = [
 				"status" => 0, 
 				"msg" => 'Transaction Failed!'
-			); 
+			]; 
 		}
 
 		return $response;

@@ -33,7 +33,7 @@ class ReportsController extends \Main\Controller {
 
 		$transactions = $this->getModel("Transaction");
 		$transactions
-		->select(" FROM_UNIXTIME(created_at, '%Y') as year, FROM_UNIXTIME(created_at, '%M %Y') as month, SUM(JSON_EXTRACT(transaction_details, '$.seller_receivable_breakdown.net_amount.value')) as net_earnings, SUM(JSON_EXTRACT(transaction_details, '$.seller_receivable_breakdown.tax_amount.value')) as tax, SUM(JSON_EXTRACT(transaction_details, '$.seller_receivable_breakdown.gross_amount.value')) as gross_earnings  ")
+		->select(" FROM_UNIXTIME(created_at, '%Y') as year, FROM_UNIXTIME(created_at, '%M %Y') as month, SUM(JSON_EXTRACT(transaction_details, '$.seller_receivable_breakdown.net_amount.value')) as net_earnings, SUM(JSON_EXTRACT(transaction_details, '$.seller_receivable_breakdown.gross_amount.value')) as gross_earnings, SUM(JSON_EXTRACT(transaction_details, '$.seller_receivable_breakdown.platform_fee.value')) as platform_fee ")
 			->join(" ")
 				->where(isset($clause) ? implode(" ",$clause) : null)
 					->groupBy(" year, month ")
@@ -51,8 +51,17 @@ class ReportsController extends \Main\Controller {
 		if($result) {
 			for($i=0; $i<count($result); $i++) {
 				$data[ $result[$i]['year'] ][ date("F", strtotime($result[$i]['month'])) ][ 'gross_earnings' ] = $result[$i]['gross_earnings'];
-				$data[ $result[$i]['year'] ][ date("F", strtotime($result[$i]['month'])) ][ 'tax' ] = $result[$i]['tax'];
-				$data[ $result[$i]['year'] ][ date("F", strtotime($result[$i]['month'])) ][ 'net_earnings' ] = $result[$i]['net_earnings'];
+				$data[ $result[$i]['year'] ][ date("F", strtotime($result[$i]['month'])) ][ 'platform_fee' ] = $result[$i]['platform_fee'];
+				
+				$tax = 0;
+				if(VAT) {
+					$tax = ($result[$i]['gross_earnings'] / 1.12) * 0.12;
+					$data[ $result[$i]['year'] ][ date("F", strtotime($result[$i]['month'])) ][ 'tax' ] = $tax;
+				}else {
+					$data[ $result[$i]['year'] ][ date("F", strtotime($result[$i]['month'])) ][ 'tax' ] = 0;
+				}
+
+				$data[ $result[$i]['year'] ][ date("F", strtotime($result[$i]['month'])) ][ 'net_earnings' ] = $result[$i]['gross_earnings'] - $result[$i]['platform_fee'] - $tax;
 			}
 		}
 

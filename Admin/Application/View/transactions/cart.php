@@ -15,6 +15,7 @@ $html[] = "<div class='page-body'>";
         $html[] = "<input type='hidden' name='_method' value='POST' />";
         $html[] = "<input type='hidden' name='cost' id='cost' value='".$data['cost']."' />";
         $html[] = "<input type='hidden' name='duration' id='duration' value='".$data['cost']."' />";
+        $html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 
         $html[] = "<div class='row justify-content-center'>";
         	$html[] = "<div class='col-md-8 col-12'>";

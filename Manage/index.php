@@ -7,6 +7,7 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 use Library\SessionHandler;
+use Library\CsrfVerifier;
 use Manage\Application\Controller\AuthenticatorController as Authenticator;
 use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Request as Request;
@@ -54,8 +55,11 @@ class Middleware implements IMiddleware {
     public function handle(Request $request): void 
     {
 
+		$verifier = new CsrfVerifier();
+		$verifier->setIgnore("/transactions/*");
+
 		Router::enableMultiRouteRendering(false);
-		Router::csrfVerifier(new BaseCsrfVerifier());
+		Router::csrfVerifier($verifier);
 
 		Router::get(MANAGE_ALIAS . '/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeForm');
 		Router::get(MANAGE_ALIAS . '/register', 'RegistrationController@register');
@@ -73,8 +77,8 @@ class Middleware implements IMiddleware {
 		$request->user = Authenticator::getInstance()->monitor();
 
 		if($request->user['status'] == 0) {
-			Router::get(MANAGE_ALIAS . '/', 'AuthenticatorController@getLoginForm');
-			$request->setRewriteUrl(url("/"));
+			Router::get(MANAGE_ALIAS, 'AuthenticatorController@getLoginForm');
+			$request->setRewriteUrl(url(""));
 			$template = "templates/login.template.php";
 		}else {
 			SessionHandler::getInstance()->init();

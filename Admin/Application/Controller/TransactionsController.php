@@ -210,7 +210,7 @@ class TransactionsController extends \Main\Controller {
 
 		$paypal = new PayPal();
 		$response = $paypal->validatePayment($_REQUEST['order_id']);
-		
+
 		if($response['status'] == 1) {
 
 			$new_data = $response['processed_data'];

@@ -23,17 +23,19 @@ $html[] = "<div class='page-body'>";
 					$html[] = "<div class='card-body'>";
 						
 						$html[] = "<div class='row align-items-center gap-3 '>";
-							$html[] = "<div class='col-7 '>";
+							$html[] = "<div class='col-lg-7 col-md-7 col-sm-12 col-12 '>";
 								$html[] = "<h3 class='mb-2 fs-18'>1 x ".$data['name']."</h3>";
 								$html[] = "<p class='text-muted'>".$data['details']."</p>";
 							$html[] = "</div>";
 
-							$html[] = "<div class='col-2 '>";
-								$html[] = "<p class='fw-bold text-end'>".$data['duration']." days</p>";
+							$html[] = "<div class='col-lg-2 col-md-2 col-sm-12 col-12 '>";
+								$html[] = "<span class='text-muted fs-12'>Duration</span>";
+								$html[] = "<p class='fw-bold'>".$data['duration']." days</p>";
 							$html[] = "</div>";
 							
-							$html[] = "<div class='col-2 '>";
-								$html[] = "<p class='fw-bold text-end'>&#8369;".number_format($data['cost'],2)."</p>";
+							$html[] = "<div class='col-lg-2 col-md-2 col-sm-12 col-12 '>";
+								$html[] = "<span class='text-muted fs-12'>Amount</span>";
+								$html[] = "<p class='fw-bold'>&#8369;".number_format($data['cost'],2)."</p>";
 							$html[] = "</div>";
 
 						$html[] = "</div>";

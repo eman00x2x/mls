@@ -104,10 +104,10 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
 											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";
 												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>VAT Computation</h3>";
-												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>Display the VAT computation clearly on invoices for transparency and compliance.</p>";
+												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>Include Value Added Tax (VAT) on all purchases.</p>";
 												
 												$html[] = "<input type='checkbox' name='show_vat' class='form-check-input' value='1' ".($data['show_vat'] == 1 ? "checked" : "")." />";
-												$html[] = "<span class='form-check-label'>Display VAT Computation</span>";
+												$html[] = "<span class='form-check-label'>Include VAT Computation</span>";
 											$html[] = "</label>";
 										$html[] = "</div>";
 

@@ -65,6 +65,10 @@ class AccountSubscriptionController extends \Main\Controller {
 						"currency_code" => "PHP",
 						"value" => $vat
 					],
+					"platform_fee" => [
+						"currency_code" => "PHP",
+						"value" => 0
+					],
 					"net_amount" => [
 						"currency_code" => "PHP",
 						"value" => $net_amount
