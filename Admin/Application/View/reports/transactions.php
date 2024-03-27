@@ -71,6 +71,10 @@ $html[] = "<div class='row justify-content-center'>";
                                 $html[] = "</thead>";
                                 $html[] = "<tbody>";
 
+                                $total_gross = 0;
+                                $total_tax = 0;
+                                $total_net = 0;
+
                                 foreach($calendar['months'] as $key => $month) {
                                     if(isset($year[$month])) {
 
@@ -85,6 +89,10 @@ $html[] = "<div class='row justify-content-center'>";
                                         $rows[$key][] = $year[$month]['gross_earnings'];
                                         $rows[$key][] = $year[$month]['tax'];
                                         $rows[$key][] = $year[$month]['net_earnings'];
+
+                                        $total_gross += (int) $year[$month]['gross_earnings'];
+                                        $total_tax += (int) $year[$month]['tax'];
+                                        $total_net += (int) $year[$month]['net_earnings'];
 
                                     }else {
 
@@ -106,7 +114,14 @@ $html[] = "<div class='row justify-content-center'>";
                                     unset($rows);
 
                                 }
-                                
+
+                                $html[] = "<tr>";
+                                    $html[] = "<td class='text-muted'>Total</td>";
+                                    $html[] = "<td class='text-center fw-bold'>&#8369; ".number_format($total_gross, 2)."</td>";
+                                    $html[] = "<td class='text-center fw-bold'>&#8369; ".number_format($total_tax, 2)."</td>";
+                                    $html[] = "<td class='text-center fw-bold'>&#8369; ".number_format($total_net, 2)."</td>";
+                                $html[] = "</tr>";
+
                                 $html[] = "</tbody>";
                                 $html[] = "</table>";
 
