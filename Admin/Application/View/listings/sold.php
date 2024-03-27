@@ -33,6 +33,8 @@ if($data) {
 				$html[] = "<input type='hidden' name='save_url' id='save_url' value='".url("ListingsController@setSold", ["id" => $data['listing_id']])."' />";
 				$html[] = "<input type='hidden' name='status' id='status' value='2' />";
 				$html[] = "<form id='form' action='' method='POST'>";
+					$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
+					
 					$html[] = "<div class='form-floating mb-3'>";
 						$html[] = "<input type='number' name='sold_price' id='sold_price' value='".($data['sold_price'] >= 0 ? $data['sold_price'] : $data['price'])."' class='form-control' required />";
 						$html[] = "<label for='sold_price'>Sold Price</label>";

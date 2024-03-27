@@ -61,6 +61,7 @@ if(!isset($_REQUEST['premium_id'])) {
 		$html[] = "<input type='hidden' name='account_id' id='account_id' value='".$data['account_id']."' />";
 		$html[] = "<input type='hidden' name='premium_id' id='premium_id' value='".$data['premium']['premium_id']."' />";
 		$html[] = "<input type='hidden' name='subscription_date' id='subscription_date' value='".DATE_NOW."' />";
+		$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 		
 		/** TRANSACTION */
 		$html[] = "<input type='hidden' name='premium_description' id='premium_description' value='[".$data['premium']['name']."] ".$data['premium']['details']."' />";

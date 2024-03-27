@@ -17,6 +17,7 @@ $html[] = "</form>";
 $html[] = "<input type='hidden' id='save_url' value='".url("UsersController@saveUpdate",["id" => $data['account_id'], "user_id" => $data['user_id']])."' />";
 
 $html[] = "<form id='form' action='' method='POST'>";
+	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 
 	$html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 		$html[] = "<div class='col-lg-6 col-md-6 col-12'>";

@@ -29,6 +29,7 @@ $html[] = "<div class='d-flex flex-column'>";
 							$html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";
 								$html[] = "<input name='user_id' id='user_id' type='hidden' value='".$data['user_id']."' />";
+								$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 								
 								$html[] = "<div class='mb-3'>";
 									$html[] = "<label class='form-label'>New Password</label>";

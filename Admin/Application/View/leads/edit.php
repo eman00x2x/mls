@@ -40,6 +40,8 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 					$html[] = "<input name='content' id='content' type='hidden' value='' />";
 					$html[] = "<input name='iv' id='iv' type='hidden' value='' />";
 					$html[] = "<input name='message' id='message' type='hidden' value='' />";
+
+                    $html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 					
                     $html[] = "<div class='card mb-3'>";
                         $html[] = "<div class='card-header'>";

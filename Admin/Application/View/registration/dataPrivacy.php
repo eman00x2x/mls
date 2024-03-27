@@ -9,6 +9,8 @@ $html[] = "<div class='page page-center'>";
 		$html[] = "</div>";
 
 			$html[] = "<form id='form' action='' method='POST'>";
+				$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
+				
 				$html[] = "<div class='card card-md'>";
 					$html[] = "<div class='card-body py-4 p-sm-5'>";
 

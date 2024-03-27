@@ -229,14 +229,15 @@ $html[] = "<div class='page-body'>";
 					if($model->rows > 0) {
 						$html[] = $model->list;
 					}else {
-						$html[] = "<div class='text-center bg-white p-5 border'>";
-							$html[] = "<div class='empty-header fw-bold'>No Results</div>";
-							$html[] = "<p class='empty-title'>Oops... no results found in your search.</p>";
-							$html[] = "<p class='empty-subtitle'>Clear your filter and try another search</p>";
-							$html[] = "<div class='empty-action'>";
-								$html[] = "<a href='".url( $model->app['url_path']['class_hint'] )."' class='btn btn-outline-primary'>Clear filter</a>";
-							$html[] = "</div>";
-						$html[] = "</div>";
+						$html[] = "<div class='card'>";
+                            $html[] = "<div class='empty'>";
+                                $html[] = "<div class='empty-image mb-4'>";
+                                    $html[] = "<img src='".CDN."images/undraw_quitting_time_dm8t.svg' height='128' />";
+                                $html[] = "</div>";
+                                $html[] = "<p class='empty-title'>No results found</p>";
+                                $html[] = "<p class='empty-subtitle text-secondary'>Try adjusting your search or filter to find what you're looking for.</p>";
+                            $html[] = "</div>";
+                        $html[] = "</div>";
 					}
 						
 

@@ -94,7 +94,15 @@ $html[] = "<div class='page-body'>";
 						$html[] = "</div>";
 						
 					}else {
-						$html[] = "<p class='mt-3'>You do not have leads yet.</p>";
+						$html[] = "<div class=''>";
+                            $html[] = "<div class='empty'>";
+                                $html[] = "<div class='empty-image mb-4'>";
+                                    $html[] = "<img src='".CDN."images/undraw_quitting_time_dm8t.svg' height='128' />";
+                                $html[] = "</div>";
+                                $html[] = "<p class='empty-title'>No results found</p>";
+                                $html[] = "<p class='empty-subtitle text-secondary'>Try adjusting your search or filter to find what you're looking for.</p>";
+                            $html[] = "</div>";
+                        $html[] = "</div>";
 					}
 					
 				$html[] = "</div>";

@@ -33,7 +33,7 @@ class ReportsController extends \Main\Controller {
 
 		$transactions = $this->getModel("Transaction");
 		$transactions
-		->select(" FROM_UNIXTIME(created_at, '%Y') as year, FROM_UNIXTIME(created_at, '%M %Y') as month, SUM(JSON_EXTRACT(transaction_details, '$.seller_receivable_breakdown.net_amount.value')) as net_earnings, SUM(JSON_EXTRACT(transaction_details, '$.seller_receivable_breakdown.tax_amount.value')) as tax, SUM(JSON_EXTRACT(transaction_details, '$.seller_receivable_breakdown.gross_amount.value')) as gross_earnings ")
+		->select(" FROM_UNIXTIME(created_at, '%Y') as year, FROM_UNIXTIME(created_at, '%M %Y') as month, SUM(JSON_EXTRACT(transaction_details, '$.seller_receivable_breakdown.net_amount.value')) as net_earnings, SUM(JSON_EXTRACT(transaction_details, '$.seller_receivable_breakdown.tax_amount.value')) as tax, SUM(JSON_EXTRACT(transaction_details, '$.seller_receivable_breakdown.gross_amount.value')) as gross_earnings  ")
 			->join(" ")
 				->where(isset($clause) ? implode(" ",$clause) : null)
 					->groupBy(" year, month ")

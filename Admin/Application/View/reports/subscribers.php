@@ -69,6 +69,18 @@ $html[] = "<div class='page-body'>";
                             }
                             $html[] = "</table>";
                         $html[] = "</div>";
+                    }else {
+
+                        $html[] = "<div class='card'>";
+                            $html[] = "<div class='empty'>";
+                                $html[] = "<div class='empty-image'>";
+                                    $html[] = "<img src='".CDN."images/undraw_quitting_time_dm8t.svg' height='128' />";
+                                $html[] = "</div>";
+                                $html[] = "<p class='empty-title'>No results found</p>";
+                                $html[] = "<p class='empty-subtitle text-secondary'>Try adjusting your search or filter to find what you're looking for.</p>";
+                            $html[] = "</div>";
+                        $html[] = "</div>";
+
                     }
         
                 $html[] = "</div>";

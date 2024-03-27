@@ -23,7 +23,7 @@ class AccountsController extends \Main\Controller {
 		$this->doc->setTitle("Accounts");
 		
 		if(isset($_REQUEST['search'])) {
-			$filters[] = " (firstname LIKE '%".$_REQUEST['search']."%' OR lastname LIKE '%".$_REQUEST['search']."%')";
+			$filters[] = " (account_name LIKE '%".$_REQUEST['search']."%')";
 			$uri['search'] = $_REQUEST['search'];
 		}
 		

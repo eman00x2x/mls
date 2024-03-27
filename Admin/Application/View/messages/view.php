@@ -1,5 +1,7 @@
 <?php
 
+$token = csrf_token();
+
 $html[] = "<div class='container-xl'>";
 	$html[] = "<div class='response'>";
 		$html[] = getMsg();
@@ -8,12 +10,14 @@ $html[] = "</div>";
 
 
 $html[] = "<form action='".url("MessagesController@uploadAttachment")."' id='pdfUploadForm' method='POST' enctype='multipart/form-data'>";
+	$html[] = "<input type='hidden' name='csrf_token' value='".$token."' />";
 	$html[] = "<center>";
 		$html[] = "<input type='file' name='ImageBrowse[]' id='PdfBrowse' accept='application/pdf' />";
 	$html[] = "</center>";
 $html[] = "</form>";
 
 $html[] = "<form action='".url("MessagesController@uploadAttachment")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
+	$html[] = "<input type='hidden' name='csrf_token' value='".$token."' />";
 	$html[] = "<center>";
 		$html[] = "<input type='file' name='ImageBrowse[]' id='ImageBrowse' multiple='multiple' accept='image/jpg,image/jpeg,image/gif,image/png' />";
 	$html[] = "</center>";
@@ -104,6 +108,7 @@ $html[] = "<div class='row justify-content-center'>";
 						$html[] = "<input type='hidden' name='participants' id='participants' class='participants' value='".json_encode($data['participants_id'])."' />";
 						$html[] = "<input type='hidden' name='thread_id' id='thread_id' class='thread_id' value='$thread_id' />";
 						$html[] = "<input type='hidden' name='type' id='type' value='text' />";
+						$html[] = "<input type='hidden' name='csrf_token' value='".$token."' />";
 
 						$html[] = "<div class='card-footer'>";
 

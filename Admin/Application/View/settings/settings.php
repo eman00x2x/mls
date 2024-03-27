@@ -53,6 +53,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 							
 								$html[] = "<form id='form' action='' method='POST'>";
 									$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";
+									$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 
 									if(url()->contains("/system-settings")) {
 										$html[] = "<h2 class='mb-4'>System Settings</h2>";

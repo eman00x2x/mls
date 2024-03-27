@@ -2,7 +2,6 @@
 
 use Pecee\SimpleRouter\SimpleRouter as Router;
 
-Router::enableMultiRouteRendering(false);
 
 /** DASHBOARD ROUTES */
 

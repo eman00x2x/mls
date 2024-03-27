@@ -11,6 +11,7 @@ use Manage\Application\Controller\AuthenticatorController as Authenticator;
 use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Request as Request;
 use Pecee\Http\Middleware\IMiddleware;
+use Pecee\Http\Middleware\BaseCsrfVerifier;
 
 session_start();
 
@@ -54,40 +55,31 @@ class Middleware implements IMiddleware {
     {
 
 		Router::enableMultiRouteRendering(false);
+		Router::csrfVerifier(new BaseCsrfVerifier());
 
-		$request->user = Authenticator::getInstance()->monitor();
-		
+		Router::get(MANAGE_ALIAS . '/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeForm');
 		Router::get(MANAGE_ALIAS . '/register', 'RegistrationController@register');
 		Router::get(MANAGE_ALIAS . '/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
 		Router::get(MANAGE_ALIAS . '/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
+
+		Router::post(MANAGE_ALIAS . '/checkCredentials', 'AuthenticatorController@checkCredentials');
+		Router::post(MANAGE_ALIAS . '/register', 'RegistrationController@register');
+		Router::post(MANAGE_ALIAS . '/registerBroker', 'RegistrationController@registerBroker');
+		Router::post(MANAGE_ALIAS . '/registerAccount', 'RegistrationController@registerAccount');
+		Router::post(MANAGE_ALIAS . '/registerAccountSave', 'RegistrationController@saveNew');
+		Router::post(MANAGE_ALIAS . '/resetPassword', 'AuthenticatorController@saveNewPassword');
+		Router::post(MANAGE_ALIAS . '/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
 		
-		$template = "templates/login.template.php";
+		$request->user = Authenticator::getInstance()->monitor();
 
-		if(url()->contains("/2-step-verification-code")) {
-			Router::get('/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeForm');
-		}else if(url()->contains("/register")) {
-
-			Router::post(MANAGE_ALIAS . '/register', 'RegistrationController@register');
-			Router::post(MANAGE_ALIAS . '/registerBroker', 'RegistrationController@registerBroker');
-			Router::post(MANAGE_ALIAS . '/registerAccount', 'RegistrationController@registerAccount');
-			Router::post(MANAGE_ALIAS . '/registerAccountSave', 'RegistrationController@saveNew');
-			
-		}else if(url()->contains("/resetPassword")) {
-			Router::post(MANAGE_ALIAS . '/resetPassword', 'AuthenticatorController@saveNewPassword');
-		} else if(url()->contains("/forgotPassword")) {
-			Router::post(MANAGE_ALIAS . '/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
+		if($request->user['status'] == 0) {
+			Router::get(MANAGE_ALIAS . '/', 'AuthenticatorController@getLoginForm');
+			$request->setRewriteUrl(url("/"));
+			$template = "templates/login.template.php";
 		}else {
-
-			if($request->user['status'] == 0) {
-				Router::get(MANAGE_ALIAS . '/', 'AuthenticatorController@getLoginForm');
-				Router::post(MANAGE_ALIAS . '/checkCredentials', 'AuthenticatorController@checkCredentials');
-				$template = "templates/login.template.php";
-			}else {
-				SessionHandler::getInstance()->init();
-				require_once('routes.php');
-				$template = "templates/template.php";
-			}
-
+			SessionHandler::getInstance()->init();
+			require_once('routes.php');
+			$template = "templates/template.php";
 		}
 
 		Router::error(function(Request $request, \Exception $exception) {

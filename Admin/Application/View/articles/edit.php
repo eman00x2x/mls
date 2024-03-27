@@ -2,6 +2,7 @@
 
 $html[] = "<input type='hidden' id='photo_uploader' value='articles' />";
 $html[] = "<form action='".url("ArticlesController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
+	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 	$html[] = "<center>";
 		$html[] = "<input type='file' name='ImageBrowse' id='ImageBrowse' />";
 	$html[] = "</center>";
@@ -44,6 +45,7 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 
 				$html[] = "<form id='form' action='' method='POST'>";
 					$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";
+					$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 					
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-header'>";

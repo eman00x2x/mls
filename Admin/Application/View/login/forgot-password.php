@@ -10,6 +10,8 @@ $html[] = "<div class='d-flex flex-column'>";
 
 			$html[] = "<input type='hidden' id='save_url' value='".url("AuthenticatorController@sendPasswordResetLink")."' />";
 			$html[] = "<form id='form' class='card card-md' action='' method='POST' autocomplete='off'>";
+				$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
+				
 				$html[] = "<div class='card-body'>";
 					$html[] = "<h2 class='card-title text-center mb-4'>Forgot Password</h2>";
 					$html[] = "<p class='text-secondary mb-4'>Enter your email address and your password reset link will be emailed to you.</p>";

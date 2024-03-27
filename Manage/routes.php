@@ -2,8 +2,6 @@
 
 use Pecee\SimpleRouter\SimpleRouter as Router;
 
-Router::enableMultiRouteRendering(false);
-
 /** DASHBOARD ROUTES */
 
 Router::get(MANAGE_ALIAS.'/', 'DashboardController@index', ['as' => 'dashboard']);

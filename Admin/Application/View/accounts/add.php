@@ -21,6 +21,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 	$html[] = "<input type='hidden' name='api_key' id='api_key' value='' />";
 	$html[] = "<input type='hidden' name='message_keys[publicKey]' id='publicKey' value='' />";
 	$html[] = "<input type='hidden' name='message_keys[privateKey]' id='privateKey' value='' />";
+	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 
 	$html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 		$html[] = "<div class='col-lg-6 col-md-6 col-sm-12 col-12'>";

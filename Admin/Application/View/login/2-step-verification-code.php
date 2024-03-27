@@ -14,6 +14,7 @@ $html[] = "<div class='d-flex flex-column'>";
                     $html[] = "<p class='my-4 text-center'>Please confirm your account by entering the authorization code sent to <strong>+1 856-672-8552</strong>.</p>";
 
 					$html[] = "<form class='border-0' action='' method='POST'>";
+                        $html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 
                         $html[] = "<div class='my-5'>";
                             $html[] = "<div class='row g-4'>";

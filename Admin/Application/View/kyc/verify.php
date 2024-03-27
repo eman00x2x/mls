@@ -4,6 +4,7 @@ $html[] = "<input type='hidden' id='save_url' value='".url("KYCController@saveUp
 
 $html[] = "<input type='hidden' id='photo_uploader' value='accounts' />";
 $html[] = "<form action='".url("AccountsController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
+	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 	$html[] = "<center>";
 		$html[] = "<input type='file' name='ImageBrowse' id='ImageBrowse' />";
 	$html[] = "</center>";
@@ -16,7 +17,8 @@ $html[] = "<div class='container-xl'>";
 $html[] = "</div>";
 
 $html[] = "<form id='form' action='' method='POST'>";
-
+	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
+	
 	/** START PAGE BODY */
 	$html[] = "<div class='page-body'>";
 		$html[] = "<div class='container-xl'>";

@@ -4,6 +4,7 @@ $html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@s
 
 $html[] = "<input type='hidden' id='photo_uploader' value='accounts' />";
 $html[] = "<form action='".url("AccountsController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
+	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 	$html[] = "<center>";
 		$html[] = "<input type='file' name='ImageBrowse' id='ImageBrowse' />";
 	$html[] = "</center>";
@@ -38,13 +39,13 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 			$html[] = "<div class='container-xl'>";
 
 				$html[] = "<form id='form' action='' method='POST'>";
-
+					$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 					if($data['api_key'] == "") {
 						$html[] = "<input type='hidden' name='api_key' id='api_key' value='' />";
 					}
 
 					if($data['pin'] == "") {
-						$html[] = "<input type='hiddens' name='pin' id='pin' value='' />";
+						$html[] = "<input type='hidden' name='pin' id='pin' value='' />";
 					}
 
 					if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {

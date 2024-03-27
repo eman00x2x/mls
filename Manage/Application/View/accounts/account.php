@@ -41,12 +41,14 @@ $html[] = "<div class='page-body'>";
 
         $html[] = "<form id='form' action='' method='POST'>";
 
+            $html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
+
             if($data['api_key'] == "") {
 				$html[] = "<input type='hiddens' name='api_key' id='api_key' value='' />";
 			}
 
             if($data['pin'] == "") {
-				$html[] = "<input type='hiddens' name='pin' id='pin' value='' />";
+				$html[] = "<input type='hidden' name='pin' id='pin' value='' />";
 			}
 
             $html[] = "<input type='hidden' name='broker_prc_license_id' value='".$data['broker_prc_license_id']."' />";

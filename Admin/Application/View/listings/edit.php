@@ -1,15 +1,5 @@
 <?php
 
-$html[] = "<style type='text/css'>";
-	$html[] = "
-	input[type=file] {
-		position: absolute;
-		left: -10000px;
-		top: 0;
-		opacity: 0;
-	}";
-$html[] = "</style>";
-
 $html[] = "<div class='container-xl'>";
 	$html[] = "<div class='response'>";
 		$html[] = getMsg();
@@ -55,6 +45,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 				$html[] = "<input type='hidden' id='photo_uploader' value='listings' />";
 				$html[] = "<form action='".url("ListingsController@uploadImages", ["id" => $data['listing']['account_id']])."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
+					$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 					$html[] = "<center>";
 						$html[] = "<input type='file' name='ImageBrowse[]' id='ImageBrowse' multiple='multiple' accept='image/*' />";
 					$html[] = "</center>";
@@ -68,6 +59,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 					$html[] = "<input name='thumb_img' id='thumb_img' type='hidden' value='".$thumb_img."' />";
 					$html[] = "<input name='account_id' id='account_id' type='hidden' value='".$data['listing']['account_id']."' />";
 					$html[] = "<input name='last_modified' id='last_modified' type='hidden' value='".date("Y-m-d H:i:s",DATE_NOW)."' />";
+					$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-header pt-4'>";

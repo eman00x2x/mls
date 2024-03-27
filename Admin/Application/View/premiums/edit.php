@@ -13,6 +13,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 	$html[] = "<input type='hidden' name='_method' id='_method' value='post' />";
 	$html[] = "<input type='hidden' name='date_added' id='date_added' value='".$data['date_added']."' />";
 	$html[] = "<input type='hidden' name='status' id='status' value='active' />";
+	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 
 	$html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 		$html[] = "<div class='col-lg-6 col-md-6 col-12 m-auto '>";

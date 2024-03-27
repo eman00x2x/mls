@@ -21,6 +21,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 	$html[] = "<input type='hidden' name='account_id' id='account_id' value='".$data['account_id']."' />";
 	$html[] = "<input type='hidden' name='user_level' id='user_level' value='2' />";
 	$html[] = "<input type='hidden' name='date_added' id='date_added' value='".DATE_NOW."' />";
+	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 
 	$html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 		$html[] = "<div class='col-lg-6 col-md-6 col-12 m-auto '>";

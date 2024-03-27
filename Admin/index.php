@@ -3,10 +3,11 @@
 header("Access-Control-Allow-Origin: *");
 header('Cache-Control: no-cache');
 
-use Admin\Application\Controller\AuthenticatorController as Authenticator;
 use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Request as Request;
 use Pecee\Http\Middleware\IMiddleware;
+use Pecee\Http\Middleware\BaseCsrfVerifier;
+use Admin\Application\Controller\AuthenticatorController as Authenticator;
 
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start();
 
@@ -47,32 +48,27 @@ class Middleware implements IMiddleware {
     {
 
 		Router::enableMultiRouteRendering(false);
+		Router::csrfVerifier(new BaseCsrfVerifier());
 		
-		$request->user = Authenticator::getInstance()->monitor();
-		
+		Router::get(ADMIN_ALIAS . '/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeFrom');
 		Router::get(ADMIN_ALIAS . '/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
 		Router::get(ADMIN_ALIAS . '/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
 
-		$template = "templates/login.template.php";
-		
-		if(url()->contains("/2-step-verification-code")) {
-			Router::get(ADMIN_ALIAS . '/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeFrom');
-		}else if(url()->contains("/resetPassword")) {
-			Router::post(ADMIN_ALIAS . '/resetPassword', 'AuthenticatorController@saveNewPassword');
-		} else if(url()->contains("/forgotPassword")) {
-			Router::post(ADMIN_ALIAS . '/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
-		}else {
-		
-			if($request->user['status'] == 0) {
-				Router::get(ADMIN_ALIAS . '/', 'AuthenticatorController@getLoginForm');
-				Router::post(ADMIN_ALIAS . '/checkCredentials', 'AuthenticatorController@checkCredentials');
-				Router::request()->setRewriteUrl(url(ADMIN_ALIAS . '/'));
-				$template = "templates/login.template.php";
-			}else {
-				require_once('routes.php');
-				$template = "templates/template.php";
-			}
+		Router::post(ADMIN_ALIAS . '/checkCredentials', 'AuthenticatorController@checkCredentials');
+		Router::post(ADMIN_ALIAS . '/resetPassword', 'AuthenticatorController@saveNewPassword');
+		Router::post(ADMIN_ALIAS . '/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
 
+		$request->user = Authenticator::getInstance()->monitor();
+
+		if($request->user['status'] == 0) {
+
+			Router::get(ADMIN_ALIAS . '', 'AuthenticatorController@getLoginForm');
+
+			$request->setRewriteUrl(url("/"));
+			$template = "templates/login.template.php";
+		}else {
+			require_once('routes.php');
+			$template = "templates/template.php";
 		}
 
 		Router::error(function(Request $request, \Exception $exception) {
