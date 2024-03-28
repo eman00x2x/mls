@@ -407,15 +407,15 @@ class ListingsController extends \Main\Controller {
 
 		if($_POST['status'] == 1) {
 			$listing = $this->getModel("Listing");
-			$listing->select(" COUNT(listing_id) ")->where(" account_id = $account_id AND status = 1 ");
+			$listing->select(" COUNT(listing_id) as total ")->where(" account_id = $id AND status = 1 ");
 			$total_listing = $listing->getList();
 
-			if($total_listing >= $_SESSION['user_logged']['privileges']['max_post']) {
+			if($total_listing[0]['total'] >= $_SESSION['user_logged']['privileges']['max_post']) {
 				$this->getLibrary("Factory")->setMsg("This account has already reached the maximum number of listings; therefore, the property cannot activate", "warning");
 
 				return json_encode(
 					array(
-						"status" => $response['status'],
+						"status" => 2,
 						"message" => getMsg()
 					)
 				);
