@@ -86,7 +86,8 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<label class='form-label text-muted'>Title</label>";
 												$html[] = "<div class='input-icon mb-3'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-writing'></i></span>";
-													$html[] = "<input type='text' name='title' id='title' value=\"".$data['listing']['title']."\" class='form-control' placeholder='Title' />";
+													$html[] = "<input type='text' name='title' id='title' value=".($data['listing']['title'])." class='form-control' placeholder='Title' />";
+													
 												$html[] = "</div>";
 												$html[] = "<p class='p-0 text-info'>Do not include \"For Sale\", \"RFO\", \"Re-Sale\" in your title.</p>";
 											$html[] = "</div>";
@@ -106,8 +107,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 										
 									$html[] = "<div class='row py-3'>";
 										$html[] = "<div class='col-lg-8 col-md-8 col-12 m-auto'>";
-
-											
 
 											$html[] = "<div class='row'>";
 												$html[] = "<div class='col-lg-6 col-md-6'>";
