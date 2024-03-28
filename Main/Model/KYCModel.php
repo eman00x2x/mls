@@ -19,11 +19,12 @@ class KYCModel extends \Main\Model {
 		"Invalid ID",
 		"Blurred ID",
 		"Expired ID",
+		/* "Birth date does not match on ID", */
 		"ID expiration not indicated",
 		"ID details cannot be seen",
 		"ID too small",
 		"Low-resolution ID",
-		"Documents Accepted"
+		"Documents accepted"
 	];
 
 	function __construct() {

@@ -213,9 +213,10 @@ class DashboardController extends \Main\Controller {
 		}
 
 		
-		$traffic->where( implode(" AND ", $filter) )
-					->groupBy(" date ")
-						->orderBy(" created_at ASC ");
+		$traffic
+		->where( implode(" AND ", $filter) )
+			->groupBy(" date ")
+				->orderBy(" created_at ASC ");
 
         $data = $traffic->getList();
 
@@ -244,8 +245,8 @@ class DashboardController extends \Main\Controller {
 
 		$transactions
 		->select(" SUM(premium_price) as total, FROM_UNIXTIME(created_at, '%Y-%m') as date ")
-		->where(" created_at >= ".$date_helper['from']." AND created_at <= ".$date_helper['to']." ")
-		->groupBy(" date ");
+			->where(" created_at >= ".$date_helper['from']." AND created_at <= ".$date_helper['to']." ")
+				->groupBy(" date ");
 
 		$data = $transactions->getList();
 
@@ -268,7 +269,8 @@ class DashboardController extends \Main\Controller {
         $kyc = $this->getModel("KYC");
         $kyc->page['limit'] = 100000;
 
-        $kyc->select(" COUNT(kyc_status) as total, 
+        $kyc
+		->select(" COUNT(kyc_status) as total, 
             CASE
                 WHEN kyc_status = 0 THEN 'KYC Pending Verification'
                 WHEN kyc_status = 1 THEN 'KYC Verified'
@@ -288,8 +290,10 @@ class DashboardController extends \Main\Controller {
         $kyc = $this->getModel("KYC");
         $kyc->page['limit'] = 100000;
 
-        $kyc->select(" COUNT(verified_by) as total, verified_by ")
-            ->groupBy(" verified_by ");
+        $kyc
+		->select(" COUNT(verified_by) as total, verified_by ")
+            ->groupBy(" verified_by ")
+				->where(" verification_details != '' ");
 
         $data = $kyc->getList();
 
@@ -302,8 +306,14 @@ class DashboardController extends \Main\Controller {
         $kyc = $this->getModel("KYC");
         $kyc->page['limit'] = 100000;
 
-        $kyc->select(" COUNT(verification_details) as total, verification_details")
-            ->groupBy(" verification_details ");
+        $kyc
+		->select(" COUNT(verification_details) as total,
+			CASE 
+				WHEN verification_details = '' THEN 'Pending Verification' 
+				ELSE verification_details 
+			END as verification_details ")
+            ->groupBy(" verification_details ")
+				->orderBy(" kyc_status ASC ");
 
         $data = $kyc->getList();
 

@@ -67,6 +67,10 @@ $html[] = "<form id='form' action='' method='POST'>";
 						
 							$html[] = "</div>";
 
+							$html[] = "<div class='mt-5 text-start'>";
+								$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-calendar me-1'></i> Submitted at:</span> <strong>".date("d F Y", $data['created_at'])."</strong></div>";
+							$html[] = "</div>";
+							
 						$html[] = "</div>";
 					$html[] = "</div>";
 
@@ -87,7 +91,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='form-floating mb-3'>";
-								$html[] = "<input type='text' id='id_expiration_date' value='".$data['id_expiration_date']."' class='form-control-plaintext' />";
+								$html[] = "<input type='text' id='id_expiration_date' value='".date("d F Y", strtotime($data['id_expiration_date']))."' class='form-control-plaintext' />";
 								$html[] = "<label for='id_expiration_date'>ID Expiration Date</label>";
 							$html[] = "</div>";
 
