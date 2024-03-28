@@ -225,6 +225,21 @@ $(document).on('keypress','#search', function(e) {
 	}
 });
 
+$(document).on('focusout', '#search', function (e) {
+	
+	val = $(this).val();
+
+	if (val != '') {
+		url = $(this).data('url') + '?search=' + val;
+		title = 'Search: ' + val;
+
+		$('.request-container').css('opacity', .3);
+
+		window.location = url;
+	}
+
+});
+
 $(document).on('change', '#select_option', function () { 
 	if ($(this).prop('checked') == true) {
 		$('.selection').prop('checked', true);

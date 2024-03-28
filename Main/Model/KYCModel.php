@@ -4,6 +4,28 @@ namespace Main\Model;
 
 class KYCModel extends \Main\Model {
 
+	public $status_description = [
+		0 => "Pending Verification",
+		1 => "Verified",
+		2 => "Denied",
+		3 => "Expired"
+	];
+
+	public $verification_explanation = [
+		"Low-resolution selfie picture",
+		"Blurred selfie picture",
+		"Invalid selfie picture",
+		"Invalid selfie picture and ID",
+		"Invalid ID",
+		"Blurred ID",
+		"Expired ID",
+		"ID expiration not indicated",
+		"ID details cannot be seen",
+		"ID too small",
+		"Low-resolution ID",
+		"Documents Accepted"
+	];
+
 	function __construct() {
 		$this->table = "kyc";
 		$this->primary_key = "kyc_id";
@@ -28,6 +50,7 @@ class KYCModel extends \Main\Model {
 
 		$v->validateGeneral($data['documents']['kyc']['selfie'], "Upload your selfie");
 		$v->validateGeneral($data['documents']['kyc']['id'], "Upload your ID");
+		$v->validateDate($data['id_expiration_date'], "ID Expiration Date");
 
 		if($v->foundErrors()) {
 			return array(
@@ -138,7 +161,7 @@ class KYCModel extends \Main\Model {
 
 			$handle->file_safe_name 	= true;
 			$handle->image_resize         = true;
-			$handle->image_x              = 200;
+			$handle->image_x              = 800;
 			$handle->image_ratio_y        = true;
 
 			$handle->Process(ROOT."/Cdn/images/temporary/");

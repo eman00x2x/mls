@@ -233,8 +233,6 @@ class DashboardController extends \Main\Controller {
 
 		}
 
-		
-
 	}
 
 	function getChartEarnings($flag = "this_year"): void {
@@ -262,6 +260,102 @@ class DashboardController extends \Main\Controller {
 		$chart_data['series'] = json_encode($chart['series']);
 
 		$this->getLibrary("Charts")->getLineChart($chart_data, "getChartEarnings", "Earnings");
+
+	}
+
+	function getKycStatus() {
+
+        $kyc = $this->getModel("KYC");
+        $kyc->page['limit'] = 100000;
+
+        $kyc->select(" COUNT(kyc_status) as total, 
+            CASE
+                WHEN kyc_status = 0 THEN 'KYC Pending Verification'
+                WHEN kyc_status = 1 THEN 'KYC Verified'
+                WHEN kyc_status = 2 THEN 'KYC Verification Denied'
+                WHEN kyc_status = 3 THEN 'KYC ID Expired'
+            END as description
+        ")->groupBy(" kyc_status ");
+
+        $data = $kyc->getList();
+
+        return $data;
+
+    }
+
+    function getKycVerifierStatistics() {
+
+        $kyc = $this->getModel("KYC");
+        $kyc->page['limit'] = 100000;
+
+        $kyc->select(" COUNT(verified_by) as total, verified_by ")
+            ->groupBy(" verified_by ");
+
+        $data = $kyc->getList();
+
+        return $data;
+
+    }
+
+    function getKycStatistics() {
+
+        $kyc = $this->getModel("KYC");
+        $kyc->page['limit'] = 100000;
+
+        $kyc->select(" COUNT(verification_details) as total, verification_details")
+            ->groupBy(" verification_details ");
+
+        $data = $kyc->getList();
+
+        return $data;
+
+    }
+
+    function getKycDateVerified($flag = "this_year"): void {
+
+		$date_helper = \dateHelper($flag);
+
+		$kyc = $this->getModel("KYC");
+        $kyc->page['limit'] = 100000;
+
+		$filter[] = " verified_at >= ".$date_helper['from']." ";
+		$filter[] = " verified_at <= ".$date_helper['to']." ";
+
+		switch($flag) {
+			case 'this_year':
+				$kyc->select(" FROM_UNIXTIME(verified_at, '%Y-%m') as date, COUNT(kyc_id) as count ");
+				break;
+
+			case 'this_month':
+				$kyc->select(" FROM_UNIXTIME(verified_at, '%Y-%m-%d') as date, COUNT(kyc_id) as count ");
+				break;
+
+			case 'this_week':
+				$kyc->select(" FROM_UNIXTIME(verified_at, '%Y-%m-%d') as date, COUNT(kyc_id) as count ");
+				break;
+
+		}
+
+		
+		$kyc->where( implode(" AND ", $filter) )
+					->groupBy(" date ")
+						->orderBy(" verified_at ASC ");
+
+        $data = $kyc->getList();
+
+		if($data) {
+
+			for($i=0; $i<count($data); $i++) {
+				$chart['series'][] = $data[$i]['count'];
+				$chart['labels'][] = $data[$i]['date'];
+			}
+
+			$chart_data['labels'] = json_encode($chart['labels']);
+			$chart_data['series'] = json_encode($chart['series']);
+
+			$this->getLibrary("Charts")->getLineChart($chart_data, "getKycDateVerified_$flag", "Verification Dates");
+
+		}
 
 	}
 

@@ -43,6 +43,8 @@ $html[] = "<form id='form' action='' method='POST'>";
 					
 						$html[] = "<div class='card-body'>";
 
+							$html[] = "<p class='text-center'>Leave blank if you don't want to change your password.</p>";
+
 							$html[] = "<div class='mb-3'>";
 								$html[] = "<div class='row'>";
 									$html[] = "<div class='col-lg-3 col-md-3 col-6'>";

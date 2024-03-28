@@ -23,7 +23,7 @@ define("ALIAS","/mls/website");
 define("CDN","http://localhost/mls/cdn/");
 define("WEBDOMAIN","http://localhost/mls/website/");
 define("WEBADMIN","http://localhost/mls/webadmin/");
-define("CS","http://localhost/mls/webadmin/");
+define("CS","http://localhost/mls/cs/");
 define("ADMIN","http://localhost/mls/admin/");
 define("MANAGE","http://localhost/mls/manage/");
 
@@ -31,6 +31,7 @@ define("ADMIN_ALIAS","/mls/admin");
 define("WEB_ADMIN_ALIAS","/mls/webadmin");
 define("MANAGE_ALIAS","/mls/manage");
 define("WEB_ALIAS","/mls/website");
+define("CS_ALIAS","/mls/cs");
 
 /* define("CDN","http://192.168.254.250/mls/cdn/");
 define("WEBDOMAIN","http://192.168.254.250/mls/website/");

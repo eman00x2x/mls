@@ -28,7 +28,7 @@ class KYCController extends \Main\Controller {
 		$this->doc->setTitle("KYC Verfication");
 		
 		if(isset($_REQUEST['search'])) {
-			$filters[] = " (firstname LIKE '%".$_REQUEST['search']."%' OR lastname LIKE '%".$_REQUEST['search']."%' OR email LIKE '%".$_REQUEST['search']."%')";
+			$filters[] = " (account_name LIKE '%".$_REQUEST['search']."%')";
 			$uri['search'] = $_REQUEST['search'];
 		}
 
@@ -56,7 +56,7 @@ class KYCController extends \Main\Controller {
 
 	}
 
-	function verify($id) {
+	function view($id) {
 
 		$this->doc->setTitle("KYC Verfication");
 		$this->doc->addScript(CDN."tabler/dist/libs/fslightbox/index.js");
@@ -64,10 +64,14 @@ class KYCController extends \Main\Controller {
 		$kyc = $this->getModel("KYC");
 		$kyc->column['kyc_id'] = $id;
 		$kyc->join(" k JOIN #__accounts a ON k.account_id=a.account_id ");
-		/* $kyc->and(" kyc_status = 0 ");  */
+		
 		$data = $kyc->getById();
 
 		if($data) {
+
+			$data['kyc_status_description'] = $kyc->status_description;
+			$data['verification_explanation'] = $kyc->verification_explanation;
+
 			$this->setTemplate("kyc/verify.php");
 			return $this->getTemplate($data,$kyc);
 		}
@@ -86,7 +90,7 @@ class KYCController extends \Main\Controller {
 		$data = $kyc->getList();
 
 		if($data) {
-			$this->setTemplate("kyc/pending.php");
+			$this->setTemplate("kyc/status.php");
 		}else {
 
 			$kyc->and(" kyc_status = 1 ");
@@ -147,8 +151,8 @@ class KYCController extends \Main\Controller {
 		$_POST['created_at'] = $time;
 		
 		$kyc = $this->getModel("KYC");
-
-		$kyc->delete();
+		/** DELETE OLD DOCS */
+		$kyc->deleteKYC($account_id, "account_id");
 
 		$response = $kyc->saveNew($_POST);
 
@@ -185,10 +189,28 @@ class KYCController extends \Main\Controller {
 				
 			}
 
+			switch($_POST['verification_details']) {
+				case "Expired ID": $_POST['kyc_status'] = 3; break;
+				case "Documents Accepted": $_POST['kyc_status'] = 1; break;
+				default:
+					$_POST['kyc_status'] = 2;
+			}
+
 			$_POST['verified_by'] = $this->session['name'];
 			$_POST['verified_at'] = DATE_NOW;
 
 			$response = $kyc->save($kyc_id,$_POST);
+
+			$notification = $this->getModel("Notification");
+			$notification->saveNew([
+				"account_id" => $data['account_id'],
+				"content" => json_encode([
+					"title" => "KYC Verification ".$kyc->status_description[ $_POST['kyc_status'] ]." - ".$_POST['verification_details'],
+					"url" => url("/kyc"),
+				])
+			]);
+
+			
 			
 			$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 

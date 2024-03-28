@@ -384,12 +384,12 @@ class AccountsController extends \Main\Controller {
 				/** SEND EMAIL ACTIVATION LINK */
 				$mail = new Mailer();
 				$response = $mail
-					->build( $this->buildEmailActivationUrl($_POST) )
+					->build( $this->mailActivationUrl($_POST) )
 						->send([
 							"to" => [
 								$data['email']
 							]
-						], CONFIG['site_name'] . " Password Reset Link Request ");
+						], CONFIG['site_name'] . " Account activation ");
 
 			}else {
 				$accounts->deleteAccount($accountResponse['id']);
@@ -654,10 +654,7 @@ class AccountsController extends \Main\Controller {
 
 	}
 
-	 function buildEmailActivationUrl($data) {
-
-		/* $html[] = "<p>Hi ".$data['name']."</p>"; */
-		$html[] = "<p>Thank you for registering in ".CONFIG['site_name'].", your activation url can be found below.</p>";
+	 function mailActivationUrl($data) {
 
 		$activation_url_data = json_encode([
 			"account_id" => $data['account_id'],
@@ -666,14 +663,10 @@ class AccountsController extends \Main\Controller {
 		]);
 
 		$activation_code = base64_encode($activation_url_data);
+		$data['url'] = rtrim(MANAGE, "/") . rtrim(url( "AuthenticatorController@accountActivation", [ "code" => $activation_code ] ), "/");
 
-		$url = rtrim(MANAGE, "/") . rtrim(url( "AuthenticatorController@accountActivation", [ "code" => $activation_code ] ), "/");
-
-		$html[] = "<br/><a href='" . $url . "'>$url</a><br/>";
-
-		$html[] = "<br/><p>Click or copy the url above to activate your account.</p>";
-
-		return implode("", $html);
+		$this->setTemplate("accounts/MAIL_activation.php");
+		return $this->getTemplate($data);
 
 	}
 	

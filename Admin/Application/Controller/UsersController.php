@@ -190,14 +190,15 @@ class UsersController extends \Main\Controller {
 
 		if($user_id) {
 
+			$user = $this->getModel("User");
+
 			$accounts = $this->getModel("Account");
 			$accounts->select(" *, (SELECT COUNT(*) FROM #__users WHERE account_id = $account_id) as total_users");
 			$accounts->column['account_id'] = $account_id;
 			$data = $accounts->getById();
 
-			if($_POST['user_status'] == "active") {
+			if(isset($_POST['user_status']) && $_POST['user_status'] == "active") {
 
-				$user = $this->getModel("User");
 				$user->select(" COUNT(user_id) as counted ")->where(" account_id = $account_id AND user_status = 'active' ");
 				$total_user = $user->getList();
 

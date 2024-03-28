@@ -20,7 +20,7 @@ Router::post(ADMIN_ALIAS.'/accounts/uploadPhoto', 'AccountsController@uploadPhot
 
 /** KYC ROUTES */
 Router::get(ADMIN_ALIAS.'/kyc', 'KYCController@index', ['as' => 'kycIndex']);
-Router::get(ADMIN_ALIAS.'/kyc/{id}/verify', 'KYCController@verify', ['as' => 'verify'])->where([ 'id' => '[0-9]+' ]);
+Router::get(ADMIN_ALIAS.'/kyc/{id}/view', 'KYCController@view', ['as' => 'view'])->where([ 'id' => '[0-9]+' ]);
 
 Router::post(ADMIN_ALIAS.'/kyc/{id}/verify', 'KYCController@saveUpdate', ['as' => 'saveKYCUpdate'])->where([ 'kyc_id' => '[0-9]+' ]);
 

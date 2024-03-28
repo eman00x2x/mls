@@ -34,7 +34,7 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<div class='box-container mb-3'>";
 				
 					$html[] = "<div class='search-box'>";
-						$html[] = "<input type='text' name='search' id='search' value='' placeholder='Search Account Name' data-url='".url("KYCController@index")."' />";
+						$html[] = "<input type='text' name='search' id='search' value='' placeholder='Search First Name or Last Name' data-url='".url("KYCController@index")."' />";
 						$html[] = "<a href='".url("KYCController@index")."' class='clearFilter'>CLEAR FILTER</a>";
 					$html[] = "</div>";
 
@@ -47,7 +47,7 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<th class='text-center w-1'>#</th>";
 									$html[] = "<th class='text-center w-1'>Account ID</th>";
 									$html[] = "<th>Name</th>";
-									$html[] = "<th class='text-center'>KYC Status</th>";
+									$html[] = "<th class=''>KYC Status</th>";
 									$html[] = "<th>Verified By</th>";
 									$html[] = "<th>Verified at</th>";
 									$html[] = "<th>Created at</th>";
@@ -57,20 +57,28 @@ $html[] = "<div class='page-body'>";
 							
 							$html[] = "<tbody>";
 							for($i=0; $i<count($data); $i++) { $c++;
+
+								$kyc_status_description = [
+									0 => "<span class='text-warning'>Pending Verification</span>",
+									1 => "<span class='text-success'>Verified</span>",
+									2 => "<span class='text-info fw-bold'>Denied</span>",
+									3 => "<span class='text-danger fw-bold'>Expired</span>"
+								];
 								
 								$html[] = "<tr>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-									$html[] = "<td class='align-middle text-center'><a class='text-decoration-none' href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."'>".$data[$i]['account_id']."</a></td>";
-									$html[] = "<td class='align-middle'><a class='text-decoration-none' href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."' class='ajax text-inherit'>".$data[$i]['account_name']['prefix']." ".$data[$i]['account_name']['firstname']." ".$data[$i]['account_name']['middlename']." ".$data[$i]['account_name']['lastname']." ".$data[$i]['account_name']['suffix']."</a></td>";
+									$html[] = "<td class='align-middle text-center'><a class='text-decoration-none' href='".url("KYCController@view",["id" => $data[$i]['kyc_id']])."'>".$data[$i]['account_id']."</a></td>";
+									$html[] = "<td class='align-middle'><a class='text-decoration-none' href='".url("KYCController@view",["id" => $data[$i]['kyc_id']])."' class='ajax text-inherit'>".$data[$i]['account_name']['prefix']." ".$data[$i]['account_name']['firstname']." ".$data[$i]['account_name']['middlename']." ".$data[$i]['account_name']['lastname']." ".$data[$i]['account_name']['suffix']."</a></td>";
 									
-									$html[] = "<td class='align-middle text-center'>".
-										($data[$i]['kyc_status'] == 1 ? "<span class='text-success '>Verified</span>" : "<span class='text-warning'>Pending</span>")."</td>";
-										$html[] = "<td class='align-middle'><a class='text-decoration-none' href='".url("KYCController@verify",["id" => $data[$i]['account_id']])."'>".$data[$i]['verified_by']."</a></td>";
+									$html[] = "<td class='align-middle'>".$kyc_status_description[ $data[$i]['kyc_status'] ]." - ".$data[$i]['verification_details']."</td>";
+									$html[] = "<td class='align-middle'><a class='text-decoration-none' href='".url("KYCController@view",["id" => $data[$i]['kyc_id']])."'>".$data[$i]['verified_by']."</a></td>";
 									$html[] = "<td class='align-middle'>".($data[$i]['verified_at'] > 0 ? date("F d, Y", $data[$i]['verified_at']) : '')."</td>";
 									$html[] = "<td class='align-middle'>".date("F d, Y", $data[$i]['created_at'])."</td>";
 									
 									$html[] = "<td class='text-center'>";
-										$html[] = "<a class='btn btn-primary ajax' href='".url("KYCController@verify",["id" => $data[$i]['kyc_id']])."'><i class='ti ti-lock me-1'></i> Verify</a>";
+										if($data[$i]['kyc_status'] == 0) {
+											$html[] = "<a class='btn btn-primary ajax' href='".url("KYCController@view",["id" => $data[$i]['kyc_id']])."'><i class='ti ti-lock me-1'></i> Verify</a>";
+										}
 									$html[] = "</td>";
 									
 								$html[] = "</tr>";

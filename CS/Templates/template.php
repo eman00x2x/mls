@@ -39,23 +39,13 @@
 									</a>
                 				</li>
 
-								<?php if($_SESSION['user_logged']['permissions']['articles']['access']) { ?>
-									<li class="nav-item <?php echo (url()->contains("/articles")) ? "active" : ""; ?>">
-										<a class="nav-link" href="<?php echo url("ArticlesController@index"); ?>">
-											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-edit'></i></span>
-											<span class="nav-link-title">Articles</span>
-										</a>
-									</li>
-								<?php } ?>
-
-								<?php if($_SESSION['user_logged']['permissions']['web_settings']['access']) { ?>
-									<li class="nav-item <?php echo (url()->contains("/settings")) ? "active" : ""; ?>">
-										<a class="nav-link" href="<?php echo url("SettingsController@webSettings",["page" => "common-settings"]); ?>">
-											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-settings-cog'></i></span>
-											<span class="nav-link-title">Settings</span>
-										</a>
-									</li>
-								<?php } ?>
+								<li class="nav-item <?php echo (url()->contains("/kyc")) ? "active" : ""; ?>">
+									<a class="nav-link" href="<?php echo url("KYCController@index"); ?>">
+										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-user-circle'></i></span>
+										<span class="nav-link-title">KYC</span>
+									</a>
+								</li>
+								
 
 							</ul>
 						</div>
@@ -76,7 +66,7 @@
 								</a>
 								<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
 									<a href="<?php echo url("UsersController@changePassword", ["id" => $_SESSION['user_logged']['user_id']]); ?>" class="dropdown-item"><i class='ti ti-key me-2'></i> Change Password</a>
-									<a href="<?php echo WEBADMIN; ?>?logout" class="dropdown-item"><i class='ti ti-logout-2 me-2'></i> Logout</a>
+									<a href="<?php echo CS; ?>?logout" class="dropdown-item"><i class='ti ti-logout-2 me-2'></i> Logout</a>
 								</div>
 							</div>
 

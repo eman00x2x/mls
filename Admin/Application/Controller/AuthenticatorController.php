@@ -180,17 +180,16 @@ class AuthenticatorController extends \Main\Controller
 				$.post($('#save_url').val(), $('#form').serialize(), function (data, status) {
 
 					var response = JSON.parse(data);
-					
+					console.log(response);
 					if (response.status == 1) {
 						if ($('#reference_url').val() !== undefined) {
 							$('.response').html(\"<img src='" . CDN . "images/loader.gif' /> Please wait while you are redirecting...\");
 							window.location = $('#reference_url').val();
-							exit();
 						}
+					}else {
+						$('#form').show();
+						$('.response').html(response.message);
 					}
-
-					$('#form').show();
-					$('.response').html(response.message);
 
 				});
 
@@ -336,14 +335,20 @@ class AuthenticatorController extends \Main\Controller
 					];
 				}
 
-				$this->recordLogin($this->setPrivileges($data));
+				if($this->recordLogin($this->setPrivileges($data))) {
+					$response = [
+						"status" => 1
+					];
+				}
 
+			}else {
 				$response = [
-					"status" => 1,
-					"message" => ""
+					"status" => 2,
+					"type" => "error",
+					"message" => getMsg()
 				];
-
 			}
+
 		}else {
 			$this->getLibrary("Factory")->setMsg("Invalid Username or Password.","error");
 			$response = [
@@ -361,7 +366,7 @@ class AuthenticatorController extends \Main\Controller
 
 		$user_login = $this->getModel("UserLogin");
 		$user_login->and(" user_id = ".$data['user_id']);
-		$user_login->where(" status = 1 ");
+		$user_login->where(" status = 'active' ");
 		
 		if($user_login->getList()) {
 
@@ -447,9 +452,6 @@ class AuthenticatorController extends \Main\Controller
 				$this->getLibrary("Factory")->setMsg("This account have been blocked by the system administrator.","warning");
 				return false;
 				break;
-			
-			default:
-				return true;
 		}
 
 		/** CHECK USER STATUS */

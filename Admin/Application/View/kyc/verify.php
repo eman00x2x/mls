@@ -16,6 +16,24 @@ $html[] = "<div class='container-xl'>";
 	$html[] = "</div>";
 $html[] = "</div>";
 
+$html[] = "<div class='page-header d-print-none text-white'>";
+	$html[] = "<div class='container-xl'>";
+
+		$html[] = "<div class='row g-2 '>";
+			$html[] = "<div class='col'>";
+				$html[] = "<h1 class='page-title'><i class='ti ti-user me-2'></i> KYC Verification</h1>";
+			$html[] = "</div>";
+
+			$html[] = "<div class='col-auto ms-auto d-print-none'>";
+				$html[] = "<div class='d-none d-sm-inline'>";
+					
+				$html[] = "</div>";
+			$html[] = "</div>";
+		$html[] = "</div>";
+
+	$html[] = "</div>";
+$html[] = "</div>";
+
 $html[] = "<form id='form' action='' method='POST'>";
 	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 	
@@ -23,107 +41,110 @@ $html[] = "<form id='form' action='' method='POST'>";
 	$html[] = "<div class='page-body'>";
 		$html[] = "<div class='container-xl'>";
 
-			$html[] = "<div class='row justify-content-center'>";
-				$html[] = "<div class='col-md-6 col-12'>";
+			$html[] = "<div class='row row-deck row-cards'>";
+				$html[] = "<div class='col-lg-3 col-md-6 col-sm-12 col-12'>";
 
 					$html[] = "<div class='card mb-3'>";
-						$html[] = "<div class='card-body'>";
 
-							$html[] = "<h1 class='display-5'>Customer Verification</h1>";
+						$html[] = "<div class='card-header'>";
+							$html[] = "<h1 class='card-title'>Selfie Picture</h1>";
+						$html[] = "</div>";
 
-							if($data['kyc_status'] == 1) {
-								$html[] = "<div class='text-center'>";
-									$html[] = "<img src='".CDN."images/tick_48.png' style='width:64px;' />";
+						$html[] = "<div class='card-body text-center'>";
 
-									$html[] = "<div class='mb-3 mt-3'>";
-										$html[] = "<a data-fslightbox href='".$data['documents']['kyc']['selfie']."'>";
-											$html[] = "<span class='avatar avatar-xxxl' style='background-image:url(".$data['documents']['kyc']['selfie'].")'></span>";
-										$html[] = "</a>";
-									$html[] = "</div>";
+							$html[] = "<div class='mb-4'>";
+								$html[] = "<a data-fslightbox href='".$data['documents']['kyc']['selfie']."'>";
+									$html[] = "<span class='avatar avatar-xxxl rounded' style='background-image: url(".$data['documents']['kyc']['selfie'].")'></span>";
+								$html[] = "</a>";
+							$html[] = "</div>";
 
-									$html[] = "<p class='fs-18'>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']." is already verified!</p>";
+							$html[] = "<div class='mb-3 text-start'>";
+								$html[] = "<div class='card-title'><i class='ti ti-address-book'></i> Personal Information</div>";
 
-								$html[] = "</div>";
-							}else {
-								
-								$html[] = "<ul class='list-group list-group-flush mb-4'>";
-									$html[] = "<li class='list-group-item py-2 m-0'>";
-										$html[] = "<span><i class='ti ti-address-book'></i> Personal Information</span>";
-
-										$html[] = "<div class='row'>";
-											$html[] = "<div class='col-auto'>";
-												$html[] = "<div class='ms-5 mt-3 '>";
-													$html[] = "<table class='table table-sm table-borderless'>";
-													$html[] = "<tr>";
-														$html[] = "<td>Full Name</td>";
-														$html[] = "<td class='fw-bold'>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</td>";
-													$html[] = "</tr>";
-													$html[] = "<tr>";
-														$html[] = "<td>Birth Date</td>";
-														$html[] = "<td class='fw-bold'>".date("d M Y",strtotime($data['birthdate']))."</td>";
-													$html[] = "</tr>";
-													$html[] = "<tr>";
-														$html[] = "<td>Email Address</td>";
-														$html[] = "<td class='fw-bold'>".$data['email']."</td>";
-													$html[] = "</tr>";
-													$html[] = "</table>";
-
-												$html[] = "</div>";
-											$html[] = "</div>";
-										$html[] = "</div>";
-
-									$html[] = "</li>";
-									$html[] = "<li class='list-group-item py-2 m-0'>";
-										$html[] = "<span class='mb-3 d-block'><i class='ti ti-file-check'></i> Documents</span>";
-
-											$html[] = "<div class='mb-3'>";
-												$html[] = "<a data-fslightbox href='".$data['documents']['kyc']['selfie']."'>";
-													$html[] = "<span class='avatar avatar-xxxl' style='background-image:url(".$data['documents']['kyc']['selfie'].")'></span>";
-												$html[] = "</a>";
-											$html[] = "</div>";
-
-											$html[] = "<div class='mb-3'>";
-												$html[] = "<a data-fslightbox href='".$data['documents']['kyc']['id']."'>";
-													$html[] = "<span class='avatar avatar-xxxl' style='width:430px; background-image:url(".$data['documents']['kyc']['id'].")'></span>";
-												$html[] = "</a>";
-											$html[] = "</div>";
-										
-									$html[] = "</li>";
-
-									$html[] = "<li class='list-group-item py-2 m-0'>";
-										$html[] = "<span class='mt-3 mb-3 d-block'><i class='ti ti-address-book'></i> Other Information</span>";
-
-										$html[] = "<div class='mb-3'>";
-											$html[] = "<label class='form-label'>ID Expiration Date</label>";
-											$html[] = "<input type='date' name='id_expiration_date' value='".$data['id_expiration_date']."' class='form-control' />";
-										$html[] = "</div>";
-
-										$html[] = "<div class='mb-4'>";
-											$html[] = "<label class='form-label'>KYC Staus</label>";
-											$html[] = "<select name='kyc_status' class='form-select'>";
-												foreach([1=>"Accept Docs", "2" => "Denied Docs"] as $key => $value) {
-													$sel = $data['kyc_status'] == $key ? "selected" : "";
-													$html[] = "<option value='$key' $sel>$value</option>";
-												}
-												
-											$html[] = "</select>";
-										$html[] = "</div>";
-
-									$html[] = "</li>";
-
-								$html[] = "</ul>";
-
-								$html[] = "<div class='mb-3'>";
-									$html[] = "<div class='btn-list'>";
-										$html[] = "<span class='btn btn-secondary'><i class='ti ti-x me-1'></i> cancel</span>";
-										$html[] = "<span class='btn btn-primary btn-save'><i class='ti ti-device-floppy me-1'></i> Save KYC</span>";
-									$html[] = "</div>";
-								$html[] = "</div>";
-							}
-							
+								$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-file me-1'></i> Full Name:</span> <strong>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</strong></div>";
+								$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-calendar me-1'></i> Birth Date:</span> <strong>".date("d M Y",strtotime($data['birthdate']))."</strong></div>";
+								$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-mail me-1'></i> Email:</span> <strong>".$data['email']."</strong></div>";
+						
+							$html[] = "</div>";
 
 						$html[] = "</div>";
 					$html[] = "</div>";
+
+				$html[] = "</div>";
+				$html[] = "<div class='col-lg-5 col-md-6 col-sm-12 col-12'>";
+
+					$html[] = "<div class='card mb-3'>";
+						$html[] = "<div class='card-header'>";
+							$html[] = "<h1 class='card-title'>Identification Card</h1>";
+						$html[] = "</div>";
+
+						$html[] = "<div class='card-body'>";
+
+							$html[] = "<div class='mb-4 overflow-auto'>";
+								$html[] = "<a data-fslightbox href='".$data['documents']['kyc']['id']."'>";
+									$html[] = "<span class='avatar avatar-xxxl' style='width:430px; background-image:url(".$data['documents']['kyc']['id'].")'></span>";
+								$html[] = "</a>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='form-floating mb-3'>";
+								$html[] = "<input type='text' id='id_expiration_date' value='".$data['id_expiration_date']."' class='form-control-plaintext' />";
+								$html[] = "<label for='id_expiration_date'>ID Expiration Date</label>";
+							$html[] = "</div>";
+
+						/* $html[] = "</div>";
+
+					$html[] = "</div>";
+				$html[] = "</div>";
+
+				$html[] = "<div class='col-lg-4 col-md-4 col-sm-12 col-12'>";
+
+					$html[] = "<div class='card mb-3'>";
+						$html[] = "<div class='card-header'>";
+							$html[] = "<h1 class='card-title'>Verification</h1>";
+						$html[] = "</div>";
+
+						$html[] = "<div class='card-body'>"; */
+
+							if($data['kyc_status'] == 0) {
+
+								$html[] = "<div class='form-floating mb-4'>";
+									$html[] = "<select name='verification_details' id='verification_details' class='form-select fs-22' style='height: auto;'>";
+
+										foreach($data['verification_explanation'] as $value) {
+											$sel = $data['verification_details'] == $value ? "selected" : "";
+											$html[] = "<option value='$value' $sel>$value</option>";
+										}
+									$html[] = "</select>";
+									$html[] = "<label for='verification_details'>Verification Explanation</label>";
+								$html[] = "</div>";
+
+								$html[] = "<div class='mb-3'>";
+									$html[] = "<div class='d-flex justify-content-between'>";
+										$html[] = "<a href='".url("KYCController@index")."' class='btn btn-light'><i class='ti ti-x me-1'></i> cancel</a>";
+										$html[] = "<span class='btn btn-primary btn-save'><i class='ti ti-device-floppy me-1'></i> Save KYC</span>";
+									$html[] = "</div>";
+								$html[] = "</div>";
+
+							}else {
+
+								$html[] = "<div class='form-floating mb-3'>";
+									$html[] = "<input type='text' id='status' value='".$data['kyc_status_description'][ $data['kyc_status'] ]."' class='form-control-plaintext fs-22' />";
+									$html[] = "<label for='status'>KYC Status</label>";
+								$html[] = "</div>";
+
+								if($data['verification_details'] != "") {
+									$html[] = "<div class='form-floating mb-3'>";
+										$html[] = "<input type='text' id='verification_details' value='".$data['verification_details']."' class='form-control-plaintext fs-22' />";
+										$html[] = "<label for='verification_details'>Verification Details</label>";
+									$html[] = "</div>";
+								}
+
+							}
+
+						$html[] = "</div>";
+
+					$html[] = "</div>";
+
 				$html[] = "</div>";
 			$html[] = "</div>";
 
@@ -132,3 +153,5 @@ $html[] = "<form id='form' action='' method='POST'>";
 	/** END PAGE */
 		
 $html[] = "</form>";
+
+$html[] = "<script type='text/javascript' src='".CDN."js/fslightbox/fslightbox.js'></script>";

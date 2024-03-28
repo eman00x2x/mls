@@ -92,9 +92,11 @@ class AccountModel extends \Main\Model {
 
 			$v = $this->getValidator();
 
-			$name = json_decode($data['account_name'],true);
-			$v->validateGeneral($name['firstname'],"First Name");
-			$v->validateGeneral($name['lastname'],"Last Name");
+			if(isset($data['account_name'])) {
+				$name = json_decode($data['account_name'],true);
+				$v->validateGeneral($name['firstname'],"First Name");
+				$v->validateGeneral($name['lastname'],"Last Name");
+			}
 
 			if(isset($data['email'])) {
 				$v->validateEmail($data['email'],"Email Address");

@@ -1,7 +1,21 @@
 <?php
 
-$html[] = "<input type='hidden' name='save_url' id='save_url' value='".ADMIN_ALIAS."/checkCredentials' />";
-$html[] = "<input type='hidden' name='reference_url' id='reference_url' value='".ADMIN_ALIAS."/' />";
+$server_name = $_SERVER['SERVER_NAME'];
+
+if(url()->contains("/webadmin")) { $server_name = WEBADMIN; }
+if(url()->contains("/admin")) { $server_name = ADMIN; }
+if(url()->contains("/cs")) { $server_name = CS; }
+
+switch($server_name) {
+	case WEBADMIN: $title = "Website Administrator Login"; break;
+	case ADMIN: $title = "Administrator Login"; break;
+	case CS: $title = "Customer Service Login"; break;
+	default: $title = "Login to your account";
+}
+
+
+$html[] = "<input type='hidden' name='save_url' id='save_url' value='".$server_name."checkCredentials' />";
+$html[] = "<input type='hidden' name='reference_url' id='reference_url' value='".$server_name."' />";
 
 $html[] = "<div class='d-flex flex-column'>";
 	$html[] = "<div class='page page-center'>";
@@ -18,7 +32,7 @@ $html[] = "<div class='d-flex flex-column'>";
 						$html[] = "<input type='hidden' name='_method' value='POST' />";
 						$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 
-						$html[] = "<h2 class='h2 text-center mb-4'>Login to your account</h2>";
+						$html[] = "<h2 class='h2 text-center mb-4'>$title</h2>";
 						
 						$html[] = "<div class='mb-3 '>";
 							$html[] = "<label class='form-label'><i class='ti ti-user-hexagon'></i> Email</label>";

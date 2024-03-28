@@ -7,7 +7,7 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 use Library\CsrfVerifier;
-use Webadmin\Application\Controller\AuthenticatorController as Authenticator;
+use CS\Application\Controller\AuthenticatorController as Authenticator;
 use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Request as Request;
 use Pecee\Http\Middleware\IMiddleware;
@@ -37,7 +37,6 @@ function autoloader($class) {
 	}else if (file_exists($file = ROOT.'/'.str_replace('\\', '/', $class).'.php')) {
 		require_once($file);
 	}
-
 }
 
 spl_autoload_register('autoloader');
@@ -57,18 +56,18 @@ class Middleware implements IMiddleware {
 		Router::enableMultiRouteRendering(false);
 		Router::csrfVerifier($verifier);
 
-		Router::get(WEB_ADMIN_ALIAS . '/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeForm');
-		Router::get(WEB_ADMIN_ALIAS . '/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
-		Router::get(WEB_ADMIN_ALIAS . '/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
+		Router::get(CS_ALIAS . '/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeForm');
+		Router::get(CS_ALIAS . '/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
+		Router::get(CS_ALIAS . '/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
 
-		Router::post(WEB_ADMIN_ALIAS . '/checkCredentials', 'AuthenticatorController@checkCredentials');
-		Router::post(WEB_ADMIN_ALIAS . '/saveNewPassword', 'AuthenticatorController@saveNewPassword');
-		Router::post(WEB_ADMIN_ALIAS . '/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
+		Router::post(CS_ALIAS . '/checkCredentials', 'AuthenticatorController@checkCredentials');
+		Router::post(CS_ALIAS . '/saveNewPassword', 'AuthenticatorController@saveNewPassword');
+		Router::post(CS_ALIAS . '/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
 		
 		$request->user = Authenticator::getInstance()->monitor();
 
 		if($request->user['status'] == 0) {
-			Router::get(WEB_ADMIN_ALIAS, 'AuthenticatorController@getLoginForm');
+			Router::get(CS_ALIAS, 'AuthenticatorController@getLoginForm');
 			$request->setRewriteUrl(url(""));
 			$template = "templates/login.template.php";
 		}else {
@@ -80,7 +79,7 @@ class Middleware implements IMiddleware {
 			$request->setRewriteCallback('ErrorsController@notFound');
 		});
 
-		Router::setDefaultNamespace('\Webadmin\Application\Controller');
+		Router::setDefaultNamespace('\CS\Application\Controller');
 		$content = Router::start();
 
 		if(AJAX_REQUEST === true) {

@@ -30,9 +30,10 @@ $html[] = "<form id='form' action='' method='POST'>";
 				$html[] = "<div class='col-md-6 col-12'>";
 
 					$html[] = "<div class='card mb-3'>";
+						$html[] = "<div class='card-header'>";
+							$html[] = "<h1 class='card-title'>Identity Verification</h1>";
+						$html[] = "</div>";
 						$html[] = "<div class='card-body'>";
-
-							$html[] = "<h1 class='display-5'>Identity Verification</h1>";
 							$html[] = "<p><i class='ti ti-camera'></i> Take a selfie photo and upload</p>";
 
 							$html[] = "<p>Example</p>";
@@ -65,8 +66,14 @@ $html[] = "<form id='form' action='' method='POST'>";
 
 								$html[] = "<div class=''>";
 									$html[] = "<span class='avatar avatar-xxl photo-preview id-container' style='width:300px; background-image: url(".CDN."images/reb-sample-license.jpg)' data-photo-container='id-container'></span>";
-									$html[] = "<small class='d-block mt-2 text-center fw-bold'>UPLOAD REAL ESTATE<br/> BROKER LICENSE (FRONT) HERE</small>";
+									$html[] = "<small class='d-block mt-2 text-center fw-bold'>UPLOAD REAL ESTATE LICENSE (FRONT) HERE</small>";
 								$html[] = "</div>";
+
+							$html[] = "</div>";
+
+							$html[] = "<div class='mb-4'>";
+								$html[] = "<label class='form-label'>ID Expiration Date</label>";
+								$html[] = "<input type='date' name='id_expiration_date' value='' class='form-control' />";
 							$html[] = "</div>";
 
 							$html[] = "<p class='text-muted mb-4'><i class='ti ti-lock'></i> This information is used for personal verification only and kept private and confidential.</p>";

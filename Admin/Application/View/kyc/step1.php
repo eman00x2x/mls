@@ -27,10 +27,13 @@ $html[] = "<form id='form' action='' method='POST'>";
 				$html[] = "<div class='col-md-6 col-12'>";
 
 					$html[] = "<div class='card mb-3'>";
+
+						/* $html[] = "<div class='card-header'>";
+							$html[] = "<h1 class='card-title'>Identity Verification</h1>";
+						$html[] = "</div>"; */
+
 						$html[] = "<div class='card-body'>";
-
-
-							$html[] = "<h1 class='display-5'>Let's get you verified!</h1>";
+							$html[] = "<h1 class='display-5 mb-4'>Let's get you verified!</h1>";
 							$html[] = "<p><i class='ti ti-checklist'></i> Complete the following steps to verify your account.</p>";
 
 							$html[] = "<ul class='list-group list-group-flush mb-4'>";
@@ -43,7 +46,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 												$html[] = "<table class='table table-sm table-borderless'>";
 												$html[] = "<tr>";
 													$html[] = "<td>Full Name</td>";
-													$html[] = "<td class='fw-bold'>".$data['firstname']." ".$data['lastname']."</td>";
+													$html[] = "<td class='fw-bold'>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</td>";
 												$html[] = "</tr>";
 												$html[] = "<tr>";
 													$html[] = "<td>Birth Date</td>";
@@ -62,7 +65,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 									$html[] = "<p class='text-muted'>Is the information above correct? This information must be shown on your ID card. If not, please update your <a href='".url("AccountsController@index")."'>profile</a></p>";
 
 								$html[] = "</li>";
-								$html[] = "<li class='list-group-item py-2 m-0'>";
+								$html[] = "<li class='list-group-item pt-4 m-0'>";
 									$html[] = "<span><i class='ti ti-file-check'></i> Document Verification</span>";
 									$html[] = "<p class='text-muted'>Upload your selfie and Real Estate Broker License ID</p>";
 								$html[] = "</li>";
