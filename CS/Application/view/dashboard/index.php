@@ -75,24 +75,26 @@ $html[] = "<div class='page-body'>";
 					$html[] = "<div class='card-body'>";
 						$html[] = "<h3 class='card-title'>KYC Verification Statistics</h3>";
 						
-						$html[] = "<table class='table'>";
-						$html[] = "<thead>";
-							$html[] = "<th>Details</th>";
-							$html[] = "<th class='text-center'>Total</th>";
-						$html[] = "</thead>";
+						$html[] = "<div class='table-responsive' style='max-height:350px; overflow-y: auto;'>";
+							$html[] = "<table class='table'>";
+							$html[] = "<thead>";
+								$html[] = "<th>Details</th>";
+								$html[] = "<th class='text-center'>Total</th>";
+							$html[] = "</thead>";
 
-						if($data['kyc_statistics']) {
-							$html[] = "<tbody>";
-							for($i=0; $i<count($data['kyc_statistics']); $i++) {
-								$html[] = "<tr>";
-									$html[] = "<td>".$data['kyc_statistics'][$i]['verification_details']."</td>";
-									$html[] = "<td class='text-center'>".$data['kyc_statistics'][$i]['total']."</td>";
-								$html[] = "</tr>";
+							if($data['kyc_statistics']) {
+								$html[] = "<tbody>";
+								for($i=0; $i<count($data['kyc_statistics']); $i++) {
+									$html[] = "<tr>";
+										$html[] = "<td>".$data['kyc_statistics'][$i]['verification_details']."</td>";
+										$html[] = "<td class='text-center'>".$data['kyc_statistics'][$i]['total']."</td>";
+									$html[] = "</tr>";
+								}
+								$html[] = "<tbody>";
 							}
-							$html[] = "<tbody>";
-						}
 
-						$html[] = "</table>";
+							$html[] = "</table>";
+						$html[] = "</div>";
 
 					$html[] = "</div>";
 				$html[] = "</div>";
@@ -103,24 +105,26 @@ $html[] = "<div class='page-body'>";
 					$html[] = "<div class='card-body'>";
 						$html[] = "<h3 class='card-title'>KYC Verifier</h3>";
 						
-						$html[] = "<table class='table'>";
-						$html[] = "<thead>";
-							$html[] = "<th>Verifier</th>";
-							$html[] = "<th class='text-center'>Total Verified</th>";
-						$html[] = "</thead>";
+						$html[] = "<div class='table-responsive' style='max-height:350px; overflow-y: auto;'>";
+							$html[] = "<table class='table'>";
+							$html[] = "<thead>";
+								$html[] = "<th>Verifier</th>";
+								$html[] = "<th class='text-center'>Total Verified</th>";
+							$html[] = "</thead>";
 
-						if($data['kyc_verifier']) {
-							$html[] = "<tbody>";
-							for($i=0; $i<count($data['kyc_verifier']); $i++) {
-								$html[] = "<tr>";
-									$html[] = "<td>".$data['kyc_verifier'][$i]['verified_by']."</td>";
-									$html[] = "<td class='text-center'>".$data['kyc_verifier'][$i]['total']."</td>";
-								$html[] = "</tr>";
+							if($data['kyc_verifier']) {
+								$html[] = "<tbody>";
+								for($i=0; $i<count($data['kyc_verifier']); $i++) {
+									$html[] = "<tr>";
+										$html[] = "<td>".$data['kyc_verifier'][$i]['verified_by']."</td>";
+										$html[] = "<td class='text-center'>".$data['kyc_verifier'][$i]['total']."</td>";
+									$html[] = "</tr>";
+								}
+								$html[] = "<tbody>";
 							}
-							$html[] = "<tbody>";
-						}
 
-						$html[] = "</table>";
+							$html[] = "</table>";
+						$html[] = "</div>";
 
 					$html[] = "</div>";
 				$html[] = "</div>";

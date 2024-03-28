@@ -69,8 +69,6 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
-							$html[] = "<p class='text-info text-center'>You will be logout once you save your new password.</p>";
-
 						$html[] = "</div>";
 					$html[] = "</div>";
 
