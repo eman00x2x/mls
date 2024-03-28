@@ -30,7 +30,7 @@ $html[] = "<div class='d-flex flex-column'>";
 			$html[] = "</form>";
 
 			$html[] = "<div class='text-center text-secondary mt-3'>";
-				$html[] = "Forget it, <a href='".url("/")."'>send me back</a> to the sign in screen.";
+				$html[] = "Forget it, <a href='".url("AuthenticatorController@getLoginForm")."'>send me back</a> to the sign in screen.";
 			$html[] = "</div>";
 
 		$html[] = "</div>";

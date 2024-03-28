@@ -77,7 +77,7 @@ class Mailer
 		} catch(Exception $e) {
 
 			return [
-				"status" => 0,
+				"status" => 2,
 				"message" => "Message could not be sent. Mailer Error: {$e->getMessage()}"
 			];
 

@@ -192,8 +192,10 @@ class UserModel extends \Main\Model {
 				$data['password'] = md5($data['password']);
 
 			}else {
-				unset($data['password']);
-				unset($data['cpassword']);
+				if(!isset($data['user_id'])) {
+					unset($data['password']);
+					unset($data['cpassword']);
+				}
 			}
 
 			if(isset($data['name'])) {

@@ -2,6 +2,7 @@
 
 namespace Admin\Application\Controller; 
 
+use Library\Mailer;
 use Admin\Application\Controller\AccountsController as Account;
 
 class AuthenticatorController extends \Main\Controller
@@ -10,6 +11,7 @@ class AuthenticatorController extends \Main\Controller
 	private static $_instance = null;
 	public $domain;
 	public $session;
+	private $doc;
 	
 	public static function getInstance () {
         if (self::$_instance === null) {
@@ -23,6 +25,7 @@ class AuthenticatorController extends \Main\Controller
 
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->domain = ADMIN;
+		$this->doc = $this->getLibrary("Factory")->getDocument();
 
         $this->session = new \Josantonius\Session\Session;
 
@@ -151,15 +154,13 @@ class AuthenticatorController extends \Main\Controller
 
 	function getLoginForm() {
 
-		$doc = $this->getLibrary("Factory")->getDocument();
-	
 		/* if($_SERVER['REQUEST_METHOD'] == "POST") {
 			if($this->checkCredentials($_POST['email'],md5($_POST['password']))) {
 				header("LOCATION: ".$this->domain."");
 			}
 		} */
 
-		$doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration("
 			$(document).ready(function(e) {
 				height = $(document).height();
 				$('.login-container').css('height',(height - 200));
@@ -202,7 +203,7 @@ class AuthenticatorController extends \Main\Controller
 			});
 		");
 
-		$doc->setTitle("MLS Login");
+		$this->doc->setTitle("MLS Login");
 
 		$this->setTemplate("login/login.php");
 		return $this->getTemplate();
@@ -211,8 +212,7 @@ class AuthenticatorController extends \Main\Controller
 
 	function getForgotPasswordForm() {
 
-		$doc = $this->getLibrary("Factory")->getDocument();
-		$doc->setTitle("Send Password Reset Link - MLS");
+		$this->doc->setTitle("Send Password Reset Link - MLS");
 
 		$this->setTemplate("login/forgot-password.php");
 		return $this->getTemplate();
@@ -220,31 +220,40 @@ class AuthenticatorController extends \Main\Controller
 
 	function getResetPasswordForm() {
 
-		$doc = $this->getLibrary("Factory")->getDocument();
-		$doc->setTitle("Password Reset - MLS");
+		$this->doc->setTitle("Password Reset - MLS");
 
 		if(!isset($_REQUEST['ref'])) {
-			response()->redirect('/not-found');
+			response()->redirect(MANAGE . 'not-found');
 		}else {
 
 			$ref = explode("&",base64_decode($_REQUEST['ref']));
-								
+			
 			foreach($ref as $r) {
 				$d = explode("=",$r);
 				$data[@$d[0]] = @$d[1];
 			}
 
-			$this->setTemplate("login/reset-password.php");
-			return $this->getTemplate($data);
+			if(isset($data['user_id']) && isset($data['email']) && isset($data['expires'])) {
+				$user = $this->getModel("User");
+				$user->where(" user_id = ".$data['user_id']." ")->and(" email = '".$data['email']."' ");
+				$response = $user->getList();
+
+				if($response) {
+					$this->setTemplate("login/reset-password.php");
+					return $this->getTemplate($data);
+				}
+
+			}
+
+			response()->redirect(MANAGE . 'not-found');
+			
 		}
 
 	}
 
 	function getTwoStepVerificationCodeForm() {
 
-		$doc = $this->getLibrary("Factory")->getDocument();
-
-		$doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration("
 
 			document.addEventListener('DOMContentLoaded', function() {
 				var inputs = document.querySelectorAll('[data-code-input]');
@@ -426,7 +435,13 @@ class AuthenticatorController extends \Main\Controller
 	
 	function isBlock($data) {
 
+		/** CHECK ACCOUNT STATUS */
 		switch($data['status']) {
+
+			case "pending_activation":
+				$this->getLibrary("Factory")->setMsg("This account is pending activation, check the account email and activate your account.","warning");
+				return false;
+				break;
 			
 			case "banned":
 				$this->getLibrary("Factory")->setMsg("This account have been blocked by the system administrator.","warning");
@@ -437,6 +452,7 @@ class AuthenticatorController extends \Main\Controller
 				return true;
 		}
 
+		/** CHECK USER STATUS */
 		switch($data['user_status']) {
 			case "inactive":
 				$this->getLibrary("Factory")->setMsg("This user has been deactivated due to an expired subscription.","warning");
@@ -465,15 +481,24 @@ class AuthenticatorController extends \Main\Controller
 				
 				$html[] = "<p>You request a password reset link through our system, Please click the link below to reset your password now.</p>";
 				
-				$ref = base64_encode("user_id=".$data['user_id']."&expires=".date("Y-m-d H:i:s",strtotime("+24 hours")));
-				$link = url("LoginController@resetPassword",null,['ref' => $ref]);
+				$ref = base64_encode("user_id=".$data['user_id']."&email=".$data['email']."&expires=".date("Y-m-d H:i:s",strtotime("+24 hours")));
+				$link = url("AuthenticatorController@getResetPasswordForm",null,['ref' => $ref]);
 				
 				$html[] = "<p>This link will be available for the next 24 hours</p>";
 				$html[] = "<p style='padding:10px;'><a href='$link'>Reset your password</a></p>";
+
+
+				$mail = new Mailer();
+				$response = $mail
+					->build(implode("",$html))
+						->send([
+							"to" => [
+								$data['email']
+							]
+						], CONFIG['site_name'] . " Password Reset Link Request ");
 				
-				$mail = $this->getModel("Mail");
-				if($mail->sendMail(CONFIG['email_address_responder'],$data['email'],"Password Reset Request",implode("",$html))) {
-					$this->getLibrary("Factory")->setMsg("Password reset link has been sent to your registered email.","correct");
+				if($response['status'] == 1) {
+					$this->getLibrary("Factory")->setMsg("Password reset link has been sent to your registered email.", "success");
 					$response = array(
 						"status" => 1,
 						"message" => getMsg()
@@ -510,6 +535,17 @@ class AuthenticatorController extends \Main\Controller
 		
 		parse_str(file_get_contents('php://input'), $_POST);
 
+		if($_POST['password'] == "") {
+			
+			$this->getLibrary("Factory")->setMsg("<br/>Enter your new password", "error");
+			$response = array(
+				"status" => 2,
+				"message" => getMsg()
+			);
+
+			return json_encode($response);
+		}
+
 		$user = $this->getModel("User");
 		$user->column['user_id'] = $_POST['user_id'];
 		$data = $user->getById();
@@ -532,6 +568,42 @@ class AuthenticatorController extends \Main\Controller
 		
 		return json_encode($response);
 		
+	}
+
+	function accountActivation($code) {
+
+		$this->doc->setTitle(CONFIG['site_name'] . " Account Activation");
+
+		$code = base64_decode($code);
+		$code = json_decode($code, true);
+
+		if (json_last_error() !== JSON_ERROR_NONE) { 
+			response()->redirect(MANAGE . 'not-found');
+		}
+
+		if(!isset($code['expiration']) || $code['expiration'] <= DATE_NOW) {
+			response()->redirect(MANAGE . 'not-found');
+		}
+
+		$accounts = $this->getModel("Account");
+		$accounts->column['account_id'] = $code['account_id'];
+		$accounts->and(" email = '".$code['email']."' ");
+		$data = $accounts->getById();
+
+		if($data) {
+
+			$accounts->save( $data['account_id'], [
+				"account_name" => json_encode($data['account_name']),
+				"status" => "active"
+			]);
+
+			$this->setTemplate("registration/activation.php");
+			return $this->getTemplate($data);
+
+		}
+
+		response()->redirect(MANAGE . 'not-found');
+
 	}
 
 }

@@ -83,8 +83,8 @@ $html[] = "<div class='row justify-content-center'>";
                                         $html[] = "<tr>";
                                             $html[] = "<td>".$month."</td>";
                                             $html[] = "<td class='text-center'>&#8369; ".number_format($year[$month]['gross_earnings'],2)."</td>";
-                                            $html[] = "<td class='text-center'>&#8369; ".number_format( (int) $year[$month]['platform_fee'],2)."</td>";
-                                            $html[] = "<td class='text-center'>&#8369; ".number_format( (int) $year[$month]['tax'],2)."</td>";
+                                            $html[] = "<td class='text-center'>&#8369; ".number_format( (float) $year[$month]['platform_fee'],2)."</td>";
+                                            $html[] = "<td class='text-center'>&#8369; ".number_format( (float) $year[$month]['tax'],2)."</td>";
                                             $html[] = "<td class='text-center'>&#8369; ".number_format($year[$month]['net_earnings'],2)."</td>";
                                         $html[] = "</tr>";
 
@@ -94,10 +94,10 @@ $html[] = "<div class='row justify-content-center'>";
                                         $rows[$key][] = $year[$month]['tax'];
                                         $rows[$key][] = $year[$month]['net_earnings'];
 
-                                        $total_gross += (int) $year[$month]['gross_earnings'];
-                                        $platform_fee += (int) $year[$month]['platform_fee'];
-                                        $total_tax += (int) $year[$month]['tax'];
-                                        $total_net += (int) $year[$month]['net_earnings'];
+                                        $total_gross += (float) $year[$month]['gross_earnings'];
+                                        $platform_fee += (float) $year[$month]['platform_fee'];
+                                        $total_tax += (float) $year[$month]['tax'];
+                                        $total_net += (float) $year[$month]['net_earnings'];
 
                                     }else {
 
@@ -129,6 +129,8 @@ $html[] = "<div class='row justify-content-center'>";
                                     $html[] = "<td class='text-center fw-bold'>&#8369; ".number_format($total_tax, 2)."</td>";
                                     $html[] = "<td class='text-center fw-bold'>&#8369; ".number_format($total_net, 2)."</td>";
                                 $html[] = "</tr>";
+
+                                $export[] = implode("|", ["Total", $total_gross, $platform_fee, $total_tax, $total_net]);
 
                                 $html[] = "</tbody>";
                                 $html[] = "</table>";

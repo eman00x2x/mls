@@ -65,13 +65,14 @@ class Middleware implements IMiddleware {
 		Router::get(MANAGE_ALIAS . '/register', 'RegistrationController@register');
 		Router::get(MANAGE_ALIAS . '/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
 		Router::get(MANAGE_ALIAS . '/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
+		Router::get(MANAGE_ALIAS . '/accountActivation/{code}', 'AuthenticatorController@accountActivation', ['as' => 'accountActivation'])->where([ 'code' => '[\w\-\=\.]+' ]);
 
 		Router::post(MANAGE_ALIAS . '/checkCredentials', 'AuthenticatorController@checkCredentials');
-		Router::post(MANAGE_ALIAS . '/register', 'RegistrationController@register');
+		Router::post(MANAGE_ALIAS . '/registerStep1', 'RegistrationController@register');
 		Router::post(MANAGE_ALIAS . '/registerBroker', 'RegistrationController@registerBroker');
 		Router::post(MANAGE_ALIAS . '/registerAccount', 'RegistrationController@registerAccount');
 		Router::post(MANAGE_ALIAS . '/registerAccountSave', 'RegistrationController@saveNew');
-		Router::post(MANAGE_ALIAS . '/resetPassword', 'AuthenticatorController@saveNewPassword');
+		Router::post(MANAGE_ALIAS . '/saveNewPassword', 'AuthenticatorController@saveNewPassword');
 		Router::post(MANAGE_ALIAS . '/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
 		
 		$request->user = Authenticator::getInstance()->monitor();

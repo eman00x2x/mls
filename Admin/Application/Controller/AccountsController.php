@@ -304,6 +304,24 @@ class AccountsController extends \Main\Controller {
 	function saveNew() {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
+
+		$accounts = $this->getModel("Account");
+		$user = $this->getModel("User");
+
+		$user->column['email'] = $_POST['email'];
+		$accounts->column['email'] = $_POST['email'];
+
+		if($accounts->getByEmail() || $user->getByEmail()) {
+			
+			$this->getLibrary("Factory")->setMsg("Email already registered", "info");
+
+			return json_encode(array(
+				"type" => 2,
+				"message" => getMsg()
+			));
+
+		}
+
 		
 		if(isset($_POST['logo']) && $_POST['logo'] != "") {
 			$_POST['logo'] = $accounts->moveUploadedImage($_POST['logo']);
@@ -320,6 +338,7 @@ class AccountsController extends \Main\Controller {
 		$_POST['account_type'] = "Real Estate Practitioner";
 		$_POST['user_level'] = 1;
 		$_POST['reference_id'] = 0;
+		$_POST['status'] = "pending_activation";
 
 		$_POST['account_name'] = json_encode([
 			"prefix" => (isset($_POST['prefix']) ? $_POST['prefix'] : ''),
@@ -344,15 +363,13 @@ class AccountsController extends \Main\Controller {
 			$_POST['message_keys'][$key] = json_decode($val, true);
 		}
 
-		$accounts = $this->getModel("Account");
 		$accountResponse = $accounts->saveNew($_POST);
 		
 		if($accountResponse['status'] == 1) {
 
 			$_POST['account_id'] = $accountResponse['id'];
 
-			$user = $this->getModel("User");
-			$_POST['status'] = 1;
+			$_POST['user_status'] = "active";
 			$_POST['name'] = implode(" ", json_decode($_POST['account_name'], true));
 			$response = $user->saveNew($_POST);
 
@@ -363,6 +380,17 @@ class AccountsController extends \Main\Controller {
 						$license->saveNew($_POST);
 					}
 				}
+
+				/** SEND EMAIL ACTIVATION LINK */
+				$mail = new Mailer();
+				$response = $mail
+					->build( $this->buildEmailActivationUrl($_POST) )
+						->send([
+							"to" => [
+								$data['email']
+							]
+						], CONFIG['site_name'] . " Password Reset Link Request ");
+
 			}else {
 				$accounts->deleteAccount($accountResponse['id']);
 			}
@@ -623,6 +651,29 @@ class AccountsController extends \Main\Controller {
 				}
 			}
 		}
+
+	}
+
+	 function buildEmailActivationUrl($data) {
+
+		/* $html[] = "<p>Hi ".$data['name']."</p>"; */
+		$html[] = "<p>Thank you for registering in ".CONFIG['site_name'].", your activation url can be found below.</p>";
+
+		$activation_url_data = json_encode([
+			"account_id" => $data['account_id'],
+			"email" => $data['email'],
+			"expiration" => strtotime("+7 days", DATE_NOW)
+		]);
+
+		$activation_code = base64_encode($activation_url_data);
+
+		$url = rtrim(MANAGE, "/") . rtrim(url( "AuthenticatorController@accountActivation", [ "code" => $activation_code ] ), "/");
+
+		$html[] = "<br/><a href='" . $url . "'>$url</a><br/>";
+
+		$html[] = "<br/><p>Click or copy the url above to activate your account.</p>";
+
+		return implode("", $html);
 
 	}
 	
