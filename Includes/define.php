@@ -149,6 +149,14 @@ define("ADMIN_PERMISSIONS",[
 	"leads" => [
 		"access" => (boolean) true,
 		"delete" => (boolean) true
+	],
+	"transactions" => [
+		"access" => (boolean) true
+	],
+	"reports" => [
+		"access" => (boolean) true,
+		"subscriber" => (boolean) true,
+		"monthly_transaction" => (boolean) true
 	]
 ]);
 

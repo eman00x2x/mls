@@ -17,6 +17,12 @@ class TransactionsController extends \Main\Controller {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
+
+		if(!isset($this->session['permissions']['transactions']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have enough permission to access the Transactions Report", "warning");
+			response()->redirect(url("DashboardController@index"));
+		}
+
 	}
 
     function index() {
@@ -101,17 +107,14 @@ class TransactionsController extends \Main\Controller {
 			for($i=0; $i<count($data['transactions']); $i++) {
 				$data['reports']['total']++;
 				
-				$data['reports']['total_gross_amount'] += (isset($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['gross_amount']['value']) ?
-					$data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['gross_amount']['value'] :
-					0
-				);
+				$data['reports']['total_gross_amount'] += $data['transactions'][$i]['premium_price'];
 
 				$data['reports']['total_tax_amount'] += (isset($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['tax_amount']['value']) ? 
 					isset($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['tax_amount']['value']) :
 					0
 				);
 
-				$data['reports']['total_gross_amount'] += (isset($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['net_amount']['value']) ? 
+				$data['reports']['total_net_amount'] += (isset($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['net_amount']['value']) ? 
 					$data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['net_amount']['value'] :
 					0
 				);

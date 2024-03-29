@@ -7,6 +7,12 @@ class ReportsController extends \Main\Controller {
     function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
+
+		if(!isset($this->session['permissions']['reports']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have enough permission to access the Transactions Report", "warning");
+			response()->redirect(url("DashboardController@index"));
+		}
 	}
 
     function transactionsReport() {

@@ -73,6 +73,18 @@ define("DEFINITION", [
             "access" => "Allow this user to access and create Articles and post to website.",
             "edit" => "Allow this user to update the Articles posted in website.",
             "delete" => "Allow this user to permanently delete an Articles posted in website."
+        ],
+        "kyc" => [
+            "access" => "Allow this user to access the KYC and process the verification of users."
+        ],
+        "transactions" => [
+            "access" => "Allow this user to access the detailed report of all Transactions of users."
+        ]
+        ,
+        "reports" => [
+            "access" => "Show the link of report to this user, allowing to view the links of below reports if access is granted",
+            "subscriber" => "Allow this user to access the total transactions per subscriber report.",
+            "monthly_transaction" => "Allow this user to access the monthly transactions report."
         ]
     ]
 
