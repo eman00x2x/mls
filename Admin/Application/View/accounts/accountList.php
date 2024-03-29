@@ -77,7 +77,7 @@ $html[] = "<div class='page-body'>";
 											
 											$html[] = "<div class='dropdown-menu dropdown-menu-right'>";
 												$html[] = "<a class='ajax dropdown-item' href='".url("AccountsController@edit",["id" => $data[$i]['account_id']])."'><i class='ti ti-edit me-2'></i> Update Account</a>";
-												if($data[$i]['account_type'] != "Administrator") {
+												if($data[$i]['account_type'] != "Administrator" && $_SESSION['user_logged']['user_level'] == 1 && isset($_SESSION['user_logged']['permissions']['accounts']['delete'])) {
 													$html[] = "<span class='dropdown-item text-light bg-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountsController@delete",["id" => $data[$i]['account_id']])."'><i class='ti ti-trash me-2'></i> Delete Account</span>";
 												}
 											$html[] = "</div>";

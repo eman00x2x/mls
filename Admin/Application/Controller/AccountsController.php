@@ -11,14 +11,15 @@ class AccountsController extends \Main\Controller {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
-	}
-	
-	function index() {
 
-		if(!$this->session['permissions']['accounts']['access']) {
+		if(!isset($this->session['permissions']['accounts']['access'])) {
 			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
 			response()->redirect(url("DashboardController@index"));
 		}
+
+	}
+	
+	function index() {
 
 		$this->doc->setTitle("Accounts");
 		
@@ -98,11 +99,6 @@ class AccountsController extends \Main\Controller {
 	}
 	
 	function view($account_id) {
-
-		if(!$this->session['permissions']['accounts']['access']) {
-			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
-			response()->redirect(url("DashboardController@index"));
-		}
 
 		$this->doc->setTitle("View Account");
 
@@ -220,11 +216,6 @@ class AccountsController extends \Main\Controller {
 	
 	function add() {
 
-		if(!$this->session['permissions']['accounts']['access']) {
-			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
-			response()->redirect(url("DashboardController@index"));
-		}
-
 		$this->doc->setTitle("New Account");
 		$this->doc->addScript(CDN."js/photo-uploader.js");
 		$this->doc->addScript(CDN."js/encryption.js");
@@ -251,11 +242,6 @@ class AccountsController extends \Main\Controller {
 	}
 	
 	function edit($account_id) {
-
-		if(!$this->session['permissions']['accounts']['edit']) {
-			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
-			response()->redirect(url("DashboardController@index"));
-		}
 
 		$this->doc->setTitle("Update Account");
 
@@ -525,7 +511,7 @@ class AccountsController extends \Main\Controller {
 	
 	function delete($id) {
 
-		if(!$this->session['permissions']['accounts']['delete']) {
+		if(!isset($this->session['permissions']['accounts']['delete'])) {
 			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
 			response()->redirect(url("DashboardController@index"));
 		}

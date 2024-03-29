@@ -12,6 +12,11 @@ class ListingsController extends \Main\Controller {
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
+
+		if(!isset($this->session['permissions']['properties']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 	}
 
 	function index($account_id) {
@@ -46,7 +51,7 @@ class ListingsController extends \Main\Controller {
 	}
 	
 	function edit($account_id, $listing_id) {
-		
+
 		$this->doc->setTitle("Update Property Listing");
 		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
 		$this->doc->addScript(CDN."js/photo-uploader.js");
@@ -107,6 +112,11 @@ class ListingsController extends \Main\Controller {
 	
 	function add($account_id) {
 
+		if(!$this->session['permissions']['properties']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
+
 		$this->doc->setTitle("New Property Listings");
 		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
 		$this->doc->addScript(CDN."js/photo-uploader.js");
@@ -166,6 +176,11 @@ class ListingsController extends \Main\Controller {
 	}
 
 	function view($listing_id) {
+
+		if(!$this->session['permissions']['properties']['access']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("View Property Listing");
 

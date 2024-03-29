@@ -8,9 +8,16 @@ class UsersController extends \Main\Controller {
 	public $session;
 
 	function __construct() {
+		
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
+
+		if(!isset($this->session['permissions']['users']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
+
 	}
 	
 	function index() {
@@ -43,7 +50,6 @@ class UsersController extends \Main\Controller {
 	
 	function view($account_id, $id) {
 
-		
 		$this->doc->setTitle("View User");
 		
 		if($id) {
@@ -111,7 +117,6 @@ class UsersController extends \Main\Controller {
 
 	function edit($account_id, $id) {
 
-		
 		$this->doc->setTitle("Update User");
 		
 		if($id) {
@@ -276,6 +281,11 @@ class UsersController extends \Main\Controller {
 	}
 	
 	function delete($account_id, $id) {
+
+		if(!$this->session['permissions']['users']['delete']) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$user = $this->getModel("User");
 		$user->column['user_id'] = $id;

@@ -17,10 +17,15 @@ $html[] = "<div class='row g-0'>";
 					$html[] = "</div>";
 					$html[] = "<div class='col-auto ms-auto d-print-none'>";
 						$html[] = "<div class='btn-list text-end'>";
-							$html[] = "<a class='ajax btn btn-dark' href='".url("UsersController@edit",["id" => $data['account_id'], "user_id" => $data['user_id']])."' ><i class='ti ti-edit me-2'></i> Update User</a>";
-							if($data['user_level'] != 1) {
+							
+							if($_SESSION['user_logged']['permissions']['users']['access']) {
+								$html[] = "<a class='ajax btn btn-dark' href='".url("UsersController@edit",["id" => $data['account_id'], "user_id" => $data['user_id']])."' ><i class='ti ti-edit me-2'></i> Update User</a>";
+							}
+
+							if($data['user_level'] != 1 && $_SESSION['user_logged']['permissions']['users']['delete']) {
 								$html[] = "<span class='btn btn-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("UsersController@delete",["id" => $data['user_id']])."'><i class='ti ti-trash me-2'></i> Delete User</span>";
 							}
+
 						$html[] = "</div>";
 					$html[] = "</div>";
 				$html[] = "</div>";

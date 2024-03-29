@@ -19,7 +19,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 				$html[] = "<div class=''>";
 					$html[] = "<div class='btn-list'>";
 						
-						if($_SESSION['user_logged']['account_type'] == "Administrator") {
+						if(in_array($_SESSION['user_logged']['account_type'], ["Administrator", "Customer Service"])) {
 							$html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@view", ["id" => $data['account_id']])."'>";
 								$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['logo'].")'></span>";
 								$html[] = $data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']." account";
@@ -28,6 +28,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 						}else {
 							$html[] = "<a class='ajax btn btn-dark' href='".url("ListingsController@addListing")."'><i class='ti ti-user-plus me-2'></i> New Listing</a>";
 						}
+
 					$html[] = "</div>";
 				$html[] = "</div>";
 			$html[] = "</div>";
@@ -97,9 +98,11 @@ $html[] = "<div class='page-body'>";
 											
 											$html[] = "<div class='dropdown-menu dropdown-menu-right'>";
 												$html[] = "<a class='ajax dropdown-item' href='".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-edit me-2'></i> Update Listing</a>";
-												if($_SESSION['user_logged']['account_type'] == "Administrator" || $_SESSION['user_logged']['permissions']['properties'] == true) {
+												
+												if(isset($_SESSION['user_logged']['permissions']['properties']['delete'])) {
 													$html[] = "<span class='dropdown-item text-light bg-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@delete",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
 												}
+
 											$html[] = "</div>";
 											
 										$html[] = "</div>";

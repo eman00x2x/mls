@@ -105,8 +105,6 @@ class AccountSubscriptionController extends \Main\Controller {
 
 	function updateStatus($id) {
 
-		parse_str(file_get_contents('php://input'), $_POST);
-		
 		$account_subscription = $this->getModel("AccountSubscription");
 		$account_subscription->column['account_subscription_id'] = $id;
 		$data = $account_subscription->getById();

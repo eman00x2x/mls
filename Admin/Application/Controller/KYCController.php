@@ -15,15 +15,15 @@ class KYCController extends \Main\Controller {
 		if(!KYC) {
 			$this->response(404);
 		}
-		
-	}
-
-	function index() {
 
 		if(!$this->session['permissions']['kyc']['access']) {
 			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
 			response()->redirect(url("DashboardController@index"));
 		}
+		
+	}
+
+	function index() {
 
 		$this->doc->setTitle("KYC Verfication");
 		

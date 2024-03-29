@@ -87,21 +87,21 @@ define("USER_PERMISSIONS",[
 define("CS_PERMISSIONS",[
     "accounts" => [
 		"access" => (boolean) true,
- 		"edit" => (boolean) true,
  		"delete" => (boolean) true
 	],
     "users" => [
 		"access" => (boolean) true,
- 		"edit" => (boolean) true,
  		"delete" => (boolean) true
 	],
     "properties" => [
 		"access" => (boolean) true,
-		"edit" => (boolean) true,
 		"delete" => (boolean) true
 	],
 	"premiums" => [
 		"process_subscription" => (boolean) true
+	],
+	"transactions" => [
+		"access" => (boolean) true
 	],
 	"kyc" => [
 		"access" => (boolean) true
