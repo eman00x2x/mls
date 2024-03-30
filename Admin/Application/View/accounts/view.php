@@ -15,6 +15,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='btn-list text-end'>";
 					$html[] = "<div class='btn-group'>";
+						$html[] = "<span class='btn btn-dark btn-locked'><i class='ti ti-lock me-1'></i> Locked Account</span>";
 						$html[] = "<a href='javascript:window.location.reload()' class='btn btn-dark'><i class='ti ti-refresh me-1'></i> Reload</a>";
 						$html[] = "<div class='btn-group'>";
 							$html[] = "<span class='btn btn-primary dropdown-toggle' data-bs-toggle='dropdown'><i class='ti ti-cogs me-1'></i> Manage</span>";
@@ -61,104 +62,62 @@ $html[] = "<div class='page-body'>";
 			$html[] = "<div class='col-lg-3 col-md-4 col-12'>";
 				
 				$html[] = "<div class='card mb-3'>";
-
 					$html[] = "<div class='card-body'>";
 
 						$html[] = "<div class='text-center bg-white'>";
 							if($data['logo'] != "") {$html[] = "<span class='avatar photo-preview mb-1 w-100 mb-3' style='background-image: url(".$data['logo'].")'></span>";
 							}else {$html[] = "<span class='avatar photo-preview mb-1 w-100 mb-3' style='background-image: url(".CDN."images/blank-profile.png)'></span>"; }
-
 						$html[] = "</div>";
 
-						$html[] = "<div class='mb-3 pb-3 border-bottom'>";
-							$html[] = "<h6 class='mb-1 fw-bold'>Account Details</h6>";
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>Account Type</label></div>";
-								$html[] = "<div class=''><span>".$data['account_type']."</span></div>";
-							$html[] = "</div>";
-							
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>Status</label></div>";
-								$html[] = "<div class=''><span>".$data['status']."</span></div>";
-							$html[] = "</div>";
+						$html[] = "<div class='card-title'>Account</div>";
 
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>Registration Date</label></div>";
-								$html[] = "<div class=''><span>".date("F d, Y",$data['registration_date'])."</span></div>";
-							$html[] = "</div>";
-						$html[] = "</div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-user me-1'></i> Account Type:</span> <strong>".$data['account_type']."</strong></div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-status-change me-1'></i> Status:</span> <strong>".$data['status']."</strong></div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-calendar me-1'></i> Registration Date:</span> <strong>".date("d M Y",$data['registration_date'])."</strong></div>";
+					$html[] = "</div>";
+				$html[] = "</div>";
+						
 
-						$html[] = "<div class='mb-3 pb-3 border-bottom'>";
-							$html[] = "<h6 class='mb-1 fw-bold'>Account Holder</h6>";
+				$html[] = "<div class='card mb-3'>";
+					$html[] = "<div class='card-body'>";
+						$html[] = "<div class='card-title'>Account Holder</div>";
 
-							if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
-								$html[] = "<div class='d-flex'>";
-									$html[] = "<div class='me-3'><label class='text-muted'>Company Name</label></div>";
-									$html[] = "<div class=''><span>".$data['company_name']."</span></div>";
-								$html[] = "</div>";
+						if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-user me-1'></i> Company Name:</span> <strong>".$data['company_name']."</strong></div>";
+							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-user me-1'></i> Profession:</span> <strong>".$data['profession']."</strong></div>";
+							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-user me-1'></i> PRC License ID Number:</span> <strong>".$data['real_estate_license_number']."</strong></div>";
+							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-user me-1'></i> TIN:</span> <strong>".$data['tin']."</strong></div>";
+						}
 
-								$html[] = "<div class='d-flex'>";
-									$html[] = "<div class='me-3'><label class='text-muted'>Profession</label></div>";
-									$html[] = "<div class=''><span>".$data['profession']."</span></div>";
-								$html[] = "</div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-user me-1'></i> Name:</span> <strong>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</strong></div>";
+						
+						if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-calendar me-1'></i> Birth Date:</span> <strong>".date("d M Y",strtotime($data['birthdate']))."</strong></div>";
+							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-phone me-1'></i> Mobile Number:</span> <strong>".$data['mobile_number']."</strong></div>";
+						}
 
-								$html[] = "<div class='d-flex'>";
-									$html[] = "<div class='me-3'><label class='text-muted'>PRC License ID Number</label></div>";
-									$html[] = "<div class=''><span>".$data['real_estate_license_number']."</span></div>";
-								$html[] = "</div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-mail me-1'></i> Email:</span> <strong>".$data['email']."</strong></div>";
 
-								$html[] = "<div class='d-flex'>";
-									$html[] = "<div class='me-3'><label class='text-muted'>TIN</label></div>";
-									$html[] = "<div class=''><span>".$data['tin']."</span></div>";
-								$html[] = "</div>";
-							}
-
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>Name</label></div>";
-								$html[] = "<div class=''><span>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</span></div>";
-							$html[] = "</div>";
-
-							if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
-								$html[] = "<div class='d-flex'>";
-									$html[] = "<div class='me-3'><label class='text-muted'>Birth Date</label></div>";
-									$html[] = "<div class=''><span>".date("M/d/Y",strtotime($data['birthdate']))."</span></div>";
-								$html[] = "</div>";
-
-								$html[] = "<div class='d-flex'>";
-									$html[] = "<div class='me-3'><label class='text-muted'>Mobile Number</label></div>";
-									$html[] = "<div class=''><span>".$data['mobile_number']."</span></div>";
-								$html[] = "</div>";
-							}
-
-							$html[] = "<div class='d-flex'>";
-								$html[] = "<div class='me-3'><label class='text-muted'>Email</label></div>";
-								$html[] = "<div class=''><span>".$data['email']."</span></div>";
-							$html[] = "</div>";
-
-							if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
-								$html[] = "<div class='d-flex '>";
-									$html[] = "<div class='me-3'><label class='text-muted'>Address</label></div>";
-									$html[] = "<div class=''><span>".$data['street']." ".$data['city']." ".$data['province']."</span></div>";
-								$html[] = "</div>";
-							}
-
-						$html[] = "</div>";
-
-						$html[] = "<div class='mb-3 pb-3 border-bottom'>";
-							$html[] = "<h6 class='mb-1 fw-bold'>Account Privileges</h6>";
-
-							foreach($data['privileges'] as $privilege => $val) {
-								$html[] = "<div class='d-flex'>";
-									$html[] = "<div class='me-3'><label class='text-muted'>".ucwords(str_replace("_"," ",$privilege))."</label></div>";
-									if(in_array($privilege, ["leads_DB","properties_DB"])) {
-										$html[] = "<div class=''><span>".(isset($data['privileges'][$privilege]) ? "<span class='text-success'><i class='ti ti-check'></i></span>" : "<span class='text-danger'><i class='ti ti-ban'></i></span>")."</span></div>";
-									}else {
-										$html[] = "<div class=''><span>".$val."</span></div>";
-									}
-								$html[] = "</div>";
-							}
-						$html[] = "</div>";
+						if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+							$html[] = "<div class='mb-2'><span class='text-muted me-1'><i class='ti ti-address-book me-1'></i> Address:</span> <strong>".$data['street']." ".$data['city']." ".$data['province']."</strong></div>";
+						}
+					$html[] = "</div>";
+				$html[] = "</div>";
 				
+				$html[] = "<div class='card mb-3'>";
+					$html[] = "<div class='card-body'>";
+						$html[] = "<div class='card-title'>Account Privileges</div>";
+
+						foreach($data['privileges'] as $privilege => $val) {
+							$html[] = "<div class='d-flex'>";
+								$html[] = "<div class='me-3'><label class='text-muted'>".ucwords(str_replace("_"," ",$privilege))."</label></div>";
+								if(in_array($privilege, ["leads_DB","properties_DB"])) {
+									$html[] = "<div class=''><span>".(isset($data['privileges'][$privilege]) ? "<span class='text-success'><i class='ti ti-check'></i></span>" : "<span class='text-danger'><i class='ti ti-ban'></i></span>")."</span></div>";
+								}else {
+									$html[] = "<div class=''><span>".$val."</span></div>";
+								}
+							$html[] = "</div>";
+						}
 						
 					$html[] = "</div>";
 				$html[] = "</div>";
@@ -271,7 +230,7 @@ $html[] = "<div class='page-body'>";
 											$html[] = "<tr class='row_subscription_".$data['subscriptions'][$i]['account_subscription_id']."'>";
 												$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
 												$html[] = "<td class='align-middle' style='width:100px'>".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_start_date'])."</td>";
-												$html[] = "<td class='align-middle' style='width:250px'>".$data['subscriptions'][$i]['name']." <span class='text-muted small d-block'>".$data['subscriptions'][$i]['details']."</span></td>";
+												$html[] = "<td class='align-middle' style='width:350px'>".$data['subscriptions'][$i]['name']." <span class='text-muted small d-block'>".$data['subscriptions'][$i]['details']."</span></td>";
 												$html[] = "<td class='align-middle'>";
 													if($data['subscriptions'][$i]['subscription_end_date'] > 0) {
 														$html[] = "".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_end_date'])."";
@@ -329,10 +288,10 @@ $html[] = "<div class='page-body'>";
 											
 											$html[] = "<tr class='row_transaction_".$data['transaction'][$i]['transaction_id']."'>";
 												$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-												$html[] = "<td class='align-middle'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@invoice", ["account_id" => $data['account_id'], "id" => $data['transaction'][$i]['transaction_id']])."'>".date("F d, Y",$data['transaction'][$i]['created_at'])."</a></td>";
-												$html[] = "<td class='align-middle' style='width:300px !important'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@invoice", ["account_id" => $data['account_id'], "id" => $data['transaction'][$i]['transaction_id']])."'>".$data['transaction'][$i]['premium_description']."</a></td>";
-												$html[] = "<td class='align-middle text-center'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@invoice", ["account_id" => $data['account_id'], "id" => $data['transaction'][$i]['transaction_id']])."'>".strtoupper($data['transaction'][$i]['payment_source'])."</a></td>";
-												$html[] = "<td class='align-middle text-end'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@invoice", ["account_id" => $data['account_id'], "id" => $data['transaction'][$i]['transaction_id']])."'>&#8369;".number_format($data['transaction'][$i]['premium_price'],2)."</a></td>";
+												$html[] = "<td class='align-middle'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transaction'][$i]['transaction_id']])."'>".date("F d, Y",$data['transaction'][$i]['created_at'])."</a></td>";
+												$html[] = "<td class='align-middle' style='width:400px !important'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transaction'][$i]['transaction_id']])."'>".$data['transaction'][$i]['premium_description']."</a></td>";
+												$html[] = "<td class='align-middle text-center'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transaction'][$i]['transaction_id']])."'>".strtoupper($data['transaction'][$i]['payment_source'])."</a></td>";
+												$html[] = "<td class='align-middle text-end'><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transaction'][$i]['transaction_id']])."'>&#8369;".number_format($data['transaction'][$i]['premium_price'],2)."</a></td>";
 												/* $html[] = "<td class='align-middle'>";
 													$html[] = "<span class='btn btn-outline-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("TransactionsController@delete",["id" => $data['transaction'][$i]['transaction_id']])."'><i class='ti ti-trash me-1'></i> Delete</span>";
 												$html[] = "</td>"; */

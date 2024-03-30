@@ -24,10 +24,6 @@ define("DEFINITION", [
         "access" => "Allow this user to access the list of subscription purchase."
     ],
 
-    /** ACCOUNT ACCESS */
-    "leads_DB" => "Allow this account to access the offered leads.",
-    "properties_DB" => "Allow this account to access an advance view of the list of real estate properties posted on the main website.",
-    
     /** PRIVILIGES */
     "max_post" => "The total number of postings this account can add.",
     "max_users" => "Total number of users this account can add.",
@@ -42,6 +38,7 @@ define("DEFINITION", [
     "ADMIN" => [
         "accounts" => [
             "access" => "Allow this user to access the accounts of others.",
+            "add" => "Allow this user to create new account.",
             "edit" => "Allow this user to update the accounts of others.",
             "delete" => "Allow this user to permanently delete the accounts of others."
         ],
@@ -62,12 +59,10 @@ define("DEFINITION", [
             "process_subscription" => "Allow this user to process a Premium Subscription for other accounts."
         ],
         "settings" => [
-            "access" => "Allow this user to access the Settings of the system.",
-            "edit" => "Allow this user to update the Settings of the system."
+            "access" => "Allow this user to access and update the Settings of the system."
         ],
         "web_settings" => [
-            "access" => "Allow this user to access the WEB Settings of the website.",
-            "edit" => "Allow this user to update the WEB Settings of the website."
+            "access" => "Allow this user to access and update the WEB Settings of the website."
         ],
         "articles" => [
             "access" => "Allow this user to access and create Articles and post to website.",

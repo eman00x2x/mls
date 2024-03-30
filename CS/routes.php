@@ -9,7 +9,9 @@ Router::get(CS_ALIAS, 'DashboardController@index', ['as' => 'dashboard']);
 Router::get(CS_ALIAS.'/accounts', 'AccountsController@index', ['as' => 'accountsIndex']);
 Router::get(CS_ALIAS.'/accounts/{id}', 'AccountsController@view', ['as' => 'accountsView'])->where([ 'id' => '[0-9]+' ]);
 Router::get(CS_ALIAS.'/accounts/{id}/edit', 'AccountsController@edit', ['as' => 'accountsEdit'])->where([ 'id' => '[0-9]+' ]);
+Router::get(CS_ALIAS.'/locked-account', 'AccountsController@lockedAccount', ['as' => 'lockedAccount']);
 
+Router::post(CS_ALIAS.'/accounts/verify-pin', 'AccountsController@verifyPin', ['as' => 'verifyPin']);
 Router::post(CS_ALIAS.'/accounts/{id}/edit/saveUpdate', 'AccountsController@saveUpdate', ['as' => 'accountsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 Router::post(CS_ALIAS.'/accounts/uploadPhoto', 'AccountsController@uploadPhoto', ['as' => 'accountsUploadPhoto']);
 
@@ -25,6 +27,8 @@ Router::post(CS_ALIAS.'/accounts/{id}/user/saveNew', 'UsersController@saveNew', 
 Router::post(CS_ALIAS.'/accounts/{id}/user/{user_id}/edit/saveUpdate', 'UsersController@saveUpdate', ['as' => 'usersSaveUpdate'])->where([ 'id' => '[0-9]+', 'user_id' => '[0-9]+' ]);
 Router::post(CS_ALIAS.'/accounts/user/uploadPhoto', 'UsersController@uploadPhoto', ['as' => 'uploadPhoto']);
 
+/** MY ACCOUNT ROUTES */
+Router::get(CS_ALIAS . '/account/user/changePassword', 'UsersController@changePassword', ['as' => 'changePassword']);
 
 /** PROPERTY LISTINGS ROUTES */
 Router::get(CS_ALIAS.'/accounts/{id}/listings', 'ListingsController@index', ['as' => 'listings'])->where([ 'id' => '[0-9]+' ]);
@@ -42,14 +46,14 @@ Router::get(CS_ALIAS.'/listingImages/{id}/delete', 'ListingImagesController@dele
 
 /** ACCOUNT SUBSCRIPTIONS ROUTES */
 Router::get(CS_ALIAS.'/accounts/{id}/subscriptionSelectionNew', 'PremiumsController@premiumSelection', ['as' => 'accountsSubscriptionSelectionNew'])->where([ 'id' => '[0-9]+' ]);
-Router::get(CS_ALIAS.'/accounts/{account_id}/transactions/{id}/invoice', 'TransactionsController@invoices', ['as' => 'transactionInvoice'])->where([ 'account_id' => '[0-9]+', 'id' => '[0-9]+' ]);
-Router::get(CS_ALIAS.'/account_subscription/{id}/delete', 'AccountSubscriptionController@delete', ['as' => 'deleteAccountSubscription'])->where([ 'id' => '[0-9]+' ]);
+Router::get(CS_ALIAS.'/subscription/{id}/delete', 'AccountSubscriptionController@delete', ['as' => 'deleteAccountSubscription'])->where([ 'id' => '[0-9]+' ]);
+Router::get(CS_ALIAS.'/subscription/{id}/updateStatus', 'AccountSubscriptionController@updateStatus', ['as' => 'updateStatusAccountSubscription'])->where([ 'id' => '[0-9]+' ]);
 
-Router::get(CS_ALIAS.'/account_subscription/{id}/updateStatus', 'AccountSubscriptionController@updateStatus', ['as' => 'updateStatusAccountSubscription'])->where([ 'id' => '[0-9]+' ]);
-Router::post(CS_ALIAS.'/account_subscription/saveNew', 'AccountSubscriptionController@saveNew', ['as' => 'accountSubscriptionSaveNew']);
+Router::post(CS_ALIAS.'/subscription/saveNew', 'AccountSubscriptionController@saveNew', ['as' => 'accountSubscriptionSaveNew']);
 
 /** ACCOUNT TRANSACTIONS */
 Router::get(CS_ALIAS.'/accounts/{account_id}/transactions', 'TransactionsController@transactions', ['as' => 'accountTransactions'])->where([ 'account_id' => '[0-9]+' ]);
+Router::get(CS_ALIAS.'/accounts/transactions/{id}', 'TransactionsController@view', ['as' => 'transactionView'])->where([ 'id' => '[0-9]+' ]);
 Router::get(CS_ALIAS.'/accounts/{account_id}/transactions/{id}/invoice', 'TransactionsController@invoices', ['as' => 'transactionInvoice'])->where([ 'account_id' => '[0-9]+', 'id' => '[0-9]+' ]);
 
 /** KYC ROUTES */
@@ -57,7 +61,3 @@ Router::get(CS_ALIAS.'/kyc', 'KYCController@index', ['as' => 'kycIndex']);
 Router::get(CS_ALIAS.'/kyc/{id}/view', 'KYCController@view', ['as' => 'view'])->where([ 'id' => '[0-9]+' ]);
 
 Router::post(CS_ALIAS.'/kyc/{id}/verify', 'KYCController@saveUpdate', ['as' => 'saveKYCUpdate'])->where([ 'kyc_id' => '[0-9]+' ]);
-
-/** ACCOUNT ROUTES */
-Router::get(CS_ALIAS . '/account/user/changePassword', 'UsersController@changePassword', ['as' => 'changePassword']);
-Router::post(CS_ALIAS . '/account/{id}/user/{user_id}/edit/saveUpdate', 'UsersController@saveUpdate', ['as' => 'usersSaveUpdate'])->where([ 'id' => '[0-9]+', 'user_id' => '[0-9]+' ]);

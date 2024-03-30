@@ -111,6 +111,7 @@ define("CS_PERMISSIONS",[
 define("ADMIN_PERMISSIONS",[
     "accounts" => [
 		"access" => (boolean) true,
+		"add" => (boolean) true,
 		"edit" => (boolean) true,
 		"delete" => (boolean) true
 	],
@@ -131,12 +132,10 @@ define("ADMIN_PERMISSIONS",[
 		"process_subscription" => (boolean) true
 	],
 	"web_settings" => [
-		"access" => (boolean) true,
-		"edit" => (boolean) true
+		"access" => (boolean) true
 	],
     "settings" => [
-		"access" => (boolean) true,
-		"edit" => (boolean) true
+		"access" => (boolean) true
 	],
     "articles" => [
 		"access" => (boolean) true,
@@ -162,8 +161,7 @@ define("ADMIN_PERMISSIONS",[
 
 define("WEBADMIN_PERMISSIONS",[
     "web_settings" => [
- 		"access" => (boolean) true,
- 		"edit" => (boolean) true
+ 		"access" => (boolean) true
 	],
     "articles" => [
 		"access" => (boolean) true,
@@ -177,7 +175,7 @@ define("ACCOUNT_PRIVILEGES",[
     "max_users" => (int) 1,
     "mls_access" => (int) 0,
     "chat_access" => (int) 1,
-    "display_ads" => (int) 0,
+    /* "display_ads" => (int) 0, */
     "featured_ads" => (int) 0,
     "handshake_limit" => (int) 1,
 	"comparative_analysis_access" => (int) 0
@@ -188,7 +186,7 @@ define("PREMIUM_SCRIPTS",[
     "max_users" => 1,
 	"mls_access" => 0,
     "chat_access" => 0,
-    "display_ads" => 0,
+    /* "display_ads" => 0, */
     "featured_ads" => 0,
 	"handshake_limit" => 1,
 	"comparative_analysis_access" => 0

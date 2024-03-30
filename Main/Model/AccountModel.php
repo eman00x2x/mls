@@ -12,9 +12,9 @@ class AccountModel extends \Main\Model {
 		$this->init();
 	}
 
-	function getByEmail() {
+	function getByPin() {
 
-		$query = "SELECT * FROM #__users WHERE email = '".$this->email."'";
+		$query = "SELECT * FROM #__accounts WHERE pin = '".$this->column['pin']."'";
 		$result = $this->DBO->query($query);
 
 		$this->initiateFields($result);
@@ -22,7 +22,24 @@ class AccountModel extends \Main\Model {
 		if($this->DBO->numRows($result) > 0) {
 
 			$line = $this->DBO->queryUniqueValue($query);
-			$this->user_id = $line['user_id'];
+			$this->column['account_id'] = $line['account_id'];
+			return $this->getById();
+
+		}else {return false;}
+
+	}
+
+	function getByEmail() {
+
+		$query = "SELECT * FROM #__accounts WHERE email = '".$this->column['email']."'";
+		$result = $this->DBO->query($query);
+
+		$this->initiateFields($result);
+
+		if($this->DBO->numRows($result) > 0) {
+
+			$line = $this->DBO->queryUniqueValue($query);
+			$this->column['account_id'] = $line['account_id'];
 			return $this->getById();
 
 		}else {return false;}

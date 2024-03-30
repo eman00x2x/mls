@@ -11,15 +11,14 @@ class AccountsController extends \Main\Controller {
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
+	}
+	
+	function index() {
 
 		if(!isset($this->session['permissions']['accounts']['access'])) {
 			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
 			response()->redirect(url("DashboardController@index"));
 		}
-
-	}
-	
-	function index() {
 
 		$this->doc->setTitle("Accounts");
 		
@@ -50,6 +49,11 @@ class AccountsController extends \Main\Controller {
 	}
 
 	function profile($id) {
+
+		if(!isset($this->session['permissions']['accounts']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("Profile");
 		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
@@ -99,6 +103,11 @@ class AccountsController extends \Main\Controller {
 	}
 	
 	function view($account_id) {
+
+		if(!isset($this->session['permissions']['accounts']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("View Account");
 
@@ -213,8 +222,13 @@ class AccountsController extends \Main\Controller {
 		$this->response(404);
 
 	}
-	
+
 	function add() {
+
+		if(!isset($this->session['permissions']['accounts']['add'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("New Account");
 		$this->doc->addScript(CDN."js/photo-uploader.js");
@@ -242,6 +256,11 @@ class AccountsController extends \Main\Controller {
 	}
 	
 	function edit($account_id) {
+
+		if(!isset($this->session['permissions']['accounts']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("Update Account");
 

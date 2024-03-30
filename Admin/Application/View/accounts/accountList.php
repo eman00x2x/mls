@@ -17,10 +17,11 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='btn-list'>";
-					$html[] = "<span class='d-none d-sm-inline'>";
-						$html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@add")."'><i class='ti ti-user-plus me-2'></i> New Account</a>";
+					$html[] = "<span class='d-none d-sm-block'>";
+						if(isset($_SESSION['user_logged']['permissions']['accounts']['add'])) {
+							$html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@add")."'><i class='ti ti-user-plus me-2'></i> New Account</a>";
+						}
 					$html[] = "</span>";
-					$html[] = "<a class='ajax btn btn-primary ajax' href='".url("AccountsController@index",null,["showall" => true])."' ><i class='ti ti-users me-2'></i> Show All Accounts</a>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";
@@ -36,11 +37,11 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<div class='box-container mb-3'>";
 				
 					$html[] = "<div class='search-box'>";
-						$html[] = "<input type='text' name='search' id='search' value='' placeholder='Search Account Name' data-url='".url("AccountsController@index")."' />";
+						$html[] = "<input type='text' name='search' id='search' value='' placeholder='Enter Email address or first name or last name' data-url='".url("AccountsController@index")."' />";
 						$html[] = "<a href='".url("AccountsController@index")."' class='clearFilter'>CLEAR FILTER</a>";
 					$html[] = "</div>";
 
-					if($data) { $c=$model->page['starting_number'];
+					if(is_array($data)) { $c=$model->page['starting_number'];
 						$html[] = "<div class='table-responsive'>";
 							
 							$html[] = "<table class='table table-hover table-outline'>";
@@ -95,15 +96,23 @@ $html[] = "<div class='page-body'>";
 						$html[] = "</div>";
 						
 					}else {
-						$html[] = "<div class=''>";
-                            $html[] = "<div class='empty'>";
-                                $html[] = "<div class='empty-image mb-4'>";
-                                    $html[] = "<img src='".CDN."images/undraw_quitting_time_dm8t.svg' height='128' />";
-                                $html[] = "</div>";
-                                $html[] = "<p class='empty-title'>No results found</p>";
-                                $html[] = "<p class='empty-subtitle text-secondary'>Try adjusting your search or filter to find what you're looking for.</p>";
-                            $html[] = "</div>";
-                        $html[] = "</div>";
+						if($data == 1) {
+							$html[] = "<div class=''>";
+								$html[] = "<div class='empty'>";
+									$html[] = "<p>Enter email address or first name or last name</p>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+						}else {
+							$html[] = "<div class=''>";
+								$html[] = "<div class='empty'>";
+									$html[] = "<div class='empty-image mb-4'>";
+										$html[] = "<img src='".CDN."images/undraw_quitting_time_dm8t.svg' height='128' />";
+									$html[] = "</div>";
+									$html[] = "<p class='empty-title'>No results found</p>";
+									$html[] = "<p class='empty-subtitle text-secondary'>Try adjusting your search or filter to find what you're looking for.</p>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+						}
 					}
 					
 				$html[] = "</div>";

@@ -1,3 +1,5 @@
+let account;
+
 $(document).ready(function () {
 	$.get('/notifications/getLatest', function (data, status) {
 		$('.notifications-container').html(data);
@@ -30,12 +32,12 @@ $(document).on('click','.btn-save', function(e) {
 		$('#snow-container').val(tinymce.get('snow-container').getContent());
 	}
 
-	/* $('.btn-save').css({
+	$('.btn-save').css({
 		'cursor': 'wait',
 		'pointer-events': 'none'
 	});
 	
-	$('.btn-save').hide(); */
+	$('.btn-save').hide();
 
 	$('.response').html("<img src='" + CDN + "images/loader.gif' /> Processing... ");
 	$('html, body').animate({ scrollTop: 0 }, 'slow');
@@ -46,6 +48,11 @@ $(document).on('click','.btn-save', function(e) {
 		if (typeof data == 'object') {
 			var response = data;
 		} else { var response = JSON.parse(data); }
+
+
+		if (response.data !== undefined) { 
+			account = response.data;
+		}
 
 		$('.btn-save').css({
 			'cursor': 'pointer',
@@ -361,7 +368,7 @@ function getAmortization() {
 }
 
 function uuidv4() {
-	return "00000000000000008000000000000000".replace(/[018]/g, c =>
+	return "0000000000000000-8000000000000000".replace(/[018]/g, c =>
 		(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
 	);
 }
