@@ -31,7 +31,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			}
 		");
 
-		$this->doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
 			$(document).ready(function() {
 
@@ -65,7 +65,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				$(this).html('');
 			});
 
-		");
+		"));
 
 		$filters[] = " is_website = 1 ";
 		$filters[] = " l.status = 1 ";
@@ -116,10 +116,8 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		$this->doc->addStylesheet(CDN."tabler/dist/libs/plyr/dist/plyr.css");
 
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
-
 		    let privateKey;
 		    let publicKey;
-
 			let currencies;
 			let currency_code;
 			let monthly_dp;
@@ -323,7 +321,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			$account->column['account_id'] = $data['account_id'];
 			$data['account'] = $account->getById();
 
-			$this->doc->addScriptDeclaration("
+			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
 				$(document).ready(function() {
 					$('.barangay-selection').remove();
@@ -343,13 +341,11 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				});
 
 				async function setKeys() {
-					/* let keys = await generateKey(); */
-					/* privateKey = keys.privateKey; */
 					privateKey = ".json_encode($data['account']['message_keys']['privateKey']).";
 					publicKey = ".json_encode($data['account']['message_keys']['publicKey']).";
 				}
 
-			");
+			"));
 
 			$images = $this->getModel("ListingImage");
 			$images->page['limit'] = 50;

@@ -17,6 +17,8 @@ class HomeController extends \Main\Controller {
 		$description = "MLS";
 		$image = "";
 
+		$this->doc->addScript(CDN."philippines-addresses/table_combine_address.js");
+
 		$this->doc->setTitle($title);
 		$this->doc->setDescription($description);
 		$this->doc->setMetaData("keywords", $description);
@@ -28,10 +30,45 @@ class HomeController extends \Main\Controller {
 		$this->doc->setFacebookMetaData("og:description", "");
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
-		$this->doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
-			$(document).ready(function() {
+			let timer;
 
+			$(document).on('change', '#address', function() {
+				let val = $('#address').val();
+				let selected_option = $('#address_result option').filter(function() {
+					return this.value == val;
+				});
+
+				$('#barangay').val( selected_option.data('barangay') );
+				$('#municipality').val( selected_option.data('municipality') );
+				$('#province').val( selected_option.data('province') );
+				$('#region').val( selected_option.data('region') );
+
+			});
+
+			$(document).on('keyup', '#address', function() {
+				let result, text;
+				let search = $('#address').val();
+				if(search != '' && search.length >= 5) {
+					clearInterval(timer);
+					timer = setTimeout(function() {
+						result = searchFor(search).reverse();
+						for(key in result) {
+							text += \"<option 
+								data-barangay='\" + result[key].barangay + \"'
+								data-municipality='\" + result[key].municipality + \"'
+								data-province='\" + result[key].province + \"'
+								data-region='\" + result[key].region + \"'
+								value='\" + result[key].barangay + \" \" + result[key].municipality + \" \" + result[key].province + \"'> \";
+						}
+						$('#address_result').html(text);
+					},500);
+				}else { clearInterval(timer); }
+			});
+
+			$(document).on('submit', '#filter-form', function(e) {
+				e.preventDefault();
 			});
 
 			$(document).on('click', '.btn-filter', function() {
@@ -46,6 +83,12 @@ class HomeController extends \Main\Controller {
 
 				formData = $('#filter-form').serialize();
 				window.location = page + '?' + formData;
+			});
+
+			$(document).on('keypress', '#address', function(e) {
+				if(e.which == 13 || e.keyCode  == 13) {
+					$('.btn-filter').trigger('click');
+				}
 			});
 
 			$(document).on('click', '.btn-toggle-filter-box' ,function() {
@@ -88,9 +131,41 @@ class HomeController extends \Main\Controller {
 			latestArticles().then( response => {
 				$('.latest-articles-container').html(response.content);
 			});
+
+			function trimString(s) {
+				let l=0, r=s.length -1;
+				while(l < s.length && s[l] == ' ') l++;
+				while(r > l && s[r] == ' ') r-=1;
+				return s.substring(l, r+1);
+			}
+
+			function compareObjects(o1, o2) {
+				let k = '';
+				for(k in o1) if(o1[k] != o2[k]) return false;
+				for(k in o2) if(o1[k] != o2[k]) return false;
+				return true;
+			}
+
+			function itemExists(haystack, needle) {
+				for(let i=0; i<haystack.length; i++) if(compareObjects(haystack[i], needle)) return true;
+				return false;
+			}
+
+			function searchFor(toSearch) {
+				let results = [];
+				toSearch = trimString(toSearch);
+				for(let i=0; i<address.length; i++) {
+					for(let key in address[i]) {
+						if(address[i][key].toLowerCase().includes(toSearch)) {
+							if(!itemExists(results, address[i])) results.push(address[i]);
+						}
+					}
+				}
+				return results;
+			}
 			
 		
-		");
+		"));
 
 		$listings = $this->getModel("listing");
 
@@ -127,8 +202,11 @@ class HomeController extends \Main\Controller {
 
 		$listings = $this->getModel("Listing");
 		$listings->page['limit'] = 5;
-		$listings->join(" l JOIN #__accounts a ON a.account_id = l.account_id");
-		$listings->where(" is_website = 1 ");
+		$listings
+			->join(" l JOIN #__accounts a ON a.account_id = l.account_id")
+				->where(" is_website = 1 ")
+					->and(" featured = 1 ")
+						->orderBy(" last_modified DESC ");
 		$data['listings'] = $listings->getList();
 
 		if($data['listings']) {
@@ -166,7 +244,7 @@ class HomeController extends \Main\Controller {
 	function latestArticles() {
 
 		$articles = $this->getModel("Article");
-		$articles->page['limit'] = 5;
+		$articles->page['limit'] = 6;
 		$data['articles'] = $articles->getList();
 
 		$this->setTemplate("home/latestArticles.php");

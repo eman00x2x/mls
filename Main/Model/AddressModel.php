@@ -51,7 +51,7 @@ class AddressModel extends \Main\Model {
 
 		$doc = \Library\Factory::getDocument();
 		$doc->addScript(CDN."philippines-addresses/json/table_address.js");
-		$doc->addScriptDeclaration("
+		$doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
 			let current_value = $current_value;
 			
@@ -150,7 +150,7 @@ class AddressModel extends \Main\Model {
 				$('input[name=\"address[barangay]\"]').val($('#barangay option:selected').text());
 			});
 
-		");
+		"));
 
 		$html[] = "<div class='address p-3 bg-muted-lt border mb-3 rounded'>";
 

@@ -149,7 +149,11 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 												$html[] = "<div class='row g-2 mb-3'>";
 													$html[] = "<label class='col-form-label col-3 mb-0 text-end pe-3'>".ucwords(str_replace("_"," ",$privileges))."</label>";
 													$html[] = "<div class='col'>";
-														$html[] = "<input type='text' name='privileges[$privileges]' class='form-control' value='".(isset($data['privileges'][$privileges]) ? $data['privileges'][$privileges] : null)."' placeholder='".DEFINITION[$privileges]."' />";
+														$html[] = "<input type='number' name='privileges[$privileges]' class='form-control' value='".(isset($data['privileges'][$privileges]) ? $data['privileges'][$privileges] : null)."' placeholder='".DEFINITION[$privileges]."'";
+															if(in_array($privileges, ["comparative_analysis_access", "chat_access", "mls_access"])) {
+																$html[] = " max='1'  ";
+															}
+														$html[] = " min='0' />";
 														$html[] = "<small class='form-hint'>".DEFINITION[$privileges]."</small>";
 													$html[] = "</div>";
 												$html[] = "</div>";

@@ -38,8 +38,7 @@
 }
 
 .p-featured {
-    overflow: auto;
-    overflow: y-hidden;
+   overflow: y-hidden;
 }
 
 .property-container {
@@ -49,6 +48,10 @@
 
 .property-container .p-image {
     height: 200px;
+}
+
+.p-title {
+    line-height: 1.4;
 }
 
 .p-description {

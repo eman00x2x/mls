@@ -72,7 +72,7 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Category</label>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select class='form-select' name='category' id='category'>";
-										foreach (["News", "Promo", "Tips", "Event"] as $category) {
+										foreach ($model->category as $category) {
 											$html[] = "<option value='$category'>".$category."</option>";
 										}
 									$html[] = "</select>";

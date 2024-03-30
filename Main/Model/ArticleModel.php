@@ -4,7 +4,7 @@ namespace Main\Model;
 
 class ArticleModel extends \Main\Model {
 
-	private $category = [
+	public $category = [
 		"News", "Promo", "Tips", "Events"
 	];
 

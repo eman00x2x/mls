@@ -28,20 +28,22 @@ class ArticlesController extends \Main\Controller {
 
 		$articles = $this->getModel("Article");
 		
+		$filters[] = " publish = 1 ";
+
+		if(isset($_GET['category']) && $_GET['category'] != "") {
+			$filters[] = " (category LIKE '%".$_GET['category']."%')";
+			$uri['category'] = $_GET['category'];
+		}
+
 		$articles->page['limit'] = 20;
-		$articles->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+		$articles->page['current'] = isset($_GET['page']) ? $_GET['page'] : 1;
 		$articles->page['target'] = url("ArticlesController@index");
 		$articles->page['uri'] = (isset($uri) ? $uri : []);
 
-		$filters[] = " publish = 1 ";
-
-		if(isset($_REQUEST['category']) && $_REQUEST['category'] != "") {
-			$filters[] = " (category LIKE '%".$_REQUEST['category']."%')";
-			$uri['category'] = $_REQUEST['category'];
-		}
-
 		$articles->where((isset($filters) ? implode(" AND ",$filters) : null))->orderBy(" created_at DESC ");
 		$data['articles'] = $articles->getList();
+
+		$data['categories'] = $this->totalArticlesPerCategory();
 
 		$this->setTemplate("articles/index.php");
 		return $this->getTemplate($data, $articles);
@@ -77,6 +79,23 @@ class ArticlesController extends \Main\Controller {
 		
 		$this->setTemplate("articles/view.php");
 		return $this->getTemplate($data, $articles);
+	}
+
+	private function totalArticlesPerCategory() {
+
+		$articles = $this->getModel("Article");
+		
+		$articles->page['limit'] = 9999999;
+		$filters[] = " publish = 1 ";
+
+		$articles
+			->select(" COUNT(category) as total_category, category ")
+				->groupBy(" category ")
+					->orderBy(" created_at DESC ");
+		$data = $articles->getList();
+
+		return $data;
+		
 	}
 
 }

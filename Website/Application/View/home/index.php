@@ -10,6 +10,12 @@ $html[] = "<div class=''>";
 					$html[] = "<div class='col-md-8 col-auto'>";
 
 						$html[] = "<form id='filter-form' action='' method='POST'>";
+
+							$html[] = "<input type='hidden' name='address[barangay]' id='barangay' value='' />";
+							$html[] = "<input type='hidden' name='address[municipality]' id='municipality' value='' />";
+							$html[] = "<input type='hidden' name='address[province]' id='province' value='' />";
+							$html[] = "<input type='hidden' name='address[region]' id='region' value='' />";
+							
 							$html[] = "<div class='search-filter'>";
 								
 								/** SPACER */
@@ -40,7 +46,8 @@ $html[] = "<div class=''>";
 										$html[] = "</div>";
 										$html[] = "<div class='flex-fill'>";
 											$html[] = "<div class='form-floating border-0 rounded-0'>";
-												$html[] = "<input type='text' name='address' id='location' value='' placeholder='Select desired location' class='form-control border-0' />";
+												$html[] = "<input type='text' id='address' value='' list='address_result' placeholder='Select desired location' class='form-control border-0' />";
+												$html[] = "<datalist id='address_result'></datalist>";
 												$html[] = "<label for='category'>Select Location</label>";
 											$html[] = "</div>";
 										$html[] = "</div>";

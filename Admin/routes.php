@@ -81,6 +81,16 @@ Router::get(ADMIN_ALIAS.'/transactions/{id}/delete', 'TransactionsController@del
 Router::get(ADMIN_ALIAS.'/report/subscribers', 'ReportsController@subscribersReport', ['as' => 'subscribersReport']);
 Router::get(ADMIN_ALIAS.'/report/transactions', 'ReportsController@transactionsReport', ['as' => 'transactionsReport']);
 
+/** ARTICLES ROUTES */
+Router::get(ADMIN_ALIAS.'/articles', 'ArticlesController@index', ['as' => 'index']);
+Router::get(ADMIN_ALIAS.'/articles/new', 'ArticlesController@add', ['as' => 'addArticle']);
+Router::get(ADMIN_ALIAS.'/articles/{id}', 'ArticlesController@edit', ['as' => 'editArticle'])->where([ 'id' => '[0-9]+' ]);
+Router::get(ADMIN_ALIAS.'/articles/{id}/delete', 'ArticlesController@delete', ['as' => 'deleteArticle'])->where([ 'id' => '[0-9]+' ]);
+
+Router::post(ADMIN_ALIAS.'/articles/{id}/save', 'ArticlesController@saveUpdate', ['as' => 'saveUpdate'])->where([ 'id' => '[0-9]+' ]);
+Router::post(ADMIN_ALIAS.'/articles/saveNew', 'ArticlesController@saveNew', ['as' => 'accountSubscriptionSaveNew']);
+Router::post(ADMIN_ALIAS.'/articles/upload', 'ArticlesController@uploadPhoto', ['as' => 'uploadPhoto']);
+
 /** ADMINISTRATION ROUTES */
 Router::get(ADMIN_ALIAS.'/settings/{page}', 'SettingsController@index', ['as' => 'settings'])->where([ 'page' => '[\w\-\=]+' ]);
 Router::get(ADMIN_ALIAS.'/web-settings/{page}', 'SettingsController@webSettings', ['as' => 'webSettings'])->where([ 'page' => '[\w\-\=]+' ]);

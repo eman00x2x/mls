@@ -13,13 +13,14 @@ class ListingsController extends \Main\Controller {
 
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 
+	}
+
+	function index($account_id) {
+
 		if(!isset($this->session['permissions']['properties']['access'])) {
 			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
 			response()->redirect(url("DashboardController@index"));
 		}
-	}
-
-	function index($account_id) {
 
 		$this->doc->setTitle("Property Listings");
 	
@@ -51,6 +52,11 @@ class ListingsController extends \Main\Controller {
 	}
 	
 	function edit($account_id, $listing_id) {
+
+		if(!isset($this->session['permissions']['properties']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("Update Property Listing");
 		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
@@ -713,17 +719,17 @@ class ListingsController extends \Main\Controller {
 		if(isset($_GET['address']) && $_GET['address'] != "") {
 			$model->page['uri']['address'] = $_GET['address'];
 
-			if($_GET['address']['region'] != "") {
+			if(isset($_GET['address']['region']) && $_GET['address']['region'] != "") {
 				$filters[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."'  ";
 				$search[] = $_GET['address']['region'];
 			}
 
-			if($_GET['address']['province'] != "") {
+			if(isset($_GET['address']['province']) && $_GET['address']['province'] != "") {
 				$filters[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['address']['province']."'  ";
 				$search[] = $_GET['address']['province'];
 			}
 
-			if($_GET['address']['municipality'] != "") {
+			if(isset($_GET['address']['municipality']) && $_GET['address']['municipality'] != "") {
 				$filters[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['address']['municipality']."'  ";
 				$search[] = $_GET['address']['municipality'];
 			}
@@ -736,6 +742,10 @@ class ListingsController extends \Main\Controller {
 			if(isset($_GET['address']['village']) && $_GET['address']['village'] != "") {
 				$filters[] = " JSON_EXTRACT(address, '$.village') = '".$_GET['address']['village']."'  ";
 				$search[] = $_GET['address']['village'];
+			}
+
+			if(!is_array($_GET['address'])) {
+				$search[] = trim($_GET['address']);
 			}
 
 		}
@@ -758,13 +768,7 @@ class ListingsController extends \Main\Controller {
 
 		$order = isset($_GET['order']) ? $_GET['order'] : " DESC";
 
-		if(
-			(isset($_GET['type']) && $_GET['type'] != "") || 
-			(isset($_GET['tags']) && $_GET['tags'] != "") || 
-			(isset($_GET['category']) && $_GET['category'] != "") || 
-			(isset($_GET['address']) && $_GET['address'] != "") || 
-			(isset($_GET['amenities']) && $_GET['amenities'] != "")
-		) {
+		if(isset($search)) {
 			$model->select("
 				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, last_modified, l.status, display, type, title, tags, long_desc, category, address, amenities,
 				MATCH( type, title, tags, long_desc, category, address, amenities )

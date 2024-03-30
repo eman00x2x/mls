@@ -19,7 +19,7 @@ $html[] = "<div class='d-flex flex-column'>";
                             $html[] = "<span><i class='ti ti-lock-open' style='font-size:48px;'></i></span>";
                             $html[] = "<div class=''>";
                                 $html[] = "<h1 class='m-0 p-0 fw-bold'>Unlock an account </h1>";
-                                $html[] = "<span class='form-hint'>Enter the account pin to access the account</span>";
+                                $html[] = "<span class='form-hint'>Enter the account PIN to gain access</span>";
 						    $html[] = "</div>";
 						$html[] = "</div>";
                         

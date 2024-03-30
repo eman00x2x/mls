@@ -6,7 +6,7 @@ use Pecee\SimpleRouter\SimpleRouter as Router;
 
 Router::get(WEB_ADMIN_ALIAS.'/', 'DashboardController@index', ['as' => 'dashboard']);
 
-/** NOTIFICATIONS ROUTES */
+/** ARTICLES ROUTES */
 Router::get(WEB_ADMIN_ALIAS.'/articles', 'ArticlesController@index', ['as' => 'index']);
 Router::get(WEB_ADMIN_ALIAS.'/articles/new', 'ArticlesController@add', ['as' => 'addArticle']);
 Router::get(WEB_ADMIN_ALIAS.'/articles/{id}', 'ArticlesController@edit', ['as' => 'editArticle'])->where([ 'id' => '[0-9]+' ]);

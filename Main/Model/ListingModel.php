@@ -112,7 +112,7 @@ class ListingModel extends \Main\Model {
 				if(!isset($data['other_details'])) { $data['other_details'] = json_encode($this->column['other_details']); }
 
 				foreach($data as $key => $val) {
-					$this->column[$key] = escape($val);
+					$this->column[$key] = $val;
 				}
 
 				$this->update();
