@@ -69,6 +69,19 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 
 				$html[] = "</div>";
+
+				/*** ADS CONTAINER */
+				$html[] = "<div class='d-none px-2 ARTICLE_LIST_SIDEBAR'>";
+					$html[] = "<a href='#' target='_blank' class='text-decoration-none'>";
+						$html[] = "<div class='card bg-dark-lt mt-2 rounded-0  d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='height:280px;'>";
+							$html[] = "<div class='loader'></div>";
+							$html[] = "<p>Loading Ads</p>";
+						$html[] = "</div>";
+					$html[] = "</a>";
+				$html[] = "</div>";
+				/*** END ADS CONTAINER */					
+
+
 			$html[] = "</div>";
 		$html[] = "</div>";
 

@@ -15,20 +15,14 @@ class PageAdsModel extends \Main\Model {
 				"width" => 1024,
 				"height" => 250
 			]
-		], 
-		"PROPERTY_LIST_INLINE" => [
-			"size" => [
-				"width" => 300,
-				"height" => 300
-			]
 		],
-		"PORPERTY_VIEW_SIDEBAR_TOP" => [
+		"PROPERTY_VIEW_SIDEBAR_TOP" => [
 			"size" => [
 				"width" => 380,
 				"height" => 280
 			]
 		],
-		"PORPERTY_VIEW_SIDEBAR_BOTTOM" => [
+		"PROPERTY_VIEW_SIDEBAR_BOTTOM" => [
 			"size" => [
 				"width" => 380,
 				"height" => 280

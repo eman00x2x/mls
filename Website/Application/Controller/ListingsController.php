@@ -101,12 +101,6 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		$this->setTemplate("listings/listProperties.php");
 		$listings->list = $this->getTemplate($response['data'],$response['model']);
 
-		$pageAds = $this->getModel("PageAds");
-		$pageAds->page['limit'] = 1;
-		$page_ads_result = $pageAds->getByPlacement("PROPERTY_LIST_TOP");
-
-		$response['data']['page_ads'] = $page_ads_result;
-
 		$this->setTempalteBasePath(ROOT."Website");
 		$this->setTemplate("listings/index.php");
 		return $this->getTemplate($response['data'], $response['model']);
@@ -375,14 +369,6 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			$this->doc->setFacebookMetaData("og:updated_time", $data['last_modified']);
 			
 			$this->saveListingView($data);
-
-			$pageAds = $this->getModel("PageAds");
-			$pageAds->page['limit'] = 1;
-			$data['page_ads']['PORPERTY_VIEW_SIDEBAR_TOP'] = $pageAds->getByPlacement("PORPERTY_VIEW_SIDEBAR_TOP");
-
-			$pageAds = $this->getModel("PageAds");
-			$pageAds->page['limit'] = 1;
-			$data['page_ads']['PORPERTY_VIEW_SIDEBAR_BOTTOM'] = $pageAds->getByPlacement("PORPERTY_VIEW_SIDEBAR_BOTTOM");
 
 			$this->setTemplate("listings/view.php");
 			return $this->getTemplate($data, $listing);

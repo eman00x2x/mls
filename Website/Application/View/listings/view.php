@@ -412,18 +412,13 @@ $html[] = "<div class='page-body mb-0'>";
 							$html[] = "</div>";
 						$html[] = "</div>";
 
-						$banner = "";
-						$url = "";
-
 						/*** ADS CONTAINER */
-						if($data['page_ads']['PORPERTY_VIEW_SIDEBAR_TOP']) {
-							$banner = $data['page_ads']['PORPERTY_VIEW_SIDEBAR_TOP'][0]['banner'];
-							$url = $data['page_ads']['PORPERTY_VIEW_SIDEBAR_TOP'][0]['url'];
-						}
-
-						$html[] = "<div class='px-4'>";
-							$html[] = "<a href='".$url."' target='_blank'>";
-								$html[] = "<div class='card bg-dark-lt mt-2 rounded-0  d-print-none' style='height:280px; background-image: url(".$banner.")'></div>";
+						$html[] = "<div class='d-none px-2 PROPERTY_VIEW_SIDEBAR_TOP'>";
+							$html[] = "<a href='#' target='_blank' class='text-decoration-none'>";
+								$html[] = "<div class='card bg-dark-lt mt-2 rounded-0  d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='height:280px;'>";
+									$html[] = "<div class='loader'></div>";
+									$html[] = "<p>Loading Ads</p>";
+								$html[] = "</div>";
 							$html[] = "</a>";
 						$html[] = "</div>";
 						/*** END ADS CONTAINER */
@@ -446,15 +441,12 @@ $html[] = "<div class='page-body mb-0'>";
 				$html[] = "<div class='col-md-4'>";
 					
 					/*** ADS CONTAINER */
-
-					if($data['page_ads']['PORPERTY_VIEW_SIDEBAR_BOTTOM']) {
-						$banner = $data['page_ads']['PORPERTY_VIEW_SIDEBAR_BOTTOM'][0]['banner'];
-						$url = $data['page_ads']['PORPERTY_VIEW_SIDEBAR_BOTTOM'][0]['url'];
-					}
-
-					$html[] = "<div class='px-4'>";
-						$html[] = "<a href='".$url."' target='_blank'>";
-							$html[] = "<div class='card bg-dark-lt rounded-0 d-print-none' style='height:280px; background-image: url(".$banner.")'></div>";
+					$html[] = "<div class='d-none px-2 PROPERTY_VIEW_SIDEBAR_BOTTOM'>";
+						$html[] = "<a href='#' target='_blank' class='text-decoration-none'>";
+							$html[] = "<div class='card bg-dark-lt rounded-0 d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='height:280px;'>";
+								$html[] = "<div class='loader'></div>";
+								$html[] = "<p>Loading Ads</p>";
+							$html[] = "</div>";
 						$html[] = "</a>";
 					$html[] = "</div>";
 					/*** END ADS CONTAINER */

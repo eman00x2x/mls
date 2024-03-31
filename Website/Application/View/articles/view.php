@@ -1,10 +1,9 @@
 <?php
 
-$html[] = "<div class='page-body'>";
+$html[] = "<div class='page-body bg-white' style='margin: 0;'>";
     $html[] = "<div class='container-xl'>";
 
         $html[] = "<div class='row'>";
-
             $html[] = "<div class='col-md-8 col-12'>";
 			
 				$html[] = "<div class='article p-4'>";
@@ -23,11 +22,22 @@ $html[] = "<div class='page-body'>";
 				$html[] = "</div>";
 
             $html[] = "</div>";
-
 			$html[] = "<div class='col-md-4 col-12'>";
-				
-        	$html[] = "</div>";
 
+				$html[] = "<div class='mt-5'>";
+					/*** ADS CONTAINER */
+					$html[] = "<div class='d-none px-2 ARTICLE_VIEW_SIDEBAR'>";
+						$html[] = "<a href='#' target='_blank' class='text-decoration-none'>";
+							$html[] = "<div class='card bg-dark-lt mt-2 rounded-0  d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='height:280px;'>";
+								$html[] = "<div class='loader'></div>";
+								$html[] = "<p>Loading Ads</p>";
+							$html[] = "</div>";
+						$html[] = "</a>";
+					$html[] = "</div>";
+					/*** END ADS CONTAINER */
+        		$html[] = "</div>";
+
+        	$html[] = "</div>";
         $html[] = "</div>";
 
     $html[] = "</div>";

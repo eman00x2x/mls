@@ -225,18 +225,17 @@ $html[] = "<div class='page-body'>";
 				$html[] = "</div>";
 
 
-				$banner = "";
-				$url = "";
-
 				/** PAGE ADS */
-				if($data['page_ads']) {
-					$banner = $data['page_ads'][0]['banner'];
-					$url = $data['page_ads'][0]['url'];
-				}
-
-				$html[] = "<a href='".$url."' target='_blank'>";
-					$html[] = "<div class='mb-3 border rounded featured-post' style='height:250px; background-image: url(".$banner.")'> <!-- FEATURED ADS --> </div>";
-				$html[] = "</a>";
+				$html[] = "<div class='mb-4'>";
+					$html[] = "<div class='d-none PROPERTY_LIST_TOP'>";
+						$html[] = "<a href='#' target='_blank'>";
+							$html[] = "<div class='card bg-dark-lt mt-2 rounded-0  d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='height:250px;'>";
+								$html[] = "<div class='loader'></div>";
+								$html[] = "<p>Loading Ads</p>";
+							$html[] = "</div>";
+						$html[] = "</a>";
+					$html[] = "</div>";
+				$html[] = "</div>";
 
 				/** LISTING LIST */
 				$html[] = $model->list;
