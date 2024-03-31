@@ -1,9 +1,3 @@
-let ticker;
-let PROPERTY_LIST_TOP;
-let PROPERTY_VIEW_SIDEBAR_TOP;
-let PROPERTY_VIEW_SIDEBAR_BOTTOM;
-let ARTICLE_LIST_SIDEBAR;
-let ARTICLE_VIEW_SIDEBAR;
 
 let getCollection = async (placement) => {
     let element = document.querySelector('.' + placement);
@@ -16,11 +10,11 @@ let getCollection = async (placement) => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    PROPERTY_LIST_TOP = getCollection('PROPERTY_LIST_TOP');
-    PROPERTY_VIEW_SIDEBAR_TOP = getCollection('PROPERTY_VIEW_SIDEBAR_TOP');
-    PROPERTY_VIEW_SIDEBAR_BOTTOM = getCollection('PROPERTY_VIEW_SIDEBAR_BOTTOM');
-    ARTICLE_LIST_SIDEBAR = getCollection('ARTICLE_LIST_SIDEBAR');
-    ARTICLE_VIEW_SIDEBAR = getCollection('ARTICLE_VIEW_SIDEBAR');
+    let PROPERTY_LIST_TOP = getCollection('PROPERTY_LIST_TOP');
+    let PROPERTY_VIEW_SIDEBAR_TOP = getCollection('PROPERTY_VIEW_SIDEBAR_TOP');
+    let PROPERTY_VIEW_SIDEBAR_BOTTOM = getCollection('PROPERTY_VIEW_SIDEBAR_BOTTOM');
+    let ARTICLE_LIST_SIDEBAR = getCollection('ARTICLE_LIST_SIDEBAR');
+    let ARTICLE_VIEW_SIDEBAR = getCollection('ARTICLE_VIEW_SIDEBAR');
 
     PROPERTY_LIST_TOP.then(data => { setAds('.PROPERTY_LIST_TOP', data); });
     PROPERTY_VIEW_SIDEBAR_TOP.then(data => { setAds('.PROPERTY_VIEW_SIDEBAR_TOP', data); });
@@ -41,5 +35,5 @@ function setAds(container, data) {
             document.querySelector(container).classList.add('d-none');
         }
     }
-    
+
 }
