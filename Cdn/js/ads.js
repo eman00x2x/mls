@@ -1,11 +1,19 @@
-
+sessionStorage.clear()
 let getCollection = async (placement) => {
     let element = document.querySelector('.' + placement);
     if (element !== null) {
         element.classList.remove('d-none');
-        const response = await fetch(DOMAIN + 'showAds/' + placement)
-            .then(response => response.json());
-        return response;
+
+        if (sessionStorage[placement] !== undefined) {
+            const response = JSON.parse(sessionStorage[placement]);
+            return response;
+        } else {
+            const response = await fetch(DOMAIN + 'showAds/' + placement)
+                .then(data => data.json());
+            sessionStorage[placement] = JSON.stringify(response);
+            return response;
+        }
+        
     }
 }
 

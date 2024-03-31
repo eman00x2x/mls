@@ -302,113 +302,115 @@ $html[] = "<div class='page-body mb-0'>";
 				$html[] = "</div>";
 
 				$html[] = "<div class='col-md-4'>";
-					$html[] = "<div class='sidebar d-none d-md-block sticky-top d-print-none'>";
-						$html[] = "<div class='card'>";
+					$html[] = "<div class='sticky-top'>";
+						$html[] = "<div class='sidebar d-none d-md-block d-print-none'>";
+							$html[] = "<div class='card'>";
 
-							$html[] = "<div class='card-body agent-form'>";
+								$html[] = "<div class='card-body agent-form'>";
 
-								$html[] = "<div class='inquiry-form-container'>";
-									$html[] = "<h2 class='card-title text-center'><i class='ti ti-message'></i> Send Message</h2>";
+									$html[] = "<div class='inquiry-form-container'>";
+										$html[] = "<h2 class='card-title text-center'><i class='ti ti-message'></i> Send Message</h2>";
 
-									$html[] = "<div class='row justify-content-center'>";
-										$html[] = "<div class='col-lg-8 col-sm-12'>";
-											$html[] = "<div class='d-flex py-1 mb-4 align-items-center'>";
-												$html[] = "<span class='avatar avatar-xl me-2 rounded-circle' style='background-image: url(".$data['account']['logo'].")'></span>";
-												$html[] = "<div class='flex-fill'>";
-													$html[] = "<div class='font-weight-medium'>";
-														$html[] = $data['account']['account_name']['prefix']." ".$data['account']['account_name']['firstname']." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix'];
+										$html[] = "<div class='row justify-content-center'>";
+											$html[] = "<div class='col-lg-8 col-sm-12'>";
+												$html[] = "<div class='d-flex py-1 mb-4 align-items-center'>";
+													$html[] = "<span class='avatar avatar-xl me-2 rounded-circle' style='background-image: url(".$data['account']['logo'].")'></span>";
+													$html[] = "<div class='flex-fill'>";
+														$html[] = "<div class='font-weight-medium'>";
+															$html[] = $data['account']['account_name']['prefix']." ".$data['account']['account_name']['firstname']." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix'];
+														$html[] = "</div>";
+														$html[] = "<div class='text-muted'>".$data['account']['profession']."</div>";
+														if($data['account']['company_name'] != "") { $html[] = "<div class='text-muted'>".$data['account']['company_name']."</div>"; }
+														$html[] = "<div class='text-muted'>Member Since ".date("Y", $data['account']['registration_date'])."</div>";
 													$html[] = "</div>";
-													$html[] = "<div class='text-muted'>".$data['account']['profession']."</div>";
-													if($data['account']['company_name'] != "") { $html[] = "<div class='text-muted'>".$data['account']['company_name']."</div>"; }
-													$html[] = "<div class='text-muted'>Member Since ".date("Y", $data['account']['registration_date'])."</div>";
 												$html[] = "</div>";
 											$html[] = "</div>";
 										$html[] = "</div>";
-									$html[] = "</div>";
 
-									$html[] = "<div class='loader-container text-center d-none'>";
-										$html[] = "<div class='d-flex gap-3 align-items-center justify-content-center'>";
-											$html[] = "<span class='loader'></span>";
-											$html[] = "<p class='p-0 m-0'>Sending message, please wait...</p>";
-										$html[] = "</div>";
-									$html[] = "</div>";
-
-									$html[] = "<form id='inquiry-form' action='".url("ListingsController@sendMessage", ["id" => $data['listing_id']])."' method='POST'>";
-
-										$html[] = "<input type='hidden' name='title' value='".$data['title']."' />";
-										$html[] = "<input type='hidden' name='account_email' value='".$data['account']['email']."' />";
-										$html[] = "<input type='hidden' name='account_id' value='".$data['account_id']."' />";
-										$html[] = "<input type='hidden' name='listing_id' value='".$data['listing_id']."' />";
-										$html[] = "<input type='hidden' name='listing_name' value='".$data['name']."' />";
-										$html[] = "<input type='hidden' name='preferences[type]' value='".$data['type']."' />";
-										$html[] = "<input type='hidden' name='preferences[bedroom]' value='".$data['bedroom']."' />";
-										$html[] = "<input type='hidden' name='preferences[bathroom]' value='".$data['bathroom']."' />";
-										$html[] = "<input type='hidden' name='preferences[parking]' value='".$data['parking']."' />";
-										$html[] = "<input type='hidden' name='preferences[lot_area]' value='".$data['lot_area']."' />";
-										$html[] = "<input type='hidden' name='preferences[category]' value='".$data['category']."' />";
-										$html[] = "<input type='hidden' name='preferences[address][barangay]' value='".$data['address']['barangay']."' />";
-										$html[] = "<input type='hidden' name='preferences[address][municipality]' value='".$data['address']['municipality']."' />";
-										$html[] = "<input type='hidden' name='preferences[address][province]' value='".$data['address']['province']."' />";
-										$html[] = "<input type='hidden' name='preferences[address][region]' value='".$data['address']['region']."' />";
-
-										$html[] = "<div class='mb-3'>";
-											$html[] = "<div class='form-floating mb-3'>";
-												$html[] = "<input type='text' name='name' id='name' value='' class='form-control' placeholder='Your Name' />";
-												$html[] = "<label for='name'>Your Name</label>";
+										$html[] = "<div class='loader-container text-center d-none'>";
+											$html[] = "<div class='d-flex gap-3 align-items-center justify-content-center'>";
+												$html[] = "<span class='loader'></span>";
+												$html[] = "<p class='p-0 m-0'>Sending message, please wait...</p>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 
-										$html[] = "<div class='mb-3'>";
-											$html[] = "<div class='form-floating mb-3'>";
-												$html[] = "<input type='email' name='email' id='email' value='' class='form-control' placeholder='Email Address' />";
-												$html[] = "<label for='email'>Email Address</label>";
-											$html[] = "</div>";
-										$html[] = "</div>";
+										$html[] = "<form id='inquiry-form' action='".url("ListingsController@sendMessage", ["id" => $data['listing_id']])."' method='POST'>";
 
-										$html[] = "<div class='hidden-fields d-none'>";
+											$html[] = "<input type='hidden' name='title' value='".$data['title']."' />";
+											$html[] = "<input type='hidden' name='account_email' value='".$data['account']['email']."' />";
+											$html[] = "<input type='hidden' name='account_id' value='".$data['account_id']."' />";
+											$html[] = "<input type='hidden' name='listing_id' value='".$data['listing_id']."' />";
+											$html[] = "<input type='hidden' name='listing_name' value='".$data['name']."' />";
+											$html[] = "<input type='hidden' name='preferences[type]' value='".$data['type']."' />";
+											$html[] = "<input type='hidden' name='preferences[bedroom]' value='".$data['bedroom']."' />";
+											$html[] = "<input type='hidden' name='preferences[bathroom]' value='".$data['bathroom']."' />";
+											$html[] = "<input type='hidden' name='preferences[parking]' value='".$data['parking']."' />";
+											$html[] = "<input type='hidden' name='preferences[lot_area]' value='".$data['lot_area']."' />";
+											$html[] = "<input type='hidden' name='preferences[category]' value='".$data['category']."' />";
+											$html[] = "<input type='hidden' name='preferences[address][barangay]' value='".$data['address']['barangay']."' />";
+											$html[] = "<input type='hidden' name='preferences[address][municipality]' value='".$data['address']['municipality']."' />";
+											$html[] = "<input type='hidden' name='preferences[address][province]' value='".$data['address']['province']."' />";
+											$html[] = "<input type='hidden' name='preferences[address][region]' value='".$data['address']['region']."' />";
+
+											$html[] = "<div class='mb-3'>";
+												$html[] = "<div class='form-floating mb-3'>";
+													$html[] = "<input type='text' name='name' id='name' value='' class='form-control' placeholder='Your Name' />";
+													$html[] = "<label for='name'>Your Name</label>";
+												$html[] = "</div>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='mb-3'>";
+												$html[] = "<div class='form-floating mb-3'>";
+													$html[] = "<input type='email' name='email' id='email' value='' class='form-control' placeholder='Email Address' />";
+													$html[] = "<label for='email'>Email Address</label>";
+												$html[] = "</div>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='hidden-fields d-none'>";
+												
+												$html[] = "<div class='mb-3'>";
+													$html[] = "<div class='form-floating mb-3'>";
+														$html[] = "<input type='number' name='mobile_no' id='mobile_no' value='' class='form-control' placeholder='(0000) 000-0000' data-mask='(0000) 000-0000' data-mask-visible='true' />";
+														$html[] = "<label for='mobile_no'>Mobile Number</label>";
+													$html[] = "</div>";
+												$html[] = "</div>";
+
+												$html[] = "<div class='mb-3'>";
+													$html[] = "<div class='form-floating mb-3'>";
+														$html[] = "<textarea name='message' id='message' value='' class='form-control' placeholder='message'></textarea>";
+														$html[] = "<label for='message'>Message</label>";
+													$html[] = "</div>";
+												$html[] = "</div>";
+
+												$html[] = "<div class='mb-3'>";
+													$security_code = rand(1000, 9999);
+													$html[] = "<div class='mb-1'>";
+														$html[] = "<p class='m-0 p-0'>Enter security code: <span class='fw-bold valid-security-code'>".$security_code."</span></p>";
+													$html[] = "</div>";
+
+													$html[] = "<input type='hidden' name='security_code' id='security_code' value='".$security_code."' />";
+
+													$html[] = "<div class='form-floating mb-3'>";
+														$html[] = "<input type='text' name='input_security_code' id='input_security_code' value='' class='form-control' placeholder='Enter security code' />";
+														$html[] = "<label class='input_security_code'>Security Code</label>";
+													$html[] = "</div>";
+												$html[] = "</div>";
+
+											$html[] = "</div>";
+
+											$html[] = "<div class='response'>";
+												$html[] = getMsg();
+											$html[] = "</div>";			
+
+											$html[] = "<p class='mt-4 text-muted fs-12'>By clicking send message, you are accepting ".SITE_NAME." <a href='".url("PagesController@terms")."'>Terms and Condition</a> and <a href='".url("PagesController@privacy")."'>Privacy Policy</a> page.</p>";
+											$html[] = "<span class='mb-3 btn btn-primary btn-send-message w-100'><i class='ti ti-send me-1'></i> Send Message</span>";
 											
-											$html[] = "<div class='mb-3'>";
-												$html[] = "<div class='form-floating mb-3'>";
-													$html[] = "<input type='number' name='mobile_no' id='mobile_no' value='' class='form-control' placeholder='(0000) 000-0000' data-mask='(0000) 000-0000' data-mask-visible='true' />";
-													$html[] = "<label for='mobile_no'>Mobile Number</label>";
-												$html[] = "</div>";
-											$html[] = "</div>";
 
-											$html[] = "<div class='mb-3'>";
-												$html[] = "<div class='form-floating mb-3'>";
-													$html[] = "<textarea name='message' id='message' value='' class='form-control' placeholder='message'></textarea>";
-													$html[] = "<label for='message'>Message</label>";
-												$html[] = "</div>";
-											$html[] = "</div>";
-
-											$html[] = "<div class='mb-3'>";
-												$security_code = rand(1000, 9999);
-												$html[] = "<div class='mb-1'>";
-													$html[] = "<p class='m-0 p-0'>Enter security code: <span class='fw-bold valid-security-code'>".$security_code."</span></p>";
-												$html[] = "</div>";
-
-												$html[] = "<input type='hidden' name='security_code' id='security_code' value='".$security_code."' />";
-
-												$html[] = "<div class='form-floating mb-3'>";
-													$html[] = "<input type='text' name='input_security_code' id='input_security_code' value='' class='form-control' placeholder='Enter security code' />";
-													$html[] = "<label class='input_security_code'>Security Code</label>";
-												$html[] = "</div>";
-											$html[] = "</div>";
-
-										$html[] = "</div>";
-
-										$html[] = "<div class='response'>";
-											$html[] = getMsg();
-										$html[] = "</div>";			
-
-										$html[] = "<p class='mt-4 text-muted fs-12'>By clicking send message, you are accepting ".SITE_NAME." <a href='".url("PagesController@terms")."'>Terms and Condition</a> and <a href='".url("PagesController@privacy")."'>Privacy Policy</a> page.</p>";
-										$html[] = "<span class='mb-3 btn btn-primary btn-send-message w-100'><i class='ti ti-send me-1'></i> Send Message</span>";
+										$html[] = "</form>";
 										
+									$html[] = "</div>";
 
-									$html[] = "</form>";
-									
 								$html[] = "</div>";
-
 							$html[] = "</div>";
 						$html[] = "</div>";
 
@@ -424,6 +426,7 @@ $html[] = "<div class='page-body mb-0'>";
 						/*** END ADS CONTAINER */
 
 					$html[] = "</div>";
+
 				$html[] = "</div>";
 			$html[] = "</div>";
 
