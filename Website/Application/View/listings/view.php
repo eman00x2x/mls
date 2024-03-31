@@ -412,11 +412,19 @@ $html[] = "<div class='page-body mb-0'>";
 							$html[] = "</div>";
 						$html[] = "</div>";
 
+						$banner = "";
+						$url = "";
+
 						/*** ADS CONTAINER */
-						$html[] = "<div class='card bg-dark-lt mt-2 rounded-0  d-print-none' style='height:250px;'>";
-							$html[] = "<div class='card-body'>";
-								$html[] = "<span class='d-block text-center text-muted'>ADS CONTAINER</span>";
-							$html[] = "</div>";
+						if($data['page_ads']['PORPERTY_VIEW_SIDEBAR_TOP']) {
+							$banner = $data['page_ads']['PORPERTY_VIEW_SIDEBAR_TOP'][0]['banner'];
+							$url = $data['page_ads']['PORPERTY_VIEW_SIDEBAR_TOP'][0]['url'];
+						}
+
+						$html[] = "<div class='px-4'>";
+							$html[] = "<a href='".$url."' target='_blank'>";
+								$html[] = "<div class='card bg-dark-lt mt-2 rounded-0  d-print-none' style='height:280px; background-image: url(".$banner.")'></div>";
+							$html[] = "</a>";
 						$html[] = "</div>";
 						/*** END ADS CONTAINER */
 
@@ -438,10 +446,16 @@ $html[] = "<div class='page-body mb-0'>";
 				$html[] = "<div class='col-md-4'>";
 					
 					/*** ADS CONTAINER */
-					$html[] = "<div class='card bg-dark-lt rounded-0 d-print-none' style='height:350px;'>";
-						$html[] = "<div class='card-body'>";
-							$html[] = "<span class='d-block text-center text-muted'>ADS CONTAINER</span>";
-						$html[] = "</div>";
+
+					if($data['page_ads']['PORPERTY_VIEW_SIDEBAR_BOTTOM']) {
+						$banner = $data['page_ads']['PORPERTY_VIEW_SIDEBAR_BOTTOM'][0]['banner'];
+						$url = $data['page_ads']['PORPERTY_VIEW_SIDEBAR_BOTTOM'][0]['url'];
+					}
+
+					$html[] = "<div class='px-4'>";
+						$html[] = "<a href='".$url."' target='_blank'>";
+							$html[] = "<div class='card bg-dark-lt rounded-0 d-print-none' style='height:280px; background-image: url(".$banner.")'></div>";
+						$html[] = "</a>";
 					$html[] = "</div>";
 					/*** END ADS CONTAINER */
 

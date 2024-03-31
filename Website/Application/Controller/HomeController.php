@@ -63,7 +63,7 @@ class HomeController extends \Main\Controller {
 								value='\" + result[key].barangay + \" \" + result[key].municipality + \" \" + result[key].province + \"'> \";
 						}
 						$('#address_result').html(text);
-					},500);
+					},200);
 				}else { clearInterval(timer); }
 			});
 
@@ -161,7 +161,7 @@ class HomeController extends \Main\Controller {
 						}
 					}
 				}
-				return results;
+				return results.slice(-20);
 			}
 			
 		

@@ -19,6 +19,8 @@
     var CDN = '<?php echo CDN; ?>';
 </script>
 
+<script type="text/javascript" src="<?php echo CDN; ?>js/ads.js"></script>
+
 <?php
 
     $document = \Library\Factory::getDocument();

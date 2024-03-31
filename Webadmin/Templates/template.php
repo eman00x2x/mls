@@ -57,6 +57,15 @@
 									</li>
 								<?php } ?>
 
+								
+									<li class="nav-item <?php echo (url()->contains("/ads")) ? "active" : ""; ?>">
+										<a class="nav-link" href="<?php echo url("PageAdsController@index"); ?>">
+											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-ad'></i></span>
+											<span class="nav-link-title">Page Ads Management</span>
+										</a>
+									</li>
+								
+
 							</ul>
 						</div>
 					</div>

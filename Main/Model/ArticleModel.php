@@ -154,9 +154,6 @@ class ArticleModel extends \Main\Model {
 			$handle->forbidden = array('application/*');
 
 			$handle->file_safe_name 	= true;
-			$handle->image_resize         = true;
-			$handle->image_x              = 200;
-			$handle->image_ratio_y        = true;
 
 			$handle->Process(ROOT."/Cdn/images/temporary/");
 

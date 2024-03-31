@@ -224,8 +224,21 @@ $html[] = "<div class='page-body'>";
 					$html[] = "<p>There are a total of (".$model->rows.") results</p>";
 				$html[] = "</div>";
 
-				$html[] = "<div class='mb-3 border rounded featured-post' style='height:250px; '> <!-- FEATURED ADS --> </div>";
 
+				$banner = "";
+				$url = "";
+
+				/** PAGE ADS */
+				if($data['page_ads']) {
+					$banner = $data['page_ads'][0]['banner'];
+					$url = $data['page_ads'][0]['url'];
+				}
+
+				$html[] = "<a href='".$url."' target='_blank'>";
+					$html[] = "<div class='mb-3 border rounded featured-post' style='height:250px; background-image: url(".$banner.")'> <!-- FEATURED ADS --> </div>";
+				$html[] = "</a>";
+
+				/** LISTING LIST */
 				$html[] = $model->list;
 
 				if(!empty($model)) {

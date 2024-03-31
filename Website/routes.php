@@ -40,3 +40,6 @@ Router::get( WEB_ALIAS . '/comparative-analysis/{uri}', 'ListingsController@comp
 
 /** PROFILE ROUTES */
 Router::get( WEB_ALIAS . '/profile/{name}', 'AccountController@profile')->where([ 'name' => '[\w\-]+' ]);
+
+/** ADS ROUTES */
+Router::get( WEB_ALIAS . '/showAds/{placement}', 'PageAdsController@showAds')->where([ 'placement' => '[\w\-]+' ]);

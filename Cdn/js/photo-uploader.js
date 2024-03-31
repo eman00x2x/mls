@@ -37,7 +37,7 @@ $(document).on('submit', '#imageUploadForm', (function (e) {
 		var response = JSON.parse(data);
 		var folder = "temporary";
 		
-		if ($('#photo_uploader').val() == "articles" || $('#photo_uploader').val() == "accounts" || $('#photo_uploader').val() == "users") {
+		if ($('#photo_uploader').val() == "page_ads" || $('#photo_uploader').val() == "articles" || $('#photo_uploader').val() == "accounts" || $('#photo_uploader').val() == "users") {
 			
 			$('.photo-preview').css('background-image', "url('" + CDN + "images/blank-profile.png')");
 			if(response.status == 1) {

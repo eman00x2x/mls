@@ -153,6 +153,7 @@ class ArticlesController extends \Main\Controller {
 			if(isset($_REQUEST['delete'])) {
 
 				$article->deleteArticle($id);
+				unlink(ROOT."Cdn/images/articles/".basename($data['banner']));
 
 				$this->getLibrary("Factory")->setMsg("Article permanently deleted!","success");
 				return json_encode(
