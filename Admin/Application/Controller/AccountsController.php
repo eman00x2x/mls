@@ -649,7 +649,7 @@ class AccountsController extends \Main\Controller {
 					if($i > ($data['account']['privileges']['max_post'] - 1)) {
 						/** make inactive property listings in account */
 						$listings->save($data['listings'][$i]['listing_id'], [
-							"status" => "inactive"
+							"status" => 0
 						]);
 					}
 

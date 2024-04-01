@@ -45,6 +45,9 @@ spl_autoload_register('autoloader');
 require_once(ROOT."/Includes/config.php");
 require_once(BASE."/helper.php");
 
+$cron = new \Library\CronJob();
+$cron->run();
+
 class Middleware implements IMiddleware {
 
     public function handle(Request $request): void 

@@ -34,7 +34,7 @@ class ListingsController extends \Main\Controller {
 		$data = $account->getById();
 
 		$filters[] = " account_id = $account_id ";
-		$filters[] = " status = 1 ";
+		$filters[] = " status IN(0, 1) ";
 		
 		$listing = $this->getModel("Listing");
 		$listing->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" last_modified DESC ");

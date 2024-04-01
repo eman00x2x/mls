@@ -72,9 +72,10 @@ $html[] = "<div class='page-body'>";
 							for($i=0; $i<count($data['listings']); $i++) { $c++;
 
 								$availability = array(
+									0 => "<span class='text-danger'>Expired</span>",
 									1 => "<span class='text-success '>Available</span>",
-									2 => "<span class='text-danger'>Sold</span>",
-									3 => "<span class='text-muted'>Sold</span>"
+									2 => "<span class='text-info'>Sold</span>",
+									3 => "<span class='text-muted'>Removed</span>"
 								);
 
 								$address = $data['listings'][$i]['address'];
