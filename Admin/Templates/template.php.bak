@@ -54,36 +54,76 @@
 										<?php if($_SESSION['user_logged']['permissions']['kyc']['access']) { ?>
 											<a href='<?php echo url("KYCController@index"); ?>' class='dropdown-item'><i class='ti ti-id me-1'></i> KYC</a>
 										<?php } ?>
-
-										<?php if(PREMIUM) { ?>
-											<?php if($_SESSION['user_logged']['permissions']['premiums']['access']) { ?>
-												<a href='<?php echo url("PremiumsController@index"); ?>' class='dropdown-item'><i class='ti ti-layers-union me-1'></i> Premiums</a>
-											<?php } ?>
-										<?php } ?>
-
-										<?php if($_SESSION['user_logged']['permissions']['page_ads']['access']) { ?>
-											<a href='<?php echo url("PageAdsController@index"); ?>' class='dropdown-item'><i class='ti ti-ad me-1'></i> Page Ads Management</a>
-										<?php } ?>
-
-									</div>
-								</li>
-
-								
-								<li class="nav-item <?php echo (url()->contains("/reports")) ? "active" : ""; ?> dropdown">
-									<a class="nav-link dropdown-toggle" href="#extra-link" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-report'></i></span>
-										<span class="nav-link-title">Settings</span>
-									</a>
-									<div class='dropdown-menu'>
-										<?php if($_SESSION['user_logged']['permissions']['settings']['access']) { ?>
-											<a href='<?php echo url("SettingsController@index", ["page" => "system-settings"]); ?>' class='dropdown-item'><i class='ti ti-settings-cog me-1'></i> System Settings</a>
-										<?php } ?>
-										<?php if($_SESSION['user_logged']['permissions']['web_settings']['access']) { ?>
-											<a href='<?php echo url("SettingsController@webSettings", ["page" => "common-settings"]); ?>' class='dropdown-item'><i class='ti ti-settings-cog me-1'></i> Website Settings</a>
-										<?php } ?>
+										
 									</div>
 								</li>
 								
+
+								<?php /* if($_SESSION['user_logged']['permissions']['accounts']['access']) { ?>
+									<li class="nav-item <?php echo (url()->contains("/accounts")) ? "active" : ""; ?>">
+										<a class="nav-link" href="<?php echo url("AccountsController@index"); ?>">
+											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-user-circle'></i></span>
+											<span class="nav-link-title">Accounts</span>
+										</a>
+									</li>
+								<?php } */ ?>
+
+								<?php /* if($_SESSION['user_logged']['permissions']['kyc']['access']) { ?>
+									<?php if(KYC) { ?>
+										<li class="nav-item <?php echo (url()->contains("/kyc")) ? "active" : ""; ?>">
+											<a class="nav-link" href="<?php echo url("KYCController@index"); ?>">
+												<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-user-circle'></i></span>
+												<span class="nav-link-title">KYC</span>
+											</a>
+										</li>
+									<?php } ?>
+								<?php } */ ?>
+								
+								<?php if(PREMIUM) { ?>
+									<li class="nav-item <?php echo (url()->contains("/premiums")) ? "active" : ""; ?>">
+										<a class="nav-link" href="<?php echo url("PremiumsController@index"); ?>">
+											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-layers-union'></i></span>
+											<span class="nav-link-title">Premiums</span>
+										</a>
+									</li>
+								<?php } ?>
+
+								<?php if($_SESSION['user_logged']['permissions']['page_ads']['access']) { ?>
+									<li class="nav-item <?php echo (url()->contains("/ads")) ? "active" : ""; ?>">
+										<a class="nav-link" href="<?php echo url("PageAdsController@index"); ?>">
+											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-ad'></i></span>
+											<span class="nav-link-title">Page Ads Management</span>
+										</a>
+									</li>
+								<?php } ?>
+
+								<?php if($_SESSION['user_logged']['permissions']['settings']['access']) { ?>
+									<li class="nav-item <?php echo (url()->contains("/settings")) ? "active" : ""; ?>">
+										<a class="nav-link" href="<?php echo url("SettingsController@index",["page" => "system-settings"]); ?>">
+											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-settings-cog'></i></span>
+											<span class="nav-link-title">Settings</span>
+										</a>
+									</li>
+								<?php } ?>
+								
+								<?php if($_SESSION['user_logged']['permissions']['web_settings']['access']) { ?>
+									<li class="nav-item <?php echo (url()->contains("/web-settings")) ? "active" : ""; ?>">
+										<a class="nav-link" href="<?php echo url("SettingsController@webSettings",["page" => "common-settings"]); ?>">
+											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-settings-cog'></i></span>
+											<span class="nav-link-title">Website Settings</span>
+										</a>
+									</li>
+								<?php } ?>
+
+								<?php /* if($_SESSION['user_logged']['permissions']['transactions']['access']) { ?>
+									<li class="nav-item <?php echo (url()->contains("/transactions")) ? "active" : ""; ?>">
+										<a class="nav-link" href="<?php echo url("TransactionsController@index"); ?>">
+											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-file-invoice'></i></span>
+											<span class="nav-link-title">Transactions</span>
+										</a>
+									</li>
+								<?php } */ ?>
+
 								<?php if($_SESSION['user_logged']['permissions']['reports']['access']) { ?>
 									<li class="nav-item <?php echo (url()->contains("/reports")) ? "active" : ""; ?> dropdown">
 										<a class="nav-link dropdown-toggle" href="#extra-link" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">

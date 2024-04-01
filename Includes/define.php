@@ -145,6 +145,9 @@ define("ADMIN_PERMISSIONS",[
 	"kyc" => [
 		"access" => (boolean) true
 	],
+	"page_ads" => [
+		"access" => (boolean) true
+	],
 	"leads" => [
 		"access" => (boolean) true,
 		"delete" => (boolean) true
@@ -167,6 +170,9 @@ define("WEBADMIN_PERMISSIONS",[
 		"access" => (boolean) true,
 		"edit" => (boolean) true,
 		"delete" => (boolean) true
+	],
+	"page_ads" => [
+		"access" => (boolean) true
 	]
 ]);
 

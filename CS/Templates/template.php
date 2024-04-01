@@ -48,13 +48,15 @@
 									</li>
 								<?php } ?>
 
-								<?php if(isset($_SESSION['user_logged']['permissions']['kyc']['access'])) { ?>
-									<li class="nav-item <?php echo (url()->contains("/kyc")) ? "active" : ""; ?>">
-										<a class="nav-link" href="<?php echo url("KYCController@index"); ?>">
-											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-user-circle'></i></span>
-											<span class="nav-link-title">KYC</span>
-										</a>
-									</li>
+								<?php if(KYC) { ?>
+									<?php if(isset($_SESSION['user_logged']['permissions']['kyc']['access'])) { ?>
+										<li class="nav-item <?php echo (url()->contains("/kyc")) ? "active" : ""; ?>">
+											<a class="nav-link" href="<?php echo url("KYCController@index"); ?>">
+												<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-user-circle'></i></span>
+												<span class="nav-link-title">KYC</span>
+											</a>
+										</li>
+									<?php } ?>
 								<?php } ?>
 
 							</ul>

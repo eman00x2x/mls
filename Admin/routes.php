@@ -91,6 +91,16 @@ Router::post(ADMIN_ALIAS.'/articles/{id}/save', 'ArticlesController@saveUpdate',
 Router::post(ADMIN_ALIAS.'/articles/saveNew', 'ArticlesController@saveNew', ['as' => 'accountSubscriptionSaveNew']);
 Router::post(ADMIN_ALIAS.'/articles/upload', 'ArticlesController@uploadPhoto', ['as' => 'uploadPhoto']);
 
+/** PAGE ADS ROUTES */
+Router::get(ADMIN_ALIAS.'/ads', 'PageAdsController@index', ['as' => 'ads']);
+Router::get(ADMIN_ALIAS.'/ads/new', 'PageAdsController@add', ['as' => 'addAds']);
+Router::get(ADMIN_ALIAS.'/ads/{id}', 'PageAdsController@edit', ['as' => 'editAds'])->where([ 'id' => '[0-9]+' ]);
+Router::get(ADMIN_ALIAS.'/ads/{id}/delete', 'PageAdsController@delete', ['as' => 'deleteAds'])->where([ 'id' => '[0-9]+' ]);
+
+Router::post(ADMIN_ALIAS.'/ads/{id}/save', 'PageAdsController@saveUpdate', ['as' => 'addAdsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
+Router::post(ADMIN_ALIAS.'/ads/saveNew', 'PageAdsController@saveNew', ['as' => 'addAdsSaveNew']);
+Router::post(ADMIN_ALIAS.'/ads/upload', 'PageAdsController@uploadPhoto', ['as' => 'adsUploadPhoto']);
+
 /** ADMINISTRATION ROUTES */
 Router::get(ADMIN_ALIAS.'/settings/{page}', 'SettingsController@index', ['as' => 'settings'])->where([ 'page' => '[\w\-\=]+' ]);
 Router::get(ADMIN_ALIAS.'/web-settings/{page}', 'SettingsController@webSettings', ['as' => 'webSettings'])->where([ 'page' => '[\w\-\=]+' ]);

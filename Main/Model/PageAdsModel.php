@@ -51,9 +51,9 @@ class PageAdsModel extends \Main\Model {
 	function getByPlacement($placement) {
 
 		$this
-		->select(" page_ads_id, banner, url, placement ")
-			->where(" placement = '$placement' ")
-				->and(" started_at < ".DATE_NOW." AND ended_at > ".DATE_NOW." ");
+			->select(" page_ads_id, banner, url, placement ")
+				->where(" placement = '$placement' ")
+					->and(" started_at < ".DATE_NOW." AND ended_at > ".DATE_NOW." AND visibility = 'visible");
 
 		return $this->getList();
 	}
