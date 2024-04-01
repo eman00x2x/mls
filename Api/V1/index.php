@@ -57,16 +57,12 @@ class Middleware implements IMiddleware {
 		
 		$request->user = Authenticator::getInstance()->checkApiKey();
 
-		if($request->user['status'] == 1) {
-			
-		}
-
 		Router::error(function(Request $request, \Exception $exception) {
 			$request->setRewriteCallback('ErrorsController@resourceNotFound');
 		});
 
 		Router::setDefaultNamespace('\Api\Application\Controller');
-		$content = Router::start();
+		echo Router::start();
 
     }
 }
