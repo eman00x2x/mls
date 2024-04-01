@@ -20,6 +20,7 @@ define("MANAGE_ALIAS","/mls/manage");
 define("ALIAS","/mls/website");
  */
 
+define("API","http://localhost/mls/api/");
 define("CDN","http://localhost/mls/cdn/");
 define("WEBDOMAIN","http://localhost/mls/website/");
 define("WEBADMIN","http://localhost/mls/webadmin/");

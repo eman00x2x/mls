@@ -45,29 +45,28 @@ spl_autoload_register('autoloader');
 require_once(ROOT."/Includes/config.php");
 require_once(BASE."/helper.php");
 
+$cron = new \Library\CronJob();
+$cron->run();
+
 class Middleware implements IMiddleware {
 
     public function handle(Request $request): void 
     {
 
-		Router::router()->reset();
-		SessionHandler::getInstance()->init();
+		Router::enableMultiRouteRendering(false);
 		
-		require_once('routes.php');
-		$template = "templates/template.php";
-		
+		$request->user = Authenticator::getInstance()->checkApiKey();
+
+		if($request->user['status'] == 1) {
+			
+		}
+
 		Router::error(function(Request $request, \Exception $exception) {
-			$request->setRewriteCallback('ErrorsController@notFound');
+			$request->setRewriteCallback('ErrorsController@resourceNotFound');
 		});
 
-		Router::setDefaultNamespace('\Website\Application\Controller');
+		Router::setDefaultNamespace('\Api\Application\Controller');
 		$content = Router::start();
-
-		if(AJAX_REQUEST === true) {
-			echo $content;
-		}else {
-			require_once($template);
-		}
 
     }
 }

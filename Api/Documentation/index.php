@@ -6,7 +6,6 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-use Library\SessionHandler;
 use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Request as Request;
 use Pecee\Http\Middleware\IMiddleware;
@@ -45,29 +44,24 @@ spl_autoload_register('autoloader');
 require_once(ROOT."/Includes/config.php");
 require_once(BASE."/helper.php");
 
+$cron = new \Library\CronJob();
+$cron->run();
+
 class Middleware implements IMiddleware {
 
     public function handle(Request $request): void 
     {
 
-		Router::router()->reset();
-		SessionHandler::getInstance()->init();
+		Router::enableMultiRouteRendering(false);
 		
-		require_once('routes.php');
-		$template = "templates/template.php";
-		
+		$request->user = Authenticator::getInstance()->checkApiKey();
+
 		Router::error(function(Request $request, \Exception $exception) {
 			$request->setRewriteCallback('ErrorsController@notFound');
 		});
 
-		Router::setDefaultNamespace('\Website\Application\Controller');
+		Router::setDefaultNamespace('\Api\Application\Controller');
 		$content = Router::start();
-
-		if(AJAX_REQUEST === true) {
-			echo $content;
-		}else {
-			require_once($template);
-		}
 
     }
 }
