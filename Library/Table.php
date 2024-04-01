@@ -20,6 +20,8 @@ class Table {
 	public $column = [];
 	public $rows = 0;
 	public $results = [];
+	
+	public $total_pages = 0;
 
 	public $page = [
 		"adjacents" => null,
@@ -150,6 +152,7 @@ class Table {
 				$this->results[] = $this->stripQuotes($line);
 			} 
 			
+			$this->total_pages = ceil($this->rows/$this->page['limit']);
 			$this->pagination = $this->pagina->build($this, $this->page['target'],$this->page['uri']);
 			
 			return $this->results;
@@ -226,7 +229,7 @@ class Table {
 
 	function setPagina($page,$limit = 2,$adjacents = 1) {
 
-		$this->page['limit'] = $limit;
+		/* $this->page['limit'] = $limit; */
 		$this->page['adjacents'] = $adjacents;
 		$this->page['current'] = (in_array($page, range(0, 10000)) ? $page : 10000000);
 
@@ -235,8 +238,6 @@ class Table {
 		} else {
 			$this->page['starting_number'] = 0;			
 		}
-
-		
 
 	}
 

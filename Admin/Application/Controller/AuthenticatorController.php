@@ -608,24 +608,4 @@ class AuthenticatorController extends \Main\Controller
 
 	}
 
-	function checkApiKey() {
-
-		if(!isset($_SERVER['X-API-KEY'])) {
-			if(!isset($_GET['api_key'])) {
-				return json_encode([
-					"message" => "Please read the documentation on how to access the API",
-					"url" => API."documentation/v1"
-				]);
-			}else {
-				$api_key = $_GET['api_key'];
-			}
-		}else {
-			$header = explode(":", $_SERVER['X-API-KEY']);
-			$api_key = array_pop($header);
-		}
-
-		debug($api_key);
-
-	}
-
 }

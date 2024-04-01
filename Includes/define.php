@@ -28,6 +28,7 @@ define("CS","http://localhost/mls/cs/");
 define("ADMIN","http://localhost/mls/admin/");
 define("MANAGE","http://localhost/mls/manage/");
 
+define("API_ALIAS","/mls/api");
 define("ADMIN_ALIAS","/mls/admin");
 define("WEB_ADMIN_ALIAS","/mls/webadmin");
 define("MANAGE_ALIAS","/mls/manage");

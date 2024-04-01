@@ -1,25 +1,17 @@
 <?php
 
 header("Access-Control-Allow-Origin: *");
-header("Content-type: text/html; charset=utf-8");
+header('Content-Type: application/json; charset=utf-8');
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-use Library\SessionHandler;
+use Api\V1\Application\Controller\AuthenticatorController as Authenticator;
 use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Request as Request;
 use Pecee\Http\Middleware\IMiddleware;
 
-session_start();
-
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start();
-
-if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-	define("AJAX_REQUEST",true);
-}else {
-	define("AJAX_REQUEST",false);
-}
 
 define("ROOT","D:/wamp64/www/mls/");
 define("BASE",dirname(__FILE__));
@@ -43,25 +35,19 @@ function autoloader($class) {
 spl_autoload_register('autoloader');
 
 require_once(ROOT."/Includes/config.php");
-require_once(BASE."/helper.php");
-
-$cron = new \Library\CronJob();
-$cron->run();
 
 class Middleware implements IMiddleware {
 
     public function handle(Request $request): void 
     {
 
-		Router::enableMultiRouteRendering(false);
-		
-		$request->user = Authenticator::getInstance()->checkApiKey();
+		require_once('routes.php');
 
 		Router::error(function(Request $request, \Exception $exception) {
 			$request->setRewriteCallback('ErrorsController@resourceNotFound');
 		});
 
-		Router::setDefaultNamespace('\Api\Application\Controller');
+		Router::setDefaultNamespace('\Api\V1\Application\Controller');
 		echo Router::start();
 
     }
