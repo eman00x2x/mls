@@ -2,19 +2,11 @@
 
 $html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveUpdate",["id" => $data['account_id']])."' />";
 
-$html[] = "<input type='hidden' id='photo_uploader' value='accounts' />";
-$html[] = "<form action='".url("AccountsController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
-	$html[] = "<center>";
-		$html[] = "<input type='file' name='ImageBrowse' id='ImageBrowse' />";
-	$html[] = "</center>";
-$html[] = "</form>";
-
 $html[] = "<div class='container-xl'>";
 	$html[] = "<div class='response'>";
 		$html[] = getMsg();
 	$html[] = "</div>";
 $html[] = "</div>";
-
 
 $html[] = "<div class='page-header d-print-none text-white'>";
 	$html[] = "<div class='container-xl'>";
@@ -52,7 +44,7 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<div class='card-header'>";
 							$html[] = "<h3 class='card-title'>Education</h3>";
 							$html[] = "<div class='card-actions'>";
-								$html[] = "<span class='btn-more' data-append='.education-container'>add more</span>";
+								$html[] = "<span class='btn btn-primary btn-more' data-container='education'>add more</span>";
 							$html[] = "</div>";
 						$html[] = "</div>";
 						$html[] = "<div class='card-body education-container'>";
@@ -62,26 +54,32 @@ $html[] = "<div class='page-body'>";
 										$html[] = "<input type='text' name='education[$i][school]' id='education-school-$i' class='form-control' value='' />";
 										$html[] = "<label for='education-school-$i'>School Name</label>";
 									$html[] = "</div>";
-									$html[] = "<div class='d-flex gap-2'>";
-										$html[] = "<div class='form-floating mb-3 w-100'>";
-											$html[] = "<input type='text' name='education[$i][degree]' id='education-degree-$i' class='form-control' value='' />";
-											$html[] = "<label for='education-degree-$i'>Degree</label>";
+
+									$html[] = "<div class='row'>";
+										$html[] = "<div class='col-lg-5 col-md-12 col-sm-12'>";
+											$html[] = "<div class='form-floating mb-3 w-100'>";
+												$html[] = "<input type='text' name='education[$i][degree]' id='education-degree-$i' class='form-control' value='' />";
+												$html[] = "<label for='education-degree-$i'>Degree</label>";
+											$html[] = "</div>";
 										$html[] = "</div>";
-										
-										$html[] = "<div class='form-floating mb-3'>";
-											$html[] = "<input type='date' name='education[$i][date][from]' id='education-date-$i' class='form-control' value='' />";
-											$html[] = "<label for='education-date-$i'>From</label>";
-										$html[] = "</div>";
-										$html[] = "<div class='form-floating mb-3'>";
-											$html[] = "<input type='date' name='education[$i][date][to]' id='education-date-$i' class='form-control' value='' />";
-											$html[] = "<label for='education-date-$i'>To</label>";
+										$html[] = "<div class='col-lg-7 col-md-12 col-sm-12'>";
+											$html[] = "<div class='d-flex gap-3 justify-content-end'>";
+												$html[] = "<div class='form-floating mb-3'>";
+													$html[] = "<input type='date' name='education[$i][date][from]' id='education-date-$i' class='form-control' style='width:130px;' value='' />";
+													$html[] = "<label for='education-date-$i'>From</label>";
+												$html[] = "</div>";
+												$html[] = "<div class='form-floating mb-3'>";
+													$html[] = "<input type='date' name='education[$i][date][to]' id='education-date-$i' class='form-control' style='width:130px;' value='' />";
+													$html[] = "<label for='education-date-$i'>To</label>";
+												$html[] = "</div>";
+											$html[] = "</div>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 							}
 						$html[] = "</div>";
 
-						$html[] = "<input type='hidden' id='' value='$i' />";
+						$html[] = "<input type='hidden' id='education-fields-count' value='$i' />";
 
 					$html[] = "</div>";
 				$html[] = "</div>";
@@ -90,9 +88,10 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<div class='card-header'>";
 							$html[] = "<h3 class='card-title'>Your Affiliation</h3>";
 							$html[] = "<div class='card-actions'>";
+								$html[] = "<span class='btn btn-primary btn-more' data-container='affiliation'>add more</span>";
 							$html[] = "</div>";
 						$html[] = "</div>";
-						$html[] = "<div class='card-body'>";
+						$html[] = "<div class='card-body affiliation-container'>";
 								
 							for($i=0; $i<1; $i++) {
 								$html[] = "<div class='mb-4 border-bottom'>";
@@ -101,19 +100,24 @@ $html[] = "<div class='page-body'>";
 										$html[] = "<label for='affiliation-organization-$i'>Organization Name</label>";
 									$html[] = "</div>";
 									
-									$html[] = "<div class='d-flex gap-2'>";
-										$html[] = "<div class='form-floating mb-3 w-100'>";
-											$html[] = "<input type='text' name='affiliation[$i][title]' id='affiliation-title-$i' class='form-control' value='' />";
-											$html[] = "<label for='affiliation-title-$i'>Position</label>";
+									$html[] = "<div class='row'>";
+										$html[] = "<div class='col-lg-5 col-md-12 col-sm-12'>";
+											$html[] = "<div class='form-floating mb-3 w-100'>";
+												$html[] = "<input type='text' name='affiliation[$i][title]' id='affiliation-title-$i' class='form-control' value='' />";
+												$html[] = "<label for='affiliation-title-$i'>Position</label>";
+											$html[] = "</div>";
 										$html[] = "</div>";
-										
-										$html[] = "<div class='form-floating mb-3'>";
-											$html[] = "<input type='date' name='affiliation[$i][date][from]' id='affiliation-date-$i' class='form-control' value='' />";
-											$html[] = "<label for='affiliation-date-$i'>From</label>";
-										$html[] = "</div>";
-										$html[] = "<div class='form-floating mb-3'>";
-											$html[] = "<input type='date' name='affiliation[$i][date][to]' id='affiliation-date-$i' class='form-control' value='' />";
-											$html[] = "<label for='affiliation-date-$i'>To</label>";
+										$html[] = "<div class='col-lg-7 col-md-12 col-sm-12'>";
+											$html[] = "<div class='d-flex gap-3 justify-content-end'>";
+												$html[] = "<div class='form-floating mb-3'>";
+													$html[] = "<input type='date' name='affiliation[$i][date][from]' id='affiliation-date-$i' class='form-control' style='width:130px;' value='' />";
+													$html[] = "<label for='affiliation-date-$i'>From</label>";
+												$html[] = "</div>";
+												$html[] = "<div class='form-floating mb-3'>";
+													$html[] = "<input type='date' name='affiliation[$i][date][to]' id='affiliation-date-$i' class='form-control' style='width:130px;' value='' />";
+													$html[] = "<label for='affiliation-date-$i'>To</label>";
+												$html[] = "</div>";
+											$html[] = "</div>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 									$html[] = "<div class='form-floating mb-3'>";
@@ -123,14 +127,17 @@ $html[] = "<div class='page-body'>";
 								$html[] = "</div>";
 							}
 						$html[] = "</div>";
+						$html[] = "<input type='hidden' id='affiliation-fields-count' value='$i' />";
 					$html[] = "</div>";
+
 					$html[] = "<div class='card  mb-3'>";
 						$html[] = "<div class='card-header'>";
 							$html[] = "<h3 class='card-title'>Your Certifications</h3>";
 							$html[] = "<div class='card-actions'>";
+								$html[] = "<span class='btn btn-primary btn-more' data-container='certification'>add more</span>";
 							$html[] = "</div>";
 						$html[] = "</div>";
-						$html[] = "<div class='card-body'>";
+						$html[] = "<div class='card-body certification-container'>";
 								
 							for($i=0; $i<1; $i++) {
 								$html[] = "<div class='mb-4 border-bottom'>";
@@ -141,14 +148,16 @@ $html[] = "<div class='page-body'>";
 								$html[] = "</div>";
 							}
 						$html[] = "</div>";
+						$html[] = "<input type='hidden' id='certification-fields-count' value='$i' />";
 					$html[] = "</div>";
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-header'>";
 							$html[] = "<h3 class='card-title'>Your Skills</h3>";
 							$html[] = "<div class='card-actions'>";
+								$html[] = "<span class='btn btn-primary btn-more' data-container='skills'>add more</span>";
 							$html[] = "</div>";
 						$html[] = "</div>";
-						$html[] = "<div class='card-body'>";
+						$html[] = "<div class='card-body skills-container'>";
 							for($i=0; $i<1; $i++) {
 								$html[] = "<div class='mb-4 border-bottom'>";
 									$html[] = "<div class='form-floating mb-3 w-100'>";
@@ -158,6 +167,7 @@ $html[] = "<div class='page-body'>";
 								$html[] = "</div>";
 							}
 						$html[] = "</div>";
+						$html[] = "<input type='hidden' id='skills-fields-count' value='$i' />";
 					$html[] = "</div>";
 				$html[] = "</div>";
 			$html[] = "</div>";

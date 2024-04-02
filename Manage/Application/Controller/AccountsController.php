@@ -25,7 +25,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
         $this->doc->setTitle("My Accounts");
         $this->doc->addScript(CDN."js/photo-uploader.js");
 
-        if((!isset($this->session['permissions']['users']['access']))) {
+        if((!isset($this->session['permissions']['accounts']['access']))) {
             $this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
                 $(document).ready(function() {
                     $('input').removeClass('form-control');

@@ -91,6 +91,111 @@ class AccountsController extends \Main\Controller {
 					]
 				});
 			});
+
+			$(document).on('click', '.btn-more', function() {
+				let html = '';
+				let container = $(this).data('container');
+				let count = $('#' + container + '-fields-count').val();
+				
+				switch(container) {
+					case 'education':
+
+						html += \"<div class='mb-4 border-bottom'>\";
+							html += \"<div class='form-floating mb-3 w-100'>\";
+								html += \"<input type='text' name='education[\" + count + \"][school]' id='education-school-\" + count + \"' class='form-control' value='' />\";
+								html += \"<label for='education-school-\" + count + \"'>School Name</label>\";
+							html += \"</div>\";
+
+							html += \"<div class='row'>\";
+								html += \"<div class='col-lg-5 col-md-12 col-sm-12'>\";
+									html += \"<div class='form-floating mb-3 w-100'>\";
+										html += \"<input type='text' name='education[\" + count + \"][degree]' id='education-degree-\" + count + \"' class='form-control' value='' />\";
+										html += \"<label for='education-degree-\" + count + \"'>Degree</label>\";
+									html += \"</div>\";
+								html += \"</div>\";
+								html += \"<div class='col-lg-7 col-md-12 col-sm-12'>\";
+									html += \"<div class='d-flex gap-3 justify-content-end'>\";
+										html += \"<div class='form-floating mb-3'>\";
+											html += \"<input type='date' name='education[\" + count + \"][date][from]' id='education-date-\" + count + \"' class='form-control' style='width:130px;' value='' />\";
+											html += \"<label for='education-date-\" + count + \"'>From</label>\";
+										html += \"</div>\";
+										html += \"<div class='form-floating mb-3'>\";
+											html += \"<input type='date' name='education[\" + count + \"][date][to]' id='education-date-\" + count + \"' class='form-control' style='width:130px;' value='' />\";
+											html += \"<label for='education-date-\" + count + \"'>To</label>\";
+										html += \"</div>\";
+									html += \"</div>\";
+								html += \"</div>\";
+							html += \"</div>\";
+						html += \"</div>\";
+
+						break;
+
+					case 'affiliation':
+
+						html += \"<div class='mb-4 border-bottom'>\";
+							html += \"<div class='form-floating mb-3 w-100'>\";
+								html += \"<input type='text' name='affiliation[\" + count + \"][organization]' id='affiliation-organization-\" + count + \"' class='form-control' value='' />\";
+								html += \"<label for='affiliation-organization-\" + count + \"'>Organization Name</label>\";
+							html += \"</div>\";
+							
+							html += \"<div class='row'>\";
+								html += \"<div class='col-lg-5 col-md-12 col-sm-12'>\";
+									html += \"<div class='form-floating mb-3 w-100'>\";
+										html += \"<input type='text' name='affiliation[\" + count + \"][title]' id='affiliation-title-\" + count + \"' class='form-control' value='' />\";
+										html += \"<label for='affiliation-title-\" + count + \"'>Position</label>\";
+									html += \"</div>\";
+								html += \"</div>\";
+								html += \"<div class='col-lg-7 col-md-12 col-sm-12'>\";
+									html += \"<div class='d-flex gap-3 justify-content-end'>\";
+										html += \"<div class='form-floating mb-3'>\";
+											html += \"<input type='date' name='affiliation[\" + count + \"][date][from]' id='affiliation-date-\" + count + \"' class='form-control' style='width:130px;' value='' />\";
+											html += \"<label for='affiliation-date-\" + count + \"'>From</label>\";
+										html += \"</div>\";
+										html += \"<div class='form-floating mb-3'>\";
+											html += \"<input type='date' name='affiliation[\" + count + \"][date][to]' id='affiliation-date-\" + count + \"' class='form-control' style='width:130px;' value='' />\";
+											html += \"<label for='affiliation-date-\" + count + \"'>To</label>\";
+										html += \"</div>\";
+									html += \"</div>\";
+								html += \"</div>\";
+							html += \"</div>\";
+							html += \"<div class='form-floating mb-3'>\";
+								html += \"<textarea name='affiliation[\" + count + \"][description]' id='affiliation-description-\" + count + \"' class='form-control' style='height:150px; width:100%'></textarea>\";
+								html += \"<label for='affiliation-description-\" + count + \"'>Short description of what you do</label>\";
+							html += \"</div>\";
+						html += \"</div>\";
+
+						break;
+
+					case 'certification':
+
+						html += \"<div class='mb-4 border-bottom'>\";
+							html += \"<div class='form-floating mb-3 w-100'>\";
+								html += \"<input type='text' name='certification[\" + count + \"]' id='certification-\" + count + \"' class='form-control' value='' />\";
+								html += \"<label for='certification-\" + count + \"'>Certification</label>\";
+							html += \"</div>\";
+						html += \"</div>\";
+
+						break;
+
+					case 'skills':
+
+						html += \"<div class='mb-4 border-bottom'>\";
+							html += \"<div class='form-floating mb-3 w-100'>\";
+								html += \"<input type='text' name='skills[\" + count + \"]' id='skills-\" + count + \"' class='form-control' value='' />\";
+								html += \"<label for='skills-\" + count + \"'>Skills</label>\";
+							html += \"</div>\";
+						html += \"</div>\";
+
+						break;
+				}
+
+				$('.' + container + '-container').append(html);
+
+				count++;
+				$('#' + container + '-fields-count').val(count);
+
+			});
+
 		");
 
 		$accounts = $this->getModel("Account");
@@ -503,6 +608,14 @@ class AccountsController extends \Main\Controller {
 				"middlename" => $_POST['middlename'],
 				"lastname" => $_POST['lastname'],
 				"suffix" => $_POST['suffix'],
+			]);
+
+			$_POST['profile'] = json_encode([
+				"about_me" => $_POST['about_me'],
+				"education" => $_POST['education'],
+				"affiliation" => $_POST['affiliation'],
+				"certification" => $_POST['certification'],
+				"skills" => $_POST['skills']
 			]);
 
 			$response = $accounts->save($account_id,$_POST);
