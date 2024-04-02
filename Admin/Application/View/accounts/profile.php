@@ -16,7 +16,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "</div>";
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='btn-list text-end'>";
-					$html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@index")."' title='Accounts'><i class='ti ti-list me-2'></i> Accounts</a>";
+					$html[] = "<span class='btn btn-dark btn-delete' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountsController@profilePreview")."'><i class='ti ti-list me-2'></i> Preview Profile</span>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";
