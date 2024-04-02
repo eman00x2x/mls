@@ -26,9 +26,12 @@ $html[] = "</div>";
 $html[] = "<div class='page-body'>";
 	$html[] = "<div class='container-xl'>";
 		$html[] = "<form id='form' action='' method='POST'>";
-			$html[] = "<div class='d-flex flex-wrap gap-2'>";
-				$html[] = "<div class=''>";
-				
+
+			$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
+
+			$html[] = "<div class='row row-deck row-cards'>";
+
+				$html[] = "<div class='col-sm-12 col-lg-6 col-md-12'>";
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-header'>";
 							$html[] = "<h3 class='card-title'>About You</h3>";
@@ -36,10 +39,13 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<div class='card-body'>";
 							$html[] = "<div class='form-floating mb-3'>";
 								$html[] = "<textarea name='about_me' id='about_me' class='form-control' style='height:150px; width:100%'></textarea>";
-								$html[] = "<label for='about_me'>Tell about your self</label>";
+								$html[] = "<label for='about_me'>Share information about yourself</label>";
 							$html[] = "</div>";
 						$html[] = "</div>";
 					$html[] = "</div>";
+				$html[] = "</div>";
+
+				$html[] = "<div class='col-sm-12 col-lg-6 col-md-12'>";
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-header'>";
 							$html[] = "<h3 class='card-title'>Education</h3>";
@@ -48,33 +54,40 @@ $html[] = "<div class='page-body'>";
 							$html[] = "</div>";
 						$html[] = "</div>";
 						$html[] = "<div class='card-body education-container'>";
-							for($i=0; $i<1; $i++) {
-								$html[] = "<div class='mb-4 border-bottom'>";
+
+							$count = count($data['profile']['education']) > 0 ? count($data['profile']['education']) : 1;
+							for($i=0; $i<$count; $i++) {
+								$html[] = "<div class='".($i==0 ? "" : "mb-4 border-bottom")." education-container-$i'>";
 									$html[] = "<div class='form-floating mb-3 w-100'>";
-										$html[] = "<input type='text' name='education[$i][school]' id='education-school-$i' class='form-control' value='' />";
+										$html[] = "<input type='text' name='education[$i][school]' id='education-school-$i' class='form-control' value='".$data['profile']['education'][$i]['school']."' />";
 										$html[] = "<label for='education-school-$i'>School Name</label>";
 									$html[] = "</div>";
 
 									$html[] = "<div class='row'>";
-										$html[] = "<div class='col-lg-5 col-md-12 col-sm-12'>";
+										$html[] = "<div class='col-lg-6 col-md-12 col-sm-12'>";
 											$html[] = "<div class='form-floating mb-3 w-100'>";
-												$html[] = "<input type='text' name='education[$i][degree]' id='education-degree-$i' class='form-control' value='' />";
+												$html[] = "<input type='text' name='education[$i][degree]' id='education-degree-$i' class='form-control' value='".$data['profile']['education'][$i]['degree']."' />";
 												$html[] = "<label for='education-degree-$i'>Degree</label>";
 											$html[] = "</div>";
 										$html[] = "</div>";
-										$html[] = "<div class='col-lg-7 col-md-12 col-sm-12'>";
-											$html[] = "<div class='d-flex gap-3 justify-content-end'>";
+										$html[] = "<div class='col-lg-6 col-md-12 col-sm-12'>";
+											$html[] = "<div class='d-flex gap-3 justify-content-between'>";
 												$html[] = "<div class='form-floating mb-3'>";
-													$html[] = "<input type='date' name='education[$i][date][from]' id='education-date-$i' class='form-control' style='width:130px;' value='' />";
+													$html[] = "<input type='date' name='education[$i][date][from]' id='education-date-$i' class='form-control' style='width:130px;' value='".$data['profile']['education'][$i]['date']['from']."' />";
 													$html[] = "<label for='education-date-$i'>From</label>";
 												$html[] = "</div>";
 												$html[] = "<div class='form-floating mb-3'>";
-													$html[] = "<input type='date' name='education[$i][date][to]' id='education-date-$i' class='form-control' style='width:130px;' value='' />";
+													$html[] = "<input type='date' name='education[$i][date][to]' id='education-date-$i' class='form-control' style='width:130px;' value='".$data['profile']['education'][$i]['date']['to']."' />";
 													$html[] = "<label for='education-date-$i'>To</label>";
 												$html[] = "</div>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 									$html[] = "</div>";
+
+									$html[] = "<p class='fs-12 text-end'>";
+										$html[] = "<span class='btn btn-sm btn-secondary btn-remove' data-container='.education-container-$i'><i class='ti ti-trash fs-14 me-1'></i> remove</span>";
+									$html[] = "</p>";
+
 								$html[] = "</div>";
 							}
 						$html[] = "</div>";
@@ -83,7 +96,8 @@ $html[] = "<div class='page-body'>";
 
 					$html[] = "</div>";
 				$html[] = "</div>";
-				$html[] = "<div class=''>";
+
+				$html[] = "<div class='col-sm-12 col-lg-6 col-md-12'>";
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-header'>";
 							$html[] = "<h3 class='card-title'>Your Affiliation</h3>";
@@ -93,43 +107,51 @@ $html[] = "<div class='page-body'>";
 						$html[] = "</div>";
 						$html[] = "<div class='card-body affiliation-container'>";
 								
-							for($i=0; $i<1; $i++) {
-								$html[] = "<div class='mb-4 border-bottom'>";
+							$count = count($data['profile']['affiliation']) > 0 ? count($data['profile']['affiliation']) : 1;
+							for($i=0; $i<$count; $i++) {
+								$html[] = "<div class='".($i==0 ? "" : "mb-4 border-bottom")." affiliation-container-$i'>";
+
 									$html[] = "<div class='form-floating mb-3 w-100'>";
-										$html[] = "<input type='text' name='affiliation[$i][organization]' id='affiliation-organization-$i' class='form-control' value='' />";
+										$html[] = "<input type='text' name='affiliation[$i][organization]' id='affiliation-organization-$i' class='form-control' value='".$data['profile']['affiliation'][$i]['organization']."' />";
 										$html[] = "<label for='affiliation-organization-$i'>Organization Name</label>";
 									$html[] = "</div>";
 									
 									$html[] = "<div class='row'>";
-										$html[] = "<div class='col-lg-5 col-md-12 col-sm-12'>";
+										$html[] = "<div class='col-lg-6 col-md-12 col-sm-12'>";
 											$html[] = "<div class='form-floating mb-3 w-100'>";
-												$html[] = "<input type='text' name='affiliation[$i][title]' id='affiliation-title-$i' class='form-control' value='' />";
-												$html[] = "<label for='affiliation-title-$i'>Position</label>";
+												$html[] = "<input type='text' name='affiliation[$i][title]' id='affiliation-title-$i' class='form-control' value='".$data['profile']['affiliation'][$i]['title']."' />";
+												$html[] = "<label for='affiliation-title-$i'>Title</label>";
 											$html[] = "</div>";
 										$html[] = "</div>";
-										$html[] = "<div class='col-lg-7 col-md-12 col-sm-12'>";
-											$html[] = "<div class='d-flex gap-3 justify-content-end'>";
+										$html[] = "<div class='col-lg-6 col-md-12 col-sm-12'>";
+											$html[] = "<div class='d-flex gap-3 justify-content-between'>";
 												$html[] = "<div class='form-floating mb-3'>";
-													$html[] = "<input type='date' name='affiliation[$i][date][from]' id='affiliation-date-$i' class='form-control' style='width:130px;' value='' />";
+													$html[] = "<input type='date' name='affiliation[$i][date][from]' id='affiliation-date-$i' class='form-control' style='width:130px;' value='".$data['profile']['affiliation'][$i]['date']['from']."' />";
 													$html[] = "<label for='affiliation-date-$i'>From</label>";
 												$html[] = "</div>";
 												$html[] = "<div class='form-floating mb-3'>";
-													$html[] = "<input type='date' name='affiliation[$i][date][to]' id='affiliation-date-$i' class='form-control' style='width:130px;' value='' />";
+													$html[] = "<input type='date' name='affiliation[$i][date][to]' id='affiliation-date-$i' class='form-control' style='width:130px;' value='".$data['profile']['affiliation'][$i]['date']['to']."' />";
 													$html[] = "<label for='affiliation-date-$i'>To</label>";
 												$html[] = "</div>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 									$html[] = "<div class='form-floating mb-3'>";
-										$html[] = "<textarea name='affiliation[$i][description]' id='affiliation-description-$i' class='form-control' style='height:150px; width:100%'></textarea>";
-										$html[] = "<label for='affiliation-description-$i'>Short description of what you do</label>";
+										$html[] = "<textarea name='affiliation[$i][description]' id='affiliation-description-$i' class='form-control' style='height:150px; width:100%'>".$data['profile']['affiliation'][$i]['description']."</textarea>";
+										$html[] = "<label for='affiliation-description-$i'>Summary of your professional role and responsibilities</label>";
 									$html[] = "</div>";
+
+									$html[] = "<p class='fs-12 text-end'>";
+										$html[] = "<span class='btn btn-sm btn-secondary btn-remove' data-container='.affiliation-container-$i'><i class='ti ti-trash fs-14 me-1'></i> remove</span>";
+									$html[] = "</p>";
 								$html[] = "</div>";
 							}
 						$html[] = "</div>";
 						$html[] = "<input type='hidden' id='affiliation-fields-count' value='$i' />";
 					$html[] = "</div>";
-
+				$html[] = "</div>";
+				
+				$html[] = "<div class='col-sm-12 col-lg-6 col-md-12 d-flex gap-3 flex-wrap'>";
 					$html[] = "<div class='card  mb-3'>";
 						$html[] = "<div class='card-header'>";
 							$html[] = "<h3 class='card-title'>Your Certifications</h3>";
@@ -139,17 +161,22 @@ $html[] = "<div class='page-body'>";
 						$html[] = "</div>";
 						$html[] = "<div class='card-body certification-container'>";
 								
-							for($i=0; $i<1; $i++) {
-								$html[] = "<div class='mb-4 border-bottom'>";
-									$html[] = "<div class='form-floating mb-3 w-100'>";
-										$html[] = "<input type='text' name='certification[$i]' id='certification-$i' class='form-control' value='' />";
-										$html[] = "<label for='certification-$i'>Certification</label>";
+							$count = count($data['profile']['certification']) > 0 ? count($data['profile']['certification']) : 1;
+							for($i=0; $i<$count; $i++) {
+								$html[] = "<div class='mb-2 certification-container-$i'>";
+									$html[] = "<div class='input-group input-group-flat'>";
+										$html[] = "<div class='form-floating'>";
+											$html[] = "<input type='text' name='certification[]' id='certification-$i' class='form-control' value='".$data['profile']['certification'][$i]."' />";
+											$html[] = "<label for='certification-$i' class='fs-12'>Certification</label>";
+										$html[] = "</div>";
+										$html[] = "<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.certification-container-$i'><i class='ti ti-trash fs-16'></i></span>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 							}
 						$html[] = "</div>";
 						$html[] = "<input type='hidden' id='certification-fields-count' value='$i' />";
 					$html[] = "</div>";
+				
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-header'>";
 							$html[] = "<h3 class='card-title'>Your Skills</h3>";
@@ -158,11 +185,15 @@ $html[] = "<div class='page-body'>";
 							$html[] = "</div>";
 						$html[] = "</div>";
 						$html[] = "<div class='card-body skills-container'>";
-							for($i=0; $i<1; $i++) {
-								$html[] = "<div class='mb-4 border-bottom'>";
-									$html[] = "<div class='form-floating mb-3 w-100'>";
-										$html[] = "<input type='text' name='skills[$i]' id='skills-$i' class='form-control' value='' />";
-										$html[] = "<label for='skills-$i'>Skills</label>";
+							$count = count($data['profile']['skills']) > 0 ? count($data['profile']['skills']) : 1;
+							for($i=0; $i<$count; $i++) {
+								$html[] = "<div class='mb-2 skills-container-$i'>";
+									$html[] = "<div class='input-group input-group-flat'>";
+										$html[] = "<div class='form-floating'>";
+											$html[] = "<input type='text' name='skills[]' id='skills-$i' class='form-control' value='".$data['profile']['skills'][$i]."' />";
+											$html[] = "<label for='skills-$i' class='fs-12'>Skill</label>";
+										$html[] = "</div>";
+										$html[] = "<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.skills-container-$i'><i class='ti ti-trash fs-16'></i></span>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 							}
@@ -171,6 +202,8 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 			$html[] = "</div>";
+
+			$html[] = "<div class='mt-5 pt-5'></div>";
 					
 		$html[] = "</form>";
 		
@@ -181,7 +214,7 @@ $html[] = "</div>";
 
 $html[] = "<div class='btn-save-container fixed-bottom bg-white py-3 border-top'>";
 	$html[] = "<div class='row g-0 justify-content-center'>";
-		$html[] = "<div class='col-lg-6 col-md-6 col-sm-12 col-12'>";
+		$html[] = "<div class='col-12'>";
 
 			$html[] = "<div class='container-xl'>";
 				$html[] = "<div class='text-end'>";

@@ -77,17 +77,17 @@ class TransactionsController extends \Admin\Application\Controller\TransactionsC
 
 		$account = $this->getModel("Account");
 		$account->select(" account_id,  account_name, logo ");
-		$account->column['account_id'] = $account_id;
+		$account->column['account_id'] = $this->account_id;
 		$data['account'] = $account->getById();
 
-		$filters[] = " account_id = ".$account_id;
+		$filters[] = " account_id = ".$this->account_id;
 		
 		$transaction = $this->getModel("Transaction");
 		$transaction->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" created_at DESC ");
 
 		$transaction->page['limit'] = 10;
 		$transaction->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$transaction->page['target'] = url("TransactionsController@index", ["account_id" => $account_id]);
+		$transaction->page['target'] = url("TransactionsController@index", ["account_id" => $this->account_id]);
 		$transaction->page['uri'] = (isset($uri) ? $uri : []);
 
 		$data['account']['transaction'] = $transaction->getList();

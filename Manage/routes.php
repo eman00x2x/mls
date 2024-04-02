@@ -16,7 +16,7 @@ Router::get(MANAGE_ALIAS.'/account', 'AccountsController@index', ['as' => 'accou
 Router::get(MANAGE_ALIAS.'/account', 'AccountsController@view', ['as' => 'accountView']);
 Router::get(MANAGE_ALIAS.'/account/profile', 'AccountsController@accountProfile', ['as' => 'profile']);
 
-Router::post(MANAGE_ALIAS.'/account/saveUpdate', 'AccountsController@saveUpdate', ['as' => 'accountsSaveUpdate']);
+Router::post(MANAGE_ALIAS.'/account/{id}/saveUpdate', 'AccountsController@saveUpdate', ['as' => 'accountsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 Router::post(MANAGE_ALIAS.'/account/uploadPhoto', 'AccountsController@uploadPhoto', ['as' => 'accountsUploadPhoto']);
 
 /** KYC ROUTES */

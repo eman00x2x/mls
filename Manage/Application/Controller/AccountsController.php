@@ -17,7 +17,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 
         $this->limitWithExpiredPrivileges($this->session['account_id']);
 
-        if(!isset($_SESSION['user_logged']['permissions']['accounts']['access'])) {
+        if(!isset($this->session['permissions']['accounts']['access'])) {
             $this->getLibrary("Factory")->setMsg("You do not have enough permissions to access the account details","error");
 			response()->redirect(url("DashboardController@index"));
         }
@@ -25,7 +25,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
         $this->doc->setTitle("My Accounts");
         $this->doc->addScript(CDN."js/photo-uploader.js");
 
-        if((!isset($this->session['permissions']['accounts']['access']))) {
+        if(!isset($this->session['permissions']['accounts']['access'])) {
             $this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
                 $(document).ready(function() {
                     $('input').removeClass('form-control');
@@ -38,15 +38,20 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
                     $('#pin').val(rcg());
                 });
 
-                $(document).on('click', '.btn-reveal-api-key', function() {
-                    key = $(this).data('key');
-                    $('.api-key-container').removeClass('text-muted');
-                    $('.api-key-container').text(key);
-                    
-                    $(this).remove();
-                });
             "));
         }
+
+        $this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+
+            $(document).on('click', '.btn-reveal-api-key', function() {
+                key = $(this).data('key');
+                $('.api-key-container').removeClass('text-muted');
+                $('.api-key-container').text(key);
+                
+                $(this).remove();
+            });
+
+        "));
 
         $account = $this->getModel("Account");
 		$account->column['account_id'] = $this->account_id;
@@ -72,9 +77,9 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 
 	}
 
-    function saveUpdate($account_id = null) {
+    /* function saveUpdate($account_id = null) {
         return parent::saveUpdate($this->account_id);
-    }
+    } */
 
     function uploadPhoto() {
 		return parent::uploadPhoto();

@@ -58,40 +58,6 @@ class AccountsController extends \Main\Controller {
 		$this->doc->setTitle("Profile");
 		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
 		$this->doc->addScriptDeclaration("
-			$(document).ready(function() {
-				tinymce.remove();
-						
-				tinymce.init({
-					selector: 'textarea#snow-container',
-					height: 500,
-					width: 'auto',
-					resize: false,
-					menubar: false,
-					plugins: [
-						'advlist autolink lists link charmap print preview anchor',
-						'searchreplace visualblocks code fullscreen',
-						'insertdatetime media table paste code wordcount image '
-					],
-					toolbar: 'table image link formatting | fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code ',
-					toolbar_groups: {
-						formatting: {
-							icon: 'bold',
-							tooltip: 'Formatting',
-							items: 'bold italic underline | superscript subscript'
-						},
-						alignment: {
-							icon: 'alignjustify',
-							tooltip: 'alignment',
-							items: ''
-						}
-					},
-					content_css: [
-						'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-						'".WEBDOMAIN."/css/style.css'
-					]
-				});
-			});
-
 			$(document).on('click', '.btn-more', function() {
 				let html = '';
 				let container = $(this).data('container');
@@ -99,22 +65,25 @@ class AccountsController extends \Main\Controller {
 				
 				switch(container) {
 					case 'education':
+						if(count == 1) {
+							cls = 'pt-4 border-top';
+						}else { cls = ''; }
 
-						html += \"<div class='mb-4 border-bottom'>\";
+						html += \"<div class='\" + cls + \" mb-4 border-bottom education-container-\" + count + \"'>\";
 							html += \"<div class='form-floating mb-3 w-100'>\";
 								html += \"<input type='text' name='education[\" + count + \"][school]' id='education-school-\" + count + \"' class='form-control' value='' />\";
 								html += \"<label for='education-school-\" + count + \"'>School Name</label>\";
 							html += \"</div>\";
 
 							html += \"<div class='row'>\";
-								html += \"<div class='col-lg-5 col-md-12 col-sm-12'>\";
+								html += \"<div class='col-lg-6 col-md-12 col-sm-12'>\";
 									html += \"<div class='form-floating mb-3 w-100'>\";
 										html += \"<input type='text' name='education[\" + count + \"][degree]' id='education-degree-\" + count + \"' class='form-control' value='' />\";
 										html += \"<label for='education-degree-\" + count + \"'>Degree</label>\";
 									html += \"</div>\";
 								html += \"</div>\";
-								html += \"<div class='col-lg-7 col-md-12 col-sm-12'>\";
-									html += \"<div class='d-flex gap-3 justify-content-end'>\";
+								html += \"<div class='col-lg-6 col-md-12 col-sm-12'>\";
+									html += \"<div class='d-flex gap-3 justify-content-between'>\";
 										html += \"<div class='form-floating mb-3'>\";
 											html += \"<input type='date' name='education[\" + count + \"][date][from]' id='education-date-\" + count + \"' class='form-control' style='width:130px;' value='' />\";
 											html += \"<label for='education-date-\" + count + \"'>From</label>\";
@@ -126,27 +95,36 @@ class AccountsController extends \Main\Controller {
 									html += \"</div>\";
 								html += \"</div>\";
 							html += \"</div>\";
+
+							html += \"<p class='fs-12 text-end'>\";
+								html += \"<span class='btn btn-sm btn-secondary btn-remove' data-container='.education-container-\" + count + \"'><i class='ti ti-trash fs-14 me-1'></i> remove</span>\";
+							html += \"</p>\";
+
 						html += \"</div>\";
 
 						break;
 
 					case 'affiliation':
 
-						html += \"<div class='mb-4 border-bottom'>\";
+						if(count == 1) {
+							cls = 'pt-4 border-top';
+						}else { cls = ''; }
+
+						html += \"<div class='\" + cls + \" mb-4 border-bottom affiliation-container-\" + count + \"'>\";
 							html += \"<div class='form-floating mb-3 w-100'>\";
 								html += \"<input type='text' name='affiliation[\" + count + \"][organization]' id='affiliation-organization-\" + count + \"' class='form-control' value='' />\";
 								html += \"<label for='affiliation-organization-\" + count + \"'>Organization Name</label>\";
 							html += \"</div>\";
 							
 							html += \"<div class='row'>\";
-								html += \"<div class='col-lg-5 col-md-12 col-sm-12'>\";
+								html += \"<div class='col-lg-6 col-md-12 col-sm-12'>\";
 									html += \"<div class='form-floating mb-3 w-100'>\";
 										html += \"<input type='text' name='affiliation[\" + count + \"][title]' id='affiliation-title-\" + count + \"' class='form-control' value='' />\";
 										html += \"<label for='affiliation-title-\" + count + \"'>Position</label>\";
 									html += \"</div>\";
 								html += \"</div>\";
-								html += \"<div class='col-lg-7 col-md-12 col-sm-12'>\";
-									html += \"<div class='d-flex gap-3 justify-content-end'>\";
+								html += \"<div class='col-lg-6 col-md-12 col-sm-12'>\";
+									html += \"<div class='d-flex gap-3 justify-content-between'>\";
 										html += \"<div class='form-floating mb-3'>\";
 											html += \"<input type='date' name='affiliation[\" + count + \"][date][from]' id='affiliation-date-\" + count + \"' class='form-control' style='width:130px;' value='' />\";
 											html += \"<label for='affiliation-date-\" + count + \"'>From</label>\";
@@ -160,18 +138,26 @@ class AccountsController extends \Main\Controller {
 							html += \"</div>\";
 							html += \"<div class='form-floating mb-3'>\";
 								html += \"<textarea name='affiliation[\" + count + \"][description]' id='affiliation-description-\" + count + \"' class='form-control' style='height:150px; width:100%'></textarea>\";
-								html += \"<label for='affiliation-description-\" + count + \"'>Short description of what you do</label>\";
+								html += \"<label for='affiliation-description-\" + count + \"'>Summary of your professional role and responsibilities</label>\";
 							html += \"</div>\";
+
+							html += \"<p class='fs-12 text-end'>\";
+								html += \"<span class='btn btn-sm btn-secondary btn-remove' data-container='.affiliation-container-\" + count + \"'><i class='ti ti-trash fs-14 me-1'></i> remove</span>\";
+							html += \"</p>\";
+
 						html += \"</div>\";
 
 						break;
 
 					case 'certification':
 
-						html += \"<div class='mb-4 border-bottom'>\";
-							html += \"<div class='form-floating mb-3 w-100'>\";
-								html += \"<input type='text' name='certification[\" + count + \"]' id='certification-\" + count + \"' class='form-control' value='' />\";
-								html += \"<label for='certification-\" + count + \"'>Certification</label>\";
+						html += \"<div class='mb-2 certification-container-\" + count + \"'>\";
+							html += \"<div class='input-group input-group-flat'>\";
+								html += \"<div class='form-floating'>\";
+									html += \"<input type='text' name='certification[\" + count + \"]' id='certification-\" + count + \"' class='form-control' value='' />\";
+									html += \"<label for='certification-\" + count + \"' class='fs-12'>Certification</label>\";
+								html += \"</div>\";
+								html += \"<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.certification-container-\" + count + \"'><i class='ti ti-trash fs-16'></i></span>\";
 							html += \"</div>\";
 						html += \"</div>\";
 
@@ -179,10 +165,13 @@ class AccountsController extends \Main\Controller {
 
 					case 'skills':
 
-						html += \"<div class='mb-4 border-bottom'>\";
-							html += \"<div class='form-floating mb-3 w-100'>\";
-								html += \"<input type='text' name='skills[\" + count + \"]' id='skills-\" + count + \"' class='form-control' value='' />\";
-								html += \"<label for='skills-\" + count + \"'>Skills</label>\";
+						html += \"<div class='mb-2 skills-container-\" + count + \"'>\";
+							html += \"<div class='input-group input-group-flat'>\";
+								html += \"<div class='form-floating'>\";
+									html += \"<input type='text' name='skills[\" + count + \"]' id='skills-\" + count + \"' class='form-control' value='' />\";
+									html += \"<label for='skills-\" + count + \"' class='fs-12'>Skills</label>\";
+								html += \"</div>\";
+								html += \"<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.skills-container-\" + count + \"'><i class='ti ti-trash fs-16'></i></span>\";
 							html += \"</div>\";
 						html += \"</div>\";
 
@@ -194,6 +183,11 @@ class AccountsController extends \Main\Controller {
 				count++;
 				$('#' + container + '-fields-count').val(count);
 
+			});
+
+			$(document).on('click', '.btn-remove', function() {
+				container = $(this).data('container');
+				$(container).remove();
 			});
 
 		");
@@ -458,6 +452,30 @@ class AccountsController extends \Main\Controller {
 			"suffix" => (isset($_POST['suffix']) ? $_POST['suffix'] : ''),
 		]);
 
+		$_POST['profile'] = json_encode([
+			"about_me" => (isset($_POST['about_me']) ? $_POST['about_me'] : null),
+			"education" => (isset($_POST['education']) ? $_POST['education'] : [
+				"school" => "",
+				"degree" => "",
+				"date" => [
+					"from" => "",
+					"to" => ""
+				]
+			]),
+
+			"affiliation" => (isset($_POST['affiliation']) ? $_POST['affiliation'] : [
+				"organization" => "",
+				"title" => "",
+				"date" => [
+					"from" => 0,
+					"to" => 0
+				]
+			]),
+
+			"certification" => (isset($_POST['certification']) ? $_POST['certification'] : ""),
+			"skills" => (isset($_POST['skills']) ? $_POST['skills'] : ""),
+		]);
+
 		if($_POST['broker_prc_license_id'] != 1) {
 			$reference = $this->getModel("LicenseReference");
 			$response =	$reference->getByLicenseId($_POST['broker_prc_license_id']);
@@ -603,19 +621,19 @@ class AccountsController extends \Main\Controller {
 			}
 
 			$_POST['account_name'] = json_encode([
-				"prefix" => $_POST['prefix'],
-				"firstname" => $_POST['firstname'],
-				"middlename" => $_POST['middlename'],
-				"lastname" => $_POST['lastname'],
-				"suffix" => $_POST['suffix'],
+				"prefix" => (isset($_POST['prefix']) ? $_POST['prefix'] : $data['account_name']['prefix']),
+				"firstname" => (isset($_POST['firstname']) ? $_POST['firstname'] : $data['account_name']['firstname']),
+				"middlename" => (isset($_POST['middlename']) ? $_POST['middlename'] : $data['account_name']['middlename']),
+				"lastname" => (isset($_POST['lastname']) ? $_POST['lastname'] : $data['account_name']['lastname']),
+				"suffix" => (isset($_POST['suffix']) ? $_POST['suffix'] : $data['account_name']['suffix']),
 			]);
 
 			$_POST['profile'] = json_encode([
-				"about_me" => $_POST['about_me'],
-				"education" => $_POST['education'],
-				"affiliation" => $_POST['affiliation'],
-				"certification" => $_POST['certification'],
-				"skills" => $_POST['skills']
+				"about_me" => (isset($_POST['about_me']) ? $_POST['about_me'] : $data['profile']['about_me']),
+				"education" => (isset($_POST['education']) ? array_values($_POST['education']) : $data['profile']['education']),
+				"affiliation" => (isset($_POST['affiliation']) ? array_values($_POST['affiliation']) : $data['profile']['affiliation']),
+				"certification" => (isset($_POST['certification']) ? array_values($_POST['certification']) : $data['profile']['certification']),
+				"skills" => (isset($_POST['skills']) ? array_values($_POST['skills']) : $data['profile']['skills']),
 			]);
 
 			$response = $accounts->save($account_id,$_POST);

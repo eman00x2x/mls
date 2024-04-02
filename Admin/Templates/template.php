@@ -47,21 +47,21 @@
 										<span class="nav-link-title">System Management</span>
 									</a>
 									<div class='dropdown-menu'>
-										<?php if($_SESSION['user_logged']['permissions']['accounts']['access']) { ?>
+										<?php if(isset($_SESSION['user_logged']['permissions']['accounts']['access'])) { ?>
 											<a href='<?php echo url("AccountsController@index"); ?>' class='dropdown-item'><i class='ti ti-user-circle me-1'></i> Accounts</a>
 										<?php } ?>
 
-										<?php if($_SESSION['user_logged']['permissions']['kyc']['access']) { ?>
+										<?php if(isset($_SESSION['user_logged']['permissions']['kyc']['access'])) { ?>
 											<a href='<?php echo url("KYCController@index"); ?>' class='dropdown-item'><i class='ti ti-id me-1'></i> KYC</a>
 										<?php } ?>
 
 										<?php if(PREMIUM) { ?>
-											<?php if($_SESSION['user_logged']['permissions']['premiums']['access']) { ?>
+											<?php if(isset($_SESSION['user_logged']['permissions']['premiums']['access'])) { ?>
 												<a href='<?php echo url("PremiumsController@index"); ?>' class='dropdown-item'><i class='ti ti-layers-union me-1'></i> Premiums</a>
 											<?php } ?>
 										<?php } ?>
 
-										<?php if($_SESSION['user_logged']['permissions']['page_ads']['access']) { ?>
+										<?php if(isset($_SESSION['user_logged']['permissions']['page_ads']['access'])) { ?>
 											<a href='<?php echo url("PageAdsController@index"); ?>' class='dropdown-item'><i class='ti ti-ad me-1'></i> Page Ads Management</a>
 										<?php } ?>
 
@@ -75,23 +75,23 @@
 										<span class="nav-link-title">Settings</span>
 									</a>
 									<div class='dropdown-menu'>
-										<?php if($_SESSION['user_logged']['permissions']['settings']['access']) { ?>
+										<?php if(isset($_SESSION['user_logged']['permissions']['settings']['access'])) { ?>
 											<a href='<?php echo url("SettingsController@index", ["page" => "system-settings"]); ?>' class='dropdown-item'><i class='ti ti-settings-cog me-1'></i> System Settings</a>
 										<?php } ?>
-										<?php if($_SESSION['user_logged']['permissions']['web_settings']['access']) { ?>
+										<?php if(isset($_SESSION['user_logged']['permissions']['web_settings']['access'])) { ?>
 											<a href='<?php echo url("SettingsController@webSettings", ["page" => "common-settings"]); ?>' class='dropdown-item'><i class='ti ti-settings-cog me-1'></i> Website Settings</a>
 										<?php } ?>
 									</div>
 								</li>
 								
-								<?php if($_SESSION['user_logged']['permissions']['reports']['access']) { ?>
+								<?php if(isset($_SESSION['user_logged']['permissions']['reports']['access'])) { ?>
 									<li class="nav-item <?php echo (url()->contains("/reports")) ? "active" : ""; ?> dropdown">
 										<a class="nav-link dropdown-toggle" href="#extra-link" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
 											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-report'></i></span>
 											<span class="nav-link-title">Reports</span>
 										</a>
 										<div class='dropdown-menu'>
-											<?php if($_SESSION['user_logged']['permissions']['transactions']['access']) { ?>
+											<?php if(isset($_SESSION['user_logged']['permissions']['transactions']['access'])) { ?>
 												<a href='<?php echo url("TransactionsController@index"); ?>' class='dropdown-item'><i class='ti ti-file-invoice me-1'></i> All Transactions</a>
 											<?php } ?>
 											<a href='<?php echo url("ReportsController@subscribersReport"); ?>' class='dropdown-item'><i class='ti ti-report me-1'></i> Subscribers Report</a>
