@@ -152,7 +152,7 @@ $html[] = "<div class='page-body'>";
 						
 						$html[] = "<div class='card-title'><i class='ti ti-user me-1'></i> Requestor</div>";
 						$html[] = "<div class='mb-3'>";
-							$html[] = "<div class='d-flex lh-1 text-reset p-0'>";
+							$html[] = "<div class='d-flex lh-1 text-reset p-0 btn-view-profile' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountsController@profilePreview", ["id" => $data['handshake']['requestor_details']['account_id']])."'>";
 								$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['handshake']['requestor_details']['logo'].")'></span>";
 								$html[] = "<div class='ms-2'>";
 									$html[] = "<div class='fw-bold'>".$data['handshake']['requestor_details']['account_name']['prefix']." ".$data['handshake']['requestor_details']['account_name']['firstname']." ".$data['handshake']['requestor_details']['account_name']['lastname']." ".$data['handshake']['requestor_details']['account_name']['suffix']."</div>";
@@ -375,7 +375,7 @@ $html[] = "<div class='page-body'>";
 
 				$html[] = "<div class='card mb-3'>";
 					$html[] = "<div class='card-body text-center'>";
-						$html[] = "<div class='mb-3'>";
+						$html[] = "<div class='mb-3 btn-view-profile' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountsController@profilePreview", ["id" => $data['account']['account_id']])."'>";
 							$html[] = "<span class='avatar avatar-xxl rounded' style='background-image: url(".$data['account']['logo'].")'></span>";
 						$html[] = "</div>";
 						$html[] = "<div class='card-title mb-0'>".$data['account']['account_name']['prefix']." ".$data['account']['account_name']['firstname']." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix']."</div>";

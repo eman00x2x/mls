@@ -313,17 +313,19 @@ $html[] = "<div class='page-body mb-0'>";
 
 										$html[] = "<div class='row justify-content-center'>";
 											$html[] = "<div class='col-lg-8 col-sm-12'>";
-												$html[] = "<div class='d-flex py-1 mb-4 align-items-center'>";
-													$html[] = "<span class='avatar avatar-xl me-2 rounded-circle' style='background-image: url(".$data['account']['logo'].")'></span>";
-													$html[] = "<div class='flex-fill'>";
-														$html[] = "<div class='font-weight-medium'>";
-															$html[] = $data['account']['account_name']['prefix']." ".$data['account']['account_name']['firstname']." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix'];
+												$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['account']['account_id'], "name" => sanitize($data['account']['account_name']['firstname']."-".$data['account']['account_name']['lastname']) ])."'>";
+													$html[] = "<div class='d-flex py-1 mb-4 align-items-center'>";
+														$html[] = "<span class='avatar avatar-xl me-2 rounded-circle' style='background-image: url(".$data['account']['logo'].")'></span>";
+														$html[] = "<div class='flex-fill'>";
+															$html[] = "<div class='font-weight-medium'>";
+																$html[] = $data['account']['account_name']['prefix']." ".$data['account']['account_name']['firstname']." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix'];
+															$html[] = "</div>";
+															$html[] = "<div class='text-muted'>".$data['account']['profession']."</div>";
+															if($data['account']['company_name'] != "") { $html[] = "<div class='text-muted'>".$data['account']['company_name']."</div>"; }
+															$html[] = "<div class='text-muted'>Member Since ".date("Y", $data['account']['registration_date'])."</div>";
 														$html[] = "</div>";
-														$html[] = "<div class='text-muted'>".$data['account']['profession']."</div>";
-														if($data['account']['company_name'] != "") { $html[] = "<div class='text-muted'>".$data['account']['company_name']."</div>"; }
-														$html[] = "<div class='text-muted'>Member Since ".date("Y", $data['account']['registration_date'])."</div>";
 													$html[] = "</div>";
-												$html[] = "</div>";
+												$html[] = "</a>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 

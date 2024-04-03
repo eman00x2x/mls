@@ -39,7 +39,7 @@ Router::get( WEB_ALIAS . '/mls/{name}', 'ListingsController@view')->where([ 'nam
 Router::get( WEB_ALIAS . '/comparative-analysis/{uri}', 'ListingsController@comparativeAnalysis')->where([ 'uri' => '[\w\-\=]+' ]);
 
 /** PROFILE ROUTES */
-Router::get( WEB_ALIAS . '/profile/{name}', 'AccountController@profile')->where([ 'name' => '[\w\-]+' ]);
+Router::get( WEB_ALIAS . '/profile/{id}/{name}', 'AccountsController@profile')->where([ 'id' => '[0-9]+', 'name' => '[\w\-]+' ]);
 
 /** ADS ROUTES */
 Router::get( WEB_ALIAS . '/showAds/{placement}', 'PageAdsController@showAds')->where([ 'placement' => '[\w\-]+' ]);

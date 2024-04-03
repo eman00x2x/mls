@@ -16,7 +16,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "</div>";
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='btn-list text-end'>";
-					$html[] = "<span class='btn btn-dark btn-delete' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountsController@profilePreview")."'><i class='ti ti-list me-2'></i> Preview Profile</span>";
+					$html[] = "<span class='btn btn-dark btn-view-profile' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountsController@profilePreview", ["id" => $data['account_id']])."'><i class='ti ti-list me-2'></i> Preview Profile</span>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";
@@ -38,7 +38,7 @@ $html[] = "<div class='page-body'>";
 						$html[] = "</div>";
 						$html[] = "<div class='card-body'>";
 							$html[] = "<div class='form-floating mb-3'>";
-								$html[] = "<textarea name='about_me' id='about_me' class='form-control' style='height:150px; width:100%'></textarea>";
+								$html[] = "<textarea name='about_me' id='about_me' class='form-control' style='height:150px; width:100%'>".$data['profile']['about_me']."</textarea>";
 								$html[] = "<label for='about_me'>Share information about yourself</label>";
 							$html[] = "</div>";
 						$html[] = "</div>";
@@ -213,15 +213,14 @@ $html[] = "</div>";
 
 
 $html[] = "<div class='btn-save-container fixed-bottom bg-white py-3 border-top'>";
-	$html[] = "<div class='row g-0 justify-content-center'>";
-		$html[] = "<div class='col-12'>";
-
-			$html[] = "<div class='container-xl'>";
-				$html[] = "<div class='text-end'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = "<div class='row g-0 justify-content-center'>";
+			$html[] = "<div class='col-12'>";
+				$html[] = "<div class='d-flex justify-content-between'>";
+					$html[] = "<span class='btn btn-outline-primary btn-view-profile' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountsController@profilePreview", ["id" => $data['account_id']])."'><i class='ti ti-list me-2'></i> Preview Profile</span>";
 					$html[] = "<span class='btn btn-outline-primary btn-save'><i class='ti ti-device-floppy me-2'></i> Save Profile</span>";
 				$html[] = "</div>";
 			$html[] = "</div>";
-
 		$html[] = "</div>";
 	$html[] = "</div>";
 $html[] = "</div>";

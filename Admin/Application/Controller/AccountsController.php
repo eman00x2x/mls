@@ -299,28 +299,33 @@ class AccountsController extends \Main\Controller {
 			"suffix" => (isset($_POST['suffix']) ? $_POST['suffix'] : ''),
 		]);
 
-		$_POST['profile'] = json_encode([
+		$_POST['profile'] = ([
 			"about_me" => (isset($_POST['about_me']) ? $_POST['about_me'] : null),
 			"education" => (isset($_POST['education']) ? $_POST['education'] : [
-				"school" => "",
-				"degree" => "",
-				"date" => [
-					"from" => "",
-					"to" => ""
+				[
+					"school" => "",
+					"degree" => "",
+					"date" => [
+						"from" => "",
+						"to" => ""
+					]
 				]
 			]),
 
 			"affiliation" => (isset($_POST['affiliation']) ? $_POST['affiliation'] : [
-				"organization" => "",
-				"title" => "",
-				"date" => [
-					"from" => 0,
-					"to" => 0
+				[
+					"organization" => "",
+					"title" => "",
+					"description" => "",
+					"date" => [
+						"from" => 0,
+						"to" => 0
+					]
 				]
 			]),
 
-			"certification" => (isset($_POST['certification']) ? $_POST['certification'] : ""),
-			"skills" => (isset($_POST['skills']) ? $_POST['skills'] : ""),
+			"certification" => (isset($_POST['certification']) ? $_POST['certification'] : [ "" ]),
+			"skills" => (isset($_POST['skills']) ? $_POST['skills'] : [ "" ]),
 		]);
 
 		if($_POST['broker_prc_license_id'] != 1) {

@@ -39,6 +39,12 @@ class PageAdsModel extends \Main\Model {
 				"width" => 300,
 				"height" => 300
 			]
+		],
+		"PROFILE_SIDEBAR_TOP" => [
+			"size" => [
+				"width" => 300,
+				"height" => 300
+			]
 		]
 	];
 
@@ -53,7 +59,7 @@ class PageAdsModel extends \Main\Model {
 		$this
 			->select(" page_ads_id, banner, url, placement ")
 				->where(" placement = '$placement' ")
-					->and(" started_at < ".DATE_NOW." AND ended_at > ".DATE_NOW." AND visibility = 'visible");
+					->and(" started_at < ".DATE_NOW." AND ended_at > ".DATE_NOW." AND visibility = 'visible' ");
 
 		return $this->getList();
 	}

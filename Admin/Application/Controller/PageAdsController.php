@@ -11,15 +11,14 @@ class PageAdsController extends \Main\Controller {
 		$this->setTempalteBasePath(ROOT."Admin");
         $this->doc = $this->getLibrary("Factory")->getDocument();
         $this->session = $this->getLibrary("SessionHandler")->get("user_logged");
+	}
+
+    function index() {
 
 		if(!isset($this->session['permissions']['page_ads']['access'])) {
 			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
 			response()->redirect(url("DashboardController@index"));
 		}
-
-	}
-
-    function index() {
 
         $this->doc->setTitle("Page Ads");
 
@@ -41,6 +40,11 @@ class PageAdsController extends \Main\Controller {
     }
 
     function add() {
+
+		if(!isset($this->session['permissions']['page_ads']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
         $this->doc->setTitle("New Page Ads");
         $this->doc->addScript(CDN."js/photo-uploader.js");
@@ -68,6 +72,11 @@ class PageAdsController extends \Main\Controller {
     }
 
     function edit($id) {
+
+		if(!isset($this->session['permissions']['page_ads']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
+			response()->redirect(url("DashboardController@index"));
+		}
 
         $pageAds = $this->getModel("PageAds");
         $pageAds->column['page_ads_id'] = $id;

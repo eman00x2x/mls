@@ -84,7 +84,7 @@ $(document).on('click','.btn-save', function(e) {
 	return false;
 });
 
-$(document).on('click','.btn-delete, .btn-sold, .btn-requestHandshake, .btn-compare-table, .btn-set-featured', function(e) {
+$(document).on('click','.btn-delete, .btn-sold, .btn-requestHandshake, .btn-compare-table, .btn-set-featured, .btn-view-profile', function(e) {
 	url = $(this).data('url');
 	$.get(url, function (data, status) { 
 		$('.offcanvas').html(data);

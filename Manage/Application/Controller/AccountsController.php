@@ -231,10 +231,10 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 
 	}
 
-    function profilePreview() {
+    function profilePreview($id) {
 
         $accounts = $this->getModel("Account");
-		$accounts->column['account_id'] = $this->account_id;
+		$accounts->column['account_id'] = (is_null($id) ? $this->account_id : $id);
 		$data = $accounts->getById();
 
 		$this->setTemplate("accounts/profilePreview.php");

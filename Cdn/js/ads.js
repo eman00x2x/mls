@@ -23,12 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let PROPERTY_VIEW_SIDEBAR_BOTTOM = getCollection('PROPERTY_VIEW_SIDEBAR_BOTTOM');
     let ARTICLE_LIST_SIDEBAR = getCollection('ARTICLE_LIST_SIDEBAR');
     let ARTICLE_VIEW_SIDEBAR = getCollection('ARTICLE_VIEW_SIDEBAR');
+    let PROFILE_SIDEBAR_TOP = getCollection('PROFILE_SIDEBAR_TOP');
 
     PROPERTY_LIST_TOP.then(data => { setAds('.PROPERTY_LIST_TOP', data); });
     PROPERTY_VIEW_SIDEBAR_TOP.then(data => { setAds('.PROPERTY_VIEW_SIDEBAR_TOP', data); });
     PROPERTY_VIEW_SIDEBAR_BOTTOM.then(data => { setAds('.PROPERTY_VIEW_SIDEBAR_BOTTOM', data); });
     ARTICLE_LIST_SIDEBAR.then(data => { setAds('.ARTICLE_LIST_SIDEBAR', data); });
     ARTICLE_VIEW_SIDEBAR.then(data => { setAds('.ARTICLE_VIEW_SIDEBAR', data); });
+    PROFILE_SIDEBAR_TOP.then(data => { setAds('.PROFILE_SIDEBAR_TOP', data); });
 
 });
 

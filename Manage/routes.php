@@ -15,7 +15,7 @@ Router::get(MANAGE_ALIAS.'/notifications-{id}-update-status', 'NotificationsCont
 Router::get(MANAGE_ALIAS.'/account', 'AccountsController@index', ['as' => 'accounts']);
 Router::get(MANAGE_ALIAS.'/account', 'AccountsController@view', ['as' => 'accountView']);
 Router::get(MANAGE_ALIAS.'/account/profile', 'AccountsController@profile', ['as' => 'profile']);
-Router::get(MANAGE_ALIAS.'/account/profile/preview', 'AccountsController@profilePreview', ['as' => 'profile']);
+Router::get(MANAGE_ALIAS.'/account/profile/{id}/preview', 'AccountsController@profilePreview', ['as' => 'profile'])->where([ 'id' => '[0-9]+' ]);
 
 Router::post(MANAGE_ALIAS.'/account/{id}/saveUpdate', 'AccountsController@saveUpdate', ['as' => 'accountsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 Router::post(MANAGE_ALIAS.'/account/uploadPhoto', 'AccountsController@uploadPhoto', ['as' => 'accountsUploadPhoto']);
