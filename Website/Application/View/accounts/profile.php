@@ -107,8 +107,22 @@ $html[] = "<div class='page-body mt-0 bg-white'>";
 					
 				$html[] = "<div class='py-4'>";
 
+					if(!empty($data['profile']['skills']) && is_array($data['profile']['skills'])) {
+
+						if($data['profile']['skills'][0] != "") {
+							$html[] = "<h3 class='card-title mb-1 text-muted'>Skills</h3>";
+
+							$html[] = "<ul class='list-group list-group-flush'>";
+							for($i=0; $i<count($data['profile']['skills']); $i++) {
+								$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['skills'][$i]."</li>";							
+							}
+						}
+						$html[] = "</ul>";
+
+					}
+
 					/*** ADS CONTAINER */
-					$html[] = "<div class='d-none px-2 PROFILE_SIDEBAR_TOP'>";
+					$html[] = "<div class='d-none px-2 mt-4 PROFILE_SIDEBAR_TOP'>";
 						$html[] = "<a href='#' target='_blank' class='text-decoration-none'>";
 							$html[] = "<div class='card bg-dark-lt mt-2 mx-auto rounded-0  d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='width:300px; min-height:300px;'>";
 								$html[] = "<div class='loader'></div>";
@@ -117,21 +131,6 @@ $html[] = "<div class='page-body mt-0 bg-white'>";
 						$html[] = "</a>";
 					$html[] = "</div>";
 					/*** END ADS CONTAINER */
-					
-					if(!empty($data['profile']['skills']) && is_array($data['profile']['skills'])) {
-
-						if($data['profile']['skills'][0] != "") {
-							$html[] = "<h3 class='card-title mb-1 text-muted'>Skills</h3>";
-
-							$html[] = "<ul class='list-group list-group-flush'>";
-							for($i=0; $i<count($data['profile']['skills']); $i++) {
-								$html[] = "<li class='list-group-item'>- ".$data['profile']['skills'][$i]."</li>";							
-							}
-						}
-						$html[] = "</ul>";
-
-					}
-
 
 				$html[] = "</div>";
 
