@@ -1,6 +1,31 @@
 <?php
 
-$html[] = "<div class='bg-blue' style='height:150px;'></div>";
+$html[] = "<div class='bg-blue' style='height:150px;'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = "<div class='row justify-content-end'>";
+			$html[] = "<div class='col-lg-4 col-md-6'>";
+			$html[] = "</div>";
+
+			$html[] = "<div class='col-lg-8 col-md-6'>";
+				$html[] = "<div class='pt-3 d-none d-md-block '>";
+					
+					/*** ADS CONTAINER */
+					$html[] = "<div class='d-none px-2 PROFILE_TOP'>";
+						$html[] = "<a href='#' target='_blank' class='text-decoration-none'>";
+							$html[] = "<div class='card bg-dark-lt mt-2 mx-auto rounded-0  d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='height:120px; width:700px;'>";
+								$html[] = "<div class='loader'></div>";
+								$html[] = "<p>Loading Ads</p>";
+							$html[] = "</div>";
+						$html[] = "</a>";
+					$html[] = "</div>";
+					/*** END ADS CONTAINER */
+
+				$html[] = "</div>";
+			$html[] = "</div>";
+
+		$html[] = "</div>";
+	$html[] = "</div>";
+$html[] = "</div>";
 
 $html[] = "<div class='page-body mt-0 bg-white'>";
 	$html[] = "<div class='container-xl'>";
@@ -10,7 +35,7 @@ $html[] = "<div class='page-body mt-0 bg-white'>";
 
 				/** START PROFILE */
 				$html[] = "<div class='card mb-3 border-0'>";
-					$html[] = "<div class='card-body'  style='margin-top: -130px;'>";
+					$html[] = "<div class='card-body' style='margin-top: -130px;'>";
 
 						if($data['logo'] != "") { $logo = $data['logo'];
 						}else { $logo = CDN."images/blank-profile.png"; }

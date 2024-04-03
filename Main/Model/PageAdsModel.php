@@ -40,6 +40,12 @@ class PageAdsModel extends \Main\Model {
 				"height" => 300
 			]
 		],
+		"PROFILE_TOP" => [
+			"size" => [
+				"width" => 700,
+				"height" => 120
+			]
+		],
 		"PROFILE_SIDEBAR_TOP" => [
 			"size" => [
 				"width" => 300,
