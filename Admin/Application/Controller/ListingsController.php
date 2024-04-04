@@ -860,7 +860,7 @@ class ListingsController extends \Main\Controller {
 				default:
                     if(in_array($field, $fields_with_score)) {
 						if($value != "") { 
-							$field_score += (1 / 10);
+							$field_score += (1 / count($fields_with_score));
 						}
                     }
                     break;
