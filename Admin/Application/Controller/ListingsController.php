@@ -771,12 +771,15 @@ class ListingsController extends \Main\Controller {
 		if(isset($search)) {
 			$model->select("
 				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, address, amenities,
+				CASE WHEN DATE(from_unixtime(modified_at) - INTERVAL 7 DAY) THEN post_score + (1/14) END,
 				MATCH( type, title, tags, long_desc, category, address, amenities )
 				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
 			")->orderby(" match_score DESC, post_score DESC ");
 		}else {
 			$sort = isset($_GET['sort']) ? ($_GET['sort'] == "match_score" ? "post_score" : $_GET['sort']) : "post_score";
-			$model->orderby(" $sort $order ");
+			$model
+				->select(" CASE WHEN DATE(from_unixtime(modified_at) - INTERVAL 7 DAY) THEN post_score + (1/14) END ")
+					->orderby(" $sort $order ");
 		}
 		
 		$model->join(" l JOIN #__accounts a ON a.account_id = l.account_id ");
@@ -833,10 +836,10 @@ class ListingsController extends \Main\Controller {
 
 				case 'address':
 					$address = json_decode($value, true);
-					if($address['municipality'] != "") { $field_score += (1 / 7); }
-					if($address['barangay'] != "") { $field_score += (1 / 7); }
-					if($address['street'] != "") { $field_score += (1 / 7); }
-					if($address['village'] != "") { $field_score += (1 / 7); }
+					if($address['municipality'] != "") { $field_score += (1 / 6); }
+					if($address['barangay'] != "") { $field_score += (1 / 6); }
+					if($address['street'] != "") { $field_score += (1 / 6); }
+					if($address['village'] != "") { $field_score += (1 / 6); }
 
 					/** region and province are not scoreable */
 					break;
