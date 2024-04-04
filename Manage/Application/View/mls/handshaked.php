@@ -64,7 +64,7 @@ $html[] = "<div class='page-body'>";
 					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Email</span> ".$data[$i]['requestor_details']['email']."</a>";
 					    $html[] = "</td>";
 					    $html[] = "<td class='align-middle'>";
-					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Registered Since</span> ".date("F d, Y", $data[$i]['requestor_details']['registration_date'])."</a>";
+					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Registered Since</span> ".date("F d, Y", $data[$i]['requestor_details']['registered_at'])."</a>";
 					    $html[] = "</td>";
 					$html[] = "</tr>";
 					$html[] = "<tr class='row_listings_".$data[$i]['handshake_id']."'>";

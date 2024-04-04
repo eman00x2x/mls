@@ -267,10 +267,11 @@ $(document).on('click', '.avatar', function () {
 $(document).on('click', '.btn-add-to-compare', function () {
 	id = $(this).data('id');
 	url = $(this).data('url');
+	csrf = $(this).data('csrf');
 
 	$('.btn-add-to-compare_' + id).html("<img src='" + CDN + "images/loader.gif' /> Modifying compare table... ");
 
-	$.post(url, {"listing_id" : id}, function (data,status) {
+	$.post(url, { "listing_id": id, "csrf_token": csrf }, function (data,status) {
 		response = JSON.parse(data);
 		$('.response').html(response.message);
 		$('.btn-add-to-compare_' + id).remove();	
@@ -280,10 +281,11 @@ $(document).on('click', '.btn-add-to-compare', function () {
 $(document).on('click', '.btn-remove-from-compare', function () {
 	id = $(this).data('id');
 	url = $(this).data('url');
+	csrf = $(this).data('csrf');
 
 	$('.btn-remove-from-compare_' + id).html("<img src='" + CDN + "images/loader.gif' /> Modifying compare table... ");
 
-	$.post(url, { "listing_id": id }, function (data, status) {
+	$.post(url, { "listing_id": id, "csrf_token": csrf }, function (data, status) {
 		response = JSON.parse(data);
 		$('.response').html(response.message);
 		$('.btn-remove-from-compare_' + id).remove();

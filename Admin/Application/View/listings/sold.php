@@ -26,7 +26,7 @@ if($data) {
 					$html[] = "</div>";
 
 					$html[] = "<div class='mb-4'>";
-						$html[] = "<span class='small text-muted d-block'>Date Posted</span> ".date("F d, Y",$data['date_added'])."";
+						$html[] = "<span class='small text-muted d-block'>Date Posted</span> ".date("F d, Y",$data['created_at'])."";
 					$html[] = "</div>";
 				$html[] = "</div>";
 

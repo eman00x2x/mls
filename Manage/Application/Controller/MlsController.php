@@ -198,7 +198,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		
 		$handshakeListings = $handshake->getByRequestorAccountId();
 
-		if($handshakeListings['total_handshakes'] >= $this->session['privileges']['handshake_limit']) {
+		if(!isset($this->session['privileges']['handshake_limit']) || ($handshakeListings['total_handshakes'] >= $this->session['privileges']['handshake_limit'])) {
 			$this->getLibrary("Factory")->setMsg("You have reached the limit of handshake request.","warning");
 			$data = false;
 		}else {
@@ -230,8 +230,8 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 						"requestee_account_id" => $data['account_id'],
 						"listing_id" => $data['listing_id'],
 						"handshake_status" => "pending",
-						"handshake_status_date" => DATE_NOW,
-						"requested_date" => DATE_NOW
+						"handshake_status_at" => DATE_NOW,
+						"requested_at" => DATE_NOW
 					));
 
 					$notification = $this->getModel("Notification");

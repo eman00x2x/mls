@@ -107,7 +107,7 @@ function properties($data, $model) {
 
 								if($model->app['comparative']) {
 									if(!in_array($data['listing_id'],(isset($_SESSION['compare']['listings']) ? array_keys($_SESSION['compare']['listings']) : []))) {
-										$html[] = "<span class='btn btn-md btn-light btn-add-to-compare btn-add-to-compare_".$data['listing_id']."' data-url='".url("MlsController@addToCompare")."' data-id='".$data['listing_id']."'><i class='ti ti-layers-difference me-2'></i> Compare</span>";
+										$html[] = "<span class='btn btn-md btn-light btn-add-to-compare btn-add-to-compare_".$data['listing_id']."' data-url='".url("MlsController@addToCompare")."' data-id='".$data['listing_id']."' data-csrf='".csrf_token()."'><i class='ti ti-layers-difference me-2'></i> Compare</span>";
 									}
 								}
 							$html[] = "</div>";

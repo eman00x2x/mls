@@ -58,7 +58,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 					$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";
 					$html[] = "<input name='thumb_img' id='thumb_img' type='hidden' value='".$thumb_img."' />";
 					$html[] = "<input name='account_id' id='account_id' type='hidden' value='".$data['listing']['account_id']."' />";
-					$html[] = "<input name='last_modified' id='last_modified' type='hidden' value='".date("Y-m-d H:i:s",DATE_NOW)."' />";
+					$html[] = "<input name='modified_at' id='modified_at' type='hidden' value='".date("Y-m-d H:i:s",DATE_NOW)."' />";
 					$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 
 					$html[] = "<div class='card mb-3'>";

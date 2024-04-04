@@ -63,9 +63,9 @@ $html[] = "<div class='page-body'>";
 										
 										$html[] = "<tr class='row_subscription_".$data['subscriptions'][$i]['account_subscription_id']."'>";
 											$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-											$html[] = "<td class='align-middle'>".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_start_date'])."</td>";
+											$html[] = "<td class='align-middle'>".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_start_at'])."</td>";
 											$html[] = "<td class='align-middle' style='width:300px'>".$data['subscriptions'][$i]['name']." <span class='text-muted small d-block'>".$data['subscriptions'][$i]['details']."</span></td>";
-											$html[] = "<td class='align-middle'>".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_start_date'])."</td>";
+											$html[] = "<td class='align-middle'>".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_start_at'])."</td>";
                                             $html[] = "<td class='align-middle'>";
 												
 													$html[] = "".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_end_date'])."";

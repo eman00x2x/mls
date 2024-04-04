@@ -4,6 +4,41 @@ namespace Main\Model;
 
 class AccountModel extends \Main\Model {
 
+	public $profile = [
+		"about_me" =>  "",
+		"education" =>  [
+			[
+				"school" =>  "",
+				"degree" =>  "",
+				"date" =>  [
+					"from" => "",
+					"to" => ""
+				]
+			]
+		],
+		"affiliation" => [
+			[
+				"organization" => "",
+				"title" => "",
+				"description" =>  "",
+				"date" => [
+					"from" => 0,
+					"to" => 0
+				]
+			]
+		],
+		"certification" => [ "" ],
+		"skills" => [ "" ],
+	];
+
+	public $account_name = [
+		"prefix" => "",
+		"firstname" => "",
+		"middlename" => "",
+		"lastname" => "",
+		"suffix" => "",
+	];
+
 	function __construct() {
 		
 		$this->table = "accounts";

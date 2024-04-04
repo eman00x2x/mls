@@ -242,8 +242,8 @@ class TransactionsController extends \Main\Controller {
 
 				/**
 				 * Check if the account has current package subscription
-				 * if the account does not have current package subscription use $new_data['created_at'] in subscription_start_date
-				 * else get the current subscription_end_date and add +1 in subscription_start_date for this subscription
+				 * if the account does not have current package subscription use $new_data['created_at'] in subscription_start_at
+				 * else get the current subscription_end_at and add +1 in subscription_start_at for this subscription
 				 */
 
 
@@ -252,8 +252,8 @@ class TransactionsController extends \Main\Controller {
 					"transaction_id" => $data['transaction']['transaction_id'],
 					"premium_id" => $premium_data['premium_id'],
 					"subscription_date" => $new_data['created_at'],
-					"subscription_start_date" => $new_data['created_at'],
-					"subscription_end_date" => strtotime("+".$new_data['duration']." days", $new_data['created_at'])
+					"subscription_start_at" => $new_data['created_at'],
+					"subscription_end_at" => strtotime("+".$new_data['duration']." days", $new_data['created_at'])
 				]);
 
 				$mail = new Mailer();

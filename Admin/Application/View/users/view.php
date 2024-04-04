@@ -64,7 +64,7 @@ $html[] = "<div class='row g-0'>";
 									$html[] = "<label class='text-muted form-label mt-2 text-end'>Date Registered</label>";
 								$html[] = "</div>";
 								$html[] = "<div class='col-9'>";
-									$html[] = "<input type='text' value='".date("F d, Y g:ia",$data['date_added'])."' class='form-control-plaintext' readonly autocomplete='off' />";
+									$html[] = "<input type='text' value='".date("F d, Y g:ia",$data['created_at'])."' class='form-control-plaintext' readonly autocomplete='off' />";
 								$html[] = "</div>";
 							$html[] = "</div>";
 						$html[] = "</div>";

@@ -83,12 +83,12 @@ $html[] = "<div class='page-body'>";
 
 								$html[] = "<p>";
 									$html[] = "<span class='fs-13 text-muted d-block'>Subscription Started</span>";
-									$html[] = date("d M Y", $subscription['subscription_start_date']);
+									$html[] = date("d M Y", $subscription['subscription_start_at']);
 								$html[] = "</p>";
 
 								$html[] = "<p>";
 									$html[] = "<span class='fs-13 text-muted d-block'>Subscription End</span>";
-									$html[] = date("d M Y", $subscription['subscription_end_date']);
+									$html[] = date("d M Y", $subscription['subscription_end_at']);
 								$html[] = "</p>";
 
 							$html[] = "</div>";

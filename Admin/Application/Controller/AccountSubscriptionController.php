@@ -27,9 +27,9 @@ class AccountSubscriptionController extends \Main\Controller {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
 
-		if(isset($_POST['subscription_start_date'])) {
-			$_POST['subscription_start_date'] = strtotime($_POST['subscription_start_date']);
-			$_POST['subscription_end_date'] = strtotime("+".$_POST['duration']." days", $_POST['subscription_start_date']);
+		if(isset($_POST['subscription_start_at'])) {
+			$_POST['subscription_start_at'] = strtotime($_POST['subscription_start_at']);
+			$_POST['subscription_end_at'] = strtotime("+".$_POST['duration']." days", $_POST['subscription_start_at']);
 		}
 
 		$_POST['susbcription_status'] = 1;

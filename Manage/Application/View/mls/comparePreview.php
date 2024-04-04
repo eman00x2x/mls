@@ -17,7 +17,7 @@ $html[] = "<div class='offcanvas-header'>";
 							$html[] = "<td>";
 								$html[] = "<div class=''>";
 									$html[] = "<div class='float-end'>";
-										$html[] = "<span class='cursor-pointer btn-remove-from-compare btn-remove-from-compare_".$arr['listing_id']."' data-url='".url("MlsController@removeFromCompare")."' data-id='".$arr['listing_id']."' title='Remove from compare'><i class='ti ti-x me-2'></i></span>";
+										$html[] = "<span class='cursor-pointer btn-remove-from-compare btn-remove-from-compare_".$arr['listing_id']."' data-url='".url("MlsController@removeFromCompare")."' data-id='".$arr['listing_id']."' data-csrf='".csrf_token()."' title='Remove from compare'><i class='ti ti-x me-2'></i></span>";
 									$html[] = "</div>";
 									$html[] = "<span class='fs-18'>".$arr['title']."</span>";
 								$html[] = "</div>";

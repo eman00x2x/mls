@@ -38,9 +38,9 @@ class PremiumsController extends \Main\Controller {
 		
 		$premium = $this->getModel("Premium");
 		$premium
-		->select(" *, (SELECT COUNT(*) FROM #__account_subscriptions WHERE premium_id = `mls_premiums`.premium_id AND (subscription_end_date > ".DATE_NOW." OR subscription_end_date = 0)) as subscribers")
+		->select(" *, (SELECT COUNT(*) FROM #__account_subscriptions WHERE premium_id = `mls_premiums`.premium_id AND (subscription_end_at > ".DATE_NOW." OR subscription_end_at = 0)) as subscribers")
 		->where(isset($clause) ? implode(" ",$clause) : null)
-		->orderBy(" date_added DESC ");
+		->orderBy(" created_at DESC ");
 
 		$premium->page['limit'] = 20;
 		$premium->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;

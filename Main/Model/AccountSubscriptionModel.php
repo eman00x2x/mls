@@ -15,7 +15,7 @@ class AccountSubscriptionModel extends \Main\Model {
 		$this->page["limit"] = 999999;
 		$this
 		->join(" acs JOIN #__premiums p ON p.premium_id = acs.premium_id ")
-		->where(" (subscription_end_date >= '".DATE_NOW."' OR subscription_status = 1) ")
+		->where(" (subscription_end_at >= '".DATE_NOW."' OR subscription_status = 1) ")
 		->and(" subscription_status = 1 AND account_id = ". $this->column['account_id'] );
 
 		$data = $this->getList();
@@ -41,7 +41,7 @@ class AccountSubscriptionModel extends \Main\Model {
 
 	function saveNew($data) {
 
-		$required_fields = array("account_id","subscription_start_date");
+		$required_fields = array("account_id","subscription_start_at");
 
 		foreach($required_fields as $value) {
 			if(!array_key_exists($value,$data)) {
@@ -57,7 +57,7 @@ class AccountSubscriptionModel extends \Main\Model {
 
 		$v = $this->getValidator();
 
-		$v->validateDate($data['subscription_start_date']," Subscription Start Date is blank.");
+		$v->validateDate($data['subscription_start_at']," Subscription Start Date is blank.");
 
 		if($v->foundErrors()) {
 			return array(

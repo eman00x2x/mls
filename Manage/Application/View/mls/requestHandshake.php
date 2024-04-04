@@ -14,7 +14,7 @@ if($data) {
                     $html[] = "<td class='align-top'>";
                         $html[] = "<span class='d-block fw-bold'>".$data['account']['firstname']." ".$data['account']['lastname']."</span>";
                         $html[] = "<span class='d-block'>".$data['account']['email']."</span>";
-                        $html[] = "<span class='d-block'>Registered since: ".date("F d, Y",$data['account']['registration_date'])."</span>";
+                        $html[] = "<span class='d-block'>Registered since: ".date("F d, Y",$data['account']['registered_at'])."</span>";
                     $html[] = "</td>";
                 $html[] = "</tr>"; */
                 $html[] = "<tr>";

@@ -35,7 +35,7 @@ class UsersController extends \Main\Controller {
 		
 		$table['user'] = $this->getModel("User");
 		$table['user']->where(isset($clause) ? implode(" ",$clause) : null)
-		->orderBy(" date_added DESC ");
+		->orderBy(" created_at DESC ");
 
 		$table['user']->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
 		$table['user']->page['target'] = url("UsersController@index");

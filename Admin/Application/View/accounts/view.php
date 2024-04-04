@@ -77,7 +77,7 @@ $html[] = "<div class='page-body'>";
 
 						$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-layout-board me-1'></i> Account Type:</span> <strong>".$data['account_type']."</strong></div>";
 						$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-status-change me-1'></i> Status:</span> <strong>".$data['status']."</strong></div>";
-						$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-calendar me-1'></i> Registration Date:</span> <strong>".date("d M Y",$data['registration_date'])."</strong></div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-calendar me-1'></i> Registration Date:</span> <strong>".date("d M Y",$data['registered_at'])."</strong></div>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 						
@@ -172,7 +172,7 @@ $html[] = "<div class='page-body'>";
 											$html[] = "</td>";
 
 											$html[] = "<td class='align-middle'><a class='text-reset text-decoration-none' href='".url("UsersController@view",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."'>".($data['users'][$i]['user_level'] == 1 ? "Account Holder" : "Regular User")."</a></td>";
-											$html[] = "<td class='align-middle'>".date("F d, Y",$data['users'][$i]['date_added'])."</td>";
+											$html[] = "<td class='align-middle'>".date("F d, Y",$data['users'][$i]['created_at'])."</td>";
 											
 											$html[] = "<td class='text-center'>";
 												$html[] = "<div class='item-action dropdown'>";
@@ -233,11 +233,11 @@ $html[] = "<div class='page-body'>";
 											
 											$html[] = "<tr class='row_subscription_".$data['subscriptions'][$i]['account_subscription_id']."'>";
 												$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-												$html[] = "<td class='align-middle' style='width:100px'>".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_start_date'])."</td>";
+												$html[] = "<td class='align-middle' style='width:100px'>".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_start_at'])."</td>";
 												$html[] = "<td class='align-middle' style='width:350px'>".$data['subscriptions'][$i]['name']." <span class='text-muted small d-block'>".$data['subscriptions'][$i]['details']."</span></td>";
 												$html[] = "<td class='align-middle'>";
-													if($data['subscriptions'][$i]['subscription_end_date'] > 0) {
-														$html[] = "".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_end_date'])."";
+													if($data['subscriptions'][$i]['subscription_end_at'] > 0) {
+														$html[] = "".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_end_at'])."";
 													}else {
 														$html[] = "Permanent";
 													}

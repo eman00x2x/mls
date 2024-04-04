@@ -11,7 +11,7 @@ $html[] = "<input type='hidden' id='save_url' value='".url("PremiumsController@s
 $html[] = "<form id='form' action='' method='POST'>";
 
 	$html[] = "<input type='hidden' name='_method' id='_method' value='post' />";
-	$html[] = "<input type='hidden' name='date_added' id='date_added' value='".$data['date_added']."' />";
+	$html[] = "<input type='hidden' name='created_at' id='created_at' value='".$data['created_at']."' />";
 	$html[] = "<input type='hidden' name='status' id='status' value='active' />";
 	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 

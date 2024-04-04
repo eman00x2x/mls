@@ -427,7 +427,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		}
 
 		$account = $this->getModel("Account");
-		$account->select(" account_id, account_name, board_region, local_board_name, email, mobile_number, profession, real_estate_license_number, logo, company_name, registration_date ");
+		$account->select(" account_id, account_name, board_region, local_board_name, email, mobile_number, profession, real_estate_license_number, logo, company_name, registered_at ");
 		$account->column['account_id'] = $_GET['account_id'];
 		$data['account'] = $account->getById();
 

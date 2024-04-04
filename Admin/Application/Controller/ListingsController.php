@@ -37,7 +37,7 @@ class ListingsController extends \Main\Controller {
 		$filters[] = " status IN(0, 1) ";
 		
 		$listing = $this->getModel("Listing");
-		$listing->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" last_modified DESC ");
+		$listing->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" modified_at DESC ");
 		
 		$listing->page['limit'] = 20;
 		$listing->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
@@ -314,7 +314,7 @@ class ListingsController extends \Main\Controller {
 		if($data) {
 
 			$account = $this->getModel("Account");
-			$account->select(" account_id, logo, profession, real_estate_license_number, account_name, mobile_number, email, registration_date");
+			$account->select(" account_id, logo, profession, real_estate_license_number, account_name, mobile_number, email, registered_at");
 			$account->column['account_id'] = $data['listing']['account_id'];
 			$data['account'] = $account->getById();
 
@@ -362,8 +362,8 @@ class ListingsController extends \Main\Controller {
 		parse_str(file_get_contents('php://input'), $_POST);
 		
 		$_POST['name'] = sanitize($_POST['title']);
-		$_POST['date_added'] = DATE_NOW;
-		$_POST['last_modified'] = DATE_NOW;
+		$_POST['created_at'] = DATE_NOW;
+		$_POST['modified_at'] = DATE_NOW;
 		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."/images/listings/".$_POST['thumb_img'] : null;
 		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? $_POST['foreclosed'] : 0;
 		$_POST['is_mls'] = isset($_POST['is_mls']) ? $_POST['is_mls'] : 0;
@@ -444,7 +444,7 @@ class ListingsController extends \Main\Controller {
 		}
 		
 		$_POST['name'] = sanitize($_POST['title']);
-		$_POST['last_modified'] = DATE_NOW;
+		$_POST['modified_at'] = DATE_NOW;
 		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."images/listings/".$_POST['thumb_img'] : null;
 		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? 1 : 0;
 		$_POST['is_mls'] = isset($_POST['is_mls']) ? 1 : 0;
@@ -651,7 +651,7 @@ class ListingsController extends \Main\Controller {
 			"featured" => 0,
 			"is_website" => 0,
 			"is_mls" => 0,
-			"last_modified" => DATE_NOW
+			"modified_at" => DATE_NOW
 		]);
 
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
@@ -770,7 +770,7 @@ class ListingsController extends \Main\Controller {
 
 		if(isset($search)) {
 			$model->select("
-				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, last_modified, l.status, display, type, title, tags, long_desc, category, address, amenities,
+				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, address, amenities,
 				MATCH( type, title, tags, long_desc, category, address, amenities )
 				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
 			")->orderby(" match_score DESC, post_score DESC ");
@@ -816,7 +816,7 @@ class ListingsController extends \Main\Controller {
 
 		$fields_with_score = [
 			"title", "tags", "long_desc", "category", "address", "price", "reservation", 
-			"payment_details", "lot_area", "thumb_img", "video", "amenities ", "other_details ", "last_modified" 
+			"payment_details", "lot_area", "thumb_img", "video", "amenities ", "other_details ", "modified_at" 
 		];
 
 		$score = $data['image_score'];

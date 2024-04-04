@@ -34,7 +34,7 @@ class AccountsController extends \Main\Controller {
 		$accounts = $this->getModel("Account");
 		$accounts
 		->where(isset($clause) ? implode(" ",$clause) : null)
-		->orderBy(" registration_date DESC ");
+		->orderBy(" registered_at DESC ");
 
 		$accounts->page['limit'] = 20;
 		$accounts->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
@@ -128,12 +128,12 @@ class AccountsController extends \Main\Controller {
 
 				$user->page['limit'] = 100;
 				$user->where(" account_id = ".$data['account_id']." ");
-				$user->orderBy(" date_added DESC ");
+				$user->orderBy(" created_at DESC ");
 				$data['users'] = $user->getList(); 
 
 				$subscription->page['limit'] = 10;
 				$subscription
-				->select("acs.account_subscription_id, s.premium_id, s.name, s.details, subscription_status, subscription_start_date, subscription_end_date, script")
+				->select("acs.account_subscription_id, s.premium_id, s.name, s.details, subscription_status, subscription_start_at, subscription_end_at, script")
 				->join(" acs JOIN #__premiums s ON s.premium_id=acs.premium_id ")
 				->and(" account_id = ".$data['account_id']." ")
 				->orderby(" acs.premium_id DESC");
@@ -281,8 +281,8 @@ class AccountsController extends \Main\Controller {
 		$time = DATE_NOW;
 
 		$_POST['name'] = $_POST['firstname']." ".$_POST['lastname'];
-		$_POST['date_added'] = $time;
-		$_POST['registration_date'] = $time;
+		$_POST['created_at'] = $time;
+		$_POST['registered_at'] = $time;
 		$_POST['created_at'] = $time;
 		$_POST['permissions'] = json_encode(USER_PERMISSIONS);
 		$_POST['privileges'] = json_encode(isset($_POST['privileges']) ? $_POST['privileges'] : CONFIG['privileges']);
@@ -600,7 +600,7 @@ class AccountsController extends \Main\Controller {
 		$users = $this->getModel("User");
 		$users->page['limit'] = 9999;
 		$users->column['account_id'] = $account_id;
-		$data['users'] = $users->where(" user_status = 'active' ")->orderBy(" date_added ASC ")->getByAccountId();
+		$data['users'] = $users->where(" user_status = 'active' ")->orderBy(" created_at ASC ")->getByAccountId();
 
 		$total_users = count($data['users']);
 		if($data['account']['privileges']['max_users'] >= $total_users) {
@@ -621,7 +621,7 @@ class AccountsController extends \Main\Controller {
 
 		$data['listings'] = $listings
 			->where(" account_id = $account_id AND status = 'available' ")
-				->orderBy(" date_added ASC ")
+				->orderBy(" created_at ASC ")
 					->getList();
 
 		if($data['listings']) {

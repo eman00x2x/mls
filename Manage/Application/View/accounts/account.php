@@ -232,7 +232,7 @@ $html[] = "<div class='page-body'>";
 
                                         $html[] = "<div class='row g-3 align-items-center'>";
                                             $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Registration Date</label></div>";
-                                            $html[] = "<div class='col-md-9 col-6'><span>".date("F d, Y",$data['registration_date'])."</span></div>";
+                                            $html[] = "<div class='col-md-9 col-6'><span>".date("F d, Y",$data['registered_at'])."</span></div>";
                                         $html[] = "</div>";
                                     $html[] = "</div>";
 

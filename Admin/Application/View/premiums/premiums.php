@@ -64,7 +64,7 @@ $html[] = "<div class='row g-0'>";
 									$html[] = "<td class='align-middle text-center'>".implode(", ", $data[$i]['duration'])."</td>";
 									$html[] = "<td class='align-middle text-end'>".number_format($data[$i]['cost'],0)."</td>";
 									$html[] = "<td class='align-middle text-center'>".($data[$i]['visibility'] == 1 ? "Yes" : "")."</td>";
-									$html[] = "<td class='align-middle'>".date("F d, Y",$data[$i]['date_added'])."</td>";
+									$html[] = "<td class='align-middle'>".date("F d, Y",$data[$i]['created_at'])."</td>";
 									
 									$html[] = "<td class='text-center'>";
 									

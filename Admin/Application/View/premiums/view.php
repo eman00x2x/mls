@@ -82,7 +82,7 @@ $html[] = "</div>";
 							$html[] = "<div class='row'>";
 								$html[] = "<label class='col-sm-3 col-form-label  text-end'>Duration</label>";
 								$html[] = "<div class='col-sm-9'>";
-									$html[] = "<input type='text' readonly class='form-control-plaintext' value='".$data['duration']."' />";
+									$html[] = "<input type='text' readonly class='form-control-plaintext' value='".json_encode($data['duration'])."' />";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
