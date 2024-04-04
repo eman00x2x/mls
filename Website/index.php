@@ -45,16 +45,6 @@ spl_autoload_register('autoloader');
 require_once(ROOT."/Includes/config.php");
 require_once(BASE."/helper.php");
 
-debug(implode(", ",[
-		"PROPERTY_LIST_TOP",
-		"PROPERTY_VIEW_SIDEBAR_TOP",
-		"PROPERTY_VIEW_SIDEBAR_BOTTOM",
-		"ARTICLE_LIST_SIDEBAR",
-		"ARTICLE_VIEW_SIDEBAR",
-		"PROFILE_TOP",
-		"PROFILE_SIDEBAR_TOP"
-	]));
-
 class Middleware implements IMiddleware {
 
     public function handle(Request $request): void 
