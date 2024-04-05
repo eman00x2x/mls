@@ -1,11 +1,5 @@
 let account;
 
-$(document).ready(function () {
-	$.get('/notifications/getLatest', function (data, status) {
-		$('.notifications-container').html(data);
-	});
-});
-
 $(document).on('click', '.data-open-notification', function () {
 	url = $(this).data('url');
 	$.get(url, function (data, status) {

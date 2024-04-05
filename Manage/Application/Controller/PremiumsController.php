@@ -43,7 +43,7 @@ class PremiumsController extends \Admin\Application\Controller\PremiumsControlle
 		$subscription = $this->getModel("AccountSubscription");
 		$subscription->join(" s JOIN #__premiums p ON p.premium_id = s.premium_id JOIN #__transactions t ON t.transaction_id = s.transaction_id");
 		$subscription->where(" s.premium_id IN(".implode(",", $package_id).") ");
-		$subscription->and(" subscription_end_date >= '".DATE_NOW."' AND s.account_id = ".$this->session['account_id']);
+		$subscription->and(" subscription_end_at >= '".DATE_NOW."' AND s.account_id = ".$this->session['account_id']);
 		$data['subscription'] = $subscription->getList();
 
 		$this->setTemplate("premiums/premiums.php");

@@ -85,7 +85,7 @@ $html[] = "<div class='page-body'>";
 															$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
 															$html[] = "<td class='align-middle'><a href='".url("UsersController@edit",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."' class='ajax text-inherit' title='User: ".$data['users'][$i]['name']."'>".$data['users'][$i]['name']."</a></td>";
 															$html[] = "<td class='align-middle'><a href='".url("UsersController@edit",["id" => $data['users'][$i]['account_id'], "user_id" => $data['users'][$i]['user_id']])."'>".$data['users'][$i]['email']."</a></td>";
-															$html[] = "<td class='align-middle'>".date("F d, Y",$data['users'][$i]['date_added'])."</td>";
+															$html[] = "<td class='align-middle'>".date("F d, Y",$data['users'][$i]['created_at'])."</td>";
 															
 															$html[] = "<td class='text-center'>";
 																if(isset($_SESSION['user_logged']['permissions']['users']['delete']) && $_SESSION['user_logged']['permissions']['users']['delete'] == true && $data['users'][$i]['user_level'] != 1) {

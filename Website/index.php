@@ -52,7 +52,7 @@ class Middleware implements IMiddleware {
 
 		Router::router()->reset();
 		SessionHandler::getInstance()->init();
-		
+
 		require_once('routes.php');
 		$template = "templates/template.php";
 		

@@ -2,32 +2,28 @@
 
 namespace Main\Model;
 
-class ListingViewModel extends \Main\Model {
+class TrafficModel extends \Main\Model {
 
 	function __construct() {
-		$this->table = "listings_view";
-		$this->primary_key = "listing_view_id";
+		$this->table = "traffics";
+		$this->primary_key = "traffic_id";
 		$this->init();
 	}
 
 	function getBySessionId() {
-		$query = "SELECT ".($this->select == "" ? "*" : $this->select)." FROM #__listings_view ".$this->join." WHERE session_id = '".$this->column['session_id']."' ".$this->and;
-		$result = $this->DBO->query($query);
 
-		$this->initiateFields($result);
+		$this->where(" session_id = '" . $this->column['session_id'] . "'");
+		$data = $this->getList();
 
-		if($this->DBO->numRows($result) > 0) {
-			$line = $this->DBO->fetchAssoc($result);
-			return $this->stripQuotes($line);
-		}else {return false;}
+		if($data) {
+			return $data;
+		}else { return false; }
+		
 	}
 
 	function saveNew($data) {
 
 		$v = $this->getValidator();
-
-		$v->validateGeneral($data['account_id'],"account_id is not set.");
-		$v->validateGeneral($data['listing_id'],"listing_id is not set.");
 
 		if($v->foundErrors()) {
 			return array(
@@ -62,7 +58,6 @@ class ListingViewModel extends \Main\Model {
 			$v = $this->getValidator();
 
 			$v->validateGeneral($data['account_id'],"account_id is not set.");
-			$v->validateGeneral($data['listing_id'],"listing_id is not set.");
 
 			if($v->foundErrors()) {
 				return array(
@@ -89,7 +84,7 @@ class ListingViewModel extends \Main\Model {
 
 	}
 
-	function deleteListingView($id,$column = "listing_view_id") {
+	function deleteTraffic($id,$column = "traffic_id") {
 		$this->delete($id,$column);
 	}
 }

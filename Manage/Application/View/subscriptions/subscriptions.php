@@ -68,7 +68,7 @@ $html[] = "<div class='page-body'>";
 											$html[] = "<td class='align-middle'>".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_start_at'])."</td>";
                                             $html[] = "<td class='align-middle'>";
 												
-													$html[] = "".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_end_date'])."";
+													$html[] = "".date("F d, Y g:ia",$data['subscriptions'][$i]['subscription_end_at'])."";
 												
 											$html[] = "</td>";
 											$html[] = "<td class='align-middle text-center'>";

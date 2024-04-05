@@ -122,6 +122,14 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		$response = $this->listProperties($listings, $filters);
 
+		$this->saveTraffic([
+			"type" => "page",
+			"name" => "MLS",
+			"id" => 0,
+			"url" => rtrim(MANAGE, '/') . url("MLSController@index"),
+			"account_id" => 0
+		]);
+
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->setTemplate("listings/listProperties.php");
 		$listings->list = $this->getTemplate($response['data'],$response['model']);

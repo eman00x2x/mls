@@ -388,10 +388,14 @@ class AuthenticatorController extends \Main\Controller
 		$subscription->column['account_id'] = $data['account_id'];
 		$privileges = $subscription->getSubscription();
 
-		if($privileges === false) {
-			$data['privileges'] = $data['privileges'];
-		}else {
-			$data['privileges'] = $privileges;
+		if($privileges) {
+			foreach($privileges as $key => $value) {
+				if(isset($data['privileges'][$key])) {
+					$data['privileges'][$key] += $value;
+				}else {
+					$data['privileges'][$key] = $value;
+				}
+			}
 		}
 
 		$account = new Account();
@@ -421,6 +425,9 @@ class AuthenticatorController extends \Main\Controller
 		unset($data['account_name']['suffix']);
 		unset($data['account_name']['middlename']);
 	
+
+		
+
 		$arr = [
 			'user_logged' => $data,
 			'domain' => $this->domain,

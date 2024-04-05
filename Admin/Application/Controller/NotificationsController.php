@@ -25,11 +25,11 @@ class NotificationsController extends \Main\Controller {
 		$notification = $this->getModel("Notification");
 
 		$notification->page['limit'] = 20;
-		$notification->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+		$notification->page['current'] = isset($_GET['page']) ? $_GET['page'] : 1;
 		$notification->page['target'] = url("NotificationsController@index");
 		$notification->page['uri'] = (isset($uri) ? $uri : []);
 
-		$notification->where(" account_id = ".$this->account_id)->orderBy(" status DESC, created_at DESC");
+		$notification->where(" account_id = ".$this->account_id )->orderBy(" status DESC, created_at DESC ");
 		$data = $notification->getList();
 
 		$this->setTemplate("notifications/index.php");
@@ -42,9 +42,10 @@ class NotificationsController extends \Main\Controller {
 		$notification = $this->getModel("Notification");
 
 		$notification->page['limit'] = 5;
-		$notification->where(" account_id = ".$this->account_id)
-			->and(" status = 1 ")
-			->orderBy(" status DESC, created_at DESC");
+		$notification
+			->where(" account_id = ".$this->account_id)
+				->and(" status = 1 ")
+					->orderBy(" status DESC, created_at DESC");
 		$data = $notification->getList();
 
 		if($data) {

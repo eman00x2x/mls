@@ -15,15 +15,19 @@ class ArticlesController extends \Main\Controller {
 
 	function index() {
 
-		$this->doc->setTitle("MLS");
-		$this->doc->setDescription("MLS");
-		$this->doc->setMetaData("Keywords", "MLS");
+		$data['title'] = "Articles - " . CONFIG['site_name'];
+		$data['description'] = $data['title'];
+		$data['image'] = null;
+		
+		$this->doc->setTitle($data['title']);
+		$this->doc->setDescription($data['description']);
+		$this->doc->setMetaData("Keywords", $data['description']);
 
 		$this->doc->setFacebookMetaData("og:url", WEBDOMAIN.url("ArticlesController@index"));
-		$this->doc->setFacebookMetaData("og:title", "Articles");
+		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", "");
-		$this->doc->setFacebookMetaData("og:description", "");
+		$this->doc->setFacebookMetaData("og:image", $data['image']);
+		$this->doc->setFacebookMetaData("og:description", $data['description']);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
 		$articles = $this->getModel("Article");
@@ -44,6 +48,13 @@ class ArticlesController extends \Main\Controller {
 		$data['articles'] = $articles->getList();
 
 		$data['categories'] = $this->totalArticlesPerCategory();
+
+		$this->saveTraffic([
+			"type" => "page",
+			"name" => "Articles",
+			"id" => 0,
+			"url" => rtrim(WEBDOMAIN, '/') . $articles->page['target'],
+		]);
 
 		$this->setTemplate("articles/index.php");
 		return $this->getTemplate($data, $articles);
@@ -77,6 +88,13 @@ class ArticlesController extends \Main\Controller {
 			"img" => $data['banner'],
 		]);
 		
+		$this->saveTraffic([
+			"type" => "article",
+			"name" => $data['title'],
+			"id" => $data['article_id'],
+			"url" => $data['url'],
+		]);
+
 		$this->setTemplate("articles/view.php");
 		return $this->getTemplate($data, $articles);
 	}
@@ -96,6 +114,39 @@ class ArticlesController extends \Main\Controller {
 
 		return $data;
 		
+	}
+
+	private function saveTraffic($data) {
+
+		$traffic = $this->getModel("Traffic");
+		$traffic->select(" session_id, JSON_EXTRACT(traffic, '$.name') as name ");
+		$traffic->column['session_id'] = $this->getLibrary("SessionHandler")->get("id");
+		
+		$response = $traffic->getBySessionId();
+
+		if($response) {
+			for($i=0; $i<count($response); $i++) {
+				$arr[$response[$i]['session_id']][] = $response[$i]['name'];
+			}
+		}
+
+		if(!isset($arr[ $traffic->column['session_id'] ]) || !in_array($data['name'], $arr[ $traffic->column['session_id'] ]) || !$response) {
+			$traffic->select("");
+			$traffic->saveNew(array(
+				"traffic" => json_encode([
+					"type" => $data['type'],
+					"name" => $data['name'],
+					"id" => $data['id'],
+					"url" => $data['url'],
+					"source" => "Website"
+				]),
+				"account_id" => 0,
+				"session_id" => $this->getLibrary("SessionHandler")->get("id"),
+				"created_at" => DATE_NOW,
+				"user_agent" => json_encode($this->getLibrary("SessionHandler")->get("user_agent"))
+			));
+		}
+
 	}
 
 }

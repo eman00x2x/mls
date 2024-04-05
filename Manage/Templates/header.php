@@ -21,6 +21,14 @@
 <script type="text/javascript">
     var MANAGE = '<?php echo MANAGE; ?>';
     var CDN = '<?php echo CDN; ?>';
+
+    
+    $(document).ready(function () {
+        $.get('<?php echo MANAGE_ALIAS; ?>/notifications/getLatest', function (data, status) {
+            $('.notifications-container').html(data);
+        });
+    });
+
 </script>
 <?php
     $document = \Library\Factory::getDocument();

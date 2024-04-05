@@ -17,8 +17,15 @@ class DashboardController extends \Main\Controller {
 
 	function index() {
 
+		$this->doc->setTitle("Dashboard");
+
 		$this->getTrafficChart();
 		$this->getChartEarnings("this_year");
+		 $this->getKycDateVerified();
+
+		$data['kyc'] = $this->getKycStatus();
+        $data['kyc_verifier'] = $this->getKycVerifierStatistics();
+        $data['kyc_statistics'] = $this->getKycStatistics();
 
 		$data['most_traffic'] = $this->getMostTraffic();
 		$data['total_accounts'] = $this->getTotalAccounts();
@@ -160,19 +167,23 @@ class DashboardController extends \Main\Controller {
 
 		$date_helper = \dateHelper($flag);
 
-		$traffic = $this->getModel("ListingView");
+		$traffic = $this->getModel("Traffic");
         $traffic->page['limit'] = 5;
 
-		$traffic
-		->select(" t.listing_id, title, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(a.account_name, '$.firstname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(a.account_name, '$.lastname'))) as posted_by, COUNT(session_id) as count ")
-			->join(" t JOIN #__listings l ON t.listing_id=l.listing_id JOIN #__accounts a ON a.account_id=t.account_id ")
-				->where(" t.created_at >= ".$date_helper['from']." AND t.created_at <= ".$date_helper['to']." ")
-					->groupBy(" t.listing_id ");
-
 		if($account_id != null) {
-			$traffic->and(" t.account_id = $account_id ");
+			$filter[] = " t.account_id = $account_id ";
 		}
-		
+
+		$filter[] = " created_at >= ".$date_helper['from']." ";
+		$filter[] = " created_at <= ".$date_helper['to']." ";
+
+		$traffic
+		->select(" JSON_UNQUOTE(JSON_EXTRACT(traffic, '$.name')) as title, JSON_UNQUOTE(JSON_EXTRACT(traffic, '$.url')) as url, COUNT(session_id) as count, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.firstname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.lastname'))) as posted_by ")
+			->join(" t LEFT JOIN #__accounts a ON a.account_id = t.account_id ")
+				->where( implode(" AND ", $filter) )
+					->groupBy(" title ")
+						->orderBy(" count DESC ");
+
         $data = $traffic->getList();
 
 		if($data) {
@@ -187,7 +198,7 @@ class DashboardController extends \Main\Controller {
 
 		$date_helper = \dateHelper($flag);
 
-		$traffic = $this->getModel("ListingView");
+		$traffic = $this->getModel("Traffic");
         $traffic->page['limit'] = 100000;
 
 		if($account_id != null) {
@@ -209,10 +220,8 @@ class DashboardController extends \Main\Controller {
 			case 'this_week':
 				$traffic->select(" FROM_UNIXTIME(created_at, '%Y-%m-%d') as date, COUNT(session_id) as count ");
 				break;
-
 		}
 
-		
 		$traffic
 		->where( implode(" AND ", $filter) )
 			->groupBy(" date ")
@@ -346,10 +355,9 @@ class DashboardController extends \Main\Controller {
 
 		}
 
-		
 		$kyc->where( implode(" AND ", $filter) )
-					->groupBy(" date ")
-						->orderBy(" verified_at ASC ");
+				->groupBy(" date ")
+					->orderBy(" verified_at ASC ");
 
         $data = $kyc->getList();
 

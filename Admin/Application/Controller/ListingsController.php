@@ -334,19 +334,13 @@ class ListingsController extends \Main\Controller {
 			$data['handshake'] = $handshake->getByRequestorAccountId();
 
 			if($data['listing']['account_id'] !== $this->session['account_id']) {
-				$traffic = $this->getModel("ListingView");
-				$traffic->column['session_id'] = $this->getLibrary("SessionHandler")->get("id");
-				
-				if(!$traffic->getBySessionId()) {
-					$traffic->saveNew(array(
-						"listing_id" => $data['listing']['listing_id'],
-						"account_id" => $data['account']['account_id'],
-						"session_id" => $this->getLibrary("SessionHandler")->get("id"),
-						"created_at" => DATE_NOW,
-						"user_agent" => json_encode($this->getLibrary("SessionHandler")->get("user_agent"))
-					));
-				}
-
+				$this->saveTraffic([
+					"type" => "listing",
+					"name" => $data['listing']['title'],
+					"id" => $listing_id,
+					"url" => rtrim(MANAGE, '/') . url("MLSController@view", ["id" => $listing_id]),
+					"account_id" => $data['account']['account_id']
+				]);
 			}
 
 			$this->setTemplate("listings/view.php");
@@ -873,6 +867,39 @@ class ListingsController extends \Main\Controller {
 		}
 
 		return $score + $field_score;
+
+	}
+
+	public function saveTraffic($data) {
+
+		$traffic = $this->getModel("Traffic");
+		$traffic->select(" session_id, JSON_EXTRACT(traffic, '$.name') as name ");
+		$traffic->column['session_id'] = $this->getLibrary("SessionHandler")->get("id");
+		
+		$response = $traffic->getBySessionId();
+
+		if($response) {
+			for($i=0; $i<count($response); $i++) {
+				$arr[$response[$i]['session_id']][] = $response[$i]['name'];
+			}
+		}
+
+		if(!isset($arr[ $traffic->column['session_id'] ]) || !in_array($data['name'], $arr[ $traffic->column['session_id'] ]) || !$response) {
+			$traffic->select("");
+			$traffic->saveNew(array(
+				"traffic" => json_encode([
+					"type" => $data['type'],
+					"name" => $data['name'],
+					"id" => $data['id'],
+					"url" => $data['url'],
+					"source" => "Website"
+				]),
+				"account_id" => $data['account_id'],
+				"session_id" => $this->getLibrary("SessionHandler")->get("id"),
+				"created_at" => DATE_NOW,
+				"user_agent" => json_encode($this->getLibrary("SessionHandler")->get("user_agent"))
+			));
+		}
 
 	}
 	

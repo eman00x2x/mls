@@ -23,15 +23,12 @@ class AccountSubscriptionModel extends \Main\Model {
 		if($data) {
 			for($i=0; $i<count($data); $i++) {
 				foreach($data[$i]['script'] as $key => $val) {
-
 					if(!isset($privileges[$key])) {
 						$privileges[$key] = 0;
 					}
-
 					$privileges[$key] += $val;
 				}
 			}
-
 			return $privileges;
 		}
 

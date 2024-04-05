@@ -77,11 +77,11 @@ $html[] = "<div class='page-body mb-0'>";
 					
 					$html[] = "<div class='d-flex justify-content-between'>";
 						$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Posted since ";
-							$html[] = date("d M Y", $data['date_added']);
+							$html[] = date("d M Y", $data['created_at']);
 						$html[] = "</span>";
 
 						$html[] = "<span class='d-block text-muted fs-12 mb-2'><i class='ti ti-calendar'></i> Modified at ";
-							$html[] = date("d M Y", $data['last_modified']);
+							$html[] = date("d M Y", $data['modified_at']);
 						$html[] = "</span>";
 					$html[] = "</div>";
 						
@@ -322,7 +322,7 @@ $html[] = "<div class='page-body mb-0'>";
 															$html[] = "</div>";
 															$html[] = "<div class='text-muted'>".$data['account']['profession']."</div>";
 															if($data['account']['company_name'] != "") { $html[] = "<div class='text-muted'>".$data['account']['company_name']."</div>"; }
-															$html[] = "<div class='text-muted'>Member Since ".date("Y", $data['account']['registration_date'])."</div>";
+															$html[] = "<div class='text-muted'>Member Since ".date("Y", $data['account']['registered_at'])."</div>";
 														$html[] = "</div>";
 													$html[] = "</div>";
 												$html[] = "</a>";

@@ -72,7 +72,6 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		$filters[] = " display = 1 ";
 
 		$_GET['offer'] = $offer;
-
 		$uri['offer'] = $offer;
 
 		$address = $this->getModel("Address");
@@ -96,6 +95,14 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		];
 
 		$response = $this->listProperties($listings, $filters);
+
+		$this->saveTraffic([
+			"type" => "page",
+			"name" => ucwords($offer) . " Property",
+			"id" => 0,
+			"url" => rtrim(WEBDOMAIN, '/') . url("ListingsController@$offer"),
+			"account_id" => 0,
+		]);
 
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->setTemplate("listings/listProperties.php");
@@ -366,9 +373,15 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			$this->doc->setFacebookMetaData("og:type", "website");
 			$this->doc->setFacebookMetaData("og:image", $data['page_image']);
 			$this->doc->setFacebookMetaData("og:description", $data['page_description']);
-			$this->doc->setFacebookMetaData("og:updated_time", $data['last_modified']);
+			$this->doc->setFacebookMetaData("og:updated_time", $data['modified_at']);
 			
-			$this->saveListingView($data);
+			$this->saveTraffic([
+				"type" => "listing",
+				"name" => $data['title'],
+				"id" => $data['listing_id'],
+				"url" => rtrim(WEBDOMAIN, '/') . url("ListingsController@view", ["name" => $data['name']]),
+				"account_id" => $data['account']['account_id'],
+			]);
 
 			$this->setTemplate("listings/view.php");
 			return $this->getTemplate($data, $listing);
@@ -379,14 +392,31 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 	}
 	
-	private function saveListingView($data) {
+	private function saveTraffic($data) {
 
-		$traffic = $this->getModel("ListingView");
+		$traffic = $this->getModel("Traffic");
+		$traffic->page['limit'] = 1000;
+		$traffic->select(" session_id, JSON_EXTRACT(traffic, '$.name') as name ");
 		$traffic->column['session_id'] = $this->getLibrary("SessionHandler")->get("id");
 		
-		if(!$traffic->getBySessionId()) {
+		$response = $traffic->getBySessionId();
+
+		if($response) {
+			for($i=0; $i<count($response); $i++) {
+				$arr[$response[$i]['session_id']][] = $response[$i]['name'];
+			}
+		}
+
+		if(!isset($arr[ $traffic->column['session_id'] ]) || !in_array($data['name'], $arr[ $traffic->column['session_id'] ]) || !$response) {
+			$traffic->select("");
 			$traffic->saveNew(array(
-				"listing_id" => $data['listing_id'],
+				"traffic" => json_encode([
+					"type" => $data['type'],
+					"name" => $data['name'],
+					"id" => $data['id'],
+					"url" => $data['url'],
+					"source" => "Website"
+				]),
 				"account_id" => $data['account_id'],
 				"session_id" => $this->getLibrary("SessionHandler")->get("id"),
 				"created_at" => DATE_NOW,
