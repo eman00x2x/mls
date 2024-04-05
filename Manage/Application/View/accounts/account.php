@@ -175,7 +175,7 @@ $html[] = "<div class='page-body'>";
                                         $html[] = "<div class='row g-3 align-items-center mb-3 '>";
                                             $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Address</label></div>";
                                             $html[] = "<div class='col-md-9 col-6'>";
-                                                /* $html[] = "<div class='row gy-2 gx-3 align-items-center'>";
+                                                $html[] = "<div class='row gy-2 gx-3 align-items-center'>";
                                                     $html[] = "<div class='col-md-4 col-lg-4 col-12'>";
                                                         $html[] = "<label class='form-label text-muted'>Street</label>";
                                                         $html[] = "<input type='text' name='street' id='street' value='".$data['street']."' class='form-control'  />";
@@ -190,17 +190,8 @@ $html[] = "<div class='page-body'>";
                                                         $html[] = "<label class='form-label text-muted'>Province</label>";
                                                         $html[] = "<input type='text' name='province' id='province' value='".$data['province']."' class='form-control'  />";
                                                     $html[] = "</div>";
-                                                $html[] = "</div>"; */
+                                                $html[] = "</div>";
                                                 
-                                                $html[] = "<div class='d-flex flex-wrap gap-3 justify-content-start'>";
-                                                    $html[] = $model->address;
-                                                $html[] = "</div>";
-
-                                                $html[] = "<div class=''>";
-                                                    $html[] = "<label class='form-label text-muted'>Street</label>";
-                                                    $html[] = "<input type='text' name='address[street]' id='street' value='".$data['street']."' class='form-control'  />";
-                                                $html[] = "</div>";
-
                                             $html[] = "</div>";
                                         $html[] = "</div>";
                                     $html[] = "</div>";

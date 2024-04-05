@@ -352,12 +352,9 @@ class AccountsController extends \Main\Controller {
 			$_POST['message_keys'][$key] = json_decode($val, true);
 		}
 
-		$_POST['address'] = json_encode([
+		$_POST['board_region'] = json_encode([
 			"region" => (isset($_POST['address']['region']) ? $_POST['address']['region'] : ""),
-			"province" => (isset($_POST['address']['province']) ? $_POST['address']['province'] : ""),
-			"municipality" => (isset($_POST['address']['municipality']) ? $_POST['address']['municipality'] : ""),
-			"barangay" => (isset($_POST['address']['barangay']) ? $_POST['address']['barangay'] : ""),
-			"street" => (isset($_POST['address']['street']) ? $_POST['address']['street'] : "")
+			"province" => (isset($_POST['address']['province']) ? $_POST['address']['province'] : "")
 		]);
 
 		$accountResponse = $accounts->saveNew($_POST);
@@ -501,12 +498,10 @@ class AccountsController extends \Main\Controller {
 				"skills" => (isset($_POST['skills']) ? array_values($_POST['skills']) : $data['profile']['skills']),
 			]);
 
-			$_POST['address'] = json_encode([
+			$_POST['board_region'] = json_encode([
 				"region" => (isset($_POST['address']['region']) ? $_POST['address']['region'] : $data['address']['region']),
 				"province" => (isset($_POST['address']['province']) ? $_POST['address']['province'] : $data['address']['province']),
-				"municipality" => (isset($_POST['address']['municipality']) ? $_POST['address']['municipality'] : $data['address']['municipality']),
-				"barangay" => (isset($_POST['address']['barangay']) ? $_POST['address']['barangay'] : $data['address']['barangay']),
-				"street" => (isset($_POST['address']['street']) ? $_POST['address']['street'] : $data['address']['street'])
+				"municipality" => (isset($_POST['address']['municipality']) ? $_POST['address']['municipality'] : $data['address']['municipality'])
 			]);
 
 			$response = $accounts->save($account_id,$_POST);
