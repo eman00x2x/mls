@@ -55,7 +55,7 @@ $html[] = "<div class='page-body'>";
 					    $html[] = "</td>";
 						
 					    $html[] = "<td class='align-middle'>";
-							$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Requestor</span> ".$data[$i]['requestor_details']['firstname']." ".$data[$i]['requestor_details']['lastname']." <span class='d-block text-muted fs-11'>".$data[$i]['requestor_details']['profession']." - ".$data[$i]['requestor_details']['real_estate_license_number']."</span></a>";
+							$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Requestor</span> ".$data[$i]['requestor_details']['account_name']['firstname']." ".$data[$i]['requestor_details']['account_name']['lastname']." <span class='d-block text-muted fs-11'>".$data[$i]['requestor_details']['profession']." - ".$data[$i]['requestor_details']['real_estate_license_number']."</span></a>";
 					    $html[] = "</td>";
 					    $html[] = "<td class='align-middle'>";
 					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Mobile Number</span> ".$data[$i]['requestor_details']['mobile_number']."</a>";

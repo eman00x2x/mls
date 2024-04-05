@@ -72,6 +72,7 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<input type='hidden' id='save_url' value='".url("MessagesController@createDownloadFile")."' />";
 				$html[] = "<form id='form' method='POST'>";
 					$html[] = "<input type='hidden' name='_method' value='POST' />";
+					$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 					$html[] = "<input type='hidden' name='thread_id' value='".$data['thread']['thread_id']."' />";
 					$html[] = "<input type='hidden' name='created_at' value='".$data['thread']['created_at']."' />";
 					$html[] = "<input type='hidden' name='encrypted_messages' id='encrypted_messages' value='' />";

@@ -52,6 +52,24 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<form id='filter-form' action='' method='POST'>";
 
 							$html[] = "<div class='mb-4'>";
+								$html[] = "<div class='border p-3'>";
+									$html[] = "<div class='form-label'>Address</div>";
+									$html[] = $model->address;
+
+									$html[] = "<div class='mb-3 street-input'>";
+										$html[] = "<label class='form-label text-muted'>Street</label>";
+										$html[] = "<input type='text' name='address[street]' id='address_street' value='' class='form-control' />";
+									$html[] = "</div>";
+
+									$html[] = "<div class='mb-3 village-input'>";
+										$html[] = "<label class='form-label text-muted'>Village / Building</label>";
+										$html[] = "<input type='text' name='address[village]' id='address_village' value='' class='form-control' />";
+									$html[] = "</div>";
+
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='mb-4'>";
 								$html[] = "<div class='form-label'>Offer</div>";
 								$html[] = "<select name='offer' id='offer' class='form-select'>";
 									foreach(["for sale", "for rent"] as $offer) {
@@ -60,11 +78,6 @@ $html[] = "<div class='page-body'>";
 									}
 								$html[] = "</select>";
 							$html[] = "</div>";
-
-							$html[] = "<div class='mb-4'>";
-								$html[] = "<div class='form-label'>Address</div>";
-								$html[] = $model->address;
-								$html[] = "</div>";
 
 							$html[] = "<div class='mb-4'>";
 								$html[] = "<div class='form-label'>Category</div>";

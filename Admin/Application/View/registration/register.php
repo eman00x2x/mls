@@ -17,22 +17,24 @@ $html[] = "<div class='response'></div>";
 
 $html[] = "<h1 class='mb-5 '>Create Account</h1>";
 
-$html[] = "<div class=' mb-3'>";
-	$html[] = "<label class='form-label'>Board Region</label>";
-	$html[] = "<select name='board_region' class='form-select' id='board_region'>";
-		foreach ($data['board_regions'] as $region) {
-			$html[] = "<option value='".$region."' >$region</option>";
-		}
-	$html[] = "</select>";
-$html[] = "</div>";
+$html[] = "<label class='form-label'>Local Board Information</label>";
+$html[] = "<div class='mb-4 p-3 bg-azure text-white board-details'>";
+	
+	$html[] = "<div class=' mb-3'>";
+		$html[] = "<label class='form-label'>Local Board</label>";
+		$html[] = "<select name='local_board_name' class='form-select' id='local_board_name'>";
+			foreach ($data['local_boards'] as $name) {
+				$html[] = "<option value='".$name."' >$name</option>";
+			}
+		$html[] = "</select>";
+	$html[] = "</div>";
 
-$html[] = "<div class=' mb-3'>";
-	$html[] = "<label class='form-label'>Local Board Name</label>";
-	$html[] = "<select name='local_board_name' class='form-select' id='local_board_name'>";
-		foreach ($data['local_boards'] as $name) {
-			$html[] = "<option value='".$name."' >$name</option>";
-		}
-	$html[] = "</select>";
+	$html[] = "<div class=''>";
+		$html[] = "<div class='d-flex gap-3'>";
+			$html[] = $data['address'];
+		$html[] = "</div>";
+	$html[] = "</div>";
+	
 $html[] = "</div>";
 
 $html[] = "<div class=' mb-3'>";
@@ -52,7 +54,7 @@ $html[] = "</div>";
 
 $html[] = "<div class='mb-4'>";
 	$html[] = "<label class='form-label'>Name</label>";
-	$html[] = "<div class='mb-3'>";
+	$html[] = "<div class='mb-3 d-none'>";
 		$html[] = "<div class='form-floating mb-3 '>";
 			$html[] = "<input type='text' name='prefix' id='prefix' value='' class='form-control'  />";
 			$html[] = "<label for='prefix'>Prefix</label>";
@@ -65,7 +67,7 @@ $html[] = "<div class='mb-4'>";
 		$html[] = "</div>";
 	$html[] = "</div>";
 	$html[] = "<div class='mb-3'>";
-		$html[] = "<div class='form-floating mb-3'>";
+		$html[] = "<div class='form-floating mb-3  d-none'>";
 			$html[] = "<input type='text' name='middlename' id='middlename' value='' class='form-control'  />";
 			$html[] = "<label for='middlename'>Middle Name</label>";
 		$html[] = "</div>";

@@ -170,13 +170,15 @@ $html[] = "<div class='page-body'>";
 					$html[] = "<div class='card-body'>";
 						$html[] = "<div class='card-title'><i class='ti ti-heart-handshake me-1'></i> Handshake Status</div>";
 						$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-status-change me-1'></i> Status:</span> <strong>".ucwords($data['handshake']['handshake_status'])."</strong></div>";
-						$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Status Date:</span> <strong>".date("F d, Y", $data['handshake']['handshake_status_date'])."</strong></div>";
+						$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-clock me-1'></i> Status Date:</span> <strong>".date("F d, Y", $data['handshake']['handshake_status_at'])."</strong></div>";
 					$html[] = "</div>";
 					
-					$html[] = "<div class='text-center d-md-block d-none mb-3'>";
-						$html[] = "<span class='btn btn-md btn-danger ms-1 mb-2 btn-cancel-handshake row_listings_".$data['listing']['listing_id']."' data-row='row_listings_".$data['listing']['listing_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
-					$html[] = "</div>";
-					
+					if($_SESSION['user_logged']['account_id'] != $data['handshake']['requestor_account_id']) {
+						$html[] = "<div class='text-center d-md-block d-none mb-3'>";
+							$html[] = "<span class='btn btn-md btn-danger ms-1 mb-2 btn-cancel-handshake row_listings_".$data['listing']['listing_id']."' data-row='row_listings_".$data['listing']['listing_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data['listing']['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>";
+						$html[] = "</div>";
+					}
+
 				$html[] = "</div>";
 
 				if($data['handshake']['handshake_status'] == "accepted") {
@@ -187,9 +189,9 @@ $html[] = "<div class='page-body'>";
 								
 								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-certificate me-1'></i> Authority:</span> <strong>".$data['listing']['other_details']['authority_type']."</strong></div>";
 								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-license me-1'></i> Commission Share:</span> <strong>".$data['listing']['other_details']['com_share']."%</strong></div>";
-								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-moneybag me-1'></i> Option Money:</span> <strong>&#8369;".number_format($data['listing']['reservation'],0)." for ".$data['listing']['payment_details']['option_money_duration']." days</strong></div>";
-								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-pig-money me-1'></i> Mode of Payment:</span> <strong>".$data['listing']['payment_details']['payment_mode']."</strong></div>";
-								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-file-description me-1'></i> Allocation of Taxes:</span> <strong>".$data['listing']['payment_details']['tax_allocation']."</strong></div>";
+								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-moneybag me-1'></i> Option Money:</span> <strong>&#8369;".number_format($data['listing']['reservation'],0)." for ".(isset($data['listing']['payment_details']['option_money_duration']) ? $data['listing']['payment_details']['option_money_duration'] : "")." days</strong></div>";
+								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-pig-money me-1'></i> Mode of Payment:</span> <strong>".(isset($data['listing']['payment_details']['payment_mode']) ? $data['listing']['payment_details']['payment_mode'] : "")."</strong></div>";
+								$html[] = "<div class='mb-1'><span class='text-muted me-1'><i class='ti ti-file-description me-1'></i> Allocation of Taxes:</span> <strong>".(isset($data['listing']['payment_details']['tax_allocation']) ? $data['listing']['payment_details']['tax_allocation'] : "")."</strong></div>";
 								
 							$html[] = "</div>";
 						$html[] = "</div>";

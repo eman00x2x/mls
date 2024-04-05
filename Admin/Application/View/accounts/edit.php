@@ -293,7 +293,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 								$html[] = "<div class='row mb-3'>";
 									$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Address</label>";
 									$html[] = "<div class='col-sm-9'>";
-										$html[] = "<div class='row gy-2 gx-3 align-items-center'>";
+										/* $html[] = "<div class='row gy-2 gx-3 align-items-center'>";
 											$html[] = "<div class='col-12'>";
 												$html[] = "<label class='form-label text-muted'>Street</label>";
 												$html[] = "<input type='text' name='street' id='street' value='".$data['street']."' class='form-control'  />";
@@ -308,7 +308,17 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<label class='form-label text-muted'>Province</label>";
 												$html[] = "<input type='text' name='province' id='province' value='".$data['province']."' class='form-control'  />";
 											$html[] = "</div>";
-										$html[] = "</div>";
+										$html[] = "</div>"; */
+
+										$html[] = "<div class='d-flex flex-wrap gap-3 justify-content-start'>";
+                                            $html[] = $model->address;
+                                        $html[] = "</div>";
+
+                                        $html[] = "<div class=''>";
+                                            $html[] = "<label class='form-label text-muted'>Street</label>";
+                                            $html[] = "<input type='text' name='address[street]' id='street' value='".$data['street']."' class='form-control'  />";
+                                        $html[] = "</div>";
+
 									$html[] = "</div>";
 								$html[] = "</div>";
 							}

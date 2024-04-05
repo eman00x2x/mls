@@ -339,7 +339,8 @@ class ListingsController extends \Main\Controller {
 					"name" => $data['listing']['title'],
 					"id" => $listing_id,
 					"url" => rtrim(MANAGE, '/') . url("MLSController@view", ["id" => $listing_id]),
-					"account_id" => $data['account']['account_id']
+					"account_id" => $data['account']['account_id'],
+					"source" => "mls"
 				]);
 			}
 
@@ -714,27 +715,27 @@ class ListingsController extends \Main\Controller {
 			$model->page['uri']['address'] = $_GET['address'];
 
 			if(isset($_GET['address']['region']) && $_GET['address']['region'] != "") {
-				$filters[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."'  ";
+				$filters[] = " JSON_EXTRACT(l.address, '$.region') = '".$_GET['address']['region']."'  ";
 				$search[] = $_GET['address']['region'];
 			}
 
 			if(isset($_GET['address']['province']) && $_GET['address']['province'] != "") {
-				$filters[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['address']['province']."'  ";
+				$filters[] = " JSON_EXTRACT(l.address, '$.province') = '".$_GET['address']['province']."'  ";
 				$search[] = $_GET['address']['province'];
 			}
 
 			if(isset($_GET['address']['municipality']) && $_GET['address']['municipality'] != "") {
-				$filters[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['address']['municipality']."'  ";
+				$filters[] = " JSON_EXTRACT(l.address, '$.municipality') = '".$_GET['address']['municipality']."'  ";
 				$search[] = $_GET['address']['municipality'];
 			}
 
 			if(isset($_GET['address']['street']) && $_GET['address']['street'] != "") {
-				$filters[] = " JSON_EXTRACT(address, '$.street') = '".$_GET['address']['street']."'  ";
+				$filters[] = " JSON_EXTRACT(l.address, '$.street') = '".$_GET['address']['street']."'  ";
 				$search[] = $_GET['address']['street'];
 			}
 
 			if(isset($_GET['address']['village']) && $_GET['address']['village'] != "") {
-				$filters[] = " JSON_EXTRACT(address, '$.village') = '".$_GET['address']['village']."'  ";
+				$filters[] = " JSON_EXTRACT(l.address, '$.village') = '".$_GET['address']['village']."'  ";
 				$search[] = $_GET['address']['village'];
 			}
 
@@ -764,16 +765,16 @@ class ListingsController extends \Main\Controller {
 
 		if(isset($search)) {
 			$model->select("
-				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, address, amenities,
+				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities,
 				CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END,
-				MATCH( type, title, tags, long_desc, category, address, amenities )
+				MATCH( type, title, tags, long_desc, category, l.address, amenities )
 				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
 			")->orderby(" match_score DESC, post_score DESC ");
 		}else {
 			$sort = isset($_GET['sort']) ? ($_GET['sort'] == "match_score" ? "post_score" : $_GET['sort']) : "post_score";
 			$model
 				->select(" 
-					listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, address, amenities,
+					listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities,
 					CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END 
 				")->orderby(" $sort $order ");
 		}
@@ -892,7 +893,7 @@ class ListingsController extends \Main\Controller {
 					"name" => $data['name'],
 					"id" => $data['id'],
 					"url" => $data['url'],
-					"source" => "Website"
+					"source" => $data['source']
 				]),
 				"account_id" => $data['account_id'],
 				"session_id" => $this->getLibrary("SessionHandler")->get("id"),

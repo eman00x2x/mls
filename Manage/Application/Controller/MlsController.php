@@ -87,12 +87,33 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$region = str_replace("_", " ", trim($args['region']));
 			$filters[] = " a.board_region = '".$region."' ";
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_region') = 1";
+
+			$_GET['address']['region'] = $this->session['address']['region'];
+
+			$this->doc->addScriptDeclaration("
+				$(document).ready(function() {
+					$('#region').prop('disabled', 'disabled');
+				});
+			");
+
 		}
 		
 		if(!is_null($args) && isset($args['local_board'])) {
 			$local_board = str_replace("_", " ", trim($args['local_board']));
 			$filters[] = " a.local_board_name = '".$local_board."' ";
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_board') = 1";
+
+			$_GET['address']['region'] = $this->session['address']['region'];
+			$_GET['address']['province'] = $this->session['address']['province'];
+			$_GET['address']['municipality'] = $this->session['address']['municipality'];
+
+			$this->doc->addScriptDeclaration("
+				$(document).ready(function() {
+					$('#region').prop('disabled', 'disabled');
+					$('#province').prop('disabled', 'disabled');
+					$('#municipality').prop('disabled', 'disabled');
+				});
+			");
 		}
 
 		if(is_null($args) && !isset($args['local_board']) && !isset($args['region'])) {
@@ -127,7 +148,8 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			"name" => "MLS",
 			"id" => 0,
 			"url" => rtrim(MANAGE, '/') . url("MLSController@index"),
-			"account_id" => 0
+			"account_id" => 0,
+			"source" => "mls"
 		]);
 
 		$this->setTempalteBasePath(ROOT."Admin");
@@ -154,7 +176,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$handshake = $this->getModel("Handshake");
 		$handshake->where(" requestor_account_id = ".$this->session['account_id']." OR requestee_account_id = ".$this->session['account_id'])
 		->and(" handshake_status IN('pending','active') ")
-		->orderby(" FIELD(handshake_status,'pending','active','done','denied'), handshake_status_date DESC ");
+		->orderby(" FIELD(handshake_status,'pending','active','done','denied'), handshake_status_at DESC ");
 		
 		$handshake->page['limit'] = 20;
 		$handshake->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
@@ -285,7 +307,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		$handshake->save($id, array(
 			"handshake_status" => "active",
-			"handshake_status_date" => DATE_NOW
+			"handshake_status_at" => DATE_NOW
 		));
 
 		$listing = $this->getModel("Listing");
@@ -328,7 +350,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		$handshake->save($id, array(
 			"handshake_status" => "denied",
-			"handshake_status_date" => DATE_NOW
+			"handshake_status_at" => DATE_NOW
 		));
 
 		$listing = $this->getModel("Listing");
@@ -371,7 +393,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		$handshake->save($id, array(
 			"handshake_status" => "done",
-			"handshake_status_date" => DATE_NOW
+			"handshake_status_at" => DATE_NOW
 		));
 		
 		$listing = $this->getModel("Listing");

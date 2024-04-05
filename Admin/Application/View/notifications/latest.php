@@ -1,7 +1,7 @@
 <?php
 
  if($data) {
-	
+
 	$html[] = "<a href='#' class='nav-link px-0' data-bs-toggle='dropdown' tabindex='-1' aria-label='Show notifications'>";
 		$html[] = "<i class='ti ti-bell'></i> <span class='badge bg-red'></span>";
 	$html[] = "</a>";

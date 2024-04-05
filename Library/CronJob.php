@@ -274,5 +274,13 @@ class CronJob extends \Main\Controller {
 
 	}
 
+	function expireHandshake() {
+
+		/**
+		 * Handshake will automatically expire after 30 days
+		 */
+
+	}
+
 
 }

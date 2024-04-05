@@ -1,0 +1,69 @@
+
+---------------------
+Server Time Zone Asia/Manila
+---------------------
+Thread Started at 2024-03-09 6:18pm
+---------------------
+Thread Started By
+- Name: Emmanuel Olivas
+- Email: eman.olivas@gmail.com
+- Photo: http://localhost/mls/cdn//images/accounts/52888351236292487032669071233861764299803537550946_011c3eb5979da64bcbf41f402e8a1abf.webp
+---------------------
+Participants Account
+- Eman Olivas
+- Emmanuel Olivas
+---------------------
+Messages
+- 2024-03-10 5:42pm Eman Olivas: https://getbootstrap.com/docs/5.0/helpers/stretched-link/ https://getbootstrap.com/docs/5.0/helpers/stretched-link/ 
+- 2024-03-10 5:43pm Eman Olivas: view-source:https://fslightbox.com/javascript/documentation/how-to-use https://fslightbox.com/javascript/documentation/how-to-use 
+- 2024-03-10 6:01pm Eman Olivas: https://www.youtube.com/watch?v=HLqtolM8fEw https://www.youtube.com/watch?v=HLqtolM8fEw 
+- 2024-03-10 6:32pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/54529158228454577462564956601039498367854691662988_e944fef9f2050e13cde0c52fcb7749ba.png 
+- 2024-03-10 6:32pm Eman Olivas: check this out: https://www.google.com/search?q=php+convert+special+characters+to+normal&oq=php+convert+spec&gs_lcrp=EgZjaHJvbWUqDQgBEAAYkQIYgAQYigUyBggAEEUYOTINCAEQABiRAhiABBiKBTINCAIQABiRAhiABBiKBTINCAMQABiRAhiABBiKBTIHCAQQABiABDIICAUQABgWGB4yCAgGEAAYFhgeMggIBxAAGBYYHjIICAgQABgWGB7SAQg0Mzk4ajBqNKgCALACAA&sourceid=chrome&ie=UTF-8 https://www.google.com/search?q=php+convert+special+characters+to+normal&oq=php+convert+spec&gs_lcrp=EgZjaHJvbWUqDQgBEAAYkQIYgAQYigUyBggAEEUYOTINCAEQABiRAhiABBiKBTINCAIQABiRAhiABBiKBTINCAMQABiRAhiABBiKBTIHCAQQABiABDIICAUQABgWGB4yCAgGEAAYFhgeMggIBxAAGBYYHjIICAgQABgWGB7SAQg0Mzk4ajBqNKgCALACAA&sourceid=chrome&ie=UTF-8 
+- 2024-03-10 6:51pm Eman Olivas: https://docs.google.com/document/d/1T-e_UnBJeufZrWFgY1hViUt63f7yyt6ZBWBBoUlmtbI/edit#heading=h.pxo29pjsotf5 https://docs.google.com/document/d/1T-e_UnBJeufZrWFgY1hViUt63f7yyt6ZBWBBoUlmtbI/edit#heading=h.pxo29pjsotf5 
+- 2024-03-10 6:52pm Eman Olivas: https://animesuge.to/home https://animesuge.to/home 
+- 2024-03-10 6:56pm Eman Olivas: https://animenana.com/view/46510103354 https://animenana.com/view/46510103354 
+- 2024-03-10 6:57pm Eman Olivas: https://animenana.com/animeserie/shangri-la-frontier/ https://animenana.com/animeserie/shangri-la-frontier/ 
+- 2024-03-10 7:09pm Eman Olivas: https://animesuge.to/home https://animesuge.to/home 
+- 2024-03-10 7:12pm Eman Olivas: testing 
+- 2024-03-10 11:56pm Emmanuel Olivas: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random 
+- 2024-03-10 11:57pm Eman Olivas: https://www.youtube.com/watch?v=HLqtolM8fEw https://www.youtube.com/watch?v=HLqtolM8fEw 
+- 2024-03-11 12:07am Eman Olivas: check this
+- 2024-03-11 12:08am Emmanuel Olivas: yes?
+- 2024-03-11 9:19pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/48646690065307896611351541716721171341440731594858_9188e824a7922290efe5819ac9459aa6.png 
+- 2024-03-11 9:27pm Eman Olivas: sent a pdf file http://localhost/mls/cdn/public/chat/15391754716288800016054416770015755349673187131967_622ae1d81dab8ce71b29cbf90862c277.pdf 
+- 2024-03-11 9:29pm Eman Olivas: sent a pdf file http://localhost/mls/cdn/public/chat/61187107125260254953192674488172002396878717854856_b8dcfe7f9a9ca3595bacb2d8bc5a2ceb.pdf 
+- 2024-03-11 9:29pm Eman Olivas: sent a pdf file http://localhost/mls/cdn/public/chat/68774645701452640051388868025025459260960775629048_8e5e826b0e2b410a192011cb015a44df.pdf 
+- 2024-03-11 9:29pm Eman Olivas: sent a pdf file http://localhost/mls/cdn/public/chat/32520672383650262668934522210307522232091722912082_e6a4d9ad9e078030a7967726f207286e.pdf 
+- 2024-03-11 9:49pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/02390842430351924989699458713175128170646496326221_bd482dd2e4ffb117ae888e90318e71c3.jpg 
+- 2024-03-11 9:58pm Eman Olivas: 
+- 2024-03-11 9:58pm Eman Olivas: 
+- 2024-03-11 9:58pm Eman Olivas: 
+- 2024-03-11 9:58pm Eman Olivas: 
+- 2024-03-11 10:00pm Eman Olivas: 
+- 2024-03-11 10:00pm Eman Olivas: 
+- 2024-03-11 10:11pm Eman Olivas: sent a pdf file http://localhost/mls/cdn/public/chat/20735013779343238712177794704259782862824527357504_d7150620af922096767a6a831d832cf6.pdf 
+- 2024-03-11 10:15pm Eman Olivas: sent a pdf file http://localhost/mls/cdn/public/chat/SHIBA_INU_WOOF_WOOF.pdf 
+- 2024-03-11 10:15pm Eman Olivas: sent a pdf file http://localhost/mls/cdn/public/chat/75198096848734959456227080752061048647590436840087_9dbbf9ec99c7a08ebbe76e093ea4db18.jpg 
+- 2024-03-11 10:22pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/58930850653226526025745716255332088469485096328565_69cebf7383fffab94996d8a0edc63380.jpg 
+- 2024-03-11 10:22pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/pdfcoffee.com_extra-judicial-partition-of-estate-sample-pdf-free.pdf 
+- 2024-03-11 10:23pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/65700039175341184318822097520353889279701402745743_b7f32d1888e63d58afa34450568fe4b6.jpg 
+- 2024-03-11 10:23pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/97292665305604215218969195443944381274330678194653_5091d8629267a41956c006c8449cc835.jpg 
+- 2024-03-11 10:23pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/53338246789438517421176587655157380182117893836184_dee5b13a042f337912d0b7effbb8872c.jpg 
+- 2024-03-11 10:24pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/76661782073789255285983521987830899391977679763223_8a84c72590e8602b3581bd74ffb008dc.jpg 
+- 2024-03-11 10:25pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/99281368395431384163362558945359255509196778135960_1ccf9e84be19899ec8c74eddad33107e.jpg 
+- 2024-03-11 10:26pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/20618890643913895312848717405270803514698385430898_8d266dec99c089f08ef5daf9ca364b44.jpg 
+- 2024-03-11 10:32pm Eman Olivas: sent a pdf file http://localhost/mls/cdn/public/chat/pdfcoffee.com_extra-judicial-partition-of-estate-sample-pdf-free.pdf 
+- 2024-03-11 10:32pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/13507222340453065934267246014194768354066024025843_6ba84498aac33f69aae410d0d98ec6ab.jpg 
+- 2024-03-11 10:58pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/01424844053088832287008313628635255957173277694064_77b669f0de02afbcc468f181c8d9afac.jpg 
+- 2024-03-11 11:39pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/91769759684277317053715153549238023740557219596802_2a4fc5dd4e1b8207a331b25be73e582d.jpg 
+- 2024-03-11 11:43pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/72620790508924002246245133110437029575250253397875_8df6ad7b697056906271fe905b0f4288.jpg 
+- 2024-03-11 11:48pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/59971803513959369001054788791867654981650814140195_87a68828765df6a98ceeead279199228.jpg 
+- 2024-03-12 12:02am Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/61893728919601875309376011016965718717358716251689_075042a1c04fdbc2c1b18f5537a2863c.jpg 
+- 2024-03-12 12:02am Eman Olivas: sent a pdf file http://localhost/mls/cdn/public/chat/pdfcoffee.com_extra-judicial-partition-of-estate-sample-pdf-free.pdf 
+- 2024-03-21 9:44pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/09678934663712346876731119065268727991085883268542_5c9143cb060e11979c0e4aacb36536aa.png 
+- 2024-03-21 9:50pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/16409908828958216847836580880960180255084797039961_03bcf5217d96dee206d28a23ea9ada34.png 
+- 2024-03-21 9:50pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/58642436796867170428397474199404594214340503294449_4326dead16ce2a60d5722317c3a36a95.png 
+- 2024-04-05 9:31pm Eman Olivas: test
+- 2024-04-05 9:31pm Eman Olivas: sent an image http://localhost/mls/cdn/public/chat/77849026523803142345185635688284918056287494324112_975e91699b7c484054539b43b7f92a8d.jpg 
+- 2024-04-05 9:32pm Eman Olivas: sent a pdf file http://localhost/mls/cdn/public/chat/pdfcoffee.com_extra-judicial-partition-of-estate-sample-pdf-free.pdf 
+- 2024-04-05 9:32pm Eman Olivas: sent a pdf file http://localhost/mls/cdn/public/chat/MTB-MLE-3-Q1-M12.pdf 

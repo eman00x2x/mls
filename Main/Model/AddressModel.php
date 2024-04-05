@@ -84,8 +84,8 @@ class AddressModel extends \Main\Model {
 					}
 				}
 
-				$('#address_village').val(current_value.village);
-				$('#address_street').val(current_value.street);
+				/* $('#address_village').val(current_value.village);
+				$('#address_street').val(current_value.street); */
 				$('#address_barangay').val(current_value.barangay);
 				$('#address_municipality').val(current_value.municipality);
 				$('#address_province').val(current_value.province);
@@ -152,7 +152,7 @@ class AddressModel extends \Main\Model {
 
 		"));
 
-		$html[] = "<div class='address p-3 bg-muted-lt border mb-3 rounded'>";
+		
 
 			$html[] = "<input type='hidden' id='address_barangay' name='address[barangay]' value='' />";
 			$html[] = "<input type='hidden' id='address_municipality' name='address[municipality]' value='' />";
@@ -160,34 +160,34 @@ class AddressModel extends \Main\Model {
 			$html[] = "<input type='hidden' id='address_region' name='address[region]' value='' />";
 
 			$html[] = "<div class='mb-3 region-selection'>";
-				$html[] = "<label class='form-label text-muted'>Region</label>";
+				$html[] = "<label class='form-label'>Region</label>";
 				$html[] = "<select id='region' class='form-select'>";
 					$html[] = "<option value=''></option>";
 				$html[] = "</select>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='mb-3 province-selection'>";
-				$html[] = "<label class='form-label text-muted'>Province</label>";
+				$html[] = "<label class='form-label'>Province</label>";
 				$html[] = "<select id='province' class='form-select'>";
 					$html[] = "<option value=''></option>";
 				$html[] = "</select>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='mb-3 municipality-selection'>";
-				$html[] = "<label class='form-label text-muted'>Municipality</label>";
+				$html[] = "<label class='form-label'>Municipality</label>";
 				$html[] = "<select id='municipality' class='form-select'>";
 					$html[] = "<option value=''></option>";
 				$html[] = "</select>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='mb-3 barangay-selection'>";
-				$html[] = "<label class='form-label text-muted'>Barangay</label>";
+				$html[] = "<label class='form-label'>Barangay</label>";
 				$html[] = "<select id='barangay' class='form-select'>";
 					$html[] = "<option value=''></option>";
 				$html[] = "</select>";
 			$html[] = "</div>";
 
-			$html[] = "<div class='mb-3 street-input'>";
+			/* $html[] = "<div class='mb-3 street-input'>";
 				$html[] = "<label class='form-label text-muted'>Street</label>";
 				$html[] = "<input type='text' name='address[street]' id='address_street' value='' class='form-control' />";
 			$html[] = "</div>";
@@ -195,9 +195,9 @@ class AddressModel extends \Main\Model {
 			$html[] = "<div class='mb-3 village-input'>";
 				$html[] = "<label class='form-label text-muted'>Village / Building</label>";
 				$html[] = "<input type='text' name='address[village]' id='address_village' value='' class='form-control' />";
-			$html[] = "</div>";
+			$html[] = "</div>"; */
 
-		$html[] = "</div>";
+		
 
 		return implode("",$html);
 	}

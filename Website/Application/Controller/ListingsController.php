@@ -102,6 +102,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			"id" => 0,
 			"url" => rtrim(WEBDOMAIN, '/') . url("ListingsController@$offer"),
 			"account_id" => 0,
+			"source" => "website"
 		]);
 
 		$this->setTempalteBasePath(ROOT."Admin");
@@ -381,6 +382,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				"id" => $data['listing_id'],
 				"url" => rtrim(WEBDOMAIN, '/') . url("ListingsController@view", ["name" => $data['name']]),
 				"account_id" => $data['account']['account_id'],
+				"source" => "website"
 			]);
 
 			$this->setTemplate("listings/view.php");
@@ -389,40 +391,6 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		}
 
 		$this->response(404);
-
-	}
-	
-	private function saveTraffic($data) {
-
-		$traffic = $this->getModel("Traffic");
-		$traffic->page['limit'] = 1000;
-		$traffic->select(" session_id, JSON_EXTRACT(traffic, '$.name') as name ");
-		$traffic->column['session_id'] = $this->getLibrary("SessionHandler")->get("id");
-		
-		$response = $traffic->getBySessionId();
-
-		if($response) {
-			for($i=0; $i<count($response); $i++) {
-				$arr[$response[$i]['session_id']][] = $response[$i]['name'];
-			}
-		}
-
-		if(!isset($arr[ $traffic->column['session_id'] ]) || !in_array($data['name'], $arr[ $traffic->column['session_id'] ]) || !$response) {
-			$traffic->select("");
-			$traffic->saveNew(array(
-				"traffic" => json_encode([
-					"type" => $data['type'],
-					"name" => $data['name'],
-					"id" => $data['id'],
-					"url" => $data['url'],
-					"source" => "Website"
-				]),
-				"account_id" => $data['account_id'],
-				"session_id" => $this->getLibrary("SessionHandler")->get("id"),
-				"created_at" => DATE_NOW,
-				"user_agent" => json_encode($this->getLibrary("SessionHandler")->get("user_agent"))
-			));
-		}
 
 	}
 

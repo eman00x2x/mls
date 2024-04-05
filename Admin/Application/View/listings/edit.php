@@ -244,6 +244,16 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = $model->addresses->addressSelection($data['listing']['address']);
 											$html[] = "</div>";
 
+											$html[] = "<div class='mb-3 street-input'>";
+												$html[] = "<label class='form-label text-muted'>Street</label>";
+												$html[] = "<input type='text' name='address[street]' id='address_street' value='".$data['listing']['address']['street']."' class='form-control' />";
+											$html[] = "</div>";
+
+											$html[] = "<div class='mb-3 village-input'>";
+												$html[] = "<label class='form-label text-muted'>Village / Building</label>";
+												$html[] = "<input type='text' name='address[village]' id='address_village' value='".$data['listing']['address']['village']."' class='form-control' />";
+											$html[] = "</div>";
+
 										$html[] = "</div>";
 									$html[] = "</div>";
 

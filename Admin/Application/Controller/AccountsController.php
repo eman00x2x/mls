@@ -197,7 +197,7 @@ class AccountsController extends \Main\Controller {
 		sort($data['local_boards']);
 
 		$this->setTemplate("accounts/add.php");
-		return $this->getTemplate($data);
+		return $this->getTemplate($data, $this->getModel("Address"));
 
 	}
 	
@@ -242,8 +242,17 @@ class AccountsController extends \Main\Controller {
 					$data['broker_prc_license_id'] = "";
 				}
 
+				$address = $this->getModel("Address");
+				$accounts->address = $address->addressSelection([
+					"region" => isset($data['address']['region']) ? $data['address']['region'] : "",
+					"province" => isset($data['address']['province']) ? $data['address']['province'] : "",
+					"municipality" => isset($data['address']['municipality']) ? $data['address']['municipality'] : "",
+					"barangay" => isset($data['address']['barangay']) ? $data['address']['barangay'] : "",
+					"street" => isset($data['address']['street']) ? $data['address']['street'] : ""
+				]);
+
 				$this->setTemplate("accounts/edit.php");
-				return $this->getTemplate($data);
+				return $this->getTemplate($data, $accounts);
 			}
 		
 		}
@@ -343,6 +352,14 @@ class AccountsController extends \Main\Controller {
 			$_POST['message_keys'][$key] = json_decode($val, true);
 		}
 
+		$_POST['address'] = json_encode([
+			"region" => (isset($_POST['address']['region']) ? $_POST['address']['region'] : ""),
+			"province" => (isset($_POST['address']['province']) ? $_POST['address']['province'] : ""),
+			"municipality" => (isset($_POST['address']['municipality']) ? $_POST['address']['municipality'] : ""),
+			"barangay" => (isset($_POST['address']['barangay']) ? $_POST['address']['barangay'] : ""),
+			"street" => (isset($_POST['address']['street']) ? $_POST['address']['street'] : "")
+		]);
+
 		$accountResponse = $accounts->saveNew($_POST);
 		
 		if($accountResponse['status'] == 1) {
@@ -406,10 +423,6 @@ class AccountsController extends \Main\Controller {
 			$accounts->column['account_id'] = $account_id;
 			$data = $accounts->getById();
 			
-			if(isset($_POST['address'])) {
-				$_POST['address'] = (isset($_POST['street']) ? $_POST['street'] : "")." ".(isset($_POST['city']) ? $_POST['city'] : "")." ".(isset($_POST['province']) ? $_POST['province'] : "");
-			}
-
 			if(isset($_POST['logo']) && $_POST['logo'] != $data['logo']) {
 				/* remove old logo */
 
@@ -486,6 +499,14 @@ class AccountsController extends \Main\Controller {
 				"affiliation" => (isset($_POST['affiliation']) ? array_values($_POST['affiliation']) : $data['profile']['affiliation']),
 				"certification" => (isset($_POST['certification']) ? array_values($_POST['certification']) : $data['profile']['certification']),
 				"skills" => (isset($_POST['skills']) ? array_values($_POST['skills']) : $data['profile']['skills']),
+			]);
+
+			$_POST['address'] = json_encode([
+				"region" => (isset($_POST['address']['region']) ? $_POST['address']['region'] : $data['address']['region']),
+				"province" => (isset($_POST['address']['province']) ? $_POST['address']['province'] : $data['address']['province']),
+				"municipality" => (isset($_POST['address']['municipality']) ? $_POST['address']['municipality'] : $data['address']['municipality']),
+				"barangay" => (isset($_POST['address']['barangay']) ? $_POST['address']['barangay'] : $data['address']['barangay']),
+				"street" => (isset($_POST['address']['street']) ? $_POST['address']['street'] : $data['address']['street'])
 			]);
 
 			$response = $accounts->save($account_id,$_POST);

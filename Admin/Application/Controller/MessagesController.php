@@ -450,7 +450,7 @@ class MessagesController extends \Main\Controller {
 
 			for($x=0; $x<count($data['thread']['participants']); $x++) {
 				
-				$account->select(" account_id, logo, CONCAT(firstname,' ',lastname) as name, profession, message_keys ");
+				$account->select(" account_id, logo, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.firstname')),' ',JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.lastname'))) as name, profession, message_keys ");
 				$account->column['account_id'] = $data['thread']['participants'][$x];
 				$accountData = $account->getById();
 
@@ -989,6 +989,7 @@ class MessagesController extends \Main\Controller {
 							}), publicKey, privateKey).then(
 								data => {
 
+									formData.append('csrf_token', '".csrf_token()."');
 									formData.append('content', data.encrypted);
 									formData.append('iv', data.iv);
 
