@@ -3,7 +3,7 @@
 $html[] = "<div class='pb-5 my-5'>";
 	$html[] = "<h2>Featured Properties</h2>";
 	$html[] = "<div class='p-featured'>";
-		$html[] = "<div class='row row-deck row-cards flex-nowrap'>";
+		$html[] = "<div class='row row-deck row-cards'>";
 			if($data['listings']) {
 				for($i=0; $i<count($data['listings']); $i++) {
 					$html[] = "<div class='col-md-5 col-lg-3 col-auto '>";
@@ -49,7 +49,7 @@ $html[] = "<div class='pb-5 my-5'>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 									$html[] = "<div class=''>";
-										$html[] = "<span class='small fs-11 text-muted'>Last Update<span class='d-block fs-12 text-dark'><i class='ti ti-calendar fs-14'></i> ".date("d M Y", $data['listings'][$i]['last_modified'])."</span></span>";
+										$html[] = "<span class='small fs-11 text-muted'>Last Update<span class='d-block fs-12 text-dark'><i class='ti ti-calendar fs-14'></i> ".date("d M Y", $data['listings'][$i]['modified_at'])."</span></span>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 								$html[] = "<a href='".url("ListingsController@view", ["name" => $data['listings'][$i]['name']])."' class='stretched-link full-link'></a>";

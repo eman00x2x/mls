@@ -46,6 +46,8 @@ class PremiumsController extends \Admin\Application\Controller\PremiumsControlle
 		$subscription->and(" subscription_end_at >= '".DATE_NOW."' AND s.account_id = ".$this->session['account_id']);
 		$data['subscription'] = $subscription->getList();
 
+		$data['current_privileges'] = $this->session['privileges'];
+
 		$this->setTemplate("premiums/premiums.php");
 		return $this->getTemplate($data,$premium);
 

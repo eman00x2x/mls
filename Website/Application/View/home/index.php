@@ -4,8 +4,10 @@ $html[] = "<div class=''>";
 
 	$html[] = "<div class='hero-image bg-azure border-bottom'>";
 		$html[] = "<div class='bg-big' style='background-image: url(".CDN."images/website/4787302162.jpg);'>";
+
 			$html[] = "<div class='hero-image-mask'></div>";
 			$html[] = "<div class='container-xl'>";
+
 				$html[] = "<div class='row justify-content-center'>";
 					$html[] = "<div class='col-md-8 col-auto'>";
 

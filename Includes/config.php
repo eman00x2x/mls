@@ -20,10 +20,12 @@ define("VAT", CONFIG['show_vat']);
 
 define("PROPERTY_TAGS", CONFIG['property_tags']);
 
-define("PAYPAL_CLIENT_ID", CONFIG['paypal_credentials']['client_id']);
-define("PAYPAL_CLIENT_SECRET", CONFIG['paypal_credentials']['client_secret']);
-define("CURRENCY", "PHP");
+$paypal_credential = require_once(ROOT . "paypal.credentials");
+
+define("PAYPAL_CLIENT_ID", $paypal_credential['client_id']);
+define("PAYPAL_CLIENT_SECRET", $paypal_credential['client_secret']);
 define("PAYPAL_ENVIRONMENT", "sandbox");
+define("CURRENCY", "PHP");
 
 define("ANALYTICS", CONFIG['analytics']);
 define("HEADER_SCRIPT", CONFIG['header_script']);

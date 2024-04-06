@@ -37,12 +37,13 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<div class='card-body'>";
 
 							$html[] = "<h3 class='card-title'>Current Privileges</h3>";
+
 							$html[] = "<table class='table'>";
-							foreach($subscription['script'] as $key => $script) {
+							foreach($data['current_privileges'] as $key => $value) {
 								$html[] = "<tr>";
 									$html[] = "<td><span>".ucwords(str_replace("_"," ",$key))."</span></td>";
 									$html[] = "<td class='text-center fw-bold'>";
-										$html[] = $script == 0 ? " - " : "+ ".$script;
+										$html[] = $value == 0 ? " - " : $value;
 									$html[] = "</td>";
 								$html[] = "</tr>";
 							}

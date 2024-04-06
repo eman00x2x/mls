@@ -211,7 +211,7 @@ class HomeController extends \Main\Controller {
 			->join(" l JOIN #__accounts a ON a.account_id = l.account_id")
 				->where(" is_website = 1 ")
 					->and(" featured = 1 ")
-						->orderBy(" last_modified DESC ");
+						->orderBy(" modified_at DESC ");
 		$data['listings'] = $listings->getList();
 
 		if($data['listings']) {

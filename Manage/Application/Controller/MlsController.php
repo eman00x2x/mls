@@ -103,9 +103,9 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$filters[] = " a.local_board_name = '".$local_board."' ";
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_board') = 1";
 
-			$_GET['address']['region'] = $this->session['address']['region'];
-			$_GET['address']['province'] = $this->session['address']['province'];
-			$_GET['address']['municipality'] = $this->session['address']['municipality'];
+			$_GET['address']['region'] = $this->session['board_region']['region'];
+			$_GET['address']['province'] = $this->session['board_region']['province'];
+			$_GET['address']['municipality'] = $this->session['board_region']['municipality'];
 
 			$this->doc->addScriptDeclaration("
 				$(document).ready(function() {
