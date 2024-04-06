@@ -85,10 +85,10 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		if(!is_null($args) && isset($args['region'])) {
 			$region = str_replace("_", " ", trim($args['region']));
-			$filters[] = " a.board_region = '".$region."' ";
+			$filters[] = " JSON_EXTRACT(board_region, '$.region') = '".$region."' ";
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_region') = 1";
 
-			$_GET['address']['region'] = $this->session['address']['region'];
+			$_GET['address']['region'] = $this->session['board_region']['region'];
 
 			$this->doc->addScriptDeclaration("
 				$(document).ready(function() {
@@ -666,7 +666,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$filters[] = " a.local_board_name = '".$this->session['local_board_name']."' ";
 		$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_board') = 1";
 		
-		$filters[] = " a.board_region = '".$this->session['board_region']."' ";
+		$filters[] = " JSON_EXTRACT(board_region, '$.region') = '".$this->session['board_region']['region']."' ";
 		$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_region') = 1";
 
 		$filters[] = " JSON_EXTRACT(is_mls_option, '$.all') = ".$_GET['is_mls_option']['all']."";

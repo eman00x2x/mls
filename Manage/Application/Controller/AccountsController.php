@@ -74,8 +74,9 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 
 		$address = $this->getModel("Address");
 		$account->address = $address->addressSelection([
-			"region" => isset($data['address']['region']) ? $data['address']['region'] : "",
-			"province" => isset($data['address']['province']) ? $data['address']['province'] : ""
+			"region" => isset($data['board_region']['region']) ? $data['board_region']['region'] : "",
+			"province" => isset($data['board_region']['province']) ? $data['board_region']['province'] : "",
+			"municipality" => isset($data['board_region']['municipality']) ? $data['board_region']['municipality'] : ""
 		]);
 
 		$this->setTemplate("accounts/account.php");

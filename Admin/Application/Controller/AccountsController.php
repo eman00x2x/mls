@@ -189,10 +189,22 @@ class AccountsController extends \Main\Controller {
 
 					$('#api_key').val(uuidv4());
 				})();
+
+				html = \"<option value=''></option>\";
+					for(let i = 0; i < region.length; i++) {
+						let obj = region[i];
+						name = obj.region_name;
+						html += \"<option value='\" + obj.region_id + \"'>\" + name.replace('ñ', 'n') + \"</option>\";
+					}
+					$('#region').html(html);
+
+					$('.board-details label').addClass('text-muted');
+					$('.region-selection, .province-selection').addClass('flex-grow-1');
+					$('.barangay-selection').remove();
+					
 			});
 		"));
 
-		$data['board_regions'] = BOARD_REGIONS;
 		$data['local_boards'] = LOCAL_BOARDS;
 		sort($data['local_boards']);
 
@@ -220,6 +232,19 @@ class AccountsController extends \Main\Controller {
 						$('#api_key').val(uuidv4());
 						$('#pin').val(rcg());
 					})();
+
+					html = \"<option value=''></option>\";
+					for(let i = 0; i < region.length; i++) {
+						let obj = region[i];
+						name = obj.region_name;
+						html += \"<option value='\" + obj.region_id + \"'>\" + name.replace('ñ', 'n') + \"</option>\";
+					}
+					$('#region').html(html);
+
+					$('.board-details label').addClass('text-muted');
+					$('.region-selection, .province-selection').addClass('flex-grow-1');
+					$('.barangay-selection').remove();
+
 				});
 			"));
 			
@@ -228,7 +253,6 @@ class AccountsController extends \Main\Controller {
 
 			if($data = $accounts->getById()) {
 
-				$data['board_regions'] = BOARD_REGIONS;
 				$data['local_boards'] = LOCAL_BOARDS;
 				sort($data['local_boards']);
 
@@ -243,13 +267,7 @@ class AccountsController extends \Main\Controller {
 				}
 
 				$address = $this->getModel("Address");
-				$accounts->address = $address->addressSelection([
-					"region" => isset($data['address']['region']) ? $data['address']['region'] : "",
-					"province" => isset($data['address']['province']) ? $data['address']['province'] : "",
-					"municipality" => isset($data['address']['municipality']) ? $data['address']['municipality'] : "",
-					"barangay" => isset($data['address']['barangay']) ? $data['address']['barangay'] : "",
-					"street" => isset($data['address']['street']) ? $data['address']['street'] : ""
-				]);
+				$accounts->address = $address->addressSelection($data['board_region']);
 
 				$this->setTemplate("accounts/edit.php");
 				return $this->getTemplate($data, $accounts);
@@ -354,7 +372,8 @@ class AccountsController extends \Main\Controller {
 
 		$_POST['board_region'] = json_encode([
 			"region" => (isset($_POST['address']['region']) ? $_POST['address']['region'] : ""),
-			"province" => (isset($_POST['address']['province']) ? $_POST['address']['province'] : "")
+			"province" => (isset($_POST['address']['province']) ? $_POST['address']['province'] : ""),
+			"municipality" => (isset($_POST['address']['municipality']) ? $_POST['address']['municipality'] : "")
 		]);
 
 		$accountResponse = $accounts->saveNew($_POST);
@@ -419,7 +438,7 @@ class AccountsController extends \Main\Controller {
 			$accounts = $this->getModel("Account");
 			$accounts->column['account_id'] = $account_id;
 			$data = $accounts->getById();
-			
+
 			if(isset($_POST['logo']) && $_POST['logo'] != $data['logo']) {
 				/* remove old logo */
 
@@ -499,9 +518,9 @@ class AccountsController extends \Main\Controller {
 			]);
 
 			$_POST['board_region'] = json_encode([
-				"region" => (isset($_POST['address']['region']) ? $_POST['address']['region'] : $data['address']['region']),
-				"province" => (isset($_POST['address']['province']) ? $_POST['address']['province'] : $data['address']['province']),
-				"municipality" => (isset($_POST['address']['municipality']) ? $_POST['address']['municipality'] : $data['address']['municipality'])
+				"region" => isset($_POST['address']['region']) ? $_POST['address']['region'] : (isset($data['board_region']['region']) ? $data['board_region']['region'] : ""),
+				"province" => isset($_POST['address']['province']) ? $_POST['address']['province'] : (isset($data['board_region']['province']) ? $data['board_region']['province'] : ""),
+				"municipality" => isset($_POST['address']['municipality']) ? $_POST['address']['municipality'] : (isset($data['board_region']['municipality']) ? $data['board_region']['municipality'] : "")
 			]);
 
 			$response = $accounts->save($account_id,$_POST);

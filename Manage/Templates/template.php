@@ -53,7 +53,7 @@
 									</a>
 									<div class='dropdown-menu'>
 										<a href='<?php echo url("MlsController@MLSLocalBoard", [ "local_board" => str_replace(" ","_", $_SESSION['user_logged']['local_board_name']) ]); ?>' class='dropdown-item'>Local Board MLS (<?php echo $_SESSION['user_logged']['local_board_name']; ?>)</a>
-										<a href='<?php echo url("MlsController@MLSRegional", [ "region" => str_replace(" ","_", $_SESSION['user_logged']['board_region']) ]); ?>' class='dropdown-item'>Regional MLS (<?php echo $_SESSION['user_logged']['board_region']; ?>)</a>
+										<a href='<?php echo url("MlsController@MLSRegional", [ "region" => str_replace(" ","_", $_SESSION['user_logged']['board_region']['region']) ]); ?>' class='dropdown-item'>Regional MLS (<?php echo $_SESSION['user_logged']['board_region']['region']; ?>)</a>
 										<a href='<?php echo url("MlsController@MLSIndex"); ?>' class='dropdown-item'>PAREB MLS Nation Wide</a>
 									</div>
                 				</li>

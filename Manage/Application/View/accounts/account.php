@@ -87,28 +87,30 @@ $html[] = "<div class='page-body'>";
                                     $html[] = "<div class='mb-3 pb-3 border-bottom mt-5'>";
                                         $html[] = "<h2 class='text-blue mb-1 fw-bold'>Local Board Details</h6>";
 
-                                        $html[] = "<div class='row g-3 align-items-center mb-3'>";
-                                            $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Local Board Region</label></div>";
-                                            $html[] = "<div class='col-md-9 col-6'>";
-                                                $html[] = "<select name='board_region' class='form-select' id='board_region'>";
-                                                    foreach ($data['board_regions'] as $region) {
-                                                        $sel = $data['board_region'] == $region ? "selected" : "";
-                                                        $html[] = "<option value='".$region."' $sel>$region</option>";
-                                                    }
-                                                $html[] = "</select>";
+                                        $html[] = "<div class='mb-4 p-3 board-details'>";
+                                            $html[] = "<div class='row align-items-center'>";
+                                                $html[] = "<label class='col-sm-3 col-form-label'>Local Board Location</label>";
+                                                $html[] = "<div class='col-sm-9'>";
+                                                    $html[] = "<div class='d-flex gap-3'>";
+                                                        foreach($data['board_region'] as $key => $val) {
+                                                            $html[] = "<div class=''>";
+                                                                $html[] = "<label class='text-muted fs-12'>".ucwords($key)."</label>";
+                                                                $html[] = "<p>$val</p>";
+                                                            $html[] = "</div>";
+                                                        }
+                                                    $html[] = "</div>";
+                                                $html[] = "</div>";
                                             $html[] = "</div>";
-                                        $html[] = "</div>";
 
-                                        $html[] = "<div class='row g-3 align-items-center mb-3'>";
-                                            $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Local Board Name</label></div>";
-                                            $html[] = "<div class='col-sm-9'>";
-                                                $html[] = "<select name='local_board_name' class='form-select' id='local_board_name'>";
-                                                    foreach ($data['local_boards'] as $name) {
-                                                        $sel = $data['local_board_name'] == $name ? "selected" : "";
-                                                        $html[] = "<option value='".$name."' $sel>$name</option>";
-                                                    }
-                                                $html[] = "</select>";
+                                            $html[] = "<div class='row g-3 align-items-center mb-3'>";
+                                                $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Local Board Name</label></div>";
+                                                $html[] = "<div class='col-sm-9'>";
+                                                    $html[] = "<p class='fw-bold'>".$data['local_board_name']."</p>";
+                                                $html[] = "</div>";
                                             $html[] = "</div>";
+                                            
+                                            $html[] = "<span class='form-hint'>If you want to update your Local Board Details, please call the customer service</span>";
+
                                         $html[] = "</div>";
                                         
                                     $html[] = "</div>";
