@@ -17,7 +17,7 @@ $html[] = "<div class='row row-cards'>";
 
 				/** Featured ads */
 				if(isset($model->app['featured_post']) && $model->app['featured_post']) {
-					if ($i % 2 == 0) { 
+					if ($i % 4 == 0) { 
 						$html[] = "<div class='featured-post px-3 pb-3 pt-2 border'>";
 							$html[] = "<span class='text-muted fst-italic fs-10 mb-1 d-block'>Sponsored</span>";
 							$html[] = properties($model->app['featured_post'][$c], $model);

@@ -24,7 +24,7 @@ class ListingsController extends \Main\Controller {
 
 		$this->doc->setTitle("Property Listings");
 	
-		if(isset($_REQUEST['search'])) {
+		if(isset($_GET['search'])) {
 			$filters[] = " (title LIKE '%".$_REQUEST['search']."%')";
 			$uri['search'] = $_REQUEST['search'];
 		}
@@ -34,8 +34,13 @@ class ListingsController extends \Main\Controller {
 		$data = $account->getById();
 
 		$filters[] = " account_id = $account_id ";
-		$filters[] = " status IN(0, 1) ";
-		
+
+		if(isset($_GET['status']) && $_GET['status'] == 2) {
+			$filters[] = " status = 2 ";
+		}else {
+			$filters[] = " status IN(0, 1) ";
+		}
+
 		$listing = $this->getModel("Listing");
 		$listing->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" modified_at DESC ");
 		
@@ -404,7 +409,7 @@ class ListingsController extends \Main\Controller {
 
 		}
 
-		$_POST["posting_score"] = $this->computeScore($_POST);
+		$_POST["post_score"] = $this->computeScore($_POST);
 
 		$listing->save($response['id'], $_POST);
 
@@ -475,7 +480,7 @@ class ListingsController extends \Main\Controller {
 			$_POST['image_score'] = $listingImage->saveImages($id,$_POST['listing_image_filename']);
 		}
 
-		$_POST['posting_score'] = $this->computeScore($_POST);
+		$_POST['post_score'] = $this->computeScore($_POST);
 
 		$listing = $this->getModel("Listing");
 		unset($_POST['listing_image_filename']);
@@ -556,11 +561,11 @@ class ListingsController extends \Main\Controller {
 
 				$listing = $this->getModel("Listing");
 				$listing->select(" COUNT(*) as total ");
-				$listing->where(" account_id = ".$data['account_id']." ");
+				$listing->where(" account_id = ".$this->session['account_id']." ");
 				$listing->and(" status = 1 AND featured = 1 ");
 				$total = $listing->getList();
 
-				if($this->session['privileges']['featured_ads'] > $total[0]['total']) {
+				if($total[0]['total'] > $this->session['privileges']['featured_ads']) {
 					$response = [
 						"type" => "error",
 						"message" => " Maximum Featured Ads has been reached, you cannot continue setting this as featured ads "

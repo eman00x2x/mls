@@ -93,10 +93,12 @@ class ListingImageModel extends \Main\Model {
 		
 		$this->where(" listing_id = $listing_id ");
 		$data = $this->getList();
-		
-		for($i=0; $i<count($data); $i++) {
-			$this->removeImage($data[$i]['filename']);
-			$this->delete($data[$i]['image_id'],"image_id");
+
+		if($data) {
+			for($i=0; $i<count($data); $i++) {
+				$this->removeImage($data[$i]['filename']);
+				$this->delete($data[$i]['image_id'],"image_id");
+			}
 		}
 		
 	}
