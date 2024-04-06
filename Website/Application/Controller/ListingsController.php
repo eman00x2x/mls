@@ -78,7 +78,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		$listings = $this->getModel("Listing");
 		$listings->address = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));
 
-		$listings->page['limit'] = 1;
+		$listings->page['limit'] = 20;
 		$listings->page['current'] = isset($_GET['page']) ? $_GET['page'] : 1;
 		$listings->page['target'] = url("ListingsController@$offer");
 		$listings->page['uri'] = (isset($uri) ? $uri : []);
@@ -86,7 +86,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		$listings->app = [
 			"handshaked" => false,
 			"comparative" => false,
-			"featured_post" => true,
+			"featured_post" => $this->getFeaturedProperties(),
 			"url_path" => [
 				"path" => "name",
 				"value" => "name",
@@ -541,6 +541,39 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		$this->setTempalteBasePath(ROOT."Admin");
 		$this->setTemplate("listings/listProperties.php");
 		return $this->getTemplate($response['data'],$response['model']);
+
+	}
+
+	function getFeaturedProperties() {
+
+		$listings = $this->getModel("Listing");
+		$data = $listings->getFeaturedProperties();
+
+		if($data) {
+			
+			$total_listing = count($data);
+
+			for($i=0; $i<$total_listing; $i++) {
+
+				$images = $this->getModel("ListingImage");
+				$images->page['limit'] = 50;
+
+				$images->column['listing_id'] = $data[$i]['listing_id'];
+				$total_image = $images->getByListingId();
+				
+				$data[$i]['total_images'] = 0;
+
+				if($total_image) {
+					$data[$i]['total_images'] = count($total_image);
+				}
+				
+			}
+
+			return $data;
+			
+		}
+
+		return false;
 
 	}
 

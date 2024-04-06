@@ -8,11 +8,7 @@
 
 			<div class='offcanvas offcanvas-end overflow-auto' tabindex='-1' id='offcanvasEnd' aria-labelledby='offcanvasEndLabel' aria-modal='true' role='dialog'></div>
 
-			<?php
-				if( !url()->contains("/") ) {
-					require_once("menu.php");
-				}
-			?>
+			<?php require_once("menu.php"); ?>
 
 			<div class="page-wrapper">
 				<?php echo $content; ?>

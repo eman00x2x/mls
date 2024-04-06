@@ -34,6 +34,11 @@ class HomeController extends \Main\Controller {
 
 			let timer;
 
+			$(document).ready(function() {
+				$('.navbar').hide();
+				$('.navbar-home').show();
+			});
+
 			$(document).on('change', '#address', function() {
 				let val = $('#address').val();
 				let selected_option = $('#address_result option').filter(function() {

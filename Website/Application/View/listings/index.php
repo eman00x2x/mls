@@ -15,7 +15,7 @@ $html[] = "<div class='page-body'>";
 
 		$html[] = "<div class='row g-4 justify-content-center'>";
 			$html[] = "<div class='col-md-3 col-lg-3 d-none d-lg-block'>";
-				$html[] = "<div class='sidebar'>";
+				$html[] = "<div class='sidebar bg-white p-4 border'>";
 
 					$html[] = "<div class='filter-box'>";
 						$html[] = "<div class='d-flex justify-content-between align-items-center'>";
@@ -26,7 +26,7 @@ $html[] = "<div class='page-body'>";
 						$html[] = "</div>";
 						$html[] = "<form id='filter-form' action='' method='POST'>";
 							$html[] = "<div class='mb-4'>";
-								$html[] = "<div class='form-label'>Address</div>";
+								$html[] = "<div class='form-label text-muted'>Address</div>";
 								$html[] = $model->address;
 								$html[] = "</div>";
 
@@ -188,7 +188,23 @@ $html[] = "<div class='page-body'>";
 
 			$html[] = "<div class='col-md-10 col-lg-9'>";
 
-				$html[] = "<div class='mb-2 d-flex align-items-baseline justify-content-end'>";
+				/** PAGE ADS */
+				$html[] = "<div class='mb-4'>";
+					$html[] = "<div class='d-none PROPERTY_LIST_TOP'>";
+						$html[] = "<a href='#' target='_blank'>";
+							$html[] = "<div class='card bg-dark-lt mt-2 rounded-0  d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='height:250px;'>";
+								$html[] = "<div class='loader'></div>";
+								$html[] = "<p>Loading Ads</p>";
+							$html[] = "</div>";
+						$html[] = "</a>";
+					$html[] = "</div>";
+				$html[] = "</div>";
+
+				$html[] = "<div class='mb-2 d-flex align-items-baseline justify-content-between'>";
+
+					$html[] = "<div class=''>";
+						$html[] = "<p>There are a total of (".$model->rows.") results</p>";
+					$html[] = "</div>";
 					
 					$html[] = "<div class='btn-group'>";
 						$html[] = "<div class='btn-group dropstart'>";
@@ -218,23 +234,7 @@ $html[] = "<div class='page-body'>";
 
 						$html[] = "<span class='btn btn-outline-secondary btn-filter-toggle d-md-block d-lg-none' data-bs-toggle='offcanvas' href='#offcanvasEnd' role='button' aria-controls='offcanvasEnd'><i class='ti ti-filter me-1'></i> Filter</span>";
 					$html[] = "</div>";
-				$html[] = "</div>";
 
-				$html[] = "<div class=''>";
-					$html[] = "<p>There are a total of (".$model->rows.") results</p>";
-				$html[] = "</div>";
-
-
-				/** PAGE ADS */
-				$html[] = "<div class='mb-4'>";
-					$html[] = "<div class='d-none PROPERTY_LIST_TOP'>";
-						$html[] = "<a href='#' target='_blank'>";
-							$html[] = "<div class='card bg-dark-lt mt-2 rounded-0  d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='height:250px;'>";
-								$html[] = "<div class='loader'></div>";
-								$html[] = "<p>Loading Ads</p>";
-							$html[] = "</div>";
-						$html[] = "</a>";
-					$html[] = "</div>";
 				$html[] = "</div>";
 
 				/** LISTING LIST */

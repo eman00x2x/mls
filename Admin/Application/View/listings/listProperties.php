@@ -1,23 +1,34 @@
 <?php
 
+$total_featured = 0;
+
 /* $html[] = "<h3><i class='ti ti-building'></i> Related Properties</h3>"; */
 $html[] = "<div class='row row-cards'>";
 	$html[] = "<div class='space-y'>";
 
 		if($data) {
 
+			if(isset($model->app['featured_post']) && $model->app['featured_post']) {
+				$total_featured = count($model->app['featured_post']);
+			}
+			
 			$c = 0;
-			for($i=0; $i<count($data); $i++) { $c++;
+			for($i=0; $i<count($data); $i++) { 
 
-				if(isset($model->app['featured_post'])) {
-					if ($i % 4 == 0) {
-						/** Featured ads */
-						$html[] = "<div class='featured-post'>";
-							$html[] = properties($data[$i], $model);
+				/** Featured ads */
+				if(isset($model->app['featured_post']) && $model->app['featured_post']) {
+					if ($i % 2 == 0) { 
+						$html[] = "<div class='featured-post px-3 pb-3 pt-2 border'>";
+							$html[] = "<span class='text-muted fst-italic fs-10 mb-1 d-block'>Sponsored</span>";
+							$html[] = properties($model->app['featured_post'][$c], $model);
 						$html[] = "</div>";
-						/** End Featured ads */
+
+						if($c < $total_featured) {
+							$c++;
+						}
 					}
 				}
+				/** End Featured ads */
 
 				$html[] = properties($data[$i], $model);
 			}

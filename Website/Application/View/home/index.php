@@ -8,6 +8,35 @@ $html[] = "<div class=''>";
 			$html[] = "<div class='hero-image-mask'></div>";
 			$html[] = "<div class='container-xl'>";
 
+				$html[] = "<div class='navbar navbar-expand-md d-print-none navbar-transparent navbar-home'>";
+					$html[] = "<button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbar-menu' aria-controls='navbar-menu' aria-expanded='false' aria-label='Toggle navigation'><span class='navbar-toggler-icon'></span></button>";
+					$html[] = "<h1 class='navbar-brand d-none-navbar-horizontal pe-0 pe-md-3'>";
+						$html[] = "<a href='".WEBDOMAIN."'>MLS</a>";
+					$html[] = "</h1>";
+
+					$html[] = "<div class='navbar-nav flex-row order-md-last'>";
+						$html[] = "<div class='nav-item'>";
+							$html[] = "<div class='btn-list'>";
+								$html[] = "<a href='' class='btn btn-md btn-outline-light' target='_blank' rel='noreferrer'><i class='ti ti-lock me-1'></i> Login</a>";
+							$html[] = "</div>";
+						$html[] = "</div>";
+					$html[] = "</div>";
+
+					$html[] = "<div class='collapse navbar-collapse' id='navbar-menu'>";
+						$html[] = "<div class='d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center'>";
+							$html[] = "<ul class='navbar-nav'>";
+								$html[] = "<li class='nav-item'>";
+									$html[] = "<a class='nav-link text-white' href='".url('ListingsController@buy')."' ><span class='nav-link-title'>Buy Property</span></a>";
+								$html[] = "</li>";
+								$html[] = "<li class='nav-item'>";
+									$html[] = "<a class='nav-link text-white' href='".url('ListingsController@rent')."' ><span class='nav-link-title'>Rent Property</span></a>";
+								$html[] = "</li>";
+							$html[] = "</ul>";
+						$html[] = "</div>";
+					$html[] = "</div>";
+					
+				$html[] = "</div>";
+
 				$html[] = "<div class='row justify-content-center'>";
 					$html[] = "<div class='col-md-8 col-auto'>";
 

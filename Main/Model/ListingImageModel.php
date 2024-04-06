@@ -57,7 +57,7 @@ class ListingImageModel extends \Main\Model {
 			
 		}
 
-		/** MINIMUM IMAGE COUNT 10 */
+		/** DIVIDED BY 10 IMAGES */
 		return ($score / 10);
 
 	}

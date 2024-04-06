@@ -15,6 +15,11 @@ class ListingModel extends \Main\Model {
 		return $this->getList();
 	}
 
+	function getFeaturedProperties() {
+		$this->where(" featured = 1 " )->orderBy(" post_score DESC ");
+		return $this->getList();
+	}
+
 	function getByName() {
 
 		$query = "SELECT * FROM #__listings WHERE name = '".$this->column['name']."' ".$this->and;
