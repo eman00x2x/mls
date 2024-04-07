@@ -7,7 +7,7 @@ $html[] = "<div class='pb-5 my-5'>";
 			if($data['listings']) {
 				for($i=0; $i<count($data['listings']); $i++) {
 					$html[] = "<div class='col-md-5 col-lg-3 col-auto '>";
-						$html[] = "<div class='card property-container' title='".$data['listings'][$i]['title']."'>";
+						$html[] = "<div class='card property-container mb-3' title='".$data['listings'][$i]['title']."'>";
 							$html[] = "<div class='p-image img-responsive img-responsive-21x9 card-img-top' style='background-image: url(".$data['listings'][$i]['thumb_img'].");'>";
 							
 								$html[] = "<div class='black-gradient'>";
@@ -53,7 +53,7 @@ $html[] = "<div class='pb-5 my-5'>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 								$html[] = "<a href='".url("ListingsController@view", ["name" => $data['listings'][$i]['name']])."' class='stretched-link full-link'></a>";
-								/* $html[] = "<a href='".url("ListingsController@view", ["name" => $data['listings'][$i]['name']])."' class='btn btn-md btn-primary stretched-link w-100'>View Details</a>"; */
+								
 							$html[] = "</div>";
 						$html[] = "</div>";
 					$html[] = "</div>";

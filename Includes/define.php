@@ -20,13 +20,13 @@ define("MANAGE_ALIAS","/mls/manage");
 define("ALIAS","/mls/website");
  */
 
-define("API","http://localhost/mls/api/");
+/* define("API","http://localhost/mls/api/");
 define("CDN","http://localhost/mls/cdn/");
 define("WEBDOMAIN","http://localhost/mls/website/");
 define("WEBADMIN","http://localhost/mls/webadmin/");
 define("CS","http://localhost/mls/cs/");
 define("ADMIN","http://localhost/mls/admin/");
-define("MANAGE","http://localhost/mls/manage/");
+define("MANAGE","http://localhost/mls/manage/"); */
 
 define("API_ALIAS","/mls/api");
 define("ADMIN_ALIAS","/mls/admin");
@@ -35,12 +35,12 @@ define("MANAGE_ALIAS","/mls/manage");
 define("WEB_ALIAS","/mls/website");
 define("CS_ALIAS","/mls/cs");
 
-/* define("CDN","http://192.168.254.250/mls/cdn/");
+define("CDN","http://192.168.254.250/mls/cdn/");
 define("WEBDOMAIN","http://192.168.254.250/mls/website/");
 define("WEBADMIN","http://192.168.254.250/mls/webadmin/");
 define("CS","http://192.168.254.250/mls/webadmin/");
 define("ADMIN","http://192.168.254.250/mls/admin/");
-define("MANAGE","http://192.168.254.250/mls/manage/"); */
+define("MANAGE","http://192.168.254.250/mls/manage/");
 
 
 define("VRSN","v1.0");

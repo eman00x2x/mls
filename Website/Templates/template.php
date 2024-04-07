@@ -21,7 +21,6 @@
 							<div class='mb-4'>
 								<h3>Main</h3>
 								<ul class='list-group list-group-flush m-0 p-0'>
-									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url(WEB_ALIAS . "/");?>' class='text-white text-decoration-none'>Home</a></li>
 									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url(WEB_ALIAS . "/buy");?>' class='text-white text-decoration-none'>Buy Property</a></li>
 									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url(WEB_ALIAS . "/rent");?>' class='text-white text-decoration-none'>Rent Property</a></li>
 									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url(WEB_ALIAS . "/articles");?>' class='text-white text-decoration-none'>Articles</a></li>

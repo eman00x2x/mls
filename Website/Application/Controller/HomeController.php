@@ -110,11 +110,6 @@ class HomeController extends \Main\Controller {
 				$('.outer-filter').removeClass('d-none');
 			});
 
-			const popularLocations = async () => {
-				const response = await fetch('".url("HomeController@popularLocations")."');
-				return response.json();
-			};
-
 			const featuredPost = async () => {
 				const response = await fetch('".url("HomeController@featuredPost")."');
 				return response.json();
@@ -124,10 +119,6 @@ class HomeController extends \Main\Controller {
 				const response = await fetch('".url("HomeController@latestArticles")."');
 				return response.json();
 			};
-
-			popularLocations().then( response => {
-				$('.popular-location-container').html(response.content);
-			});
 
 			featuredPost().then( response => {
 				$('.featured-post-container').html(response.content);
@@ -197,11 +188,12 @@ class HomeController extends \Main\Controller {
 		$data = $listings->getList();
 
 		$this->setTemplate("home/popularLocations.php");
-		$data = $this->getTemplate($data, $listings);
+		$html = $this->getTemplate($data, $listings);
 
 		echo json_encode([
 			"status" => "success",
-			"content" => $data
+			"content" => $html,
+			"data" => $data
 		]);
 
 		exit();
@@ -254,7 +246,7 @@ class HomeController extends \Main\Controller {
 	function latestArticles() {
 
 		$articles = $this->getModel("Article");
-		$articles->page['limit'] = 6;
+		$articles->page['limit'] = 4;
 		$data['articles'] = $articles->getList();
 
 		$this->setTemplate("home/latestArticles.php");

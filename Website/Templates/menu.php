@@ -1,5 +1,6 @@
-<header class="navbar navbar-expand-md d-print-none">
+<header class="navbar navbar-expand-md d-print-none px-3 fs-16">
 	<div class="container-xl">
+	
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -13,7 +14,7 @@
 		<div class="navbar-nav flex-row order-md-last">
 			<div class="nav-item">
 				<div class="btn-list">
-					<a href="<?=WEBDOMAIN;?>" class="btn btn-md" target="_blank" rel="noreferrer"><i class='ti ti-lock me-1'></i> Login</a>
+					<a href="<?=MANAGE;?>" class="btn p-0 border-0" target="_blank" rel="noreferrer"><i class='ti ti-lock me-1'></i> Login</a>
 				</div>
             </div>
 		</div>
@@ -21,32 +22,52 @@
 		<div class="collapse navbar-collapse" id="navbar-menu">
 			<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
 				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" href="<?=WEBDOMAIN;?>" >
-							<span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-								<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
-							</span>
-							<span class="nav-link-title">
-								Home
-							</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="<?=url("ListingsController@buy");?>" >
-							<span class="nav-link-title">
-								Buy
-							</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="<?=url("ListingsController@rent");?>" >
-							<span class="nav-link-title">
-								Rent
-							</span>
-						</a>
-					</li>
+					<?php
+						$html[] = "<li class='nav-item'>";
+
+							$html[] = "<div class='dropdown'>";
+								$html[] = "<span class='nav-link dropdown-toggle cursor-pointer' id='menuForBuyProperty' data-bs-toggle='dropdown' aria-expanded='false'><span class='nav-link-title'>Buy Property</span></span>";
+								$html[] = "<div class='dropdown-menu' aria-labelledby='menuForBuyProperty'>";
+									foreach([
+										"House and Lot", "Towhouse", "Condominium", "Residential Lot", "Commercial Lot"
+									] as $category) {
+										$html[] = "<a class='dropdown-item' href='".url('ListingsController@buy', null, [ "category" => $category ])."' >Buy $category</a>";
+									}
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+						$html[] = "</li>";
+						$html[] = "<li class='nav-item'>";
+
+							$html[] = "<div class='dropdown'>";
+								$html[] = "<span class='nav-link dropdown-toggle cursor-pointer' id='menuForRentProperty' data-bs-toggle='dropdown' aria-expanded='false'><span class='nav-link-title'>Rent Property</span></span>";
+								$html[] = "<div class='dropdown-menu' aria-labelledby='menuForRentProperty'>";
+									foreach([
+										"House and Lot", "Towhouse", "Condominium", "Residential Lot", "Commercial Lot"
+									] as $category) {
+										$html[] = "<a class='dropdown-item' href='".url('ListingsController@rent', null, [ "category" => $category ])."' >Rent $category</a>";
+									}
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+						$html[] = "</li>";
+
+						$html[] = "<li class='nav-item'>";
+
+							$html[] = "<div class='dropdown'>";
+								$html[] = "<span class='nav-link dropdown-toggle cursor-pointer' id='menuForPopularLocation' data-bs-toggle='dropdown' aria-expanded='false'><span class='nav-link-title'>Popular Locations</span></span>";
+								$html[] = "<div class='dropdown-menu locationContainer' aria-labelledby='menuForPopularLocation'>";
+									
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+						$html[] = "</li>";
+
+						echo implode("", $html);
+					?>
 				</ul>
 			</div>
 		</div>
+	
 	</div>
 </header>

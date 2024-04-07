@@ -313,7 +313,7 @@ $html[] = "<div class='page-body mb-0'>";
 
 										$html[] = "<div class='row justify-content-center'>";
 											$html[] = "<div class='col-lg-8 col-sm-12'>";
-												$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['account']['account_id'], "name" => sanitize($data['account']['account_name']['firstname']."-".$data['account']['account_name']['lastname']) ])."'>";
+												$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['account']['account_id'], "name" => sanitize($data['account']['account_name']['firstname']."-".$data['account']['account_name']['lastname']) ])."' class='text-decoration-none'>";
 													$html[] = "<div class='d-flex py-1 mb-4 align-items-center'>";
 														$html[] = "<span class='avatar avatar-xl me-2 rounded-circle' style='background-image: url(".$data['account']['logo'].")'></span>";
 														$html[] = "<div class='flex-fill'>";
@@ -353,7 +353,8 @@ $html[] = "<div class='page-body mb-0'>";
 											$html[] = "<input type='hidden' name='preferences[address][municipality]' value='".$data['address']['municipality']."' />";
 											$html[] = "<input type='hidden' name='preferences[address][province]' value='".$data['address']['province']."' />";
 											$html[] = "<input type='hidden' name='preferences[address][region]' value='".$data['address']['region']."' />";
-
+											$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
+											
 											$html[] = "<div class='mb-3'>";
 												$html[] = "<div class='form-floating mb-3'>";
 													$html[] = "<input type='text' name='name' id='name' value='' class='form-control' placeholder='Your Name' />";

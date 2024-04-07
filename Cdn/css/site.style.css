@@ -1,3 +1,4 @@
+
 .hero-image {
     position: relative;
 }
@@ -52,6 +53,7 @@
 
 .p-title {
     line-height: 1.4;
+    height:40px;
 }
 
 .p-description {
@@ -60,9 +62,7 @@
 }
 
 .p-tech-details {
-    position: absolute;
-    bottom:0;
-    width:100%;
+   
 }
 
 .p-tech-label {

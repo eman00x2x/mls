@@ -36,7 +36,7 @@ class ArticlesController extends \Main\Controller {
 
 		if(isset($_GET['category']) && $_GET['category'] != "") {
 			$filters[] = " (category LIKE '%".$_GET['category']."%')";
-			$uri['category'] = $_GET['category'];
+			$uri['category'] = ucwords($_GET['category']);
 		}
 
 		$articles->page['limit'] = 20;

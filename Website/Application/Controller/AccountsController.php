@@ -17,6 +17,13 @@ class AccountsController extends \Main\Controller {
 		$accounts->column['account_id'] = $id;
 		$data = $accounts->getById();
 
+		$listings = $this->getModel("Listing");
+		$listings->column['account_id'] = $id;
+		$listings
+			->select(" listing_id, is_website, name, title, category, address, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, status ")
+				->and(" status = 1 AND display = 1 AND is_website = 1 ");
+		$data['listings'] = $listings->getByAccountId();
+
         $name = $data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix'];
         $description = $name." - " . nicetrim($data['profile']['about_me'], 120) . " - " . CONFIG["site_name"];
 

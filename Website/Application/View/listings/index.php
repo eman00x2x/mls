@@ -176,7 +176,7 @@ $html[] = "<div class='page-body'>";
 						$html[] = "</form>";
 
 						$html[] = "<div class='btn-filter-container mt-5 sticky-bottom'>";
-							$html[] = "<div class='pb-4' style='background-color: #f6f8fb; margin-bottom: -15px !important;'>";
+							$html[] = "<div class='pb-4' style='background-color: #FFF; margin-bottom: -15px !important;'>";
 								$html[] = "<span class='btn btn-primary w-100 btn-filter'><i class='ti ti-filter me-1'></i> Filter Result</span>";
 							$html[] = "</div>";
 						$html[] = "</div>";
