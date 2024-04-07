@@ -32,5 +32,5 @@
 ?>
 
 <script type="text/javascript">
-$(document).ready(function () { const popularLocations = async () => { const response = await fetch('<?php echo url("HomeController@popularLocations"); ?>'); return response.json(); }; popularLocations().then(response => { $('.popular-location-container').html(response.content); list = response.data; html = ''; x = 0; for (key in list) { x++; if (x <= 8) { html += "<a href='" + DOMAIN + "buy/?address[municipality]=" + (list[key].city).replace(' ','+') + "'  class='dropdown-item'>" + list[key].city + "</a>"; } } $('.locationContainer').html(html); }); });
+$(document).ready(function () { const popularLocations = async () => { const response = await fetch('<?php echo url("HomeController@popularLocations"); ?>'); return response.json(); }; popularLocations().then(response => { $('.popular-location-container').html(response.content); list = response.data; html = ''; x = 0; for (key in list) { x++; if (x <= 8) { html += "<a href='" + DOMAIN + "buy/?address[region]=" + (list[key].region).replace(' ','+') + "&address[province]=" + (list[key].province).replace(' ','+') + "&address[municipality]=" + (list[key].city).replace(' ','+') + "'  class='dropdown-item'>" + list[key].city + "</a>"; } } $('.locationContainer').html(html); }); });
 </script>

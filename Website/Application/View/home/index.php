@@ -25,7 +25,7 @@ $html[] = "<div class=''>";
 					$html[] = "<div class='collapse navbar-collapse' id='navbar-menu'>";
 						$html[] = "<div class='d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center'>";
 							$html[] = "<ul class='navbar-nav'>";
-								$html[] = "<li class='nav-item'>";
+								$html[] = "<li class='nav-item fw-bold'>";
 
 									$html[] = "<div class='dropdown'>";
 										$html[] = "<span class='nav-link text-white dropdown-toggle cursor-pointer' id='menuForBuyProperty' data-bs-toggle='dropdown' aria-expanded='false'><span class='nav-link-title'>Buy Property</span></span>";
@@ -39,7 +39,7 @@ $html[] = "<div class=''>";
 									$html[] = "</div>";
 
 								$html[] = "</li>";
-								$html[] = "<li class='nav-item'>";
+								$html[] = "<li class='nav-item fw-bold'>";
 
 									$html[] = "<div class='dropdown'>";
 										$html[] = "<span class='nav-link text-white dropdown-toggle cursor-pointer' id='menuForRentProperty' data-bs-toggle='dropdown' aria-expanded='false'><span class='nav-link-title'>Rent Property</span></span>";
@@ -54,7 +54,7 @@ $html[] = "<div class=''>";
 
 								$html[] = "</li>";
 
-								$html[] = "<li class='nav-item'>";
+								$html[] = "<li class='nav-item fw-bold'>";
 
 									$html[] = "<div class='dropdown'>";
 										$html[] = "<span class='nav-link text-white dropdown-toggle cursor-pointer' id='menuForPopularLocation' data-bs-toggle='dropdown' aria-expanded='false'><span class='nav-link-title'>Popular Locations</span></span>";
@@ -90,8 +90,11 @@ $html[] = "<div class=''>";
 									$html[] = "<div class='mt-5 pt-5 d-lg-block d-none'></div>";
 									/** SPACER */
 
-									$html[] = "<h1 class='display-4 text-white fw-bold'>Find the best investment! <span class='d-block fs-16'>Only @ PAREB MLS</span></h1>";
-									
+									$html[] = "<div class=''>";
+										$html[] = "<h1 class='d-inline display-4 text-white fw-bold'>Find the best investment! </h1>";
+										$html[] = "<p class='d-block fs-16 text-white'>Only @ PAREB MLS</p>";
+									$html[] = "</div>";
+
 									$html[] = "<div class=''>";
 										$html[] = "<div class='btn-group bg-white rounded-0'>";
 											$html[] = "<input type='radio' class='btn-check ' name='offer' id='offer-1' autocomplete='off' checked >";
@@ -328,7 +331,7 @@ $html[] = "<div class=''>";
 					$html[] = "<h2 class='display-3 text-blue'>About</h2>";
 						$html[] = "<div class='d-flex gap-3 flex-wrap flex-lg-nowrap'>";
 
-							$html[] = "<div class='flex-fill order-md-last'>";
+							$html[] = "<div class='flex-fill order-md-last mb-4'>";
 								$html[] = "<img src='".CDN."images/150ceddb-4707-47e6-8009-940522ba403f.png' class='' style='width:1024px;' />";
 							$html[] = "</div>";
 
@@ -361,33 +364,35 @@ $html[] = "<div class=''>";
 				$html[] = "</div>";
 
 				$html[] = "<div class='row g-5 my-5'>";
-					$html[] = "<div class='col-lg-3 col-md-3 col-sm-6 col-12'>";
+					$html[] = "<div class='col-lg-6 col-md-3 col-sm-6 col-12'>";
+
 						$html[] = "<div class='text-center'>";
-							$html[] = "<img src='".CDN."images/item_default.jpg' class='' style='' />";
+							$html[] = "<span class='avatar avatar-xxl rounded-circle' style='background-image: url(".CDN."images/website/pexels-photo-3182806.webp)'></span>";
 							$html[] = "<h3 class='mt-3'>Strength in Unity</h3>";
-							$html[] = "<p>PAREB Network: Leading Philippine Real Estate with 68 Local Member Boards and 5,000 Strong Practitioners</p>";
+							$html[] = "<p>PAREB Network proudly spearheads the Philippine real estate arena, commanding a robust presence through its 68 Local Member Boards. With a collective force of 5,000 skilled practitioners, PAREB Network stands as a cornerstone of excellence and integrity in the industry, driving forward innovation and shaping the future landscape of real estate across the nation</p>";
 						$html[] = "</div>";
+
 					$html[] = "</div>";
 
-					$html[] = "<div class='col-lg-3 col-md-3 col-sm-6 col-12'>";
+					$html[] = "<div class='col-lg-6 col-md-3 col-sm-6 col-12'>";
 						$html[] = "<div class='text-center'>";
-							$html[] = "<img src='".CDN."images/item_default.jpg' class='' style='' />";
+							$html[] = "<span class='avatar avatar-xxl rounded-circle' style='background-image: url(".CDN."images/website/pexels-photo-5668517.webp)'></span>";
 							$html[] = "<h3 class='mt-3'>Empowering Excellence</h3>";
 							$html[] = "<p>PAREB brokers excel in specialized knowledge and skills, gathering comprehensive market data from both reference materials and the PAREB Network. Our members, licensed as appraisers, consultants, CPAs, lawyers, and engineers, enhance our collective expertise. Committed to client support, we prioritize knowledge-sharing and offer valuable guidance</p>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 
-					$html[] = "<div class='col-lg-3 col-md-3 col-sm-6 col-12'>";
+					$html[] = "<div class='col-lg-6 col-md-3 col-sm-6 col-12'>";
 						$html[] = "<div class='text-center'>";
-							$html[] = "<img src='".CDN."images/item_default.jpg' class='' style='' />";
+							$html[] = "<span class='avatar avatar-xxl rounded-circle' style='background-image: url(".CDN."images/website/document-agreement-documents-sign-48195.webp)'></span>";
 							$html[] = "<h3 class='mt-3'>Simplify and Amplify</h3>";
 							$html[] = "<p>To streamline the process, rather than seeking out 10 individual brokers, the seller only needs to engage one PAREB broker, who will then ensure the property's distribution throughout the extensive PAREB Network</p>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 
-					$html[] = "<div class='col-lg-3 col-md-3 col-sm-6 col-12'>";
+					$html[] = "<div class='col-lg-6 col-md-3 col-sm-6 col-12'>";
 						$html[] = "<div class='text-center'>";
-							$html[] = "<img src='".CDN."images/item_default.jpg' class='' style='' />";
+							$html[] = "<span class='avatar avatar-xxl rounded-circle' style='background-image: url(".CDN."images/website/pexels-photo-6347705.webp)'></span>";
 							$html[] = "<h3 class='mt-3'>Expanding Horizons</h3>";
 							$html[] = "<p>A typical broker usually has a limited inventory. If a buyer has specifications that a broker doesn’t carry, the broker will exert further effort to search for other properties within the PAREB network</p>";
 						$html[] = "</div>";
@@ -400,7 +405,7 @@ $html[] = "<div class=''>";
 	
 	$html[] = "<div class='bg-white'>";
 		$html[] = "<div class='container-xl py-5'>";
-			$html[] = "<div class='my-3 py-5 px-3'>";
+			$html[] = "<div class='my-3 py-5 px-3  fs-16'>";
 				$html[] = "<div class='latest-articles-container'>";
 					$html[] = "<p class='text-center mb-0'><img src='".CDN."images/loader.gif' /> loading articles, please wait...</p>";
 				$html[] = "</div>";

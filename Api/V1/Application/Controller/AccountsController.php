@@ -11,7 +11,7 @@ class AccountsController extends \Api\V1\Application\Controller\AuthenticatorCon
         $users->column['account_id'] = $this->account['account_id'];
 
         $users
-            ->select(" user_id, name, email, user_status as status, date_added as created_at ")
+            ->select(" user_id, name, email, user_status as status, created_at ")
                 ->and(" user_level != 1 ");
 
         $data = $users->getByAccountId();

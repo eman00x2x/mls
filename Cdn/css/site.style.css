@@ -81,11 +81,11 @@
 }
 
 .featured-post {
-    background-color:#F0BB1D;
+    background-color:rgb(255, 241, 199);
 }
 
 .text-accent {
-    color: #F0BB1D !important;
+    color: #f0bb1d !important;
 }
 
 .text-highlight, .text-blue {

@@ -11,14 +11,15 @@ class ListingsController extends \Api\V1\Application\Controller\AuthenticatorCon
         $listings->column['account_id'] = $this->account['account_id'];
         
         $listings
-            ->select(" listing_id as id, thumb_img, title, category, offer, price, 
+            ->select(" listing_id as id, thumb_img, title, category, offer, price, is_mls, is_website, is_mls_option,
                 CASE 
                     WHEN status = 0 THEN 'Expired'
                     WHEN status = 1 THEN 'Active'
                     WHEN status = 2 THEN 'Sold'
                     WHEN status = 3 THEN 'Removed'
                 END as status, 
-            last_modified as modified_at ");
+                modified_at,
+                created_at ");
 
         $listings->page['limit'] = 100;
         $listings->page['current'] = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -61,11 +62,13 @@ class ListingsController extends \Api\V1\Application\Controller\AuthenticatorCon
                     WHEN status = 3 THEN 'Removed'
                 END as status, long_desc, 
                 JSON_EXTRACT(other_details, '$.authority_type') as authority_type, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(other_details, '$.com_share')), '%') as com_share,
-                post_score, last_modified as modified_at, date_added as created_at
+                post_score, modified_at, created_at
             ")
                 ->and(" account_id  = ". $this->account['account_id']);
 
         $data = $listings->getById();
+
+        $data['car_spaces'] = $data['parking'];
 
         if($data) {
             
@@ -80,6 +83,13 @@ class ListingsController extends \Api\V1\Application\Controller\AuthenticatorCon
                 }
             }
 
+            $data['payment_details']['bank_loan'] = ($data['payment_details']['bank_loan'] == 1 ? true : false);
+            $data['payment_details']['pagibig_loan'] = ($data['payment_details']['pagibig_loan'] == 1 ? true : false);
+            $data['payment_details']['assume_balance'] = ($data['payment_details']['assume_balance'] == 1 ? true : false);
+            $data['amenities'] = ($data['amenities'] != "" ? explode(",", $data['amenities']) : false);
+
+            unset($data['parking']);
+            unset($data['post_score']);
             unset($data['listing_id']);
             unset($data['account_id']);
 

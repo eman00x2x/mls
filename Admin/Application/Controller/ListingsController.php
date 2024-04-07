@@ -720,28 +720,28 @@ class ListingsController extends \Main\Controller {
 			$model->page['uri']['address'] = $_GET['address'];
 
 			if(isset($_GET['address']['region']) && $_GET['address']['region'] != "") {
-				$filters[] = " JSON_EXTRACT(l.address, '$.region') = '".$_GET['address']['region']."'  ";
-				$search[] = $_GET['address']['region'];
+				$filters[] = " JSON_EXTRACT(l.address, '$.region') = '".str_replace("+", " ", $_GET['address']['region'])."'  ";
+				$search[] = str_replace("+", " ", $_GET['address']['region']);
 			}
 
 			if(isset($_GET['address']['province']) && $_GET['address']['province'] != "") {
-				$filters[] = " JSON_EXTRACT(l.address, '$.province') = '".$_GET['address']['province']."'  ";
-				$search[] = $_GET['address']['province'];
+				$filters[] = " JSON_EXTRACT(l.address, '$.province') = '".str_replace("+", " ", $_GET['address']['province'])."'  ";
+				$search[] = str_replace("+", " ", $_GET['address']['province']);
 			}
 
 			if(isset($_GET['address']['municipality']) && $_GET['address']['municipality'] != "") {
-				$filters[] = " JSON_EXTRACT(l.address, '$.municipality') = '".$_GET['address']['municipality']."'  ";
-				$search[] = $_GET['address']['municipality'];
+				$filters[] = " JSON_EXTRACT(l.address, '$.municipality') = '".str_replace("+", " ", $_GET['address']['municipality'])."'  ";
+				$search[] = str_replace("+", " ", $_GET['address']['municipality']);
 			}
 
 			if(isset($_GET['address']['street']) && $_GET['address']['street'] != "") {
-				$filters[] = " JSON_EXTRACT(l.address, '$.street') = '".$_GET['address']['street']."'  ";
-				$search[] = $_GET['address']['street'];
+				$filters[] = " JSON_EXTRACT(l.address, '$.street') = '".str_replace("+", " ", $_GET['address']['street'])."'  ";
+				$search[] = str_replace("+", " ", $_GET['address']['street']);
 			}
 
 			if(isset($_GET['address']['village']) && $_GET['address']['village'] != "") {
-				$filters[] = " JSON_EXTRACT(l.address, '$.village') = '".$_GET['address']['village']."'  ";
-				$search[] = $_GET['address']['village'];
+				$filters[] = " JSON_EXTRACT(l.address, '$.village') = '".str_replace("+", " ", $_GET['address']['village'])."'  ";
+				$search[] = str_replace("+", " ", $_GET['address']['village']);
 			}
 
 			if(!is_array($_GET['address'])) {

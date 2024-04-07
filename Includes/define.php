@@ -35,6 +35,7 @@ define("MANAGE_ALIAS","/mls/manage");
 define("WEB_ALIAS","/mls/website");
 define("CS_ALIAS","/mls/cs");
 
+define("API","http://192.168.254.250/mls/api/");
 define("CDN","http://192.168.254.250/mls/cdn/");
 define("WEBDOMAIN","http://192.168.254.250/mls/website/");
 define("WEBADMIN","http://192.168.254.250/mls/webadmin/");

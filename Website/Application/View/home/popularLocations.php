@@ -30,9 +30,9 @@ $html[] = "<div class='pb-5 my-5'>";
 
 						$html[] = "<a href='".url("ListingsController@buy", null, [
 							"address[barangay]" => "",
-							"address[municipality]" => $data[$i]['city'],
-							"address[province]" => $data[$i]['province'],
-							"address[region]" => $data[$i]['region']
+							"address[municipality]" => str_replace(" ","+", $data[$i]['city']),
+							"address[province]" => str_replace(" ","+", $data[$i]['province']),
+							"address[region]" => str_replace(" ","+", $data[$i]['region']),
 						])."' class='stretched-link full-link'></a>";
 					$html[] = "</div>";
 				$html[] = "</div>";

@@ -14,10 +14,10 @@
 				<?php echo $content; ?>
 			</div>
 
-			<div class='main-footer p-4 pb-5 text-white mb-5 d-print-none'>
-				<div class='container-xl mb-5 pb-5 fs-16'>
+			<div class='main-footer py-5 text-white mb-5 d-print-none'>
+				<div class='container-xl mb-4 py-5 fs-16'>
 					<div class='row'>
-						<div class='col-lg-4 col-md-4 col-sm-12'>
+						<div class='col-lg-3 col-md-4 col-sm-12'>
 							<div class='mb-4'>
 								<h3>Main</h3>
 								<ul class='list-group list-group-flush m-0 p-0'>
@@ -32,7 +32,7 @@
 							</div>
 						</div>
 
-						<div class='col-lg-4 col-md-4 col-sm-12'>
+						<div class='col-lg-5 col-md-4 col-sm-12'>
 							<div class='mb-4'>
 								<h3>Leading the Real Estate Landscape in the Philippines</h3>
 								<p>The Philippine Association of Real Estate Boards Inc. (PAREB) is the premier and largest national real estate service organization in the Philippines. It comprises 68 local member boards with a collective membership of 5,000 real estate practitioners.</p>
@@ -47,7 +47,7 @@
 						</div>
 					</div>
 
-					<p>&copy; <?=WEBDOMAIN;?> All Rights reserved.</p>
+					<p class='text-center'>&copy; <?=WEBDOMAIN;?> All Rights reserved.</p>
 				</div>
 			</div>
 

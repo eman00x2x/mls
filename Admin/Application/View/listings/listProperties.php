@@ -25,7 +25,7 @@ $html[] = "<div class='row row-cards'>";
 
 						if($c < $total_featured) {
 							$c++;
-						}
+						}else { $c=0; }
 					}
 				}
 				/** End Featured ads */

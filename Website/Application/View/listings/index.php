@@ -18,12 +18,12 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<div class='sidebar bg-white p-4 border'>";
 
 					$html[] = "<div class='filter-box'>";
+
 						$html[] = "<div class='d-flex justify-content-between align-items-center'>";
 					    	$html[] = "<h3>Filter Results</h3>";
-
 							$html[] = "<a href='".currentUrl($model)."' class='text-decoration-none'><i class='ti ti-trash'></i> Clear filter</a>";
-							
 						$html[] = "</div>";
+
 						$html[] = "<form id='filter-form' action='' method='POST'>";
 							$html[] = "<div class='mb-4'>";
 								$html[] = "<div class='form-label text-muted'>Address</div>";
@@ -192,7 +192,7 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<div class='mb-4'>";
 					$html[] = "<div class='d-none PROPERTY_LIST_TOP'>";
 						$html[] = "<a href='#' target='_blank'>";
-							$html[] = "<div class='card bg-dark-lt mt-2 rounded-0  d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='height:250px;'>";
+							$html[] = "<div class='card bg-dark-lt rounded-0  d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='height:250px;'>";
 								$html[] = "<div class='loader'></div>";
 								$html[] = "<p>Loading Ads</p>";
 							$html[] = "</div>";
