@@ -14,8 +14,8 @@
 				<?php echo $content; ?>
 			</div>
 
-			<div class='main-footer p-4 pb-5 bg-blue text-white mb-5 d-print-none'>
-				<div class='container-xl mb-5 pb-5'>
+			<div class='main-footer p-4 pb-5 text-white mb-5 d-print-none'>
+				<div class='container-xl mb-5 pb-5 fs-16'>
 					<div class='row'>
 						<div class='col-lg-4 col-md-4 col-sm-12'>
 							<div class='mb-4'>
@@ -34,17 +34,15 @@
 
 						<div class='col-lg-4 col-md-4 col-sm-12'>
 							<div class='mb-4'>
-								<h3>Address</h3>
-								<p class='m-0 p-0'>Maecenas ac diam vel tellus feugiat fringilla</p>
-								<p class='m-0 p-0'>Pellentesque eleifend ex neque, sit amet ultrices nunc congue in. Proin finibus mi nec lacus ornare euismod</p>
+								<h3>Leading the Real Estate Landscape in the Philippines</h3>
+								<p>The Philippine Association of Real Estate Boards Inc. (PAREB) is the premier and largest national real estate service organization in the Philippines. It comprises 68 local member boards with a collective membership of 5,000 real estate practitioners.</p>
+								<p><i class='ti ti-map-pin'></i> Our Headquarters is lcoated at The PAREB Centre, P.E. Antonio Brgy. Ugong, Pasig City</p>
 							</div>
 						</div>
 						
 						<div class='col-lg-4 col-md-4 col-sm-12'>
 							<div class='mb-4'>
 								<h3>Social</h3>
-								<p class='m-0 p-0'>Maecenas ac diam vel tellus feugiat fringilla</p>
-								<p class='m-0 p-0'>Pellentesque eleifend ex neque, sit amet ultrices nunc congue in. Proin finibus mi nec lacus ornare euismod</p>
 							</div>
 						</div>
 					</div>

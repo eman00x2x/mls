@@ -250,6 +250,8 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 							});
 
 					}else {
+						$('.loader-container').addClass('d-none');
+						$('#inquiry-form').show();
 						$('.response').html(response.message);
 					}
 
@@ -327,7 +329,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 			$account = $this->getModel("Account");
 			$account->column['account_id'] = $data['account_id'];
-			$data['account'] = $account->getById();
+			$account_data = $account->getById();
 
 			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
@@ -349,8 +351,8 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				});
 
 				async function setKeys() {
-					privateKey = ".json_encode($data['account']['message_keys']['privateKey']).";
-					publicKey = ".json_encode($data['account']['message_keys']['publicKey']).";
+					privateKey = ".json_encode($account_data['message_keys']['privateKey']).";
+					publicKey = ".json_encode($account_data['message_keys']['publicKey']).";
 				}
 
 			"));
@@ -381,9 +383,11 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				"name" => $data['title'],
 				"id" => $data['listing_id'],
 				"url" => rtrim(WEBDOMAIN, '/') . url("ListingsController@view", ["name" => $data['name']]),
-				"account_id" => $data['account']['account_id'],
+				"account_id" => $account_data['account_id'],
 				"source" => "website"
 			]);
+
+			$data['account'] = $account_data;
 
 			$this->setTemplate("listings/view.php");
 			return $this->getTemplate($data, $listing);

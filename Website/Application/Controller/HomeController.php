@@ -183,9 +183,11 @@ class HomeController extends \Main\Controller {
 		$listings = $this->getModel("Listing");
 		$listings->page['limit'] = 10;
 		$listings->select(" COUNT(JSON_EXTRACT(address, '$.municipality')) as total, JSON_EXTRACT(address, '$.municipality') as city, JSON_EXTRACT(address, '$.region') as region, JSON_EXTRACT(address, '$.province') as province ");
-		/* $listings->where(" is_website = 1 "); */
+		$listings->where(" is_website = 1 ");
 		$listings->groupBy(" city ");
 		$data = $listings->getList();
+
+		$data = array_merge($data, $data, $data);
 
 		$this->setTemplate("home/popularLocations.php");
 		$html = $this->getTemplate($data, $listings);
@@ -208,7 +210,7 @@ class HomeController extends \Main\Controller {
 			->join(" l JOIN #__accounts a ON a.account_id = l.account_id")
 				->where(" is_website = 1 ")
 					->and(" featured = 1 ")
-						->orderBy(" modified_at DESC ");
+						->orderBy(" post_score DESC ");
 		$data['listings'] = $listings->getList();
 
 		if($data['listings']) {
@@ -228,6 +230,8 @@ class HomeController extends \Main\Controller {
 					$data['listings'][$i]['total_images'] = count($total_image);
 				}
 			}
+
+			$data['listings'] = array_merge($data['listings'], $data['listings'], $data['listings'], $data['listings']);
 
 			$this->setTemplate("home/featuredPost.php");
 			$data = $this->getTemplate($data, $listings);
@@ -250,6 +254,7 @@ class HomeController extends \Main\Controller {
 		$data['articles'] = $articles->getList();
 
 		$this->setTemplate("home/latestArticles.php");
+
 		$data = $this->getTemplate($data, $articles);
 
 		echo json_encode([

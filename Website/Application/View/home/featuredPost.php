@@ -1,10 +1,16 @@
 <?php
 
 $html[] = "<div class='pb-5 my-5'>";
-	$html[] = "<h2>Featured Properties</h2>";
-	$html[] = "<div class='p-featured'>";
+
+	$html[] = "<div class='text-center pb-3'>";
+		$html[] = "<h2 class='mb-0 display-5 text-blue'>Browse Our Premier Selection</h2>";
+		$html[] = "<p>Explore Featured Properties Offering Exceptional Value and Quality</p>";
+	$html[] = "</div>";
+
+	$html[] = "<div class='p-featured mt-3'>";
 		$html[] = "<div class='row row-deck row-cards'>";
 			if($data['listings']) {
+
 				for($i=0; $i<count($data['listings']); $i++) {
 					$html[] = "<div class='col-md-5 col-lg-3 col-auto '>";
 						$html[] = "<div class='card property-container mb-3' title='".$data['listings'][$i]['title']."'>";

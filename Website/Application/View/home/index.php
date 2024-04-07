@@ -90,7 +90,7 @@ $html[] = "<div class=''>";
 									$html[] = "<div class='mt-5 pt-5 d-lg-block d-none'></div>";
 									/** SPACER */
 
-									$html[] = "<h1 class='display-4 text-white fw-bold'>Find the best investment! <span class='d-block fs-16 '>Only @ PAREB MLS</span></h1>";
+									$html[] = "<h1 class='display-4 text-white fw-bold'>Find the best investment! <span class='d-block fs-16'>Only @ PAREB MLS</span></h1>";
 									
 									$html[] = "<div class=''>";
 										$html[] = "<div class='btn-group bg-white rounded-0'>";
@@ -123,7 +123,7 @@ $html[] = "<div class=''>";
 												$html[] = "</div>";
 											$html[] = "</div>";
 											$html[] = "<div class='d-none d-md-block'>";
-												$html[] = "<span class='btn btn-danger btn-filter border-0 rounded-0 ' type='button' style='padding: 1.19rem 1.19rem 1.18rem 1.19rem;'><i class='ti ti-search me-2'></i> Search</span>";
+												$html[] = "<span class='btn btn-primary btn-filter border-0 rounded-0 ' type='button' style='padding: 1.19rem 1.19rem 1.18rem 1.19rem;'><i class='ti ti-search me-2'></i> Search</span>";
 											$html[] = "</div>";
 										$html[] = "</div>";
 
@@ -276,7 +276,7 @@ $html[] = "<div class=''>";
 										$html[] = "</div>";
 
 										$html[] = "<div class='text-center mt-5  d-sm-block d-md-none inner-filter'>";
-											$html[] = "<span class='btn btn-danger w-100 border-0 btn-filter' type='button'><i class='ti ti-search me-2'></i> Search</span>";
+											$html[] = "<span class='btn btn-primary w-100 border-0 btn-filter' type='button'><i class='ti ti-search me-2'></i> Search</span>";
 										$html[] = "</div>";
 										
 									$html[] = "</div>";
@@ -285,7 +285,7 @@ $html[] = "<div class=''>";
 							$html[] = "</form>";
 
 							$html[] = "<div class='text-center mt-3 d-sm-block d-md-none outer-filter'>";
-								$html[] = "<span class='btn btn-danger w-100 border-0 btn-filter' type='button'><i class='ti ti-search me-2'></i> Search</span>";
+								$html[] = "<span class='btn btn-primary w-100 border-0 btn-filter' type='button'><i class='ti ti-search me-2'></i> Search</span>";
 							$html[] = "</div>";
 
 						$html[] = "</div>";
@@ -321,38 +321,27 @@ $html[] = "<div class=''>";
 	$html[] = "<div class='bg-white'>";
 		$html[] = "<div class='container-xl'>";
 			$html[] = "<div class='my-3 py-5 px-3 fs-16'>";
-				/* $html[] = "<h2>About</h2>";
-				$html[] = "<div class=''>";
-					$html[] = "<img src='".CDN."images/item_default.jpg' class='float-start me-2' style='width:200px;' />";
-					$html[] = "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dictum volutpat nunc, ut malesuada magna pellentesque sollicitudin. In ut nisl finibus augue luctus dictum. Nulla et tincidunt nunc. Sed aliquam rhoncus interdum. Vivamus convallis lectus et enim rhoncus tempor. Vestibulum cursus porttitor massa nec consectetur. Sed in est porttitor lacus interdum interdum vitae a nulla.</p>";
-					$html[] = "<p>Fusce lobortis, risus et consectetur rhoncus, turpis turpis interdum mi, et lobortis magna enim ut tortor. Proin finibus fringilla placerat. Fusce laoreet lacus est, sed vulputate justo hendrerit quis. Donec at ipsum ipsum. Vivamus eget varius metus. Ut semper dapibus augue nec gravida. Nam suscipit nibh urna, elementum malesuada neque semper posuere. Quisque viverra egestas felis at pulvinar. Fusce laoreet ipsum ut porttitor consequat. Proin tempor massa vel enim interdum consequat. Phasellus tempus arcu quis nibh finibus semper.</p>";
-					$html[] = "<p>Proin maximus, lacus ac ultrices maximus, velit elit auctor mauris, eu convallis metus velit id tellus. Sed interdum diam ligula, et blandit risus feugiat eu. Cras diam nulla, condimentum in neque a, consequat sagittis eros. Praesent mollis iaculis nisl accumsan aliquam. Fusce a turpis nisi. Duis semper accumsan dolor a elementum. Nullam ac ultrices eros. Sed semper, massa quis vulputate convallis, tellus libero porta odio, vel placerat arcu purus et sem. Curabitur iaculis erat vitae arcu suscipit, sit amet pellentesque purus euismod. Quisque in vestibulum tellus. Pellentesque feugiat nulla sit amet sapien sollicitudin vehicula. Proin eu lacus sodales, porta risus in, semper felis. Nam ante nibh, tincidunt eget malesuada in, sodales ut nibh.</p>";
-				$html[] = "</div>"; */
-
+				
 				$html[] = "<div class='row justify-content-center my-5 py-5'>";
 					$html[] = "<div class='col-lg-10 col-md-10 col-sm-12'>";
 
-						$html[] = "<div class='d-flex align-items-center gap-3'>";
+					$html[] = "<h2 class='display-3 text-blue'>About</h2>";
+						$html[] = "<div class='d-flex gap-3 flex-wrap flex-lg-nowrap'>";
 
-							$html[] = "<div class=''>";
+							$html[] = "<div class='flex-fill order-md-last'>";
 								$html[] = "<img src='".CDN."images/150ceddb-4707-47e6-8009-940522ba403f.png' class='' style='width:1024px;' />";
 							$html[] = "</div>";
 
-							$html[] = "<div class='text-end'>";
-
-								$html[] = "<h2 class='display-3'>About</h2>";
-								$html[] = "<div class='mb-4 '>";
-									$html[] = "<h3>Unified Excellence <small class='d-block fw-normal'>PAREB's Nationwide Network of Real Estate Specialists</small></h3>";
-									$html[] = "<p>PAREB is a non-profit organization comprising professional real estate practitioners, including consultants, appraisers, assessors, brokers, and salespersons across all 18 regions of the Philippines. Our members specialize in residential, commercial brokerage, and project selling</p>";
-								$html[] = "</div>";
-
-								$html[] = "<div class='mb-3 '>";
-									$html[] = "<h3>Elevating Ethical Standards <small class='d-block fw-normal'>PAREB's Commitment to Protecting Real Estate Integrity</small></h3>";
-									$html[] = "<p>PAREB champions the highest ethical conduct and standards of practice among its members. Through regular conventions, conferences, and forums, it equips and enhances the skills and knowledge of its members, advancing and protecting the interests of property owners and buyers. Additionally, PAREB collaborates as a leading partner with government regulators and policymakers to establish an environment and legal framework that safeguards the integrity of real estate transactions</p>";
-								$html[] = "</div>";
-
+							$html[] = "<div class='flex-fill'>";
+								$html[] = "<h3>Unified Excellence <span class='d-block fw-normal fs-14'>PAREB's Nationwide Network of Real Estate Specialists</span></h3>";
+								$html[] = "<p>PAREB is a non-profit organization comprising professional real estate practitioners, including consultants, appraisers, assessors, brokers, and salespersons across all 18 regions of the Philippines. Our members specialize in residential, commercial brokerage, and project selling</p>";
 							$html[] = "</div>";
 
+							$html[] = "<div class='flex-fill'>";
+								$html[] = "<h3>Elevating Ethical Standards <small class='d-block fw-normal fs-14'>PAREB's Commitment to Protecting Real Estate Integrity</small></h3>";
+								$html[] = "<p>PAREB champions the highest ethical conduct and standards of practice among its members. Through regular conventions, conferences, and forums, it equips and enhances the skills and knowledge of its members, advancing and protecting the interests of property owners and buyers. Additionally, PAREB collaborates as a leading partner with government regulators and policymakers to establish an environment and legal framework that safeguards the integrity of real estate transactions</p>";
+							$html[] = "</div>";
+							
 						$html[] = "</div>";
 
 					$html[] = "</div>";
@@ -367,7 +356,7 @@ $html[] = "<div class=''>";
 			$html[] = "<div class='join-container py-5 my-5 text-center fs-16'>";
 
 				$html[] = "<div class=''>";
-					$html[] = "<h2 class='display-6 fw-bold'>Elevate Your Real Estate Experience</h2>";
+					$html[] = "<h2 class='mb-0 display-5 text-blue'>Elevate Your Real Estate Experience</h2>";
 					$html[] = "<p>The Edge of Collaborating with a PAREB Broker</p>";
 				$html[] = "</div>";
 
