@@ -16,13 +16,11 @@ function import($path,$data=null,$model=null) {
 	}else {
 		$theFile1 = explode("\\",$path);
 		$theFile = array_pop($theFile1);
-
 		$html[] = " <h1 class='m-0 p-0'>File is Missing</h1> <p><br/>&mdash; <i>File</i> <b>$theFile</b> is missing in <b>".implode("\\",$theFile1)."</b> folder !</p> <hr />";
-		
 	}
 
-	return implode("",$html);
-
+    return implode("",$html);
+    
 }
 
 function clean($str) {

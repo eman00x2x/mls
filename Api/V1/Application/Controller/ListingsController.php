@@ -67,13 +67,13 @@ class ListingsController extends \Api\V1\Application\Controller\AuthenticatorCon
                 ->and(" account_id  = ". $this->account['account_id']);
 
         $data = $listings->getById();
-
-        $data['car_spaces'] = $data['parking'];
-
+        
         if($data) {
+
+            $data['car_spaces'] = isset($data['parking']) ? $data['parking'] : [];
             
             $images = $this->getModel("ListingImage");
-            $images->column['listing_id'] = $data['listing_id'];
+            $images->column['listing_id'] = $id;
             $images->select(" url ");
             $data['images'] = $images->getByListingId();
 
