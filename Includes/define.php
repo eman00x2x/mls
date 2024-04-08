@@ -5,6 +5,8 @@ date_default_timezone_set("Asia/Manila");
 
 define("DATE_NOW",strtotime("Now"));
 define("LIST_LIMIT",20);
+define("DEVELOPMENT", true);
+
 /* 
 define("API","http://api.mls/");
 define("WEBADMIN","http://webadmin.mls/");
@@ -14,27 +16,38 @@ define("ADMIN","http://admin.mls/");
 define("MANAGE","http://manage.mls/");
 define("CDN","http://cdn.mls/");
 
-define("ADMIN_ALIAS","/mls/admin");
-define("WEB_ADMIN_ALIAS","/mls/webadmin");
-define("MANAGE_ALIAS","/mls/manage");
-define("ALIAS","/mls/website");
  */
 
-define("API","http://localhost/mls/api/");
-define("API_V1","http://localhost/mls/api/v1");
-define("CDN","http://localhost/mls/cdn/");
-define("WEBDOMAIN","http://localhost/mls/website/");
-define("WEBADMIN","http://localhost/mls/webadmin/");
-define("CS","http://localhost/mls/cs/");
-define("ADMIN","http://localhost/mls/admin/");
-define("MANAGE","http://localhost/mls/manage/");
+if(DEVELOPMENT) {
 
-define("API_ALIAS","/mls/api");
-define("ADMIN_ALIAS","/mls/admin");
-define("WEB_ADMIN_ALIAS","/mls/webadmin");
-define("MANAGE_ALIAS","/mls/manage");
-define("WEB_ALIAS","/mls/website");
-define("CS_ALIAS","/mls/cs");
+	define("API_DOCS_ALIAS","/mls/api/documentation");
+	define("API_ALIAS","/mls/api");
+	define("ADMIN_ALIAS","/mls/admin");
+	define("WEB_ADMIN_ALIAS","/mls/webadmin");
+	define("MANAGE_ALIAS","/mls/manage");
+	define("WEB_ALIAS","/mls/website");
+	define("CS_ALIAS","/mls/cs");
+
+}else {
+
+	define("API_DOCS_ALIAS","");
+	define("API_ALIAS","");
+	define("ADMIN_ALIAS","");
+	define("WEB_ADMIN_ALIAS","");
+	define("MANAGE_ALIAS","");
+	define("WEB_ALIAS","");
+	define("CS_ALIAS","");
+
+}
+
+define("API",		"http://localhost/mls/api/");
+define("API_V1",	"http://localhost/mls/api/v1");
+define("CDN",		"http://localhost/mls/cdn/");
+define("WEBDOMAIN",	"http://localhost/mls/website/");
+define("WEBADMIN",	"http://localhost/mls/webadmin/");
+define("CS",		"http://localhost/mls/cs/");
+define("ADMIN",		"http://localhost/mls/admin/");
+define("MANAGE",	"http://localhost/mls/manage/");
 
 /* define("API","http://192.168.254.250/mls/api/");
 define("CDN","http://192.168.254.250/mls/cdn/");
@@ -44,17 +57,7 @@ define("CS","http://192.168.254.250/mls/webadmin/");
 define("ADMIN","http://192.168.254.250/mls/admin/");
 define("MANAGE","http://192.168.254.250/mls/manage/"); */
 
-
 define("VRSN","v1.0");
-
-define("BOARD_REGIONS", [
-	"NORTH LUZON",
-	"SOUTH LUZON",
-	"CENTRAL LUZON",
-	"NCR",
-	"VISAYAS",
-	"MINDANAO"
-]);
 
 define("LOCAL_BOARDS", [
 	"PRB PASIG REAL ESTATE BOARD INC",

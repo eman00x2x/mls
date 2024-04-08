@@ -27,6 +27,10 @@
     });
 </script>
 
+<style class='text/css'>
+body { background-color: #FFF; font-size: 16px; }
+</style>
+
 <?php
     $document = \Library\Factory::getDocument();
     echo \Library\DocumentRenderer::fetchHead($document);

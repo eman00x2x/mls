@@ -54,7 +54,7 @@ class Middleware implements IMiddleware {
 		SessionHandler::getInstance()->init();
 
 		require_once('routes.php');
-		$template = "templates/template.php";
+		$template = "Templates/template.php";
 		
 		Router::error(function(Request $request, \Exception $exception) {
 			$request->setRewriteCallback('ErrorsController@notFound');

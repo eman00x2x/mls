@@ -2,34 +2,37 @@
 
 use Pecee\SimpleRouter\SimpleRouter as Router;
 
-/** DASHBOARD ROUTES */
+Router::group(['prefix' => WEB_ADMIN_ALIAS], function () {
 
-Router::get(WEB_ADMIN_ALIAS.'/', 'DashboardController@index', ['as' => 'dashboard']);
+    /** DASHBOARD ROUTES */
+    Router::get('/', 'DashboardController@index', ['as' => 'dashboard']);
 
-/** ARTICLES ROUTES */
-Router::get(WEB_ADMIN_ALIAS.'/articles', 'ArticlesController@index', ['as' => 'index']);
-Router::get(WEB_ADMIN_ALIAS.'/articles/new', 'ArticlesController@add', ['as' => 'addArticle']);
-Router::get(WEB_ADMIN_ALIAS.'/articles/{id}', 'ArticlesController@edit', ['as' => 'editArticle'])->where([ 'id' => '[0-9]+' ]);
-Router::get(WEB_ADMIN_ALIAS.'/articles/{id}/delete', 'ArticlesController@delete', ['as' => 'deleteArticle'])->where([ 'id' => '[0-9]+' ]);
+    /** ARTICLES ROUTES */
+    Router::get('/articles', 'ArticlesController@index', ['as' => 'index']);
+    Router::get('/articles/new', 'ArticlesController@add', ['as' => 'addArticle']);
+    Router::get('/articles/{id}', 'ArticlesController@edit', ['as' => 'editArticle'])->where([ 'id' => '[0-9]+' ]);
+    Router::get('/articles/{id}/delete', 'ArticlesController@delete', ['as' => 'deleteArticle'])->where([ 'id' => '[0-9]+' ]);
 
-Router::post(WEB_ADMIN_ALIAS.'/articles/{id}/save', 'ArticlesController@saveUpdate', ['as' => 'saveUpdate'])->where([ 'id' => '[0-9]+' ]);
-Router::post(WEB_ADMIN_ALIAS.'/articles/saveNew', 'ArticlesController@saveNew', ['as' => 'articlesSaveNew']);
-Router::post(WEB_ADMIN_ALIAS.'/articles/upload', 'ArticlesController@uploadPhoto', ['as' => 'uploadPhoto']);
+    Router::post('/articles/{id}/save', 'ArticlesController@saveUpdate', ['as' => 'saveUpdate'])->where([ 'id' => '[0-9]+' ]);
+    Router::post('/articles/saveNew', 'ArticlesController@saveNew', ['as' => 'articlesSaveNew']);
+    Router::post('/articles/upload', 'ArticlesController@uploadPhoto', ['as' => 'uploadPhoto']);
 
-/** PAGE ADS ROUTES */
-Router::get(WEB_ADMIN_ALIAS.'/ads', 'PageAdsController@index', ['as' => 'ads']);
-Router::get(WEB_ADMIN_ALIAS.'/ads/new', 'PageAdsController@add', ['as' => 'addAds']);
-Router::get(WEB_ADMIN_ALIAS.'/ads/{id}', 'PageAdsController@edit', ['as' => 'editAds'])->where([ 'id' => '[0-9]+' ]);
-Router::get(WEB_ADMIN_ALIAS.'/ads/{id}/delete', 'PageAdsController@delete', ['as' => 'deleteAds'])->where([ 'id' => '[0-9]+' ]);
+    /** PAGE ADS ROUTES */
+    Router::get('/ads', 'PageAdsController@index', ['as' => 'ads']);
+    Router::get('/ads/new', 'PageAdsController@add', ['as' => 'addAds']);
+    Router::get('/ads/{id}', 'PageAdsController@edit', ['as' => 'editAds'])->where([ 'id' => '[0-9]+' ]);
+    Router::get('/ads/{id}/delete', 'PageAdsController@delete', ['as' => 'deleteAds'])->where([ 'id' => '[0-9]+' ]);
 
-Router::post(WEB_ADMIN_ALIAS.'/ads/{id}/save', 'PageAdsController@saveUpdate', ['as' => 'addAdsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
-Router::post(WEB_ADMIN_ALIAS.'/ads/saveNew', 'PageAdsController@saveNew', ['as' => 'addAdsSaveNew']);
-Router::post(WEB_ADMIN_ALIAS.'/ads/upload', 'PageAdsController@uploadPhoto', ['as' => 'adsUploadPhoto']);
+    Router::post('/ads/{id}/save', 'PageAdsController@saveUpdate', ['as' => 'addAdsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
+    Router::post('/ads/saveNew', 'PageAdsController@saveNew', ['as' => 'addAdsSaveNew']);
+    Router::post('/ads/upload', 'PageAdsController@uploadPhoto', ['as' => 'adsUploadPhoto']);
 
 
-/** WEB SETTINGS ROUTES */
-Router::get(WEB_ADMIN_ALIAS.'/settings/{page}', 'SettingsController@webSettings', ['as' => 'webSettings'])->where([ 'page' => '[\w\-\=]+' ]);
-Router::post(WEB_ADMIN_ALIAS.'/settings/saveUpdate', 'SettingsController@saveUpdate', ['as' => 'saveUpdate']);
+    /** WEB SETTINGS ROUTES */
+    Router::get('/settings/{page}', 'SettingsController@webSettings', ['as' => 'webSettings'])->where([ 'page' => '[\w\-\=]+' ]);
+    Router::post('/settings/saveUpdate', 'SettingsController@saveUpdate', ['as' => 'saveUpdate']);
 
-Router::get(WEB_ADMIN_ALIAS.'/account/user/changePassword', 'UsersController@changePassword', ['as' => 'changePassword']);
-Router::post(WEB_ADMIN_ALIAS.'/account/{id}/user/{user_id}/edit/saveUpdate', 'UsersController@saveUpdate', ['as' => 'usersSaveUpdate'])->where([ 'id' => '[0-9]+', 'user_id' => '[0-9]+' ]);
+    Router::get('/account/user/changePassword', 'UsersController@changePassword', ['as' => 'changePassword']);
+    Router::post('/account/{id}/user/{user_id}/edit/saveUpdate', 'UsersController@saveUpdate', ['as' => 'usersSaveUpdate'])->where([ 'id' => '[0-9]+', 'user_id' => '[0-9]+' ]);
+
+});

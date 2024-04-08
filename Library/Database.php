@@ -104,7 +104,11 @@ namespace Library {
 					<td style='text-align:left;background-color:#F5F5F5;'>".mysqli_error($this->link)."</td></tr>
 			</table>";
 
-			#$this->error = "<h1>Server is too busy.</h1><p>The Server is processing your first request. Please refresh the page if this page still showing to you contact the System Adminsitrator.</p>";
+			/* response()->httpCode(500);
+			$this->error = json_encode([
+				"message" => "The server is currently busy processing your initial request. Please try again. If the error persists, please contact the system administrator.",
+				"email" => CONFIG['contact_info']['email']
+			]); */
 
 			return $this->error;
 		}

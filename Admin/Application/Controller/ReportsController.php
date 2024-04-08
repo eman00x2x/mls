@@ -106,9 +106,9 @@ class ReportsController extends \Main\Controller {
 
 		if($result) {
 			for($i=0; $i<count($result); $i++) {
-				$data[ $result[$i]['board_region'] ][$i]['board'] = $result[$i]['local_board_name'];
-				$data[ $result[$i]['board_region'] ][$i]['total'] = $result[$i]['total'];
-				$data[ $result[$i]['board_region'] ][$i]['net_earnings'] = $result[$i]['net_earnings'];
+				$data[ $result[$i]['board_region']['region'] ][$i]['board'] = $result[$i]['local_board_name'];
+				$data[ $result[$i]['board_region']['region'] ][$i]['total'] = $result[$i]['total'];
+				$data[ $result[$i]['board_region']['region'] ][$i]['net_earnings'] = $result[$i]['net_earnings'];
 			}
 		}
 

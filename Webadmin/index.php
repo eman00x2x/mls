@@ -57,14 +57,16 @@ class Middleware implements IMiddleware {
 		Router::enableMultiRouteRendering(false);
 		Router::csrfVerifier($verifier);
 
-		Router::get(WEB_ADMIN_ALIAS . '/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeForm');
-		Router::get(WEB_ADMIN_ALIAS . '/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
-		Router::get(WEB_ADMIN_ALIAS . '/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
+		Router::group(['prefix' => WEB_ADMIN_ALIAS], function () {
+			Router::get('/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeForm');
+			Router::get('/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
+			Router::get('/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
 
-		Router::post(WEB_ADMIN_ALIAS . '/checkCredentials', 'AuthenticatorController@checkCredentials');
-		Router::post(WEB_ADMIN_ALIAS . '/saveNewPassword', 'AuthenticatorController@saveNewPassword');
-		Router::post(WEB_ADMIN_ALIAS . '/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
-		
+			Router::post('/checkCredentials', 'AuthenticatorController@checkCredentials');
+			Router::post('/saveNewPassword', 'AuthenticatorController@saveNewPassword');
+			Router::post('/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
+		});
+
 		$request->user = Authenticator::getInstance()->monitor();
 
 		if($request->user['status'] == 0) {

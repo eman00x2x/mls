@@ -9,29 +9,35 @@ $html[] = "<div class='container-xl'>";
 
         $html[] = "<div class='col-lg-2 col-md-3 col-sm-12 col-12'>";
             
-            $html[] = "<div class='sidebar' style='position:relative;'>";
-                $html[] = "<div class='sticky-top'>";
-                    $html[] = "<div class='list-group list-group-flush'>";
+            $html[] = "<div class='sidebar sticky-top pt-3'>";
 
-                        $html[] = "<div class='list-group-item'>";
-                            $html[] = "<h3 class='mb-1'>Getting Started</h3>";
-                            $html[] = "<a href='#getting_started' class='d-block  ms-2 mb-1'>Get Started</a>";
-                            $html[] = "<a href='#get_api_key' class='d-block  ms-2 mb-1'>Get API Key</a>";
-                        $html[] = "</div>";
+                $html[] = "<div class='d-flex gap-3 align-items-baseline pb-3 mb-3 border-bottom'>";
+                    $html[] = "<div>";
+                        $html[] = "<img src='".CDN."images/logo.png' style='width:50px;' />";
+                    $html[] = "</div>";
+                    $html[] = "<h1>".CONFIG['site_name']." API <small class='fw-normal fs-16'>v1</small></h1>";
+                $html[] = "</div>";
 
-                        $html[] = "<div class='list-group-item'>";
-                            $html[] = "<h3 class='mb-1'>Accounts</h3>";
-                            $html[] = "<a href='#get_account' class='d-block  ms-2 mb-1'>Get Account</a>";
-                        $html[] = "</div>";
+                $html[] = "<div class='list-group list-group-flush'>";
+                    $html[] = "<div class='list-group-item'>";
+                        $html[] = "<h3 class='mb-1'>Getting Started</h3>";
+                        $html[] = "<a href='#getting_started' class='d-block  ms-2 mb-1'>Get Started</a>";
+                        $html[] = "<a href='#get_api_key' class='d-block  ms-2 mb-1'>Get API Key</a>";
+                    $html[] = "</div>";
 
-                        $html[] = "<div class='list-group-item'>";
-                            $html[] = "<h3 class='mb-1'>Properties</h3>";
-                            $html[] = "<a href='#get_properties' class='d-block  ms-2 mb-1'>Get Properties</a>";
-                            $html[] = "<a href='#get_property' class='d-block  ms-2 mb-1'>Get Property Details</a>";
-                        $html[] = "</div>";
+                    $html[] = "<div class='list-group-item'>";
+                        $html[] = "<h3 class='mb-1'>Accounts</h3>";
+                        $html[] = "<a href='#get_account' class='d-block  ms-2 mb-1'>Get Account</a>";
+                    $html[] = "</div>";
 
+                    $html[] = "<div class='list-group-item'>";
+                        $html[] = "<h3 class='mb-1'>Property Listings</h3>";
+                        $html[] = "<a href='#get_properties' class='d-block  ms-2 mb-1'>Get Properties</a>";
+                        $html[] = "<a href='#get_property' class='d-block  ms-2 mb-1'>Get Property Details</a>";
                     $html[] = "</div>";
                 $html[] = "</div>";
+
+                $html[] = "<p class='mt-5 position-bottom'>&copy; ".CONFIG['site_name']." ".date("Y")."  All Rights reserved.</p>";
             $html[] = "</div>";
 
         $html[] = "</div>";
@@ -41,9 +47,9 @@ $html[] = "<div class='container-xl'>";
                 /** GETTING STARTED */
                 $html[] = "<div id='getting_started' class='py-5'>";
                     $html[] = "<h2 class='display-4'>Getting Started</h2>";
-                    $html[] = "<p>This API provides a data from $api_name and only registered members and has a privilege can access this informations.</p>";
-                    $html[] = "<p>The purpose of this API is to provide a data from $api_name to use on members own purpose.</p>";
-                    $html[] = "<p>This API requires API_KEY to authenticate.</p>";
+                    $html[] = "<p>This API provides data from the $api_name, and only registered members with privileges can access this information.</p>";
+                    $html[] = "<p>The purpose of this API is to provide data from $api_name for members to use for their own purposes.</p>";
+                    $html[] = "<p>This API requires an API_KEY for authentication.</p>";
                     $html[] = "<p>The API response is formatted as JSON.</p>";
                 $html[] = "</div>";
                 /** END GETTING STARTED */
@@ -53,20 +59,12 @@ $html[] = "<div class='container-xl'>";
                     $html[] = "<h2>API Header Status Response</h2>";
                     $html[] = "<table class='table'>";
                     $html[] = "<tr>";
-                        $html[] = "<td>200</td>";
+                        $html[] = "<td style='width:50px;'>200</td>";
                         $html[] = "<td>Request has been successful</td>";
                     $html[] = "</tr>";
                     $html[] = "<tr>";
                         $html[] = "<td>204</td>";
                         $html[] = "<td>No content.</td>";
-                    $html[] = "</tr>";
-                    $html[] = "<tr>";
-                        $html[] = "<td>400</td>";
-                        $html[] = "<td>Bad Request. Request failed. Wrong or missing parameters, wrong api_key.</td>";
-                    $html[] = "</tr>";
-                    $html[] = "<tr>";
-                        $html[] = "<td>403</td>";
-                        $html[] = "<td>Forbidden. Once the shipments processed at DELASIA Office, you cannot update or delete the resource.</td>";
                     $html[] = "</tr>";
                     $html[] = "<tr>";
                         $html[] = "<td>404</td>";
@@ -84,8 +82,8 @@ $html[] = "<div class='container-xl'>";
                 /** RESOURCE AND URI */
                 $html[] = "<div class='py-5'>";
                     $html[] = "<h2>Resources and URIs</h2>";
-                    $html[] = "<p>A RESTful API utilises HTTP commands POST, GET, PUT, and DELETE in order to perform an operation on a resource at the server. This resource is addressed by a URI; and what is returned by the server is a representation of that resource depending on its current state. HTTP POST and GET commonly used in our services.</p>";
-                    $html[] = "<p>For the meantime only GET command is allowed to perform an operation on a resource at the server.</p>";
+                    $html[] = "<p>A RESTful API utilizes HTTP commands such as POST, GET, PUT, and DELETE to perform operations on a resource at the server. This resource is addressed by a URI, and what is returned by the server is a representation of that resource based on its current state. HTTP GET are commonly used in our services.</p>";
+                    $html[] = "<p>Currently, only the GET command is allowed to perform operations on a resource at the server.</p>";
 
                     $html[] = "<pre>";
                         $html[] = "<code>";
@@ -97,28 +95,63 @@ $html[] = "<div class='container-xl'>";
                     $html[] = "</pre>";
                     
 
-                    $html[] = "<h3>ENDPOINT</h3>";
-                    $html[] = "<ul>";
-                        $html[] = "<li>".API_V1."/account - data of your account profile</li>";
-                        $html[] = "<li>".API_V1."/properties - data list of properties</li>";
-                        $html[] = "<li>".API_V1."/property/{id} - data of property, where id is the property id, you can get this from the list</li>";
-                    $html[] = "</ul>";
-                
+                    $html[] = "<br/><h3>ENDPOINT</h3>";
+                    $html[] = "<table class='table'>";
+                    $html[] = "<thead>";
+                        $html[] = "<tr>";
+                            $html[] = "<th>Endpoint</th>";
+                            $html[] = "<th>Info</th>";
+                        $html[] = "</tr>";
+                    $html[] = "</thead>";
+                    $html[] = "<tr>";
+                        $html[] = "<td>".API_V1."/account</td>";
+                        $html[] = "<td>Data of your account profile</td>";
+                    $html[] = "</tr>";
+                    $html[] = "<tr>";
+                        $html[] = "<td>".API_V1."/properties</td>";
+                        $html[] = "<td>Data list of properties</td>";
+                    $html[] = "</tr>";
+                    $html[] = "<tr>";
+                        $html[] = "<td>".API_V1."/property/:id</td>";
+                        $html[] = "<td>Data of property, where the ID is the property ID; you can obtain this from the list.</td>";
+                    $html[] = "</tr>";
+                    $html[] = "</table>";
+
+                    $html[] = "<h3 class='mt-5'>404 Error response</h3>";
+                    $html[] = "<pre>";
+                        $html[] = "<code>";
+                            $html[] = '{
+  "message": "The requested resource could not be found. Please refer to the documentation",
+  "url": "http://localhost/mls/api/documentation"
+}';
+                        $html[] = "</code>";
+                    $html[] = "</pre>";
+
+                    $html[] = "<h3 class='mt-5'>500 Error response</h3>";
+                    $html[] = "<pre>";
+                        $html[] = "<code>";
+                            $html[] = '{
+  "message": "The server is currently busy processing your initial request. Please try again. If the error persists, please contact the system administrator.",
+  "email": "'.CONFIG['contact_info']['email'].'"
+}';
+                        $html[] = "</code>";
+                    $html[] = "</pre>";
+                   
                 $html[] = "</div>";
                 /** END RESOURCE AND URI */
 
                 /** GET API KEY */
                 $html[] = "<div id='get_api_key' class='py-5'>";
                     $html[] = "<h2>Getting API KEY</h2>";
-                    $html[] = "<p>To get an API KEY, you must be registered to $api_name, and purchased the API access privilege.</p>";
+                    $html[] = "<p>To obtain an API key, you must be registered with $api_name and have purchased the API access privilege.</p>";
                     $html[] = "<ul>";
                         $html[] = "<li>Login to your account</li>";
-                        $html[] = "<li>Click your picture from the upper right corner and click \"My Account\"</li>";
-                        $html[] = "<li>Scroll to the bottom</li>";
-                        $html[] = "<li>and click reveal API KEY</li>";
+                        $html[] = "<li>Click on your profile picture from the upper right corner, then select \"My Account\".</li>";
+                        $html[] = "<li>Scroll to the bottom and click on \"Reveal API KEY\".</li>";
                     $html[] = "</ul>";
 
-                    $html[] = "<p>You may use CURL or request via HTTP to retrieved a data at the server</p>";
+                    $html[] = "<p>You may use CURL, Javascript Fetch, Python Requests or make an HTTP request to retrieve data from the server.</p>";
+                    $html[] = "<p>The API key can be passed as URI parameters or in the header named X-API-KEY</p>";
 
                     $html[] = "<h3>HTTP Request</h3>";
                     $html[] = "<pre>";
@@ -145,17 +178,31 @@ $html[] = "<div class='container-xl'>";
                 $html[] = "<div id='get_account' class='py-5'>";
                     $html[] = "<h2 class='display-4'>Accounts</h2>";
                     $html[] = "<h2>Get Account Data</h2>";
-                    $html[] = "<p>/account response is your account and personal information.</p>";
+                    $html[] = "<p>Response contains your account and personal information.</p>";
                     $html[] = "<p>To get your account data:</p>";
                     
-                    $html[] = "<h3>HTTP Request</h3>";
-                    $html[] = "<pre>";
-                        $html[] = "<code>";
-                            $html[] = 'GET '.API_V1.'/account?api_key='.$insert_api_key;
-                        $html[] = "</code>";
-                    $html[] = "</pre>";
+                    $html[] = "<div class='card border-0'>";
+                        $html[] = "<div class='card-header'>";
+                            $html[] = "<ul class='nav nav-tabs card-header-tabs nav-fill' data-bs-toggle='tabs' role='tablist'>";
+                                $html[] = "<li class='nav-item' role='presentation'><a href='#curl_account_request' class='nav-link active' data-bs-toggle='tab' aria-selected='true' role='tab'>HTTP Request</a></li>";
+                                $html[] = "<li class='nav-item' role='presentation'><a href='#http_account_request' class='nav-link' data-bs-toggle='tab' aria-selected='true' role='tab'>Curl</a></li>";
+                            $html[] = "</ul>";
+                        $html[] = "</div>";
+                        $html[] = "<div class='card-body'>";
+                            $html[] = "<div class='tab-content'>";
+                                $html[] = "<div class='tab-pane active show' id='curl_account_request'>";
+                                    $html[] = "<h3>HTTP Request</h3>";
+                                    $html[] = "<pre>";
+                                        $html[] = "<code>";
+                                            $html[] = 'GET '.API_V1.'/account?api_key='.$insert_api_key;
+                                        $html[] = "</code>";
+                                    $html[] = "</pre>";
+                                $html[] = "</div>";
+                            $html[] = "</div>";
 
-                    $html[] = "<h3>CURL Request</h3>";
+                            $html[] = "<div class='tab-content'>";
+                                $html[] = "<div class='tab-pane' id='http_account_request'>";
+                                    $html[] = "<h3>CURL Request</h3>";
                     $html[] = "<pre>";
                         $html[] = "<code>";
                             $html[] = 'curl -i 
@@ -165,6 +212,11 @@ $html[] = "<div class='container-xl'>";
                         $html[] = "</code>";
                     $html[] = "</pre>";
 
+                                $html[] = "</div>";
+                            $html[] = "</div>";
+                        $html[] = "</div>";
+                    $html[] = "</div>";
+
                     $html[] = "<h3 class='mt-5'>Possible success response</h3>";
                     $html[] = "<pre>";
                         $html[] = "<code>";
@@ -173,13 +225,13 @@ $html[] = "<div class='container-xl'>";
   "company_name": "",
   "profession": "",
   "real_estate_license_number": "",
-  "board_region": {
+  "board_location": {
     "region": "",
     "province": "",
     "municipality": ""
   },
   "local_board_name": "",
-  "account_name": {
+  "name": {
     "prefix": "",
     "firstname": "",
     "middlename": "",
@@ -215,33 +267,76 @@ $html[] = "<div class='container-xl'>";
                         $html[] = "</code>";
                     $html[] = "</pre>";
 
+
                 $html[] = "</div>";
                 /** END GET ACCOUNT DATA */
 
                 /** GET PROPERTIES DATA */
                 $html[] = "<div id='get_properties' class='py-5'>";
-                    $html[] = "<h2 class='display-4'>Properties</h2>";
+                    $html[] = "<h2 class='display-4'>Property Listings</h2>";
                     $html[] = "<h2>Get Properties</h2>";
-                    $html[] = "<p>/properties response is the list of your posted properties</p>";
-                    $html[] = "<p>To get your account data:</p>";
-                    
-                    $html[] = "<h3>HTTP Request</h3>";
-                    $html[] = "<pre>";
-                        $html[] = "<code>";
-                            $html[] = 'GET '.API_V1.'/properties?api_key='.$insert_api_key;
-                        $html[] = "</code>";
-                    $html[] = "</pre>";
+                    $html[] = "<p>Response is the list of your posted properties</p>";
+                    $html[] = "<p>To get your properties data:</p>";
 
-                    $html[] = "<h3>CURL Request</h3>";
+                    $html[] = "<div class='card border-0'>";
+                        $html[] = "<div class='card-header'>";
+                            $html[] = "<ul class='nav nav-tabs card-header-tabs nav-fill' data-bs-toggle='tabs' role='tablist'>";
+                                $html[] = "<li class='nav-item' role='presentation'><a href='#curl_properties_request' class='nav-link active' data-bs-toggle='tab' aria-selected='true' role='tab'>HTTP Request</a></li>";
+                                $html[] = "<li class='nav-item' role='presentation'><a href='#http_properties_request' class='nav-link' data-bs-toggle='tab' aria-selected='true' role='tab'>Curl</a></li>";
+                            $html[] = "</ul>";
+                        $html[] = "</div>";
+                        $html[] = "<div class='card-body'>";
+                            $html[] = "<div class='tab-content'>";
+                                $html[] = "<div class='tab-pane active show' id='curl_properties_request'>";
+                                    $html[] = "<h3>HTTP Request</h3>";
+                                    $html[] = "<pre>";
+                                        $html[] = "<code>";
+                                            $html[] = 'GET '.API_V1.'/properties?api_key='.$insert_api_key.'&page=:page';
+                                        $html[] = "</code>";
+                                    $html[] = "</pre>";
+                                $html[] = "</div>";
+                            $html[] = "</div>";
+
+                            $html[] = "<div class='tab-content'>";
+                                $html[] = "<div class='tab-pane' id='http_properties_request'>";
+                                    $html[] = "<h3>CURL Request</h3>";
                     $html[] = "<pre>";
                         $html[] = "<code>";
                             $html[] = 'curl -i 
     -H "Accept: application/json" 
     -H "X-API-KEY: '.$insert_api_key.'"
-    '.API_V1.'/properties';
+    '.API_V1.'/properties?page=:page';
                         $html[] = "</code>";
                     $html[] = "</pre>";
 
+                                $html[] = "</div>";
+                            $html[] = "</div>";
+                        $html[] = "</div>";
+                    $html[] = "</div>";
+
+                    $html[] = "<div class='my-5'>";
+                        $html[] = "<h3>URI Parameters</h3>";
+                        $html[] = "<table class='table'>";
+                        $html[] = "<theader>";
+                            $html[] = "<tr>";
+                                $html[] = "<th>Parameter</th>";
+                                $html[] = "<th>Description</th>";
+                                $html[] = "<th>Example</th>";
+                            $html[] = "</theader>";
+                        $html[] = "</tr>";
+                        /* $html[] = "<tr>";
+                            $html[] = "<td>api_key</td>";
+                            $html[] = "<td>your api key</td>";
+                            $html[] = "<td>394cf9fe9b88bcf2b-76032930840351b</td>";
+                        $html[] = "</tr>"; */
+                        $html[] = "<tr>";
+                            $html[] = "<td>page</td>";
+                            $html[] = "<td>the page number</td>";
+                            $html[] = "<td>page=2</td>";
+                        $html[] = "</tr>";
+                        $html[] = "</table>";
+                    $html[] = "</div><br/>";
+                    
                     $html[] = "<h3 class='mt-5'>Possible success response</h3>";
                     $html[] = "<pre>";
                         $html[] = "<code>";
@@ -280,18 +375,32 @@ $html[] = "<div class='container-xl'>";
 
                 /** GET PROPERTY DATA */
                 $html[] = "<div id='get_property' class='py-5'>";
-                    $html[] = "<h2>Get Properties</h2>";
-                    $html[] = "<p>/properties/:id response is the posted property selected data</p>";
-                    $html[] = "<p>To get your account data:</p>";
-                    
-                    $html[] = "<h3>HTTP Request</h3>";
-                    $html[] = "<pre>";
-                        $html[] = "<code>";
-                            $html[] = 'GET '.API_V1.'/properties/:id?api_key='.$insert_api_key;
-                        $html[] = "</code>";
-                    $html[] = "</pre>";
+                    $html[] = "<h2>Get Property Details</h2>";
+                    $html[] = "<p>The response contains the selected data of the posted property</p>";
+                    $html[] = "<p>To get your property data:</p>";
 
-                    $html[] = "<h3>CURL Request</h3>";
+                    $html[] = "<div class='card border-0'>";
+                        $html[] = "<div class='card-header'>";
+                            $html[] = "<ul class='nav nav-tabs card-header-tabs nav-fill' data-bs-toggle='tabs' role='tablist'>";
+                                $html[] = "<li class='nav-item' role='presentation'><a href='#curl_property_request' class='nav-link active' data-bs-toggle='tab' aria-selected='true' role='tab'>HTTP Request</a></li>";
+                                $html[] = "<li class='nav-item' role='presentation'><a href='#http_property_request' class='nav-link' data-bs-toggle='tab' aria-selected='true' role='tab'>Curl</a></li>";
+                            $html[] = "</ul>";
+                        $html[] = "</div>";
+                        $html[] = "<div class='card-body'>";
+                            $html[] = "<div class='tab-content'>";
+                                $html[] = "<div class='tab-pane active show' id='curl_property_request'>";
+                                    $html[] = "<h3>HTTP Request</h3>";
+                                    $html[] = "<pre>";
+                                        $html[] = "<code>";
+                                            $html[] = 'GET '.API_V1.'/properties/:id?api_key='.$insert_api_key;
+                                        $html[] = "</code>";
+                                    $html[] = "</pre>";
+                                $html[] = "</div>";
+                            $html[] = "</div>";
+
+                            $html[] = "<div class='tab-content'>";
+                                $html[] = "<div class='tab-pane' id='http_property_request'>";
+                                    $html[] = "<h3>CURL Request</h3>";
                     $html[] = "<pre>";
                         $html[] = "<code>";
                             $html[] = 'curl -i 
@@ -301,6 +410,11 @@ $html[] = "<div class='container-xl'>";
                         $html[] = "</code>";
                     $html[] = "</pre>";
 
+                                $html[] = "</div>";
+                            $html[] = "</div>";
+                        $html[] = "</div>";
+                    $html[] = "</div>";
+                    
                     $html[] = "<h3 class='mt-5'>Possible success response</h3>";
                     $html[] = "<pre>";
                         $html[] = "<code>";

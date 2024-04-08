@@ -240,13 +240,6 @@ class TransactionsController extends \Main\Controller {
 
 				$account_subscription = $this->getModel("AccountSubscription");
 
-				/**
-				 * Check if the account has current package subscription
-				 * if the account does not have current package subscription use $new_data['created_at'] in subscription_start_at
-				 * else get the current subscription_end_at and add +1 in subscription_start_at for this subscription
-				 */
-
-
 				$account_subscription->saveNew([
 					"account_id" => $account_id,
 					"transaction_id" => $data['transaction']['transaction_id'],

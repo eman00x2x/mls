@@ -19,7 +19,7 @@ class ErrorsController extends \Admin\Application\Controller\ErrorsController {
         response()->httpCode(404);
         echo json_encode([
             "message" => "The requested resource could not be found. Please refer to the documentation",
-            "url" => API. "documentation/v1"
+            "url" => API. "documentation"
         ], JSON_PRETTY_PRINT);
         exit();
         

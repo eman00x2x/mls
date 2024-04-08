@@ -12,12 +12,6 @@
 				<?php echo $content; ?>
 			</div>
 
-			<div class='main-footer py-5 text-white mb-5 d-print-none'>
-				<div class='container-xl mb-4 py-5 fs-16'>
-					
-					<p class='text-center'>&copy; <?=WEBDOMAIN;?> All Rights reserved.</p>
-				</div>
-			</div>
 
 		</body>
 </html>

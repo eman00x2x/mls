@@ -21,8 +21,8 @@ class AuthenticatorController extends \Admin\Application\Controller\Authenticato
 		}
 
         $account = $this->getModel("Account");
-        $account->select(" logo, company_name, profession, real_estate_license_number, board_region, local_board_name, 
-            account_name, birthdate, CONCAT(street, ' ', city, ' ', province) as address, mobile_number, email, tin, privileges,
+        $account->select(" logo, company_name, profession, real_estate_license_number, board_region as board_location, local_board_name, 
+            account_name as name, birthdate, CONCAT(street, ' ', city, ' ', province) as address, mobile_number, email, tin, privileges,
             status, registered_at
         ");
         $account->column['api_key'] = $api_key;
@@ -52,7 +52,7 @@ class AuthenticatorController extends \Admin\Application\Controller\Authenticato
             }else {
                 echo json_encode([
                     "message" => "You do not have enough privileges to access the API. Please refer to the documentation",
-                    "url" => API. "documentation/v1"
+                    "url" => API. "documentation"
                 ]);
                 exit();
             }

@@ -48,7 +48,12 @@ class Middleware implements IMiddleware {
 		});
 
 		Router::setDefaultNamespace('\Api\V1\Application\Controller');
-		echo Router::start();
+		
+		try {
+			echo Router::start();
+		} catch(\Error $e) {
+			response()->httpCode(500);
+		}
 
     }
 }

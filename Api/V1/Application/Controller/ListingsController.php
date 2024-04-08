@@ -19,7 +19,7 @@ class ListingsController extends \Api\V1\Application\Controller\AuthenticatorCon
                     WHEN status = 3 THEN 'Removed'
                 END as status, 
                 modified_at,
-                created_at ");
+                created_a ");
 
         $listings->page['limit'] = 100;
         $listings->page['current'] = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -42,8 +42,9 @@ class ListingsController extends \Api\V1\Application\Controller\AuthenticatorCon
             ], JSON_PRETTY_PRINT);
         }
 
+        response()->httpCode(204);
         return json_encode([
-            "message" => "no results found"
+            "message" => "No results found"
         ], JSON_PRETTY_PRINT);
 
     }

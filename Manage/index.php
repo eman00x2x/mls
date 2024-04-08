@@ -61,30 +61,34 @@ class Middleware implements IMiddleware {
 		Router::enableMultiRouteRendering(false);
 		Router::csrfVerifier($verifier);
 
-		Router::get(MANAGE_ALIAS . '/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeForm');
-		Router::get(MANAGE_ALIAS . '/register', 'RegistrationController@register');
-		Router::get(MANAGE_ALIAS . '/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
-		Router::get(MANAGE_ALIAS . '/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
-		Router::get(MANAGE_ALIAS . '/accountActivation/{code}', 'AuthenticatorController@accountActivation', ['as' => 'accountActivation'])->where([ 'code' => '[\w\-\=\.]+' ]);
+		Router::group(['prefix' => MANAGE_ALIAS], function () {
 
-		Router::post(MANAGE_ALIAS . '/checkCredentials', 'AuthenticatorController@checkCredentials');
-		Router::post(MANAGE_ALIAS . '/registerStep1', 'RegistrationController@register');
-		Router::post(MANAGE_ALIAS . '/registerBroker', 'RegistrationController@registerBroker');
-		Router::post(MANAGE_ALIAS . '/registerAccount', 'RegistrationController@registerAccount');
-		Router::post(MANAGE_ALIAS . '/registerAccountSave', 'RegistrationController@saveNew');
-		Router::post(MANAGE_ALIAS . '/saveNewPassword', 'AuthenticatorController@saveNewPassword');
-		Router::post(MANAGE_ALIAS . '/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
+			Router::get('/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeForm');
+			Router::get('/register', 'RegistrationController@register');
+			Router::get('/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
+			Router::get('/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
+			Router::get('/accountActivation/{code}', 'AuthenticatorController@accountActivation', ['as' => 'accountActivation'])->where([ 'code' => '[\w\-\=\.]+' ]);
+
+			Router::post('/checkCredentials', 'AuthenticatorController@checkCredentials');
+			Router::post('/registerStep1', 'RegistrationController@register');
+			Router::post('/registerBroker', 'RegistrationController@registerBroker');
+			Router::post('/registerAccount', 'RegistrationController@registerAccount');
+			Router::post('/registerAccountSave', 'RegistrationController@saveNew');
+			Router::post('/saveNewPassword', 'AuthenticatorController@saveNewPassword');
+			Router::post('/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
 		
+		});
+
 		$request->user = Authenticator::getInstance()->monitor();
 
 		if($request->user['status'] == 0) {
 			Router::get(MANAGE_ALIAS, 'AuthenticatorController@getLoginForm');
 			$request->setRewriteUrl(url(""));
-			$template = "templates/login.template.php";
+			$template = "Templates/login.template.php";
 		}else {
 			SessionHandler::getInstance()->init();
 			require_once('routes.php');
-			$template = "templates/template.php";
+			$template = "Templates/template.php";
 		}
 
 		Router::error(function(Request $request, \Exception $exception) {
