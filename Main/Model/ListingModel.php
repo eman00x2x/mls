@@ -169,9 +169,9 @@ class ListingModel extends \Main\Model {
 				$handle->allowed = array('image/*');
 				$handle->forbidden = array('application/*');
 				
-				if($handle->image_src_x > 800) {
+				if($handle->image_src_x > 1024) {
 					$handle->image_resize = true;
-					$handle->image_x = 800;
+					$handle->image_x = 1024;
 					$handle->image_ratio_y = true;
 				}
 				

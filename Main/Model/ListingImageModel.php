@@ -53,7 +53,7 @@ class ListingImageModel extends \Main\Model {
 
 			}
 
-			$score += ($image['width'] / 1000) + ($image['height'] / 1000);
+			$score += ($image['width'] / 1024) + ($image['height'] / 1024);
 			
 		}
 
