@@ -11,7 +11,7 @@ class ListingsController extends \Api\V1\Application\Controller\AuthenticatorCon
         $listings->column['account_id'] = $this->account['account_id'];
         
         $listings
-            ->select(" listing_id as id, thumb_img, title, category, offer, price, is_mls, is_website, is_mls_option,
+            ->select(" listing_id as id, thumb_img, title, category, offer, price, 
                 CASE 
                     WHEN status = 0 THEN 'Expired'
                     WHEN status = 1 THEN 'Active'
@@ -19,7 +19,7 @@ class ListingsController extends \Api\V1\Application\Controller\AuthenticatorCon
                     WHEN status = 3 THEN 'Removed'
                 END as status, 
                 modified_at,
-                created_a ");
+                created_at ");
 
         $listings->page['limit'] = 100;
         $listings->page['current'] = isset($_GET['page']) ? $_GET['page'] : 1;

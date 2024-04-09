@@ -188,63 +188,65 @@ $html[] = "<div class='page-body'>";
 
 			$html[] = "<div class='col-md-10 col-lg-9'>";
 
-				/** PAGE ADS */
-				$html[] = "<div class='mb-4'>";
-					$html[] = "<div class='d-none PROPERTY_LIST_TOP'>";
-						$html[] = "<a href='#' target='_blank'>";
-							$html[] = "<div class='card bg-dark-lt rounded-0  d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='height:250px;'>";
-								$html[] = "<div class='loader'></div>";
-								$html[] = "<p>Loading Ads</p>";
+				$html[] = "<div class='px-3'>";
+					/** PAGE ADS */
+					$html[] = "<div class='mb-4'>";
+						$html[] = "<div class='d-none PROPERTY_LIST_TOP'>";
+							$html[] = "<a href='#' target='_blank'>";
+								$html[] = "<div class='card bg-dark-lt rounded-0  d-print-none banner-container d-flex align-items-center justify-content-center gap-2' style='height:250px;'>";
+									$html[] = "<div class='loader'></div>";
+									$html[] = "<p>Loading Ads</p>";
+								$html[] = "</div>";
+							$html[] = "</a>";
+						$html[] = "</div>";
+					$html[] = "</div>";
+
+					$html[] = "<div class='mb-2 d-flex align-items-baseline justify-content-between'>";
+
+						$html[] = "<div class=''>";
+							$html[] = "<p>There are a total of (".$model->rows.") results</p>";
+						$html[] = "</div>";
+						
+						$html[] = "<div class='btn-group'>";
+							$html[] = "<div class='btn-group dropstart'>";
+								$html[] = "<span class='btn btn-outline-secondary dropdown-toggle' id='btn-sort' data-bs-toggle='dropdown' aria-expanded='false'><i class='ti ti-sort-descending me-1'></i> Sort</span>";
+								$html[] = "<ul class='dropdown-menu' aria-labelledby='btn-sort'>";
+
+									$uri = function(array $uri) use ($model) {
+										$r = $model->page['uri'];
+										unset($r['offer']);
+
+										foreach($uri as $k => $v) {
+											$r[$k] = $v;
+										}
+										
+										return $r;
+									};
+
+									$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "last_modified", "order" => "ASC"]) )."' class='dropdown-item'>Newest</a></li>";
+									$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "last_modified", "order" => "DESC"]) )."' class='dropdown-item'>Oldest</a></li>";
+									$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "price", "order" => "ASC"]) )."' class='dropdown-item'>By Price</a></li>";
+									$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "lot_area", "order" => "ASC"]) )."' class='dropdown-item'>By Land Area</a></li>";
+									$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "floor_area", "order" => "ASC"]) )."' class='dropdown-item'>By Floor Area</a></li>";
+									$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "match_score", "order" => "DESC"]) )."' class='dropdown-item'>By Relevance</a></li>";
+									$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "post_score", "order" => "DESC"]) )."' class='dropdown-item'>By Rank</a></li>";
+								$html[] = "</ul>";
 							$html[] = "</div>";
-						$html[] = "</a>";
-					$html[] = "</div>";
-				$html[] = "</div>";
 
-				$html[] = "<div class='mb-2 d-flex align-items-baseline justify-content-between'>";
-
-					$html[] = "<div class=''>";
-						$html[] = "<p>There are a total of (".$model->rows.") results</p>";
-					$html[] = "</div>";
-					
-					$html[] = "<div class='btn-group'>";
-						$html[] = "<div class='btn-group dropstart'>";
-							$html[] = "<span class='btn btn-outline-secondary dropdown-toggle' id='btn-sort' data-bs-toggle='dropdown' aria-expanded='false'><i class='ti ti-sort-descending me-1'></i> Sort</span>";
-							$html[] = "<ul class='dropdown-menu' aria-labelledby='btn-sort'>";
-
-								$uri = function(array $uri) use ($model) {
-									$r = $model->page['uri'];
-									unset($r['offer']);
-
-									foreach($uri as $k => $v) {
-                                        $r[$k] = $v;
-                                    }
-									
-									return $r;
-								};
-
-								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "last_modified", "order" => "ASC"]) )."' class='dropdown-item'>Newest</a></li>";
-								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "last_modified", "order" => "DESC"]) )."' class='dropdown-item'>Oldest</a></li>";
-								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "price", "order" => "ASC"]) )."' class='dropdown-item'>By Price</a></li>";
-								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "lot_area", "order" => "ASC"]) )."' class='dropdown-item'>By Land Area</a></li>";
-								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "floor_area", "order" => "ASC"]) )."' class='dropdown-item'>By Floor Area</a></li>";
-								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "match_score", "order" => "DESC"]) )."' class='dropdown-item'>By Relevance</a></li>";
-								$html[] = "<li><a href='".currentUrl($model, [], $uri(["sort" => "post_score", "order" => "DESC"]) )."' class='dropdown-item'>By Rank</a></li>";
-							$html[] = "</ul>";
+							$html[] = "<span class='btn btn-outline-secondary btn-filter-toggle d-md-block d-lg-none' data-bs-toggle='offcanvas' href='#offcanvasEnd' role='button' aria-controls='offcanvasEnd'><i class='ti ti-filter me-1'></i> Filter</span>";
 						$html[] = "</div>";
 
-						$html[] = "<span class='btn btn-outline-secondary btn-filter-toggle d-md-block d-lg-none' data-bs-toggle='offcanvas' href='#offcanvasEnd' role='button' aria-controls='offcanvasEnd'><i class='ti ti-filter me-1'></i> Filter</span>";
 					$html[] = "</div>";
 
+					/** LISTING LIST */
+					$html[] = $model->list;
+
+					if(!empty($model)) {
+						$html[] = "<div class='mt-4'>";
+							$html[] = $model->pagination;
+						$html[] = "</div>";
+					}
 				$html[] = "</div>";
-
-				/** LISTING LIST */
-				$html[] = $model->list;
-
-				if(!empty($model)) {
-					$html[] = "<div class='mt-4'>";
-						$html[] = $model->pagination;
-					$html[] = "</div>";
-				}
 
         	$html[] = "</div>";
 		$html[] = "</div>";

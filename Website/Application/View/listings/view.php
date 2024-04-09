@@ -3,7 +3,7 @@
 $html[] = "<div class='page-body mb-0'>";
 	$html[] = "<div class='container-xl'>";
 
-		$html[] = "<div class='my-3 p-2'>";
+		$html[] = "<div class='my-3 px-3'>";
 			$html[] = "<div class='row gap-2 justify-content-center'>";
 				$html[] = "<div class='col-sm-6 col-md-5 col-lg-5'>";
 

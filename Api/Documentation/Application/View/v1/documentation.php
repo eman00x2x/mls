@@ -4,45 +4,70 @@ $api_name = "PAREB MLS API";
 $insert_api_key = "<span class='insert-api-key'>[API_KEY]</span>";
 $curl_note = "<p class='mt-0 pt-0'>/** for readability purposes only **/</p>";
 
-$html[] = "<div class='container-xl'>";
+$html[] = "<div class='offcanvas offcanvas-start' tabindex='-1' id='offcanvasMenu' aria-labelledby='offcanvasLabel'>";
+    $html[] = "<div class='offcanvas-header'>";
+        $html[] = "<button type='button' class='btn-close text-reset' data-bs-dismiss='offcanvas' aria-label='Close'></button>";
+    $html[] = "</div>";
+    $html[] = "<div class='offcanvas-body'>";
+    $html[] = "</div>";
+$html[] = "</div>";
+
+
+$html[] = "<div class='container-fluid'>";
+
+    $html[] = "<div class='d-block d-md-none'>";
+        $html[] = "<div class='navbar fixed-top navbar-expand-lg navbar-light bg-light'>";
+            $html[] = "<div class='container'>";
+                $html[] = "<span class='navbar-toggler cursor-pointer open-menu' data-bs-toggle='offcanvas' data-bs-target='#offcanvasMenu' aria-controls='offcanvasMenu' aria-expanded='false' aria-label='Toggle navigation'>";
+                    $html[] = "<span class='navbar-toggler-icon'></span>";
+                $html[] = "</span>";
+                $html[] = "<a class='navbar-brand' href='".API."documentation'>".CONFIG['site_name']." API <small class='fw-normal fs-16'>v1</small></a>";
+            $html[] = "</div>";
+        $html[] = "</div>";
+    $html[] = "</div>";
+
     $html[] = "<div class='row g-0'>";
 
-        $html[] = "<div class='col-lg-2 col-md-3 col-sm-12 col-12'>";
+        $html[] = "<div class='col-lg-3 col-md-3 col-sm-12 col-12'>";
             
-            $html[] = "<div class='sidebar sticky-top pt-3'>";
+            $html[] = "<div class='sidebar sticky-top  px-3 d-none d-md-block' >";
+                $html[] = "<div class='pt-3 border-end border-2' style='height:750px;'>";  
 
-                $html[] = "<div class='d-flex gap-3 align-items-baseline pb-3 mb-3 border-bottom'>";
-                    $html[] = "<div>";
-                        $html[] = "<img src='".CDN."images/logo.png' style='width:50px;' />";
+                    $html[] = "<div class='menu'>";
+                        $html[] = "<div class='d-flex gap-2 align-items-baseline pb-3 mb-3 border-bottom'>";
+                            $html[] = "<div>";
+                                $html[] = "<img src='".CDN."images/logo.png' style='width:50px;' />";
+                            $html[] = "</div>";
+                            $html[] = "<h1>".CONFIG['site_name']." API <small class='fw-normal fs-16'>v1</small></h1>";
+                        $html[] = "</div>";
+
+                        $html[] = "<div class='list-group list-group-flush'>";
+                            $html[] = "<div class='list-group-item'>";
+                                $html[] = "<h3 class='mb-1'>Getting Started</h3>";
+                                $html[] = "<a href='#getting_started' class='d-block ms-2 mb-1'>Get Started</a>";
+                                $html[] = "<a href='#get_api_key' class='d-block ms-2 mb-1'>Get API Key</a>";
+                            $html[] = "</div>";
+
+                            $html[] = "<div class='list-group-item'>";
+                                $html[] = "<h3 class='mb-1'>Accounts</h3>";
+                                $html[] = "<a href='#get_account' class='d-block  ms-2 mb-1'>Get Account</a>";
+                            $html[] = "</div>";
+
+                            $html[] = "<div class='list-group-item'>";
+                                $html[] = "<h3 class='mb-1'>Property Listings</h3>";
+                                $html[] = "<a href='#get_properties' class='d-block  ms-2 mb-1'>Get Properties</a>";
+                                $html[] = "<a href='#get_property' class='d-block  ms-2 mb-1'>Get Property Details</a>";
+                            $html[] = "</div>";
+                        $html[] = "</div>";
+
+                        $html[] = "<p class='mt-5 position-bottom'>&copy; ".CONFIG['site_name']." ".date("Y")."  All Rights reserved.</p>";
                     $html[] = "</div>";
-                    $html[] = "<h1>".CONFIG['site_name']." API <small class='fw-normal fs-16'>v1</small></h1>";
                 $html[] = "</div>";
-
-                $html[] = "<div class='list-group list-group-flush'>";
-                    $html[] = "<div class='list-group-item'>";
-                        $html[] = "<h3 class='mb-1'>Getting Started</h3>";
-                        $html[] = "<a href='#getting_started' class='d-block  ms-2 mb-1'>Get Started</a>";
-                        $html[] = "<a href='#get_api_key' class='d-block  ms-2 mb-1'>Get API Key</a>";
-                    $html[] = "</div>";
-
-                    $html[] = "<div class='list-group-item'>";
-                        $html[] = "<h3 class='mb-1'>Accounts</h3>";
-                        $html[] = "<a href='#get_account' class='d-block  ms-2 mb-1'>Get Account</a>";
-                    $html[] = "</div>";
-
-                    $html[] = "<div class='list-group-item'>";
-                        $html[] = "<h3 class='mb-1'>Property Listings</h3>";
-                        $html[] = "<a href='#get_properties' class='d-block  ms-2 mb-1'>Get Properties</a>";
-                        $html[] = "<a href='#get_property' class='d-block  ms-2 mb-1'>Get Property Details</a>";
-                    $html[] = "</div>";
-                $html[] = "</div>";
-
-                $html[] = "<p class='mt-5 position-bottom'>&copy; ".CONFIG['site_name']." ".date("Y")."  All Rights reserved.</p>";
             $html[] = "</div>";
-
+            
         $html[] = "</div>";
         $html[] = "<div class='col-lg-8 col-md-8 col-sm-12 col-12'>";
-            $html[] = "<div class='content border-start border-2 p-5'>";
+            $html[] = "<div class='content py-5 px-3'>";
                 
                 /** GETTING STARTED */
                 $html[] = "<div id='getting_started' class='py-5'>";
@@ -96,26 +121,28 @@ $html[] = "<div class='container-xl'>";
                     
 
                     $html[] = "<br/><h3>ENDPOINT</h3>";
-                    $html[] = "<table class='table'>";
-                    $html[] = "<thead>";
+                    $html[] = "<div class='table-responsive'>";
+                        $html[] = "<table class='table'>";
+                        $html[] = "<thead>";
+                            $html[] = "<tr>";
+                                $html[] = "<th>Endpoint</th>";
+                                $html[] = "<th>Info</th>";
+                            $html[] = "</tr>";
+                        $html[] = "</thead>";
                         $html[] = "<tr>";
-                            $html[] = "<th>Endpoint</th>";
-                            $html[] = "<th>Info</th>";
+                            $html[] = "<td>".API_V1."/account</td>";
+                            $html[] = "<td>Data of your account profile</td>";
                         $html[] = "</tr>";
-                    $html[] = "</thead>";
-                    $html[] = "<tr>";
-                        $html[] = "<td>".API_V1."/account</td>";
-                        $html[] = "<td>Data of your account profile</td>";
-                    $html[] = "</tr>";
-                    $html[] = "<tr>";
-                        $html[] = "<td>".API_V1."/properties</td>";
-                        $html[] = "<td>Data list of properties</td>";
-                    $html[] = "</tr>";
-                    $html[] = "<tr>";
-                        $html[] = "<td>".API_V1."/property/:id</td>";
-                        $html[] = "<td>Data of property, where the ID is the property ID; you can obtain this from the list.</td>";
-                    $html[] = "</tr>";
-                    $html[] = "</table>";
+                        $html[] = "<tr>";
+                            $html[] = "<td>".API_V1."/properties</td>";
+                            $html[] = "<td>Data list of properties</td>";
+                        $html[] = "</tr>";
+                        $html[] = "<tr>";
+                            $html[] = "<td>".API_V1."/property/:id</td>";
+                            $html[] = "<td>Data of property, where the ID is the property ID; you can obtain this from the list.</td>";
+                        $html[] = "</tr>";
+                        $html[] = "</table>";
+                    $html[] = "</div>";
 
                     $html[] = "<h3 class='mt-5'>404 Error response</h3>";
                     $html[] = "<pre>";
@@ -291,7 +318,7 @@ $html[] = "<div class='container-xl'>";
                                     $html[] = "<h3>HTTP Request</h3>";
                                     $html[] = "<pre>";
                                         $html[] = "<code>";
-                                            $html[] = 'GET '.API_V1.'/properties?api_key='.$insert_api_key.'&page=:page';
+                                            $html[] = 'GET '.API_V1.'/properties?api_key='.$insert_api_key.'';
                                         $html[] = "</code>";
                                     $html[] = "</pre>";
                                 $html[] = "</div>";
@@ -305,7 +332,7 @@ $html[] = "<div class='container-xl'>";
                             $html[] = 'curl -i 
     -H "Accept: application/json" 
     -H "X-API-KEY: '.$insert_api_key.'"
-    '.API_V1.'/properties?page=:page';
+    '.API_V1.'/properties';
                         $html[] = "</code>";
                     $html[] = "</pre>";
 
@@ -316,25 +343,27 @@ $html[] = "<div class='container-xl'>";
 
                     $html[] = "<div class='my-5'>";
                         $html[] = "<h3>URI Parameters</h3>";
-                        $html[] = "<table class='table'>";
-                        $html[] = "<theader>";
+                        $html[] = "<div class='table-responsive'>";
+                            $html[] = "<table class='table'>";
+                            $html[] = "<theader>";
+                                $html[] = "<tr>";
+                                    $html[] = "<th>Parameter</th>";
+                                    $html[] = "<th>Description</th>";
+                                    $html[] = "<th>Example</th>";
+                                $html[] = "</theader>";
+                            $html[] = "</tr>";
+                            /* $html[] = "<tr>";
+                                $html[] = "<td>api_key</td>";
+                                $html[] = "<td>your api key</td>";
+                                $html[] = "<td>394cf9fe9b88bcf2b-76032930840351b</td>";
+                            $html[] = "</tr>"; */
                             $html[] = "<tr>";
-                                $html[] = "<th>Parameter</th>";
-                                $html[] = "<th>Description</th>";
-                                $html[] = "<th>Example</th>";
-                            $html[] = "</theader>";
-                        $html[] = "</tr>";
-                        /* $html[] = "<tr>";
-                            $html[] = "<td>api_key</td>";
-                            $html[] = "<td>your api key</td>";
-                            $html[] = "<td>394cf9fe9b88bcf2b-76032930840351b</td>";
-                        $html[] = "</tr>"; */
-                        $html[] = "<tr>";
-                            $html[] = "<td>page</td>";
-                            $html[] = "<td>the page number</td>";
-                            $html[] = "<td>page=2</td>";
-                        $html[] = "</tr>";
-                        $html[] = "</table>";
+                                $html[] = "<td>page</td>";
+                                $html[] = "<td>the page number</td>";
+                                $html[] = "<td>page=2</td>";
+                            $html[] = "</tr>";
+                            $html[] = "</table>";
+                        $html[] = "</div>";
                     $html[] = "</div><br/>";
                     
                     $html[] = "<h3 class='mt-5'>Possible success response</h3>";
@@ -354,13 +383,6 @@ $html[] = "<div class='container-xl'>";
       "category": "House and Lot",
       "offer": "for sale",
       "price": 1500000,
-      "is_mls": 1,
-      "is_website": 1,
-      "is_mls_option": {
-        "local_board": 1,
-        "local_region": 1,
-        "all": 1
-      },
       "status": "Active",
       "modified_at": 1710575599,
       "created_at": 1699019091

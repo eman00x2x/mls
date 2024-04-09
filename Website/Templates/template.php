@@ -15,7 +15,7 @@
 			</div>
 
 			<div class='main-footer py-5 text-white mb-5 d-print-none'>
-				<div class='container-xl mb-4 py-5 fs-16'>
+				<div class='container-xl mb-4 py-5 px-4 fs-16'>
 					<div class='row'>
 						<div class='col-lg-3 col-md-4 col-sm-12'>
 							<div class='mb-4'>

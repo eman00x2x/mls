@@ -9,7 +9,7 @@ $html[] = "<div class='page-body bg-white' style='margin: 0;'>";
 				
 					$html[] = "<div class='article py-4'>";
 						
-						$html[] = "<div class='d-flex  justify-content-between'>";
+						$html[] = "<div class='d-flex flex-wrap justify-content-between'>";
 
 							$html[] = "<div class=''>";
 								$html[] = "<h1 class='mb-1'>".$data['title']."</h1>";

@@ -15,6 +15,16 @@ class ApiV1Controller extends \Main\Controller {
 
         $this->doc->setTitle(CONFIG['site_name'] . " API Documentation");
 
+        $this->doc->addScriptDeclaration("
+            $(document).ready(function() {
+                $('.menu').clone().appendTo('.offcanvas-body');
+
+                $('.menu a').click(function() {
+                    $('.offcanvas .btn-close').trigger('click');
+                });
+            });
+        ");
+
         $this->setTemplate("v1/documentation.php");
         return $this->getTemplate();
     }
