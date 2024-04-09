@@ -54,7 +54,7 @@ define("API_V1",	"http://localhost/mls/api/v1");
 define("CDN",		"http://192.168.254.250/mls/cdn/");
 define("WEBDOMAIN",	"http://192.168.254.250/mls/website/");
 define("WEBADMIN",	"http://192.168.254.250/mls/webadmin/");
-define("CS",		"http://192.168.254.250/mls/webadmin/");
+define("CS",		"http://192.168.254.250/mls/cs/");
 define("ADMIN",		"http://192.168.254.250/mls/admin/");
 define("MANAGE",	"http://192.168.254.250/mls/manage/");
 
