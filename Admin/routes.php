@@ -80,6 +80,12 @@ Router::group(['prefix' => ADMIN_ALIAS], function () {
     /** REPORTS ROUTES */
     Router::get('/report/subscribers', 'ReportsController@subscribersReport', ['as' => 'subscribersReport']);
     Router::get('/report/transactions', 'ReportsController@transactionsReport', ['as' => 'transactionsReport']);
+    Router::get('/report/propertiesReport', 'ReportsController@propertiesReport', ['as' => 'propertiesReport']);
+    Router::get('/report/listingPerCategoriesReport', 'ReportsController@listingPerCategoriesReport', ['as' => 'listingPerCategoriesReport']);
+    Router::get('/report/listingPerRegion', 'ReportsController@listingPerRegion', ['as' => 'listingPerRegion']);
+    Router::get('/report/listingPerProvince', 'ReportsController@listingPerProvince', ['as' => 'listingPerProvince']);
+    Router::get('/report/listingPerMunicipality', 'ReportsController@listingPerMunicipality', ['as' => 'listingPerMunicipality']);
+    Router::get('/report/listingPerBarangay', 'ReportsController@listingPerBarangay', ['as' => 'listingPerBarangay']);
 
     /** ARTICLES ROUTES */
     Router::get('/articles', 'ArticlesController@index', ['as' => 'index']);

@@ -93,7 +93,7 @@ class Charts
                         bar: { columnWidth: '50%' }
                     },
                     dataLabels: { enabled: false, },
-					fill: { opacity: .16, type: 'solid' },
+					fill: { opacity: 1, type: 'solid' },
 					stroke: {
 						width: 2,
 						lineCap: 'round',
@@ -116,13 +116,12 @@ class Charts
 					xaxis: {
 						labels: { padding: 0 },
 						tooltip: { enabled: false },
-						type: 'datetime',
-      			        axisBorder: { show: false, }
+      			        axisBorder: { show: false, },
+						categories: $data[labels],
 					},
 					yaxis: {
 						labels: { padding: 4 }
 					},
-					labels: $data[labels],
 					colors: [tabler.getColor('primary')],
 					legend: { show: false },
 				})).render();

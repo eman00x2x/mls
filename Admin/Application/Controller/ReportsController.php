@@ -117,4 +117,137 @@ class ReportsController extends \Main\Controller {
 
 	}
 
+	function propertiesReport() {
+
+		$this->doc->setTitle("Properties Report");
+
+		$this->listingPerCategoriesReport();
+
+		$address = $this->getModel("Address");
+		$address->selection = $address->addressSelection();
+
+		$this->doc->addScriptDeclaration("
+			$(document).ready(function() {
+				$('.barangay-selection').hide();
+			});
+
+			$(document).on('change', '#region', function() {
+				let val = $('#region option:selected').val();
+				$.get('".url("ReportsController@listingPerProvince")."?loc='+val, function(data) {
+					$('.location-continer').html(data);
+				});
+			});
+
+			$(document).on('change', '#province', function() {
+				let val = $('#province option:selected').val();
+				$.get('".url("ReportsController@listingPerMunicipality")."?loc='+val, function(data) {
+					$('.location-continer').html(data);
+				});
+			});
+
+			$(document).on('change', '#municipality', function() {
+				let val = $('#municipality option:selected').val();
+				$.get('".url("ReportsController@listingPerBarangay")."?loc='+val, function(data) {
+					$('.location-continer').html(data);
+				});
+			});
+
+		");
+
+		$this->setTemplate("reports/properties.php");
+		return $this->getTemplate(null, $address);
+
+	}
+
+	function listingPerCategoriesReport($flag = "this_year") {
+
+		$date_helper = \dateHelper($flag);
+
+		$listing = $this->getModel("Listing");
+		$listing->select(" category, COUNT(category) as total_listing ")
+			->groupBy(" category ")
+				#->where(" status = 1 AND created_at >= ".$date_helper['from']." AND created_at <= ".$date_helper['to']." ");
+				->where(" status = 1  ");
+
+		$listing->page['limit'] = 999999;
+
+		$data = $listing->getList();
+
+		if($data) {
+			for($i=0; $i<count($data); $i++) {
+				$chart['labels'][] = $data[$i]['category'];
+				$chart['series'][] = $data[$i]['total_listing'];
+			}
+		}
+
+		$chart_data['labels'] = json_encode($chart['labels']);
+		$chart_data['series'] = json_encode($chart['series']);
+
+		$this->getLibrary("Charts")->getBarChart($chart_data, "getCategoriesChart_$flag", "Categories");
+		
+	}
+
+	function listingPerRegion() {
+
+		$listing = $this->getModel("Listing");
+		$listing->select(" JSON_EXTRACT(address, '$.region') as region, COUNT(listing_id) as total_listing ")
+			->groupBy(" region ")
+				->where(" status = 1 ");
+
+		$listing->page['limit'] = 999999;
+
+		$data = $listing->getList();
+
+		$this->setTemplate("reports/listingPerRegion.php");
+		return $this->getTemplate($data);
+		
+	}
+
+	function listingPerProvince() {
+
+		$listing = $this->getModel("Listing");
+		$listing->select(" JSON_EXTRACT(address, '$.province') as province, COUNT(listing_id) as total_listing ")
+			->groupBy(" province ")
+				->where(" status = 1 AND JSON_EXTRACT(address, '$.province') = '".$_GET['loc']."' ");
+
+		$listing->page['limit'] = 999999;
+
+		$data = $listing->getList();
+
+		$this->setTemplate("reports/listingPerProvince.php");
+		return $this->getTemplate($data);
+	}
+
+	function listingPerMunicipality() {
+
+		$listing = $this->getModel("Listing");
+		$listing->select(" JSON_EXTRACT(address, '$.municipality') as municipality, COUNT(listing_id) as total_listing ")
+			->groupBy(" municipality ")
+				->where(" status = 1 AND JSON_EXTRACT(address, '$.province') = '".$_GET['loc']."' ");
+
+		$listing->page['limit'] = 999999;
+
+		$data = $listing->getList();
+		
+		$this->setTemplate("reports/listingPerMunicipality.php");
+		return $this->getTemplate($data);
+		
+	}
+
+	function listingPerBarangay() {
+
+		$listing = $this->getModel("Listing");
+		$listing->select(" JSON_EXTRACT(address, '$.barangay') as barangay, COUNT(listing_id) as total_listing ")
+			->groupBy(" barangay ")
+				->where(" status = 1 AND JSON_EXTRACT(address, '$.province') = '".$_GET['loc']."' ");
+
+		$listing->page['limit'] = 999999;
+
+		$data = $listing->getList();
+		
+		$this->setTemplate("reports/listingPerBarangay.php");
+		return $this->getTemplate($data);
+		
+	}
+
 } 

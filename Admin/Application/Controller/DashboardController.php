@@ -21,7 +21,7 @@ class DashboardController extends \Main\Controller {
 
 		$this->getTrafficChart();
 		$this->getChartEarnings("this_year");
-		 $this->getKycDateVerified();
+		$this->getKycDateVerified();
 
 		$data['kyc'] = $this->getKycStatus();
         $data['kyc_verifier'] = $this->getKycVerifierStatistics();

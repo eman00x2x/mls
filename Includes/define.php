@@ -40,23 +40,23 @@ if(DEVELOPMENT) {
 
 }
 
-/* define("API",		"http://localhost/mls/api/");
+define("API",	"http://localhost/mls/api/");
 define("API_V1",	"http://localhost/mls/api/v1");
 define("CDN",		"http://localhost/mls/cdn/");
 define("WEBDOMAIN",	"http://localhost/mls/website/");
 define("WEBADMIN",	"http://localhost/mls/webadmin/");
 define("CS",		"http://localhost/mls/cs/");
 define("ADMIN",		"http://localhost/mls/admin/");
-define("MANAGE",	"http://localhost/mls/manage/"); */
+define("MANAGE",	"http://localhost/mls/manage/");
 
-define("API",		"http://192.168.254.250/mls/api/");
+/* define("API",		"http://192.168.254.250/mls/api/");
 define("API_V1",	"http://localhost/mls/api/v1");
 define("CDN",		"http://192.168.254.250/mls/cdn/");
 define("WEBDOMAIN",	"http://192.168.254.250/mls/website/");
 define("WEBADMIN",	"http://192.168.254.250/mls/webadmin/");
 define("CS",		"http://192.168.254.250/mls/cs/");
 define("ADMIN",		"http://192.168.254.250/mls/admin/");
-define("MANAGE",	"http://192.168.254.250/mls/manage/");
+define("MANAGE",	"http://192.168.254.250/mls/manage/"); */
 
 define("VRSN","v1.0");
 

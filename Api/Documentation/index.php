@@ -51,6 +51,7 @@ class Middleware implements IMiddleware {
 		require_once(BASE."/Templates/template.php");
 		
     }
+	
 }
 
 $middleWare = new \Middleware();
