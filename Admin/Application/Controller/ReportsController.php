@@ -129,6 +129,11 @@ class ReportsController extends \Main\Controller {
 		$this->doc->addScriptDeclaration("
 			$(document).ready(function() {
 				$('.barangay-selection').hide();
+
+				$.get('".url("ReportsController@listingPerRegion")."', function(data) {
+					$('.location-continer').html(data);
+				});
+
 			});
 
 			$(document).on('change', '#region', function() {
@@ -164,19 +169,28 @@ class ReportsController extends \Main\Controller {
 			});
 
 			$(document).on('click', '.text-region', function() {
-				val = $(this).text();
-				$('#region option:selected').text(val).trigger('change');
+				triggerChange($(this).text(), 'region');
 			});
 
 			$(document).on('click', '.text-province', function() {
-				val = $(this).text();
-				$('#province option:selected').text(val).trigger('change');
+				triggerChange($(this).text(), 'province');
 			});
 
 			$(document).on('click', '.text-municipality', function() {
-				val = $(this).text();
-				$('#municipality option:selected').text(val).trigger('change');
+				triggerChange($(this).text(), 'municipality');
 			});
+
+			$(document).on('click', '.reset-filter', function() {
+				$('#region option[value=\"\"]').prop('selected', true).trigger('change');
+			});
+
+			function triggerChange(text, element_id) {
+				$('#' + element_id + ' option').map(function(){
+					if(this.text == text) {
+						$('#' + element_id + ' option[value=' + this.value + ']').prop('selected', true).trigger('change');
+					}
+				});
+			}
 
 		");
 

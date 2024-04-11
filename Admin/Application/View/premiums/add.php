@@ -100,7 +100,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select class='form-select' name='duration'>";
 										foreach(["30,90,180,365", "30,90", "30,90,180", "30", "90", "180", "365"] as $value) {
-											$html[] = "<option value='$value'>".$value."</option>";
+											$html[] = "<option value='[$value]'>".$value."</option>";
 										}
 									$html[] = "</select>";
 									$html[] = "<span class='form-hint fs-12'>Members can select their subscription duration</span>";

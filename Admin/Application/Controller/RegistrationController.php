@@ -97,7 +97,7 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 
 			$(document).ready(function() {
 				$('#api_key').val(uuidv4());
-				$('#api_key').val(rcg());
+				$('#pin').val(rcg());
 			});
 
 			$(document).on('focusout', '#prc_license_id', function() {

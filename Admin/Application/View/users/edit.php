@@ -10,6 +10,7 @@ $html[] = "<input type='hidden' id='photo_uploader' value='users' />";
 $html[] = "<form action='".url("UsersController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 	$html[] = "<center>";
 		$html[] = "<input type='file' name='ImageBrowse' id='ImageBrowse' />";
+		$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 	$html[] = "</center>";
 $html[] = "</form>";
 

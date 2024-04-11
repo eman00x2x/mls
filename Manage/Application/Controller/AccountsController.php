@@ -68,7 +68,6 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 
         $data['privileges'] = $_SESSION['user_logged']['privileges'];
 
-        $data['board_regions'] = BOARD_REGIONS;
 		$data['local_boards'] = LOCAL_BOARDS;
 		sort($data['local_boards']);
 

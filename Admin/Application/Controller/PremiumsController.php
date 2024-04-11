@@ -161,6 +161,7 @@ class PremiumsController extends \Main\Controller {
 		}
 
 		$_POST['script'] = json_encode($_POST['script']);
+		$_POST['created_at'] = DATE_NOW;
 
 		$premium = $this->getModel("Premium");
 		$response = $premium->saveNew($_POST);

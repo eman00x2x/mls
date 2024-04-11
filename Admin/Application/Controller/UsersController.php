@@ -89,7 +89,9 @@ class UsersController extends \Main\Controller {
 				if($privileges === false) {
 					$data['privileges'] = $data['privileges'];
 				}else {
-					$data['privileges'] = $privileges;
+					foreach($privileges as $key => $val) {
+						$data['privileges'][$key] += $val;
+					}
 				}
 
 				if($data['total_users'] >= $data['privileges']['max_users']) {
@@ -158,21 +160,13 @@ class UsersController extends \Main\Controller {
 
 		$user = $this->getModel("User");
 
+		$_POST['created_at'] = DATE_NOW;
+
 		foreach($_POST['permissions'] as $key => $val) {
-			$_POST['permissions'][$key] = (boolean) $val;
+			$_POST['permissions'][$key] = $val;
 		}
 
-		if($_POST['photo'] != $data['photo']) {
-			/* remove old logo */
-
-			$photo_url = explode("/", $data['photo']);
-			$current_photo = array_pop($photo_url);
-			$file = ROOT."Cdn/images/users/".$current_photo;
-			
-			if(file_exists($file)) {
-				@unlink($file);
-			}
-			
+		if(isset($_POST['photo']) && $_POST['photo'] != "") {
 			$_POST['photo'] = $user->moveUploadedImage($_POST['photo']);
 		}
 

@@ -36,6 +36,29 @@ class DashboardController extends \Main\Controller {
 
 	}
 
+	function getActivePremium() {
+
+		$subscription = $this->getModel("AccountSubscription");
+		$subscription->join(" acs JOIN #__premiums p ON acs.premium_id = p.premium_id");
+		$subscription->where(" type = 'limited_time' AND account_id = " . $this->session['account_id']);
+		$data = $subscription->getList();
+
+		if($data) {
+			$package = ucwords($data[0]['name']." ".$data[0]['category']);
+
+			$date_now = new \DateTime();
+			$end_date = new \DateTime(date("Y-m-d", $data[0]['subscription_end_at']));
+			$interval = $date_now->diff($end_date);
+			$days = $interval->days. " days left";
+
+			return $package." ".$days;
+		}else {
+			return "None";
+		}
+
+
+	}
+
 	function getTotalAccounts(): int {
 
 		$accounts = $this->getModel("Account");
@@ -264,12 +287,12 @@ class DashboardController extends \Main\Controller {
 				$chart['labels'][] = $data[$i]['date'];
 				$chart['series'][] = $data[$i]['total'];
 			}
+
+			$chart_data['labels'] = json_encode($chart['labels']);
+			$chart_data['series'] = json_encode($chart['series']);
+
+			$this->getLibrary("Charts")->getLineChart($chart_data, "getChartEarnings", "Earnings");
 		}
-
-		$chart_data['labels'] = json_encode($chart['labels']);
-		$chart_data['series'] = json_encode($chart['series']);
-
-		$this->getLibrary("Charts")->getLineChart($chart_data, "getChartEarnings", "Earnings");
 
 	}
 

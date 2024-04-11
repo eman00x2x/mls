@@ -59,7 +59,7 @@ $html[] = "<div class='page-body'>";
 							
 							$html[] = "<tbody>";
 							for($i=0; $i<count($data); $i++) { $c++;
-								
+
 								$html[] = "<tr>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
 									$html[] = "<td class='align-middle'><div class='avatar' style='background-image: url(".$data[$i]['logo'].")'></div></td>";
@@ -67,7 +67,7 @@ $html[] = "<div class='page-body'>";
 										$html[] = $data[$i]['account_name']['firstname']." ".$data[$i]['account_name']['lastname']." <small class='text-muted d-block'>".$data[$i]['email']."</small>";
 									$html[] = "</a></td>";
 									$html[] = "<td class='align-middle'><a href='".url("AccountsController@view",["id" => $data[$i]['account_id']])."' class='text-decoration-none'>".$data[$i]['account_type']."</a></td>";
-									$html[] = "<td class='align-middle'>".($data[$i]['status'] == 'active' ? "<span class='text-success '>Active</span>" : "<span class='text-danger'>Banned</span>")."</td>";
+									$html[] = "<td class='align-middle'>".strtoupper($data[$i]['status'])."</td>";
 									$html[] = "<td class='align-middle'>".date("F d, Y", $data[$i]['registered_at'])."</td>";
 									
 									$html[] = "<td class='text-center'>";

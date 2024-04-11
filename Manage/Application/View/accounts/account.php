@@ -6,6 +6,7 @@ if(isset($_SESSION['user_logged']['permissions']['accounts']['access'])) {
 	$html[] = "<input type='hidden' id='photo_uploader' value='accounts' />";
 	$html[] = "<form action='".url("AccountsController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 		$html[] = "<center>";
+            $html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 			$html[] = "<input type='file' name='ImageBrowse' id='ImageBrowse' />";
 		$html[] = "</center>";
 	$html[] = "</form>";

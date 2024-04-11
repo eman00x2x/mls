@@ -82,7 +82,7 @@ $html[] = "</div>";
 							$html[] = "<div class='row'>";
 								$html[] = "<label class='col-sm-3 col-form-label  text-end'>Duration</label>";
 								$html[] = "<div class='col-sm-9'>";
-									$html[] = "<input type='text' readonly class='form-control-plaintext' value='".json_encode($data['duration'])."' />";
+									$html[] = "<input type='text' readonly class='form-control-plaintext' value='".implode(" days, ", $data['duration'])." days' />";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
@@ -104,10 +104,14 @@ $html[] = "</div>";
 						$html[] = "<div class='card-body'>";
 							
 							foreach($data['script'] as $premium => $val) {
-								$html[] = "<div class='row'>";
-									$html[] = "<label class='col-sm-3 col-form-label  text-end'>$premium</label>";
+								$html[] = "<div class='row align-items-center'>";
+									$html[] = "<label class='col-sm-3 col-form-label  text-end'>".ucwords(str_replace("_", " ", $premium))."</label>";
 									$html[] = "<div class='col-sm-9'>";
-										$html[] = "<div>".(isset($data['script'][$premium]) ? $data['script'][$premium] : null)."</div>";
+										if(in_array($premium, ["mls_access", "chat_access", "comparative_analysis_access"])) {
+											$html[] = "<div>".(isset($data['script'][$premium]) ? "Yes" : null)."</div>";
+										}else {
+											$html[] = "<div>".(isset($data['script'][$premium]) ? $data['script'][$premium] : null)."</div>";
+										}
 									$html[] = "</div>";
 								$html[] = "</div>";
 							}

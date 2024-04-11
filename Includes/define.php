@@ -84,6 +84,9 @@ define("USER_PERMISSIONS",[
 		"access" => (boolean) true,
 		"delete" => (boolean) true
 	],
+	"kyc" => [
+		"access" => (boolean) true
+	],
     "premiums" => [
 		"process_subscription" => (boolean) true
 	],
@@ -189,7 +192,6 @@ define("ACCOUNT_PRIVILEGES",[
     "max_users" => (int) 1,
     "mls_access" => (int) 0,
     "chat_access" => (int) 1,
-    /* "display_ads" => (int) 0, */
     "featured_ads" => (int) 0,
     "handshake_limit" => (int) 1,
 	"comparative_analysis_access" => (int) 0

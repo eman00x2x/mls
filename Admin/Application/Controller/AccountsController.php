@@ -2,6 +2,8 @@
 
 namespace Admin\Application\Controller;
 
+use Library\Mailer;
+
 class AccountsController extends \Main\Controller {
 
 	public $doc;
@@ -188,6 +190,7 @@ class AccountsController extends \Main\Controller {
 					$('#privateKey').val(JSON.stringify(keys.privateKey));
 
 					$('#api_key').val(uuidv4());
+					$('#pin').val(rcg());
 				})();
 
 				html = \"<option value=''></option>\";
@@ -290,17 +293,13 @@ class AccountsController extends \Main\Controller {
 		$accounts->column['email'] = $_POST['email'];
 
 		if($accounts->getByEmail() || $user->getByEmail()) {
-			
 			$this->getLibrary("Factory")->setMsg("Email already registered", "info");
-
 			return json_encode(array(
 				"type" => 2,
 				"message" => getMsg()
 			));
-
 		}
 
-		
 		if(isset($_POST['logo']) && $_POST['logo'] != "") {
 			$_POST['logo'] = $accounts->moveUploadedImage($_POST['logo']);
 		}
@@ -326,7 +325,7 @@ class AccountsController extends \Main\Controller {
 			"suffix" => (isset($_POST['suffix']) ? $_POST['suffix'] : ''),
 		]);
 
-		$_POST['profile'] = ([
+		$_POST['profile'] = json_encode([
 			"about_me" => (isset($_POST['about_me']) ? $_POST['about_me'] : null),
 			"education" => (isset($_POST['education']) ? $_POST['education'] : [
 				[
@@ -376,6 +375,8 @@ class AccountsController extends \Main\Controller {
 			"municipality" => (isset($_POST['address']['municipality']) ? $_POST['address']['municipality'] : "")
 		]);
 
+		unset($_POST['address']);
+
 		$accountResponse = $accounts->saveNew($_POST);
 		
 		if($accountResponse['status'] == 1) {
@@ -396,11 +397,11 @@ class AccountsController extends \Main\Controller {
 
 				/** SEND EMAIL ACTIVATION LINK */
 				$mail = new Mailer();
-				$response = $mail
+				$mail
 					->build( $this->mailActivationUrl($_POST) )
 						->send([
 							"to" => [
-								$data['email']
+								$_POST['email']
 							]
 						], CONFIG['site_name'] . " Account activation ");
 
@@ -565,13 +566,13 @@ class AccountsController extends \Main\Controller {
 
 					$listing = $this->getModel("Listing");
 					$listing_image = $this->getModel("ListingImage");
-					$invoice = $this->getModel("Invoice");
+					$transaction = $this->getModel("Transaction");
 					$user = $this->getModel("User");
 
 					if(PREMIUM) {
 						$account_subscription = $this->getModel("AccountSubscription");
 						$account_subscription->delete($id,"account_id");
-						$invoice->delete($id,"account_id");
+						$transaction->delete($id,"account_id");
 					}
 
 					$listing->where(" account_id = $id ");

@@ -30,9 +30,9 @@ class PayPal {
 		$data['tax_total'] = 0;
 
 		if(VAT) {
-			$data['cost'] = $data['cost'] / 1.12;
-			$data['tax'] = $data['cost'] * 0.12;
-			$data['tax_total'] = $data['tax'] * $quantity;
+			$data['cost'] = round($data['cost'] / 1.12, 2);
+			$data['tax'] = round($data['cost'] * 0.12, 2);
+			$data['tax_total'] = round($data['tax'] * $quantity, 2);
 		}
 
 		$data['total_without_tax'] = $data['cost'] * $quantity;

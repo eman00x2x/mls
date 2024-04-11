@@ -87,15 +87,6 @@ class UserModel extends \Main\Model {
 			}
 		}
 
-		/* $this->column['username'] = strtolower($data['username']);
-		if($this->getByUsername()) {
-			return array(
-				"status" => 2,
-				"type" => "error",
-				"message" => "Username already exists."
-			);
-		} */
-
 		$this->column['email'] = strtolower($data['email']);
 		if($this->getByEmail()) {
 			return array(
@@ -107,12 +98,6 @@ class UserModel extends \Main\Model {
 
 		$v = $this->getValidator();
 
-		/* $v->validateUsername($data['username'], "Username must only contain alphanumeric, numbers and underscore no spaces and special characters.");
-		if(strlen($data['username']) < 4) {
-			$v->addError("Username must have 6 characters long.");
-		} */
-
-		/* $v->validateWords($data['username'],"Invalid username. You cannot use '".$data['username']."' for your username."); */
 		$v->validateEmail($data['email'],"* Invalid email");
 		$v->validateGeneral($data['password'],"Enter password");
 
@@ -132,7 +117,7 @@ class UserModel extends \Main\Model {
 
 			$data['password'] = md5($data['password']);
 
-			if(isset($data['permissions'])) {
+			if(isset($data['permissions']) && is_array($data['permissions'])) {
 				$data['permissions'] = json_encode($data['permissions']);
 			}
 
@@ -306,11 +291,23 @@ class UserModel extends \Main\Model {
 
 	function deleteUser($id,$column = "user_id") {
 
-		$this->user_id = $id;
-		$data = $this->getById();
-		$this->removePhoto($data['photo']);
+		if($column == "user_id") {
+			$this->column['user_id'] = $id;
+			$data = $this->getById();
+			$this->removePhoto($data['photo']);
+			$this->delete($id,$column);
+		}else {
+			$this->where(" $column = $id ");
+			$data = $this->getList();
 
-		$this->delete($id,$column);
+			if($data) {
+				for($i=0; $i<count($data); $i++) {
+					$this->removePhoto($data[$i]['photo']);
+				}
+
+				$this->delete($id,$column);
+			}
+		}
 
 		return array(
 			"status" => 1,

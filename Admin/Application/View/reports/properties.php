@@ -42,10 +42,11 @@ $html[] = "<div class='page-body'>";
 
                 $html[] = "<div class='card mb-3'>";
                     $html[] = "<div class='card-header'>";
-                        $html[] = "<div class=''>";
-                            $html[] = "<div class='d-flex gap-2 justify-content-center'>";
+                        $html[] = "<div class='w-100'>";
+                            $html[] = "<div class='d-flex gap-2 justify-content-start'>";
                                 $html[] = $model->selection;
                             $html[] = "</div>";
+                            $html[] = "<span class='btn btn-sm reset-filter'><i class='ti ti-restore fs-14 me-2'></i> Reset Filter</span>";
                         $html[] = "</div>";
                     $html[] = "</div>";
                     $html[] = "<div class='card-body p-0'>";

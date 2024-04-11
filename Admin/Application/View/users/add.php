@@ -10,6 +10,7 @@ $html[] = "<input type='hidden' id='photo_uploader' value='users' />";
 $html[] = "<form action='".url("UsersController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 	$html[] = "<center>";
 		$html[] = "<input type='file' name='ImageBrowse' id='ImageBrowse' />";
+		$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 	$html[] = "</center>";
 $html[] = "</form>";
 
@@ -84,6 +85,15 @@ $html[] = "<form id='form' action='' method='POST'>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 							}
+
+							$html[] = "<div class='row mb-3'>";
+								$html[] = "<div class='col-3'>";
+									$html[] = "<label class='text-muted form-label mt-2 text-end'>Confirm Password</label>";
+								$html[] = "</div>";
+								$html[] = "<div class='col-9'>";
+									$html[] = "<input type='password' name='cpassword' id='cpassword' value='' class='form-control'  />";
+								$html[] = "</div>";
+							$html[] = "</div>";
 							
 						$html[] = "</div>";
 					$html[] = "</div>";
