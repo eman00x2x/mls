@@ -389,9 +389,9 @@ class ListingsController extends \Main\Controller {
 		if(isset($_POST['amenities'])) {$_POST['amenities'] = implode(",",$_POST['amenities']); }
 
 		$_POST['is_mls_option'] = json_encode([
-			"local_board" => isset($_POST['mls_local_board']) ? 1 : 0,
-			"local_region" => isset($_POST['mls_local_region']) ? 1 : 0,
-			"all" => isset($_POST['mls_all']) ? 1 : 0
+			"local_board" => isset($_POST['is_mls_option']['local_board']) ? 1 : 0,
+			"local_region" => isset($_POST['is_mls_option']['local_region']) ? 1 : 0,
+			"all" => isset($_POST['is_mls_option']['all']) ? 1 : 0
 		]);
 	
 		$listing = $this->getModel("Listing");
@@ -466,9 +466,9 @@ class ListingsController extends \Main\Controller {
 		]);
 
 		$_POST['is_mls_option'] = json_encode([
-			"local_board" => isset($_POST['mls_local_board']) ? 1 : 0,
-			"local_region" => isset($_POST['mls_local_region']) ? 1 : 0,
-			"all" => isset($_POST['mls_all']) ? 1 : 0
+			"local_board" => isset($_POST['is_mls_option']['local_board']) ? 1 : 0,
+			"local_region" => isset($_POST['is_mls_option']['local_region']) ? 1 : 0,
+			"all" => isset($_POST['is_mls_option']['all']) ? 1 : 0
 		]);
 
 		if(isset($_POST['address'])) { $_POST['address'] = json_encode($_POST['address']); }
@@ -787,6 +787,7 @@ class ListingsController extends \Main\Controller {
 		$model->join(" l JOIN #__accounts a ON a.account_id = l.account_id ");
 		$model->where((isset($filters) ? implode(" AND ",$filters) : null));
 		$data = $model->getList();
+
 
 		if($data) {
 

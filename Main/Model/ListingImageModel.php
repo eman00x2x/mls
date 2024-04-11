@@ -19,26 +19,17 @@ class ListingImageModel extends \Main\Model {
 
 	function saveImages($listing_id,$data) {
 
-		$images = [];
 		$score = 0;
 	
-		foreach($data as $image) {
-			
+		foreach($data as $key => $image) {
+
 			$old_filename = ROOT.DS."Cdn".DS."images".DS."temporary".DS.$image['name'];
 			if(file_exists($old_filename)) {
 				
 				$name = explode(".",$image['name']);
 				$ext = array_pop($name);
 				
-				/* $length = 50;
-				$new_name = '';
-				$chars = range(0, 9);
-
-				for ($x = 0; $x < $length; $x++) {
-					$new_name .= $chars[array_rand($chars)];
-				} */
-				
-				$new_name = md5(time().time()).".".$ext;
+				$new_name = md5($key.time()).".".$ext;
 			
 				$new_filename = ROOT.DS."Cdn".DS."images".DS."listings".DS.$new_name;
 				rename($old_filename,$new_filename);

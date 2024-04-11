@@ -86,7 +86,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<label class='form-label text-muted'>Title</label>";
 												$html[] = "<div class='input-icon mb-3'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-writing'></i></span>";
-													$html[] = "<input type='text' name='title' id='title' value=".($data['listing']['title'])." class='form-control' placeholder='Title' />";
+													$html[] = "<input type='text' name='title' id='title' value='".($data['listing']['title'])."' class='form-control' placeholder='Title' />";
 													
 												$html[] = "</div>";
 												$html[] = "<p class='p-0 text-info'>Do not include \"For Sale\", \"RFO\", \"Re-Sale\" in your title.</p>";
@@ -543,21 +543,21 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 													$html[] = "<div class='form-group mb-2'>";
 														$html[] = "<label class='form-check form-switch cursor-pointer'>";
-															$html[] = "<input class='form-check-input cursor-pointer' name='mls_local_board' type='checkbox' value='1' id='is_mls_local_board' ".((isset($data['listing']['is_mls_option']['local_board']) ? $data['listing']['is_mls_option']['local_board'] : 0) == 1 ? "checked" : "")." />";
+															$html[] = "<input class='form-check-input cursor-pointer' name='is_mls_option[local_board]' type='checkbox' value='1' id='is_mls_local_board' ".((isset($data['listing']['is_mls_option']['local_board']) ? $data['listing']['is_mls_option']['local_board'] : 0) == 1 ? "checked" : "")." />";
 															$html[] = "<span class='form-check-label cursor-pointer' for='mls_local_board'>Display this property listing on <b>Local Board's MLS</b></span>";
 														$html[] = "</label>";
 													$html[] = "</div>";
 
 													$html[] = "<div class='form-group mb-2'>";
 														$html[] = "<label class='form-check form-switch cursor-pointer'>";
-															$html[] = "<input class='form-check-input cursor-pointer' name='mls_local_region' type='checkbox' value='1' id='is_mls_local_region' ".((isset($data['listing']['is_mls_option']['local_region']) ? $data['listing']['is_mls_option']['local_region'] : 0) == 1 ? "checked" : "")." />";
+															$html[] = "<input class='form-check-input cursor-pointer' name='is_mls_option[local_region]' type='checkbox' value='1' id='is_mls_local_region' ".((isset($data['listing']['is_mls_option']['local_region']) ? $data['listing']['is_mls_option']['local_region'] : 0) == 1 ? "checked" : "")." />";
 															$html[] = "<span class='form-check-label cursor-pointer' for='mls_local_region'>Display this property listing on your <b>Local Board Region's MLS</b></span>";
 														$html[] = "</label>";
 													$html[] = "</div>";
 
 													$html[] = "<div class='form-group mb-2'>";
 														$html[] = "<label class='form-check form-switch cursor-pointer'>";
-															$html[] = "<input class='form-check-input cursor-pointer' name='mls_all' type='checkbox' value='1' id='is_mls_all' ".((isset($data['listing']['is_mls_option']['all']) ? $data['listing']['is_mls_option']['all'] : 0) == 1 ? "checked" : "")." />";
+															$html[] = "<input class='form-check-input cursor-pointer' name='is_mls_option[all]' type='checkbox' value='1' id='is_mls_all' ".((isset($data['listing']['is_mls_option']['all']) ? $data['listing']['is_mls_option']['all'] : 0) == 1 ? "checked" : "")." />";
 															$html[] = "<span class='form-check-label cursor-pointer' for='is_mls_all'>Display this property listing on <b>PAREB MLS Nation wide</b></span>";
 														$html[] = "</label>";
 													$html[] = "</div>";
@@ -599,7 +599,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<label class='form-label text-muted'>Authority to Sell Expiration Date</label>";
 												$html[] = "<div class='input-icon mb-2'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
-													$html[] = "<input type='date' name='authority_to_sell_expiration' id='authority_to_sell_expiration' value='".(isset($data['listing']['other_details']["authority_to_sell_expiration"]) ? date("Y-m-d", strtotime($data['listing']['other_details']["authority_to_sell_expiration"])) : null)."' step='0.5' class='form-control' placeholder='Authority to Sell Expiration Date' />";
+													$html[] = "<input type='date' name='authority_to_sell_expiration' id='authority_to_sell_expiration' value='".(isset($data['listing']['other_details']["authority_to_sell_expiration"]) ? date("Y-m-d", $data['listing']['other_details']["authority_to_sell_expiration"]) : null)."' step='0.5' class='form-control' placeholder='Authority to Sell Expiration Date' />";
 												$html[] = "</div>";
 												$html[] = "<span class='form-hint'>Please specify the expiration date of your Authority to Sell for this property.</span>";
 											$html[] = "</div>";

@@ -43,6 +43,7 @@ class ListingModel extends \Main\Model {
 		$v->validateGeneral($data['type'],"type is blank.");
 		$v->validateGeneral($data['offer'],"offer is blank.");
 		$v->validateGeneral($data['tags'],"no selected tags.");
+		$v->validateGeneral($data['duration'],"Select Posting Duration");
 
 		$other_details = json_decode($data['other_details'],true);
 		$v->validateNumber($other_details['com_share'],"Commission share is required.");

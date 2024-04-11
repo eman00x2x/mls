@@ -484,7 +484,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 											if(isset($_SESSION['user_logged']['privileges']['mls_access']) && $_SESSION['user_logged']['privileges']['mls_access'] >= 1) {
 												$html[] = "<div class='form-group mb-3'>";
 													$html[] = "<label class='form-check form-switch cursor-pointer'>";
-														$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls' checked  />";
+														$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls'  />";
 														$html[] = "<span class='form-check-label cursor-pointer' for='is_mls'>Display this property listing on the Multiple Listing Service (MLS)</span>";
 													$html[] = "</label>";
 												$html[] = "</div>";
