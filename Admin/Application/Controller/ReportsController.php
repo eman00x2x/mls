@@ -190,9 +190,9 @@ class ReportsController extends \Main\Controller {
 	function listingPerRegion() {
 
 		$listing = $this->getModel("Listing");
-		$listing->select(" JSON_EXTRACT(address, '$.region') as region, COUNT(listing_id) as total_listing ")
-			->groupBy(" region ")
-				->where(" status = 1 ");
+		$listing->select(" JSON_EXTRACT(address, '$.province') as province, COUNT(listing_id) as total_listing ")
+			->groupBy(" province ")
+				->where(" status = 1 AND JSON_EXTRACT(address, '$.region') = '".$_GET['loc']."' ");
 
 		$listing->page['limit'] = 999999;
 
@@ -206,8 +206,8 @@ class ReportsController extends \Main\Controller {
 	function listingPerProvince() {
 
 		$listing = $this->getModel("Listing");
-		$listing->select(" JSON_EXTRACT(address, '$.province') as province, COUNT(listing_id) as total_listing ")
-			->groupBy(" province ")
+		$listing->select(" JSON_EXTRACT(address, '$.municipality') as municipality, COUNT(listing_id) as total_listing ")
+			->groupBy(" municipality ")
 				->where(" status = 1 AND JSON_EXTRACT(address, '$.province') = '".$_GET['loc']."' ");
 
 		$listing->page['limit'] = 999999;
@@ -221,9 +221,9 @@ class ReportsController extends \Main\Controller {
 	function listingPerMunicipality() {
 
 		$listing = $this->getModel("Listing");
-		$listing->select(" JSON_EXTRACT(address, '$.municipality') as municipality, COUNT(listing_id) as total_listing ")
-			->groupBy(" municipality ")
-				->where(" status = 1 AND JSON_EXTRACT(address, '$.province') = '".$_GET['loc']."' ");
+		$listing->select(" JSON_EXTRACT(address, '$.barangay') as barangay, COUNT(listing_id) as total_listing ")
+			->groupBy(" barangay ")
+				->where(" status = 1 AND JSON_EXTRACT(address, '$.municipality') = '".$_GET['loc']."' ");
 
 		$listing->page['limit'] = 999999;
 
