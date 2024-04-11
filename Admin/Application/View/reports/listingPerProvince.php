@@ -12,7 +12,7 @@ $html[] = "<tbody>";
     if($data) {
         for($i=0; $i < count($data); $i++) {
             $html[] = "<tr>";
-                $html[] = "<td>".$data[$i]['province']."</td>";
+                $html[] = "<td><span class='cursor-pointer text-province'>".$data[$i]['province']."</span></td>";
                 $html[] = "<td>".$data[$i]['total_listing']."</td>";
             $html[] = "</tr>";
         }

@@ -132,24 +132,50 @@ class ReportsController extends \Main\Controller {
 			});
 
 			$(document).on('change', '#region', function() {
-				let val = $('#region option:selected').val();
-				$.get('".url("ReportsController@listingPerProvince")."?loc='+val, function(data) {
-					$('.location-continer').html(data);
-				});
+				let val = $('#region option:selected').text();
+				
+				if(val != '') {
+					$.get('".url("ReportsController@listingPerProvince")."?loc='+val, function(data) {
+						$('.location-continer').html(data);
+					});
+				}else { 
+					$.get('".url("ReportsController@listingPerRegion")."?loc='+val, function(data) {
+						$('.location-continer').html(data);
+					});
+				}
 			});
 
 			$(document).on('change', '#province', function() {
-				let val = $('#province option:selected').val();
-				$.get('".url("ReportsController@listingPerMunicipality")."?loc='+val, function(data) {
-					$('.location-continer').html(data);
-				});
+				let val = $('#province option:selected').text();
+				if(val != '') {
+					$.get('".url("ReportsController@listingPerMunicipality")."?loc='+val, function(data) {
+						$('.location-continer').html(data);
+					});
+				}else { $('#region').trigger('change'); }
 			});
 
 			$(document).on('change', '#municipality', function() {
-				let val = $('#municipality option:selected').val();
-				$.get('".url("ReportsController@listingPerBarangay")."?loc='+val, function(data) {
-					$('.location-continer').html(data);
-				});
+				let val = $('#municipality option:selected').text();
+				if(val != '') {
+					$.get('".url("ReportsController@listingPerBarangay")."?loc='+val, function(data) {
+						$('.location-continer').html(data);
+					});
+				}else { $('#province').trigger('change'); }
+			});
+
+			$(document).on('click', '.text-region', function() {
+				val = $(this).text();
+				$('#region option:selected').text(val).trigger('change');
+			});
+
+			$(document).on('click', '.text-province', function() {
+				val = $(this).text();
+				$('#province option:selected').text(val).trigger('change');
+			});
+
+			$(document).on('click', '.text-municipality', function() {
+				val = $(this).text();
+				$('#municipality option:selected').text(val).trigger('change');
 			});
 
 		");
@@ -190,9 +216,9 @@ class ReportsController extends \Main\Controller {
 	function listingPerRegion() {
 
 		$listing = $this->getModel("Listing");
-		$listing->select(" JSON_EXTRACT(address, '$.province') as province, COUNT(listing_id) as total_listing ")
-			->groupBy(" province ")
-				->where(" status = 1 AND JSON_EXTRACT(address, '$.region') = '".$_GET['loc']."' ");
+		$listing->select(" JSON_EXTRACT(address, '$.region') as region, COUNT(listing_id) as total_listing ")
+			->groupBy(" region ")
+				->where(" status = 1 ");
 
 		$listing->page['limit'] = 999999;
 
@@ -202,8 +228,24 @@ class ReportsController extends \Main\Controller {
 		return $this->getTemplate($data);
 		
 	}
-
+	
 	function listingPerProvince() {
+
+		$listing = $this->getModel("Listing");
+		$listing->select(" JSON_EXTRACT(address, '$.province') as province, COUNT(listing_id) as total_listing ")
+			->groupBy(" province ")
+				->where(" status = 1 AND JSON_EXTRACT(address, '$.region') = '".$_GET['loc']."' ");
+
+		$listing->page['limit'] = 999999;
+
+		$data = $listing->getList();
+
+		$this->setTemplate("reports/listingPerProvince.php");
+		return $this->getTemplate($data);
+		
+	}
+
+	function listingPerMunicipality() {
 
 		$listing = $this->getModel("Listing");
 		$listing->select(" JSON_EXTRACT(address, '$.municipality') as municipality, COUNT(listing_id) as total_listing ")
@@ -213,25 +255,9 @@ class ReportsController extends \Main\Controller {
 		$listing->page['limit'] = 999999;
 
 		$data = $listing->getList();
-
-		$this->setTemplate("reports/listingPerProvince.php");
-		return $this->getTemplate($data);
-	}
-
-	function listingPerMunicipality() {
-
-		$listing = $this->getModel("Listing");
-		$listing->select(" JSON_EXTRACT(address, '$.barangay') as barangay, COUNT(listing_id) as total_listing ")
-			->groupBy(" barangay ")
-				->where(" status = 1 AND JSON_EXTRACT(address, '$.municipality') = '".$_GET['loc']."' ");
-
-		$listing->page['limit'] = 999999;
-
-		$data = $listing->getList();
 		
 		$this->setTemplate("reports/listingPerMunicipality.php");
 		return $this->getTemplate($data);
-		
 	}
 
 	function listingPerBarangay() {
@@ -239,7 +265,7 @@ class ReportsController extends \Main\Controller {
 		$listing = $this->getModel("Listing");
 		$listing->select(" JSON_EXTRACT(address, '$.barangay') as barangay, COUNT(listing_id) as total_listing ")
 			->groupBy(" barangay ")
-				->where(" status = 1 AND JSON_EXTRACT(address, '$.province') = '".$_GET['loc']."' ");
+				->where(" status = 1 AND JSON_EXTRACT(address, '$.municipality') = '".$_GET['loc']."' ");
 
 		$listing->page['limit'] = 999999;
 
