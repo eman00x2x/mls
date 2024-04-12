@@ -88,7 +88,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$filters[] = " JSON_EXTRACT(board_region, '$.region') = '".$region."' ";
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_region') = 1";
 
-			$_GET['address']['region'] = $this->session['board_region']['region'];
+			/* $_GET['address']['region'] = $this->session['board_region']['region']; */
 
 			$this->doc->addScriptDeclaration("
 				$(document).ready(function() {
@@ -103,9 +103,9 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$filters[] = " a.local_board_name = '".$local_board."' ";
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_board') = 1";
 
-			$_GET['address']['region'] = $this->session['board_region']['region'];
+			/* $_GET['address']['region'] = $this->session['board_region']['region'];
 			$_GET['address']['province'] = $this->session['board_region']['province'];
-			$_GET['address']['municipality'] = $this->session['board_region']['municipality'];
+			$_GET['address']['municipality'] = $this->session['board_region']['municipality']; */
 
 			$this->doc->addScriptDeclaration("
 				$(document).ready(function() {
