@@ -28,15 +28,6 @@ $html[] = "</div>";
 $html[] = "<div class='page-body'>";
 	$html[] = "<div class='container-xl'>";
 
-        $html[] = "<div class=''>";
-            $html[] = "<div class='card mb-3'>";
-				$html[] = "<div class='card-body'>";
-					$html[] = "<h3 class='card-title'>Per Category</h3>";
-					$html[] = "<div id='getCategoriesChart_this_year' class='chart-lg'></div>";
-				$html[] = "</div>";
-			$html[] = "</div>";
-        $html[] = "</div>";
-
         $html[] = "<div class='row'>";
             $html[] = "<div class='col-lg-4 col-md-5 col-sm-12 col-12'>";
 
@@ -54,6 +45,35 @@ $html[] = "<div class='page-body'>";
                     $html[] = "</div>";
                 $html[] = "</div>";
                 
+            $html[] = "</div>";
+            $html[] = "<div class='col-lg-8 col-md-7 col-sm-12 col-12'>";
+
+                $html[] = "<div class=''>";
+                    $html[] = "<div class='card mb-3'>";
+                        $html[] = "<div class='card-body'>";
+                            $html[] = "<h3 class='card-title'>Per Category</h3>";
+                            $html[] = "<div id='getCategoriesChart_this_year' class='chart-lg'></div>";
+                        $html[] = "</div>";
+                    $html[] = "</div>";
+                $html[] = "</div>";
+
+                $html[] = "<div class=''>";
+                    $html[] = "<div class='card mb-3'>";
+                        $html[] = "<div class='card-body'>";
+                            $html[] = "<h3 class='card-title'>Per Price Range</h3>";
+                            $html[] = "<div id='getPriceRangeChart' class='chart-lg'></div>";
+                        $html[] = "</div>";
+                    $html[] = "</div>";
+                $html[] = "</div>";
+
+                $html[] = "<div class=''>";
+                    $html[] = "<div class='card mb-3'>";
+                        $html[] = "<div class='card-body p-0'>";
+                            $html[] = "<div class='location-continer' style='height:400px;'></div>";
+                        $html[] = "</div>";
+                    $html[] = "</div>";
+                $html[] = "</div>";
+
             $html[] = "</div>";
         $html[] = "</div>";
 

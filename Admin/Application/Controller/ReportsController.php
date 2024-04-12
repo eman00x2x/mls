@@ -203,11 +203,26 @@ class ReportsController extends \Main\Controller {
 
 		$date_helper = \dateHelper($flag);
 
+		$filter[] = " status = 1 ";
+		/* $filter[] = " created_at >= ".$date_helper['from']." ";
+		$filter[] = " created_at <= ".$date_helper['to']." "; */
+
+		if(isset($_GET['region']) && $_GET['region'] != "") {
+			$filter[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['region']."' ";
+		}
+
+		if(isset($_GET['province']) && $_GET['province'] != "") {
+			$filter[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['province']."' ";
+		}
+
+		if(isset($_GET['municipality']) && $_GET['municipality'] != "") {
+			$filter[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['municipality']."' ";
+		}
+
 		$listing = $this->getModel("Listing");
 		$listing->select(" category, COUNT(category) as total_listing ")
 			->groupBy(" category ")
-				#->where(" status = 1 AND created_at >= ".$date_helper['from']." AND created_at <= ".$date_helper['to']." ");
-				->where(" status = 1  ");
+				->where( implode(" AND ", $filter) );
 
 		$listing->page['limit'] = 999999;
 
@@ -288,6 +303,37 @@ class ReportsController extends \Main\Controller {
 		$this->setTemplate("reports/listingPerBarangay.php");
 		return $this->getTemplate($data);
 		
+	}
+
+	function getPriceRange() {
+
+		$date_helper = \dateHelper($flag);
+
+		$filter[] = " status = 1 ";
+		/* $filter[] = " created_at >= ".$date_helper['from']." ";
+		$filter[] = " created_at <= ".$date_helper['to']." "; */
+
+		if(isset($_GET['region']) && $_GET['region'] != "") {
+			$filter[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['region']."' ";
+		}
+
+		if(isset($_GET['province']) && $_GET['province'] != "") {
+			$filter[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['province']."' ";
+		}
+
+		if(isset($_GET['municipality']) && $_GET['municipality'] != "") {
+			$filter[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['municipality']."' ";
+		}
+
+		$listing = $this->getModel("Listing");
+		$listing->select(" COUNT(listing_id) as total_listing ")
+			->groupBy(" barangay ")
+				->where( implode(" AND ", $filter) );
+
+		$listing->page['limit'] = 999999;
+
+		$data = $listing->getList();
+
 	}
 
 } 
