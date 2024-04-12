@@ -118,105 +118,68 @@ class ReportsController extends \Main\Controller {
 	}
 
 	function propertiesReport() {
+		
+		unset($_SESSION['export']);
 
 		$this->doc->setTitle("Properties Report");
 
 		$this->listingPerCategoriesReport();
+		$this->getPriceRange();
+		$data['location'] = $this->getPerLocation();
 
 		$address = $this->getModel("Address");
-		$address->selection = $address->addressSelection();
+		$address->selection = $address->addressSelection(isset($_GET['address']) ? $_GET['address'] : null);
 
 		$this->doc->addScriptDeclaration("
+
 			$(document).ready(function() {
 				$('.barangay-selection').hide();
-
-				$.get('".url("ReportsController@listingPerRegion")."', function(data) {
-					$('.location-continer').html(data);
-				});
-
 			});
 
-			$(document).on('change', '#region', function() {
-				let val = $('#region option:selected').text();
-				
-				if(val != '') {
-					$.get('".url("ReportsController@listingPerProvince")."?loc='+val, function(data) {
-						$('.location-continer').html(data);
-					});
-				}else { 
-					$.get('".url("ReportsController@listingPerRegion")."?loc='+val, function(data) {
-						$('.location-continer').html(data);
-					});
-				}
-			});
+			$(document).on('click', '.btn-create-report', function() {
 
-			$(document).on('change', '#province', function() {
-				let val = $('#province option:selected').text();
-				if(val != '') {
-					$.get('".url("ReportsController@listingPerMunicipality")."?loc='+val, function(data) {
-						$('.location-continer').html(data);
-					});
-				}else { $('#region').trigger('change'); }
-			});
+				formData = $('#create_report').serialize();
+				window.location = '?' + formData;
 
-			$(document).on('change', '#municipality', function() {
-				let val = $('#municipality option:selected').text();
-				if(val != '') {
-					$.get('".url("ReportsController@listingPerBarangay")."?loc='+val, function(data) {
-						$('.location-continer').html(data);
-					});
-				}else { $('#province').trigger('change'); }
 			});
-
-			$(document).on('click', '.text-region', function() {
-				triggerChange($(this).text(), 'region');
-			});
-
-			$(document).on('click', '.text-province', function() {
-				triggerChange($(this).text(), 'province');
-			});
-
-			$(document).on('click', '.text-municipality', function() {
-				triggerChange($(this).text(), 'municipality');
-			});
-
-			$(document).on('click', '.reset-filter', function() {
-				$('#region option[value=\"\"]').prop('selected', true).trigger('change');
-			});
-
-			function triggerChange(text, element_id) {
-				$('#' + element_id + ' option').map(function(){
-					if(this.text == text) {
-						$('#' + element_id + ' option[value=' + this.value + ']').prop('selected', true).trigger('change');
-					}
-				});
-			}
 
 		");
 
+		debug($_SESSION['export']);
+
 		$this->setTemplate("reports/properties.php");
-		return $this->getTemplate(null, $address);
+		return $this->getTemplate($data, $address);
 
 	}
 
-	function listingPerCategoriesReport($flag = "this_year") {
+	function listingPerCategoriesReport() {
 
+		$flag = "this_year";
 		$date_helper = \dateHelper($flag);
 
-		$filter[] = " status = 1 ";
+		if(isset($_GET['status']) && $_GET['status'] != "") {
+			$filter[] = " status = '".$_GET['status']."' ";
+		}else {
+			$filter[] = " status = 1 ";
+		}
+
 		/* $filter[] = " created_at >= ".$date_helper['from']." ";
 		$filter[] = " created_at <= ".$date_helper['to']." "; */
 
-		if(isset($_GET['region']) && $_GET['region'] != "") {
-			$filter[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['region']."' ";
+		if(isset($_GET['offer']) && $_GET['offer'] != "") {
+			$filter[] = " offer = '".$_GET['offer']."' ";
 		}
 
-		if(isset($_GET['province']) && $_GET['province'] != "") {
-			$filter[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['province']."' ";
+		if(isset($_GET['address']['region']) && $_GET['address']['region'] != "") {
+			$filter[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."' ";
 		}
 
-		if(isset($_GET['municipality']) && $_GET['municipality'] != "") {
-			$filter[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['municipality']."' ";
+		if(isset($_GET['address']['province']) && $_GET['address']['province'] != "") {
+			$filter[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['address']['province']."' ";
+		}
+
+		if(isset($_GET['address']['municipality']) && $_GET['address']['municipality'] != "") {
+			$filter[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['address']['municipality']."' ";
 		}
 
 		$listing = $this->getModel("Listing");
@@ -233,106 +196,192 @@ class ReportsController extends \Main\Controller {
 				$chart['labels'][] = $data[$i]['category'];
 				$chart['series'][] = $data[$i]['total_listing'];
 			}
+
+			$chart_data['labels'] = json_encode($chart['labels']);
+			$chart_data['series'] = json_encode($chart['series']);
+
+			$this->getLibrary("Charts")->getBarChart($chart_data, "getCategoriesChart_$flag", "Categories");
+
+			if($data) {
+				$export[] = "category|total";
+				for($i=0; $i<count($data); $i++) {
+					$export[] = implode("|", $data[$i]);
+				}
+			}
+
+			$_SESSION['export']['category'] = $export;
+
 		}
 
-		$chart_data['labels'] = json_encode($chart['labels']);
-		$chart_data['series'] = json_encode($chart['series']);
-
-		$this->getLibrary("Charts")->getBarChart($chart_data, "getCategoriesChart_$flag", "Categories");
-		
 	}
 
-	function listingPerRegion() {
+	function getPerLocation() {
+
+		$flag = "this_year";
+		$date_helper = \dateHelper($flag);
+
+		if(isset($_GET['status']) && $_GET['status'] != "") {
+			$filter[] = " status = '".$_GET['status']."' ";
+		}else {
+			$filter[] = " status = 1 ";
+		}
+
+		/* $filter[] = " created_at >= ".$date_helper['from']." ";
+		$filter[] = " created_at <= ".$date_helper['to']." "; */
 
 		$listing = $this->getModel("Listing");
-		$listing->select(" JSON_EXTRACT(address, '$.region') as region, COUNT(listing_id) as total_listing ")
-			->groupBy(" region ")
-				->where(" status = 1 ");
-
 		$listing->page['limit'] = 999999;
 
+		if(isset($_GET['offer']) && $_GET['offer'] != "") {
+			$filter[] = " offer = '".$_GET['offer']."' ";
+		}
+
+		if(!isset($_GET['address'])) {
+			$listing->select(" JSON_EXTRACT(address, '$.region') as region, COUNT(listing_id) as total_listing ");
+			$listing->groupBy(" region ");
+			$this->setTemplate("reports/listingPerRegion.php");
+
+			$index = "region";
+		}else {
+
+			if($_GET['address']['region'] != "" && $_GET['address']['province'] == "" && $_GET['address']['municipality'] == "") {
+
+				$filter[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."' ";
+
+				$listing->select(" JSON_EXTRACT(address, '$.province') as province, COUNT(listing_id) as total_listing ");
+				$listing->groupBy(" region ");
+				$this->setTemplate("reports/listingPerProvince.php");
+
+				$index = "province";
+			}
+
+			if($_GET['address']['region'] != "" && $_GET['address']['province'] != "" && $_GET['address']['municipality'] == "") {
+
+				$filter[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."' ";
+				$filter[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['address']['province']."' ";
+
+				$listing->select(" JSON_EXTRACT(address, '$.municipality') as municipality, COUNT(listing_id) as total_listing ");
+				$listing->groupBy(" municipality ");
+				$this->setTemplate("reports/listingPerMunicipality.php");
+
+				$index = "municipality";
+			}
+
+			if($_GET['address']['region'] != "" && $_GET['address']['province'] != "" && $_GET['address']['municipality'] != "") {
+
+				$filter[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."' ";
+				$filter[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['address']['province']."' ";
+				$filter[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['address']['municipality']."' ";
+
+				$listing->select(" JSON_EXTRACT(address, '$.barangay') as barangay, COUNT(listing_id) as total_listing ");
+				$listing->groupBy(" barangay ");
+				$this->setTemplate("reports/listingPerBarangay.php");
+
+				$index = "barangay";
+			}
+
+		}
+
+		$listing->where( implode(" AND ", $filter) );
 		$data = $listing->getList();
 
-		$this->setTemplate("reports/listingPerRegion.php");
-		return $this->getTemplate($data);
+		if($data) {
+			$export[] = "$index|total";
+			for($i=0; $i<count($data); $i++) {
+				$export[] = implode("|", $data[$i]);
+			}
+		}
+
+		$_SESSION['export']['location'] = $export;
 		
-	}
-	
-	function listingPerProvince() {
-
-		$listing = $this->getModel("Listing");
-		$listing->select(" JSON_EXTRACT(address, '$.province') as province, COUNT(listing_id) as total_listing ")
-			->groupBy(" province ")
-				->where(" status = 1 AND JSON_EXTRACT(address, '$.region') = '".$_GET['loc']."' ");
-
-		$listing->page['limit'] = 999999;
-
-		$data = $listing->getList();
-
-		$this->setTemplate("reports/listingPerProvince.php");
-		return $this->getTemplate($data);
-		
-	}
-
-	function listingPerMunicipality() {
-
-		$listing = $this->getModel("Listing");
-		$listing->select(" JSON_EXTRACT(address, '$.municipality') as municipality, COUNT(listing_id) as total_listing ")
-			->groupBy(" municipality ")
-				->where(" status = 1 AND JSON_EXTRACT(address, '$.province') = '".$_GET['loc']."' ");
-
-		$listing->page['limit'] = 999999;
-
-		$data = $listing->getList();
-		
-		$this->setTemplate("reports/listingPerMunicipality.php");
-		return $this->getTemplate($data);
-	}
-
-	function listingPerBarangay() {
-
-		$listing = $this->getModel("Listing");
-		$listing->select(" JSON_EXTRACT(address, '$.barangay') as barangay, COUNT(listing_id) as total_listing ")
-			->groupBy(" barangay ")
-				->where(" status = 1 AND JSON_EXTRACT(address, '$.municipality') = '".$_GET['loc']."' ");
-
-		$listing->page['limit'] = 999999;
-
-		$data = $listing->getList();
-		
-		$this->setTemplate("reports/listingPerBarangay.php");
 		return $this->getTemplate($data);
 		
 	}
 
 	function getPriceRange() {
 
-		$date_helper = \dateHelper($flag);
+		/* $date_helper = \dateHelper($flag); */
 
-		$filter[] = " status = 1 ";
+		
 		/* $filter[] = " created_at >= ".$date_helper['from']." ";
 		$filter[] = " created_at <= ".$date_helper['to']." "; */
 
-		if(isset($_GET['region']) && $_GET['region'] != "") {
-			$filter[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['region']."' ";
+		if(isset($_GET['status']) && $_GET['status'] != "") {
+			$filter[] = " status = '".$_GET['status']."' ";
+		}else {
+			$filter[] = " status = 1 ";
 		}
 
-		if(isset($_GET['province']) && $_GET['province'] != "") {
-			$filter[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['province']."' ";
+		if(isset($_GET['offer']) && $_GET['offer'] != "") {
+			$filter[] = " offer = '".$_GET['offer']."' ";
 		}
 
-		if(isset($_GET['municipality']) && $_GET['municipality'] != "") {
-			$filter[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['municipality']."' ";
+		if(isset($_GET['address']['region']) && $_GET['address']['region'] != "") {
+			$filter[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."' ";
+		}
+
+		if(isset($_GET['address']['province']) && $_GET['address']['province'] != "") {
+			$filter[] = " JSON_EXTRACT(address, '$.province') = '".$_GET['address']['province']."' ";
+		}
+
+		if(isset($_GET['address']['municipality']) && $_GET['address']['municipality'] != "") {
+			$filter[] = " JSON_EXTRACT(address, '$.municipality') = '".$_GET['address']['municipality']."' ";
 		}
 
 		$listing = $this->getModel("Listing");
-		$listing->select(" COUNT(listing_id) as total_listing ")
-			->groupBy(" barangay ")
+
+		$listing->select("
+			(CASE
+				WHEN price < 3000000 then '0 - 3M'
+				WHEN price > 3000000 and price <= 6000000 then '3M - 6M'
+				WHEN price > 6000000 and price <= 10000000 then '6M - 10M'
+				WHEN price > 10000000 and price <= 15000000 then '10M - 15M'
+				WHEN price > 15000000 and price <= 25000000 then '15M - 25M'
+				WHEN price > 25000000 and price <= 35000000 then '25M - 35M'
+				WHEN price > 35000000 and price <= 45000000 then '35M - 45M'
+				WHEN price > 45000000 and price <= 50000000 then '45M - 50M'
+				WHEN price > 50000000 and price <= 80000000 then '50M - 80M'
+				WHEN price > 80000000 and price <= 100000000 then '80M - 100M'
+				WHEN price > 100000000 and price <= 120000000 then '100M - 120M'
+				WHEN price > 12000000 and price <= 140000000 then '120M - 140M'
+				WHEN price > 14000000 and price <= 160000000 then '140M - 160M'
+				WHEN price > 16000000 and price <= 180000000 then '160M - 180M'
+				WHEN price > 18000000 and price <= 200000000 then '180M - 200M'
+				WHEN price > 20000000 and price <= 230000000 then '200M - 230M'
+				WHEN price > 23000000 and price <= 260000000 then '230M - 260M'
+				WHEN price > 26000000 and price <= 290000000 then '260M - 290M'
+				WHEN price > 26000000 and price <= 290000000 then '260M - 290M'
+				WHEN price > 29000000 and price <= 310000000 then '290M - 310M'
+				WHEN price > 31000000 and price <= 350000000 then '310M - 350M'
+				WHEN price > 35000000 then '350M - Above'
+			END) p_range, COUNT(price) as total
+		")
+			->groupBy(" p_range ")
 				->where( implode(" AND ", $filter) );
 
-		$listing->page['limit'] = 999999;
-
 		$data = $listing->getList();
+
+		if($data) {
+			for($i=0; $i<count($data); $i++) {
+				$chart['labels'][] = $data[$i]['p_range'];
+				$chart['series'][] = $data[$i]['total'];
+			}
+
+			$chart_data['labels'] = json_encode($chart['labels']);
+			$chart_data['series'] = json_encode($chart['series']);
+
+			$this->getLibrary("Charts")->getBarChart($chart_data, "getPriceRangeChart", "Price Range Chart");
+
+			if($data) {
+				$export[] = "price_range|total";
+				for($i=0; $i<count($data); $i++) {
+					$export[] = implode("|", $data[$i]);
+				}
+			}
+
+			$_SESSION['export']['price_range'] = $export;
+
+		}
 
 	}
 

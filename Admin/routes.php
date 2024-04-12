@@ -86,6 +86,7 @@ Router::group(['prefix' => ADMIN_ALIAS], function () {
     Router::get('/report/listingPerProvince', 'ReportsController@listingPerProvince', ['as' => 'listingPerProvince']);
     Router::get('/report/listingPerMunicipality', 'ReportsController@listingPerMunicipality', ['as' => 'listingPerMunicipality']);
     Router::get('/report/listingPerBarangay', 'ReportsController@listingPerBarangay', ['as' => 'listingPerBarangay']);
+    Router::get('/report/getPriceRange', 'ReportsController@getPriceRange', ['as' => 'getPriceRange']);
 
     /** ARTICLES ROUTES */
     Router::get('/articles', 'ArticlesController@index', ['as' => 'index']);

@@ -29,29 +29,49 @@ $html[] = "<div class='page-body'>";
 	$html[] = "<div class='container-xl'>";
 
         $html[] = "<div class='row'>";
-            $html[] = "<div class='col-lg-4 col-md-5 col-sm-12 col-12'>";
+            $html[] = "<div class='col-lg-3 col-md-5 col-sm-12 col-12'>";
 
                 $html[] = "<div class='card mb-3'>";
                     $html[] = "<div class='card-header'>";
-                        $html[] = "<div class='w-100'>";
-                            $html[] = "<div class='d-flex gap-2 justify-content-start'>";
-                                $html[] = $model->selection;
-                            $html[] = "</div>";
-                            $html[] = "<span class='btn btn-sm reset-filter'><i class='ti ti-restore fs-14 me-2'></i> Reset Filter</span>";
-                        $html[] = "</div>";
+                        $html[] = "<h3 class='card-title'>Create Report</h3>";
                     $html[] = "</div>";
-                    $html[] = "<div class='card-body p-0'>";
-                        $html[] = "<div class='location-continer' style='height:400px;'></div>";
+                    $html[] = "<div class='card-body'>";
+                        $html[] = "<form id='create_report' method='get'>";
+                            $html[] = "<div class='mb-3'>";
+                                $html[] = "<label class='form-label'>Offer</label>";
+                                $html[] = "<select name='offer' id='offer' class='form-select'>";
+                                    foreach(["for sale","for rent"] as $offer) {
+                                        $html[] = "<option value='$offer'>".ucwords($offer)."</option>";
+                                    }
+                                $html[] = "</select>";
+                            $html[] = "</div>";
+
+                            $html[] = $model->selection;
+
+                            $html[] = "<div class='mb-3'>";
+                                $html[] = "<label class='form-label'>Status</label>";
+                                $html[] = "<select name='status' id='status' class='form-select'>";
+                                    foreach([1 => "available", 2=> "sold"] as $key => $status) {
+                                        $html[] = "<option value='$key'>".ucwords($status)."</option>";
+                                    }
+                                $html[] = "</select>";
+                            $html[] = "</div>";
+
+                            $html[] = "<div class='mt-3'>";
+                                $html[] = "<span class='btn btn-primary btn-create-report'>Create Report</span>";
+                            $html[] = "</div>";
+
+                        $html[] = "</form>";
                     $html[] = "</div>";
                 $html[] = "</div>";
                 
             $html[] = "</div>";
-            $html[] = "<div class='col-lg-8 col-md-7 col-sm-12 col-12'>";
+            $html[] = "<div class='col-lg-9 col-md-7 col-sm-12 col-12'>";
 
                 $html[] = "<div class=''>";
                     $html[] = "<div class='card mb-3'>";
                         $html[] = "<div class='card-body'>";
-                            $html[] = "<h3 class='card-title'>Per Category</h3>";
+                            $html[] = "<h3 class='card-title'>Category Chart</h3>";
                             $html[] = "<div id='getCategoriesChart_this_year' class='chart-lg'></div>";
                         $html[] = "</div>";
                     $html[] = "</div>";
@@ -60,7 +80,7 @@ $html[] = "<div class='page-body'>";
                 $html[] = "<div class=''>";
                     $html[] = "<div class='card mb-3'>";
                         $html[] = "<div class='card-body'>";
-                            $html[] = "<h3 class='card-title'>Per Price Range</h3>";
+                            $html[] = "<h3 class='card-title'>Price Range Chart</h3>";
                             $html[] = "<div id='getPriceRangeChart' class='chart-lg'></div>";
                         $html[] = "</div>";
                     $html[] = "</div>";
@@ -68,8 +88,8 @@ $html[] = "<div class='page-body'>";
 
                 $html[] = "<div class=''>";
                     $html[] = "<div class='card mb-3'>";
-                        $html[] = "<div class='card-body p-0'>";
-                            $html[] = "<div class='location-continer' style='height:400px;'></div>";
+                        $html[] = "<div class='card-body'>";
+                            $html[] = "<div class='location-continer' style='height:400px;'>".$data['location']."</div>";
                         $html[] = "</div>";
                     $html[] = "</div>";
                 $html[] = "</div>";
