@@ -83,7 +83,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>Enable WebSocket Chat Based</h3>";
 												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>If WebSocket chat functionality is activated, users gain the ability to engage in real-time communication via chat while seamlessly receiving messages as they are transmitted.</p>";
 												$html[] = "<pre style='margin-left:-40px;'>";
-													$html[] = "Utilize PuTTY to access SSH on the web server for running the WebSocket server.<br/>file path: ".ROOT."Manage/webSocketServer.php";
+													$html[] = "Use PuTTY to access SSH on the web server to run the WebSocket server.<br/>file path: ".ROOT."webSocketServer.php";
 												$html[] = "</pre>";
 											
 												$html[] = "<input type='checkbox' name='chat_is_websocket' class='form-check-input' value='1' ".($data['chat_is_websocket'] == 1 ? "checked" : "")." />";

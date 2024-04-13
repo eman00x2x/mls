@@ -7,6 +7,8 @@ define("DATE_NOW",strtotime("Now"));
 define("LIST_LIMIT",20);
 define("DEVELOPMENT", true);
 
+define("WEBSOCKET_SERVER_ADDRESS", "ws://localhost:8980/mls/Manage/webSocketServer.php");
+
 /* 
 define("API","http://api.mls/");
 define("WEBADMIN","http://webadmin.mls/");

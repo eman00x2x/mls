@@ -7,15 +7,14 @@ use Admin\Application\Controller\AccountsController;
 
 class CronJob extends \Main\Controller {
 
-	function __construct() {
-
-	}
+	function __construct() {}
 
 	function run() {
 		
 		$this->expirePosting();
 		$this->expireSubscription();
 		$this->expiredKYC();
+		$this->expireHandshake();
 
 		$this->expiringPosting();
 		$this->expiringSubscription();

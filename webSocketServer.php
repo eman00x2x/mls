@@ -1,6 +1,6 @@
 <?php
 
-define("ROOT","D:/wamp64/www/mls/");
+define("ROOT","/home1/onepremi/public_html/instaland");
 define("BASE",dirname(__FILE__));
 define("DS",DIRECTORY_SEPARATOR);
 define("ACCESS", 1);

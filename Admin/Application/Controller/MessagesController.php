@@ -8,7 +8,7 @@ class MessagesController extends \Main\Controller {
 	public $session;
 	
 	private $ws_client;
-	private $websocketAddress = "ws://localhost:8980/mls/Manage/webSocketServer.php";
+	private $websocketAddress = WEBSOCKET_SERVER_ADDRESS;
 
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."Admin");

@@ -31,29 +31,29 @@ DROP TABLE IF EXISTS `mls_accounts`;
 CREATE TABLE IF NOT EXISTS `mls_accounts` (
   `account_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `reference_id` bigint NOT NULL DEFAULT '0',
-  `account_type` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Possible value Administrator, Web Admin, Customer Service, Real Estate Practitioner',
-  `logo` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'A valid image url',
+  `account_type` varchar(50) CHARACTER SET utf8mb3  NOT NULL COMMENT 'Possible value Administrator, Web Admin, Customer Service, Real Estate Practitioner',
+  `logo` text CHARACTER SET utf8mb3  COMMENT 'A valid image url',
   `company_name` varchar(150) DEFAULT NULL,
   `profession` varchar(150) DEFAULT NULL,
   `real_estate_license_number` varchar(150) DEFAULT NULL,
   `board_region` varchar(150) DEFAULT NULL,
   `local_board_name` varchar(200) DEFAULT NULL,
-  `account_name` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'Posible values\r\n{\r\n    "prefix": "",\r\n    "firstname": "",\r\n    "middlename": "",\r\n    "lastname": "",\r\n    "suffix": ""\r\n}',
-  `birthdate` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'date formated as YYYY-mm-dd',
+  `account_name` text CHARACTER SET utf8mb3  COMMENT 'Posible values\r\n{\r\n    "prefix": "",\r\n    "firstname": "",\r\n    "middlename": "",\r\n    "lastname": "",\r\n    "suffix": ""\r\n}',
+  `birthdate` varchar(50) CHARACTER SET utf8mb3  DEFAULT NULL COMMENT 'date formated as YYYY-mm-dd',
   `street` varchar(150) DEFAULT NULL,
   `city` varchar(50) DEFAULT NULL,
   `province` varchar(50) DEFAULT NULL,
   `mobile_number` varchar(20) DEFAULT NULL,
   `email` varchar(150) DEFAULT NULL,
   `tin` varchar(50) DEFAULT NULL,
-  `profile` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Posible values\r\n{\r\n    "about_me": "",\r\n    "education": [\r\n        {\r\n            "school": "",\r\n            "degree": "",\r\n            "date": {\r\n                "from": "",\r\n                "to": ""\r\n            }\r\n        }\r\n    ],\r\n    "affiliation": [\r\n        {\r\n            "organization": "",\r\n            "title": "",\r\n            "description": "",\r\n            "date": {\r\n                "from": 0,\r\n                "to": 0\r\n            }\r\n        }\r\n    ],\r\n    "certification": [\r\n        ""\r\n    ],\r\n    "skills": [\r\n        ""\r\n    ]\r\n}',
-  `uploads` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'An array of filenames uploaded JSON format',
+  `profile` text CHARACTER SET utf8mb3  NOT NULL COMMENT 'Posible values\r\n{\r\n    "about_me": "",\r\n    "education": [\r\n        {\r\n            "school": "",\r\n            "degree": "",\r\n            "date": {\r\n                "from": "",\r\n                "to": ""\r\n            }\r\n        }\r\n    ],\r\n    "affiliation": [\r\n        {\r\n            "organization": "",\r\n            "title": "",\r\n            "description": "",\r\n            "date": {\r\n                "from": 0,\r\n                "to": 0\r\n            }\r\n        }\r\n    ],\r\n    "certification": [\r\n        ""\r\n    ],\r\n    "skills": [\r\n        ""\r\n    ]\r\n}',
+  `uploads` text CHARACTER SET utf8mb3  COMMENT 'An array of filenames uploaded JSON format',
   `preferences` text,
-  `privileges` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'account privileges\r\n\r\n{\r\n    "max_post": 20,\r\n    "max_users": 1,\r\n    "mls_access": 0,\r\n    "chat_access": 1,\r\n    "featured_ads": 0,\r\n    "handshake_limit": 1,\r\n    "comparative_analysis_access": 0\r\n}\r\njson format',
-  `message_keys` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'A Web Crypto API generated value by the system (public_key and private_key) JSON Format for encryption and decryption of private message',
-  `api_key` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'A Web Crypto API generated value (random generated 33 characters)',
-  `pin` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'A Web Crypto API generated value (random generated 6 characters)',
-  `status` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT 'active' COMMENT 'Posible values are active, banned, pending_activation',
+  `privileges` text CHARACTER SET utf8mb3  COMMENT 'account privileges\r\n\r\n{\r\n    "max_post": 20,\r\n    "max_users": 1,\r\n    "mls_access": 0,\r\n    "chat_access": 1,\r\n    "featured_ads": 0,\r\n    "handshake_limit": 1,\r\n    "comparative_analysis_access": 0\r\n}\r\njson format',
+  `message_keys` text CHARACTER SET utf8mb3  COMMENT 'A Web Crypto API generated value by the system (public_key and private_key) JSON Format for encryption and decryption of private message',
+  `api_key` text CHARACTER SET utf8mb3  COMMENT 'A Web Crypto API generated value (random generated 33 characters)',
+  `pin` varchar(10) CHARACTER SET utf8mb3  DEFAULT NULL COMMENT 'A Web Crypto API generated value (random generated 6 characters)',
+  `status` varchar(20) CHARACTER SET utf8mb3  NOT NULL DEFAULT 'active' COMMENT 'Posible values are active, banned, pending_activation',
   `registered_at` int NOT NULL COMMENT 'epoch of time',
   PRIMARY KEY (`account_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1113 DEFAULT CHARSET=utf8mb3;
@@ -115,13 +115,13 @@ CREATE TABLE IF NOT EXISTS `mls_articles` (
   `category` varchar(150) DEFAULT NULL,
   `title` text,
   `name` text,
-  `banner` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'image url',
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'HTML format value',
+  `banner` text CHARACTER SET utf8mb4  COMMENT 'image url',
+  `content` text CHARACTER SET utf8mb4  COMMENT 'HTML format value',
   `publish` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 = published, 0 = unpublished',
   `created_by` text,
   `created_at` int NOT NULL COMMENT 'epoch of time',
   PRIMARY KEY (`article_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 ;
 
 --
 -- Dumping data for table `mls_articles`
@@ -171,10 +171,10 @@ DROP TABLE IF EXISTS `mls_handshakes`;
 CREATE TABLE IF NOT EXISTS `mls_handshakes` (
   `handshake_id` bigint NOT NULL AUTO_INCREMENT,
   `requestor_account_id` bigint NOT NULL,
-  `requestor_details` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'Posible Value\r\n{\r\n    "account_id": 1,\r\n    "logo": "http://cdn.mls/images/accounts/dde1e1eaa66d4e.jpg",\r\n    "company_name": "My Name;",\r\n    "profession": "Real Estate Broker",\r\n    "real_estate_license_number": 22554,\r\n    "firstname": "My Firstname",\r\n    "lastname": "My Lastname",\r\n    "birthdate": "1901-01-01",\r\n    "street": "My Street Address",\r\n    "city": "My City Address",\r\n    "province": "National Capital Region",\r\n    "mobile_number": "xxxxxxxxxxx",\r\n    "email": "myemail@email.com",\r\n    "tin": "xxx-xxx-xxxx",\r\n    "status": "active",\r\n    "registered_at": 2147483647\r\n}\r\nJSON format',
+  `requestor_details` text CHARACTER SET utf8mb3  COMMENT 'Posible Value\r\n{\r\n    "account_id": 1,\r\n    "logo": "http://cdn.mls/images/accounts/dde1e1eaa66d4e.jpg",\r\n    "company_name": "My Name;",\r\n    "profession": "Real Estate Broker",\r\n    "real_estate_license_number": 22554,\r\n    "firstname": "My Firstname",\r\n    "lastname": "My Lastname",\r\n    "birthdate": "1901-01-01",\r\n    "street": "My Street Address",\r\n    "city": "My City Address",\r\n    "province": "National Capital Region",\r\n    "mobile_number": "xxxxxxxxxxx",\r\n    "email": "myemail@email.com",\r\n    "tin": "xxx-xxx-xxxx",\r\n    "status": "active",\r\n    "registered_at": 2147483647\r\n}\r\nJSON format',
   `requestee_account_id` bigint NOT NULL,
   `listing_id` bigint NOT NULL,
-  `handshake_status` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT 'pending' COMMENT 'Posible values accepted, pending, denied, cancelled',
+  `handshake_status` varchar(10) CHARACTER SET utf8mb3  DEFAULT 'pending' COMMENT 'Posible values accepted, pending, denied, cancelled',
   `handshake_status_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   `requested_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   PRIMARY KEY (`handshake_id`)
@@ -200,15 +200,15 @@ DROP TABLE IF EXISTS `mls_kyc`;
 CREATE TABLE IF NOT EXISTS `mls_kyc` (
   `kyc_id` bigint NOT NULL AUTO_INCREMENT,
   `account_id` bigint NOT NULL,
-  `documents` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Posible values\r\n\r\n{"kyc":{"selfie":"http://localhost/mls/cdn/public/kyc/1/0322b613cdb8e75d995.webp", "id":"http://localhost/mls/cdn/public/kyc/1/613cdb8e75d995.png"}}',
+  `documents` text CHARACTER SET utf8mb4  NOT NULL COMMENT 'Posible values\r\n\r\n{"kyc":{"selfie":"http://localhost/mls/cdn/public/kyc/1/0322b613cdb8e75d995.webp", "id":"http://localhost/mls/cdn/public/kyc/1/613cdb8e75d995.png"}}',
   `kyc_status` tinyint(1) NOT NULL COMMENT '0=pending, 1=verified, 2=denied, 3=expired',
   `id_expiration_date` date NOT NULL,
-  `verification_details` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Posible values\r\n\r\nLow-resolution selfie picture, Blurred selfie picture, Invalid selfie picture, Invalid selfie picture and ID, Invalid ID, Blurred ID, Expired ID, ID expiration not indicated, ID details cannot be seen, ID too small, Low-resolution ID, Documents accepted',
-  `verified_by` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'KYC Officer name',
+  `verification_details` varchar(150) CHARACTER SET utf8mb4  DEFAULT NULL COMMENT 'Posible values\r\n\r\nLow-resolution selfie picture, Blurred selfie picture, Invalid selfie picture, Invalid selfie picture and ID, Invalid ID, Blurred ID, Expired ID, ID expiration not indicated, ID details cannot be seen, ID too small, Low-resolution ID, Documents accepted',
+  `verified_by` varchar(100) CHARACTER SET utf8mb4  DEFAULT NULL COMMENT 'KYC Officer name',
   `verified_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   `created_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   PRIMARY KEY (`kyc_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 ;
 
 --
 -- Dumping data for table `mls_kyc`
@@ -233,12 +233,12 @@ CREATE TABLE IF NOT EXISTS `mls_leads` (
   `lead_id` bigint NOT NULL AUTO_INCREMENT,
   `listing_id` bigint NOT NULL,
   `account_id` bigint NOT NULL,
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'A Web Crypto API Encrypted value',
-  `iv` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'initialization vector that can be used with secret key for data decryption',
-  `preferences` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'Posible value\r\n\r\n{"type":"Residential","bedroom":"4","bathroom":"2","parking":"2","lot_area":"2589","category":"Condominium","address":{"barangay":"","municipality":"Pasig City","province":"Metro Manila","region":"NCR"}}\r\n\r\nin JSON Format',
+  `content` text CHARACTER SET utf8mb4  COMMENT 'A Web Crypto API Encrypted value',
+  `iv` text CHARACTER SET utf8mb4  COMMENT 'initialization vector that can be used with secret key for data decryption',
+  `preferences` text CHARACTER SET utf8mb4  COMMENT 'Posible value\r\n\r\n{"type":"Residential","bedroom":"4","bathroom":"2","parking":"2","lot_area":"2589","category":"Condominium","address":{"barangay":"","municipality":"Pasig City","province":"Metro Manila","region":"NCR"}}\r\n\r\nin JSON Format',
   `inquire_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   PRIMARY KEY (`lead_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 ;
 
 --
 -- Dumping data for table `mls_leads`
@@ -527,9 +527,9 @@ CREATE TABLE IF NOT EXISTS `mls_messages` (
   `message_id` bigint NOT NULL AUTO_INCREMENT,
   `thread_id` bigint NOT NULL,
   `user_id` bigint NOT NULL,
-  `content` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'A Web Crypto API Encrypted value',
+  `content` text CHARACTER SET utf8mb3  NOT NULL COMMENT 'A Web Crypto API Encrypted value',
   `is_read` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Possible value is 1 or 0',
-  `iv` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'initialization vector that can be used with secret key for data decryption',
+  `iv` text CHARACTER SET utf8mb3  COMMENT 'initialization vector that can be used with secret key for data decryption',
   `created_at` int UNSIGNED NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   PRIMARY KEY (`message_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb3;
@@ -599,11 +599,11 @@ DROP TABLE IF EXISTS `mls_notifications`;
 CREATE TABLE IF NOT EXISTS `mls_notifications` (
   `notification_id` bigint NOT NULL AUTO_INCREMENT,
   `account_id` int NOT NULL,
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'Possible value\r\n{"title":"My Name requested a handshake","message":"Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City","url":"http://manage.mls/mls/handshaked"}\r\n\r\nJSON Format',
+  `content` text CHARACTER SET utf8mb4  COMMENT 'Possible value\r\n{"title":"My Name requested a handshake","message":"Modern 2 storey 5 bedrooms Alabang 400 Village, Muntinlupa City","url":"http://manage.mls/mls/handshaked"}\r\n\r\nJSON Format',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Possible value 1 or 0',
   `created_at` int NOT NULL COMMENT 'epoch of time',
   PRIMARY KEY (`notification_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=412 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=412 DEFAULT CHARSET=utf8mb4 ;
 
 --
 -- Dumping data for table `mls_notifications`
@@ -1033,16 +1033,16 @@ DROP TABLE IF EXISTS `mls_page_ads`;
 CREATE TABLE IF NOT EXISTS `mls_page_ads` (
   `page_ads_id` int NOT NULL AUTO_INCREMENT,
   `banner` text,
-  `placement` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Possible value\r\nPROPERTY_LIST_TOP, PROPERTY_VIEW_SIDEBAR_TOP, PROPERTY_VIEW_SIDEBAR_BOTTOM, ARTICLE_LIST_SIDEBAR, ARTICLE_VIEW_SIDEBAR, PROFILE_TOP, PROFILE_SIDEBAR_TOP',
-  `visibility` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'visible',
-  `url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'a valid url',
+  `placement` varchar(100) CHARACTER SET utf8mb4  DEFAULT NULL COMMENT 'Possible value\r\nPROPERTY_LIST_TOP, PROPERTY_VIEW_SIDEBAR_TOP, PROPERTY_VIEW_SIDEBAR_BOTTOM, ARTICLE_LIST_SIDEBAR, ARTICLE_VIEW_SIDEBAR, PROFILE_TOP, PROFILE_SIDEBAR_TOP',
+  `visibility` varchar(7) CHARACTER SET utf8mb4  NOT NULL DEFAULT 'visible',
+  `url` text CHARACTER SET utf8mb4  COMMENT 'a valid url',
   `impresion` int NOT NULL DEFAULT '0',
   `clicked` int NOT NULL DEFAULT '0',
   `started_at` int DEFAULT '0' COMMENT 'epoch of time',
   `ended_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   `created_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   PRIMARY KEY (`page_ads_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 ;
 
 --
 -- Dumping data for table `mls_page_ads`
@@ -1065,12 +1065,12 @@ INSERT INTO `mls_page_ads` (`page_ads_id`, `banner`, `placement`, `visibility`, 
 DROP TABLE IF EXISTS `mls_premiums`;
 CREATE TABLE IF NOT EXISTS `mls_premiums` (
   `premium_id` bigint NOT NULL AUTO_INCREMENT,
-  `category` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT 'Possible value package or individual',
-  `type` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT 'limited_time' COMMENT 'Possible value limited_time',
+  `category` varchar(50) CHARACTER SET utf8mb3  DEFAULT NULL COMMENT 'Possible value package or individual',
+  `type` varchar(50) CHARACTER SET utf8mb3  DEFAULT 'limited_time' COMMENT 'Possible value limited_time',
   `name` varchar(50) DEFAULT NULL,
   `details` text,
-  `script` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'Possible value\r\n{"max_post":"120","max_users":"4","display_ads":"5","featured_ads":"4"}\r\nJSON Format',
-  `duration` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'Possible value ["30","90","180","365"] JSON Format',
+  `script` text CHARACTER SET utf8mb3  COMMENT 'Possible value\r\n{"max_post":"120","max_users":"4","display_ads":"5","featured_ads":"4"}\r\nJSON Format',
+  `duration` text CHARACTER SET utf8mb3  COMMENT 'Possible value ["30","90","180","365"] JSON Format',
   `cost` decimal(15,2) NOT NULL DEFAULT '0.00',
   `visibility` tinyint UNSIGNED NOT NULL DEFAULT '1' COMMENT 'Possible value 1 or 0',
   `created_at` int UNSIGNED NOT NULL COMMENT 'epoch of time',
@@ -1102,25 +1102,25 @@ DROP TABLE IF EXISTS `mls_settings`;
 CREATE TABLE IF NOT EXISTS `mls_settings` (
   `id` int NOT NULL AUTO_INCREMENT,
   `site_name` varchar(50) DEFAULT NULL,
-  `contact_info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'Possible value\r\n{"mobile_number":"09199999999","email":"myorg@email.com","office_address":"55 sitio st brgy pinagkaisahan quezon city","contact_page_text":"Donec a lobortis diam. Sed eu accumsan lectus. Nunc viverra eros non dui euismod interdum viverra vitae libero. Vestibulum fringilla, eros id volutpat mattis, ipsum ipsum elementum elit, quis posuere erat nisl ac augue. Etiam nec vehicula massa. Donec eget eros non tellus suscipit lobortis. Pellentesque dapibus ante augue, sed luctus nunc laoreet vel."}\r\nJSON Format',
+  `contact_info` text CHARACTER SET utf8mb4  COMMENT 'Possible value\r\n{"mobile_number":"09199999999","email":"myorg@email.com","office_address":"55 sitio st brgy pinagkaisahan quezon city","contact_page_text":"Donec a lobortis diam. Sed eu accumsan lectus. Nunc viverra eros non dui euismod interdum viverra vitae libero. Vestibulum fringilla, eros id volutpat mattis, ipsum ipsum elementum elit, quis posuere erat nisl ac augue. Etiam nec vehicula massa. Donec eget eros non tellus suscipit lobortis. Pellentesque dapibus ante augue, sed luctus nunc laoreet vel."}\r\nJSON Format',
   `property_tags` text,
-  `paypal_credentials` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'Possible value\r\n{"client_id":"AczoZMmV6Tkw24LL55FDfCaCMsp7aSo5bf75EFLy22u0nswrH15Cmrac2tsimtGCLaiU35vb605Pi3oF","client_secret":"EOxCjX0hgxSaffhW1QEFZcqto_LBL_qnAIl22TuYH1sVio-AljiMdb6ti95V8z0lb_RbKLexNcSSibE0"}\r\nJSON Format',
+  `paypal_credentials` text CHARACTER SET utf8mb4  COMMENT 'Possible value\r\n{"client_id":"AczoZMmV6Tkw24LL55FDfCaCMsp7aSo5bf75EFLy22u0nswrH15Cmrac2tsimtGCLaiU35vb605Pi3oF","client_secret":"EOxCjX0hgxSaffhW1QEFZcqto_LBL_qnAIl22TuYH1sVio-AljiMdb6ti95V8z0lb_RbKLexNcSSibE0"}\r\nJSON Format',
   `show_vat` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Posible value 1 or 0',
   `chat_is_websocket` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Posible value 1 or 0',
   `email_address_responder` varchar(150) NOT NULL,
   `enable_kyc_verification` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Posible value 1 or 0',
   `enable_premium` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Posible value 1 or 0',
   `enable_pin_access` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Posible value 1 or 0',
-  `privileges` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'Default system privileges\r\n{ "max_post": 20, "max_users": 1, "mls_access": 0, "chat_access": 1, "featured_ads": 0, "handshake_limit": 1, "comparative_analysis_access": 0 }\r\njson format',
-  `analytics` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'javascript',
-  `header_script` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'javascript',
-  `data_privacy` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'HTML Format value',
-  `terms` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'HTML Format value',
-  `about` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'HTML Format value',
-  `refund_policy` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'HTML Format value',
+  `privileges` text CHARACTER SET utf8mb4  COMMENT 'Default system privileges\r\n{ "max_post": 20, "max_users": 1, "mls_access": 0, "chat_access": 1, "featured_ads": 0, "handshake_limit": 1, "comparative_analysis_access": 0 }\r\njson format',
+  `analytics` text CHARACTER SET utf8mb4  COMMENT 'javascript',
+  `header_script` text CHARACTER SET utf8mb4  COMMENT 'javascript',
+  `data_privacy` text CHARACTER SET utf8mb4  COMMENT 'HTML Format value',
+  `terms` text CHARACTER SET utf8mb4  COMMENT 'HTML Format value',
+  `about` text CHARACTER SET utf8mb4  COMMENT 'HTML Format value',
+  `refund_policy` text CHARACTER SET utf8mb4  COMMENT 'HTML Format value',
   `modified_at` int NOT NULL COMMENT 'epoch of time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;
 
 --
 -- Dumping data for table `mls_settings`
@@ -1200,10 +1200,10 @@ CREATE TABLE IF NOT EXISTS `mls_users` (
   `password` varchar(255) NOT NULL,
   `email` varchar(150) NOT NULL,
   `name` varchar(50) DEFAULT NULL,
-  `photo` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'A valid image url',
+  `photo` text CHARACTER SET utf8mb3  COMMENT 'A valid image url',
   `user_level` int UNSIGNED NOT NULL DEFAULT '2' COMMENT 'Possible value 1 or 2, 2 for normal user, 1 for account holder',
-  `user_status` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT 'active' COMMENT 'Possible value inactive or active',
-  `permissions` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT 'Possible value\r\n{"accounts":{"access":true,"add":true,"edit":true,"delete":true},"users":{"access":true,"edit":true,"delete":true},"properties":{"access":true,"edit":true,"delete":true},"premiums":{"access":true,"edit":true,"delete":true,"process_subscription":true},"web_settings":{"access":true},"settings":{"access":true},"articles":{"access":true,"edit":true,"delete":true},"kyc":{"access":true},"page_ads":{"access":true},"leads":{"access":true,"delete":true},"transactions":{"access":true},"reports":{"access":true,"subscriber":true,"monthly_transaction":true}}\r\nJSON Format',
+  `user_status` varchar(10) CHARACTER SET utf8mb3  NOT NULL DEFAULT 'active' COMMENT 'Possible value inactive or active',
+  `permissions` text CHARACTER SET utf8mb3  COMMENT 'Possible value\r\n{"accounts":{"access":true,"add":true,"edit":true,"delete":true},"users":{"access":true,"edit":true,"delete":true},"properties":{"access":true,"edit":true,"delete":true},"premiums":{"access":true,"edit":true,"delete":true,"process_subscription":true},"web_settings":{"access":true},"settings":{"access":true},"articles":{"access":true,"edit":true,"delete":true},"kyc":{"access":true},"page_ads":{"access":true},"leads":{"access":true,"delete":true},"transactions":{"access":true},"reports":{"access":true,"subscriber":true,"monthly_transaction":true}}\r\nJSON Format',
   `two_factor_authentication` tinyint(1) NOT NULL DEFAULT '0',
   `two_factor_authentication_aps` varchar(50) DEFAULT NULL,
   `created_at` int DEFAULT '0' COMMENT 'epoch of time',
@@ -1239,12 +1239,12 @@ DROP TABLE IF EXISTS `mls_user_login`;
 CREATE TABLE IF NOT EXISTS `mls_user_login` (
   `user_login_id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` bigint NOT NULL,
-  `session_id` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'a User session id',
+  `session_id` text CHARACTER SET utf8mb4  COMMENT 'a User session id',
   `status` tinyint NOT NULL DEFAULT '0' COMMENT 'Possible value 1 or 0',
-  `login_details` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'Possible value \r\n{"ip_address":"158.62.33.138","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari\\/537.36 Edg/122.0.0.0","browser_name":"Edge","browser_version":"122.0.0.0","platform":"Windows 10","location":{"continent":"Asia","timezone":"Asia\\/Manila","country_name":"Philippines","country_code":"PH","region_name":"Metro Manila","city":"Quezon City","latitude":"14.6475","longitude":"121.0494","location_accuracy_radius":"10"}}\r\nJSON Format',
+  `login_details` text CHARACTER SET utf8mb4  COMMENT 'Possible value \r\n{"ip_address":"158.62.33.138","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari\\/537.36 Edg/122.0.0.0","browser_name":"Edge","browser_version":"122.0.0.0","platform":"Windows 10","location":{"continent":"Asia","timezone":"Asia\\/Manila","country_name":"Philippines","country_code":"PH","region_name":"Metro Manila","city":"Quezon City","latitude":"14.6475","longitude":"121.0494","location_accuracy_radius":"10"}}\r\nJSON Format',
   `login_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   PRIMARY KEY (`user_login_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 ;
 
 --
 -- Dumping data for table `mls_user_login`

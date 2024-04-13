@@ -10,6 +10,10 @@ namespace Library {
 		var $db_name 		= 	"mls";
 		var $db_prefix 		= 	"mls";
 
+		/* var $dbUser 		= 	"onepremi_sales";
+		var $dbPass 		= 	"1Plmc7211!@#$%";
+		var $dbName 		= 	"onepremi_mls"; */
+
 
 	}
 }
