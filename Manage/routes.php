@@ -104,7 +104,7 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
     Router::get('/messages/upload/{filename}/removeAttachment', 'MessagesController@removeAttachment', ['as' => 'removeAttachment'])->where([ 'filename' => '[\w\-\=\.]+' ]);
     Router::get('/downloadFile', 'MessagesController@downloadMessages', ['as' => 'downloadFile']);
 
-    Router::post('/messages/scrapeUrl', 'MessagesController@scrapeUrl', ['as' => 'scrapeUrl']);
+    Router::get('/messages/scrapeUrl', 'MessagesController@scrapeUrl', ['as' => 'scrapeUrl']);
     Router::post('/messages/saveNewMessage', 'MessagesController@saveNewMessage', ['as' => 'saveNewMessage']);
     Router::post('/messages/upload', 'MessagesController@uploadAttachment', ['as' => 'uploadMessageAttachment']);
     Router::post('/createDownloadFile', 'MessagesController@createDownloadFile', ['as' => 'createDownloadFile']);

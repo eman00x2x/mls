@@ -5,7 +5,7 @@ use Pecee\SimpleRouter\SimpleRouter as Router;
 Router::group(['prefix' => CS_ALIAS], function () {
 
     /** DASHBOARD ROUTES */
-    Router::get(CS_ALIAS, 'DashboardController@index', ['as' => 'dashboard']);
+    Router::get("/", 'DashboardController@index', ['as' => 'dashboard']);
 
     /** ACCOUNTS ROUTES */
     Router::get('/accounts', 'AccountsController@index', ['as' => 'accountsIndex']);
@@ -30,7 +30,7 @@ Router::group(['prefix' => CS_ALIAS], function () {
     Router::post('/accounts/user/uploadPhoto', 'UsersController@uploadPhoto', ['as' => 'uploadPhoto']);
 
     /** MY ACCOUNT ROUTES */
-    Router::get(CS_ALIAS . '/account/user/changePassword', 'UsersController@changePassword', ['as' => 'changePassword']);
+    Router::get('/account/user/changePassword', 'UsersController@changePassword', ['as' => 'changePassword']);
 
     /** PROPERTY LISTINGS ROUTES */
     Router::get('/accounts/{id}/listings', 'ListingsController@index', ['as' => 'listings'])->where([ 'id' => '[0-9]+' ]);

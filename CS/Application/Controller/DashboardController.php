@@ -6,7 +6,7 @@ class DashboardController extends \Admin\Application\Controller\DashboardControl
 
     function __construct() {
         parent::__construct();
-		$this->setTempalteBasePath(ROOT."/Cs");
+		$this->setTempalteBasePath(ROOT."/CS");
 	}
 
     function index() {

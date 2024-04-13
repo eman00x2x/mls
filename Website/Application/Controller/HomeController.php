@@ -163,7 +163,7 @@ class HomeController extends \Main\Controller {
 		
 		"));
 
-		$listings = $this->getModel("listing");
+		$listings = $this->getModel("Listing");
 
 		$model = [
 			"listings" => $listings
@@ -179,19 +179,21 @@ class HomeController extends \Main\Controller {
 	}
 
 	function popularLocations() {
+
+		$data = null;
+		$html = null;
 	
 		$listings = $this->getModel("Listing");
 		$listings->page['limit'] = 10;
-		$listings->select(" COUNT(JSON_EXTRACT(address, '$.municipality')) as total, JSON_EXTRACT(address, '$.municipality') as city, JSON_EXTRACT(address, '$.region') as region, JSON_EXTRACT(address, '$.province') as province ");
-		$listings->where(" is_website = 1 ");
-		$listings->groupBy(" city ");
+		$listings
+			->select(" COUNT(JSON_EXTRACT(address, '$.municipality')) as total, JSON_EXTRACT(address, '$.municipality') as city, JSON_EXTRACT(address, '$.region') as region, JSON_EXTRACT(address, '$.province') as province ")
+				->where(" is_website = 1 ")
+					->groupBy(" city ");
 		$data = $listings->getList();
-
-		$data = array_merge($data, $data, $data);
 
 		$this->setTemplate("home/popularLocations.php");
 		$html = $this->getTemplate($data, $listings);
-
+		
 		echo json_encode([
 			"status" => "success",
 			"content" => $html,
@@ -203,6 +205,8 @@ class HomeController extends \Main\Controller {
 	}
 
 	function featuredPost() {
+
+		$data = null;
 
 		$listings = $this->getModel("Listing");
 		$listings->page['limit'] = 5;
@@ -231,31 +235,32 @@ class HomeController extends \Main\Controller {
 				}
 			}
 
-			$data['listings'] = array_merge($data['listings'], $data['listings'], $data['listings'], $data['listings']);
-
-			$this->setTemplate("home/featuredPost.php");
-			$data = $this->getTemplate($data, $listings);
-
-			echo json_encode([
-				"status" => "success",
-				"content" => $data
-			]);
-
-			exit();
-
 		}
+
+		$this->setTemplate("home/featuredPost.php");
+		$data = $this->getTemplate($data, $listings);
+
+		echo json_encode([
+			"status" => "success",
+			"content" => $data
+		]);
+
+		exit();
 
 	}
 
 	function latestArticles() {
 
+		$data = null;
+
 		$articles = $this->getModel("Article");
 		$articles->page['limit'] = 4;
 		$data['articles'] = $articles->getList();
 
-		$this->setTemplate("home/latestArticles.php");
-
-		$data = $this->getTemplate($data, $articles);
+		if($data) {
+			$this->setTemplate("home/latestArticles.php");
+			$data = $this->getTemplate($data, $articles);
+		}
 
 		echo json_encode([
 			"status" => "success",

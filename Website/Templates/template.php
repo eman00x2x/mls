@@ -36,7 +36,7 @@
 							<div class='mb-4'>
 								<h3>Leading the Real Estate Landscape in the Philippines</h3>
 								<p>The Philippine Association of Real Estate Boards Inc. (PAREB) is the premier and largest national real estate service organization in the Philippines. It comprises 68 local member boards with a collective membership of 5,000 real estate practitioners.</p>
-								<p><i class='ti ti-map-pin'></i> Our Headquarters is lcoated at The PAREB Centre, P.E. Antonio Brgy. Ugong, Pasig City</p>
+								<p><i class='ti ti-map-pin'></i> Our Headquarters is located at The PAREB Centre, P.E. Antonio Brgy. Ugong, Pasig City</p>
 							</div>
 						</div>
 						

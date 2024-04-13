@@ -311,32 +311,12 @@ $(document).on('click', '.btn-update_subscription_status', function (e) {
 
 });
 
-function timeSince(date) {
+function timeSince(epoch) {
 
-	var seconds = Math.floor(((new Date().getTime() / 1000) - date))
+	let date = new Date(0);
+	date.setUTCSeconds(epoch);
 
-	var interval = seconds / 31536000;
-
-	if (interval > 1) {
-		return Math.floor(interval) + " years";
-	}
-	interval = seconds / 2592000;
-	if (interval > 1) {
-		return Math.floor(interval) + " months";
-	}
-	interval = seconds / 86400;
-	if (interval > 1) {
-		return Math.floor(interval) + " days";
-	}
-	interval = seconds / 3600;
-	if (interval > 1) {
-		return Math.floor(interval) + " hours";
-	}
-	interval = seconds / 60;
-	if (interval > 1) {
-		return Math.floor(interval) + " minutes";
-	}
-	return Math.floor(seconds) + " seconds";
+	return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
 function getAmortization() {

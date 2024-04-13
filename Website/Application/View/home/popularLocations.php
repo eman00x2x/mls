@@ -3,7 +3,7 @@
 $html[] = "<div class='pb-5 my-5'>";
 
 	$html[] = "<div class='text-center pb-3'>";
-		$html[] = "<h2 class='mb-0 display-5 text-blue'>Explore Trending Destinations</h2>";
+		$html[] = "<h2 class='mb-0 display-5 text-blue'>Highly Demanded Real Estate Markets</h2>";
 		$html[] = "<p>Discover Our Most Popular Locations</p>";
 	$html[] = "</div>";
 

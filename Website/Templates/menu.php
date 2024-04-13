@@ -5,9 +5,8 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<h1 class="navbar-brand d-none-navbar-horizontal pe-0 pe-md-3">
-			<a href="<?php echo WEBDOMAIN; ?>">
-				<!-- <img src="./static/logo.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image"> -->
-				MLS
+			<a href="<?php echo WEBDOMAIN; ?>" class='text-decoration-none'>
+				<img src="<?php echo CDN."images/logo.png"; ?>" width="50" class="navbar-brand-image"> PAREB MLS
 			</a>
 		</h1>
 

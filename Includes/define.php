@@ -28,7 +28,7 @@ if(DEVELOPMENT) {
 	define("WEB_ADMIN_ALIAS","/mls/Webadmin");
 	define("MANAGE_ALIAS","/mls/Manage");
 	define("WEB_ALIAS","/mls/Website");
-	define("CS_ALIAS","/mls/Cs");
+	define("CS_ALIAS","/mls/CS");
 
 }else {
 
@@ -47,7 +47,7 @@ define("API_V1",	"http://localhost/mls/Api/v1");
 define("CDN",		"http://localhost/mls/Cdn/");
 define("WEBDOMAIN",	"http://localhost/mls/Website/");
 define("WEBADMIN",	"http://localhost/mls/Webadmin/");
-define("CS",		"http://localhost/mls/Cs/");
+define("CS",		"http://localhost/mls/CS/");
 define("ADMIN",		"http://localhost/mls/Admin/");
 define("MANAGE",	"http://localhost/mls/Manage/");
 

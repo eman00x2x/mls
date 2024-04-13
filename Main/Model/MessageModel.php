@@ -175,8 +175,6 @@ class MessageModel extends \Main\Model {
 	 */
 	function uploadAttachment($file) {
 
-		require_once(ROOT.DS."vendor".DS."upload".DS."upload.php");
-		
 		$files = array();
 		foreach ($file as $k => $l) {
 			foreach ($l as $i => $v) {
@@ -220,7 +218,7 @@ class MessageModel extends \Main\Model {
 					);
 				}
 
-				$handle->Process(ROOT."Cdn/public/temporary/"); 
+				$handle->Process(ROOT."/Cdn/public/temporary/"); 
 				
 				if ($handle->processed) {
 

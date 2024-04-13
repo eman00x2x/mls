@@ -11,7 +11,9 @@ $html[] = "<div class=''>";
 				$html[] = "<div class='navbar navbar-expand-md d-print-none navbar-transparent navbar-home fs-16'>";
 					$html[] = "<button class='navbar-toggler  text-white' type='button' data-bs-toggle='collapse' data-bs-target='#navbar-menu' aria-controls='navbar-menu' aria-expanded='false' aria-label='Toggle navigation'><span class='navbar-toggler-icon'></span></button>";
 					$html[] = "<h1 class='navbar-brand d-none-navbar-horizontal pe-0 pe-md-3'>";
-						$html[] = "<a href='".WEBDOMAIN."' class=' text-white'>MLS</a>";
+						$html[] = "<a href='".WEBDOMAIN."' class=' text-white text-decoration-none'>";
+							$html[] = "<img src='".CDN."images/logo.png' width='50' class='navbar-brand-image'> PAREB MLS";
+						$html[] = "</a>";
 					$html[] = "</h1>";
 
 					$html[] = "<div class='navbar-nav flex-row order-md-last'>";

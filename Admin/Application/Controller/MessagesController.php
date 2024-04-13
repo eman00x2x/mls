@@ -51,7 +51,7 @@ class MessagesController extends \Main\Controller {
 		$thread->page['uri'] = (isset($uri) ? $uri : []);
 
 		$data['threads'] = $thread->getList();
-		
+
 		$last_messages = json_encode([]);
 
 		if($data['threads']) {
@@ -64,20 +64,22 @@ class MessagesController extends \Main\Controller {
 
 			for($i=0; $i<count($data['threads']); $i++) {
 
-				for($x=0; $x<count($data['threads'][$i]['participants']); $x++) {
-					
-					$account->select(" account_id, logo, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.firstname')),' ',JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.lastname'))) as name, profession, message_keys ");
-					$account->column['account_id'] = $data['threads'][$i]['participants'][$x];
-					$accountData = $account->getById();
+				if($data['threads'][$i]['participants']) {
+					for($x=0; $x<count($data['threads'][$i]['participants']); $x++) {
+						
+						$account->select(" account_id, logo, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.firstname')),' ',JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.lastname'))) as name, profession, message_keys ");
+						$account->column['account_id'] = $data['threads'][$i]['participants'][$x];
+						$accountData = $account->getById();
 
-					if($accountData['account_id'] == $this->session['account_id']) {
-						$a = $this->session['account_id'];
-					}else {
-						$a = "recipient";
+						if($accountData['account_id'] == $this->session['account_id']) {
+							$a = $this->session['account_id'];
+						}else {
+							$a = "recipient";
+						}
+
+						$data['threads'][$i]['accounts'][ $a ] = $accountData;
+
 					}
-
-					$data['threads'][$i]['accounts'][ $a ] = $accountData;
-
 				}
 
 				$user->select(" account_id, user_id, photo, name, email ");
@@ -620,14 +622,14 @@ class MessagesController extends \Main\Controller {
 
 		header("Content-type: text/html; charset=utf-8");
 
-		parse_str(file_get_contents('php://input'), $_POST);
+		/* parse_str(file_get_contents('php://input'), $_POST); */
 
 			// Extract HTML using curl
 			$ch = curl_init();
 			
 			curl_setopt($ch, CURLOPT_HEADER, 0);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_URL, $_POST["url"]);
+			curl_setopt($ch, CURLOPT_URL, $_GET["url"]);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 			
 			$data = curl_exec($ch);
@@ -635,7 +637,7 @@ class MessagesController extends \Main\Controller {
 
 			if($data) {
 
-				$url = trim(parse_url($_POST["url"], PHP_URL_SCHEME).'://'.parse_url($_POST["url"], PHP_URL_HOST), '/');
+				$url = trim(parse_url($_GET["url"], PHP_URL_SCHEME).'://'.parse_url($_GET["url"], PHP_URL_HOST), '/');
 
 				// Load HTML to DOM Object
 				$dom = new \DOMDocument();
@@ -1255,22 +1257,15 @@ class MessagesController extends \Main\Controller {
 				
 				if(messageToTransform.length > 0) { 
 
-					const formData = new FormData();
 					const urls = messageToTransform.reverse();
 
 					messageToTransform = [];
 
 					for(let i = 0; i < urls.length; i++) {
 
-						formData.append('url', urls[i].link);
-
-						fetch('".url("MessagesController@scrapeUrl")."', { 
-								method: 'POST', 
-								body: new URLSearchParams(formData).toString(),
-								headers: {
-									'Content-type': 'application/x-www-form-urlencoded'
-								}  
-							})
+						fetch('".url("MessagesController@scrapeUrl")."?' + new URLSearchParams({
+							url: urls[i].link
+						}))
 						.then( response => response.json() )
 						.then( data => {
 
@@ -1295,7 +1290,7 @@ class MessagesController extends \Main\Controller {
 
 								$('.wrapper_' + container).addClass('p-2');
 
-								/* scrollToBottom('.card-body'); */
+								scrollToBottom('.card-body');
 							}
 
 						});
