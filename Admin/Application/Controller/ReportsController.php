@@ -145,7 +145,11 @@ class ReportsController extends \Main\Controller {
 
 		");
 
-		debug($_SESSION['export']);
+		$_SESSION['export'] = array_merge(
+			(isset($_SESSION['export']['category']) ? $_SESSION['export']['category'] : []),
+			(isset($_SESSION['export']['price_range']) ? $_SESSION['export']['price_range'] : []),
+			(isset($_SESSION['export']['location']) ? $_SESSION['export']['location'] : []),
+		);
 
 		$this->setTemplate("reports/properties.php");
 		return $this->getTemplate($data, $address);
@@ -203,12 +207,14 @@ class ReportsController extends \Main\Controller {
 			$this->getLibrary("Charts")->getBarChart($chart_data, "getCategoriesChart_$flag", "Categories");
 
 			if($data) {
-				$export[] = "category|total";
+				$export[] = "CATEGORY|TOTAL";
 				for($i=0; $i<count($data); $i++) {
 					$export[] = implode("|", $data[$i]);
 				}
 			}
 
+			$export[] = null;
+			$export[] = null;
 			$_SESSION['export']['category'] = $export;
 
 		}
@@ -236,23 +242,22 @@ class ReportsController extends \Main\Controller {
 			$filter[] = " offer = '".$_GET['offer']."' ";
 		}
 
-		if(!isset($_GET['address'])) {
-			$listing->select(" JSON_EXTRACT(address, '$.region') as region, COUNT(listing_id) as total_listing ");
-			$listing->groupBy(" region ");
-			$this->setTemplate("reports/listingPerRegion.php");
+		$listing->select(" JSON_EXTRACT(address, '$.region') as region, COUNT(listing_id) as total_listing ");
+		$listing->groupBy(" region ");
+		$this->setTemplate("reports/listingPerRegion.php");
 
-			$index = "region";
-		}else {
+		$index = "REGION";
 
+		if(isset($_GET['address'])) {
 			if($_GET['address']['region'] != "" && $_GET['address']['province'] == "" && $_GET['address']['municipality'] == "") {
 
 				$filter[] = " JSON_EXTRACT(address, '$.region') = '".$_GET['address']['region']."' ";
 
 				$listing->select(" JSON_EXTRACT(address, '$.province') as province, COUNT(listing_id) as total_listing ");
-				$listing->groupBy(" region ");
+				$listing->groupBy(" province ");
 				$this->setTemplate("reports/listingPerProvince.php");
 
-				$index = "province";
+				$index = "PROVINCE";
 			}
 
 			if($_GET['address']['region'] != "" && $_GET['address']['province'] != "" && $_GET['address']['municipality'] == "") {
@@ -264,7 +269,7 @@ class ReportsController extends \Main\Controller {
 				$listing->groupBy(" municipality ");
 				$this->setTemplate("reports/listingPerMunicipality.php");
 
-				$index = "municipality";
+				$index = "MUNICIPALITY";
 			}
 
 			if($_GET['address']['region'] != "" && $_GET['address']['province'] != "" && $_GET['address']['municipality'] != "") {
@@ -277,21 +282,22 @@ class ReportsController extends \Main\Controller {
 				$listing->groupBy(" barangay ");
 				$this->setTemplate("reports/listingPerBarangay.php");
 
-				$index = "barangay";
+				$index = "BARANGAY";
 			}
-
 		}
 
 		$listing->where( implode(" AND ", $filter) );
 		$data = $listing->getList();
 
 		if($data) {
-			$export[] = "$index|total";
+			$export[] = "$index|TOTAL";
 			for($i=0; $i<count($data); $i++) {
 				$export[] = implode("|", $data[$i]);
 			}
 		}
 
+		$export[] = null;
+		$export[] = null;
 		$_SESSION['export']['location'] = $export;
 		
 		return $this->getTemplate($data);
@@ -357,7 +363,8 @@ class ReportsController extends \Main\Controller {
 			END) p_range, COUNT(price) as total
 		")
 			->groupBy(" p_range ")
-				->where( implode(" AND ", $filter) );
+				->where( implode(" AND ", $filter) )
+					->orderBy(" p_range ");
 
 		$data = $listing->getList();
 
@@ -373,12 +380,14 @@ class ReportsController extends \Main\Controller {
 			$this->getLibrary("Charts")->getBarChart($chart_data, "getPriceRangeChart", "Price Range Chart");
 
 			if($data) {
-				$export[] = "price_range|total";
+				$export[] = "PRICE RANGE|TOTAL";
 				for($i=0; $i<count($data); $i++) {
 					$export[] = implode("|", $data[$i]);
 				}
 			}
 
+			$export[] = null;
+			$export[] = null;
 			$_SESSION['export']['price_range'] = $export;
 
 		}

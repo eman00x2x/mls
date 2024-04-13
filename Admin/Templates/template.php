@@ -96,6 +96,7 @@
 											<?php } ?>
 											<a href='<?php echo url("ReportsController@subscribersReport"); ?>' class='dropdown-item'><i class='ti ti-report me-1'></i> Subscribers Report</a>
 											<a href='<?php echo url("ReportsController@transactionsReport"); ?>' class='dropdown-item'><i class='ti ti-report me-1'></i> Transactions Report</a>
+											<a href='<?php echo url("ReportsController@propertiesReport"); ?>' class='dropdown-item'><i class='ti ti-report me-1'></i> Listings Report</a>
 										</div>
 									</li>
 								<?php } ?>

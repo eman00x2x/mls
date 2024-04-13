@@ -57,7 +57,8 @@ $html[] = "<div class='page-body'>";
                                 $html[] = "</select>";
                             $html[] = "</div>";
 
-                            $html[] = "<div class='mt-3'>";
+                            $html[] = "<div class='mt-3 d-flex justify-content-between gap-3'>";
+                                $html[] = "<a href='".url("ReportsController@propertiesReport")."' class='btn btn-secondary'>Reset</a>";
                                 $html[] = "<span class='btn btn-primary btn-create-report'>Create Report</span>";
                             $html[] = "</div>";
 
