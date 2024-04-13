@@ -119,7 +119,7 @@ class ArticleModel extends \Main\Model {
 
 	function moveUploadedImage($filename) {
 
-        $old_dir = ROOT."Cdn/images/temporary/".$filename;
+        $old_dir = ROOT."/Cdn/images/temporary/".$filename;
 
 		if(file_exists($old_dir)) {
 
@@ -136,7 +136,7 @@ class ArticleModel extends \Main\Model {
 
 			$new_filename = $new_name."_".md5(time()).".".$ext;
 		
-			$new_dir = ROOT."Cdn/images/articles/".$new_filename;
+			$new_dir = ROOT."/Cdn/images/articles/".$new_filename;
 			rename($old_dir,$new_dir);
 
 			return CDN."images/articles/".$new_filename;
@@ -173,7 +173,7 @@ class ArticleModel extends \Main\Model {
 
 	function removePhoto($filename) {
 
-		$file = ROOT."Cdn/images/articles/".$filename;
+		$file = ROOT."/Cdn/images/articles/".$filename;
 		
 		/* check file if exists in main folder */
 		if(file_exists($file)) {

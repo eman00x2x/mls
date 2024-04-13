@@ -9,7 +9,7 @@ class UsersController extends \Admin\Application\Controller\UsersController {
 	function __construct() {
 
         parent::__construct();
-        $this->setTempalteBasePath(ROOT."Manage");
+        $this->setTempalteBasePath(ROOT."/Manage");
 		
 		$this->account_id = $this->session['account_id'];
 
@@ -41,7 +41,7 @@ class UsersController extends \Admin\Application\Controller\UsersController {
 	}
 
 	function changePassword($id = null, $account_id = null) {
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		return parent::changePassword($this->session['user_id'], $this->account_id);
 	}
 
@@ -62,7 +62,7 @@ class UsersController extends \Admin\Application\Controller\UsersController {
 			response()->redirect(url("UsersController@index"));
 		}
 
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		return parent::add($this->account_id);
 	}
 
@@ -77,7 +77,7 @@ class UsersController extends \Admin\Application\Controller\UsersController {
 			response()->redirect(url("UsersController@index"));
 		}
 
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		return parent::edit($this->account_id,$user_id);
 	}
 
@@ -87,7 +87,7 @@ class UsersController extends \Admin\Application\Controller\UsersController {
 			$this->response(404);
 		}
 
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		return parent::delete($account_id,$user_id);
 	}
 	

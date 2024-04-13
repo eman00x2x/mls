@@ -7,7 +7,7 @@ class SessionController extends \Main\Controller {
 	private $doc;
 	
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Website");
+		$this->setTempalteBasePath(ROOT."/Website");
 		
 	}
 

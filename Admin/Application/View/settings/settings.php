@@ -89,6 +89,17 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 												$html[] = "<input type='checkbox' name='chat_is_websocket' class='form-check-input' value='1' ".($data['chat_is_websocket'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable WebSocket</span>";
 											$html[] = "</label>";
+
+											$html[] = "<div class='form-floating mt-4'>";
+												$html[] = "<input type='text' name='websocket[ip_address]' id='websocket_ip_address' value='".$data['websocket']['ip_address']."' class='form-control' />";
+												$html[] = "<label for='websocket_ip_address'>Websocket Server IP Address (IPv4)</label>";
+											$html[] = "</div>";
+
+											$html[] = "<div class='form-floating mt-4'>";
+												$html[] = "<input type='number' name='websocket[port]' id='websocket_port' value='".$data['websocket']['port']."' class='form-control' min='0' max='65535' />";
+												$html[] = "<label for='websocket_ip_address'>Websocket Server Port (IPv4)</label>";
+											$html[] = "</div>";
+
 										$html[] = "</div>";
 
 										$html[] = "<div class='mb-5 border rounded-3 p-5'>";

@@ -9,7 +9,7 @@ class AccountSubscriptionController extends \Main\Controller {
 	public $session;
 
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");

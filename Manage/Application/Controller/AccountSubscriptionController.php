@@ -6,7 +6,7 @@ class AccountSubscriptionController extends \Admin\Application\Controller\Accoun
 	
 	function __construct() {
 		parent::__construct();
-        $this->setTempalteBasePath(ROOT."Manage");
+        $this->setTempalteBasePath(ROOT."/Manage");
 		$this->account_id = $this->session['account_id'];
 	}
 	

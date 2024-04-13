@@ -44,9 +44,9 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<td><span>".ucwords(str_replace("_"," ",$key))."</span></td>";
 									$html[] = "<td class='text-center fw-bold'>";
 										if(in_array($key, ["mls_access", "chat_access", "comparative_analysis_access"])) {
-											$html[] = $value > 0 ? " Yes " : " - ";
+											$html[] = $value > 0 ? " Yes " : " No ";
 										}else {
-											$html[] = $value == 0 ? " - " : $value;
+											$html[] = $value;
 										}
 									$html[] = "</td>";
 								$html[] = "</tr>";

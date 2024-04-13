@@ -11,7 +11,7 @@ class MessagesController extends \Main\Controller {
 	private $websocketAddress = WEBSOCKET_SERVER_ADDRESS;
 
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
@@ -52,6 +52,8 @@ class MessagesController extends \Main\Controller {
 
 		$data['threads'] = $thread->getList();
 		
+		$last_messages = json_encode([]);
+
 		if($data['threads']) {
 
 			$messages_list = [];
@@ -105,9 +107,10 @@ class MessagesController extends \Main\Controller {
 			}
 
 			$last_messages = json_encode($messages_list);
-			$this->doc->addScriptDeclaration("			const last_messages = $last_messages;");
-
+			
 		}
+
+		$this->doc->addScriptDeclaration("			const last_messages = $last_messages;");
 
 		$this->doc->addScript(CDN."js/encryption.js");
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
@@ -706,10 +709,10 @@ class MessagesController extends \Main\Controller {
 				thread_id = parseInt($('#thread_id').val());
 				participants = $('#participants').val();
 				
-				websocket.onopen = function(ev) { // connection is open 
+				websocket.onopen = function(ev) {
 					console.log(' Server Open ');
-				}
-
+				};
+				
 				websocket.onmessage = function(event) {
 					var response	= JSON.parse(event.data);
 
@@ -731,7 +734,7 @@ class MessagesController extends \Main\Controller {
 					}
 
 				};
-
+				
 				websocket.onerror	= function(ev) {
 					console.log('Error Occurred - ' + ev.data);
 					$('#serverErrorModal').show({
@@ -739,7 +742,7 @@ class MessagesController extends \Main\Controller {
 						keyboard: false
 					});
 				};
-
+				
 				websocket.onclose 	= function(ev) {
 					console.log('Connection Closed');
 					$('#serverErrorModal').show({

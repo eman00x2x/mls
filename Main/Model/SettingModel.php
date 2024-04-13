@@ -26,6 +26,7 @@ class SettingModel extends \Main\Model {
 				);
 			}else {
 
+				if(!isset($data['websocket'])) { $this->column['websocket'] = json_encode($this->column['websocket']); }
 				if(!isset($data['privileges'])) { $this->column['privileges'] = json_encode($this->column['privileges']); }
 				if(!isset($data['property_tags'])) { $this->column['property_tags'] = json_encode($this->column['property_tags']); }
 				if(!isset($data['contact_info'])) { $this->column['contact_info'] = json_encode($this->column['contact_info']); }

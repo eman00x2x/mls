@@ -195,7 +195,7 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 			$response['data']['pin'] = $_POST['pin'];
 			$response['data']['api_key'] = $_POST['api_key'];
 
-			$response['data']['board_regions'] = BOARD_REGIONS;
+			/* $response['data']['board_regions'] = BOARD_REGIONS; */
 			$response['data']['local_boards'] = LOCAL_BOARDS;
 			sort($response['data']['local_boards']);
 

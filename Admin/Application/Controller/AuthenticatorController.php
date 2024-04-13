@@ -23,7 +23,9 @@ class AuthenticatorController extends \Main\Controller
 
     function __construct() {
 
-		$this->setTempalteBasePath(ROOT."Admin");
+		ini_set('session.save_path', SESSION_SAVE_PATH);
+
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->domain = ADMIN;
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 
@@ -458,13 +460,15 @@ class AuthenticatorController extends \Main\Controller
 
 		$accounts = $this->getModel("Account");
 		$accounts->column['account_id'] = $code['account_id'];
-		$accounts->and(" email = '".$code['email']."' ");
+		$accounts->and(" email = '".$code['email']."' AND status = 'pending_activation' ");
 		$data = $accounts->getById();
 
 		if($data) {
 
 			$accounts->save( $data['account_id'], [
+				"board_region" => json_encode($data['board_region']),
 				"account_name" => json_encode($data['account_name']),
+				"profile" => json_encode($data['profile']),
 				"status" => "active"
 			]);
 

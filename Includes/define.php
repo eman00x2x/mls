@@ -7,7 +7,7 @@ define("DATE_NOW",strtotime("Now"));
 define("LIST_LIMIT",20);
 define("DEVELOPMENT", true);
 
-define("WEBSOCKET_SERVER_ADDRESS", "ws://localhost:8980/mls/Manage/webSocketServer.php");
+define("SESSION_SAVE_PATH", "D:/wamp64/www/mls/sessions");
 
 /* 
 define("API","http://api.mls/");
@@ -22,13 +22,13 @@ define("CDN","http://cdn.mls/");
 
 if(DEVELOPMENT) {
 
-	define("API_DOCS_ALIAS","/mls/api/documentation");
-	define("API_ALIAS","/mls/api");
-	define("ADMIN_ALIAS","/mls/admin");
-	define("WEB_ADMIN_ALIAS","/mls/webadmin");
-	define("MANAGE_ALIAS","/mls/manage");
-	define("WEB_ALIAS","/mls/website");
-	define("CS_ALIAS","/mls/cs");
+	define("API_DOCS_ALIAS","/mls/Api/documentation");
+	define("API_ALIAS","/mls/Api");
+	define("ADMIN_ALIAS","/mls/Admin");
+	define("WEB_ADMIN_ALIAS","/mls/Webadmin");
+	define("MANAGE_ALIAS","/mls/Manage");
+	define("WEB_ALIAS","/mls/Website");
+	define("CS_ALIAS","/mls/Cs");
 
 }else {
 
@@ -42,14 +42,14 @@ if(DEVELOPMENT) {
 
 }
 
-define("API",	"http://localhost/mls/api/");
-define("API_V1",	"http://localhost/mls/api/v1");
-define("CDN",		"http://localhost/mls/cdn/");
-define("WEBDOMAIN",	"http://localhost/mls/website/");
-define("WEBADMIN",	"http://localhost/mls/webadmin/");
-define("CS",		"http://localhost/mls/cs/");
-define("ADMIN",		"http://localhost/mls/admin/");
-define("MANAGE",	"http://localhost/mls/manage/");
+define("API",		"http://localhost/mls/Api/");
+define("API_V1",	"http://localhost/mls/Api/v1");
+define("CDN",		"http://localhost/mls/Cdn/");
+define("WEBDOMAIN",	"http://localhost/mls/Website/");
+define("WEBADMIN",	"http://localhost/mls/Webadmin/");
+define("CS",		"http://localhost/mls/Cs/");
+define("ADMIN",		"http://localhost/mls/Admin/");
+define("MANAGE",	"http://localhost/mls/Manage/");
 
 /* define("API",		"http://192.168.254.250/mls/api/");
 define("API_V1",	"http://localhost/mls/api/v1");
@@ -160,11 +160,11 @@ define("ADMIN_PERMISSIONS",[
 	],
 	"page_ads" => [
 		"access" => (boolean) true
-	],
+	]/* ,
 	"leads" => [
 		"access" => (boolean) true,
 		"delete" => (boolean) true
-	],
+	] */,
 	"transactions" => [
 		"access" => (boolean) true
 	],

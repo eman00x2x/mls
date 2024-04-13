@@ -5,8 +5,9 @@ namespace Manage\Application\Controller;
 class DashboardController extends \Admin\Application\Controller\DashboardController {
 
 	function __construct() {
+       
         parent::__construct();
-		$this->setTempalteBasePath(ROOT."Manage");
+		$this->setTempalteBasePath(ROOT."/Manage");
 	}
 
     function index() {
@@ -18,7 +19,6 @@ class DashboardController extends \Admin\Application\Controller\DashboardControl
         $this->getTrafficChart($this->session['account_id'], "this_month");
 
         $data['premium'] = $this->getActivePremium();
-        
         
         $data['max_post'] = $this->session['privileges']['max_post'];
         $data['handshake_participants'] = $this->getHandshakeParticipants($this->session['account_id']);

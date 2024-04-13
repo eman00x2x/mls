@@ -7,7 +7,7 @@ class HomeController extends \Main\Controller {
 	private $doc;
 	
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Website");
+		$this->setTempalteBasePath(ROOT."/Website");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 	}
 

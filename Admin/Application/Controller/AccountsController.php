@@ -10,7 +10,7 @@ class AccountsController extends \Main\Controller {
 	public $session;
 
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 	}
@@ -445,7 +445,7 @@ class AccountsController extends \Main\Controller {
 
 				$logo_url = explode("/", $data['logo']);
 				$current_logo = array_pop($logo_url);
-				$file = ROOT."Cdn/images/accounts/".$current_logo;
+				$file = ROOT."/Cdn/images/accounts/".$current_logo;
 				
 				if(file_exists($file)) {
 					@unlink($file);
@@ -454,7 +454,7 @@ class AccountsController extends \Main\Controller {
 				$_POST['logo'] = $accounts->moveUploadedImage($_POST['logo']);
 
 			}else { $_POST['logo'] = null; }
-			
+
 			if(isset($_POST['broker_prc_license_id'])) {
 
 				$reference = $this->getModel("LicenseReference");
@@ -484,7 +484,7 @@ class AccountsController extends \Main\Controller {
 			if(isset($_POST['uploads'])) {
 
 				if(isset($_POST['uploads']['kyc'])) {
-					array_map('unlink', array_filter((array) glob(ROOT."Cdn/public/kyc/$account_id/*")));
+					array_map('unlink', array_filter((array) glob(ROOT."/Cdn/public/kyc/$account_id/*")));
 				}
 
 				foreach($_POST['uploads'] as $key => $val) {
@@ -630,7 +630,14 @@ class AccountsController extends \Main\Controller {
 		$privileges = $subscriptions->getSubscription();
 
 		if($privileges) {
-			$data['account']['privileges'] = $privileges;
+			foreach($privileges as $key => $val) {
+
+				if(!isset($data['account']['privileges'][$key])) {
+					$data['account']['privileges'][$key] = $val;
+				}else {
+					$data['account']['privileges'][$key] += $val;
+				}
+			}
 		}
 
 		$users = $this->getModel("User");
@@ -639,6 +646,7 @@ class AccountsController extends \Main\Controller {
 		$data['users'] = $users->where(" user_status = 'active' ")->orderBy(" created_at ASC ")->getByAccountId();
 
 		$total_users = count($data['users']);
+		
 		if($data['account']['privileges']['max_users'] >= $total_users) {
 			for($i=0; $i<$total_users; $i++) {
 
@@ -651,6 +659,7 @@ class AccountsController extends \Main\Controller {
 
 			}
 		}
+		
 
 		$listings = $this->getModel("Listing");
 		$listings->page['limit'] = 99999;
@@ -687,7 +696,7 @@ class AccountsController extends \Main\Controller {
 		]);
 
 		$activation_code = base64_encode($activation_url_data);
-		$data['url'] = rtrim(MANAGE, "/") . rtrim(url( "AuthenticatorController@accountActivation", [ "code" => $activation_code ] ), "/");
+		$data['url'] = MANAGE . rtrim("accountActivation/code=".$activation_code, "/");
 
 		$this->setTemplate("accounts/MAIL_activation.php");
 		return $this->getTemplate($data);

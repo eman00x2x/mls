@@ -14,13 +14,13 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 	function __construct() {
 
         parent::__construct();
-        $this->setTempalteBasePath(ROOT."Manage");
+        $this->setTempalteBasePath(ROOT."/Manage");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 		$this->account_id = $this->session['account_id'];
 
-		if(!isset($this->session['privileges']['mls_access']) && in_array($this->session['account_type'], ["Customer Service"])) {
+		if((!isset($this->session['privileges']['mls_access']) && in_array($this->session['account_type'], ["Customer Service"])) || $this->session['privileges']['mls_access'] == 0) {
 			$this->getLibrary("Factory")->setMsg("Access to the MLS (Multiple Listing Service) requires premium privileges. Upgrade your subscription or subscribe to a premium to gain access.", "warning");
 			response()->redirect(url("DashboardController@index"));
 		}
@@ -43,11 +43,25 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 	
 	function MLSIndex($args = null) {
 
+		$target = url('MlsController@MLSIndex');
+
+		if(!is_null($args)) {
+
+			if(isset($args['local_board'])) {
+				$target = url('MlsController@MLSLocalBoard', ["board" => $args['local_board']]);
+			}
+
+			if(isset($args['region'])) {
+				$target = url('MlsController@MLSRegional', ["region" => $args['region']]);
+			}
+
+		}
+
         $this->doc->setTitle("MLS System");
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 			$(document).on('click','.btn-filter',function() {
 				var formData = $('#filter-form').serialize();
-				window.location = '".url('MlsController@MLSIndex')."?filter=' + btoa(formData);
+				window.location = '".$target."?filter=' + btoa(formData);
 			});
 
 			$(document).on('click','.btn-filter-form',function() {
@@ -90,11 +104,11 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 			/* $_GET['address']['region'] = $this->session['board_region']['region']; */
 
-			$this->doc->addScriptDeclaration("
+			/* $this->doc->addScriptDeclaration("
 				$(document).ready(function() {
 					$('#region').prop('disabled', 'disabled');
 				});
-			");
+			"); */
 
 		}
 		
@@ -107,13 +121,13 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$_GET['address']['province'] = $this->session['board_region']['province'];
 			$_GET['address']['municipality'] = $this->session['board_region']['municipality']; */
 
-			$this->doc->addScriptDeclaration("
+			/* $this->doc->addScriptDeclaration("
 				$(document).ready(function() {
 					$('#region').prop('disabled', 'disabled');
 					$('#province').prop('disabled', 'disabled');
 					$('#municipality').prop('disabled', 'disabled');
 				});
-			");
+			"); */
 		}
 
 		if(is_null($args) && !isset($args['local_board']) && !isset($args['region'])) {
@@ -152,11 +166,11 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			"source" => "mls"
 		]);
 
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->setTemplate("listings/listProperties.php");
 		$listings->list = $this->getTemplate($response['data'],$response['model']);
 
-		$this->setTempalteBasePath(ROOT."Manage");
+		$this->setTempalteBasePath(ROOT."/Manage");
 		$this->setTemplate("mls/list.php");
 		return $this->getTemplate($response['data'],$response['model']);
 
@@ -514,7 +528,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	function comparePreview() {
 
-		if(!isset($this->session['privileges']['comparaive_analysis_access']) && in_array($this->session['account_type'], ["Customer Service"])) {
+		if((!isset($this->session['privileges']['comparative_analysis_access']) && in_array($this->session['account_type'], ["Customer Service"])) || $this->session['privileges']['comparative_analysis_access'] == 0) {
 			$this->getLibrary("Factory")->setMsg("Access to the MLS Comparative Analysis Table requires premium privileges. Upgrade your subscription or subscribe to a premium to gain access.", "warning");
 			return getMsg();
 		}
@@ -529,7 +543,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	function compareListings() {
 
-		if(!isset($this->session['privileges']['comparaive_analysis_access']) && in_array($this->session['account_type'], ["Customer Service"])) {
+		if((!isset($this->session['privileges']['comparative_analysis_access']) && in_array($this->session['account_type'], ["Customer Service"])) || $this->session['privileges']['comparative_analysis_access'] == 0) {
 			$this->getLibrary("Factory")->setMsg("Access to the MLS Comparative Analysis Table requires premium privileges. Upgrade your subscription or subscribe to a premium to gain access.", "warning");
 			response()->redirect(url("MlsController@MLSIndex"));
 		}

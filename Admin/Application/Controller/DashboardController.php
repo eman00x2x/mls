@@ -10,7 +10,7 @@ class DashboardController extends \Main\Controller {
 	public $session;
 
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 	}
@@ -217,7 +217,7 @@ class DashboardController extends \Main\Controller {
 
 	}
 
-	function getTrafficChart($account_id = null, $flag = "this_year"): void {
+	function getTrafficChart($account_id = null, $flag = "this_year") {
 
 		$date_helper = \dateHelper($flag);
 
@@ -246,9 +246,9 @@ class DashboardController extends \Main\Controller {
 		}
 
 		$traffic
-		->where( implode(" AND ", $filter) )
-			->groupBy(" date ")
-				->orderBy(" created_at ASC ");
+			->where( implode(" AND ", $filter) )
+				->groupBy(" date ")
+					->orderBy(" created_at ASC ");
 
         $data = $traffic->getList();
 

@@ -74,8 +74,10 @@ define("DEFINITION", [
         ],
         "transactions" => [
             "access" => "Allow this user to access the detailed report of all Transactions of users."
-        ]
-        ,
+        ],
+        "page_ads" => [
+            "access" => "Allow this user to access and manage the Page Advertisements."
+        ],
         "reports" => [
             "access" => "Show the link of report to this user, allowing to view the links of below reports if access is granted",
             "subscriber" => "Allow this user to access the total transactions per subscriber report.",

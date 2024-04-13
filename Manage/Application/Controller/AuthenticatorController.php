@@ -23,7 +23,7 @@ class AuthenticatorController extends \Admin\Application\Controller\Authenticato
 	function getLoginForm() {
 
 		parent::getLoginForm();
-		$this->setTempalteBasePath(ROOT."Manage");
+		$this->setTempalteBasePath(ROOT."/Manage");
 		$this->setTemplate("login/login.php");
 		return $this->getTemplate();
 		

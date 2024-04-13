@@ -8,7 +8,7 @@ class KYCController extends \Main\Controller {
 	public $session;
 
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 
@@ -241,7 +241,7 @@ class KYCController extends \Main\Controller {
 		$data = $kyc->getById();
 
 		foreach($data['documents']['kyc'] as $key => $route) {
-			$data['documents']['kyc'][$key] = str_replace(CDN, ROOT."Cdn", $route);
+			$data['documents']['kyc'][$key] = str_replace(CDN, ROOT."/Cdn", $route);
 
 			if(file_exists($data['documents']['kyc'][$key])) {
 				unlink($data['documents']['kyc'][$key]);

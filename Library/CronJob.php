@@ -279,11 +279,9 @@ class CronJob extends \Main\Controller {
 		 * Handshake will automatically expire after 30 days
 		 */
 
-		$handshake = $this->getModel("Handshake");
-		$handshake->where(" request_at <= '".DATE_NOW."' AND handshake_status = 'accepted' ");
-		$data = $handshake->getList();
+		$expiration = strtotime("+30 days");
 
-		$handshake->DBO->query(" UPDATE #__handshakes SET handshake_status = 'cancelled' WHERE (handshake_status = 'accepted' AND handshake_status_at <= '".DATE_NOW."') OR (handshake_status = 'pending' AND requested_at <= '".DATE_NOW."') ");
+		$handshake->DBO->query(" UPDATE #__handshakes SET handshake_status = 'cancelled' WHERE (handshake_status = 'accepted' AND handshake_status_at <= '".$expiration."') OR (handshake_status = 'pending' AND requested_at <= '".$expiration."') ");
 	
 	}
 

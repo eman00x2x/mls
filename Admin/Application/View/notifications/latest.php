@@ -17,7 +17,7 @@
 
 			$html[] = "<div class='list-group list-group-flush list-group-hoverable'>";
 
-                for($i=0; $i<count($data); $i++) {
+                /* for($i=0; $i<count($data); $i++) {
                     $html[] = "<div class='list-group-item'>";
                         $html[] = "<div class='row align-items-center'>";
                         	$html[] = "<div class='col-auto'>";
@@ -33,7 +33,7 @@
                             $html[] = "</div>";
                         $html[] = "</div>";
                     $html[] = "</div>";
-                }
+                } */
             
 			$html[] = "</div>";
 			

@@ -6,7 +6,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 	function __construct() {
 		parent::__construct();
-		$this->setTempalteBasePath(ROOT."Website");
+		$this->setTempalteBasePath(ROOT."/Website");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 	}
 
@@ -105,11 +105,11 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			"source" => "website"
 		]);
 
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->setTemplate("listings/listProperties.php");
 		$listings->list = $this->getTemplate($response['data'],$response['model']);
 
-		$this->setTempalteBasePath(ROOT."Website");
+		$this->setTempalteBasePath(ROOT."/Website");
 		$this->setTemplate("listings/index.php");
 		return $this->getTemplate($response['data'], $response['model']);
 
@@ -542,7 +542,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 		$response = parent::listProperties($listings, $filters);
 
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->setTemplate("listings/listProperties.php");
 		return $this->getTemplate($response['data'],$response['model']);
 

@@ -8,7 +8,7 @@ class ArticlesController extends \Main\Controller {
 	public $session;
 	
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 
@@ -122,7 +122,7 @@ class ArticlesController extends \Main\Controller {
 
 			$banner_url = explode("/", $data['banner']);
 			$current_banner = array_pop($banner_url);
-			$file = ROOT."Cdn/images/articles/".$current_banner;
+			$file = ROOT."/Cdn/images/articles/".$current_banner;
 			
 			if(file_exists($file)) {
 				@unlink($file);
@@ -153,7 +153,7 @@ class ArticlesController extends \Main\Controller {
 			if(isset($_REQUEST['delete'])) {
 
 				$article->deleteArticle($id);
-				unlink(ROOT."Cdn/images/articles/".basename($data['banner']));
+				unlink(ROOT."/Cdn/images/articles/".basename($data['banner']));
 
 				$this->getLibrary("Factory")->setMsg("Article permanently deleted!","success");
 				return json_encode(

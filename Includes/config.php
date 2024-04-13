@@ -1,7 +1,12 @@
 <?php
 
 use Admin\Application\Controller\SettingsController;
+
+ini_set('session.save_path', SESSION_SAVE_PATH);
+
 define("CONFIG", SettingsController::getInstance()->getConfig());
+
+define("WEBSOCKET_SERVER_ADDRESS", "wss://".CONFIG['websocket']['ip_address'].":".CONFIG['websocket']['port']."/webSocketServer.php");
 
 /* define("SITE_NAME", CONFIG['site_name']); */
 define("SITE_NAME", CONFIG['site_name']);
@@ -20,7 +25,7 @@ define("VAT", CONFIG['show_vat']);
 
 define("PROPERTY_TAGS", CONFIG['property_tags']);
 
-$paypal_credential = require_once(ROOT . "paypal.credentials");
+$paypal_credential = require_once(ROOT . "/paypal.credentials");
 
 define("PAYPAL_CLIENT_ID", $paypal_credential['client_id']);
 define("PAYPAL_CLIENT_SECRET", $paypal_credential['client_secret']);

@@ -6,7 +6,7 @@ class PremiumsController extends \Admin\Application\Controller\PremiumsControlle
 
 	function __construct() {
 		parent::__construct();
-		$this->setTempalteBasePath(ROOT."Manage");
+		$this->setTempalteBasePath(ROOT."/Manage");
 	}
 	
 	function index() {

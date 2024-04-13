@@ -8,7 +8,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 	
 	function __construct() {
         parent::__construct();
-        $this->setTempalteBasePath(ROOT."Manage");
+        $this->setTempalteBasePath(ROOT."/Manage");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->account_id = $this->session['account_id'];
 	}
@@ -231,7 +231,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$accounts->column['account_id'] = $this->account_id;
 		$data = $accounts->getById();
 
-        $this->setTempalteBasePath(ROOT."Admin");
+        $this->setTempalteBasePath(ROOT."/Admin");
 		$this->setTemplate("accounts/profile.php");
 		return $this->getTemplate($data);
 

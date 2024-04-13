@@ -5,7 +5,7 @@ namespace Admin\Application\Controller;
 class ListingImagesController extends \Main\Controller {
 	
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 	}
 	
 	function delete($image_id) {

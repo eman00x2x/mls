@@ -122,7 +122,7 @@ class KYCModel extends \Main\Model {
 
 	function moveUploadedImage($filename, $path = "/images/accounts") {
 
-        $old_dir = ROOT."Cdn/images/temporary/".$filename;
+        $old_dir = ROOT."/Cdn/images/temporary/".$filename;
 
 		if(file_exists($old_dir)) {
 
@@ -139,7 +139,7 @@ class KYCModel extends \Main\Model {
 
 			$new_filename = $new_name."_".md5(time()).".".$ext;
 		
-			$new_dir = ROOT."Cdn/$path/";
+			$new_dir = ROOT."/Cdn/$path/";
 
 			if(!is_dir($new_dir)) {
 				mkdir($new_dir, 0775, true);
@@ -183,7 +183,7 @@ class KYCModel extends \Main\Model {
 
 	function removePhoto($filename, $path = "/images/accounts") {
 
-		$file = ROOT."Cdn".$path."/".$filename;
+		$file = ROOT."/Cdn".$path."/".$filename;
 		
 		/* check file if exists in main folder */
 		if(file_exists($file)) {

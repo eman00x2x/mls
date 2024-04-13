@@ -6,7 +6,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 
     function __construct() {
         parent::__construct();
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 	}
 	
 	function index() {
@@ -48,7 +48,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 
 	function pinLocked() {
 
-		$this->setTempalteBasePath(ROOT."CS");
+		$this->setTempalteBasePath(ROOT."/CS");
 
 		$this->doc->addScriptDeclaration("
 

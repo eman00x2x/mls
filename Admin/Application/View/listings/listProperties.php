@@ -77,7 +77,14 @@ function properties($data, $model) {
 				$html[] = "<div class='card-body'>";
 					$html[] = "<div class='row'>";
 						$html[] = "<div class='col-sm-8 col-md-12 col-lg-8'>";
-							$html[] = "<a href='".url("ListingsController@view", ["name" => $data['name']])."' style='text-decoration: none;' class='text-dark'><h3 class='mb-2 card-title'>".$data['title']."</h3></a>";
+							$html[] = "<a href='".
+							url(
+								$model->app['url_path']['class_hint'], [
+									$model->app['url_path']['path'] => $data[ $model->app['url_path']['value'] ] 
+								]
+							)."' style='text-decoration: none;' class='text-dark'><h3 class='mb-2 card-title'>".$data['title']."</h3></a>";
+
+							$html[] = "<span class=''><i class='ti ti-building-store fs-14'></i> ".$data['category']."</span>";
 						$html[] = "</div>";
 						
 						$html[] = "<div class='col-sm-4 col-md-12 col-lg-4 text-lg-end'>";

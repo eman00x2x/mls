@@ -52,7 +52,7 @@ class Middleware implements IMiddleware {
 		
 		Router::group(['prefix' => ADMIN_ALIAS], function () {
 
-			Router::get('/2-step-verification-code', 'AuthenticatorController@getTwoStepVerificationCodeFrom');
+			Router::get('/accountActivation', 'AuthenticatorController@accountActivation', ['as' => 'accountActivation']);
 			Router::get('/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
 			Router::get('/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
 

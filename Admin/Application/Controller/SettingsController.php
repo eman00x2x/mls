@@ -17,7 +17,7 @@ class SettingsController extends \Main\Controller {
     }
 
 	function __construct() {
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 	}
@@ -78,7 +78,11 @@ class SettingsController extends \Main\Controller {
 		$_POST['enable_kyc_verification'] = isset($_POST['enable_kyc_verification']) ? $_POST['enable_kyc_verification'] : 0;
 		$_POST['enable_premium'] = isset($_POST['enable_premium']) ? $_POST['enable_premium'] : 0;
 		$_POST['enable_pin_access'] = isset($_POST['enable_pin_access']) ? $_POST['enable_pin_access'] : 0;
-		
+
+		if(isset($_POST['websocket'])) {
+			$_POST['websocket'] = json_encode($_POST['websocket']);
+		}
+
 		if(isset($_POST['privileges'])) { $_POST['privileges'] = json_encode($_POST['privileges']); }
 		if(isset($_POST['paypal_credentials'])) { $_POST['paypal_credentials'] = json_encode($_POST['paypal_credentials']); }
 		if(isset($_POST['contact_info'])) { $_POST['contact_info'] = json_encode($_POST['contact_info']); }

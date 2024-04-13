@@ -9,7 +9,7 @@ class UsersController extends \Main\Controller {
 
 	function __construct() {
 		
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
 
@@ -242,7 +242,7 @@ class UsersController extends \Main\Controller {
 
 				$photo_url = explode("/", $data['photo']);
 				$current_photo = array_pop($photo_url);
-				$file = ROOT."Cdn/images/users/".$current_photo;
+				$file = ROOT."/Cdn/images/users/".$current_photo;
 				
 				if(file_exists($file)) {
 					@unlink($file);

@@ -246,7 +246,13 @@ $html[] = "<div class='page-body'>";
                                         foreach($data['privileges'] as $privilege => $val) {
                                             $html[] = "<div class='row g-3 align-items-center'>";
                                                 $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>".ucwords(str_replace("_"," ",$privilege))."</label></div>";
-                                                $html[] = "<div class='col-md-9 col-6'><span>".$val."</span></div>";
+                                                $html[] = "<div class='col-md-9 col-6'><span>";
+                                                    if(in_array($privilege, ["mls_access", "chat_access", "comparative_analysis_access"])) {
+                                                        $html[] = $val > 0 ? " Yes " : " No ";
+                                                    }else {
+                                                        $html[] = $val;
+                                                    }
+                                                $html[] = "</span></div>";
                                             $html[] = "</div>";
                                         }
 

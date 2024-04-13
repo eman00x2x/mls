@@ -19,8 +19,7 @@ class SessionHandler extends \Josantonius\Session\Session
         return self::$_instance;
     }
 
-	function __construct() {
-	}
+	function __construct() {}
 
 	public function init() {
 
