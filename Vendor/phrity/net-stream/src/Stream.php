@@ -5,13 +5,14 @@ namespace Phrity\Net;
 use InvalidArgumentException;
 use Phrity\Util\ErrorHandler;
 use Psr\Http\Message\StreamInterface;
+use Stringable;
 use Throwable;
 
 /**
  * Phrity\Net\Stream class.
  * @see https://www.php-fig.org/psr/psr-7/#34-psrhttpmessagestreaminterface
 */
-class Stream implements StreamInterface
+class Stream implements StreamInterface, Stringable
 {
     private static $readmodes = ['r', 'r+', 'w+', 'a+', 'x+', 'c+'];
     private static $writemodes = ['r+', 'w', 'w+', 'a', 'a+', 'x', 'x+', 'c', 'c+'];
@@ -24,7 +25,7 @@ class Stream implements StreamInterface
 
     /**
      * Create new stream wrapper instance
-     * @param resource $resource A stream resource to wrap
+     * @param resource $stream A stream resource to wrap
      * @throws \InvalidArgumentException If not a valid stream resource
      */
     public function __construct($stream)
@@ -35,7 +36,7 @@ class Stream implements StreamInterface
         }
         $rtype = get_resource_type($stream);
         if (!in_array($rtype, ['stream', 'persistent stream'])) {
-             throw new InvalidArgumentException("Invalid stream provided; gor resource type '{$rtype}'.");
+             throw new InvalidArgumentException("Invalid stream provided; got resource type '{$rtype}'.");
         }
         $this->stream = $stream;
         $this->handler = new ErrorHandler();
@@ -81,7 +82,7 @@ class Stream implements StreamInterface
      *     provided. Returns a specific key value if a key is provided and the
      *     value is found, or null if the key is not found.
      */
-    public function getMetadata($key = null)
+    public function getMetadata(string|null $key = null): mixed
     {
         if (!isset($this->stream)) {
             return null;
@@ -123,7 +124,7 @@ class Stream implements StreamInterface
      * @return string Returns the data read from the stream, or an empty string.
      * @throws \StreamException if an error occurs.
      */
-    public function read($length): string
+    public function read(int $length): string
     {
         if (!isset($this->stream)) {
             throw new StreamException(StreamException::STREAM_DETACHED);
@@ -142,7 +143,7 @@ class Stream implements StreamInterface
      * @return int Returns the number of bytes written to the stream.
      * @throws \StreamException on failure.
      */
-    public function write($string): int
+    public function write(string $string): int
     {
         if (!isset($this->stream)) {
             throw new StreamException(StreamException::STREAM_DETACHED);
@@ -159,7 +160,7 @@ class Stream implements StreamInterface
      * Get the size of the stream if known.
      * @return int|null Returns the size in bytes if known, or null if unknown.
      */
-    public function getSize(): ?int
+    public function getSize(): int|null
     {
         if (!isset($this->stream)) {
             return null;
@@ -183,7 +184,7 @@ class Stream implements StreamInterface
      * @param int $whence Specifies how the cursor position will be calculated based on the seek offset.
      * @throws \StreamException on failure.
      */
-    public function seek($offset, $whence = SEEK_SET): void
+    public function seek(int $offset, int $whence = SEEK_SET): void
     {
         if (!isset($this->stream)) {
             throw new StreamException(StreamException::STREAM_DETACHED);

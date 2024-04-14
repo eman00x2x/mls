@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Copyright (C) 2014-2023 Textalk and contributors.
- *
+ * Copyright (C) 2014-2024 Textalk and contributors.
  * This file is part of Websocket PHP and is free software under the ISC License.
- * License text: https://raw.githubusercontent.com/sirn-se/websocket-php/master/COPYING.md
  */
 
 namespace WebSocket;
@@ -28,7 +26,8 @@ use WebSocket\Exception\{
     ConnectionLevelInterface,
     Exception,
     HandshakeException,
-    MessageLevelInterface
+    MessageLevelInterface,
+    ReconnectException
 };
 use WebSocket\Http\{
     Request,
@@ -377,7 +376,7 @@ class Client implements LoggerAwareInterface, Stringable
 
         $host_uri = (new Uri())
             ->withScheme($this->socketUri->getScheme() == 'wss' ? 'ssl' : 'tcp')
-            ->withHost($this->socketUri->getHost(Uri::IDNA))
+            ->withHost($this->socketUri->getHost(Uri::IDN_ENCODE))
             ->withPort($this->socketUri->getPort(Uri::REQUIRE_PORT));
 
         $stream = null;
@@ -395,7 +394,7 @@ class Client implements LoggerAwareInterface, Stringable
         }
         $name = $stream->getRemoteName();
         $this->streams->attach($stream, $name);
-        $this->connection = new Connection($stream, true, false);
+        $this->connection = new Connection($stream, true, false, $host_uri->getScheme() === 'ssl');
         $this->connection->setFrameSize($this->frameSize);
         $this->connection->setTimeout($this->timeout);
         $this->connection->setLogger($this->logger);
@@ -408,11 +407,18 @@ class Client implements LoggerAwareInterface, Stringable
             $this->logger->error("[client] {$error}");
             throw new ClientException($error);
         }
-
-        if (!$this->persistent || $stream->tell() == 0) {
-            $response = $this->performHandshake($host_uri);
+        try {
+            if (!$this->persistent || $stream->tell() == 0) {
+                $response = $this->performHandshake($this->socketUri);
+            }
+        } catch (ReconnectException $e) {
+            $this->logger->info("[client] {$e->getMessage()}");
+            if ($uri = $e->getUri()) {
+                $this->socketUri = $uri;
+            }
+            $this->connect();
+            return;
         }
-
         $this->logger->info("[client] Client connected to {$this->socketUri}");
         $this->dispatch('connect', [$this, $this->connection, $response]);
     }
@@ -451,6 +457,16 @@ class Client implements LoggerAwareInterface, Stringable
     }
 
     /**
+     * Get meta value on connection.
+     * @param string $key Meta key
+     * @return mixed Meta value
+     */
+    public function getMeta(string $key): mixed
+    {
+        return $this->isConnected() ? $this->connection->getMeta($key) : null;
+    }
+
+    /**
      * Get Response for handshake procedure.
      * @return Response|null Handshake.
      */
@@ -466,19 +482,14 @@ class Client implements LoggerAwareInterface, Stringable
      * Perform upgrade handshake on new connections.
      * @throws HandshakeException On failed handshake
      */
-    protected function performHandshake(Uri $host_uri): Response
+    protected function performHandshake(Uri $uri): Response
     {
-        $http_uri = (new Uri())
-            ->withPath($this->socketUri->getPath(), Uri::ABSOLUTE_PATH)
-            ->withQuery($this->socketUri->getQuery());
-
         // Generate the WebSocket key.
         $key = $this->generateKey();
 
-        $request = new Request('GET', $http_uri);
+        $request = new Request('GET', $uri);
 
         $request = $request
-            ->withHeader('Host', $host_uri->getAuthority())
             ->withHeader('User-Agent', 'websocket-client-php')
             ->withHeader('Connection', 'Upgrade')
             ->withHeader('Upgrade', 'websocket')
@@ -486,8 +497,8 @@ class Client implements LoggerAwareInterface, Stringable
             ->withHeader('Sec-WebSocket-Version', '13');
 
         // Handle basic authentication.
-        if ($userinfo = $this->socketUri->getUserInfo()) {
-            $request = $request->withHeader('authorization', 'Basic ' . base64_encode($userinfo));
+        if ($userinfo = $uri->getUserInfo()) {
+            $request = $request->withHeader('Authorization', 'Basic ' . base64_encode($userinfo));
         }
 
         // Add and override with headers.
@@ -495,17 +506,17 @@ class Client implements LoggerAwareInterface, Stringable
             $request = $request->withHeader($name, $content);
         }
 
-        $this->connection->pushHttp($request);
-        $response = $this->connection->pullHttp();
-
         try {
+            $request = $this->connection->pushHttp($request);
+            $response = $this->connection->pullHttp();
+
             if ($response->getStatusCode() != 101) {
                 throw new HandshakeException("Invalid status code {$response->getStatusCode()}.", $response);
             }
 
             if (empty($response->getHeaderLine('Sec-WebSocket-Accept'))) {
                 throw new HandshakeException(
-                    "Connection to '{$this->socketUri}' failed: Server sent invalid upgrade response.",
+                    "Connection to '{$uri}' failed: Server sent invalid upgrade response.",
                     $response
                 );
             }
@@ -523,7 +534,7 @@ class Client implements LoggerAwareInterface, Stringable
             throw $e;
         }
 
-        $this->logger->debug("[client] Handshake on {$http_uri->getPath()}");
+        $this->logger->debug("[client] Handshake on {$uri->getPath()}");
         $this->connection->setHandshakeRequest($request);
         $this->connection->setHandshakeResponse($response);
 
@@ -544,7 +555,7 @@ class Client implements LoggerAwareInterface, Stringable
     }
 
     /**
-     * Ensure URI insatnce to use in client.
+     * Ensure URI instance to use in client.
      * @param UriInterface|string $uri A ws/wss-URI
      * @return Uri
      * @throws BadUriException On invalid URI

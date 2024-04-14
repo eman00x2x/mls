@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Copyright (C) 2014-2023 Textalk and contributors.
- *
+ * Copyright (C) 2014-2024 Textalk and contributors.
  * This file is part of Websocket PHP and is free software under the ISC License.
- * License text: https://raw.githubusercontent.com/sirn-se/websocket-php/master/COPYING.md
  */
 
 namespace WebSocket\Middleware;
@@ -30,7 +28,8 @@ class Callback implements
     ProcessHttpOutgoingInterface,
     ProcessIncomingInterface,
     ProcessOutgoingInterface,
-    ProcessTickInterface
+    ProcessTickInterface,
+    Stringable
 {
     use LoggerAwareTrait;
     use StringableTrait;

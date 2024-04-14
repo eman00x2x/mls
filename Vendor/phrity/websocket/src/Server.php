@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Copyright (C) 2014-2023 Textalk and contributors.
- *
+ * Copyright (C) 2014-2024 Textalk and contributors.
  * This file is part of Websocket PHP and is free software under the ISC License.
- * License text: https://raw.githubusercontent.com/sirn-se/websocket-php/master/COPYING.md
  */
 
 namespace WebSocket;
@@ -198,6 +196,15 @@ class Server implements LoggerAwareInterface, Stringable
     }
 
     /**
+     * Get connection scheme.
+     * @return string scheme
+     */
+    public function isSsl(): bool
+    {
+        return $this->scheme === 'ssl';
+    }
+
+    /**
      * Number of currently connected clients.
      * @return int Connection count
      */
@@ -383,7 +390,7 @@ class Server implements LoggerAwareInterface, Stringable
             $stream = $socket->accept();
             $name = $stream->getRemoteName();
             $this->streams->attach($stream, $name);
-            $connection = new Connection($stream, false, true);
+            $connection = new Connection($stream, false, true, $this->isSsl());
             $connection
                 ->setLogger($this->logger)
                 ->setFrameSize($this->frameSize)
@@ -482,7 +489,11 @@ class Server implements LoggerAwareInterface, Stringable
         }
 
         // Respond to handshake
-        $connection->pushHttp($response);
+        $response = $connection->pushHttp($response);
+        if ($response->getStatusCode() != 101) {
+            $exception = new HandshakeException("Invalid status code {$response->getStatusCode()}", $response);
+        }
+
         if ($exception) {
             throw $exception;
         }

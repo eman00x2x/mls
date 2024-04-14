@@ -21,10 +21,9 @@ class SocketServer extends Stream
     /**
      * Create new socker server instance
      * @param \Psr\Http\Message\UriInterface $uri The URI to open socket on.
-     * @param int $flags Flags to set on socket.
      * @throws StreamException if unable to create socket.
      */
-    public function __construct(UriInterface $uri, int $flags = STREAM_SERVER_BIND | STREAM_SERVER_LISTEN)
+    public function __construct(UriInterface $uri)
     {
         $this->handler = new ErrorHandler();
         if (!in_array($uri->getScheme(), $this->getTransports())) {
@@ -37,8 +36,9 @@ class SocketServer extends Stream
         } else {
             throw new StreamException(StreamException::SCHEME_HANDLER, ['scheme' => $uri->getScheme()]);
         }
-        $this->stream = $this->handler->with(function () use ($flags) {
+        $this->stream = $this->handler->with(function () {
             $error_code = $error_message = '';
+            $flags = STREAM_SERVER_BIND | STREAM_SERVER_LISTEN;
             return stream_socket_server($this->address, $error_code, $error_message, $flags);
         }, new StreamException(StreamException::SERVER_SOCKET_ERR, ['uri' => $uri->__toString()]));
         $this->evalStream();
@@ -60,7 +60,7 @@ class SocketServer extends Stream
      * If server is in blocking mode.
      * @return bool|null
      */
-    public function isBlocking(): ?bool
+    public function isBlocking(): bool|null
     {
         return $this->getMetadata('blocked');
     }
@@ -86,7 +86,7 @@ class SocketServer extends Stream
      *     provided. Returns a specific key value if a key is provided and the
      *     value is found, or null if the key is not found.
      */
-    public function getMetadata($key = null)
+    public function getMetadata($key = null): mixed
     {
         if (!isset($this->stream)) {
             return null;
@@ -110,7 +110,7 @@ class SocketServer extends Stream
      * @return Phrity\Net\SocketStream|null The stream for opened conenction.
      * @throws StreamException if socket is closed
      */
-    public function accept(?int $timeout = null): ?SocketStream
+    public function accept(int|null $timeout = null): SocketStream|null
     {
         if (!isset($this->stream)) {
             throw new StreamException(StreamException::SERVER_CLOSED);

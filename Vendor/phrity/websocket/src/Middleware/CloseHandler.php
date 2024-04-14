@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Copyright (C) 2014-2023 Textalk and contributors.
- *
+ * Copyright (C) 2014-2024 Textalk and contributors.
  * This file is part of Websocket PHP and is free software under the ISC License.
- * License text: https://raw.githubusercontent.com/sirn-se/websocket-php/master/COPYING.md
  */
 
 namespace WebSocket\Middleware;
@@ -13,6 +11,7 @@ use Psr\Log\{
     LoggerAwareInterface,
     LoggerAwareTrait
 };
+use Stringable;
 use WebSocket\Connection;
 use WebSocket\Message\{
     Close,
@@ -24,7 +23,7 @@ use WebSocket\Trait\StringableTrait;
  * WebSocket\Middleware\CloseHandler class.
  * Handles close procedure.
  */
-class CloseHandler implements LoggerAwareInterface, ProcessIncomingInterface, ProcessOutgoingInterface
+class CloseHandler implements LoggerAwareInterface, ProcessIncomingInterface, ProcessOutgoingInterface, Stringable
 {
     use LoggerAwareTrait;
     use StringableTrait;

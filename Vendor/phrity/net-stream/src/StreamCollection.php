@@ -5,7 +5,6 @@ namespace Phrity\Net;
 use Countable;
 use Iterator;
 use Phrity\Util\ErrorHandler;
-use TypeError;
 
 /**
  * Phrity\Net\StreamCollection class.
@@ -33,7 +32,7 @@ class StreamCollection implements Countable, Iterator
      * @return string Name of stream.
      * @throws StreamException If already attached.
      */
-    public function attach(Stream $attach, ?string $key = null): string
+    public function attach(Stream $attach, string|null $key = null): string
     {
         if ($key && array_key_exists($key, $this->streams)) {
             throw new StreamException(StreamException::COLLECT_KEY_CONFLICT, ['key' => $key]);
@@ -48,14 +47,13 @@ class StreamCollection implements Countable, Iterator
      * @param Stream|string $detach Stream or name of stream  to detach.
      * @return bool If a stream was detached.
      */
-    public function detach($detach): bool
+    public function detach(Stream|string $detach): bool
     {
         if (is_string($detach)) {
             if (array_key_exists($detach, $this->streams)) {
                 unset($this->streams[$detach]);
                 return true;
             }
-            return false;
         }
         if ($detach instanceof Stream) {
             foreach ($this->streams as $key => $stream) {
@@ -64,9 +62,8 @@ class StreamCollection implements Countable, Iterator
                     return true;
                 }
             }
-            return false;
         }
-        throw new TypeError("Argument #1 ($detach) must be of type Phrity\Net\Stream or string.");
+        return false;
     }
 
     /**

@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Copyright (C) 2014-2023 Textalk and contributors.
- *
+ * Copyright (C) 2014-2024 Textalk and contributors.
  * This file is part of Websocket PHP and is free software under the ISC License.
- * License text: https://raw.githubusercontent.com/sirn-se/websocket-php/master/COPYING.md
  */
 
 namespace WebSocket;
@@ -64,14 +62,15 @@ class Connection implements LoggerAwareInterface, Stringable
     private $handshakeRequest;
     private $handshakeResponse;
     private $meta = [];
+    private $closed = false;
 
 
     /* ---------- Magic methods ------------------------------------------------------------------------------------ */
 
-    public function __construct(SocketStream $stream, bool $pushMasked, bool $pullMaskedRequired)
+    public function __construct(SocketStream $stream, bool $pushMasked, bool $pullMaskedRequired, bool $ssl = false)
     {
         $this->stream = $stream;
-        $this->httpHandler = new HttpHandler($this->stream);
+        $this->httpHandler = new HttpHandler($this->stream, $ssl);
         $this->messageHandler = new MessageHandler(new FrameHandler($this->stream, $pushMasked, $pullMaskedRequired));
         $this->middlewareHandler = new MiddlewareHandler($this->messageHandler, $this->httpHandler);
         $this->setLogger(new NullLogger());
@@ -81,7 +80,7 @@ class Connection implements LoggerAwareInterface, Stringable
 
     public function __destruct()
     {
-        if ($this->isConnected()) {
+        if (!$this->closed && $this->isConnected()) {
             $this->stream->close();
         }
     }
@@ -201,6 +200,7 @@ class Connection implements LoggerAwareInterface, Stringable
     {
         $this->logger->info('[connection] Closing connection');
         $this->stream->close();
+        $this->closed = true;
         return $this;
     }
 
@@ -258,7 +258,7 @@ class Connection implements LoggerAwareInterface, Stringable
     }
 
     /**
-     * Set meta value on connection.
+     * Get meta value on connection.
      * @param string $key Meta key
      * @return mixed Meta value
      */
@@ -349,7 +349,7 @@ class Connection implements LoggerAwareInterface, Stringable
 
     /* ---------- Internal helper methods -------------------------------------------------------------------------- */
 
-    protected function throwException(Throwable $e): void
+    protected function throwException(Throwable $e): never
     {
         // Internal exceptions are handled and re-thrown
         if ($e instanceof Exception) {

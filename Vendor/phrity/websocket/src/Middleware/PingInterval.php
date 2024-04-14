@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Copyright (C) 2014-2023 Textalk and contributors.
- *
+ * Copyright (C) 2014-2024 Textalk and contributors.
  * This file is part of Websocket PHP and is free software under the ISC License.
- * License text: https://raw.githubusercontent.com/sirn-se/websocket-php/master/COPYING.md
  */
 
 namespace WebSocket\Middleware;
@@ -25,7 +23,7 @@ use WebSocket\Trait\StringableTrait;
  * WebSocket\Middleware\PingInterval class.
  * Handles close procedure.
  */
-class PingInterval implements LoggerAwareInterface, ProcessOutgoingInterface, ProcessTickInterface
+class PingInterval implements LoggerAwareInterface, ProcessOutgoingInterface, ProcessTickInterface, Stringable
 {
     use LoggerAwareTrait;
     use StringableTrait;

@@ -19,6 +19,7 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
+            'Phrity\\Util\\' => 12,
             'Phrity\\Net\\' => 11,
             'Pecee\\' => 6,
             'PHPMailer\\PHPMailer\\' => 20,
@@ -26,10 +27,6 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
         'J' => 
         array (
             'Josantonius\\Session\\' => 20,
-        ),
-        'B' => 
-        array (
-            'Braintree\\' => 10,
         ),
     );
 
@@ -51,10 +48,14 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
+        'Phrity\\Util\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phrity/util-errorhandler/src',
+        ),
         'Phrity\\Net\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phrity/net-stream/src',
-            1 => __DIR__ . '/..' . '/phrity/net-uri/src',
+            0 => __DIR__ . '/..' . '/phrity/net-uri/src',
+            1 => __DIR__ . '/..' . '/phrity/net-stream/src',
         ),
         'Pecee\\' => 
         array (
@@ -68,14 +69,6 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
         array (
             0 => __DIR__ . '/..' . '/josantonius/session/src',
         ),
-        'Braintree\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/braintree/braintree_php/lib/Braintree',
-        ),
-    );
-
-    public static $fallbackDirsPsr4 = array (
-        0 => __DIR__ . '/..' . '/phrity/util-errorhandler/src',
     );
 
     public static $classMap = array (
@@ -102,7 +95,6 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr4 = ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2::$fallbackDirsPsr4;
             $loader->classMap = ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2::$classMap;
 
         }, null, ClassLoader::class);
