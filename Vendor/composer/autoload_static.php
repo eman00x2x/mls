@@ -28,6 +28,10 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
         array (
             'Josantonius\\Session\\' => 20,
         ),
+        'I' => 
+        array (
+            'Ifsnop\\' => 7,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -54,8 +58,8 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
         ),
         'Phrity\\Net\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phrity/net-uri/src',
-            1 => __DIR__ . '/..' . '/phrity/net-stream/src',
+            0 => __DIR__ . '/..' . '/phrity/net-stream/src',
+            1 => __DIR__ . '/..' . '/phrity/net-uri/src',
         ),
         'Pecee\\' => 
         array (
@@ -68,6 +72,10 @@ class ComposerStaticInitccbd9fb62008d58e9235c07fccc91de2
         'Josantonius\\Session\\' => 
         array (
             0 => __DIR__ . '/..' . '/josantonius/session/src',
+        ),
+        'Ifsnop\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ifsnop/mysqldump-php/src/Ifsnop',
         ),
     );
 

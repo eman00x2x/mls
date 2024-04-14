@@ -40,7 +40,6 @@
 									</a>
                 				</li>
 
-								
 								<li class="nav-item <?php echo (url()->contains("/reports")) ? "active" : ""; ?> dropdown">
 									<a class="nav-link dropdown-toggle" href="#extra-link" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
 										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-report'></i></span>
@@ -65,10 +64,13 @@
 											<a href='<?php echo url("PageAdsController@index"); ?>' class='dropdown-item'><i class='ti ti-ad me-1'></i> Page Ads Management</a>
 										<?php } ?>
 
+										<?php if(isset($_SESSION['user_logged']['permissions']['articles']['access'])) { ?>
+											<a href='<?php echo url("ArticlesController@index"); ?>' class='dropdown-item'><i class='ti ti-edit me-1'></i> Articles</a>
+										<?php } ?>
+
 									</div>
 								</li>
 
-								
 								<li class="nav-item <?php echo (url()->contains("/reports")) ? "active" : ""; ?> dropdown">
 									<a class="nav-link dropdown-toggle" href="#extra-link" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
 										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-report'></i></span>
@@ -100,6 +102,16 @@
 										</div>
 									</li>
 								<?php } ?>
+
+								<?php if($_SESSION['user_logged']['user_level'] == 1 && $_SESSION['user_logged']['account_type'] == "Administrator") { ?>
+									<li class="nav-item">
+										<a class="nav-link" href="<?php echo url("AdministrationController@index"); ?>">
+											<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-database'></i></span>
+											<span class="nav-link-title">Database Administration</span>
+										</a>
+									</li>
+								<?php } ?>
+								
 							</ul>
 						</div>
 					</div>

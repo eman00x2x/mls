@@ -26,7 +26,7 @@ define("CDN","http://cdn.mls/");
 
 if(DEVELOPMENT) {
 
-	define("API_DOCS_ALIAS","/mls/Api/documentation");
+	define("API_DOCS_ALIAS","/mls/Api/Documentation");
 	define("API_ALIAS","/mls/Api");
 	define("ADMIN_ALIAS","/mls/Admin");
 	define("WEB_ADMIN_ALIAS","/mls/Webadmin");
@@ -47,7 +47,8 @@ if(DEVELOPMENT) {
 }
 
 define("API",		"http://localhost/mls/Api/");
-define("API_V1",	"http://localhost/mls/Api/v1");
+define("API_DOCS",	"http://localhost/mls/Api/Documentation/");
+define("API_V1",	"http://localhost/mls/Api/v1/");
 define("CDN",		"http://localhost/mls/Cdn/");
 define("WEBDOMAIN",	"http://localhost/mls/Website/");
 define("WEBADMIN",	"http://localhost/mls/Webadmin/");

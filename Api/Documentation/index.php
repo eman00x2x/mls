@@ -6,12 +6,10 @@ use Pecee\Http\Middleware\IMiddleware;
 
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start();
 
-define("ROOT","D:/wamp64/www/mls/");
 define("BASE",dirname(__FILE__));
-define("DS",DIRECTORY_SEPARATOR);
 define("ACCESS", 1);
 
-require_once(ROOT."/Includes/define.php");
+require_once("../../Includes/define.php");
 require_once(ROOT."/Includes/functions.php");
 require_once(ROOT."/Vendor/autoload.php");
 require_once(ROOT."/Vendor/pecee/simple-router/helpers.php");

@@ -130,16 +130,16 @@ $html[] = "<div class='container-fluid'>";
                             $html[] = "</tr>";
                         $html[] = "</thead>";
                         $html[] = "<tr>";
-                            $html[] = "<td>".API_V1."/account</td>";
+                            $html[] = "<td>".API_V1."account</td>";
                             $html[] = "<td>Data of your account profile</td>";
                         $html[] = "</tr>";
                         $html[] = "<tr>";
-                            $html[] = "<td>".API_V1."/properties</td>";
+                            $html[] = "<td>".API_V1."properties</td>";
                             $html[] = "<td>Data list of properties</td>";
                         $html[] = "</tr>";
                         $html[] = "<tr>";
-                            $html[] = "<td>".API_V1."/property/:id</td>";
-                            $html[] = "<td>Data of property, where the ID is the property ID; you can obtain this from the list.</td>";
+                            $html[] = "<td>".API_V1."property/:id</td>";
+                            $html[] = "<td>Data of property, where <i>:id</i> is the listing ID; you can obtain this from the list.</td>";
                         $html[] = "</tr>";
                         $html[] = "</table>";
                     $html[] = "</div>";
@@ -183,7 +183,7 @@ $html[] = "<div class='container-fluid'>";
                     $html[] = "<h3>HTTP Request</h3>";
                     $html[] = "<pre>";
                         $html[] = "<code>";
-                            $html[] = 'GET '.API_V1.'/[RESOURCE]?api_key='.$insert_api_key;
+                            $html[] = 'GET '.API_V1.'[RESOURCE]?api_key='.$insert_api_key;
                         $html[] = "</code>";
                     $html[] = "</pre>";
 
@@ -193,7 +193,7 @@ $html[] = "<div class='container-fluid'>";
                             $html[] = 'curl -i 
     -H "Accept: application/json" 
     -H "X-API-KEY: '.$insert_api_key.'"
-    '.API_V1.'/[RESOURCE]';
+    '.API_V1.'[RESOURCE]';
                         $html[] = "</code>";
                     $html[] = "</pre>";
 
@@ -221,7 +221,7 @@ $html[] = "<div class='container-fluid'>";
                                     $html[] = "<h3>HTTP Request</h3>";
                                     $html[] = "<pre>";
                                         $html[] = "<code>";
-                                            $html[] = 'GET '.API_V1.'/account?api_key='.$insert_api_key;
+                                            $html[] = 'GET '.API_V1.'account?api_key='.$insert_api_key;
                                         $html[] = "</code>";
                                     $html[] = "</pre>";
                                 $html[] = "</div>";
@@ -235,7 +235,7 @@ $html[] = "<div class='container-fluid'>";
                             $html[] = 'curl -i 
     -H "Accept: application/json" 
     -H "X-API-KEY: '.$insert_api_key.'"
-    '.API_V1.'/account';
+    '.API_V1.'account';
                         $html[] = "</code>";
                     $html[] = "</pre>";
 
@@ -318,7 +318,7 @@ $html[] = "<div class='container-fluid'>";
                                     $html[] = "<h3>HTTP Request</h3>";
                                     $html[] = "<pre>";
                                         $html[] = "<code>";
-                                            $html[] = 'GET '.API_V1.'/properties?api_key='.$insert_api_key.'';
+                                            $html[] = 'GET '.API_V1.'properties?api_key='.$insert_api_key.'';
                                         $html[] = "</code>";
                                     $html[] = "</pre>";
                                 $html[] = "</div>";
@@ -332,7 +332,7 @@ $html[] = "<div class='container-fluid'>";
                             $html[] = 'curl -i 
     -H "Accept: application/json" 
     -H "X-API-KEY: '.$insert_api_key.'"
-    '.API_V1.'/properties';
+    '.API_V1.'properties';
                         $html[] = "</code>";
                     $html[] = "</pre>";
 
@@ -414,7 +414,7 @@ $html[] = "<div class='container-fluid'>";
                                     $html[] = "<h3>HTTP Request</h3>";
                                     $html[] = "<pre>";
                                         $html[] = "<code>";
-                                            $html[] = 'GET '.API_V1.'/properties/:id?api_key='.$insert_api_key;
+                                            $html[] = 'GET '.API_V1.'properties/:id?api_key='.$insert_api_key;
                                         $html[] = "</code>";
                                     $html[] = "</pre>";
                                 $html[] = "</div>";
@@ -428,7 +428,7 @@ $html[] = "<div class='container-fluid'>";
                             $html[] = 'curl -i 
     -H "Accept: application/json" 
     -H "X-API-KEY: '.$insert_api_key.'"
-    '.API_V1.'/properties/:id';
+    '.API_V1.'properties/:id';
                         $html[] = "</code>";
                     $html[] = "</pre>";
 
@@ -436,6 +436,26 @@ $html[] = "<div class='container-fluid'>";
                             $html[] = "</div>";
                         $html[] = "</div>";
                     $html[] = "</div>";
+
+                    $html[] = "<div class='my-5'>";
+                        $html[] = "<h3>URI Parameters</h3>";
+                        $html[] = "<div class='table-responsive'>";
+                            $html[] = "<table class='table'>";
+                            $html[] = "<theader>";
+                                $html[] = "<tr>";
+                                    $html[] = "<th>Parameter</th>";
+                                    $html[] = "<th>Description</th>";
+                                    $html[] = "<th>Example</th>";
+                                $html[] = "</theader>";
+                            $html[] = "</tr>";
+                            $html[] = "<tr>";
+                                $html[] = "<td>id</td>";
+                                $html[] = "<td>the ID of listing</td>";
+                                $html[] = "<td>15234</td>";
+                            $html[] = "</tr>";
+                            $html[] = "</table>";
+                        $html[] = "</div>";
+                    $html[] = "</div><br/>";
                     
                     $html[] = "<h3 class='mt-5'>Possible success response</h3>";
                     $html[] = "<pre>";

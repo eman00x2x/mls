@@ -2,15 +2,45 @@
 
 namespace Admin\Application\Controller;
 
-class AdministrationController extends \Application\Controller {
+use Ifsnop\Mysqldump as IMysqldump;
+
+class AdministrationController extends \Main\Controller {
 	
-	function __construct() {}
+	function __construct() {
+		$this->setTempalteBasePath(ROOT."/Admin");
+		$this->doc = $this->getLibrary("Factory")->getDocument();
+	}
 	
-	function defaultView() {
+	function index() {
+
+		$this->doc->setTitle("Database Administration");
 		
-		$classes = $this->getModel("Classes");
-		$data['classes'] = $classes->getList();
-		
+		$data['tables'] = [
+			"mls_accounts",
+			"mls_account_subscriptions",
+			"mls_articles",
+			"mls_deleted_threads",
+			"mls_handshakes",
+			"mls_kyc",
+			"mls_leads",
+			"mls_license_reference",
+			"mls_listings",
+			"mls_listing_images",
+			"mls_messages",
+			"mls_notifications",
+			"mls_page_ads",
+			"mls_premiums",
+			"mls_settings",
+			"mls_threads",
+			"mls_traffics",
+			"mls_transactions",
+			"mls_users",
+			"mls_user_login"
+		];
+
+		$path = ROOT."/Admin/DATABASE_BACKUP";
+		$data['backup_files'] = array_values(array_diff(scandir($path), array('.', '..')));
+
 		$this->setTemplate("administration".DS."default.php");
 		return $this->getTemplate($data);
 		
@@ -36,7 +66,7 @@ class AdministrationController extends \Application\Controller {
 				while ($i < $db->numFields($result)) {
 					$meta = $db->fetchFields($result, $i);
 					
-					echo '<th style="font-size:10px;">' . strtoupper($meta[$i]->name) . '</th>';
+					echo '<th class="text-center">' . strtoupper($meta[$i]->name) . '</th>';
 					$i = $i + 1;
 				}
 				echo '</tr></thead>';
@@ -50,7 +80,7 @@ class AdministrationController extends \Application\Controller {
 					while ($y < $count)
 					{
 						$c_row = current($row);
-						echo '<td style="font-size:12px;">' . $c_row . '</td>';
+						echo '<td class="fs-12 align-middle text-center">' . $c_row . '</td>';
 						next($row);
 						$y = $y + 1;
 					}
@@ -60,10 +90,70 @@ class AdministrationController extends \Application\Controller {
 				echo '</tbody>';
 				echo '</table></div>';
 				$db->freeResult($result);
+			}else {
+				echo "<p>Executed but no results.</p>";
 			}
 		}
 		
 	}
 	
-	
+	function backupDatabase() {
+
+		$db = \Library\Factory::getDBO();
+
+		$mysql_backup_file = 'backup-'.date("Y-m-d-g-iA",strtotime("NOW")).'.sql';
+
+		try {
+
+			$dump = new IMysqldump\Mysqldump('mysql:host=localhost;dbname=mls', 'root', '');
+			$dump->start(ROOT."/Admin/DATABASE_BACKUP/".$mysql_backup_file);
+			
+			$this->getLibrary("Factory")->setMsg("Successfully save the backup <i>$mysql_backup_file</i>.","success");
+
+			echo getMsg();
+
+		} catch (\Exception $e) {
+			echo 'mysqldump-php error: ' . $e->getMessage();
+		}
+
+		exit();
+
+	}
+
+	function downloadBackup() {
+
+		$url = ADMIN."DATABASE_BACKUP/".$_GET['file'];
+		$filename = basename($url);
+		$local_path = ROOT."/Admin/DATABASE_BACKUP";
+
+		header("Content-Description: File Transfer");
+		header('Content-Type: application/octet-stream');
+		header("Content-disposition: attachment; filename=\"" . $filename . "\""); 
+		header('Expires: 0');
+    	header('Cache-Control: must-revalidate');
+    	header('Pragma: public');
+		header("Content-length: ".filesize($local_path."/".$filename));
+
+		readfile($url); 
+		exit();
+
+	}
+
+	function deleteBackup() {
+
+		if(!isset($_GET['file'])) {
+			$this->getLibrary("Factory")->setMsg("Can't find file.","error");
+			echo getMsg();
+		}
+
+		$local_path = ROOT."/Admin/DATABASE_BACKUP";
+		unlink($local_path."/".$_GET['file']);
+
+		$this->getLibrary("Factory")->setMsg("Database backup file deleted.","success");
+		echo getMsg();
+		
+		exit();
+
+	}
+
 }

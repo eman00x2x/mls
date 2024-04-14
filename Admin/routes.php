@@ -114,7 +114,11 @@ Router::group(['prefix' => ADMIN_ALIAS], function () {
     Router::post('/settings/saveUpdate', 'SettingsController@saveUpdate', ['as' => 'saveUpdate'])->where([ 'page' => '[\w\-\=]+' ]);
 
     Router::get('/administration', 'AdministrationController@index', ['as' => 'administration']);
-    Router::post('/administration', 'AdministrationController@queryResult', ['as' => 'administration-queryResult']);
+    Router::get('/administration/dbBackup', 'AdministrationController@backupDatabase', ['as' => 'administration-backupDatabase']);
+    Router::get('/administration/downloadBackup', 'AdministrationController@downloadBackup', ['as' => 'administration-downloadBackup']);
+    Router::get('/administration/deleteBackup', 'AdministrationController@deleteBackup', ['as' => 'administration-deleteBackup']);
+
+    Router::post('/administration/queryResult', 'AdministrationController@queryResult', ['as' => 'administration-queryResult']);
 
     /** DEBUGGING */
     Router::get('/debug', 'DebugController@debug', ['as' => 'debug']);

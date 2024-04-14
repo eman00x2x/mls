@@ -50,8 +50,9 @@ class ArticlesController extends \Main\Controller {
 		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
 		$this->doc->addScript(CDN."js/photo-uploader.js");
 
+		$article = $this->getModel("Article");
 		$this->setTemplate("articles/add.php");
-		return $this->getTemplate();
+		return $this->getTemplate(null, $article);
 		
 		$this->response(404);
 		

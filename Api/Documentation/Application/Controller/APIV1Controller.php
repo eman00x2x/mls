@@ -7,7 +7,7 @@ class ApiV1Controller extends \Main\Controller {
     public $doc;
 
     function __construct() {
-        $this->setTempalteBasePath(ROOT."Api\Documentation");
+        $this->setTempalteBasePath(ROOT."/Api/Documentation");
         $this->doc = $this->getLibrary("Factory")->getDocument();
     }
 

@@ -5,6 +5,7 @@
         "phrity/websocket": "^2.1",
         "spipu/html2pdf": "^5.2",
         "josantonius/session": "^2.0",
-        "phpmailer/phpmailer": "^6.9"
+        "phpmailer/phpmailer": "^6.9",
+        "ifsnop/mysqldump-php": "^2.12"
     }
 }
