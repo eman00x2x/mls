@@ -16,7 +16,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
-				$html[] = "<div class='d-none d-sm-inline'>";
+				$html[] = "<div class=''>";
 					$html[] = "<div class='btn-list'>";
 
 						$html[] = "<a class='ajax btn btn-dark' href='".url("LeadsController@add")."'><i class='ti ti-user-plus me-2'></i> New Leads</a>";

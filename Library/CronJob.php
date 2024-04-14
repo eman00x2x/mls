@@ -11,17 +11,18 @@ class CronJob extends \Main\Controller {
 
 	function run() {
 		
-		$this->expirePosting();
-		$this->expireSubscription();
+		$this->expiredPosting();
+		$this->expiredSubscription();
 		$this->expiredKYC();
-		$this->expireHandshake();
+		$this->expiredHandshake();
+		$this->expiredAutorityToSell();
 
 		$this->expiringPosting();
 		$this->expiringSubscription();
 
 	}
 
-	function expirePosting(): void {
+	function expiredPosting(): void {
 
 		$listings = $this->getModel("Listing");
 		$listings->page['limit'] = 9999999999;
@@ -132,7 +133,7 @@ class CronJob extends \Main\Controller {
 
 	}
 
-	function expireSubscription() {
+	function expiredSubscription() {
 
 		$subscription = $this->getModel("AccountSubscription");
 		$subscription->page['limit'] = 9999999999;
@@ -273,16 +274,25 @@ class CronJob extends \Main\Controller {
 
 	}
 
-	function expireHandshake() {
+	function expiredHandshake() {
 
 		/**
 		 * Handshake will automatically expire after 30 days
 		 */
 
-		$expiration = strtotime("+30 days");
+		$expiration = DATE_NOW;
 
-		$handshake->DBO->query(" UPDATE #__handshakes SET handshake_status = 'cancelled' WHERE (handshake_status = 'accepted' AND handshake_status_at <= '".$expiration."') OR (handshake_status = 'pending' AND requested_at <= '".$expiration."') ");
+		$handshake = $this->getModel("Handshake");
+		$handshake->DBO->query(" UPDATE #__handshakes SET handshake_status = 'cancelled' WHERE (handshake_status = 'accepted' AND DATE_ADD(handshake_status_at, INTERVAL 30 DAY) <= '".$expiration."') OR (handshake_status = 'pending' AND DATE_ADD(requested_at, INTERVAL 30 DAY) <= '".$expiration."') ");
 	
+	}
+
+	function expiredAutorityToSell() {
+
+		$expiration = DATE_NOW;
+		$listing = $this->getModel("Listing");
+		$listing->DBO->query("UPDATE #__listings SET status = '0', display = 2 WHERE JSON_EXTRACT(other_details, '$.authority_to_sell_expiration') <= '".$expiration."' ");
+
 	}
 
 
