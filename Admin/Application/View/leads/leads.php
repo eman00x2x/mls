@@ -18,6 +18,8 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='d-none d-sm-inline'>";
 					$html[] = "<div class='btn-list'>";
+
+						$html[] = "<a class='ajax btn btn-dark' href='".url("LeadsController@add")."'><i class='ti ti-user-plus me-2'></i> New Leads</a>";
 						
 						if($_SESSION['user_logged']['account_type'] == "Administrator") {
 							$html[] = "<a class='ajax btn btn-dark' href='".url("AccountsController@view", ["id" => $data['account_id']])."'>";
@@ -53,7 +55,6 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<thead>";
 								$html[] = "<tr>";
 									$html[] = "<th class='text-center w-1'>#</th>";
-									$html[] = "<th class=''>Listing</th>";
 									$html[] = "<th>Lead Name</th>";
 									$html[] = "<th>Email Address</th>";
 									$html[] = "<th>Mobile Number</th>";
@@ -66,15 +67,17 @@ $html[] = "<div class='page-body'>";
 
 								$html[] = "<tr class='row_leads_".$data['leads'][$i]['lead_id']."'>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-									$html[] = "<td class='align-middle'>";
+									/* $html[] = "<td class='align-middle'>";
 										$html[] = "<div class='d-flex'>";
 											$html[] = "<div class='avatar' style='background-image: url(".$data['leads'][$i]['listing']['thumb_img'].")'></div>";
 											$html[] = "<div class='ps-2'>";
-												$html[] = "<span class='d-block'>Listing ID: ".$data['leads'][$i]['listing']['listing_id']."</span>";
+												if($data['leads'][$i]['listing']['listing_id'] > 0) {
+													$html[] = "<span class='d-block'>Listing ID: ".$data['leads'][$i]['listing']['listing_id']."</span>";
+												}
 												$html[] = "<span class='d-block'>".$data['leads'][$i]['listing']['title']."</span>";
 											$html[] = "</div>";
 										$html[] = "</div>";
-									$html[] = "</td>";
+									$html[] = "</td>"; */
 									$html[] = "<td class='align-middle'><span class='name-container'><img src='".CDN."images/loader.gif' /> decrypting...</span></td>";
 									$html[] = "<td class='align-middle'><span class='email-container'><img src='".CDN."images/loader.gif' /> decrypting...</span></td>";
 									$html[] = "<td class='align-middle'><span class='mobile-number-container'><img src='".CDN."images/loader.gif' /> decrypting...</span></td>";

@@ -48,7 +48,15 @@ class LeadsController extends \Main\Controller {
 			for($i=0; $i<count($data['leads']); $i++) {
 				$encrypted_content[] = $data['leads'][$i];
 				$listing->column['listing_id'] = $data['leads'][$i]['listing_id'];
-				$data['leads'][$i]['listing'] = $listing->getById();
+				$listingData = $listing->getById();
+
+				if($listingData) {
+					$data['leads'][$i]['listing'] = $listingData;
+				}else {
+					$data['leads'][$i]['listing']['listing_id'] = 0;
+					$data['leads'][$i]['listing']['thumb_img'] = CDN."images/item_default.jpg";
+					$data['leads'][$i]['listing']['title'] = "N/A";
+				}
 			}
 
 			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
@@ -85,6 +93,59 @@ class LeadsController extends \Main\Controller {
 		"));
 
 		$this->setTemplate("leads/leads.php");
+		return $this->getTemplate($data,$lead);
+		
+	}
+
+	function add() {
+		
+		$this->doc->setTitle("New Leads");
+
+		$this->doc->addScript(CDN."js/encryption.js");
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+
+			let privateKey;
+			let publicKey;
+			
+			$(document).on('click', '.btn-save-lead', function() {
+
+				let formData = new FormData(document.querySelector('#form'));
+
+				setKeys()
+					.then( () => {
+						encrypt(JSON.stringify({
+							'name': formData.get('name'),
+							'message': formData.get('message'),
+							'mobile_no': formData.get('mobile_no'),
+							'email': formData.get('email')
+						}), publicKey, privateKey)
+							.then( data => {
+
+								$('#content').val( data.encrypted );
+								$('#iv').val( data.iv );
+
+								$('.btn-save').trigger('click');
+
+							});
+					});
+
+			});
+
+			async function setKeys() {
+				privateKey = ".json_encode($this->session['message_keys']['privateKey']).";
+				publicKey = ".json_encode($this->session['message_keys']['publicKey']).";
+			}
+
+		"));
+
+		$listing = $this->getModel("Listing");
+		$data['listing'] = $listing->getList();
+
+		$lead = $this->getModel("Lead");
+		$lead->addresses = $this->getModel("Address");
+		$lead->categorySelection = $listing->categorySelection();
+		
+		$this->setTemplate("leads/add.php");
 		return $this->getTemplate($data,$lead);
 		
 	}
@@ -221,6 +282,29 @@ class LeadsController extends \Main\Controller {
 		
 	}
 	
+	function saveNew() {
+
+		parse_str(file_get_contents('php://input'), $_POST);
+
+		$_POST['inquire_at'] = DATE_NOW;
+		$_POST['account_id'] = $this->session['account_id'];
+		$_POST['listing_id'] = 0;
+		$_POST['preferences']['category'] = $_POST['category'];
+		$_POST['preferences']['address'] = $_POST['address'];
+		$_POST['preferences'] = json_encode($_POST['preferences']);
+
+		$leads = $this->getModel("Lead");
+		$response = $leads->saveNew($_POST);
+
+		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
+
+		return json_encode(array(
+			"status" => $response['status'],
+			"message" => getMsg()
+		));
+
+	}
+
 	function saveUpdate($id) {
 		
 		parse_str(file_get_contents('php://input'), $_POST);

@@ -7,6 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 
+<link rel="icon" type="image/x-icon" href="<?php echo CDN; ?>images/favicon/favicon.ico">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
 <!-- CSS -->
 <link href="<?php echo CDN; ?>tabler/dist/css/tabler.min.css" rel="stylesheet" />

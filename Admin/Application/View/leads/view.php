@@ -62,31 +62,33 @@ $html[] = "<div class='row justify-content-center'>";
                         $html[] = "</tr>";
                         $html[] = "</table>";
 
-                        $html[] = "<div class='listing_wrap my-5'>";
+                        if($data['listing']) {
+                            $html[] = "<div class='listing_wrap my-5'>";
 
-                            $html[] = "<h3>Subject Listing</h3>";
+                                $html[] = "<h3>Subject Listing</h3>";
 
-							$html[] = "<table class='table'>";
-							$html[] = "<tr>";
-								$html[] = "<td class='align-middle'>";
-                                    $html[] = "<div class='d-flex'>";
-                                        $html[] = "<div class=''>";
-                                            $html[] = "<span class='avatar avatar-xl' style='background-image: url(".$data['listing']['thumb_img'].")'></span>";
+                                $html[] = "<table class='table'>";
+                                $html[] = "<tr>";
+                                    $html[] = "<td class='align-middle'>";
+                                        $html[] = "<div class='d-flex'>";
+                                            $html[] = "<div class=''>";
+                                                $html[] = "<span class='avatar avatar-xl' style='background-image: url(".$data['listing']['thumb_img'].")'></span>";
+                                            $html[] = "</div>";
+                                            $html[] = "<div class='ps-2'>";
+                                                $html[] = "<span class='d-block'>".$data['listing']['title']."</span>";
+                                                $html[] = "<span class='d-block'>".$data['listing']['category']."</span>";
+                                                $html[] = "<span class='d-block'>".$data['listing']['address']['municipality']." ".$data['listing']['address']['province']."</span>";
+                                            $html[] = "</div>";
                                         $html[] = "</div>";
-                                        $html[] = "<div class='ps-2'>";
-                                            $html[] = "<span class='d-block'>".$data['listing']['title']."</span>";
-                                            $html[] = "<span class='d-block'>".$data['listing']['category']."</span>";
-                                            $html[] = "<span class='d-block'>".$data['listing']['address']['municipality']." ".$data['listing']['address']['province']."</span>";
-                                        $html[] = "</div>";
-                                    $html[] = "</div>";
-								$html[] = "</td>";
-								$html[] = "<td class='align-middle'>";
-									$html[] = "<a href='".url("ListingsController@view",["id" => $data['listing']['listing_id']])."' class='btn btn-primary'>View Listing</a>";
-								$html[] = "</td>";
-							$html[] = "</tr>";
-                            $html[] = "</table>";
+                                    $html[] = "</td>";
+                                    $html[] = "<td class='align-middle'>";
+                                        $html[] = "<a href='".url("ListingsController@view",["id" => $data['listing']['listing_id']])."' class='btn btn-primary'>View Listing</a>";
+                                    $html[] = "</td>";
+                                $html[] = "</tr>";
+                                $html[] = "</table>";
 
-                        $html[] = "</div>";
+                            $html[] = "</div>";
+                        }
                     $html[] = "</div>";
                 
                 $html[] = "</div>";

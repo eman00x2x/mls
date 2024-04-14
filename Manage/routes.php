@@ -83,10 +83,12 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
 
     /** LEADS ROUTES */
     Router::get('/leads', 'LeadsController@index', ['as' => 'leads']);
+    Router::get('/leads/add', 'LeadsController@add', ['as' => 'leadAdd']);
     Router::get('/leads/{id}', 'LeadsController@view', ['as' => 'leadView'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/leads/{id}/edit', 'LeadsController@edit', ['as' => 'leadEdit'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/leads/{id}/delete', 'LeadsController@delete', ['as' => 'leadDelete'])->where([ 'id' => '[0-9]+' ]);
 
+    Router::post('/leads/saveNew', 'LeadsController@saveNew', ['as' => 'leadSaveNew']);
     Router::post('/leads/{id}/saveUpdate', 'LeadsController@saveUpdate', ['as' => 'leadSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 
     /** THREADS ROUTES */

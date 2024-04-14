@@ -3,6 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
 
+<link rel="icon" type="image/x-icon" href="<?php echo CDN; ?>images/favicon/favicon.ico">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
 <!-- CSS -->
 <link href="<?php echo CDN; ?>tabler/dist/css/tabler.min.css" rel="stylesheet" />

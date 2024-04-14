@@ -40,7 +40,8 @@ class LeadModel extends \Main\Model {
 
 		$v = $this->getValidator();
 
-		$v->validateGeneral($data['listing_id'],"Listing not found");
+		$v->validateGeneral($data['name'],"Name is required");
+		$v->validateGeneral($data['email'],"Email address is required");
 		$v->validateGeneral($data['account_id'],"Account is required");
 		$v->validateGeneral($data['inquire_at'],"Time sent is required");
 
