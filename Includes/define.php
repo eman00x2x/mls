@@ -1,4 +1,5 @@
 <?php
+
 defined("ACCESS")or die("Restricted page!");
 
 date_default_timezone_set("Asia/Manila");
@@ -7,7 +8,10 @@ define("DATE_NOW",strtotime("Now"));
 define("LIST_LIMIT",20);
 define("DEVELOPMENT", true);
 
-define("SESSION_SAVE_PATH", "D:/wamp64/www/mls/sessions");
+define("ROOT","D:/wamp64/www/mls");
+define("DS",DIRECTORY_SEPARATOR);
+
+define("SESSION_SAVE_PATH", ROOT."/sessions");
 
 /* 
 define("API","http://api.mls/");

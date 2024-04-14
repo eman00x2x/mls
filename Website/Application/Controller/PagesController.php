@@ -24,7 +24,7 @@ class PagesController extends \Main\Controller {
 		$this->doc->setFacebookMetaData("og:url", url());
 		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", $image);
+		$this->doc->setFacebookMetaData("og:image", $data['image']);
 		$this->doc->setFacebookMetaData("og:description", $data['description]']);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 

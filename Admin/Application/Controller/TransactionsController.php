@@ -2,7 +2,7 @@
 
 namespace Admin\Application\Controller;
 
-Use Library\Paypal as Paypal;
+Use Library\PayPal as PayPal;
 use Library\Mailer;
 
 class TransactionsController extends \Main\Controller {

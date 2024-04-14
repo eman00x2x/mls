@@ -2,8 +2,7 @@
 
 namespace Library;
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\PHPMailer as PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 class Mailer
@@ -13,9 +12,7 @@ class Mailer
 	private $sender = EMAIL_ADDRESS_RESPONDER;
 	private $message;
 
-	function __construct() {
-		$this->mailer = new PHPMailer(true);
-	}
+	function __construct() {}
 
 	function setMailSender($email) {
 		$this->sender = $email;
@@ -33,7 +30,11 @@ class Mailer
 	 */
 
 	function send(array $to, string $subject, array $attachments = null) {
+
+		require_once(ROOT."/Vendor/PHPMailer/phpmailer/src/PHPMailer.php");
 		
+		$this->mailer = new PHPMailer(true);
+
 		try {
 
 			//Set who the message is to be sent from
