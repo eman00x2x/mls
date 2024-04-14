@@ -6,15 +6,26 @@ $html[] = "<div class='container-xl'>";
 	$html[] = "</div>";
 $html[] = "</div>";
 
-$html[] = "<div class='overlay d-none'><div class='overlay-content'><img src='".CDN."images/loader.gif' alt='Processing...'/></div></div>";
-
 $html[] = "<div class='page-body'>";
 	$html[] = "<div class='container-xl'>";
 
         $html[] = "<div class='row justify-content-center'>";
         	$html[] = "<div class='col-md-6 col-12'>";
+
+				$html[] = "<div class='card loader-container d-none'>";
+					$html[] = "<div class='card-body'>";
+						$html[] = "<div class='p-5 m-5 text-center'>";
+							$html[] = "<div class='d-flex align-items-center justify-content-center'>";
+								$html[] = "<div class='loader'></div>";
+							$html[] = "</div>";
+							$html[] = "<p class='mt-3 mb-0'>Please wait while processing your purchase.</p>";
+							$html[] = "<p class='fst-italic text-muted'>Do not nagivate away or reload this page.</p>";
+						$html[] = "</div>";
+					$html[] = "</div>";
+				$html[] = "</div>";
+
 				
-				$html[] = "<div class='card'>";
+				$html[] = "<div class='card cart-container'>";
 				
 					$html[] = "<div class='card-header'>";
 						$html[] = "<h2 class='card-title'><i class='ti ti-shopping-cart me-2'></i> Cost Summary</h2>";

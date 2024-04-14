@@ -23,8 +23,6 @@ class AuthenticatorController extends \Main\Controller
 
     function __construct() {
 
-		ini_set('session.save_path', SESSION_SAVE_PATH);
-
 		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->domain = ADMIN;
 		$this->doc = $this->getLibrary("Factory")->getDocument();

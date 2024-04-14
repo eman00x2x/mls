@@ -15,7 +15,7 @@ $html[] = "<div style='display: flex; gap: 0.5rem; justify-content: space-betwee
 		$html[] = "<br/><p>";
 			#$html[] = "<span class='d-block text-muted fs-11 text-end'>Transaction Date</span>";
 			$html[] = "<div style='display: block;' class='d-block'>".date("F d, Y", $data['transaction']['created_at'])."</div>";
-			$html[] = "<div style='display: block;'>Transaction #".$data['transaction']['transaction_id']."</div>";
+			$html[] = "<div style='display: block;'>Transaction ID: ".$data['transaction']['payment_transaction_id']."</div>";
 		$html[] = "</p>";
 	$html[] = "</td></tr>";
 	$html[] = "</table>";

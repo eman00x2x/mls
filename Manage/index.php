@@ -79,7 +79,7 @@ class Middleware implements IMiddleware {
 
 		if($request->user['status'] == 0) {
 			Router::get(MANAGE_ALIAS, 'AuthenticatorController@getLoginForm');
-			$request->setRewriteUrl(url(""));
+			$request->setRewriteUrl(url("/"));
 			$template = "Templates/login.template.php";
 		}else {
 			SessionHandler::getInstance()->init();

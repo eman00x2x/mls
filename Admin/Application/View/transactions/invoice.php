@@ -49,10 +49,10 @@ $html[] = "<div class='row justify-content-center'>";
 								$html[] = "<span class='text-muted'>".$data['account']['email']."</span>";
 							$html[] = "</p>";
 
-							$html[] = "<p>";
+							$html[] = "<p class='text-end'>";
 								#$html[] = "<span class='d-block text-muted fs-11 text-end'>Transaction Date</span>";
 								$html[] = "<span class='d-block'>".date("F d, Y", $data['transaction']['created_at'])."</span>";
-								$html[] = "<span class='d-block text-end'>Transaction #".$data['transaction']['transaction_id']."</span>";
+								$html[] = "<span class='d-block text-end'>Transaction ID: ".$data['transaction']['payment_transaction_id']."</span>";
 							$html[] = "</p>";
 						$html[] = "</div>";
 						

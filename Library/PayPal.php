@@ -138,12 +138,11 @@ class PayPal {
 				return form_data;   
 			}
 
-			// Show a loader on payment form processing
+			/* Show a loader on payment form processing */
 			const setProcessing = (isProcessing) => {
 				if (isProcessing) {
-					$('.overlay').removeClass('d-none');
-				} else {
-					$('.overlay').addClass('d-none');
+					$('.loader-container').removeClass('d-none');
+					$('.cart-container').addClass('d-none');
 				}
 			}  
 			
