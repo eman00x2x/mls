@@ -2,6 +2,8 @@
 
 namespace Main\Model;
 
+use Verot\Upload\Upload as Upload;
+
 class PageAdsModel extends \Main\Model {
 
 	/**
@@ -189,7 +191,7 @@ class PageAdsModel extends \Main\Model {
 
 	function moveUploadedImage($filename) {
 
-        $old_dir = ROOT."Cdn/public/temporary/".$filename;
+        $old_dir = ROOT."/Cdn/public/temporary/".$filename;
 
 		if(file_exists($old_dir)) {
 
@@ -206,7 +208,7 @@ class PageAdsModel extends \Main\Model {
 
 			$new_filename = $new_name."_".md5(time()).".".$ext;
 		
-			$new_dir = ROOT."Cdn/public/page_ads/".$new_filename;
+			$new_dir = ROOT."/Cdn/public/page_ads/".$new_filename;
 			rename($old_dir,$new_dir);
 
 			return CDN."public/page_ads/".$new_filename;
@@ -216,7 +218,7 @@ class PageAdsModel extends \Main\Model {
 
 	function uploadPhoto($data) {
 
-		$handle = new \Vendor\Upload\Upload($data);
+		$handle = new Upload($data);
 
 		if ($handle->uploaded) {
 
@@ -232,8 +234,8 @@ class PageAdsModel extends \Main\Model {
 					"status" => 1,
 					"message" => "Logo uploaded successfully",
 					"filename" => $handle->file_dst_name,
-					"temp_url" => CDN."/public/temporary/".$handle->file_dst_name,
-					"url" => CDN."/public/page_ads/".$handle->file_dst_name
+					"temp_url" => CDN."public/temporary/".$handle->file_dst_name,
+					"url" => CDN."public/page_ads/".$handle->file_dst_name
 				));
 			}
 
@@ -243,7 +245,7 @@ class PageAdsModel extends \Main\Model {
 
 	function removePhoto($filename) {
 
-		$file = ROOT."Cdn/public/page_ads/".$filename;
+		$file = ROOT."/Cdn/public/page_ads/".$filename;
 		
 		/* check file if exists in main folder */
 		if(file_exists($file)) {

@@ -397,16 +397,20 @@ class AccountsController extends \Main\Controller {
 
 				/** SEND EMAIL ACTIVATION LINK */
 				$mail = new Mailer();
-				$mail
+				$response = $mail
 					->build( $this->mailActivationUrl($_POST) )
 						->send([
 							"to" => [
 								$_POST['email']
 							]
 						], CONFIG['site_name'] . " Account activation ");
+					
+				if($response['status'] == 2) {
+					$this->delete($accountResponse['id']);
+				}
 
 			}else {
-				$accounts->deleteAccount($accountResponse['id']);
+				$this->delete($accountResponse['id']);
 			}
 
 			$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);

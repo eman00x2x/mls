@@ -3,6 +3,7 @@
 namespace Main\Model;
 
 use Library\Encrypt;
+use Verot\Upload\Upload as Upload;
 
 class MessageModel extends \Main\Model {
 
@@ -186,7 +187,7 @@ class MessageModel extends \Main\Model {
 		
 		foreach ($files as $file) {
 
-			$handle = new \Vendor\Upload\Upload($file); 
+			$handle = new Upload($file); 
 
 			if ($handle->uploaded) {
 			

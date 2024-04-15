@@ -2,6 +2,8 @@
 
 namespace Main\Model;
 
+use Verot\Upload\Upload as Upload;
+
 class ListingModel extends \Main\Model {
 
 	function __construct() {
@@ -160,7 +162,7 @@ class ListingModel extends \Main\Model {
 		
 		foreach ($files as $file) {
 
-			$handle = new \Vendor\Upload\Upload($file); 
+			$handle = new Upload($file); 
 
 			if ($handle->uploaded) {
 			

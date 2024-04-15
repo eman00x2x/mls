@@ -2,6 +2,8 @@
 
 namespace Main\Model;
 
+use Verot\Upload\Upload as Upload;
+
 class AccountModel extends \Main\Model {
 
 	public $profile = [
@@ -254,7 +256,7 @@ class AccountModel extends \Main\Model {
 
 	function uploadPhoto($data, $path = "/images/accounts") {
 
-		$handle = new \Vendor\Upload\Upload($data);
+		$handle = new Upload($data);
 
 		if ($handle->uploaded) {
 

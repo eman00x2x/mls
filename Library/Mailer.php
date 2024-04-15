@@ -2,8 +2,8 @@
 
 namespace Library;
 
-use PHPMailer\PHPMailer\PHPMailer as PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+/* use PHPMailer\PHPMailer\PHPMailer as PHPMailer;
+use PHPMailer\PHPMailer\Exception; */
 
 class Mailer
 {
@@ -31,9 +31,11 @@ class Mailer
 
 	function send(array $to, string $subject, array $attachments = null) {
 
+		require_once(ROOT."/Vendor/PHPMailer/phpmailer/src/Exception.php");
 		require_once(ROOT."/Vendor/PHPMailer/phpmailer/src/PHPMailer.php");
+		/* require_once(ROOT."/Vendor/PHPMailer/phpmailer/src/SMTP.php"); */
 		
-		$this->mailer = new PHPMailer(true);
+		$this->mailer = new \PHPMailer\PHPMailer\PHPMailer();
 
 		try {
 
@@ -68,10 +70,17 @@ class Mailer
 			$this->mailer->Body    = $this->message;
 			$this->mailer->AltBody = strip_tags($this->message);
 
-			$this->mailer->send();
+			if(!$this->mailer->send()) {
+				return [
+					"status" => 2,
+					"type" => "error",
+					"message" => "Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}"
+				];
+			}
 
 			return [
 				"status" => 1,
+				"type" => "success",
 				"message" => "Message has been sent"
 			];
 
@@ -79,6 +88,7 @@ class Mailer
 
 			return [
 				"status" => 2,
+				"type" => "error",
 				"message" => "Message could not be sent. Mailer Error: {$e->getMessage()}"
 			];
 
@@ -91,11 +101,11 @@ class Mailer
 
 			/** HEADER */
 			$html[] = "<div style='text-align:center;padding:20px;border-bottom:1px solid #ECECEC;background-color:#F2F1EF;'>";
-				$html[] = "<img src='".CDN."images/logo.png' alt='Logo' style='width:250px;' />";
+				$html[] = "<img src='".CDN."images/favicon/apple-touch-icon.png' alt='Logo' />";
 			$html[] = "</div>";
 
 			/** BODY */
-			$html[] = "<div style='padding:20px;width:90%;margin:0 auto; background-color:#FFF;'>";
+			$html[] = "<div style='padding:20px;width:90%;margin:0 auto; background-color:#FFF; text-wrap: wrap;'>";
 				$html[] = $message;
 			$html[] = "</div>";
 

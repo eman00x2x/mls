@@ -218,7 +218,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	function viewListing($id) {
 
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 
 		$this->doc->addStyleDeclaration("
 
@@ -620,7 +620,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	function downloadPDFFormat($id)  {
 
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 
 		$listing = $this->getModel("Listing");
 		$listing->column['listing_id'] = $id;
@@ -687,7 +687,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		
 		$response = parent::listProperties($listings, $filters);
 		
-		$this->setTempalteBasePath(ROOT."Admin");
+		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->setTemplate("listings/listProperties.php");
 		return $this->getTemplate($response['data'],$response['model']);
 

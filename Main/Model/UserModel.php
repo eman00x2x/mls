@@ -2,6 +2,8 @@
 
 namespace Main\Model;
 
+use Verot\Upload\Upload as Upload;
+
 class UserModel extends \Main\Model {
 
 	function __construct() {
@@ -247,7 +249,7 @@ class UserModel extends \Main\Model {
 
 	function uploadPhoto($data) {
 
-		$handle = new \Vendor\Upload\Upload($data);
+		$handle = new Upload($data);
 
 		if ($handle->uploaded) {
 
@@ -266,8 +268,8 @@ class UserModel extends \Main\Model {
 					"status" => 1,
 					"message" => "Logo uploaded successfully",
 					"filename" => $handle->file_dst_name,
-					"temp_url" => CDN."/images/temporary/".$handle->file_dst_name,
-					"url" => CDN."/images/users/".$handle->file_dst_name
+					"temp_url" => CDN."images/temporary/".$handle->file_dst_name,
+					"url" => CDN."images/users/".$handle->file_dst_name
 				));
 			}
 
