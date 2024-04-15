@@ -207,13 +207,26 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 
 		}else {
 			$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
-
 			return json_encode(array(
 				"type" => 2,
 				"status" => $response['status'],
 				"message" => getMsg()
 			));
 		}
+
+	}
+
+	function successPage() {
+		$this->setTemplate("registration/successPage.php");
+		return $this->getTemplate();
+	}
+
+	function resendActivationLinkForm() {
+		$this->setTemplate("registration/resendActivationLinkForm.php");
+		return $this->getTemplate();
+	}
+
+	function sendActivationLink() {
 
 	}
 	

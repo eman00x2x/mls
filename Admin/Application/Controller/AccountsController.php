@@ -397,7 +397,7 @@ class AccountsController extends \Main\Controller {
 
 				/** SEND EMAIL ACTIVATION LINK */
 				$mail = new Mailer();
-				$response = $mail
+				$send = $mail
 					->build( $this->mailActivationUrl($_POST) )
 						->send([
 							"to" => [
@@ -405,7 +405,7 @@ class AccountsController extends \Main\Controller {
 							]
 						], CONFIG['site_name'] . " Account activation ");
 					
-				if($response['status'] == 2) {
+				if($send['status'] == 2) {
 					$this->delete($accountResponse['id']);
 				}
 
@@ -700,7 +700,7 @@ class AccountsController extends \Main\Controller {
 		]);
 
 		$activation_code = base64_encode($activation_url_data);
-		$data['url'] = MANAGE . rtrim("accountActivation/code=".$activation_code, "/");
+		$data['url'] = MANAGE . rtrim("accountActivation/".$activation_code, "/");
 
 		$this->setTemplate("accounts/MAIL_activation.php");
 		return $this->getTemplate($data);

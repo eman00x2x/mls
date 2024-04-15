@@ -1,7 +1,7 @@
 <?php
 
 
-/* $html[] = "<input type='hidden' id='reference_url' value='".url(MANAGE_ALIAS . '/')."' />"; */
+$html[] = "<input type='hidden' id='reference_url' value='".url("RegistrationController@successPage")."' />";
 $html[] = "<input type='hidden' id='save_url' value='".url("RegistrationController@saveNew")."' />";
 
 $html[] = "<input type='hidden' name='message_keys[publicKey]' id='publicKey' value='".$data['message_keys']['publicKey']."' />";

@@ -64,7 +64,9 @@ class Middleware implements IMiddleware {
 			Router::get('/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
 			Router::get('/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
 			Router::get('/accountActivation/{code}', 'AuthenticatorController@accountActivation', ['as' => 'accountActivation'])->where([ 'code' => '[\w\-\=\.]+' ]);
-
+			Router::get('/registration-success', 'RegistrationController@successPage', ['as' => 'successPage']);
+			Router::get('/resend-activation-link', 'RegistrationController@resendActivationLinkForm', ['as' => 'resendActivationLinkForm']);
+			
 			Router::post('/checkCredentials', 'AuthenticatorController@checkCredentials');
 			Router::post('/registerStep1', 'RegistrationController@register');
 			Router::post('/registerBroker', 'RegistrationController@registerBroker');
@@ -72,6 +74,7 @@ class Middleware implements IMiddleware {
 			Router::post('/registerAccountSave', 'RegistrationController@saveNew');
 			Router::post('/saveNewPassword', 'AuthenticatorController@saveNewPassword');
 			Router::post('/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
+			Router::post('/sendActivationLink', 'RegistrationController@sendActivationLink', ['as' => 'sendActivationLink']);
 		
 		});
 

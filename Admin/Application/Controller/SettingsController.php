@@ -87,6 +87,7 @@ class SettingsController extends \Main\Controller {
 		if(isset($_POST['paypal_credentials'])) { $_POST['paypal_credentials'] = json_encode($_POST['paypal_credentials']); }
 		if(isset($_POST['contact_info'])) { $_POST['contact_info'] = json_encode($_POST['contact_info']); }
 		if(isset($_POST['property_tags'])) { $_POST['property_tags'] = json_encode(explode(", ",$_POST['property_tags'])); }
+		if(isset($_POST['email_address_responder'])) { $_POST['email_address_responder'] = json_encode($_POST['email_address_responder']); }
 
 		$_POST['modified_at'] = DATE_NOW;
 

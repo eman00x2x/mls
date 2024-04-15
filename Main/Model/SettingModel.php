@@ -31,6 +31,7 @@ class SettingModel extends \Main\Model {
 				if(!isset($data['property_tags'])) { $this->column['property_tags'] = json_encode($this->column['property_tags']); }
 				if(!isset($data['contact_info'])) { $this->column['contact_info'] = json_encode($this->column['contact_info']); }
 				if(!isset($data['paypal_credentials'])) { $this->column['paypal_credentials'] = json_encode($this->column['paypal_credentials']); }
+				if(!isset($data['email_address_responder'])) { $this->column['email_address_responder'] = json_encode($this->column['email_address_responder']); }
 
 				foreach($data as $key => $val) {
 					$this->column[$key] = $val;

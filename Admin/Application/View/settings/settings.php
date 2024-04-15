@@ -134,12 +134,32 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 
 										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
 											$html[] = "<h3 class='card-title'>Email Address Responder</h3>";
-											$html[] = "<p class='card-subtitle'>Please provide the email address designated as the responder for sending email notifications to users.</p>";
-											$html[] = "<div class='row g-2'>";
-												$html[] = "<div class='col-md'>";
-													$html[] = "<input type='text' name='email_address_responder' class='form-control' value='".$data['email_address_responder']."' placeholder='Email Address Responder' />";
-												$html[] = "</div>";
+											$html[] = "<p class='card-subtitle'>Please provide the email address designated as the responder for sending email notifications to users. Connection details, including SMTP username and password, are required.</p>";
+											
+											$html[] = "<div class='form-floating mt-4'>";
+												$html[] = "<input type='text' name='email_address_responder[email]' id='email_address_responder_email' value='".$data['email_address_responder']['email']."' class='form-control' />";
+												$html[] = "<label for='email_address_responder_email'>Email Address</label>";
 											$html[] = "</div>";
+											$html[] = "<p class='mt-1 mx-1 fs-12 form-hint'>Username to use for SMTP authentication</p>";
+
+											$html[] = "<div class='form-floating mt-4'>";
+												$html[] = "<input type='password' name='email_address_responder[password]' id='email_address_responder_password' value='".$data['email_address_responder']['password']."' class='form-control' />";
+												$html[] = "<label for='email_address_responder_password'>Password</label>";
+											$html[] = "</div>";
+											$html[] = "<p class='mt-1 mx-1 fs-12 form-hint'>Password to use for SMTP authentication</p>";
+
+											$html[] = "<div class='form-floating mt-4'>";
+												$html[] = "<input type='text' name='email_address_responder[host]' id='email_address_responder_host' value='".$data['email_address_responder']['host']."' class='form-control' />";
+												$html[] = "<label for='email_address_responder_host'>Mail Server</label>";
+											$html[] = "</div>";
+											$html[] = "<p class='mt-1 mx-1 fs-12 form-hint'>Set the hostname of the mail server, usually mail.server.com</p>";
+
+											$html[] = "<div class='form-floating mt-4'>";
+												$html[] = "<input type='text' name='email_address_responder[port]' id='email_address_responder_port' value='".$data['email_address_responder']['port']."' class='form-control' />";
+												$html[] = "<label for='email_address_responder_port'>Mail Server Port</label>";
+											$html[] = "</div>";
+											$html[] = "<p class='mt-1 mx-1 fs-12 form-hint'>Set the SMTP port number - likely to be 25, 465 or 587</p>";
+											
 										$html[] = "</div>";
 
 										/* $html[] = "<div class='mb-5 border rounded-3 p-5'>";

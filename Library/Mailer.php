@@ -9,7 +9,11 @@ class Mailer
 {
 
 	private $mailer;
-	private $sender = EMAIL_ADDRESS_RESPONDER;
+	private $sender = EMAIL_ADDRESS_RESPONDER['email'];
+	private $smtp_username = EMAIL_ADDRESS_RESPONDER['email'];
+	private $smtp_password = EMAIL_ADDRESS_RESPONDER['password'];
+	private $smtp_server = EMAIL_ADDRESS_RESPONDER['host'];
+	private $smtp_port = EMAIL_ADDRESS_RESPONDER['port'];
 	private $message;
 
 	function __construct() {}
@@ -33,15 +37,27 @@ class Mailer
 
 		require_once(ROOT."/Vendor/PHPMailer/phpmailer/src/Exception.php");
 		require_once(ROOT."/Vendor/PHPMailer/phpmailer/src/PHPMailer.php");
-		/* require_once(ROOT."/Vendor/PHPMailer/phpmailer/src/SMTP.php"); */
+		require_once(ROOT."/Vendor/PHPMailer/phpmailer/src/SMTP.php");
 		
 		$this->mailer = new \PHPMailer\PHPMailer\PHPMailer();
 
 		try {
 
 			//Set who the message is to be sent from
-			$this->mailer->setFrom($this->sender, 'Mailer');
+			$this->mailer->setFrom($this->sender, 'PAREB MLS Mailer');
 			$this->mailer->isHTML(true);
+			$this->mailer->isSMTP();
+			
+			//Enable SMTP debugging
+			//SMTP::DEBUG_OFF = off (for production use)
+			//SMTP::DEBUG_CLIENT = client messages
+			//SMTP::DEBUG_SERVER = client and server messages
+			$this->mailer->SMTPDebug = \PHPMailer\PHPMailer\SMTP::DEBUG_OFF;
+			$this->mailer->Host = $this->smtp_server;
+			$this->mailer->Port = $this->smtp_port;
+			$this->mailer->SMTPAuth = true;
+			$this->mailer->Username = $this->smtp_username;
+			$this->mailer->Password = $this->smtp_password;
 
 			foreach($to['to'] as $to) {
 				//Set who the message is to be sent to
@@ -74,7 +90,8 @@ class Mailer
 				return [
 					"status" => 2,
 					"type" => "error",
-					"message" => "Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}"
+					/* "message" => "Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}" */
+					"message" => "Could not process your request. Please try again later."
 				];
 			}
 
@@ -89,7 +106,8 @@ class Mailer
 			return [
 				"status" => 2,
 				"type" => "error",
-				"message" => "Message could not be sent. Mailer Error: {$e->getMessage()}"
+				/* "message" => "Message could not be sent. Mailer Error: {$e->getMessage()}" */
+				"message" => "Could not process your request. Please try again later."
 			];
 
 		}
@@ -101,7 +119,7 @@ class Mailer
 
 			/** HEADER */
 			$html[] = "<div style='text-align:center;padding:20px;border-bottom:1px solid #ECECEC;background-color:#F2F1EF;'>";
-				$html[] = "<img src='".CDN."images/favicon/apple-touch-icon.png' alt='Logo' />";
+				$html[] = "<img src='".CDN."images/favicon/favicon-32x32.png' alt='Logo' /> PAREB MLS";
 			$html[] = "</div>";
 
 			/** BODY */
