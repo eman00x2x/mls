@@ -2,10 +2,10 @@
 
 namespace Admin\Application\Controller;
 
-class RegistrationController extends \Admin\Application\Controller\AccountsController {
-	
-	public $doc;
+use Library\Mailer;
 
+class RegistrationController extends AccountsController {
+	
 	function __construct() {
 		parent::__construct();
 	}
@@ -13,7 +13,7 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 	function register() {
 
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->doc->setTitle("Register Account - MLS");
+		$this->doc->setTitle("Register Account - ".CONFIG['site_name']);
 
 		$this->doc->addScript(CDN."js/encryption.js");
 		$this->doc->addScript(CDN."philippines-addresses/json/table_address.js");
@@ -178,7 +178,7 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 		parse_str(file_get_contents('php://input'), $_POST);
 
 		$this->doc = $this->getLibrary("Factory")->getDocument();
-		$this->doc->setTitle("Register Account - MLS");
+		$this->doc->setTitle("Register Account - ".CONFIG['site_name']);
 
 		$reference = $this->getModel("LicenseReference");
 		$response =	$reference->getByLicenseId($_POST['broker_prc_license_id']);
@@ -216,17 +216,117 @@ class RegistrationController extends \Admin\Application\Controller\AccountsContr
 
 	}
 
+	function accountActivation($code) {
+
+		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->doc->setTitle(CONFIG['site_name'] . " Account Activation");
+
+		$code = base64_decode($code);
+		$code = json_decode($code, true);
+
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			response()->redirect(MANAGE . 'not-found');
+		}
+
+		if(!isset($code['expiration']) && $code['expiration'] >= DATE_NOW) {
+			response()->redirect(MANAGE . 'not-found');
+		}
+
+		$accounts = $this->getModel("Account");
+		$accounts->column['account_id'] = $code['account_id'];
+		$accounts->and(" email = '".$code['email']."' AND status = 'pending_activation' ");
+		$data = $accounts->getById();
+
+		if($data) {
+
+			$accounts->save( $data['account_id'], [
+				"board_region" => json_encode($data['board_region']),
+				"account_name" => json_encode($data['account_name']),
+				"profile" => json_encode($data['profile']),
+				"status" => "active"
+			]);
+
+			$this->setTemplate("registration/activation.php");
+			return $this->getTemplate($data);
+
+		}
+
+		response()->redirect(MANAGE . 'not-found');
+
+	}
+
 	function successPage() {
+		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->doc->setTitle("Successfully Registered - ".CONFIG['site_name']);
+
 		$this->setTemplate("registration/successPage.php");
 		return $this->getTemplate();
 	}
 
 	function resendActivationLinkForm() {
+
+		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->doc->setTitle("Resend Activation Link to Email - ".CONFIG['site_name']);
+
+		$this->doc->addScriptDeclaration("
+			$(document).on('click', '.btn-resend-activation', function() {
+
+				$('.response').html(\"<div class='d-flex gap-2 align-items-center'><div class='loader'></div> <p class='mb-0'>Sending activation link, please wait...</p></div>\");
+				$('.btn-resend-activation').addClass('d-none');
+
+				$.post($('#save_url').val(), $('#form').serialize(), function(data) {
+					response = JSON.parse(data);
+
+					if(response.status == 2) {
+						$('.btn-resend-activation').removeClass('d-none');
+					}
+
+					$('.response').html(response.message);
+				});
+			});
+		");
+
 		$this->setTemplate("registration/resendActivationLinkForm.php");
 		return $this->getTemplate();
 	}
 
 	function sendActivationLink() {
+
+		$account = $this->getModel("Account");
+		$account->column['email'] = $_POST['email'];
+		$data = $account->getByEmail();
+
+		if($data) {
+
+			$data['name'] = $data['account_name']['firstname']." ".$data['account_name']['lastname'];
+
+			/** SEND EMAIL ACTIVATION LINK */
+			$mail = new Mailer();
+			$send = $mail
+				->build( $this->mailActivationUrl($data) )
+					->send([
+						"to" => [
+							$_POST['email']
+						]
+					], CONFIG['site_name'] . " Account activation ");
+			
+			if($send['status'] == 2) {
+				$this->getLibrary("Factory")->setMsg("The activation link could not be sent. Please try again later.", "error");
+			}else {
+				$this->getLibrary("Factory")->setMsg("Activation link has been successfully sent.", "success");
+			}
+
+			$response['status'] = $send['status'];
+		}else {
+			$this->getLibrary("Factory")->setMsg("Sorry, no records were found for the email address you provided", "error");
+			$response['status'] = 2;
+		}
+
+		return json_encode(array(
+			"type" => 1,
+			"status" => $response['status'],
+			"message" => getMsg()
+		));
 
 	}
 	

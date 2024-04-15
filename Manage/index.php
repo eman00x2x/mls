@@ -63,7 +63,7 @@ class Middleware implements IMiddleware {
 			Router::get('/register', 'RegistrationController@register');
 			Router::get('/resetPassword', 'AuthenticatorController@getResetPasswordForm', ['as' => 'resetPassword']);
 			Router::get('/forgotPassword', 'AuthenticatorController@getForgotPasswordForm', ['as' => 'forgotPassword']);
-			Router::get('/accountActivation/{code}', 'AuthenticatorController@accountActivation', ['as' => 'accountActivation'])->where([ 'code' => '[\w\-\=\.]+' ]);
+			Router::get('/accountActivation/{code}', 'RegistrationController@accountActivation', ['as' => 'accountActivation'])->where([ 'code' => '[\w\-\=\.]+' ]);
 			Router::get('/registration-success', 'RegistrationController@successPage', ['as' => 'successPage']);
 			Router::get('/resend-activation-link', 'RegistrationController@resendActivationLinkForm', ['as' => 'resendActivationLinkForm']);
 			

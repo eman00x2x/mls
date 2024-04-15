@@ -9,6 +9,7 @@ $html[] = "<div class='page page-center'>";
 			$html[] = "<span class='d-block'><b>MLS Account Registration</b></span>";
 		$html[] = "</div>";
 
+		$html[] = "<input type='hidden' id='save_url' value='".url("RegistrationController@sendActivationLink")."' />";
 		$html[] = "<form id='form' action='' method='POST'>";
 			$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 			
@@ -17,16 +18,17 @@ $html[] = "<div class='page page-center'>";
 
 					$html[] = "<div class='registration_form'>";
 
-						$html[] = "<h1>Resend Activation Link to Email</h1>";
-						$html[] = "<p></p>";
+						$html[] = "<h2>Resend Activation Link to Email</h2>";
+						$html[] = "<p>Enter your registered email address and click Resend Activation Link.</p>";
 
 						$html[] = "<div class='mb-3 form-floating'>";
 							$html[] = "<input type='email' class='form-control' name='email' id='email'  placeholder='Enter Email' autocomplete='off'>";
-							$html[] = "<label for='email'>Email</label>";
+							$html[] = "<label for='email'>Email Address</label>";
 						$html[] = "</div>";
 
 						$html[] = "<div class=''>";
-							$html[] = "<span class='btn btn-primary'>Resend Activation link</span>";
+							$html[] = "<div class='response'></div>";
+							$html[] = "<span class='btn btn-primary btn-resend-activation'>Resend Activation link</span>";
 						$html[] = "</div>";
 						
 					$html[] = "</div>";
@@ -36,7 +38,7 @@ $html[] = "<div class='page page-center'>";
 		$html[] = "</form>";
 
 		$html[] = "<div class='text-center text-secondary mt-3'>";
-			$html[] = "Already have account? <a href='".url(MANAGE_ALIAS . "/")."' tabindex='-1'>Sign in</a>";
+			$html[] = "Already activated? <a href='".url("AuthenticatorController@getLoginForm")."' tabindex='-1'>Sign in</a>";
 		$html[] = "</div>";
 	$html[] = "</div>";
 

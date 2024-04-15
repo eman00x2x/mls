@@ -441,44 +441,6 @@ class AuthenticatorController extends \Main\Controller
 		
 	}
 
-	function accountActivation($code) {
-
-		$this->doc->setTitle(CONFIG['site_name'] . " Account Activation");
-
-		$code = base64_decode($code);
-		$code = json_decode($code, true);
-
-		if (json_last_error() !== JSON_ERROR_NONE) { 
-			response()->redirect(MANAGE . 'not-found');
-		}
-
-		if(!isset($code['expiration']) || $code['expiration'] <= DATE_NOW) {
-			response()->redirect(MANAGE . 'not-found');
-		}
-
-		$accounts = $this->getModel("Account");
-		$accounts->column['account_id'] = $code['account_id'];
-		$accounts->and(" email = '".$code['email']."' AND status = 'pending_activation' ");
-		$data = $accounts->getById();
-
-		if($data) {
-
-			$accounts->save( $data['account_id'], [
-				"board_region" => json_encode($data['board_region']),
-				"account_name" => json_encode($data['account_name']),
-				"profile" => json_encode($data['profile']),
-				"status" => "active"
-			]);
-
-			$this->setTemplate("registration/activation.php");
-			return $this->getTemplate($data);
-
-		}
-
-		response()->redirect(MANAGE . 'not-found');
-
-	}
-
 	function getLoginForm() {
 
 		/* if($_SERVER['REQUEST_METHOD'] == "POST") {
