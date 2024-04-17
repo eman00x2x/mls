@@ -3,6 +3,7 @@
 namespace Admin\Application\Controller;
 
 use Ifsnop\Mysqldump as IMysqldump;
+use Library\Configuration;
 
 class AdministrationController extends \Main\Controller {
 	
@@ -99,13 +100,16 @@ class AdministrationController extends \Main\Controller {
 	
 	function backupDatabase() {
 
+		require_once(ROOT."/Vendor/ifsnop/mysqldump-php/src/Ifsnop/Mysqldump/Mysqldump.php");
+
 		$db = \Library\Factory::getDBO();
+		$config = new Configuration();
 
 		$mysql_backup_file = 'backup-'.date("Y-m-d-g-iA",strtotime("NOW")).'.sql';
 
 		try {
 
-			$dump = new IMysqldump\Mysqldump('mysql:host=localhost;dbname=mls', 'root', '');
+			$dump = new IMysqldump\Mysqldump('mysql:host='.$config->db_host.';dbname='.$config->db_name.'', $config->db_user, $config->db_pass);
 			$dump->start(ROOT."/Admin/DATABASE_BACKUP/".$mysql_backup_file);
 			
 			$this->getLibrary("Factory")->setMsg("Successfully save the backup <i>$mysql_backup_file</i>.","success");
@@ -122,8 +126,8 @@ class AdministrationController extends \Main\Controller {
 
 	function downloadBackup() {
 
-		$url = ADMIN."DATABASE_BACKUP/".$_GET['file'];
-		$filename = basename($url);
+		$url = url("AdministrationController@downloadBackup", null, ["file" => $_GET['file']]);
+		$filename = $_GET['file'];
 		$local_path = ROOT."/Admin/DATABASE_BACKUP";
 
 		header("Content-Description: File Transfer");
@@ -134,7 +138,7 @@ class AdministrationController extends \Main\Controller {
     	header('Pragma: public');
 		header("Content-length: ".filesize($local_path."/".$filename));
 
-		readfile($url); 
+		readfile($local_path."/".$filename); 
 		exit();
 
 	}

@@ -55,6 +55,7 @@ class UsersController extends \Main\Controller {
 		if($id) {
 		
 			$table['user'] = $this->getModel("User");
+			$table['user']->select(" *, u.email as email ");
 			$table['user']->column['user_id'] = $id;
 			$table['user']->join = " u JOIN #__accounts a ON u.account_id = a.account_id";
 
