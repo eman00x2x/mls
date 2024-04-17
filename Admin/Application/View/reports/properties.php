@@ -40,7 +40,7 @@ $html[] = "<div class='page-body'>";
                             $html[] = "<div class='mb-3'>";
                                 $html[] = "<label class='form-label'>Offer</label>";
                                 $html[] = "<select name='offer' id='offer' class='form-select'>";
-                                    foreach(["for sale","for rent"] as $offer) {
+                                    foreach(["for sale","for rent","looking for"] as $offer) {
                                         $html[] = "<option value='$offer'>".ucwords($offer)."</option>";
                                     }
                                 $html[] = "</select>";
@@ -49,12 +49,12 @@ $html[] = "<div class='page-body'>";
                             $html[] = $model->selection;
 
                             $html[] = "<div class='mb-3'>";
-                                $html[] = "<label class='form-label'>Status</label>";
-                                $html[] = "<select name='status' id='status' class='form-select'>";
-                                    foreach([1 => "available", 2=> "sold"] as $key => $status) {
-                                        $html[] = "<option value='$key'>".ucwords($status)."</option>";
-                                    }
-                                $html[] = "</select>";
+                                foreach([1 => "available", 0 => "expired", 2=> "sold"] as $key => $status) {
+                                    $html[] = "<div class='form-check'>";
+                                        $html[] = "<input type='checkbox' name='status[]' value='$key' class='form-check-input' id='statusCheckBox_$status' />";
+                                        $html[] = "<label class='form-label' for='statusCheckBox_$status'>".ucwords($status)."</label>";
+                                    $html[] = "</div>";
+                                }
                             $html[] = "</div>";
 
                             $html[] = "<div class='mt-3 d-flex justify-content-between gap-3'>";

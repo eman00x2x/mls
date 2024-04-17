@@ -161,8 +161,8 @@ class ReportsController extends \Main\Controller {
 		$flag = "this_year";
 		$date_helper = \dateHelper($flag);
 
-		if(isset($_GET['status']) && $_GET['status'] != "") {
-			$filter[] = " status = '".$_GET['status']."' ";
+		if(isset($_GET['status'])) {
+			$filter[] = " status IN(".implode(",", $_GET['status']).") ";
 		}else {
 			$filter[] = " status = 1 ";
 		}
@@ -226,8 +226,8 @@ class ReportsController extends \Main\Controller {
 		$flag = "this_year";
 		$date_helper = \dateHelper($flag);
 
-		if(isset($_GET['status']) && $_GET['status'] != "") {
-			$filter[] = " status = '".$_GET['status']."' ";
+		if(isset($_GET['status'])) {
+			$filter[] = " status IN(".implode(",", $_GET['status']).") ";
 		}else {
 			$filter[] = " status = 1 ";
 		}

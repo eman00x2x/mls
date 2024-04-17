@@ -77,13 +77,31 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 									$html[] = "<div class='row justify-content-center py-3'>";
 										$html[] = "<div class='col-md-8 col-lg-8 col-12'>";
 
-											$html[] = "<div class='form-group mb-3'>";
-												$html[] = "<label class='form-label text-muted'>Title</label>";
-												$html[] = "<div class='input-icon mb-3'>";
-													$html[] = "<span class='input-icon-addon'><i class='ti ti-writing'></i></span>";
-													$html[] = "<input type='text' name='title' id='title' value='' class='form-control' placeholder='Title' />";
+											$html[] = "<div class='d-flex gap-2  mb-3'>";
+
+												$html[] = "<div class='form-group'>";
+													$html[] = "<label class='form-label text-muted'>Offer</label>";
+													$html[] = "<div class='input-icon'>";
+														$html[] = "<span class='input-icon-addon'><i class='ti ti-tags'></i></span>";
+														$html[] = "<select class='form-control' name='offer' id='offer'>";
+															$offer_type = array("For Sale","For Rent", "Looking For");
+															foreach($offer_type as $key => $val) {
+																$html[] = "<option value='".strtolower($val)."'>$val</option>";
+															}
+														$html[] = "</select>";
+														$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+													$html[] = "</div>";
 												$html[] = "</div>";
-												$html[] = "<p class='p-0 text-info'>Do not include \"For Sale\", \"RFO\", \"Re-Sale\" in your title.</p>";
+
+												$html[] = "<div class='form-group flex-grow-1'>";
+													$html[] = "<label class='form-label text-muted'>Title</label>";
+													$html[] = "<div class='input-icon mb-1'>";
+														$html[] = "<span class='input-icon-addon'><i class='ti ti-writing'></i></span>";
+														$html[] = "<input type='text' name='title' id='title' value='' class='form-control' placeholder='Title' />";
+													$html[] = "</div>";
+													$html[] = "<p class='p-0 text-info'>Do not include \"For Sale\", \"RFO\", \"Re-Sale\" in your title.</p>";
+												$html[] = "</div>";
+
 											$html[] = "</div>";
 												
 											$html[] = "<div class='form-group mb-3'>";
@@ -106,15 +124,10 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<div class='col-lg-6 col-md-6'>";
 										
 													$html[] = "<div class='form-group mb-3'>";
-														$html[] = "<label class='form-label text-muted'>Offer</label>";
+														$html[] = "<label class='form-label text-muted'>Category</label>";
 														$html[] = "<div class='input-icon mb-3'>";
-															$html[] = "<span class='input-icon-addon'><i class='ti ti-tags'></i></span>";
-															$html[] = "<select class='form-control' name='offer' id='offer'>";
-																$offer_type = array("For Sale","For Rent");
-																foreach($offer_type as $key => $val) {
-																	$html[] = "<option value='".strtolower($val)."'>$val</option>";
-																}
-															$html[] = "</select>";
+															$html[] = "<span class='input-icon-addon'><i class='ti ti-building-store'></i></span>";
+															$html[] = $model->categorySelection();
 															$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
 														$html[] = "</div>";
 													$html[] = "</div>";
@@ -139,17 +152,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "</div>";
 											$html[] = "</div>";
 
-											
-											
-											$html[] = "<div class='form-group mb-3'>";
-												$html[] = "<label class='form-label text-muted'>Category</label>";
-												$html[] = "<div class='input-icon mb-3'>";
-													$html[] = "<span class='input-icon-addon'><i class='ti ti-building-store'></i></span>";
-													$html[] = $model->categorySelection();
-													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
-												$html[] = "</div>";
-											$html[] = "</div>";
-										
 											$html[] = "<div class='row'>";
 												$html[] = "<div class='col-md-4 col-lg-4 col-12'>";
 													$html[] = "<div class='form-group mb-3'>";

@@ -149,8 +149,6 @@ class ListingModel extends \Main\Model {
 			return json_encode($uploadedImages);
 		}
 		
-		require_once(ROOT.DS."vendor".DS."upload".DS."upload.php");
-		
 		$files = array();
 		foreach ($data as $k => $l) {
 			foreach ($l as $i => $v) {
