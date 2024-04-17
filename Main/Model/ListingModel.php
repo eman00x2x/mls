@@ -138,7 +138,7 @@ class ListingModel extends \Main\Model {
 
 	function uploadImage($data) {
 
-		if(count($data['name']) > 5) {
+		if(count($data['name']) >= 6) {
 			
 			\Library\Factory::setMsg("Select 5 or less images per upload!","wrong");
 			$uploadedImages[] = array(

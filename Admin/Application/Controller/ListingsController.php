@@ -93,6 +93,14 @@ class ListingsController extends \Main\Controller {
 				link = $(this).data('link');
 				$('.nav-tabs a[href=\"' + link + '\"]').tab('show');
 			});
+
+			$(document).on('input', '#price', function() {
+				val = $(this).val();
+				val = val.replace(/\,/g,'');
+				val = parseInt(val);
+				$(this).val(val);
+			});
+
 		");
 
 		$account = $this->getModel("Account");
@@ -145,6 +153,13 @@ class ListingsController extends \Main\Controller {
 					$('#is_mls').prop('checked', true);
 				}
 			})
+
+			$(document).on('input', '#price', function() {
+				val = $(this).val();
+				val = val.replace(/\,/g,'');
+				val = parseInt(val);
+				$(this).val(val);
+			});
 		");
 
 		$account = $this->getModel("Account");
