@@ -15,19 +15,19 @@
 			</div>
 
 			<div class='main-footer py-5 text-white mb-5 d-print-none'>
-				<div class='container-xl mb-4 py-5 px-4 fs-16'>
+				<div class='container-xl mb-4 py-5 px-4 fs-14'>
 					<div class='row'>
 						<div class='col-lg-3 col-md-4 col-sm-12'>
 							<div class='mb-4'>
 								<h3>Main</h3>
 								<ul class='list-group list-group-flush m-0 p-0'>
-									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url(WEB_ALIAS . "/buy");?>' class='text-white text-decoration-none'>Buy Property</a></li>
-									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url(WEB_ALIAS . "/rent");?>' class='text-white text-decoration-none'>Rent Property</a></li>
-									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url(WEB_ALIAS . "/articles");?>' class='text-white text-decoration-none'>Articles</a></li>
-									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url(WEB_ALIAS . "/about");?>' class='text-white text-decoration-none'>About</a></li>
-									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url(WEB_ALIAS . "/contact");?>' class='text-white text-decoration-none'>Contact</a></li>
-									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url(WEB_ALIAS . "/terms");?>' class='text-white text-decoration-none'>Terms</a></li>
-									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url(WEB_ALIAS . "/data-privacy");?>' class='text-white text-decoration-none'>Data Privacy</a></li>
+									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url("ListingsController@buy");?>' class='text-decoration-none'><i class='ti ti-chevron-right me-1'></i> Buy Property</a></li>
+									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url("ListingsController@rent");?>' class='text-decoration-none'><i class='ti ti-chevron-right me-1'></i> Rent Property</a></li>
+									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url("ArticlesController@index");?>' class='text-decoration-none'><i class='ti ti-chevron-right me-1'></i> Articles</a></li>
+									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url("PagesController@about");?>' class='text-decoration-none'><i class='ti ti-chevron-right me-1'></i> About</a></li>
+									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url("PagesController@contact");?>' class='text-decoration-none'><i class='ti ti-chevron-right me-1'></i> Contact</a></li>
+									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url("PagesController@terms");?>' class='text-decoration-none'><i class='ti ti-chevron-right me-1'></i> Terms</a></li>
+									<li class='list-group-item px-0 py-0 border-0'><a href='<?=url("PagesController@privacy");?>' class='text-decoration-none'><i class='ti ti-chevron-right me-1'></i> Data Privacy</a></li>
 								</ul>
 							</div>
 						</div>
@@ -35,7 +35,7 @@
 						<div class='col-lg-5 col-md-4 col-sm-12'>
 							<div class='mb-4'>
 								<h3>Leading the Real Estate Landscape in the Philippines</h3>
-								<p>The Philippine Association of Real Estate Boards Inc. (PAREB) is the premier and largest national real estate service organization in the Philippines. It comprises 68 local member boards with a collective membership of 5,000 real estate practitioners.</p>
+								<p>The Philippine Association of Real Estate Boards Inc. (PAREB) is the foremost and largest national real estate service organization in the Philippines, encompassing 68 local member boards with a combined membership of 5,000 real estate practitioners.</p>
 								<p><i class='ti ti-map-pin'></i> Our Headquarters is located at The PAREB Centre, P.E. Antonio Brgy. Ugong, Pasig City</p>
 							</div>
 						</div>

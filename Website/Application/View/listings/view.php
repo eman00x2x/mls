@@ -405,7 +405,7 @@ $html[] = "<div class='page-body mb-0'>";
 												$html[] = getMsg();
 											$html[] = "</div>";			
 
-											$html[] = "<p class='mt-4 text-muted fs-12'>By clicking send message, you are accepting ".SITE_NAME." <a href='".url("PagesController@terms")."'>Terms and Condition</a> and <a href='".url("PagesController@privacy")."'>Privacy Policy</a> page.</p>";
+											$html[] = "<p class='mt-4 text-muted fs-12'>By clicking send message, you accept ".CONFIG['site_name']." <a href='".url("PagesController@terms")."'>Terms and Condition</a> and <a href='".url("PagesController@privacy")."'>Privacy Policy</a> page.</p>";
 											$html[] = "<span class='mb-3 btn btn-primary btn-send-message w-100'><i class='ti ti-send me-1'></i> Send Message</span>";
 											
 
