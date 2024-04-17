@@ -43,6 +43,7 @@ function setAds(container, data) {
             document.querySelector(container + ' a').setAttribute('href', data.current.data.url);
             document.querySelector(container + ' .banner-container').innerHTML = '';
             document.querySelector(container + ' .banner-container').style.setProperty('background-image', 'url(' + data.current.data.banner + ')');
+            document.querySelector(container + ' .banner-container').style.setProperty('background-repeat', 'no-repeat !important');
         } else { 
             document.querySelector(container).classList.add('d-none');
         }

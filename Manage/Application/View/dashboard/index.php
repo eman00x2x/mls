@@ -93,12 +93,12 @@ $html[] = "<div class='page-body'>";
 												for($i=0; $i<count($data['handshake_participants']); $i++) {
 
 													$req_fname_ini = "";
-													if($data['handshake_participants'][$i]['requestor_details']['firstname']) {
+													if(isset($data['handshake_participants'][$i]['requestor_details']['firstname'])) {
 														$req_fname_ini = substr($data['handshake_participants'][$i]['requestor_details']['firstname'], 0, 1);
 													}
 
 													$req_lname_ini = "";
-													if($data['handshake_participants'][$i]['requestor_details']['lastname']) {
+													if(isset($data['handshake_participants'][$i]['requestor_details']['lastname'])) {
 														$req_lname_ini = substr($data['handshake_participants'][$i]['requestor_details']['lastname'], 0, 1);
 													}
 

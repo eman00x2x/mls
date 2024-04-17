@@ -70,10 +70,10 @@ class Middleware implements IMiddleware {
 		if($request->user['status'] == 0) {
 			Router::get(WEB_ADMIN_ALIAS, 'AuthenticatorController@getLoginForm');
 			$request->setRewriteUrl(url(""));
-			$template = "templates/login.template.php";
+			$template = "Templates/login.template.php";
 		}else {
 			require_once('routes.php');
-			$template = "templates/template.php";
+			$template = "Templates/template.php";
 		}
 
 		Router::error(function(Request $request, \Exception $exception) {
