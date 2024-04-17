@@ -40,7 +40,7 @@ class ListingModel extends \Main\Model {
 
 		$v = $this->getValidator();
 
-		$v->validateGeneral($data['name'],"Do not leave the name blank.");
+		$v->validateGeneral($data['title'],"Do not leave the title blank.");
 		$v->validateGeneral($data['category'],"category is blank.");
 		$v->validateGeneral($data['type'],"type is blank.");
 		$v->validateGeneral($data['offer'],"offer is blank.");
@@ -179,12 +179,19 @@ class ListingModel extends \Main\Model {
 				$handle->Process(ROOT."/Cdn/images/temporary/"); 
 				
 				if ($handle->processed) {
+
+					$path = ROOT.DS."Cdn".DS."images".DS."temporary".DS;
+					$name = explode(".",$handle->file_dst_name);
+					$ext = array_pop($name);
+					
+					$new_name = md5($handle->file_dst_name.time()).".".$ext;
+					rename($path.$handle->file_dst_name, $path.$new_name);
 				
 					$uploadedImages[] = array(
 						"status" => 1,
 						"id" => rand(1000,10000).time(),
-						"filename" => $handle->file_dst_name,
-						"url" => CDN."images/listings/".$handle->file_dst_name,
+						"filename" => $new_name,
+						"url" => CDN."images/listings/".$new_name,
 						"width" => $handle->image_dst_x,
 						"height" => $handle->image_dst_y,
 						"application" => "listings"

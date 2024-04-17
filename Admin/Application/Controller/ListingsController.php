@@ -385,7 +385,7 @@ class ListingsController extends \Main\Controller {
 		]);
 		
 		if(isset($_POST['address'])) { $_POST['address'] = json_encode($_POST['address']); }
-		if(isset($_POST['tags'])) { $_POST['tags'] = json_encode($_POST['tags']); }
+		if(isset($_POST['tags'])) { $_POST['tags'] = json_encode($_POST['tags']); }else { $_POST['tags'] = json_encode([""]); }
 		if(isset($_POST['amenities'])) {$_POST['amenities'] = implode(",",$_POST['amenities']); }
 
 		$_POST['is_mls_option'] = json_encode([
@@ -825,7 +825,7 @@ class ListingsController extends \Main\Controller {
 			"payment_details", "lot_area", "thumb_img", "video", "amenities ", "other_details ", "modified_at" 
 		];
 
-		$score = $data['image_score'];
+		$score = isset($data['image_score']) ? $data['image_score'] : 0;
 		$field_score = 0;
 
 		foreach($data as $field => $value) {

@@ -92,8 +92,16 @@ $html[] = "<div class='page-body'>";
 											if($data['handshake_participants']) {
 												for($i=0; $i<count($data['handshake_participants']); $i++) {
 
-													$req_fname_ini = substr($data['handshake_participants'][$i]['requestor_details']['firstname'], 0, 1);
-													$req_lname_ini = substr($data['handshake_participants'][$i]['requestor_details']['lastname'], 0, 1);
+													$req_fname_ini = "";
+													if($data['handshake_participants'][$i]['requestor_details']['firstname']) {
+														$req_fname_ini = substr($data['handshake_participants'][$i]['requestor_details']['firstname'], 0, 1);
+													}
+
+													$req_lname_ini = "";
+													if($data['handshake_participants'][$i]['requestor_details']['lastname']) {
+														$req_lname_ini = substr($data['handshake_participants'][$i]['requestor_details']['lastname'], 0, 1);
+													}
+
 													$req_initials = $req_fname_ini."".$req_lname_ini;
 
 													$html[] = "<div class='avatar-list avatar-list-stacked'>";

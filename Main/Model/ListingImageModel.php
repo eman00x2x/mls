@@ -26,10 +26,7 @@ class ListingImageModel extends \Main\Model {
 			$old_filename = ROOT.DS."Cdn".DS."images".DS."temporary".DS.$image['name'];
 			if(file_exists($old_filename)) {
 				
-				$name = explode(".",$image['name']);
-				$ext = array_pop($name);
-				
-				$new_name = md5($key.time()).".".$ext;
+				$new_name = $image['name'];
 			
 				$new_filename = ROOT.DS."Cdn".DS."images".DS."listings".DS.$new_name;
 				rename($old_filename,$new_filename);

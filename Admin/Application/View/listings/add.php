@@ -486,7 +486,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 											if(isset($_SESSION['user_logged']['privileges']['mls_access']) && $_SESSION['user_logged']['privileges']['mls_access'] >= 1) {
 												$html[] = "<div class='form-group mb-3'>";
 													$html[] = "<label class='form-check form-switch cursor-pointer'>";
-														$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls'  />";
+														$html[] = "<input class='form-check-input cursor-pointer' name='is_mls' type='checkbox' value='1' id='is_mls' checked />";
 														$html[] = "<span class='form-check-label cursor-pointer' for='is_mls'>Display this property listing on the Multiple Listing Service (MLS)</span>";
 													$html[] = "</label>";
 												$html[] = "</div>";
@@ -495,21 +495,21 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 													$html[] = "<div class='form-group mb-2'>";
 														$html[] = "<label class='form-check form-switch cursor-pointer'>";
-															$html[] = "<input class='form-check-input cursor-pointer' name='is_mls_option[local_board]' type='checkbox' value='1' id='is_mls_local_board'  />";
+															$html[] = "<input class='form-check-input cursor-pointer' name='is_mls_option[local_board]' type='checkbox' value='1' id='is_mls_local_board' checked  />";
 															$html[] = "<span class='form-check-label cursor-pointer' for='mls_local_board'>Display this property listing on <b>Local Board's MLS</b></span>";
 														$html[] = "</label>";
 													$html[] = "</div>";
 
 													$html[] = "<div class='form-group mb-2'>";
 														$html[] = "<label class='form-check form-switch cursor-pointer'>";
-															$html[] = "<input class='form-check-input cursor-pointer' name='is_mls_option[local_region]' type='checkbox' value='1' id='is_mls_local_region'  />";
+															$html[] = "<input class='form-check-input cursor-pointer' name='is_mls_option[local_region]' type='checkbox' value='1' id='is_mls_local_region' checked  />";
 															$html[] = "<span class='form-check-label cursor-pointer' for='mls_local_region'>Display this property listing on your <b>Local Board Region's MLS</b></span>";
 														$html[] = "</label>";
 													$html[] = "</div>";
 
 													$html[] = "<div class='form-group mb-2'>";
 														$html[] = "<label class='form-check form-switch cursor-pointer'>";
-															$html[] = "<input class='form-check-input cursor-pointer' name='is_mls_option[all]' type='checkbox' value='1' id='is_mls_all'  />";
+															$html[] = "<input class='form-check-input cursor-pointer' name='is_mls_option[all]' type='checkbox' value='1' id='is_mls_all' checked  />";
 															$html[] = "<span class='form-check-label cursor-pointer' for='is_mls_all'>Display this property listing on <b>PAREB MLS Nation wide</b></span>";
 														$html[] = "</label>";
 													$html[] = "</div>";
@@ -549,7 +549,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<label class='form-label text-muted'>Authority to Sell Expiration Date</label>";
 												$html[] = "<div class='input-icon mb-2'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
-													$html[] = "<input type='date' name='authority_to_sell_expiration' id='authority_to_sell_expiration' value='' step='0.5' class='form-control' placeholder='Authority to Sell Expiration Date' />";
+													$html[] = "<input type='date' name='authority_to_sell_expiration' id='authority_to_sell_expiration' value='".date("Y-m-d", strtotime("+3 months"))."' class='form-control' placeholder='Authority to Sell Expiration Date' />";
 												$html[] = "</div>";
 												$html[] = "<span class='form-hint'>Please specify the expiration of your Authority to Sell for this property.</span>";
 											$html[] = "</div>";

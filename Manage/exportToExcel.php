@@ -1,5 +1,7 @@
 <?php
 
+ini_set('session.save_path', ROOT."/sessions");
+
 session_start();
 
 $filename = time() . ".xls";
