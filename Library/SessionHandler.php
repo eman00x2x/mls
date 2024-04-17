@@ -3,6 +3,7 @@
 namespace Library;
 
 use Library\UserClient;
+use Library\Document;
 
 class SessionHandler extends \Josantonius\Session\Session
 {
@@ -63,6 +64,35 @@ class SessionHandler extends \Josantonius\Session\Session
 		$this->regenerateId();
 		$this->clear();
 		$this->destroy();
+	}
+
+	function setUserAgent() {
+
+		$doc = new Document();
+		$doc->addScriptDeclaration("
+
+			$(document).ready(function() {
+
+				let userAgent = navigator.userAgent;
+				let browser = userAgent.indexOf('Chrome') > -1? 
+					'Chrome' : (userAgent.indexOf('Safari') > -1? 
+						'Safari' : (userAgent.indexOf('Firefox') > -1? 
+							'Firefox' : (userAgent.indexOf('MSIE') > -1? 
+								'MSIE' : (userAgent.indexOf('Trident') > -1? 
+									'Trident' : (userAgent.indexOf('Edge') > -1? 'Edge' : '')
+									)
+								)
+							)
+						);
+
+				console.log(userAgent);
+				console.log(browser);
+				
+
+			});
+
+		");
+
 	}
 
 }
