@@ -42,7 +42,7 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
     Router::get('/user/{id}/edit', 'UsersController@userEdit', ['as' => 'userMANAGE_ALIASEdit'])->where([ 'id' => '[0-9]+' ]);
 
     /** PROPERTY LISTINGS ROUTES */
-    Router::get('/listings', 'ListingsController@listingIndex', ['as' => 'listings']);
+    Router::get('/listings', 'ListingsController@index', ['as' => 'listings']);
     Router::get('/listings/new', 'ListingsController@addListing', ['as' => 'listingsAdd']);
     Router::get('/listings/{id}', 'ListingsController@view', ['as' => 'listingsView'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/listings/{id}/edit', 'ListingsController@editListing', ['as' => 'listingsEdit'])->where([ 'id' => '[0-9]+' ]);

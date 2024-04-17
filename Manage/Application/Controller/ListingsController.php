@@ -16,7 +16,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		}
 	}
 	
-	function listingIndex() {
+	function index($account_id = null) {
 		$this->setTempalteBasePath(ROOT."/Manage");
 		return parent::index($this->account_id);
 	}

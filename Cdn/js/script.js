@@ -26,12 +26,12 @@ $(document).on('click','.btn-save', function(e) {
 		$('#snow-container').val(tinymce.get('snow-container').getContent());
 	}
 
-	/* $('.btn-save').css({
+	$('.btn-save').css({
 		'cursor': 'wait',
 		'pointer-events': 'none'
 	});
 	
-	$('.btn-save').hide(); */
+	$('.btn-save').hide();
 
 	$('.response').html("<img src='" + CDN + "images/loader.gif' /> Processing... ");
 	$('html, body').animate({ scrollTop: 0 }, 'slow');

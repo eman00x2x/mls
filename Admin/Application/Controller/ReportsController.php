@@ -312,8 +312,8 @@ class ReportsController extends \Main\Controller {
 		/* $filter[] = " created_at >= ".$date_helper['from']." ";
 		$filter[] = " created_at <= ".$date_helper['to']." "; */
 
-		if(isset($_GET['status']) && $_GET['status'] != "") {
-			$filter[] = " status = '".$_GET['status']."' ";
+		if(isset($_GET['status'])) {
+			$filter[] = " status IN(".implode(",", $_GET['status']).") ";
 		}else {
 			$filter[] = " status = 1 ";
 		}

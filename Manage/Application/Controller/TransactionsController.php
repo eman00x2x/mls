@@ -87,7 +87,7 @@ class TransactionsController extends \Admin\Application\Controller\TransactionsC
 
 		$transaction->page['limit'] = 10;
 		$transaction->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$transaction->page['target'] = url("TransactionsController@index", ["account_id" => $this->account_id]);
+		$transaction->page['target'] = url("TransactionsController@transactions");
 		$transaction->page['uri'] = (isset($uri) ? $uri : []);
 
 		$data['account']['transaction'] = $transaction->getList();
