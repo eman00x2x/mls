@@ -25,7 +25,7 @@
 
     
     $(document).ready(function () {
-        $.get('<?php echo MANAGE_ALIAS; ?>/notifications/getLatest', function (data, status) {
+        $.get('<?php echo MANAGE; ?>/notifications/getLatest', function (data, status) {
             $('.notifications-container').html(data);
         });
     });
