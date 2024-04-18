@@ -35,6 +35,11 @@ class AccountsController extends \Main\Controller {
 		
 		$accounts = $this->getModel("Account");
 		$accounts
+		->select(" *, (SELECT COUNT(listing_id) FROM #__listings WHERE account_id = a.account_id AND status = 1) as total_available,
+			(SELECT COUNT(listing_id) FROM #__listings WHERE account_id = a.account_id AND status = 2) as total_sold,
+			(SELECT COUNT(listing_id) FROM #__listings WHERE account_id = a.account_id AND status = 0) as total_expired
+		")
+		->join(" a ")
 		->where(isset($clause) ? implode(" ",$clause) : null)
 		->orderBy(" registered_at DESC ");
 
