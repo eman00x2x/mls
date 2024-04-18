@@ -132,24 +132,13 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 			if(sessionStorage['currencies'] === undefined) {
 
-				currency_codes = '&currencies[]=EUR&currencies[]=USD&currencies[]=PHP&currencies[]=JPY&currencies[]=AUD';
-				currency_codes += '&currencies[]=BHD&currencies[]=CAD&currencies[]=ILS&currencies[]=KRW&currencies[]=KWD';
-				currency_codes += '&currencies[]=SGD&currencies[]=THB&currencies[]=AED&currencies[]=GBP&currencies[]=CNY';
-				
-				fetch('https://api.currencyapi.com/v3/latest?base_currency=PHP' + currency_codes, {
-					method: 'GET',
-					headers: {
-						'apikey': 'cur_live_va2sfTCkkZypiRPLMmH3vJy5tG7rd2POwtSfLY6R'
-					}
-				})
-					.then( res => res.json() )
-						.then( data => {
-							/* localStorage.setItem('currencies', JSON.Stringify(data)); */
+				$.get('".url("ListingsController@getCurrencyConverter")."', function(data) {
+					response = JSON.parse(data);
 
-							sessionStorage.currencies = JSON.stringify(data);
-							currencies = data.data;
-							init(data);
-						});
+					sessionStorage.currencies = JSON.stringify(response);
+					currencies = response.data;
+					init(response);
+				});
 				
 			}else {
 				console.log('session data loaded successfully!');

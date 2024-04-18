@@ -227,22 +227,12 @@ class ListingsController extends \Main\Controller {
 
 			if(sessionStorage['currencies'] === undefined) {
 
-				currency_codes = '&currencies[]=EUR&currencies[]=USD&currencies[]=PHP&currencies[]=JPY&currencies[]=AUD';
-				currency_codes += '&currencies[]=BHD&currencies[]=CAD&currencies[]=ILS&currencies[]=KRW&currencies[]=KWD';
-				currency_codes += '&currencies[]=SGD&currencies[]=THB&currencies[]=AED&currencies[]=GBP&currencies[]=CNY';
-				
-				fetch('https://api.currencyapi.com/v3/latest?base_currency=PHP' + currency_codes, {
-					method: 'GET',
-					headers: {
-						'apikey': 'cur_live_va2sfTCkkZypiRPLMmH3vJy5tG7rd2POwtSfLY6R'
-					}
-				})
-					.then( res => res.json() )
-						.then( data => {
-							sessionStorage.currencies = JSON.stringify(data);
-							currencies = data.data;
-							init(data);
-						});
+				$.get('".url("ListingsController@getCurrencyConverter")."', function(data) {
+					response = JSON.parse(data);
+					sessionStorage.currencies = JSON.stringify(response);
+					currencies = response.data;
+					init(response);
+				});
 				
 			}else {
 				console.log('session data loaded successfully!');
@@ -921,6 +911,60 @@ class ListingsController extends \Main\Controller {
 				"user_agent" => json_encode($this->getLibrary("SessionHandler")->get("user_agent"))
 			));
 		}
+
+	}
+
+	function getCurrencyConverter() {
+
+		$currency_converter_results_file = ROOT."/Cdn/public/currency_converter_results.txt";
+		$data = require_once($currency_converter_results_file);
+
+		if(file_exists($currency_converter_results_file)) {
+			$data = json_decode($data, true);
+			$last_update = strtotime(date("Y-m-d", strtotime($data['meta']['last_updated_at'])));
+
+			$date_now = strtotime(date("Y-m-d", DATE_NOW));
+
+			if($date_now > $last_update) {
+				
+				$currency_codes[] = 'currencies[]=EUR&currencies[]=USD&currencies[]=PHP&currencies[]=JPY&currencies[]=AUD';
+				$currency_codes[] = 'currencies[]=BHD&currencies[]=CAD&currencies[]=ILS&currencies[]=KRW&currencies[]=KWD';
+				$currency_codes[] = 'currencies[]=SGD&currencies[]=THB&currencies[]=AED&currencies[]=GBP&currencies[]=CNY';
+
+				$url = "https://api.currencyapi.com/v3/latest?base_currency=PHP&".implode("&", $currency_codes);
+
+				$ch = curl_init();
+				$headers = [
+					'apikey: cur_live_va2sfTCkkZypiRPLMmH3vJy5tG7rd2POwtSfLY6R'
+				];
+
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+				curl_setopt($ch, CURLOPT_HEADER, 0);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+				
+				$response = curl_exec($ch);
+				$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+				curl_close($ch);
+				
+				if($http_code == 200) {
+					$txt = '<?php return \''.$response.'\';';
+
+					$file = fopen($currency_converter_results_file, "w");
+					fwrite($file, $txt);
+					fclose($myfile);
+
+					$data = json_decode($response, true);
+				}
+
+			}
+
+		}
+
+   		return json_encode($data);
 
 	}
 	

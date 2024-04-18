@@ -45,5 +45,7 @@ Router::group(['prefix' => WEB_ALIAS], function () {
 
     /** ADS ROUTES */
     Router::get('/showAds/{placement}', 'PageAdsController@showAds')->where([ 'placement' => '[\w\-]+' ]);
+    
+    Router::get('/getCurrencyConverter', 'ListingsController@getCurrencyConverter');
 
 });

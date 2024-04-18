@@ -1,0 +1,33 @@
+<?php
+
+return '{
+    "meta": {
+        "last_updated_at": "2024-04-13T10:15:59Z"
+    },
+    "data": {
+	"USD": {
+            "code": "USD",
+            "value": 0.000004
+        },
+        "AED": {
+            "code": "AED",
+            "value": 3.67306
+        },
+        "AFN": {
+            "code": "AFN",
+            "value": 91.80254
+        },
+        "ALL": {
+            "code": "ALL",
+            "value": 108.22904
+        },
+        "AMD": {
+            "code": "AMD",
+            "value": 480.41659
+        },
+	"PHP": {
+            "code": "PHP",
+            "value": 56.00
+        }
+    }
+}';

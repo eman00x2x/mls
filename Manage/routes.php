@@ -135,6 +135,8 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
     Router::get('/invoices/{id}/delete', 'InvoicesController@delete', ['as' => 'deleteInvoice'])->where([ 'id' => '[0-9]+' ]);
 
 
+    Router::get('/getCurrencyConverter', 'ListingsController@getCurrencyConverter');
+
     /** DEBUGGING */
     Router::get('/debug', 'DebugController@debug', ['as' => 'debug']);
 
