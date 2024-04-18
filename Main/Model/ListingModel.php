@@ -89,7 +89,7 @@ class ListingModel extends \Main\Model {
 
 			$v = $this->getValidator();
 
-			$v->validateGeneral($data['name'],"Do not leave the name blank.");
+			$v->validateGeneral($data['title'],"Do not leave the name blank.");
 			$v->validateGeneral($data['category'],"category is blank.");
 			$v->validateGeneral($data['type'],"type is blank.");
 			$v->validateGeneral($data['offer'],"offer is blank.");
