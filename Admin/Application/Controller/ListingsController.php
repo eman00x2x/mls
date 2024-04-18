@@ -553,6 +553,56 @@ class ListingsController extends \Main\Controller {
 
 	}
 
+	function remove($id) {
+
+		$listing = $this->getModel("Listing");
+		$listing->column['listing_id'] = $id;
+		$data = $listing->getById();
+		
+		if($data) {
+
+			if(isset($_REQUEST['remove'])) {
+
+				$listing = $this->getModel("Listing");
+				$listing->save($id, [
+					"title" => $data['title'],
+					"category" => $data['category'],
+					"type" => $data['type'],
+					"offer" => $data['offer'],
+					"other_details" => json_encode($data['other_details']),
+					"address" => json_encode($data['address']),
+					"status" => 3,
+					"featured" => 0,
+					"is_website" => 0,
+					"is_mls" => 0,
+					"display" => 0,
+					"modified_at" => DATE_NOW
+				]);
+
+				$response = [
+					"type" => "info",
+					"message" => "Listing fsuccessfully removed!"
+				];
+				
+
+				$this->getLibrary("Factory")->setMsg($response['message'], $response['type']);
+
+				return json_encode([
+					"status" => 1,
+					"message" => getMsg()
+				]);
+
+			}
+
+		}else {
+			$this->getLibrary("Factory")->setMsg("Property listing not found.","warning");
+		}
+
+		$this->setTemplate("listings/remove.php");
+		return $this->getTemplate($data);
+
+	}
+
 	function setFeatured($id) {
 
 		$listing = $this->getModel("Listing");
@@ -578,7 +628,7 @@ class ListingsController extends \Main\Controller {
 
 					$listing = $this->getModel("Listing");
 					$listing->save($id, [
-						"name" => $data['name'],
+						"title" => $data['title'],
 						"category" => $data['category'],
 						"type" => $data['type'],
 						"offer" => $data['offer'],
@@ -644,7 +694,7 @@ class ListingsController extends \Main\Controller {
 		$data = $listing->getById();
 
 		$response = $listing->save($id,[
-			"name" => $data['name'],
+			"title" => $data['title'],
 			"category" => $data['category'],
 			"type" => $data['type'],
 			"offer" => $data['offer'],
@@ -655,6 +705,7 @@ class ListingsController extends \Main\Controller {
 			"featured" => 0,
 			"is_website" => 0,
 			"is_mls" => 0,
+			"display" => 0,
 			"modified_at" => DATE_NOW
 		]);
 
@@ -949,7 +1000,7 @@ class ListingsController extends \Main\Controller {
 				$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 				curl_close($ch);
-				
+
 				if($http_code == 200) {
 					$txt = '<?php return \''.$response.'\';';
 

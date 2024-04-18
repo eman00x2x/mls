@@ -63,9 +63,10 @@ $html[] = "<div class='page-body'>";
 							for($i=0; $i<count($data['listings']); $i++) { $c++;
 
 								$availability = array(
+									0 => "<span class='text-danger'>Deactivated</span>",
 									1 => "<span class='text-success '>Available</span>",
-									2 => "<span class='text-danger'>Sold</span>",
-									3 => "<span class='text-muted'>Sold</span>"
+									2 => "<span class='text-info'>Sold</span>",
+									3 => "<span class='text-muted'>Removed</span>"
 								);
 
 								$address = $data['listings'][$i]['address'];
@@ -99,7 +100,7 @@ $html[] = "<div class='page-body'>";
 												$html[] = "<span class='dropdown-item btn-set-featured cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@setFeatured",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-rubber-stamp me-2'></i> Featured Settings</span>";
 												$html[] = "<span class='dropdown-item btn-sold cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@soldSettings",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-currency-peso me-2'></i> Sold Settings</span>";
 												if(isset($_SESSION['user_logged']['permissions']['properties']['delete'])) {
-													$html[] = "<span class='dropdown-item text-light bg-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@delete",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
+													$html[] = "<span class='dropdown-item text-light bg-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@remove",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-x me-2'></i> Remove</span>";
 												}
 											$html[] = "</div>";
 											

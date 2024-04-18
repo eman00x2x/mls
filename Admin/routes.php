@@ -43,8 +43,11 @@ Router::group(['prefix' => ADMIN_ALIAS], function () {
     Router::get('/accounts/{id}/listings/new', 'ListingsController@add', ['as' => 'listingsAdd'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/accounts/{id}/listings/{listing_id}', 'ListingsController@view', ['as' => 'listingsView'])->where([ 'id' => '[0-9]+', 'listing_id' => '[0-9]+' ]);
     Router::get('/accounts/{id}/listings/{listing_id}/edit', 'ListingsController@edit', ['as' => 'listingsEdit'])->where([ 'id' => '[0-9]+', 'listing_id' => '[0-9]+' ]);
+    Router::get('/listings/{id}/remove', 'ListingsController@remove', ['as' => 'listingsRemove'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/listings/{id}/delete', 'ListingsController@delete', ['as' => 'listingsDelete'])->where([ 'id' => '[0-9]+' ]);
-
+    Router::get('/listings/{id}/sold', 'ListingsController@soldSettings', ['as' => 'listingsSoldSettings'])->where([ 'id' => '[0-9]+' ]);
+    Router::get('/listings/{id}/featured', 'ListingsController@setFeatured', ['as' => 'listingsSetFeatured'])->where([ 'id' => '[0-9]+' ]);
+    
     Router::post('/accounts/{id}/listings/uploadImages', 'ListingsController@uploadImages', ['as' => 'listingsEdit'])->where([ 'id' => '[0-9]+' ]);
     Router::post('/accounts/{id}/listings/new/saveNew', 'ListingsController@saveNew', ['as' => 'listingsSaveNew'])->where([ 'id' => '[0-9]+' ]);
     Router::post('/accounts/listings/{id}/edit/saveUpdate', 'ListingsController@saveUpdate', ['as' => 'listingsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);

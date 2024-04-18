@@ -58,6 +58,7 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<tr>";
 									$html[] = "<th class='text-center w-1'>#</th>";
 									$html[] = "<th class='w-1'></th>";
+									$html[] = "<th class='w-1'>Featured</th>";
 									$html[] = "<th>Title</th>";
 									$html[] = "<th>Type</th>";
 									$html[] = "<th>Category</th>";
@@ -84,6 +85,13 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<tr class='row_listings_".$data['listings'][$i]['listing_id']."'>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
 									$html[] = "<td class='align-middle'><div class='avatar' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div></td>";
+									$html[] = "<td class='align-middle text-center'><span class='btn-set-featured featured-indicator-container cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@setFeatured",["id" => $data['listings'][$i]['listing_id']])."'>";
+										
+										$html[] = ($data['listings'][$i]['featured'] == 1) ? 
+											"<svg  xmlns='http://www.w3.org/2000/svg'  width='24'  height='24'  viewBox='0 0 22 22'  fill='Orange'  class='icon icon-tabler icons-tabler-filled icon-tabler-star'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z' /></svg>"
+											: "<i class='ti ti-star text-muted'></i>";
+
+									$html[] = "</span></td>";
 									$html[] = "<td class='align-middle'><a href='".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."'>".$data['listings'][$i]['title']."</a></td>";
 									$html[] = "<td class='align-middle'><a href='".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."'>".$data['listings'][$i]['type']."</a></td>";
 									$html[] = "<td class='align-middle'><a href='".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."'>".$data['listings'][$i]['category']."</a></td>";
@@ -99,8 +107,11 @@ $html[] = "<div class='page-body'>";
 											
 											$html[] = "<div class='dropdown-menu dropdown-menu-right'>";
 												$html[] = "<a class='ajax dropdown-item' href='".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-edit me-2'></i> Update Listing</a>";
+												$html[] = "<span class='dropdown-item btn-set-featured cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@setFeatured",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-rubber-stamp me-2'></i> Featured Settings</span>";
+												$html[] = "<span class='dropdown-item btn-sold cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@soldSettings",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-currency-peso me-2'></i> Sold Settings</span>";
 												
 												if(isset($_SESSION['user_logged']['permissions']['properties']['delete'])) {
+													$html[] = "<span class='dropdown-item text-light bg-secondary btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@remove",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-x me-2'></i> Remove</span>";
 													$html[] = "<span class='dropdown-item text-light bg-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@delete",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
 												}
 
