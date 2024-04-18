@@ -82,9 +82,9 @@ $html[] = "<div class='page-body'>";
 								$address = $data['listings'][$i]['address'];
 								unset($address['region']);
 								
-								$html[] = "<tr class='row_listings_".$data['listings'][$i]['listing_id']."'>";
+								$html[] = "<tr class='row_listings_".$data['listings'][$i]['listing_id']." listings-table'>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-									$html[] = "<td class='align-middle'><div class='avatar' style='background-image: url(".$data['listings'][$i]['thumb_img'].")'></div></td>";
+									$html[] = "<td class='align-middle'><div class='avatar' data-thumb-image='".$data['listings'][$i]['thumb_img']."'></div></td>";
 									$html[] = "<td class='align-middle text-center'><span class='btn-set-featured featured-indicator-container cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@setFeatured",["id" => $data['listings'][$i]['listing_id']])."'>";
 										
 										$html[] = ($data['listings'][$i]['featured'] == 1) ? 

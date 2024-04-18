@@ -23,6 +23,15 @@ class ListingsController extends \Main\Controller {
 		}
 
 		$this->doc->setTitle("Property Listings");
+
+		$this->doc->addScriptDeclaration("
+			$(document).ready(function() {
+				$('.listings-table .avatar').each(function() {
+					thumb_image = $(this).attr('data-thumb-image');
+					$(this).css('background-image', 'url('+thumb_image+')');
+				});
+			});
+		");
 	
 		if(isset($_GET['search'])) {
 			$filters[] = " (title LIKE '%".$_REQUEST['search']."%')";
@@ -738,7 +747,9 @@ class ListingsController extends \Main\Controller {
 
 		if(isset($_GET['price']) && $_GET['price'] != "") {
 			$model->page['uri']['price'] = $_GET['price'];
-			$filters[] = "price >= ".$_GET['price']."";
+
+			$price = explode("-", $_GET['price']);
+			$filters[] = "price BETWEEN ".$price[0]." AND ".$price[1]."";
 		}
 
 		if(isset($_GET['lot_area']) && $_GET['lot_area'] != "") {
@@ -962,6 +973,163 @@ class ListingsController extends \Main\Controller {
 				"user_agent" => json_encode($this->getLibrary("SessionHandler")->get("user_agent"))
 			));
 		}
+
+	}
+
+	function getFeaturedProperties($model, $filter = []) {
+
+		$filters[] = " featured = 1 ";
+
+		if(isset($_GET['offer']) && $_GET['offer'] == "buy") {
+			$filters[] = " offer = 'for sale'";
+			$model->page['uri']['offer'] = "for sale";
+		}
+
+		if(isset($_GET['offer']) && $_GET['offer'] == "rent") {
+			$filters[] = " offer = 'for rent'";
+			$model->page['uri']['offer'] = "for rent";
+		}
+
+		if(isset($_GET['category']) && $_GET['category'] != "") {
+			$model->page['uri']['category'] = $_GET['category'];
+			$filters[] = " category LIKE '%".$_GET['category']."%'";
+			$search[] = $_GET['category'];
+		}
+
+		if(isset($_GET['price']) && $_GET['price'] != "") {
+			$model->page['uri']['price'] = $_GET['price'];
+
+			$price = explode("-", $_GET['price']);
+			$filters[] = "price BETWEEN ".$price[0]." AND ".$price[1]."";
+		}
+
+		if(isset($_GET['lot_area']) && $_GET['lot_area'] != "") {
+			$model->page['uri']['lot_area'] = $_GET['lot_area'];
+			$filters[] = "lot_area >= ".$_GET['lot_area']."";
+		}
+
+		if(isset($_GET['floor_area']) && $_GET['floor_area'] != "") {
+			$model->page['uri']['floor_area'] = $_GET['floor_area'];
+			$filters[] = "floor_area >= ".$_GET['floor_area']."";
+		}
+
+		if(isset($_GET['bedroom']) && $_GET['bedroom'] != "") {
+			$model->page['uri']['bedroom'] = $_GET['bedroom'];
+
+			if($_GET['bedroom'] == "Studio") {
+				$filters[] = " bedroom = '".$_GET['bedroom']."'";
+			}else {
+				$filters[] = " bedroom >= ".$_GET['bedroom'];
+			}
+		}
+
+		if(isset($_GET['bathroom']) && $_GET['bathroom'] != "") {
+			$model->page['uri']['bathroom'] = $_GET['bathroom'];
+			$filters[] = " bathroom >= ".$_GET['bathroom'];
+		}
+
+		if(isset($_GET['parking']) && $_GET['parking'] != "") {
+			$model->page['uri']['parking'] = $_GET['parking'];
+			$filters[] = "parking >= ".$_GET['parking']."";
+		}
+
+		if(isset($_GET['address']) && $_GET['address'] != "") {
+			$model->page['uri']['address'] = $_GET['address'];
+
+			if(isset($_GET['address']['region']) && $_GET['address']['region'] != "") {
+				$filters[] = " JSON_EXTRACT(l.address, '$.region') = '".str_replace("+", " ", $_GET['address']['region'])."'  ";
+				$search[] = str_replace("+", " ", $_GET['address']['region']);
+			}
+
+			if(isset($_GET['address']['province']) && $_GET['address']['province'] != "") {
+				$filters[] = " JSON_EXTRACT(l.address, '$.province') = '".str_replace("+", " ", $_GET['address']['province'])."'  ";
+				$search[] = str_replace("+", " ", $_GET['address']['province']);
+			}
+
+			if(isset($_GET['address']['municipality']) && $_GET['address']['municipality'] != "") {
+				$filters[] = " JSON_EXTRACT(l.address, '$.municipality') = '".str_replace("+", " ", $_GET['address']['municipality'])."'  ";
+				$search[] = str_replace("+", " ", $_GET['address']['municipality']);
+			}
+
+			if(isset($_GET['address']['street']) && $_GET['address']['street'] != "") {
+				$filters[] = " JSON_EXTRACT(l.address, '$.street') = '".str_replace("+", " ", $_GET['address']['street'])."'  ";
+				$search[] = str_replace("+", " ", $_GET['address']['street']);
+			}
+
+			if(isset($_GET['address']['village']) && $_GET['address']['village'] != "") {
+				$filters[] = " JSON_EXTRACT(l.address, '$.village') = '".str_replace("+", " ", $_GET['address']['village'])."'  ";
+				$search[] = str_replace("+", " ", $_GET['address']['village']);
+			}
+
+			if(!is_array($_GET['address'])) {
+				$search[] = trim($_GET['address']);
+			}
+
+		}
+
+		if(isset($_GET['amenities']) && $_GET['amenities'] != "") {
+			
+			if(!is_array($_GET['amenities'])) {
+				$_GET['amenities'] = explode(",", $_GET['amenities']);
+			}
+
+			$model->page['uri']['amenities'] = $_GET['amenities'];
+			$search[] = implode(" ", $_GET['amenities']);
+			
+		}
+
+		if(isset($_GET['tags']) && $_GET['tags'] != "") {
+			$model->page['uri']['tags'] = $_GET['tags'];
+			$search[] = implode(" ", $_GET['tags']);
+		}
+
+		$order = isset($_GET['order']) ? $_GET['order'] : " DESC";
+
+		if(isset($search)) {
+			$model->select("
+				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities,
+				CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END,
+				MATCH( type, title, tags, long_desc, category, l.address, amenities )
+				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
+			")->orderby(" match_score DESC, post_score DESC ");
+		}else {
+			$sort = isset($_GET['sort']) ? ($_GET['sort'] == "match_score" ? "post_score" : $_GET['sort']) : "post_score";
+			$model
+				->select(" 
+					listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities,
+					CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END 
+				")->orderby(" $sort $order ");
+		}
+		
+		$model->join(" l JOIN #__accounts a ON a.account_id = l.account_id ");
+		$model->where((isset($filters) ? implode(" AND ",$filters) : null));
+		$data = $model->getList();
+
+		if($data) {
+			
+			$total_listing = count($data);
+
+			for($i=0; $i<$total_listing; $i++) {
+
+				$images = $this->getModel("ListingImage");
+				$images->page['limit'] = 50;
+
+				$images->column['listing_id'] = $data[$i]['listing_id'];
+				$total_image = $images->getByListingId();
+				
+				$data[$i]['total_images'] = 0;
+
+				if($total_image) {
+					$data[$i]['total_images'] = count($total_image);
+				}
+				
+			}
+
+			return $data;
+			
+		}
+
+		return false;
 
 	}
 

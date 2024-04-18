@@ -12,7 +12,10 @@ $html[] = "<div class='row row-cards'>";
 				$total_featured = count($model->app['featured_post']);
 			}
 			
-			$c = 0;
+			if(!isset($_SESSION['c'])) {
+				$_SESSION['c'] = 0;
+			}
+			
 			for($i=0; $i<count($data); $i++) { 
 
 				/** Featured ads */
@@ -20,12 +23,12 @@ $html[] = "<div class='row row-cards'>";
 					if ($i % 4 == 0) { 
 						$html[] = "<div class='featured-post px-3 pb-3 pt-2 border'>";
 							$html[] = "<span class='text-muted fst-italic fs-10 mb-1 d-block'>Sponsored</span>";
-							$html[] = properties($model->app['featured_post'][$c], $model);
+							$html[] = properties($model->app['featured_post'][ $_SESSION['c'] ], $model);
 						$html[] = "</div>";
 
-						if($c < $total_featured) {
-							$c++;
-						}else { $c=0; }
+						if($_SESSION['c'] < ($total_featured - 1)) {
+							$_SESSION['c']++;
+						}else { $_SESSION['c'] = 0; }
 					}
 				}
 				/** End Featured ads */

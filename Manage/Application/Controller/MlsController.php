@@ -148,6 +148,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$listings->app = [
 			"handshaked" => true,
 			"comparative" => true,
+			"featured_post" => $this->getFeaturedProperties($listings, $filters),
 			"url_path" => [
 				"path" => "id",
 				"value" => "listing_id",

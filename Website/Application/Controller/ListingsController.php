@@ -86,7 +86,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		$listings->app = [
 			"handshaked" => false,
 			"comparative" => false,
-			"featured_post" => $this->getFeaturedProperties(),
+			"featured_post" => $this->getFeaturedProperties($listings, $filters),
 			"url_path" => [
 				"path" => "name",
 				"value" => "name",
@@ -537,38 +537,4 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 	}
 
-	function getFeaturedProperties() {
-
-		$listings = $this->getModel("Listing");
-		$data = $listings->getFeaturedProperties();
-
-		if($data) {
-			
-			$total_listing = count($data);
-
-			for($i=0; $i<$total_listing; $i++) {
-
-				$images = $this->getModel("ListingImage");
-				$images->page['limit'] = 50;
-
-				$images->column['listing_id'] = $data[$i]['listing_id'];
-				$total_image = $images->getByListingId();
-				
-				$data[$i]['total_images'] = 0;
-
-				if($total_image) {
-					$data[$i]['total_images'] = count($total_image);
-				}
-				
-			}
-
-			return $data;
-			
-		}
-
-		return false;
-
-	}
-
-	
 }
