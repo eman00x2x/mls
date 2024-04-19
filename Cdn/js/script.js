@@ -30,10 +30,12 @@ $(document).on('click','.btn-save', function(e) {
 		'cursor': 'wait',
 		'pointer-events': 'none'
 	});
+
+	$("#form :input").attr('readonly', true);
 	
 	$('.btn-save').hide();
 
-	$('.response').html("<img src='" + CDN + "images/loader.gif' /> Processing... ");
+	$('.response').html("<div class='bg-white p-3 mt-3 rounded'><div class='d-flex gap-3 align-items-center'><div class='loader'></div><p class='mb-0'>Processing, Please wait...</p></div></div>");
 	$('html, body').animate({ scrollTop: 0 }, 'slow');
 	
 	$.post($('#save_url').val(), $('#form').serialize(), function (data, status) {

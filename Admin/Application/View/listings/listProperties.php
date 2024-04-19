@@ -103,7 +103,7 @@ function properties($data, $model) {
                                 if($data['lot_area'] > 0) {     $html[] = "<div class=''>		<span class='d-block mb-1 fs-10 text-muted'>Land Area</span> <i class='ti ti-maximize me-1'></i> ".number_format($data['lot_area'],0)." sqm</div>"; }
 								if($data['floor_area'] > 0) {   $html[] = "<div class=''>	    <span class='d-block mb-1 fs-10 text-muted'>Floor Area</span> <i class='ti ti-ruler me-1'></i> ".number_format($data['floor_area'],0)." sqm</div>"; }
 								if($data['parking'] > 0) {      $html[] = "<div class=''>		<span class='d-block mb-1 fs-10 text-muted'>Garage</span> <i class='ti ti-car-garage me-1'></i> ".$data['parking']."</div>"; }
-                                if($data['bedroom'] > 0) {      $html[] = "<div class=''>		<span class='d-block mb-1 fs-10 text-muted'>Bedroom</span> <i class='ti ti-bed me-1'></i> ".$data['bedroom']."</div>"; }
+                                if($data['bedroom'] != 0) {      $html[] = "<div class=''>		<span class='d-block mb-1 fs-10 text-muted'>Bedroom</span> <i class='ti ti-bed me-1'></i> ".$data['bedroom']."</div>"; }
 								if($data['bathroom'] > 0) {     $html[] = "<div class=''>		<span class='d-block mb-1 fs-10 text-muted'>Bathroom</span> <i class='ti ti-bath me-1'></i> ".$data['bathroom']."</div>"; }
 							$html[] = "</div>";
 

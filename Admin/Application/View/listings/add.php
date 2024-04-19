@@ -159,6 +159,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 														$html[] = "<div class='input-icon mb-3'>";
 															$html[] = "<span class='input-icon-addon'><i class='ti ti-bed-flat'></i></span>";
 															$html[] = "<select class='form-select' name='bedroom' id='bedroom'>";
+																$html[] = "<option value='0'>No Bedroom</option>";
 																$html[] = "<option value='Studio'>Studio</option>";
 																for($i=1; $i<11; $i++) {
 																	$html[] = "<option value='$i'>$i Bedroom</option>";
@@ -221,7 +222,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<div class='input-icon mb-3'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-building-cottage'></i></span>";
 													$html[] = "<select class='form-select' name='tags[]' id='tags' multiple='multiple'>";
-														/** Additional tags can be add in /includes/define.php */
 														foreach(CONFIG['property_tags'] as $key => $val) {
 															$html[] = "<option value='$val'>$val</option>";
 														}

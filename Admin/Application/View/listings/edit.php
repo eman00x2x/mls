@@ -167,7 +167,8 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 														$html[] = "<div class='input-icon mb-3'>";
 															$html[] = "<span class='input-icon-addon'><i class='ti ti-bed-flat'></i></span>";
 															$html[] = "<select class='form-select' name='bedroom' id='bedroom'>";
-																$sel = "Studio" == $data['listing']['bedroom'] ? "selected" : "";
+																$sel = "Studio" == $data['listing']['bedroom'] ? "selected" : (0 == $data['listing']['bedroom'] ? "selected" : "");
+																$html[] = "<option value='0' $sel>No Bedroom</option>";
 																$html[] = "<option value='Studio' $sel>Studio</option>";
 																for($i=1; $i<11; $i++) {
 																	$sel = $i == $data['listing']['bedroom'] ? "selected" : "";

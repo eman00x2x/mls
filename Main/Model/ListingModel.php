@@ -48,7 +48,7 @@ class ListingModel extends \Main\Model {
 		$v->validateGeneral($data['duration'],"Select Posting Duration");
 
 		if(isset($data['price'])) {
-			$v->validateGeneral($data['price'],"price is blank.");
+			$v->validateNumber($data['price'],"price is blank.");
 		}
 
 		$other_details = json_decode($data['other_details'],true);
@@ -93,25 +93,24 @@ class ListingModel extends \Main\Model {
 
 			$v = $this->getValidator();
 
-			$v->validateGeneral($data['title'],"Do not leave the name blank.");
-			$v->validateGeneral($data['category'],"category is blank.");
-			$v->validateGeneral($data['type'],"type is blank.");
-			$v->validateGeneral($data['offer'],"offer is blank.");
+			if(isset($data['title'])) { $v->validateGeneral($data['title'],"Do not leave the name blank."); }
+			if(isset($data['category'])) { $v->validateGeneral($data['category'],"category is blank."); }
+			if(isset($data['type'])) { $v->validateGeneral($data['type'],"type is blank."); }
+			if(isset($data['offer'])) { $v->validateGeneral($data['offer'],"offer is blank."); }
+			if(isset($data['price'])) { $v->validateGeneral($data['price'],"price is blank."); }
 
-			if(isset($data['price'])) {
-				$v->validateGeneral($data['price'],"price is blank.");
+			if(isset($data['other_details'])) {
+				$other_details = json_decode($data['other_details'],true);
+				$v->validateNumber($other_details['com_share'],"Commission share is required.");
+				$v->validateDate($other_details['authority_to_sell_expiration'],"Authority to Sell Expiration Date is required.");
 			}
 
-			$other_details = json_decode($data['other_details'],true);
-
-			$v->validateNumber($other_details['com_share'],"Commission share is required.");
-			$v->validateDate($other_details['authority_to_sell_expiration'],"Authority to Sell Expiration Date is required.");
-
-			$address = json_decode($data['address'],true);
-
-			$v->validateGeneral($address['region'],"Region is blank.");
-			$v->validateGeneral($address['province'],"Province is blank.");
-			$v->validateGeneral($address['municipality'],"Municipality is blank.");
+			if(isset($data['address'])) {
+				$address = json_decode($data['address'],true);
+				$v->validateGeneral($address['region'],"Region is blank.");
+				$v->validateGeneral($address['province'],"Province is blank.");
+				$v->validateGeneral($address['municipality'],"Municipality is blank.");
+			}
 
 			if($v->foundErrors()) {
 				return array(

@@ -18,7 +18,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='d-sm-inline'>";
 					$html[] = "<div class='btn-list'>";
-						$html[] = "<a class='ajax btn btn-dark' href='".url("ListingsController@listingIndex", null, ["status" => 2])."'><i class='ti ti-home-dollar me-2'></i> Show Sold</a>";
+						$html[] = "<a class='ajax btn btn-dark' href='".url("ListingsController@index", null, ["status" => 2])."'><i class='ti ti-home-dollar me-2'></i> Show Sold</a>";
 						$html[] = "<a class='ajax btn btn-dark' href='".url("ListingsController@addListing")."'><i class='ti ti-user-plus me-2'></i> New Listing</a>";
 					$html[] = "</div>";
 				$html[] = "</div>";
