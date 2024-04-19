@@ -17,6 +17,49 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 	}
 	
 	function index($account_id = null) {
+
+		$this->doc->addScriptDeclaration("
+
+			$(document).on('click', '.btn-download-listings', function() {
+				$.get('".url("ListingsController@downloadPropertyListings")."', function(data) {
+					
+					$('.response').html(\"<div class='message alert alert-success alert-dismissible bg-white p-3'><div class='d-flex align-items-center gap-3'><div class='loader'></div> <p class='mb-0'>File downloading...</p> </div> <button type='button' class='btn-close' data-bs-dismiss='alert'></button></div>\");
+
+					response = JSON.parse(data);
+
+					if(response.status == 1) {
+
+						fetch(response.url)
+							.then(resp => resp.blob())
+							.then(blob => {
+								const url = window.URL.createObjectURL(blob);
+								const a = document.createElement('a');
+								a.style.display = 'none';
+								a.href = url;
+
+								// the filename you want
+								a.download = response.filename;
+								document.body.appendChild(a);
+								a.click();
+
+								window.URL.revokeObjectURL(url);
+
+								$('.response').hide();
+
+							})
+							.catch(function() {
+								$('.response').html(\"<div class='alert alert-danger alert-dismissible bg-white p-3'><div class='d-flex align-items-center gap-3'><div class='loader'></div> <p class='mb-0'>File error downloading...</p></div> <button type='button' class='btn-close' data-bs-dismiss='alert'></button></div>\");
+							});
+
+					}else {
+
+					}
+						
+				});
+			});
+
+		");
+
 		$this->setTempalteBasePath(ROOT."/Manage");
 		return parent::index($this->account_id);
 	}
@@ -31,6 +74,10 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 	function saveNew() {
 		return parent::saveNew();
+	}
+
+	function downloadPropertyListings($account_id = null) {
+		return parent::downloadPropertyListings($this->account_id);
 	}
 
 }

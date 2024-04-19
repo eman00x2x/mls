@@ -1055,5 +1055,84 @@ class ListingsController extends \Main\Controller {
    		return json_encode($data);
 
 	}
+
+	function downloadPropertyListings($account_id) {
+
+		$listing = $this->getModel("Listing");
+		$listing->page['limit'] = 99999999;
+		$listing->column['account_id'] = $account_id;
+		$data = $listing->getByAccountId();
+
+		if($data) {
+
+			$export[] = "LISTING_ID,PLACEMENT,OFFER,TYPE,FORECLOSED,TITLE,TAGS,LONG_DESCRIPTION,CATEGORY,REGION,PROVINCE,MUNICIPALITY,BARANGAY,STREET,VILLAGE,PRICE,RESERVATION,FLOOR_AREA,LOT_AREA,BEDROOM,BATHROOM,PARKING,AMENITIES,THUMB_IMAGE_LINK,VIDEO_LINK,CREATED_AT,MODIFIED_AT";
+
+			for($i=0; $i<count($data); $i++) {
+
+				if($data[$i]['is_mls_option']['local_board'] == 1) { $placement[] = "Local Board"; }
+				if($data[$i]['is_mls_option']['local_region'] == 1) { $placement[] = "Regional"; }
+				if($data[$i]['is_mls_option']['all'] == 1) { $placement[] = "National"; }
+
+				if($data[$i]['foreclosed'] == 1) { $foreclosed = "Yes"; } else { $foreclosed = "No"; }
+
+				$export[] = implode(",", [
+					$data[$i]['listing_id'],
+					"-".implode(" -", $placement),
+					$data[$i]['offer'],
+					$data[$i]['type'],
+					$foreclosed,
+					$data[$i]['title'],
+					implode(" ", $data[$i]['tags']),
+					str_replace(",", " ", strip_tags($data[$i]['long_desc'])),
+					$data[$i]['category'],
+					$data[$i]['address']['region'],
+					$data[$i]['address']['province'],
+					$data[$i]['address']['municipality'],
+					$data[$i]['address']['barangay'],
+					$data[$i]['address']['street'],
+					$data[$i]['address']['village'],
+					$data[$i]['price'],
+					$data[$i]['reservation'],
+					$data[$i]['floor_area'],
+					$data[$i]['lot_area'],
+					$data[$i]['bedroom'],
+					$data[$i]['bathroom'],
+					$data[$i]['parking'],
+					"-".str_replace(",", " -", $data[$i]['amenities']),
+					$data[$i]['thumb_img'],
+					$data[$i]['video'],
+					date("Y-m-d", $data[$i]['created_at']),
+					date("Y-m-d", $data[$i]['modified_at'])
+				]);
+
+			}
+
+			$filename = DATE_NOW."".$account_id.".csv";
+			$path = ROOT."/Cdn/public/downloads";
+
+			$file = fopen($path."/".$filename, "w");
+			fwrite($file, implode("\n", $export));
+			fclose($file);
+
+			return json_encode(array(
+				"status" => 1,
+				"filename" => $filename,
+				"url" => CDN."public/downloads/".$filename,
+				"message" => "File downloading..."
+			));
+
+		}else {
+
+			$this->getLibrary("Factory")->setMsg("There was an error downloading the file. Please contact the system administrator to resolve the issue.", "error");
+
+			return json_encode(array(
+				"status" => 2,
+				"message" => getMsg()
+			));
+
+		}
+
+		
+	}
 	
 }
