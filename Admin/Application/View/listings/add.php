@@ -28,7 +28,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 									$html[] = "</a>";
 									$html[] = "<a class='btn btn-dark' href='".url("ListingsController@index",["id" => $data['account_id']])."' title='Listings'><i class='ti ti-list me-1'></i> Property Listings</a>";
 								}else {
-									$html[] = "<a class='btn btn-dark' href='".url("ListingsController@listingIndex")."' title='Listings'><i class='ti ti-list me-1'></i> Property Listings</a>";
+									$html[] = "<a class='btn btn-dark' href='".url("ListingsController@index")."' title='Listings'><i class='ti ti-list me-1'></i> Property Listings</a>";
 								}
 							$html[] = "</div>";
 						$html[] = "</div>";

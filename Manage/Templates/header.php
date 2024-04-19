@@ -21,6 +21,7 @@
 
 <script type="text/javascript">
     var MANAGE = '<?php echo MANAGE; ?>';
+    var DOMAIN = '<?php echo MANAGE; ?>';
     var CDN = '<?php echo CDN; ?>';
 
     

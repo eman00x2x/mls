@@ -87,7 +87,9 @@ class AuthenticatorController extends \Main\Controller
 
 			if($this->isBlock($data)) {
 
-				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",ADMIN)) && $data['account_type'] != "Administrator") {
+				$url = str_replace("/checkCredentials", "", $_SERVER['HTTP_HOST']."".$_SERVER['REQUEST_URI']);
+
+				if($url == rtrim(str_replace(["https://", "http://"], ["", ""], ADMIN), "/") && !in_array($data['account_type'], ["Administrator"]) ) {
 					$this->getLibrary("Factory")->setMsg("Only Administrator can login here.","error");
 					$response = [
 						"status" => 2,
@@ -96,7 +98,7 @@ class AuthenticatorController extends \Main\Controller
 					];
 				}
 
-				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",WEBADMIN)) && !in_array($data['account_type'], ["Web Admin", "Administrator"]) ) {
+				if($url == rtrim(str_replace(["https://", "http://"], ["", ""], WEBADMIN), "/") && !in_array($data['account_type'], ["Web Admin", "Administrator"]) ) {
 					$this->getLibrary("Factory")->setMsg("Only Web Administrator can login here.","error");
 					$response = [
 						"status" => 2,
@@ -105,7 +107,7 @@ class AuthenticatorController extends \Main\Controller
 					];
 				}
 
-				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",CS)) && !in_array($data['account_type'], ["Customer Service", "Administrator"]) ) {
+				if($url == rtrim(str_replace(["https://", "http://"], ["", ""], CS), "/") && !in_array($data['account_type'], ["Customer Service", "Administrator"]) ) {
 					$this->getLibrary("Factory")->setMsg("Only Customer Service can login here.","error");
 					$response = [
 						"status" => 2,
@@ -114,7 +116,7 @@ class AuthenticatorController extends \Main\Controller
 					];
 				}
 
-				if($_SERVER['HTTP_HOST'] == str_replace("/","",str_replace("http://","",MANAGE)) && !in_array($data['account_type'], ["Real Estate Practitioner", "Administrator"]) ) {
+				if($url == rtrim(str_replace(["https://", "http://"], ["", ""], MANAGE), "/") && !in_array($data['account_type'], ["Real Estate Practitioner", "Administrator"]) ) {
 					$this->getLibrary("Factory")->setMsg("Only Real Estate Practitioner can login here.","error");
 					$response = [
 						"status" => 2,
@@ -123,18 +125,24 @@ class AuthenticatorController extends \Main\Controller
 					];
 				}
 
-				if(!$this->checkLoggedUser($data)) {
-					$response = [
-						"status" => 2,
-						"type" => "error",
-						"message" => getMsg()
-					];
-				}
+				if(isset($response['type']) && $response['type'] == "error") {
+					return json_encode($response);
+				}else {
 
-				if($this->recordLogin($this->setPrivileges($data))) {
-					$response = [
-						"status" => 1
-					];
+					if(!$this->checkLoggedUser($data)) {
+						$response = [
+							"status" => 2,
+							"type" => "error",
+							"message" => getMsg()
+						];
+					}
+
+					if($this->recordLogin($this->setPrivileges($data))) {
+						$response = [
+							"status" => 1
+						];
+					}
+
 				}
 
 			}else {

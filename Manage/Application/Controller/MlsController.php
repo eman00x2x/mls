@@ -490,7 +490,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		$total = count($_SESSION['compare']['listings']);
 
-		if($total >= 4) {
+		if($total > 20) {
 			$this->getLibrary("Factory")->setMsg("Maximum count of listings has been reached! Cannot add more in compare table!","info");
 		}else {
 
@@ -605,20 +605,6 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	}
 
-	/* CRONJOB runs every day at 12am */
-	function expiredHandshakeRequest() {
-
-		/* Current time minus 30 days */
-		$time = strtotime("-30 days",DATE_NOW);
-
-		/* Handshake remains for 30 days only
-		Removing expired data permanently */
-
-		$handshake = $this->getModel("Handshake");
-		$handshake->query(" DELETE FROM #__handshake WHERE date_created <= $time ");
-
-	}
-
 	function downloadPDFFormat($id)  {
 
 		$this->setTempalteBasePath(ROOT."/Admin");
@@ -662,7 +648,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 	function relatedProperties() {
 
 		$listings = $this->getModel("Listing");
-		$listings->page['limit'] = 5;
+		$listings->page['limit'] = 10;
 		$listings->app = [
 			"handshaked" => true,
 			"comparative" => true,
@@ -684,14 +670,12 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$filters[] = " JSON_EXTRACT(board_region, '$.region') = '".$this->session['board_region']['region']."' ";
 		$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_region') = 1";
 
-		$filters[] = " JSON_EXTRACT(is_mls_option, '$.all') = ".$_GET['is_mls_option']['all']."";
-		
-		$response = parent::listProperties($listings, $filters);
+		$response = $this->listProperties($listings, $filters);
 		
 		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->setTemplate("listings/listProperties.php");
 		return $this->getTemplate($response['data'],$response['model']);
 
 	}
-	
+
 }

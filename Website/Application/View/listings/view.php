@@ -3,7 +3,7 @@
 $html[] = "<div class='page-body mb-0'>";
 	$html[] = "<div class='container-xl'>";
 
-		$html[] = "<div class='my-3 px-3'>";
+		$html[] = "<div class='my-3 px-2'>";
 			$html[] = "<div class='row gap-2 justify-content-center'>";
 				$html[] = "<div class='col-sm-6 col-md-5 col-lg-5'>";
 
@@ -441,8 +441,10 @@ $html[] = "<div class='page-body mb-0'>";
 
 			$html[] = "<div class='row'>";
 				$html[] = "<div class='col-md-8'>";
-					$html[] = "<h3><i class='ti ti-building'></i> Related Properties</h3>";
-					$html[] = "<div class='related-properties-container'></div>";
+					$html[] = "<div class='mb-3'>";
+						$html[] = "<h3><i class='ti ti-building'></i> Related Properties</h3>";
+						$html[] = "<div class='related-properties-container'></div>";
+					$html[] = "</div>";
 				$html[] = "</div>";
 				$html[] = "<div class='col-md-4'>";
 					

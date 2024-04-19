@@ -197,7 +197,7 @@ class ListingsController extends \Main\Controller {
 			if($_SESSION['domain'] == ADMIN) {
 				response()->redirect(url("ListingsController@index",["id" => $data['account_id']]));
 			}else {
-				response()->redirect(url("ListingsController@listingIndex"));
+				response()->redirect(url("ListingsController@index"));
 			}
 		}else {
 
@@ -228,109 +228,115 @@ class ListingsController extends \Main\Controller {
 		
 		$data['listing'] = $listing->getById();
 
-		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+		if($data) {
 
-			let currencies;
-			let currency_code;
-			let monthly_dp;
+			$fields = explode(",", "listing_id,address,lot_area,price,category");
+			foreach($fields as $value) {
+				$uri[$value] = $data['listing'][ $value ];
+			}
 
-			if(sessionStorage['currencies'] === undefined) {
+			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
-				$.get('".url("ListingsController@getCurrencyConverter")."', function(data) {
-					response = JSON.parse(data);
-					sessionStorage.currencies = JSON.stringify(response);
-					currencies = response.data;
-					init(response);
+				let currencies;
+				let currency_code;
+				let monthly_dp;
+
+				if(sessionStorage['currencies'] === undefined) {
+
+					$.get('".url("ListingsController@getCurrencyConverter")."', function(data) {
+						response = JSON.parse(data);
+						sessionStorage.currencies = JSON.stringify(response);
+						currencies = response.data;
+						init(response);
+					});
+					
+				}else {
+					console.log('session data loaded successfully!');
+					let data = JSON.parse(sessionStorage['currencies']);
+					currencies = data.data;
+					setTimeout(() => {
+						init(data);
+					}, 10);
+				}
+
+				$(document).ready(function() {
+					
+					if($('.description').height() > 300) {
+						$('.description').addClass('border-bottom');
+						$('.btn-description-toggle').removeClass('d-none');
+					}
+
+					$.get('".url("MlsController@relatedProperties")."', ".json_encode($uri).", function(data) {
+						$('.related-properties-container').html(data);
+					});
+
+				});
+
+				$(document).on('change', '#currency-code-selection', function() {
+					
+					currency_code = $('#currency-code-selection option:selected').val();
+					let price = parseInt($('.selling-price').data('price'));
+					let rate = (1 / currencies[currency_code]['value']);
+
+					let converterPrice = ( price / rate );
+					$('.selling-price').html('<span class=\"fs-12\">' + currencies[currency_code]['code'] + '</span> ' + parseFloat(converterPrice.toFixed(2)).toLocaleString() );
+					$('.currency-code').text( currencies[currency_code]['code'] );
+					$('.base-currency-value').html('' + currencies[currency_code]['code'] + ' ' + ( 1 / currencies[currency_code]['value']) );
+
+					convertAmortization();
+
 				});
 				
-			}else {
-				console.log('session data loaded successfully!');
-				let data = JSON.parse(sessionStorage['currencies']);
-				currencies = data.data;
-				setTimeout(() => {
-					init(data);
-				}, 10);
-			}
+				document.addEventListener('DOMContentLoaded', function () {
+					window.Plyr && (new Plyr('#player-youtube'));
+				});
 
-			$(document).ready(function() {
-				
-				if($('.description').height() > 300) {
-					$('.description').addClass('border-bottom');
-					$('.btn-description-toggle').removeClass('d-none');
-				}
+				$(document).on('change', '#mortgage-downpayment-selection, #mortgage-interest-selection, #mortgage-years-selection', function() {
+					result = getAmortization();
+					monthly_dp = result.monthly_payment;
+					convertAmortization();
+				});
 
-				$.get('".url("MlsController@relatedProperties")."', ".json_encode($data['listing']).", function(data) {
-					$('.related-properties-container').html(data);
-				})
+				$(document).on('click', '.btn-description-toggle', function() {
+					$('.description').css('height', 'auto');
+					$('.description').removeClass('border-bottom');
+					$('.btn-description-toggle').remove();
+				});
 
-			});
+				async function init(data) {
 
-			$(document).on('change', '#currency-code-selection', function() {
-				
-				currency_code = $('#currency-code-selection option:selected').val();
-				let price = parseInt($('.selling-price').data('price'));
-				let rate = (1 / currencies[currency_code]['value']);
-
-				let converterPrice = ( price / rate );
-				$('.selling-price').html('<span class=\"fs-12\">' + currencies[currency_code]['code'] + '</span> ' + parseFloat(converterPrice.toFixed(2)).toLocaleString() );
-				$('.currency-code').text( currencies[currency_code]['code'] );
-				$('.base-currency-value').html('' + currencies[currency_code]['code'] + ' ' + ( 1 / currencies[currency_code]['value']) );
-
-				convertAmortization();
-			});
-			
-			document.addEventListener('DOMContentLoaded', function () {
-				window.Plyr && (new Plyr('#player-youtube'));
-			});
-
-			$(document).on('change', '#mortgage-downpayment-selection, #mortgage-interest-selection, #mortgage-years-selection', function() {
-				result = getAmortization();
-				monthly_dp = result.monthly_payment;
-				convertAmortization();
-			});
-
-			$(document).on('click', '.btn-description-toggle', function() {
-				$('.description').css('height', 'auto');
-				$('.description').removeClass('border-bottom');
-				$('.btn-description-toggle').remove();
-			});
-
-			async function init(data) {
-
-				let date = new Date(data.meta.last_updated_at).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' });
-				
-				let html = '';
-				for (let key in currencies) {
-					if (currencies.hasOwnProperty(key)) {
-						sel = currencies[key].code == 'PHP' ? 'selected' : '';
-						html += \"<option value='\" + currencies[key].code + \"' \" + sel + \">\" + currencies[key].code + \"</option>\";
+					let date = new Date(data.meta.last_updated_at).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' });
+					
+					let html = '';
+					for (let key in currencies) {
+						if (currencies.hasOwnProperty(key)) {
+							sel = currencies[key].code == 'PHP' ? 'selected' : '';
+							html += \"<option value='\" + currencies[key].code + \"' \" + sel + \">\" + currencies[key].code + \"</option>\";
+						}
 					}
+
+					$('#currency-code-selection').append(html);
+
+					$('.last-updated-at').html( date );
+					$('.base-currency-value').html('' + currencies.PHP['code'] + ' ' + ( 1 / currencies.USD['value']) );
+
+					currency_code = $('#currency-code-selection option:selected').val();
+					let price = parseInt($('.selling-price').data('price'));
+
+					let converterPrice = ( price / ( 1 / currencies[currency_code]['value']) );
+					$('.selling-price').html('<span class=\"fs-12\">' + currency_code + '</span> ' + parseFloat(converterPrice.toFixed(2)).toLocaleString() );
+
+					result = getAmortization();
+					monthly_dp = result.monthly_payment;
+					convertAmortization();
 				}
 
-				$('#currency-code-selection').append(html);
+				function convertAmortization() {
+					let converted_dp = (monthly_dp / (1 / currencies[currency_code]['value']));
+					$('.monthly_dp').html('<span class=\"fs-12\">' + currency_code + '</span> ' + parseFloat((converted_dp.toFixed(2))).toLocaleString()  );
+				}
 
-				$('.last-updated-at').html( date );
-				$('.base-currency-value').html('' + currencies.PHP['code'] + ' ' + ( 1 / currencies.USD['value']) );
-
-				currency_code = $('#currency-code-selection option:selected').val();
-				let price = parseInt($('.selling-price').data('price'));
-
-				let converterPrice = ( price / ( 1 / currencies[currency_code]['value']) );
-				$('.selling-price').html('<span class=\"fs-12\">' + currency_code + '</span> ' + parseFloat(converterPrice.toFixed(2)).toLocaleString() );
-
-				result = getAmortization();
-				monthly_dp = result.monthly_payment;
-				convertAmortization();
-			}
-
-			function convertAmortization() {
-				let converted_dp = (monthly_dp / (1 / currencies[currency_code]['value']));
-				$('.monthly_dp').html('<span class=\"fs-12\">' + currency_code + '</span> ' + parseFloat((converted_dp.toFixed(2))).toLocaleString()  );
-			}
-
-		"));
-		
-		if($data) {
+			"));
 
 			$account = $this->getModel("Account");
 			$account->select(" account_id, logo, profession, real_estate_license_number, account_name, mobile_number, email, registered_at");
@@ -378,7 +384,7 @@ class ListingsController extends \Main\Controller {
 		$_POST['name'] = sanitize($_POST['title'])."-".DATE_NOW;
 		$_POST['created_at'] = DATE_NOW;
 		$_POST['modified_at'] = DATE_NOW;
-		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."/images/listings/".$_POST['thumb_img'] : null;
+		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."images/listings/".$_POST['thumb_img'] : null;
 		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? $_POST['foreclosed'] : 0;
 		$_POST['is_mls'] = isset($_POST['is_mls']) ? $_POST['is_mls'] : 0;
 		$_POST['is_website'] = isset($_POST['is_website']) ? $_POST['is_website'] : 0;
@@ -748,8 +754,14 @@ class ListingsController extends \Main\Controller {
 		if(isset($_GET['price']) && $_GET['price'] != "") {
 			$model->page['uri']['price'] = $_GET['price'];
 
-			$price = explode("-", $_GET['price']);
-			$filters[] = "price BETWEEN ".$price[0]." AND ".$price[1]."";
+			if(stripos($_GET['price'], "-") === true) {
+				$price = explode("-", $_GET['price']);
+				$filters[] = "price BETWEEN ".$price[0]." AND ".$price[1]."";
+			}else {
+				$price = $_GET['price'];
+				$filters[] = "price >= ".$price[0];
+			}
+
 		}
 
 		if(isset($_GET['lot_area']) && $_GET['lot_area'] != "") {
@@ -800,7 +812,7 @@ class ListingsController extends \Main\Controller {
 				$search[] = str_replace("+", " ", $_GET['address']['municipality']);
 			}
 
-			if(isset($_GET['address']['street']) && $_GET['address']['street'] != "") {
+			/* if(isset($_GET['address']['street']) && $_GET['address']['street'] != "") {
 				$filters[] = " JSON_EXTRACT(l.address, '$.street') = '".str_replace("+", " ", $_GET['address']['street'])."'  ";
 				$search[] = str_replace("+", " ", $_GET['address']['street']);
 			}
@@ -808,7 +820,7 @@ class ListingsController extends \Main\Controller {
 			if(isset($_GET['address']['village']) && $_GET['address']['village'] != "") {
 				$filters[] = " JSON_EXTRACT(l.address, '$.village') = '".str_replace("+", " ", $_GET['address']['village'])."'  ";
 				$search[] = str_replace("+", " ", $_GET['address']['village']);
-			}
+			} */
 
 			if(!is_array($_GET['address'])) {
 				$search[] = trim($_GET['address']);
@@ -834,26 +846,30 @@ class ListingsController extends \Main\Controller {
 
 		$order = isset($_GET['order']) ? $_GET['order'] : " DESC";
 
+		if(isset($_GET['sort'])) {
+			$sort = $_GET['sort']." ".$order;
+		}else {
+			$sort = " post_score DESC ";
+		}
+
 		if(isset($search)) {
 			$model->select("
-				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities,
+				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
 				CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END,
 				MATCH( type, title, tags, long_desc, category, l.address, amenities )
 				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
-			")->orderby(" match_score DESC, post_score DESC ");
+			")->orderby(" match_score DESC, $sort ");
 		}else {
-			$sort = isset($_GET['sort']) ? ($_GET['sort'] == "match_score" ? "post_score" : $_GET['sort']) : "post_score";
 			$model
 				->select(" 
-					listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities,
+					listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
 					CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END 
-				")->orderby(" $sort $order ");
+				")->orderby(" post_score DESC, $sort ");
 		}
 		
 		$model->join(" l JOIN #__accounts a ON a.account_id = l.account_id ");
 		$model->where((isset($filters) ? implode(" AND ",$filters) : null));
 		$data = $model->getList();
-
 
 		if($data) {
 
@@ -882,6 +898,12 @@ class ListingsController extends \Main\Controller {
 			"model" => $model
 		];
 
+	}
+
+	function getFeaturedProperties($model, $filter = []) {
+		$filters[] = " featured = 1 ";
+		$response = $this->listProperties($this->getModel("Listing"), $filters);
+		return ($response['data']);
 	}
 
 	private function computeScore($data) {
@@ -973,163 +995,6 @@ class ListingsController extends \Main\Controller {
 				"user_agent" => json_encode($this->getLibrary("SessionHandler")->get("user_agent"))
 			));
 		}
-
-	}
-
-	function getFeaturedProperties($model, $filter = []) {
-
-		$filters[] = " featured = 1 ";
-
-		if(isset($_GET['offer']) && $_GET['offer'] == "buy") {
-			$filters[] = " offer = 'for sale'";
-			$model->page['uri']['offer'] = "for sale";
-		}
-
-		if(isset($_GET['offer']) && $_GET['offer'] == "rent") {
-			$filters[] = " offer = 'for rent'";
-			$model->page['uri']['offer'] = "for rent";
-		}
-
-		if(isset($_GET['category']) && $_GET['category'] != "") {
-			$model->page['uri']['category'] = $_GET['category'];
-			$filters[] = " category LIKE '%".$_GET['category']."%'";
-			$search[] = $_GET['category'];
-		}
-
-		if(isset($_GET['price']) && $_GET['price'] != "") {
-			$model->page['uri']['price'] = $_GET['price'];
-
-			$price = explode("-", $_GET['price']);
-			$filters[] = "price BETWEEN ".$price[0]." AND ".$price[1]."";
-		}
-
-		if(isset($_GET['lot_area']) && $_GET['lot_area'] != "") {
-			$model->page['uri']['lot_area'] = $_GET['lot_area'];
-			$filters[] = "lot_area >= ".$_GET['lot_area']."";
-		}
-
-		if(isset($_GET['floor_area']) && $_GET['floor_area'] != "") {
-			$model->page['uri']['floor_area'] = $_GET['floor_area'];
-			$filters[] = "floor_area >= ".$_GET['floor_area']."";
-		}
-
-		if(isset($_GET['bedroom']) && $_GET['bedroom'] != "") {
-			$model->page['uri']['bedroom'] = $_GET['bedroom'];
-
-			if($_GET['bedroom'] == "Studio") {
-				$filters[] = " bedroom = '".$_GET['bedroom']."'";
-			}else {
-				$filters[] = " bedroom >= ".$_GET['bedroom'];
-			}
-		}
-
-		if(isset($_GET['bathroom']) && $_GET['bathroom'] != "") {
-			$model->page['uri']['bathroom'] = $_GET['bathroom'];
-			$filters[] = " bathroom >= ".$_GET['bathroom'];
-		}
-
-		if(isset($_GET['parking']) && $_GET['parking'] != "") {
-			$model->page['uri']['parking'] = $_GET['parking'];
-			$filters[] = "parking >= ".$_GET['parking']."";
-		}
-
-		if(isset($_GET['address']) && $_GET['address'] != "") {
-			$model->page['uri']['address'] = $_GET['address'];
-
-			if(isset($_GET['address']['region']) && $_GET['address']['region'] != "") {
-				$filters[] = " JSON_EXTRACT(l.address, '$.region') = '".str_replace("+", " ", $_GET['address']['region'])."'  ";
-				$search[] = str_replace("+", " ", $_GET['address']['region']);
-			}
-
-			if(isset($_GET['address']['province']) && $_GET['address']['province'] != "") {
-				$filters[] = " JSON_EXTRACT(l.address, '$.province') = '".str_replace("+", " ", $_GET['address']['province'])."'  ";
-				$search[] = str_replace("+", " ", $_GET['address']['province']);
-			}
-
-			if(isset($_GET['address']['municipality']) && $_GET['address']['municipality'] != "") {
-				$filters[] = " JSON_EXTRACT(l.address, '$.municipality') = '".str_replace("+", " ", $_GET['address']['municipality'])."'  ";
-				$search[] = str_replace("+", " ", $_GET['address']['municipality']);
-			}
-
-			if(isset($_GET['address']['street']) && $_GET['address']['street'] != "") {
-				$filters[] = " JSON_EXTRACT(l.address, '$.street') = '".str_replace("+", " ", $_GET['address']['street'])."'  ";
-				$search[] = str_replace("+", " ", $_GET['address']['street']);
-			}
-
-			if(isset($_GET['address']['village']) && $_GET['address']['village'] != "") {
-				$filters[] = " JSON_EXTRACT(l.address, '$.village') = '".str_replace("+", " ", $_GET['address']['village'])."'  ";
-				$search[] = str_replace("+", " ", $_GET['address']['village']);
-			}
-
-			if(!is_array($_GET['address'])) {
-				$search[] = trim($_GET['address']);
-			}
-
-		}
-
-		if(isset($_GET['amenities']) && $_GET['amenities'] != "") {
-			
-			if(!is_array($_GET['amenities'])) {
-				$_GET['amenities'] = explode(",", $_GET['amenities']);
-			}
-
-			$model->page['uri']['amenities'] = $_GET['amenities'];
-			$search[] = implode(" ", $_GET['amenities']);
-			
-		}
-
-		if(isset($_GET['tags']) && $_GET['tags'] != "") {
-			$model->page['uri']['tags'] = $_GET['tags'];
-			$search[] = implode(" ", $_GET['tags']);
-		}
-
-		$order = isset($_GET['order']) ? $_GET['order'] : " DESC";
-
-		if(isset($search)) {
-			$model->select("
-				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities,
-				CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END,
-				MATCH( type, title, tags, long_desc, category, l.address, amenities )
-				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
-			")->orderby(" match_score DESC, post_score DESC ");
-		}else {
-			$sort = isset($_GET['sort']) ? ($_GET['sort'] == "match_score" ? "post_score" : $_GET['sort']) : "post_score";
-			$model
-				->select(" 
-					listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities,
-					CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END 
-				")->orderby(" $sort $order ");
-		}
-		
-		$model->join(" l JOIN #__accounts a ON a.account_id = l.account_id ");
-		$model->where((isset($filters) ? implode(" AND ",$filters) : null));
-		$data = $model->getList();
-
-		if($data) {
-			
-			$total_listing = count($data);
-
-			for($i=0; $i<$total_listing; $i++) {
-
-				$images = $this->getModel("ListingImage");
-				$images->page['limit'] = 50;
-
-				$images->column['listing_id'] = $data[$i]['listing_id'];
-				$total_image = $images->getByListingId();
-				
-				$data[$i]['total_images'] = 0;
-
-				if($total_image) {
-					$data[$i]['total_images'] = count($total_image);
-				}
-				
-			}
-
-			return $data;
-			
-		}
-
-		return false;
 
 	}
 

@@ -71,7 +71,7 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
     Router::get('/mls/handshaked/{id}/deniedRequest', 'MlsController@deniedRequest', ['as' => 'deniedRequest'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/mls/handshaked/{id}/doneHandshake', 'MlsController@doneHandshake', ['as' => 'doneHandshake'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/mls/handshaked/{listing_id}/cancelHandshake', 'MlsController@cancelHandshake', ['as' => 'cancelHandshake'])->where([ 'listing_id' => '[0-9]+' ]);
-    Router::get('/related-properties', 'MlsController@relatedProperties');
+    Router::get('/mls/related-properties', 'MlsController@relatedProperties', ['as' => 'relatedProperties']);
 
     /** DOWNLOAD MLS LISTING URL */
     Router::get('/mls/{id}/download', 'MlsController@downloadPDFFormat', ['as' => 'listingsView'])->where([ 'id' => '[0-9]+' ]);

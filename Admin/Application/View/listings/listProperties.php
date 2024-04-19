@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $total_featured = 0;
 
 /* $html[] = "<h3><i class='ti ti-building'></i> Related Properties</h3>"; */
@@ -20,15 +20,17 @@ $html[] = "<div class='row row-cards'>";
 
 				/** Featured ads */
 				if(isset($model->app['featured_post']) && $model->app['featured_post']) {
-					if ($i % 4 == 0) { 
-						$html[] = "<div class='featured-post px-3 pb-3 pt-2 border'>";
-							$html[] = "<span class='text-muted fst-italic fs-10 mb-1 d-block'>Sponsored</span>";
-							$html[] = properties($model->app['featured_post'][ $_SESSION['c'] ], $model);
-						$html[] = "</div>";
+					if(isset($model->app['featured_post'][ $_SESSION['c'] ]['listing_id']) && $model->app['featured_post'][ $_SESSION['c'] ]['listing_id'] > 0) {
+						if ($i % 4 == 0) { 
+							$html[] = "<div class='featured-post px-3 pb-3 pt-2 border'>";
+								$html[] = "<span class='text-muted fst-italic fs-10 mb-1 d-block'>Sponsored</span>";
+								$html[] = properties($model->app['featured_post'][ $_SESSION['c'] ], $model);
+							$html[] = "</div>";
 
-						if($_SESSION['c'] < ($total_featured - 1)) {
-							$_SESSION['c']++;
-						}else { $_SESSION['c'] = 0; }
+							if($_SESSION['c'] < ($total_featured - 1)) {
+								$_SESSION['c']++;
+							}else { $_SESSION['c'] = 0; }
+						}
 					}
 				}
 				/** End Featured ads */

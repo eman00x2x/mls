@@ -316,6 +316,11 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 		if($data) {
 
+			$fields = explode(",", "listing_id,address,lot_area,price,category");
+			foreach($fields as $value) {
+				$uri[$value] = $data[ $value ];
+			}
+
 			$account = $this->getModel("Account");
 			$account->column['account_id'] = $data['account_id'];
 			$account_data = $account->getById();
@@ -333,7 +338,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 						$('.btn-description-toggle').removeClass('d-none');
 					}
 
-					$.get('".url("ListingsController@relatedProperties")."', ".json_encode($data).", function(data) {
+					$.get('".url("ListingsController@relatedProperties")."', ".json_encode($uri).", function(data) {
 						$('.related-properties-container').html(data);
 					})
 
@@ -513,7 +518,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 	function relatedProperties() {
 
 		$listings = $this->getModel("Listing");
-		$listings->page['limit'] = 5;
+		$listings->page['limit'] = 10;
 		$listings->app = [
 			"handshaked" => false,
 			"comparative" => false,

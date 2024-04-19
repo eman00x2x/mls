@@ -188,7 +188,9 @@ class HomeController extends \Main\Controller {
 		$listings
 			->select(" COUNT(JSON_EXTRACT(address, '$.municipality')) as total, JSON_EXTRACT(address, '$.municipality') as city, JSON_EXTRACT(address, '$.region') as region, JSON_EXTRACT(address, '$.province') as province ")
 				->where(" is_website = 1 ")
-					->groupBy(" city ");
+					->groupBy(" city ")
+						->orderBy(" total DESC");
+						
 		$data = $listings->getList();
 
 		$this->setTemplate("home/popularLocations.php");
@@ -209,12 +211,12 @@ class HomeController extends \Main\Controller {
 		$data = null;
 
 		$listings = $this->getModel("Listing");
-		$listings->page['limit'] = 5;
+		$listings->page['limit'] = 8;
 		$listings
 			->join(" l JOIN #__accounts a ON a.account_id = l.account_id")
 				->where(" is_website = 1 ")
 					->and(" featured = 1 ")
-						->orderBy(" post_score DESC ");
+						->orderBy(" post_score DESC, modified_at DESC ");
 		$data['listings'] = $listings->getList();
 
 		if($data['listings']) {

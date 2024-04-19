@@ -47,6 +47,10 @@ class ListingModel extends \Main\Model {
 		$v->validateGeneral($data['tags'],"no selected tags.");
 		$v->validateGeneral($data['duration'],"Select Posting Duration");
 
+		if(isset($data['price'])) {
+			$v->validateGeneral($data['price'],"price is blank.");
+		}
+
 		$other_details = json_decode($data['other_details'],true);
 		$v->validateNumber($other_details['com_share'],"Commission share is required.");
 		$v->validateDate($other_details['authority_to_sell_expiration'],"Authority to Sell Expiration Date is required.");
@@ -93,6 +97,10 @@ class ListingModel extends \Main\Model {
 			$v->validateGeneral($data['category'],"category is blank.");
 			$v->validateGeneral($data['type'],"type is blank.");
 			$v->validateGeneral($data['offer'],"offer is blank.");
+
+			if(isset($data['price'])) {
+				$v->validateGeneral($data['price'],"price is blank.");
+			}
 
 			$other_details = json_decode($data['other_details'],true);
 

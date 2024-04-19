@@ -105,7 +105,7 @@ class DashboardController extends \Main\Controller {
 			->select(" COUNT(listing_id) as total ");
 
 		if($account_id != null) {
-			$listings->where(" account_id = $account_id ");
+			$listings->where(" account_id = $account_id AND status = 1 ");
 		}
 
 		$data = $listings->getList();
