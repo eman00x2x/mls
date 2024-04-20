@@ -53,6 +53,7 @@ $(document).on('click','.btn-save', function(e) {
 
 		$('.btn-save').show();
 		$('.response').html(response.message);
+		$("#form :input").attr('readonly', false);
 
 		if (response.status == 1) {
 			if ($('#reference_url').val() !== undefined) {
@@ -355,4 +356,35 @@ function rcg() {
 
 function random(start, end) {
 	return Math.floor(Math.random() * (end - start + 1)) + start;
+}
+
+function loadImage(url, callback) {
+	var image = new Image();
+	image.onload = function () {
+		callback(null, image);
+	};
+	image.onerror = function () {
+		callback(new Error('Could not load image at ' + url));
+	};
+	image.src = url;
+}
+
+function loadImages(urls, callback) {
+	var returned = false;
+	var count = 0;
+	var result = new Array(urls.length);
+	urls.forEach(function (url, index) {
+		loadImage(url, function (error, item) {
+			if (returned) return;
+			if (error) {
+				returned = true;
+				return callback(error);
+			}
+			result[index] = item;
+			count++;
+			if (count === urls.length) {
+				return callback(null, result);
+			}
+		});
+	});
 }

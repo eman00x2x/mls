@@ -60,8 +60,9 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<th class='w-1'></th>";
 									$html[] = "<th class='w-1'>Featured</th>";
 									$html[] = "<th>Title</th>";
-									$html[] = "<th style='width:250px;'>Placement</th>";
-									$html[] = "<th class='text-end'>Lot Area</th>";
+									$html[] = "<th>Type</th>";
+									$html[] = "<th>Category</th>";
+									$html[] = "<th>Address</th>";
 									$html[] = "<th class='text-end'>Price</th>";
 									$html[] = "<th>Status</th>";
 									$html[] = "<th class='text-center'></th>";
@@ -80,12 +81,10 @@ $html[] = "<div class='page-body'>";
 
 								$address = $data['listings'][$i]['address'];
 								unset($address['region']);
-
-								$redirect = "onclick='window.location=\"".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."\"'";
 								
-								$html[] = "<tr class='row_listings_".$data['listings'][$i]['listing_id']." listings-table cursor-pointer'>";
-									$html[] = "<td $redirect class='align-middle text-center w-1 text-muted'>$c</td>";
-									$html[] = "<td $redirect class='align-middle'><div class='avatar' data-thumb-image='".$data['listings'][$i]['thumb_img']."'></div></td>";
+								$html[] = "<tr class='row_listings_".$data['listings'][$i]['listing_id']." listings-table'>";
+									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
+									$html[] = "<td class='align-middle'><div class='avatar' data-thumb-image='".$data['listings'][$i]['thumb_img']."'></div></td>";
 									$html[] = "<td class='align-middle text-center'><span class='btn-set-featured featured-indicator-container cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@setFeatured",["id" => $data['listings'][$i]['listing_id']])."'>";
 										
 										$html[] = ($data['listings'][$i]['featured'] == 1) ? 
@@ -93,42 +92,14 @@ $html[] = "<div class='page-body'>";
 											: "<i class='ti ti-star text-muted'></i>";
 
 									$html[] = "</span></td>";
-									$html[] = "<td $redirect class='align-middle'>";
-										$html[] = "<span class='fw-bold'>".$data['listings'][$i]['title']."</span>";
-										$html[] = "<span class='d-block text-muted fs-12'><span class='fw-bold'>".$data['listings'][$i]['category']."</span> in ".(implode(" ",$address))."</span>";
-									$html[] = "</td>";
+									$html[] = "<td class='align-middle'><a href='".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."'>".$data['listings'][$i]['title']."</a></td>";
+									$html[] = "<td class='align-middle'><a href='".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."'>".$data['listings'][$i]['type']."</a></td>";
+									$html[] = "<td class='align-middle'><a href='".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."'>".$data['listings'][$i]['category']."</a></td>";
+									$html[] = "<td class='align-middle'><a href='".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."'>".(implode(" ",$address))."</a></td>";
+									$html[] = "<td class='align-middle text-end'><a href='".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."'>".convertMillions($data['listings'][$i]['price'])."</a></td>";
+									$html[] = "<td class='align-middle'>".($availability[$data['listings'][$i]['status']])."</td>";
 									
-									$html[] = "<td $redirect class='align-middle'>";
-										
-										$placement = [];
-
-										if($data['listings'][$i]['is_website'] == 1) {
-											$placement[] = "Public Website";
-										}
-
-										foreach($data['listings'][$i]['is_mls_option'] as $key => $value) {
-											if($value == 1) {
-												switch($key) {
-													case 'local_board': $placement[] = "Local Board MLS"; break;
-													case 'local_region': $placement[] = "Regional MLS"; break;
-													case 'all': $placement[] = "National MLS"; break;
-												}
-											}
-										}
-
-										if(!empty($placement)) {
-											$post_placement = implode(", ", $placement);
-										}else {
-											$post_placement = "None";
-										}
-
-										$html[] = "<span>".$post_placement."</span>";
-									$html[] = "</td>";
-									$html[] = "<td $redirect class='align-middle text-end'>".$data['listings'][$i]['lot_area']." sqm</td>";
-									$html[] = "<td $redirect class='align-middle text-end'>".convertMillions($data['listings'][$i]['price'])."</td>";
-									$html[] = "<td $redirect class='align-middle'>".($availability[$data['listings'][$i]['status']])."</td>";
-									
-									$html[] = "<td class='text-center align-middle'>";
+									$html[] = "<td class='text-center'>";
 									
 										$html[] = "<div class='item-action dropdown'>";
 										

@@ -24,18 +24,96 @@ class ListingsController extends \Main\Controller {
 
 		$this->doc->setTitle("Property Listings");
 
-		$this->doc->addScriptDeclaration("
-			$(document).ready(function() {
-				$('.listings-table .avatar').each(function() {
-					thumb_image = $(this).attr('data-thumb-image');
-					$(this).css('background-image', 'url('+thumb_image+')');
-				});
-			});
-		");
-	
 		if(isset($_GET['search'])) {
 			$filters[] = " (title LIKE '%".$_REQUEST['search']."%')";
 			$uri['search'] = $_REQUEST['search'];
+		}
+
+		if(isset($_GET['offer']) && $_GET['offer'] == "") {
+			$filters[] = " offer = 'for sale'";
+			$uri['offer'] = "for sale";
+		}
+
+		if(isset($_GET['offer']) && $_GET['offer'] == "") {
+			$filters[] = " offer = 'for rent'";
+			$uri['offer'] = "for rent";
+		}
+
+		if(isset($_GET['category']) && $_GET['category'] != "") {
+			$uri['category'] = $_GET['category'];
+			$filters[] = " category LIKE '%".$_GET['category']."%'";
+		}
+
+		if(isset($_GET['price']) && $_GET['price'] != "") {
+			$uri['price'] = $_GET['price'];
+
+			if(stripos($_GET['price'], "-") === true) {
+				$price = explode("-", $_GET['price']);
+				$filters[] = "price BETWEEN ".$price[0]." AND ".$price[1]."";
+			}else {
+				$price = $_GET['price'];
+				$filters[] = "price >= ".$price[0];
+			}
+
+		}
+
+		if(isset($_GET['lot_area']) && $_GET['lot_area'] != "") {
+			$uri['lot_area'] = $_GET['lot_area'];
+			$filters[] = "lot_area >= ".$_GET['lot_area']."";
+		}
+
+		if(isset($_GET['floor_area']) && $_GET['floor_area'] != "") {
+			$uri['floor_area'] = $_GET['floor_area'];
+			$filters[] = "floor_area >= ".$_GET['floor_area']."";
+		}
+
+		if(isset($_GET['bedroom']) && $_GET['bedroom'] != "") {
+			$uri['bedroom'] = $_GET['bedroom'];
+
+			if($_GET['bedroom'] == "Studio") {
+				$filters[] = " bedroom = '".$_GET['bedroom']."'";
+			}else {
+				$filters[] = " bedroom >= ".$_GET['bedroom'];
+			}
+		}
+
+		if(isset($_GET['bathroom']) && $_GET['bathroom'] != "") {
+			$uri['bathroom'] = $_GET['bathroom'];
+			$filters[] = " bathroom >= ".$_GET['bathroom'];
+		}
+
+		if(isset($_GET['parking']) && $_GET['parking'] != "") {
+			$uri['parking'] = $_GET['parking'];
+			$filters[] = "parking >= ".$_GET['parking']."";
+		}
+
+		if(isset($_GET['address']) && $_GET['address'] != "") {
+			$uri['address'] = $_GET['address'];
+
+			if(isset($_GET['address']['region']) && $_GET['address']['region'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.region') = '".str_replace("+", " ", $_GET['address']['region'])."'  ";
+			}
+
+			if(isset($_GET['address']['province']) && $_GET['address']['province'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.province') = '".str_replace("+", " ", $_GET['address']['province'])."'  ";
+			}
+
+			if(isset($_GET['address']['municipality']) && $_GET['address']['municipality'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.municipality') = '".str_replace("+", " ", $_GET['address']['municipality'])."'  ";
+			}
+
+			/* if(isset($_GET['address']['street']) && $_GET['address']['street'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.street') = '".str_replace("+", " ", $_GET['address']['street'])."'  ";
+			}
+
+			if(isset($_GET['address']['village']) && $_GET['address']['village'] != "") {
+				$filters[] = " JSON_EXTRACT(address, '$.village') = '".str_replace("+", " ", $_GET['address']['village'])."'  ";
+			} */
+
+			if(!is_array($_GET['address'])) {
+				$search[] = trim($_GET['address']);
+			}
+
 		}
 
 		$account = $this->getModel("Account");
@@ -50,7 +128,9 @@ class ListingsController extends \Main\Controller {
 			$filters[] = " status IN(0, 1) ";
 		}
 
+		$address = $this->getModel("Address");
 		$listing = $this->getModel("Listing");
+		$listing->address = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));
 		$listing->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" modified_at DESC ");
 		
 		$listing->page['limit'] = 20;
@@ -59,6 +139,40 @@ class ListingsController extends \Main\Controller {
 		$listing->page['uri'] = (isset($uri) ? $uri : []);
 		
 		$data['listings'] = $listing->getList();
+
+		if($data['listings']) {
+			for($i=0; $i<count($data['listings']); $i++) {
+				$images[] = $data['listings'][$i]['thumb_img'];
+			}
+
+			$this->doc->addScriptDeclaration("
+
+				$(document).on('click','.btn-filter',function() {
+					var formData = $('#filter-form').serialize();
+					window.location = '".$listing->page['target']."?filter=' + formData;
+				});
+
+				$(document).ready(function() {
+					$('.listings-table .avatar').each(function() {
+						thumb_image = $(this).attr('data-thumb-image');
+						$(this).css('background-image', 'url(".CDN."images/loader.gif)');
+						getImage(thumb_image, $(this));
+					});
+				});
+
+				async function getImage(thumb_image, element) {
+					await fetch('".url("ListingsController@getThumbnail")."?url=' + thumb_image)
+						.then( response => response.json() )
+						.then(  (data) => {
+							element.css('background-image', 'url('+data.url+')');
+						});
+					
+				}
+
+
+			");
+
+		}
 
 		$this->setTemplate("listings/listings.php");
 		return $this->getTemplate($data,$listing);
@@ -1154,6 +1268,61 @@ class ListingsController extends \Main\Controller {
 		}
 
 		
+	}
+
+	function getThumbnail() {
+
+		if(isset($_GET['url']) && $_GET['url'] != "") {
+			$filename = basename($_GET['url']);
+			$original_path = ROOT."/Cdn/images/listings";
+			$destination_path = ROOT."/Cdn/images/listings_thumb";
+			$newwidth = 270;
+			$newheight = 210;
+			
+			if(!file_exists($destination_path."/".$filename)) {
+				
+				list($width, $height) = getimagesize($original_path."/".$filename);
+				if (pathinfo($original_path."/".$filename, PATHINFO_EXTENSION) == 'jpg' || pathinfo($original_path."/".$filename,PATHINFO_EXTENSION) == 'jpeg') {
+					$src = imagecreatefromjpeg($original_path."/".$filename);
+					$dst = imagecreatetruecolor($newwidth, $newheight);
+					imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+					imagejpeg($dst, $destination_path."/".$filename, 100);
+				}
+
+				if (pathinfo($original_path."/".$filename,PATHINFO_EXTENSION) == 'png') {
+					$src = imagecreatefrompng($original_path."/".$filename);
+					$dst = imagecreatetruecolor($newwidth, $newheight);
+					imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+					imagepng($dst, $destination_path."/".$filename, 0);
+				}
+
+				if (pathinfo($original_path."/".$filename,PATHINFO_EXTENSION) == 'gif') {
+					$src = imagecreatefromgif($original_path."/".$filename);
+					$dst = imagecreatetruecolor($newwidth, $newheight);
+					imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+					imagegif($dst, $destination_path."/".$filename, 100);
+				}
+
+				if (pathinfo($original_path."/".$filename,PATHINFO_EXTENSION) == 'webp') {
+					$src = imagecreatefromwebp($original_path."/".$filename);
+					$dst = imagecreatetruecolor($newwidth, $newheight);
+					imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+					imagewebp($dst, $destination_path."/".$filename, 100);
+				}
+
+
+				$url = CDN."images/listings_thumb/$filename";
+			}else {
+				$url = CDN."images/listings_thumb/$filename";
+			}
+
+			echo json_encode([
+				"url" => $url
+			]);
+		}
+
+		exit();
+
 	}
 	
 }

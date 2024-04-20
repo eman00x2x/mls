@@ -44,13 +44,10 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<form id='filter-form'>";
 
 							$html[] = "<div class='d-flex justify-content-between align-items-center'>";
-					    	$html[] = "<h3>Filter Results</h3>";
-
-							$html[] = "<a href='".url("MlsController@MLSIndex")."' class='text-decoration-none'><i class='ti ti-trash'></i> Clear filter</a>";
-							
-						$html[] = "</div>";
-						$html[] = "<form id='filter-form' action='' method='POST'>";
-
+								$html[] = "<h3>Filter Results</h3>";
+								$html[] = "<a href='".url("MlsController@MLSIndex")."' class='text-decoration-none'><i class='ti ti-trash'></i> Clear filter</a>";
+							$html[] = "</div>";
+						
 							$html[] = "<div class='mb-4'>";
 								$html[] = "<div class='border p-3'>";
 									$html[] = "<div class='form-label'>Address</div>";
@@ -222,13 +219,12 @@ $html[] = "<div class='page-body'>";
 								$html[] = "</label>";
 								$html[] = "<div class='small text-secondary'>If On, results will include foreclosure properties</div>";
 							$html[] = "</div>";
-						$html[] = "</form>";
-
-						$html[] = "<div class='btn-filter-container mt-5 sticky-bottom'>";
-							$html[] = "<div class='pb-4' style='background-color: #f6f8fb; margin-bottom: -15px !important;'>";
-								$html[] = "<span class='btn btn-primary w-100 btn-filter'><i class='ti ti-filter me-1'></i> Filter Result</span>";
+						
+							$html[] = "<div class='btn-filter-container mt-5 sticky-bottom'>";
+								$html[] = "<div class='pb-4' style='background-color: #f6f8fb; margin-bottom: -15px !important;'>";
+									$html[] = "<span class='btn btn-primary w-100 btn-filter'><i class='ti ti-filter me-1'></i> Filter Result</span>";
+								$html[] = "</div>";
 							$html[] = "</div>";
-						$html[] = "</div>";
 
 						$html[] = "</form>";
 					$html[] = "</div>";

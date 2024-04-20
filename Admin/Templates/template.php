@@ -17,7 +17,12 @@
 		</div>
 
 		<div class='offcanvas offcanvas-end' tabindex='-1' id='offcanvasEnd' aria-labelledby='offcanvasEndLabel' aria-modal='true' role='dialog'>
-			
+			<div class='p-5'>
+				<div class='d-flex align-items-center gap-3'>
+					<div class='loader'></div>
+					<p class='mb-0'>Please wait while retrieving content...</p>
+				</div>
+			</div>
 		</div>
 
 		<div class='page'>
