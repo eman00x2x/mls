@@ -106,7 +106,7 @@ $html[] = "<div class='page-body mt-0 bg-white'>";
 				$html[] = "</div>";
 				$html[] = "<div class='col-lg-3 col-md-4 col-sm-12 col-12'>";
 						
-					$html[] = "<div class='py-4 px-3'>";
+					$html[] = "<div class='py-4 px-2'>";
 
 						if(!empty($data['profile']['skills']) && is_array($data['profile']['skills'])) {
 
@@ -142,16 +142,16 @@ $html[] = "<div class='page-body mt-0 bg-white'>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 
-		$html[] = "<div class='pb-5 my-5 px-3'>";
+		$html[] = "<div class='pb-5 my-5 px-2'>";
 			$html[] = "<h2 class='pb-0 mb-0'>Featured Properties</h2>";
 			$html[] = "<p class='p-0 text-muted'>Posted by ".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</p>";
 			$html[] = "<div class='p-featured '>";
-				$html[] = "<div class='row row-deck row-cards'>";
+				$html[] = "<div class='row row-deck row-cards listings-table'>";
 					if($data['listings']) {
 						for($i=0; $i<count($data['listings']); $i++) {
 							$html[] = "<div class='col-md-5 col-lg-3 col-12 '>";
 								$html[] = "<div class='card property-container mb-3' title='".$data['listings'][$i]['title']."'>";
-									$html[] = "<div class='p-image img-responsive img-responsive-21x9 card-img-top' style='background-image: url(".$data['listings'][$i]['thumb_img'].");'>";
+									$html[] = "<div class='p-image img-responsive img-responsive-21x9 card-img-top' data-thumb-image='".$data['listings'][$i]['thumb_img']."'>";
 									
 										$html[] = "<div class='black-gradient'>";
 							

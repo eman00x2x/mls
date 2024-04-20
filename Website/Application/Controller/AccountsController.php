@@ -38,6 +38,27 @@ class AccountsController extends \Main\Controller {
 		$this->doc->setFacebookMetaData("og:description", $description);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+
+			$(document).ready(function() {
+				$('.listings-table .card-img-top').each(function() {
+					thumb_image = $(this).attr('data-thumb-image');
+					$(this).css('background-image', 'url(".CDN."images/loader.gif)');
+					getImage(thumb_image, $(this));
+				});
+			});
+
+			async function getImage(thumb_image, element) {
+				await fetch('".url("ListingsController@getThumbnail")."?url=' + thumb_image)
+					.then( response => response.json() )
+					.then(  (data) => {
+						element.css('background-image', 'url('+data.url+')');
+					});
+				
+			}
+
+		"));
+
 		$this->setTemplate("accounts/profile.php");
 		return $this->getTemplate($data);
 

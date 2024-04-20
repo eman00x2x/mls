@@ -18,7 +18,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 	
 	function index($account_id = null) {
 
-		$this->doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
 			$(document).on('click', '.btn-download-listings', function() {
 				$.get('".url("ListingsController@downloadPropertyListings")."', function(data) {
@@ -58,7 +58,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				});
 			});
 
-		");
+		"));
 
 		$this->setTempalteBasePath(ROOT."/Manage");
 		return parent::index($this->account_id);

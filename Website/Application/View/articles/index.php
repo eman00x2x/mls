@@ -3,7 +3,7 @@
 $html[] = "<div class='page-body'>";
     $html[] = "<div class='container-xl'>";
 
-		$html[] = "<div class='px-3'>";
+		$html[] = "<div class='px-2'>";
 			$html[] = "<div class='row g-2'>";
 				$html[] = "<div class='col-lg-9 col-md-8 col-sm-12 col-12 order-lg-1 order-sm-2'>";
 

@@ -116,6 +116,11 @@ class ListingsController extends \Main\Controller {
 
 		}
 
+		if(isset($_GET['foreclosed'])) {
+			$model->page['uri']['foreclosed'] = $_GET['foreclosed'];
+			$filters[] = " foreclosed = 1 ";
+		}
+
 		$account = $this->getModel("Account");
 		$account->column['account_id'] = $account_id;
 		$data = $account->getById();
@@ -145,7 +150,7 @@ class ListingsController extends \Main\Controller {
 				$images[] = $data['listings'][$i]['thumb_img'];
 			}
 
-			$this->doc->addScriptDeclaration("
+			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
 				$(document).on('click','.btn-filter',function() {
 					var formData = $('#filter-form').serialize();
@@ -169,7 +174,7 @@ class ListingsController extends \Main\Controller {
 					
 				}
 
-			");
+			"));
 
 		}
 
@@ -190,7 +195,7 @@ class ListingsController extends \Main\Controller {
 		$this->doc->addScript(CDN."js/photo-uploader.js");
 		$this->doc->addScript(CDN."tabler/dist/libs/tom-select/dist/js/tom-select.base.min.js?1695847769");
 
-		$this->doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 			$(document).ready(function() {
 				if (localStorage.getItem('items') !== null) {
 					localStorage.clear();
@@ -223,7 +228,7 @@ class ListingsController extends \Main\Controller {
 				$(this).val(val);
 			});
 
-		");
+		"));
 
 		$account = $this->getModel("Account");
 		$account->column['account_id'] = $account_id;
@@ -979,6 +984,11 @@ class ListingsController extends \Main\Controller {
 		if(isset($_GET['tags']) && $_GET['tags'] != "") {
 			$model->page['uri']['tags'] = $_GET['tags'];
 			$search[] = implode(" ", $_GET['tags']);
+		}
+
+		if(isset($_GET['foreclosed'])) {
+			$model->page['uri']['foreclosed'] = $_GET['foreclosed'];
+			$filters[] = " foreclosed = 1 ";
 		}
 
 		$order = isset($_GET['order']) ? $_GET['order'] : " DESC";

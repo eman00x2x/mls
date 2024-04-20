@@ -33,18 +33,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
-			$(document).ready(function() {
-
-			});
-
 			$(document).on('click', '.btn-filter', function() {
-				/* let formData = new FormData(document.querySelector('#filter-form')); let object = {};
-				formData.forEach((value, key) => {
-					if(!Reflect.has(object, key)){ object[key] = value;return; }
-					if(!Array.isArray(object[key])){ object[key] = [object[key]]; }
-					object[key].push(value);
-				}); let json = JSON.stringify(object); window.location = '?' + btoa(json); */
-				
 				formData = $('#filter-form').serialize();
 				window.location = '?' + formData;
 			});

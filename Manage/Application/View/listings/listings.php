@@ -74,7 +74,7 @@ $html[] = "<div class='offcanvas offcanvas-end' tabindex='-1' id='filterOffcanva
 					$html[] = "<div class='form-label'>Land Area</div>";
 					$html[] = "<select name='lot_area' id='lot_area' class='form-select'>";
 						$html[] = "<option value=''></option>";
-						foreach(["0 - Below 100sqm", "101sqm - 200sqm", "201sqm - 300sqm", "301sqm - 400sqm", "401sqm - 500sqm", "501sqm - 1000sqm", "1001sqm - 2000sqm", "2001sqm - 5000sqm", "50001sqm - 10000sqm", "10001sqm and above - 00",] as $range) {
+						foreach(["0 - Below 100sqm", "101sqm - 200sqm", "201sqm - 300sqm", "301sqm - 400sqm", "401sqm - 500sqm", "501sqm - 1000sqm", "1001sqm - 2000sqm", "2001sqm - 5000sqm", "5001sqm - 10000sqm", "10001sqm and above - 00",] as $range) {
 							
 							$land_area = trim(str_replace(["Below", "and above", "sqm", " "],["","", "", ""], $range));
 							$sel = isset($model->page['uri']['lot_area']) && $model->page['uri']['lot_area'] == $land_area ? "selected" : "";
@@ -92,7 +92,7 @@ $html[] = "<div class='offcanvas offcanvas-end' tabindex='-1' id='filterOffcanva
 					$html[] = "<div class='form-label'>Floor Area</div>";
 					$html[] = "<select name='floor_area' id='floor_area' class='form-select'>";
 						$html[] = "<option value=''></option>";
-						foreach(["0 - Below 100sqm", "101sqm - 200sqm", "201sqm - 300sqm", "301sqm - 400sqm", "401sqm - 500sqm", "501sqm - 1000sqm", "1001sqm - 2000sqm", "2001sqm - 5000sqm", "50001sqm - 10000sqm", "10001sqm and above - 00",] as $range) {
+						foreach(["0 - Below 100sqm", "101sqm - 200sqm", "201sqm - 300sqm", "301sqm - 400sqm", "401sqm - 500sqm", "501sqm - 1000sqm", "1001sqm - 2000sqm", "2001sqm - 5000sqm", "5001sqm - 10000sqm", "10001sqm and above - 00",] as $range) {
 							
 							$floor_area = trim(str_replace(["Below", "and above", "sqm", " "],["","", "", ""], $range));
 							$sel = isset($model->page['uri']['floor_area']) && $model->page['uri']['floor_area'] == $floor_area ? "selected" : "";
@@ -149,11 +149,11 @@ $html[] = "<div class='offcanvas offcanvas-end' tabindex='-1' id='filterOffcanva
 			$html[] = "<div class='form-label'>Include Foreclosure Property?</div>";
 			$html[] = "<div class='mb-4'>";
 				$html[] = "<label class='form-check form-switch cursor-pointer'>";
-					$html[] = "<input class='form-check-input' type='checkbox' value='0'>";
-					$html[] = "<span class='form-check-label form-check-label-on'>On</span>";
-					$html[] = "<span class='form-check-label form-check-label-off'>Off</span>";
+					$html[] = "<input type='checkbox' name='foreclosed' id='foreclosed'  value='1' class='form-check-input'>";
+					$html[] = "<span class='form-check-label form-check-label-on'>Yes</span>";
+					$html[] = "<span class='form-check-label form-check-label-off'>No</span>";
 				$html[] = "</label>";
-				$html[] = "<div class='small text-secondary'>If On, results will include foreclosure properties</div>";
+				$html[] = "<div class='small text-secondary'>If Yes, results will include foreclosure properties</div>";
 			$html[] = "</div>";
 		
 			$html[] = "<div class='btn-filter-container sticky-bottom'>";
