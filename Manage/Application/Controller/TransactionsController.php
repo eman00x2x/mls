@@ -16,6 +16,8 @@ class TransactionsController extends \Admin\Application\Controller\TransactionsC
 
 	function transactions() {
 
+		$this->setTempalteBasePath(ROOT."/Manage");
+		
 		$this->doc->setTitle("Transactions");
 
 		if(isset($_REQUEST['date'])) {

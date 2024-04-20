@@ -34,7 +34,7 @@
 						<span class="navbar-toggler-icon"></span>
 					</button>
 
-					<h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3"><a href="#">Logo</a></h1>
+					<h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3"><a href="<?php echo MANAGE; ?>" class="text-decoration-none"><img src='<?php echo CDN."images/favicon/favicon-32x32.png"; ?>' /> <?php echo CONFIG['site_name']; ?></a></h1>
 
 					<div class="collapse navbar-collapse" id="navbar-menu">
 						<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
@@ -60,7 +60,7 @@
 									<div class='dropdown-menu'>
 										<a href='<?php echo url("MlsController@MLSLocalBoard", [ "local_board" => str_replace(" ","_", $_SESSION['user_logged']['local_board_name']) ]); ?>' class='dropdown-item'>Local Board MLS (<?php echo $_SESSION['user_logged']['local_board_name']; ?>)</a>
 										<a href='<?php echo url("MlsController@MLSRegional", [ "region" => str_replace(" ","_", $_SESSION['user_logged']['board_region']['region']) ]); ?>' class='dropdown-item'>Regional MLS (<?php echo $_SESSION['user_logged']['board_region']['region']; ?>)</a>
-										<a href='<?php echo url("MlsController@MLSIndex"); ?>' class='dropdown-item'>PAREB MLS Nation Wide</a>
+										<a href='<?php echo url("MlsController@MLSIndex"); ?>' class='dropdown-item'>PAREB National MLS</a>
 									</div>
                 				</li>
 
