@@ -42,7 +42,7 @@ $html[] = "<page style=''>";
 			$html[] = "</table>";
 
 			$html[] = "<div style='position:absolute; top:20px; right:20px;'>";
-				$html[] = "<qrcode value='".WEBDOMAIN."".$data['listing']['name']."?mls=1' ec='Q' style='padding:1px; border: 1px solid #e1e1e1; width: 30mm;'></qrcode>";
+				$html[] = "<qrcode value='".WEBDOMAIN."p-".$data['listing']['name']."?mls=1' ec='Q' style='padding:1px; border: 1px solid #e1e1e1; width: 30mm;'></qrcode>";
 				$html[] = "<br/><span style='font-size:10px; margin-top:5px;'>Scan QR to visit the page</span>";
 			$html[] = "</div>";
 

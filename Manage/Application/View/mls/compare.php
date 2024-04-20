@@ -99,7 +99,7 @@ $html[] = "<div class='page-body'>";
 
 						$html[] = "<tr>";
 							$html[] = "<td class='text-center col-avatar'>";
-								$html[] = "<div class='avatar avatar-xl' style='background-image: url(".$data['listing'][$i]['thumb_img'].")'></div>";
+								$html[] = "<div class='avatar avatar-xl' style='background-image: url(".CDN."images/listings_thumb/".basename($data['listing'][$i]['thumb_img']).")'></div>";
 							$html[] = "</td>";
 
 							foreach($columns as $col) {

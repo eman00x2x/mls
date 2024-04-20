@@ -1,5 +1,173 @@
 <?php
 
+
+$html[] = "<div class='offcanvas offcanvas-end' tabindex='-1' id='filterOffcanvasEnd' aria-labelledby='offcanvasEndLabel' aria-modal='true' role='dialog'>";
+
+	$html[] = "<div class='p-4  overflow-auto'>";
+		$html[] = "<form id='filter-form'>";
+
+			$html[] = "<div class='d-flex justify-content-between align-items-center'>";
+				$html[] = "<h3>Filter Results</h3>";
+				$html[] = "<a href='".url("ListingsController@index")."' class='text-decoration-none'><i class='ti ti-trash'></i> Clear filter</a>";
+			$html[] = "</div>";
+		
+			$html[] = "<div class='mb-4'>";
+				$html[] = "<div class='border p-3'>";
+					$html[] = "<div class='form-label'>Address</div>";
+					$html[] = $model->address;
+
+					$html[] = "<div class='mb-3 street-input'>";
+						$html[] = "<label class='form-label text-muted'>Street</label>";
+						$html[] = "<input type='text' name='address[street]' id='address_street' value='' class='form-control' />";
+					$html[] = "</div>";
+
+					$html[] = "<div class='mb-3 village-input'>";
+						$html[] = "<label class='form-label text-muted'>Village / Building</label>";
+						$html[] = "<input type='text' name='address[village]' id='address_village' value='' class='form-control' />";
+					$html[] = "</div>";
+
+				$html[] = "</div>";
+			$html[] = "</div>";
+
+			$html[] = "<div class='mb-4'>";
+				$html[] = "<div class='form-label'>Offer</div>";
+				$html[] = "<select name='offer' id='offer' class='form-select'>";
+					foreach(["for sale", "for rent"] as $offer) {
+						$sel = isset($model->page['uri']['offer']) && $model->page['uri']['offer'] == $offer ? "selected" : "";
+						$html[] = "<option value='".$offer."' $sel>".ucwords($offer)."</option>";
+					}
+				$html[] = "</select>";
+			$html[] = "</div>";
+
+			$html[] = "<div class='mb-4'>";
+				$html[] = "<div class='form-label'>Category</div>";
+				$html[] = $model->categorySelection((isset($model->page['uri']['category']) ? $model->page['uri']['category'] : null));
+			$html[] = "</div>";
+
+			$html[] = "<div class='form-label'>Price</div>";
+			$html[] = "<div class='mb-4'>";
+				$html[] = "<select name='price' id='price' class='form-select'>";
+					
+					if(isset($model->page['uri']['offer']) && $model->page['uri']['offer'] == "for rent") {
+						$price_range = explode(",", "0 - Below 10000, 10000 - 20000, 20001 - 40000, 40001 - 60000, 60001 - 100000, 100001 - 1000000, 1000001 and above - 00");
+					}else {
+						$price_range = explode(",", "0 - Below 1000000, 1000001 - 3000000, 3000001 - 6000000, 6000001 - 10000000, 10000001 - 15000000, 15000001 - 25000000, 25000001 - 35000000, 35000001 - 45000000, 45000001 - 50000000, 50000001 - 80000000, 80000001 - 100000000, 100000001 - 120000000, 120000001 - 140000000, 140000001 - 160000000, 160000001 - 180000000, 180000001 - 200000000, 200000001 - 230000000, 230000001 - 260000000, 260000001 - 290000000, 310000001 - 350000000, 350000001 and above - 00");
+					}
+				
+					$html[] = "<option value=''></option>";
+					foreach($price_range as $range) {
+
+						$price_val = trim(str_replace(["Below", "and above", " "],["","", ""], $range));
+						$sel = isset($model->page['uri']['price']) && $model->page['uri']['price'] == $price_val ? "selected" : "";
+
+						$price = explode(" - ", str_replace(["sqm", "Below", "and above"],"", $range));
+
+						$r1 = ($price[0] == "0" ? "Below" : "&#8369;".number_format($price[0],0)." - ");
+						$r2 = ($price[1] == "00" ? "and above " : "&#8369;".number_format($price[1],0)."");
+
+						$html[] = "<option value='".$price_val."' $sel>".$r1." ".$r2."</option>";
+					}
+				$html[] = "</select>";
+			$html[] = "</div>";
+
+			$html[] = "<div class='d-flex gap-2'>";
+				$html[] = "<div class='mb-4'>";
+					$html[] = "<div class='form-label'>Land Area</div>";
+					$html[] = "<select name='lot_area' id='lot_area' class='form-select'>";
+						$html[] = "<option value=''></option>";
+						foreach(["0 - Below 100sqm", "101sqm - 200sqm", "201sqm - 300sqm", "301sqm - 400sqm", "401sqm - 500sqm", "501sqm - 1000sqm", "1001sqm - 2000sqm", "2001sqm - 5000sqm", "50001sqm - 10000sqm", "10001sqm and above - 00",] as $range) {
+							
+							$land_area = trim(str_replace(["Below", "and above", "sqm", " "],["","", "", ""], $range));
+							$sel = isset($model->page['uri']['lot_area']) && $model->page['uri']['lot_area'] == $land_area ? "selected" : "";
+
+							$area = explode(" - ", str_replace(["sqm", "Below", "and above"],"", $range));
+							$r1 = ($area[0] == 0 ? "Below" : number_format($area[0],0)."sqm");
+							$r2 = ($area[1] == "00" ? "above " : number_format($area[1],0)."sqm");
+
+							$html[] = "<option value='".$land_area."' $sel>".$r1." - ".$r2."</option>";
+						}
+					$html[] = "</select>";
+				$html[] = "</div>";
+
+				$html[] = "<div class='mb-4'>";
+					$html[] = "<div class='form-label'>Floor Area</div>";
+					$html[] = "<select name='floor_area' id='floor_area' class='form-select'>";
+						$html[] = "<option value=''></option>";
+						foreach(["0 - Below 100sqm", "101sqm - 200sqm", "201sqm - 300sqm", "301sqm - 400sqm", "401sqm - 500sqm", "501sqm - 1000sqm", "1001sqm - 2000sqm", "2001sqm - 5000sqm", "50001sqm - 10000sqm", "10001sqm and above - 00",] as $range) {
+							
+							$floor_area = trim(str_replace(["Below", "and above", "sqm", " "],["","", "", ""], $range));
+							$sel = isset($model->page['uri']['floor_area']) && $model->page['uri']['floor_area'] == $floor_area ? "selected" : "";
+							
+							$area = explode(" - ", str_replace(["sqm", "Below", "and above"],"", $range));
+							$r1 = ($area[0] == 0 ? "Below" : number_format($area[0],0)." sqm");
+							$r2 = ($area[1] == "00" ? "above " : number_format($area[1],0)." sqm");
+							$html[] = "<option value='".$floor_area."' $sel>".$r1." - ".$r2."</option>";
+						}
+
+					$html[] = "</select>";
+				$html[] = "</div>";
+			$html[] = "</div>";
+
+			$html[] = "<div class='d-flex gap-2'>";
+				$html[] = "<div class='mb-4'>";
+					$html[] = "<div class='form-label'>Bedroom</div>";
+					$html[] = "<select name='bedroom' id='bedroom' class='form-select'>";
+						$html[] = "<option value=''></option>";
+						foreach(["0", "Studio", "1 Bedroom", "2 Bedroom", "3 Bedroom", "4 Bedroom", "5 Bedroom", "6 and more Bedroom"] as $room) {
+							$bedroom_val = trim(str_replace(["Bedroom", "and more"],["",""], $room));
+							$sel = isset($model->page['uri']['bedroom']) && $model->page['uri']['bedroom'] == $bedroom_val ? "selected" : "";
+							$html[] = "<option value='".$bedroom_val."' $sel>$room</option>";
+						}
+
+					$html[] = "</select>";
+				$html[] = "</div>";
+
+				$html[] = "<div class='mb-4'>";
+					$html[] = "<div class='form-label'>Bathroom</div>";
+					$html[] = "<select name='bathroom' id='bathroom' class='form-select'>";
+						$html[] = "<option value=''></option>";
+						foreach(["1 Bathroom", "2 Bathroom", "3 Bathroom", "4 Bathroom", "5 Bathroom", "6 and more Bathroom"] as $room) {
+							$bathroom = trim(str_replace(["Bathroom", "and more"],["",""], $room));
+							$sel = isset($model->page['uri']['bathroom']) && $model->page['uri']['bathroom'] == $bathroom ? "selected" : "";
+							$html[] = "<option value='".$bathroom."' $sel>$room</option>";
+						}
+					$html[] = "</select>";
+				$html[] = "</div>";
+
+				$html[] = "<div class='mb-4'>";
+					$html[] = "<div class='form-label'>Garage</div>";
+					$html[] = "<select name='parking' id='parking' class='form-select'>";
+						$html[] = "<option value=''></option>";
+						foreach(["1 Car Space", "2 Car Space", "3 Car Space", "4 Car Space", "5 Car Space", "6 and more Car Space"] as $space) {
+							$parking = trim(str_replace(["Car Space", "and more"],["",""], $space));
+							$sel = isset($model->page['uri']['parking']) && $model->page['uri']['parking'] == $parking ? "selected" : "";
+							$html[] = "<option value='".$parking."' $sel>$space</option>";
+						}
+					$html[] = "</select>";
+				$html[] = "</div>";
+			$html[] = "</div>";
+
+			$html[] = "<div class='form-label'>Include Foreclosure Property?</div>";
+			$html[] = "<div class='mb-4'>";
+				$html[] = "<label class='form-check form-switch cursor-pointer'>";
+					$html[] = "<input class='form-check-input' type='checkbox' value='0'>";
+					$html[] = "<span class='form-check-label form-check-label-on'>On</span>";
+					$html[] = "<span class='form-check-label form-check-label-off'>Off</span>";
+				$html[] = "</label>";
+				$html[] = "<div class='small text-secondary'>If On, results will include foreclosure properties</div>";
+			$html[] = "</div>";
+		
+			$html[] = "<div class='btn-filter-container sticky-bottom'>";
+				$html[] = "<div class='pb-3' style='background-color: #FFF; margin-bottom: -10px;'>";
+					$html[] = "<span class='btn btn-primary w-100 btn-filter'><i class='ti ti-filter me-1'></i> Filter Result</span>";
+				$html[] = "</div>";
+			$html[] = "</div>";
+
+		$html[] = "</form>";
+	$html[] = "</div>";
+
+$html[] = "</div>";
+
 $html[] = "<div class='container-xl'>";
 	$html[] = "<div class='response'>";
 		$html[] = getMsg();
@@ -24,10 +192,15 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 								$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['logo'].")'></span>";
 								$html[] = $data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']." account";
 							$html[] = "</a>";
-							$html[] = "<a class='ajax btn btn-dark' href='".url("ListingsController@add", ["id" => $data['account_id']])."'><i class='ti ti-user-plus me-2'></i> New Listing</a>";
-						}else {
-							$html[] = "<a class='ajax btn btn-dark' href='".url("ListingsController@addListing")."'><i class='ti ti-user-plus me-2'></i> New Listing</a>";
 						}
+
+						$html[] = "<button class='btn btn-dark dropdown-toggle' type='button' id='listingsOption' data-bs-toggle='dropdown' aria-expanded='false'><i class='ti ti-dots-circle-horizontal me-1'></i> Options</button>";
+						$html[] = "<ul class='dropdown-menu' aria-labelledby='listingsOption'>";
+							$html[] = "<li><a class='dropdown-item ajax ' href='".url("ListingsController@add", ["id" => $data['account_id']])."'><i class='ti ti-user-plus me-2'></i> New Listing</a></li>";
+							$html[] = "<li><a class='dropdown-item ajax' href='".url("ListingsController@index", ["id" => $data['account_id']], ["status" => 2])."'><i class='ti ti-home-dollar me-2'></i> Show Sold</a></li>";
+							$html[] = "<li><span class='dropdown-item ajax ' data-bs-toggle='offcanvas' href='#filterOffcanvasEnd' role='button' aria-controls='filterOffcanvasEnd'><i class='ti ti-filter me-2'></i> Filter</a></li>";
+							/* $html[] = "<li><span class='dropdown-item ajax btn-download-listings cursor-pointer'><i class='ti ti-download me-2'></i> Download Listings</span></li>"; */
+						$html[] = "</ul>";
 
 					$html[] = "</div>";
 				$html[] = "</div>";

@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 $total_featured = 0;
 
 /* $html[] = "<h3><i class='ti ti-building'></i> Related Properties</h3>"; */
@@ -47,7 +47,7 @@ $html[] = "</div>";
 
 function properties($data, $model) {
 
-	$html[] = "<div class='card row_listings_".$data['listing_id']."'>";
+	$html[] = "<div class='card row_listings_".$data['listing_id']." listings-table'>";
 		$html[] = "<div class='row g-0'>";
 			$html[] = "<div class='col-sm-4 col-md-5 col-lg-4'>";
 
@@ -58,7 +58,7 @@ function properties($data, $model) {
 						]
 					)."'>";
 
-					$html[] = "<div class='avatar avatar-xxxl w-100 rounded-0 border-0' style='background-image: url(".$data['thumb_img'].")'>";
+					$html[] = "<div class='avatar avatar-xxxl w-100 rounded-0 border-0' data-thumb-image='".$data['thumb_img']."'>";
 						
 						$html[] = "<div class='black-gradient'>";
 						

@@ -86,6 +86,23 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 				$('.offcanvas-end').html('');
 			});
 
+			$(document).ready(function() {
+				$('.listings-table .avatar').each(function() {
+					thumb_image = $(this).attr('data-thumb-image');
+					$(this).css('background-image', 'url(".CDN."images/loader.gif)');
+					getImage(thumb_image, $(this));
+				});
+			});
+
+			async function getImage(thumb_image, element) {
+				await fetch('".url("ListingsController@getThumbnail")."?url=' + thumb_image)
+					.then( response => response.json() )
+					.then(  (data) => {
+						element.css('background-image', 'url('+data.url+')');
+					});
+				
+			}
+
 		")); 
 
 		if(isset($_GET['filter'])) {

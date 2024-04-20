@@ -65,6 +65,23 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				$(this).html('');
 			});
 
+			$(document).ready(function() {
+				$('.listings-table .avatar').each(function() {
+					thumb_image = $(this).attr('data-thumb-image');
+					$(this).css('background-image', 'url(".CDN."images/loader.gif)');
+					getImage(thumb_image, $(this));
+				});
+			});
+
+			async function getImage(thumb_image, element) {
+				await fetch('".url("ListingsController@getThumbnail")."?url=' + thumb_image)
+					.then( response => response.json() )
+					.then(  (data) => {
+						element.css('background-image', 'url('+data.url+')');
+					});
+				
+			}
+
 		"));
 
 		$filters[] = " is_website = 1 ";
@@ -340,6 +357,13 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 					$.get('".url("ListingsController@relatedProperties")."', ".json_encode($uri).", function(data) {
 						$('.related-properties-container').html(data);
+
+						$('.listings-table .avatar').each(function() {
+							thumb_image = $(this).attr('data-thumb-image');
+							$(this).css('background-image', 'url(".CDN."images/loader.gif)');
+							getImage(thumb_image, $(this));
+						});
+
 					})
 
 				});
@@ -347,6 +371,15 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 				async function setKeys() {
 					privateKey = ".json_encode($account_data['message_keys']['privateKey']).";
 					publicKey = ".json_encode($account_data['message_keys']['publicKey']).";
+				}
+
+				async function getImage(thumb_image, element) {
+					await fetch('".url("ListingsController@getThumbnail")."?url=' + thumb_image)
+						.then( response => response.json() )
+						.then(  (data) => {
+							element.css('background-image', 'url('+data.url+')');
+						});
+					
 				}
 
 			"));

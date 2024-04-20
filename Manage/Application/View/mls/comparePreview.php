@@ -13,7 +13,7 @@ $html[] = "<div class='offcanvas-header'>";
     			if($data['listings']) {
 					foreach($data['listings'] as $key => $arr) {
 						$html[] = "<tr class='compare_row_".$arr['listing_id']."'>";
-							$html[] = "<td><span class='avatar avatar-xxl' style='background-image: url(".$arr['thumb_img'].")'></span></td>";
+							$html[] = "<td><span class='avatar avatar-xxl' style='background-image: url(".CDN."images/listings_thumb/".basename($arr['thumb_img']).")'></span></td>";
 							$html[] = "<td>";
 								$html[] = "<div class=''>";
 									$html[] = "<div class='float-end'>";

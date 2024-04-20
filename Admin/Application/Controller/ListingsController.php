@@ -169,7 +169,6 @@ class ListingsController extends \Main\Controller {
 					
 				}
 
-
 			");
 
 		}
@@ -382,6 +381,13 @@ class ListingsController extends \Main\Controller {
 
 					$.get('".url("MlsController@relatedProperties")."', ".json_encode($uri).", function(data) {
 						$('.related-properties-container').html(data);
+
+						$('.listings-table .avatar').each(function() {
+							thumb_image = $(this).attr('data-thumb-image');
+							$(this).css('background-image', 'url(".CDN."images/loader.gif)');
+							getImage(thumb_image, $(this));
+						});
+						
 					});
 
 				});
@@ -448,6 +454,15 @@ class ListingsController extends \Main\Controller {
 				function convertAmortization() {
 					let converted_dp = (monthly_dp / (1 / currencies[currency_code]['value']));
 					$('.monthly_dp').html('<span class=\"fs-12\">' + currency_code + '</span> ' + parseFloat((converted_dp.toFixed(2))).toLocaleString()  );
+				}
+
+				async function getImage(thumb_image, element) {
+					await fetch('".url("ListingsController@getThumbnail")."?url=' + thumb_image)
+						.then( response => response.json() )
+						.then(  (data) => {
+							element.css('background-image', 'url('+data.url+')');
+						});
+					
 				}
 
 			"));
@@ -754,7 +769,9 @@ class ListingsController extends \Main\Controller {
 
 				if($total[0]['total'] > $this->session['privileges']['featured_ads']) {
 					$response = [
+						"status" => 2,
 						"type" => "error",
+						"is_featured" => 0,
 						"message" => " Maximum Featured Ads has been reached, you cannot continue setting this as featured ads "
 					];
 				}else {
@@ -771,7 +788,9 @@ class ListingsController extends \Main\Controller {
 					]);
 
 					$response = [
+						"status" => 1,
 						"type" => "success",
+						"is_featured" => 1,
 						"message" => "Listing featured setting successfully save!"
 					];
 				}
@@ -779,7 +798,7 @@ class ListingsController extends \Main\Controller {
 				$this->getLibrary("Factory")->setMsg($response['message'], $response['type']);
 
 				return json_encode([
-					"status" => 1,
+					"status" => $response['status'],
 					"featured" => $_GET['is_featured'],
 					"message" => getMsg()
 				]);
