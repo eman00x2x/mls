@@ -65,7 +65,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 	}
 	
 	function edit($id, $account_id = null) {
-		return parent::edit($this->account_id,$id);
+		return parent::edit($id, $this->account_id);
 	}
 	
 	function add($account_id = null) {

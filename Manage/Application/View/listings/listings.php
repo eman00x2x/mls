@@ -20,7 +20,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 					$html[] = "<div class='btn-list'>";
 						$html[] = "<span class='ajax btn btn-dark btn-download-listings'><i class='ti ti-download me-2'></i> Download Listings</span>";
 						$html[] = "<a class='ajax btn btn-dark' href='".url("ListingsController@index", null, ["status" => 2])."'><i class='ti ti-home-dollar me-2'></i> Show Sold</a>";
-						$html[] = "<a class='ajax btn btn-dark' href='".url("ListingsController@addListing")."'><i class='ti ti-user-plus me-2'></i> New Listing</a>";
+						$html[] = "<a class='ajax btn btn-dark' href='".url("ListingsController@add")."'><i class='ti ti-user-plus me-2'></i> New Listing</a>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 			$html[] = "</div>";
