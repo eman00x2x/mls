@@ -47,6 +47,7 @@ Router::group(['prefix' => ADMIN_ALIAS], function () {
     Router::get('/listings/{id}/delete', 'ListingsController@delete', ['as' => 'listingsDelete'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/listings/{id}/sold', 'ListingsController@soldSettings', ['as' => 'listingsSoldSettings'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/listings/{id}/featured', 'ListingsController@setFeatured', ['as' => 'listingsSetFeatured'])->where([ 'id' => '[0-9]+' ]);
+    Router::get('/listings/downloadPropertyListings', 'ListingsController@downloadPropertyListings', ['as' => 'downloadPropertyListings']);
     
     Router::post('/accounts/{id}/listings/uploadImages', 'ListingsController@uploadImages', ['as' => 'listingsEdit'])->where([ 'id' => '[0-9]+' ]);
     Router::post('/accounts/{id}/listings/new/saveNew', 'ListingsController@saveNew', ['as' => 'listingsSaveNew'])->where([ 'id' => '[0-9]+' ]);
@@ -90,6 +91,7 @@ Router::group(['prefix' => ADMIN_ALIAS], function () {
     Router::get('/report/listingPerMunicipality', 'ReportsController@listingPerMunicipality', ['as' => 'listingPerMunicipality']);
     Router::get('/report/listingPerBarangay', 'ReportsController@listingPerBarangay', ['as' => 'listingPerBarangay']);
     Router::get('/report/getPriceRange', 'ReportsController@getPriceRange', ['as' => 'getPriceRange']);
+    Router::get('/report/downloadListingsReport', 'ReportsController@downloadListingsReport', ['as' => 'downloadListingsReport']);
 
     /** ARTICLES ROUTES */
     Router::get('/articles', 'ArticlesController@index', ['as' => 'index']);

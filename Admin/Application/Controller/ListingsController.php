@@ -65,7 +65,7 @@ class ListingsController extends \Main\Controller {
 		
 	}
 	
-	function edit($account_id, $listing_id) {
+	function edit($listing_id, $account_id) {
 
 		if(!isset($this->session['permissions']['properties']['access'])) {
 			$this->getLibrary("Factory")->setMsg("You do not have permission to access this content.","error");
@@ -363,7 +363,7 @@ class ListingsController extends \Main\Controller {
 					"type" => "listing",
 					"name" => $data['listing']['title'],
 					"id" => $listing_id,
-					"url" => rtrim(MANAGE, '/') . url("MLSController@view", ["id" => $listing_id]),
+					"url" => rtrim(MANAGE, '/') . url("MlsController@view", ["id" => $listing_id]),
 					"account_id" => $data['account']['account_id'],
 					"source" => "mls"
 				]);
@@ -381,7 +381,7 @@ class ListingsController extends \Main\Controller {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
 		
-		$_POST['title'] = str_replace(["'","\""], ["",""], $_POST['title']);
+		$_POST['title'] = str_replace(["'","\"",","], ["","",""], $_POST['title']);
 		$_POST['name'] = sanitize($_POST['title'])."-".DATE_NOW;
 		$_POST['created_at'] = DATE_NOW;
 		$_POST['modified_at'] = DATE_NOW;
@@ -466,7 +466,7 @@ class ListingsController extends \Main\Controller {
 			}
 		}
 		
-		$_POST['title'] = str_replace(["'","\""], ["",""], $_POST['title']);
+		$_POST['title'] = str_replace(["'","\"",","], ["","",""], $_POST['title']);
 		$_POST['modified_at'] = DATE_NOW;
 		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."images/listings/".$_POST['thumb_img'] : null;
 		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? 1 : 0;
@@ -1056,16 +1056,22 @@ class ListingsController extends \Main\Controller {
 
 	}
 
-	function downloadPropertyListings($account_id) {
+	function downloadPropertyListings($account_id = null) {
 
 		$listing = $this->getModel("Listing");
 		$listing->page['limit'] = 99999999;
-		$listing->column['account_id'] = $account_id;
-		$data = $listing->getByAccountId();
+
+		if($account_id != null) {
+			$listing->column['account_id'] = $account_id;
+			$data = $listing->getByAccountId();
+		}else {
+			$account_id = "";
+			$data = $listing->getList();
+		}
 
 		if($data) {
 
-			$export[] = "LISTING_ID,PLACEMENT,OFFER,TYPE,FORECLOSED,TITLE,TAGS,LONG_DESCRIPTION,CATEGORY,REGION,PROVINCE,MUNICIPALITY,BARANGAY,STREET,VILLAGE,PRICE,RESERVATION,FLOOR_AREA,LOT_AREA,BEDROOM,BATHROOM,PARKING,AMENITIES,THUMB_IMAGE_LINK,VIDEO_LINK,CREATED_AT,MODIFIED_AT";
+			$export[] = "LISTING_ID,PLACEMENT,OFFER,TYPE,FORECLOSED,TITLE,TAGS,CATEGORY,REGION,PROVINCE,MUNICIPALITY,BARANGAY,STREET,VILLAGE,PRICE,RESERVATION,FLOOR_AREA,LOT_AREA,BEDROOM,BATHROOM,PARKING,AMENITIES,THUMB_IMAGE_LINK,VIDEO_LINK,CREATED_AT,MODIFIED_AT";
 
 			for($i=0; $i<count($data); $i++) {
 
@@ -1077,20 +1083,20 @@ class ListingsController extends \Main\Controller {
 
 				$export[] = implode(",", [
 					$data[$i]['listing_id'],
-					"-".implode(" -", $placement),
+					" -".implode(" -", $placement),
 					$data[$i]['offer'],
 					$data[$i]['type'],
 					$foreclosed,
-					$data[$i]['title'],
+					str_replace(["'","\"",","], ["","",""], $data[$i]['title']),
 					implode(" ", $data[$i]['tags']),
-					str_replace(",", " ", strip_tags($data[$i]['long_desc'])),
+					/* str_replace(",", " ", strip_tags($data[$i]['long_desc'])), */
 					$data[$i]['category'],
 					$data[$i]['address']['region'],
 					$data[$i]['address']['province'],
 					$data[$i]['address']['municipality'],
-					$data[$i]['address']['barangay'],
-					$data[$i]['address']['street'],
-					$data[$i]['address']['village'],
+					str_replace(["'","\"",","], ["","",""], $data[$i]['address']['barangay']),
+					str_replace(["'","\"",","], ["","",""], $data[$i]['address']['street']),
+					str_replace(["'","\"",","], ["","",""], $data[$i]['address']['village']),
 					$data[$i]['price'],
 					$data[$i]['reservation'],
 					$data[$i]['floor_area'],
@@ -1098,12 +1104,14 @@ class ListingsController extends \Main\Controller {
 					$data[$i]['bedroom'],
 					$data[$i]['bathroom'],
 					$data[$i]['parking'],
-					"-".str_replace(",", " -", $data[$i]['amenities']),
+					" -".str_replace(",", " -", $data[$i]['amenities']),
 					$data[$i]['thumb_img'],
 					$data[$i]['video'],
 					date("Y-m-d", $data[$i]['created_at']),
 					date("Y-m-d", $data[$i]['modified_at'])
 				]);
+
+				unset($placement);
 
 			}
 
@@ -1113,6 +1121,19 @@ class ListingsController extends \Main\Controller {
 			$file = fopen($path."/".$filename, "w");
 			fwrite($file, implode("\n", $export));
 			fclose($file);
+
+			if($account_id == "") {
+				header("Content-Description: File Transfer");
+				header('Content-Type: application/octet-stream');
+				header("Content-disposition: attachment; filename=\"" . $filename . "\""); 
+				header('Expires: 0');
+				header('Cache-Control: must-revalidate');
+				header('Pragma: public');
+				header("Content-length: ".filesize($path."/".$filename));
+
+				readfile($path."/".$filename); 
+				exit();
+			}
 
 			return json_encode(array(
 				"status" => 1,

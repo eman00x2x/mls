@@ -43,9 +43,9 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
 
     /** PROPERTY LISTINGS ROUTES */
     Router::get('/listings', 'ListingsController@index', ['as' => 'listings']);
-    Router::get('/listings/new', 'ListingsController@addListing', ['as' => 'listingsAdd']);
+    Router::get('/listings/new', 'ListingsController@add', ['as' => 'listingsAdd']);
     Router::get('/listings/{id}', 'ListingsController@view', ['as' => 'listingsView'])->where([ 'id' => '[0-9]+' ]);
-    Router::get('/listings/{id}/edit', 'ListingsController@editListing', ['as' => 'listingsEdit'])->where([ 'id' => '[0-9]+' ]);
+    Router::get('/listings/{id}/edit', 'ListingsController@edit', ['as' => 'listingsEdit'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/listings/{id}/sold', 'ListingsController@soldSettings', ['as' => 'listingsSoldSettings'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/listings/{id}/featured', 'ListingsController@setFeatured', ['as' => 'listingsSetFeatured'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/listings/{id}/delete', 'ListingsController@delete', ['as' => 'listingsDelete'])->where([ 'id' => '[0-9]+' ]);

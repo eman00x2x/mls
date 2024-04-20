@@ -64,11 +64,11 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		return parent::index($this->account_id);
 	}
 	
-	function editListing($id) {
+	function edit($id, $account_id = null) {
 		return parent::edit($this->account_id,$id);
 	}
 	
-	function addListing() {
+	function add($account_id = null) {
 		return parent::add($this->account_id);
 	}
 

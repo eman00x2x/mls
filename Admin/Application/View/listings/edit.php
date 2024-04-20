@@ -58,6 +58,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 					$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";
 					$html[] = "<input name='thumb_img' id='thumb_img' type='hidden' value='".$thumb_img."' />";
 					$html[] = "<input name='account_id' id='account_id' type='hidden' value='".$data['listing']['account_id']."' />";
+					$html[] = "<input name='duration' id='duration' type='hidden' value='".$data['listing']['duration']."' />";
 					$html[] = "<input name='modified_at' id='modified_at' type='hidden' value='".date("Y-m-d H:i:s",DATE_NOW)."' />";
 					$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 
@@ -473,7 +474,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 									$html[] = "<div class='row justify-content-center py-3'>";
 										$html[] = "<div class='col-md-8 col-lg-8 col-12'>";
 
-											$html[] = "<div class='mb-3'>";
+											/* $html[] = "<div class='mb-3'>";
 												$html[] = "<label class='form-label text-muted'>Posting Duration</label>";
 												$html[] = "<div class='input-icon '>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
@@ -486,7 +487,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 													$html[] = "</select>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
 												$html[] = "</div>";
-											$html[] = "</div>";
+											$html[] = "</div>"; */
 
 											$html[] = "<div class='mb-5'>";		
 												$html[] = "<label class='form-label text-muted'>Video (Youtube Url)</label>";
@@ -682,7 +683,9 @@ $html[] = "<script type='text/javascript'>";
 			toolbar: 'link | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat code ',
 			content_css: [
 				'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-				'".WEBDOMAIN."/css/style.css'
+				'".CDN."tabler/dist/css/tabler.min.css',
+				'".CDN."tabler/dist/css/tabler-vendors.min.css?1695847769',
+				'".CDN."css/site.style.css'
 			]
 		});
 	});";

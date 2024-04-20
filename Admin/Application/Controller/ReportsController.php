@@ -119,7 +119,7 @@ class ReportsController extends \Main\Controller {
 
 	function propertiesReport() {
 		
-		unset($_SESSION['export']);
+		unset($_SESSION['export']['properties']);
 
 		$this->doc->setTitle("Properties Report");
 
@@ -138,14 +138,47 @@ class ReportsController extends \Main\Controller {
 
 			$(document).on('click', '.btn-create-report', function() {
 
-				formData = $('#create_report').serialize();
-				window.location = '?' + formData;
+				$.get('".url("ReportsController@downloadListingsReport")."', function(data) {
+					
+					$('.response').html(\"<div class='message alert alert-success alert-dismissible bg-white p-3'><div class='d-flex align-items-center gap-3'><div class='loader'></div> <p class='mb-0'>Downloading report...</p> </div> <button type='button' class='btn-close' data-bs-dismiss='alert'></button></div>\");
+
+					response = JSON.parse(data);
+
+					if(response.status == 1) {
+
+						fetch(response.url)
+							.then(resp => resp.blob())
+							.then(blob => {
+								const url = window.URL.createObjectURL(blob);
+								const a = document.createElement('a');
+								a.style.display = 'none';
+								a.href = url;
+
+								// the filename you want
+								a.download = response.filename;
+								document.body.appendChild(a);
+								a.click();
+
+								window.URL.revokeObjectURL(url);
+
+								$('.response').hide();
+
+							})
+							.catch(function() {
+								$('.response').html(\"<div class='alert alert-danger alert-dismissible bg-white p-3'><div class='d-flex align-items-center gap-3'><div class='loader'></div> <p class='mb-0'>File error downloading...</p></div> <button type='button' class='btn-close' data-bs-dismiss='alert'></button></div>\");
+							});
+
+					}else {
+
+					}
+						
+				});
 
 			});
 
 		");
 
-		$_SESSION['export'] = array_merge(
+		$_SESSION['export']['properties'] = array_merge(
 			(isset($_SESSION['export']['category']) ? $_SESSION['export']['category'] : []),
 			(isset($_SESSION['export']['price_range']) ? $_SESSION['export']['price_range'] : []),
 			(isset($_SESSION['export']['location']) ? $_SESSION['export']['location'] : []),
@@ -392,6 +425,47 @@ class ReportsController extends \Main\Controller {
 
 		}
 
+	}
+
+	function downloadListingsReport() {
+
+		if(isset($_SESSION['export']['properties'])) {
+
+			$data = $_SESSION['export']['properties'];
+
+			for($i=0; $i<count($data); $i++) {
+				if($data[$i] != "") {
+					$data[$i] = str_replace("|", ",", $data[$i]);
+				}
+				$export[] = $data[$i];
+			}
+
+			$filename = DATE_NOW.".csv";
+			$path = ROOT."/Cdn/public/downloads";
+
+			$file = fopen($path."/".$filename, "w");
+			fwrite($file, implode("\n", $export));
+			fclose($file);
+
+			return json_encode(array(
+				"status" => 1,
+				"filename" => $filename,
+				"url" => CDN."public/downloads/".$filename,
+				"message" => "File downloading..."
+			));
+
+		}else {
+
+			$this->getLibrary("Factory")->setMsg("There was an error downloading the file. Please contact the system administrator to resolve the issue.", "error");
+
+			return json_encode(array(
+				"status" => 2,
+				"message" => getMsg()
+			));
+
+		}
+
+		
 	}
 
 } 

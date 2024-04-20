@@ -39,16 +39,12 @@ $(document).on('click','.btn-save', function(e) {
 	$('html, body').animate({ scrollTop: 0 }, 'slow');
 	
 	$.post($('#save_url').val(), $('#form').serialize(), function (data, status) {
-		console.log(data);
+		
+		let response;
 
 		if (typeof data == 'object') {
-			var response = data;
-		} else { var response = JSON.parse(data); }
-
-
-		if (response.data !== undefined) { 
-			account = response.data;
-		}
+			response = data;
+		} else { response = JSON.parse(data); }
 
 		$('.btn-save').css({
 			'cursor': 'pointer',
@@ -56,20 +52,20 @@ $(document).on('click','.btn-save', function(e) {
 		});
 
 		$('.btn-save').show();
+		$('.response').html(response.message);
 
-		message = '';
 		if (response.status == 1) {
 			if ($('#reference_url').val() !== undefined) {
 
-				message = " <p class='bg-white border mt-3 p-3 mb-3'><img src='" + CDN + "images/loader.gif' />Please wait while you are redirecting...</p>";
+				let message = " <div class='bg-white p-3 mt-3 rounded'><div class='d-flex gap-3 align-items-center'><div class='loader'></div><p class='mb-0'>Please wait while you are redirecting...</p></div></div>";
+
+				$('.response').html(message);
 
 				setTimeout(function () {
 					window.location = $('#reference_url').val();
-				}, 3000);
+				}, 10);
 			}
 		}
-
-		$('.response').html(response.message + message);
 
 	});
 

@@ -120,41 +120,44 @@ $html[] = "<div class='page-body'>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 
-			$html[] = "<div class='col-lg-4 col-md-6 col-sm-6 col-12'>";
+			$html[] = "<div class='col-lg-8 col-md-8 col-sm-8 col-12'>";
 				$html[] = "<div class='card mb-3'>";
 					$html[] = "<div class='card-header'>";
 						$html[] = "<h3 class='card-title'>Most Visited Property Listings</h3>";
 					$html[] = "</div>";
 
-					$html[] = "<div class='card-table table-responsive'>";
-						$html[] = "<table class='table table-vcenter'>";
-						$html[] = "<thead>";
-							$html[] = "<th>Posting Title</th>";
-							$html[] = "<th class='text-center'>Visitors</th>";
-							$html[] = "<th class='text-center'>Posted By</th>";
-							$html[] = "<th></th>";
-						$html[] = "</thead>";
+					$html[] = "<div class='table-responsive'>";
+						$html[] = "<div class='card-table'>";
+							$html[] = "<table class='table table-vcenter'>";
+							$html[] = "<thead>";
+								$html[] = "<th>Posting Title</th>";
+								$html[] = "<th class='text-center'>Visitors</th>";
+								$html[] = "<th class='text-center'>Posted By</th>";
+								$html[] = "<th></th>";
+							$html[] = "</thead>";
 
-						if($data['most_traffic']) {
-							for($i=0; $i<count($data['most_traffic']); $i++) {
-								$html[] = "<tr>";
-									$html[] = "<td>".$data['most_traffic'][$i]['title']." <span class='text-muted fs-12 d-block'>".str_replace([WEBDOMAIN, MANAGE], ["",""], $data['most_traffic'][$i]['url'])."</span></td>";
-									$html[] = "<td class='text-center'>".$data['most_traffic'][$i]['count']."</td>";
-									$html[] = "<td class='text-center'>".$data['most_traffic'][$i]['posted_by']."</td>";
-									$html[] = "<td></td>";
-								$html[] = "</tr>";
+							if($data['most_traffic']) {
+								for($i=0; $i<count($data['most_traffic']); $i++) {
+									$html[] = "<tr>";
+										$html[] = "<td>".$data['most_traffic'][$i]['title']." <span class='text-muted fs-12 d-block'>".str_replace([WEBDOMAIN, MANAGE], ["",""], $data['most_traffic'][$i]['url'])."</span></td>";
+										$html[] = "<td class='text-center'>".$data['most_traffic'][$i]['count']."</td>";
+										$html[] = "<td class='text-center'>".$data['most_traffic'][$i]['posted_by']."</td>";
+										$html[] = "<td></td>";
+									$html[] = "</tr>";
+								}
 							}
-						}
 
-						$html[] = "</table>";
+							$html[] = "</table>";
+						$html[] = "</div>";
 					$html[] = "</div>";
 					
 				$html[] = "</div>";
 			$html[] = "</div>";
 
-			$html[] = "<div class='col-lg-4 col-md-4 col-sm-12 col-12'>";
+			$html[] = "<div class='col-lg-4 col-md-4 col-sm-12 col-12 d-block'>";
+
 				$html[] = "<div class='card mb-3'>";
-					$html[] = "<div class='card-body'>";
+					$html[] = "<div class='card-body' style='height:200px;'>";
 						$html[] = "<h3 class='card-title'>KYC Verification Statistics</h3>";
 						
 						$html[] = "<div class='table-responsive' style='max-height:350px; overflow-y: auto;'>";
@@ -180,11 +183,9 @@ $html[] = "<div class='page-body'>";
 
 					$html[] = "</div>";
 				$html[] = "</div>";
-			$html[] = "</div>";
 
-			$html[] = "<div class='col-lg-4 col-md-4 col-sm-12 col-12'>";
 				$html[] = "<div class='card mb-3'>";
-					$html[] = "<div class='card-body'>";
+					$html[] = "<div class='card-body'  style='height:200px;'>";
 						$html[] = "<h3 class='card-title'>KYC Verifier</h3>";
 						
 						$html[] = "<div class='table-responsive' style='max-height:350px; overflow-y: auto;'>";
@@ -210,6 +211,7 @@ $html[] = "<div class='page-body'>";
 
 					$html[] = "</div>";
 				$html[] = "</div>";
+
 			$html[] = "</div>";
 
 		$html[] = "</div>";
