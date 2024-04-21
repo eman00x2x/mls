@@ -137,6 +137,7 @@ class AuthenticatorController extends \Main\Controller
 						];
 					}
 
+					$data['user_agent'] = json_decode(base64_decode($_POST['user_agent']), true);
 					if($this->recordLogin($this->setPrivileges($data))) {
 						$response = [
 							"status" => 1
@@ -266,15 +267,13 @@ class AuthenticatorController extends \Main\Controller
 		$login_session_id = $this->session->getId();
 		$data['login_session_id'] = $login_session_id;
 
-		$client_info = \Library\UserClient::getInstance()->information();
-
 		$user_login = $this->getModel("UserLogin");
 		$user_login->saveNew([
 			"user_id" => $data['user_id'],
 			"session_id" => $login_session_id,
 			"status" => 1,
 			"login_at" => DATE_NOW,
-			"login_details" => $client_info
+			"login_details" => json_encode($data['user_agent'])
 		]);
 
 		unset($data['account_name']['prefix']);
@@ -451,16 +450,11 @@ class AuthenticatorController extends \Main\Controller
 
 	function getLoginForm() {
 
-		/* if($_SERVER['REQUEST_METHOD'] == "POST") {
-			if($this->checkCredentials($_POST['email'],md5($_POST['password']))) {
-				header("LOCATION: ".$this->domain."");
-			}
-		} */
-
-		$this->doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 			$(document).ready(function(e) {
 				height = $(document).height();
 				$('.login-container').css('height',(height - 200));
+				$('#user_agent').val(btoa(JSON.stringify(userClient)));
 			});
 
 			$(document).on('click','.btn-login', function(e) {
@@ -471,13 +465,10 @@ class AuthenticatorController extends \Main\Controller
 				}
 
 				$('#form').hide();
-
 				$('.response').html(\"<img src='" . CDN . "images/loader.gif' /> Logging In... \");
 
 				$.post($('#save_url').val(), $('#form').serialize(), function (data, status) {
-
 					var response = JSON.parse(data);
-					console.log(response);
 					if (response.status == 1) {
 						if ($('#reference_url').val() !== undefined) {
 							$('.response').html(\"<img src='" . CDN . "images/loader.gif' /> Please wait while you are redirecting...\");
@@ -487,7 +478,6 @@ class AuthenticatorController extends \Main\Controller
 						$('#form').show();
 						$('.response').html(response.message);
 					}
-
 				});
 
 			});
@@ -497,7 +487,7 @@ class AuthenticatorController extends \Main\Controller
 					$('.btn-login').trigger('click');
 				}
 			});
-		");
+		"));
 
 		$this->doc->setTitle("MLS Login");
 

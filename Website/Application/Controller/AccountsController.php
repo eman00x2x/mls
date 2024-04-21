@@ -46,6 +46,18 @@ class AccountsController extends \Main\Controller {
 					$(this).css('background-image', 'url(".CDN."images/loader.gif)');
 					getImage(thumb_image, $(this));
 				});
+				$.post('".url("SessionController@saveTraffic")."', {
+					'type': 'page',
+					'name': 'Profile $id',
+					'id': 0,
+					'url': '".url()."',
+					'source': 'Website',
+					'client_info': {
+						'userAgent': userClient.userAgent,
+						'geo': userClient.geo,
+						'browser': userClient.browser
+					}
+				});
 			});
 
 			async function getImage(thumb_image, element) {

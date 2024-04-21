@@ -37,6 +37,19 @@ class HomeController extends \Main\Controller {
 			$(document).ready(function() {
 				$('.navbar').hide();
 				$('.navbar-home').show();
+
+				$.post('".url("SessionController@saveTraffic")."', {
+					'type': 'page',
+					'name': 'Homepage',
+					'id': 0,
+					'url': '".url()."',
+					'source': 'Website',
+					'client_info': {
+						'userAgent': userClient.userAgent,
+						'geo': userClient.geo,
+						'browser': userClient.browser
+					}
+				});
 			});
 
 			$(document).on('change', '#address', function() {
@@ -169,11 +182,6 @@ class HomeController extends \Main\Controller {
 			"listings" => $listings
 		];
 
-		$this->saveTraffic([
-			"name" => "Homepage",
-			"url" => rtrim(WEBDOMAIN, '/') . url("HomeController@index")
-		]);
-
 		$this->setTemplate("home/index.php");
 		return $this->getTemplate(null, $model);
 	}
@@ -270,39 +278,6 @@ class HomeController extends \Main\Controller {
 		]);
 
 		exit();
-
-	}
-
-	private function saveTraffic($data) {
-
-		$traffic = $this->getModel("Traffic");
-		$traffic->select(" session_id, JSON_EXTRACT(traffic, '$.name') as name ");
-		$traffic->column['session_id'] = $this->getLibrary("SessionHandler")->get("id");
-		
-		$response = $traffic->getBySessionId();
-
-		if($response) {
-			for($i=0; $i<count($response); $i++) {
-				$arr[$response[$i]['session_id']][] = $response[$i]['name'];
-			}
-		}
-
-		if(!isset($arr[ $traffic->column['session_id'] ]) || !in_array($data['name'], $arr[ $traffic->column['session_id'] ]) || !$response) {
-			$traffic->select("");
-			$traffic->saveNew(array(
-				"traffic" => json_encode([
-					"type" => "page",
-					"name" => $data['name'],
-					"id" => 0,
-					"url" => $data['url'],
-					"source" => "Website"
-				]),
-				"account_id" => 0,
-				"session_id" => $this->getLibrary("SessionHandler")->get("id"),
-				"created_at" => DATE_NOW,
-				"user_agent" => json_encode($this->getLibrary("SessionHandler")->get("user_agent"))
-			));
-		}
 
 	}
 

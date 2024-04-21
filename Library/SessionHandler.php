@@ -3,7 +3,6 @@
 namespace Library;
 
 use Library\UserClient;
-use Library\Document;
 
 class SessionHandler extends \Josantonius\Session\Session
 {
@@ -13,12 +12,12 @@ class SessionHandler extends \Josantonius\Session\Session
 	private $container = "session";
 	
 	public static function getInstance () {
-        if (self::$_instance === null) {
-            self::$_instance = new self;
-        }
+		if (self::$_instance === null) {
+			self::$_instance = new self;
+		}
 
-        return self::$_instance;
-    }
+		return self::$_instance;
+	}
 
 	function __construct() {}
 
@@ -66,32 +65,65 @@ class SessionHandler extends \Josantonius\Session\Session
 		$this->destroy();
 	}
 
-	function setUserAgent() {
+	function getUserClient() {
 
-		$doc = new Document();
-		$doc->addScriptDeclaration("
+		$doc = \Library\Factory::getDocument();
+		$doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
+			const userClient = {
+				\"userAgent\": null,
+				\"geo\": null,
+				\"browser\": null
+			};
+			
 			$(document).ready(function() {
 
-				let userAgent = navigator.userAgent;
-				let browser = userAgent.indexOf('Chrome') > -1? 
-					'Chrome' : (userAgent.indexOf('Safari') > -1? 
-						'Safari' : (userAgent.indexOf('Firefox') > -1? 
-							'Firefox' : (userAgent.indexOf('MSIE') > -1? 
-								'MSIE' : (userAgent.indexOf('Trident') > -1? 
-									'Trident' : (userAgent.indexOf('Edge') > -1? 'Edge' : '')
-									)
-								)
-							)
-						);
+				const obj = JSON.parse(localStorage.getItem('client'));
 
-				console.log(userAgent);
-				console.log(browser);
-				
+				if(localStorage.getItem('client') === null) {
+					getGeo();
+					userClient.userAgent = navigator.userAgent;
+					getBrowser();
+				}
 
+				userClient.userAgent = obj.userAgent;
+				userClient.geo = obj.geo;
+				userClient.browser = obj.browser;
 			});
 
-		");
+			async function getGeo() {
+				$.get('https://ipinfo.io/json', function(data) {
+					userClient.geo = data;
+					localStorage.setItem('client', JSON.stringify(userClient));
+				});
+			}
+
+			function getBrowser() {
+
+				const isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+				const isFirefox = typeof InstallTrigger !== 'undefined';
+				const isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === '[object SafariRemoteNotification]'; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
+				const isIE = /*@cc_on!@*/false || !!document.documentMode;
+				const isEdge = !isIE && !!window.StyleMedia;
+				const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+				const isEdgeChromium = isChrome && (navigator.userAgent.indexOf('Edg') != -1);
+				const isBlink = (isChrome || isOpera) && !!window.CSS;
+
+				if(isOpera) { userClient.browser = 'Opera'; }
+				else if(isFirefox) { userClient.browser = 'Firefox'; }
+				else if(isSafari) { userClient.browser = 'Safari'; }
+				else if(isIE) { userClient.browser = 'IE'; }
+				else if(isEdge) { userClient.browser = 'Edge'; }
+				else if(isChrome) { userClient.browser = 'Chrome'; }
+				else if(isEdgeChromium) { userClient.browser = 'Edge'; }
+				else if(isBlink) { userClient.browser = 'Blink'; }
+				else { userClient.browser = 'Unknown Browser'; }
+
+				localStorage.setItem('client', JSON.stringify(userClient));
+
+			}
+
+		"));
 
 	}
 

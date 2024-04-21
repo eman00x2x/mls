@@ -48,5 +48,6 @@ Router::group(['prefix' => WEB_ALIAS], function () {
     
     Router::get('/getCurrencyConverter', 'ListingsController@getCurrencyConverter');
     Router::get('/listings/getThumbnail', 'ListingsController@getThumbnail', ['as' => 'getThumbnail']);
+    Router::post('/tracker', 'SessionController@saveTraffic', ['as' => 'saveTraffic']);
 
 });

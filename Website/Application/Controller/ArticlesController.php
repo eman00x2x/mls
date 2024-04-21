@@ -49,12 +49,22 @@ class ArticlesController extends \Main\Controller {
 
 		$data['categories'] = $this->totalArticlesPerCategory();
 
-		$this->saveTraffic([
-			"type" => "page",
-			"name" => "Articles",
-			"id" => 0,
-			"url" => rtrim(WEBDOMAIN, '/') . $articles->page['target'],
-		]);
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+			$(document).ready(function() {
+				$.post('".url("SessionController@saveTraffic")."', {
+					'type': 'page',
+					'name': 'Articles',
+					'id': 0,
+					'url': '".url()."',
+					'source': 'Website',
+					'client_info': {
+						'userAgent': userClient.userAgent,
+						'geo': userClient.geo,
+						'browser': userClient.browser
+					}
+				});
+			});
+		"));
 
 		$this->setTemplate("articles/index.php");
 		return $this->getTemplate($data, $articles);
@@ -87,14 +97,24 @@ class ArticlesController extends \Main\Controller {
 			"description" => $description,
 			"img" => $data['banner'],
 		]);
-		
-		$this->saveTraffic([
-			"type" => "article",
-			"name" => $data['title'],
-			"id" => $data['article_id'],
-			"url" => $data['url'],
-		]);
 
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+			$(document).ready(function() {
+				$.post('".url("SessionController@saveTraffic")."', {
+					'type': 'article',
+					'name': '".$data['title']."',
+					'id': ".$data['article_id'].",
+					'url': '".url()."',
+					'source': 'Website',
+					'client_info': {
+						'userAgent': userClient.userAgent,
+						'geo': userClient.geo,
+						'browser': userClient.browser
+					}
+				});
+			});
+		"));
+		
 		$this->setTemplate("articles/view.php");
 		return $this->getTemplate($data, $articles);
 	}
@@ -114,39 +134,6 @@ class ArticlesController extends \Main\Controller {
 
 		return $data;
 		
-	}
-
-	private function saveTraffic($data) {
-
-		$traffic = $this->getModel("Traffic");
-		$traffic->select(" session_id, JSON_EXTRACT(traffic, '$.name') as name ");
-		$traffic->column['session_id'] = $this->getLibrary("SessionHandler")->get("id");
-		
-		$response = $traffic->getBySessionId();
-
-		if($response) {
-			for($i=0; $i<count($response); $i++) {
-				$arr[$response[$i]['session_id']][] = $response[$i]['name'];
-			}
-		}
-
-		if(!isset($arr[ $traffic->column['session_id'] ]) || !in_array($data['name'], $arr[ $traffic->column['session_id'] ]) || !$response) {
-			$traffic->select("");
-			$traffic->saveNew(array(
-				"traffic" => json_encode([
-					"type" => $data['type'],
-					"name" => $data['name'],
-					"id" => $data['id'],
-					"url" => $data['url'],
-					"source" => "Website"
-				]),
-				"account_id" => 0,
-				"session_id" => $this->getLibrary("SessionHandler")->get("id"),
-				"created_at" => DATE_NOW,
-				"user_agent" => json_encode($this->getLibrary("SessionHandler")->get("user_agent"))
-			));
-		}
-
 	}
 
 }

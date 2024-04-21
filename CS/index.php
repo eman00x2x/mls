@@ -6,6 +6,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
+use Library\SessionHandler;
 use Library\CsrfVerifier;
 use CS\Application\Controller\AuthenticatorController as Authenticator;
 use Pecee\SimpleRouter\SimpleRouter as Router;
@@ -47,6 +48,8 @@ class Middleware implements IMiddleware {
 
     public function handle(Request $request): void 
     {
+
+		SessionHandler::getInstance()->getUserClient();
 
 		$verifier = new CsrfVerifier();
 		$verifier->setIgnore("/transactions/*");

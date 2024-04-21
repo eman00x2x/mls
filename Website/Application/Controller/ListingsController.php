@@ -60,6 +60,18 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 					$(this).css('background-image', 'url(".CDN."images/loader.gif)');
 					getImage(thumb_image, $(this));
 				});
+				$.post('".url("SessionController@saveTraffic")."', {
+					'type': 'page',
+					'name': '".ucwords($offer) . " Property',
+					'id': 0,
+					'url': '".url()."',
+					'source': 'Website',
+					'client_info': {
+						'userAgent': userClient.userAgent,
+						'geo': userClient.geo,
+						'browser': userClient.browser
+					}
+				});
 			});
 
 			async function getImage(thumb_image, element) {
@@ -101,15 +113,6 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		];
 
 		$response = $this->listProperties($listings, $filters);
-
-		$this->saveTraffic([
-			"type" => "page",
-			"name" => ucwords($offer) . " Property",
-			"id" => 0,
-			"url" => rtrim(WEBDOMAIN, '/') . url("ListingsController@$offer"),
-			"account_id" => 0,
-			"source" => "website"
-		]);
 
 		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->setTemplate("listings/listProperties.php");
@@ -353,7 +356,21 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 							getImage(thumb_image, $(this));
 						});
 
-					})
+					});
+
+					$.post('".url("SessionController@saveTraffic")."', {
+						'type': 'listing',
+						'name': '".$data['title']."',
+						'id': ".$data['listing_id'].",
+						'url': '".url()."',
+						'source': 'Website',
+						'account_id': ".$account_data['account_id'].",
+						'client_info': {
+							'userAgent': userClient.userAgent,
+							'geo': userClient.geo,
+							'browser': userClient.browser
+						}
+					});
 
 				});
 
@@ -394,15 +411,6 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			$this->doc->setFacebookMetaData("og:description", $data['page_description']);
 			$this->doc->setFacebookMetaData("og:updated_time", $data['modified_at']);
 			
-			$this->saveTraffic([
-				"type" => "listing",
-				"name" => $data['title'],
-				"id" => $data['listing_id'],
-				"url" => rtrim(WEBDOMAIN, '/') . url("ListingsController@view", ["name" => $data['name']]),
-				"account_id" => $account_data['account_id'],
-				"source" => "website"
-			]);
-
 			$data['account'] = $account_data;
 
 			$this->setTemplate("listings/view.php");

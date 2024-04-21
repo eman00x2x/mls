@@ -92,6 +92,18 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 					$(this).css('background-image', 'url(".CDN."images/loader.gif)');
 					getImage(thumb_image, $(this));
 				});
+				$.post('".url("SessionController@saveTraffic")."', {
+					'type': 'page',
+					'name': 'MLS',
+					'id': 0,
+					'url': '".url()."',
+					'source': 'MLS',
+					'client_info': {
+						'userAgent': userClient.userAgent,
+						'geo': userClient.geo,
+						'browser': userClient.browser
+					}
+				});
 			});
 
 			async function getImage(thumb_image, element) {
@@ -174,15 +186,6 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		];
 
 		$response = $this->listProperties($listings, $filters);
-
-		$this->saveTraffic([
-			"type" => "page",
-			"name" => "MLS",
-			"id" => 0,
-			"url" => rtrim(MANAGE, '/') . url("MLSController@index"),
-			"account_id" => 0,
-			"source" => "mls"
-		]);
 
 		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->setTemplate("listings/listProperties.php");

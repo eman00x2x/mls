@@ -48,6 +48,8 @@ class Middleware implements IMiddleware {
     public function handle(Request $request): void 
     {
 
+		SessionHandler::getInstance()->getUserClient();
+
 		$verifier = new CsrfVerifier();
 		$verifier->setIgnore("/transactions/*");
 

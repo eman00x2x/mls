@@ -170,4 +170,10 @@ class UserClient
         return $this;
     }
 
+    function getInfo() {
+
+        
+
+    }
+
 }

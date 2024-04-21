@@ -206,7 +206,27 @@ class ListingsController extends \Main\Controller {
 				if(this.checked) {
 					$('#is_mls').prop('checked', true);
 				}
-			})
+
+				if(
+					$('#is_mls_local_board').prop('checked') == false &&
+					$('#is_mls_local_region').prop('checked') == false &&
+					$('#is_mls_all').prop('checked') == false
+				) {
+					$('#is_mls').prop('checked', false);
+				}
+
+			});
+
+			$(document).on('change', '#is_mls', function() {
+				if(this.checked == false) {
+					$('#is_mls_local_board, #is_mls_local_region, #is_mls_all').prop('checked', false);
+				}
+
+				if($('#is_mls_local_board').prop('checked') == false && this.checked == true) {
+					$('#is_mls_local_board').prop('checked', true);
+				}
+
+			});
 
 			$(document).on('change', '#status', function() {
 				if($('#status option:selected').val() == 2) {
@@ -279,7 +299,27 @@ class ListingsController extends \Main\Controller {
 				if(this.checked) {
 					$('#is_mls').prop('checked', true);
 				}
-			})
+
+				if(
+					$('#is_mls_local_board').prop('checked') == false &&
+					$('#is_mls_local_region').prop('checked') == false &&
+					$('#is_mls_all').prop('checked') == false
+				) {
+					$('#is_mls').prop('checked', false);
+				}
+
+			});
+
+			$(document).on('change', '#is_mls', function() {
+				if(this.checked == false) {
+					$('#is_mls_local_board, #is_mls_local_region, #is_mls_all').prop('checked', false);
+				}
+
+				if($('#is_mls_local_board').prop('checked') == false && this.checked == true) {
+					$('#is_mls_local_board').prop('checked', true);
+				}
+
+			});
 
 			$(document).on('input', '#price', function() {
 				val = $(this).val();
@@ -392,7 +432,20 @@ class ListingsController extends \Main\Controller {
 							$(this).css('background-image', 'url(".CDN."images/loader.gif)');
 							getImage(thumb_image, $(this));
 						});
-						
+					});
+
+					$.post('".url("SessionController@saveTraffic")."', {
+						'type': 'listing',
+						'name': '".$data['listing']['title']."',
+						'id': $listing_id,
+						'url': '".url()."',
+						'source': 'MLS',
+						'account_id': ".$data['listing']['account_id'].",
+						'client_info': {
+							'userAgent': userClient.userAgent,
+							'geo': userClient.geo,
+							'browser': userClient.browser
+						}
 					});
 
 				});
@@ -492,17 +545,6 @@ class ListingsController extends \Main\Controller {
 			$handshake->and(" listing_id = ".$listing_id." AND handshake_status NOT IN('done','cancel','denied')");
 			$data['handshake'] = $handshake->getByRequestorAccountId();
 
-			if($data['listing']['account_id'] !== $this->session['account_id']) {
-				$this->saveTraffic([
-					"type" => "listing",
-					"name" => $data['listing']['title'],
-					"id" => $listing_id,
-					"url" => rtrim(MANAGE, '/') . url("MlsController@view", ["id" => $listing_id]),
-					"account_id" => $data['account']['account_id'],
-					"source" => "mls"
-				]);
-			}
-
 			$this->setTemplate("listings/view.php");
 			return $this->getTemplate($data,$listing);
 		}
@@ -538,6 +580,9 @@ class ListingsController extends \Main\Controller {
 			"authority_to_sell_expiration" => strtotime($_POST['authority_to_sell_expiration']),
 			"com_share" => $_POST['com_share']
 		]);
+
+		$pattern = "/<[^\/>]*>([\s]?)*<\/[^>]*>/";
+		$_POST['long_desc'] = preg_replace($pattern, "", $_POST['long_desc']);
 		
 		if(isset($_POST['address'])) { $_POST['address'] = json_encode($_POST['address']); }
 		if(isset($_POST['tags'])) { $_POST['tags'] = json_encode($_POST['tags']); }else { $_POST['tags'] = json_encode([""]); }
@@ -627,6 +672,9 @@ class ListingsController extends \Main\Controller {
 			"local_region" => isset($_POST['is_mls_option']['local_region']) ? 1 : 0,
 			"all" => isset($_POST['is_mls_option']['all']) ? 1 : 0
 		]);
+
+		$pattern = "/<[^\/>]*>([\s|&nbsp;]?)*<\/[^>]*>/";
+		$_POST['long_desc'] = preg_replace($pattern, "", $_POST['long_desc']);
 
 		if(isset($_POST['address'])) { $_POST['address'] = json_encode($_POST['address']); }
 		if(isset($_POST['tags'])) { $_POST['tags'] = json_encode($_POST['tags']); }

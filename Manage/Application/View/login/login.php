@@ -18,6 +18,7 @@ $html[] = "<div class='d-flex flex-column bg-white'>";
 						$html[] = "<form id='form' class='border-0' action='' method='POST'>";
 
 							$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
+							$html[] = "<input type='hidden' name='user_agent' id='user_agent' value='' />";
 
 							$html[] = "<h2 class='h3 text-center mb-4'>Login to your account</h2>";
 							

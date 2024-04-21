@@ -27,7 +27,7 @@
 						<span class="navbar-toggler-icon"></span>
 					</button>
 
-					<h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3"><a href="#">Logo</a></h1>
+					<h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3"><a href="<?php echo CS; ?>" class="text-decoration-none"><img src='<?php echo CDN."images/favicon/favicon-32x32.png"; ?>' /> <?php echo CONFIG['site_name']; ?></a></h1>
 
 					<div class="collapse navbar-collapse" id="navbar-menu">
 						<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
