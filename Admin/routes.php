@@ -21,6 +21,7 @@ Router::group(['prefix' => ADMIN_ALIAS], function () {
     /** KYC ROUTES */
     Router::get('/kyc', 'KYCController@index', ['as' => 'kycIndex']);
     Router::get('/kyc/{id}/view', 'KYCController@view', ['as' => 'view'])->where([ 'id' => '[0-9]+' ]);
+    Router::get('/kyc/{id}/delete', 'KYCController@delete', ['as' => 'delete'])->where([ 'id' => '[0-9]+' ]);
 
     Router::post('/kyc/{id}/verify', 'KYCController@saveUpdate', ['as' => 'saveKYCUpdate'])->where([ 'kyc_id' => '[0-9]+' ]);
 

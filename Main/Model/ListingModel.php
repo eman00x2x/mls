@@ -175,7 +175,7 @@ class ListingModel extends \Main\Model {
 
 				$handle->file_max_size = '2048000';
 				$handle->allowed = array('image/*');
-				$handle->forbidden = array('application/*');
+				$handle->forbidden = array('application/*', 'text/javascript', 'application/x-javascript');
 				
 				if($handle->image_src_x > 1024) {
 					$handle->image_resize = true;

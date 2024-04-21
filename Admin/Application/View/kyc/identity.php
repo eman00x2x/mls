@@ -2,7 +2,7 @@
 
 $html[] = "<input type='hidden' id='save_url' value='".url("KYCController@saveNew", ["id" => $data['account_id']])."' />";
 
-$html[] = "<input type='hidden' id='reference_url' value='".url("KYCController@kycVerificationForm", ["id" => $data['account_id']], ["step" => "3"])."' />";
+$html[] = "<input type='hidden' id='reference_url' value='".url("KYCController@kycVerificationForm")."' />";
 $html[] = "<input type='hidden' id='photo_container' value='' />";
 $html[] = "<form action='".url("KYCController@kycDocsUpload", ["id" => $data['account_id']])."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
 	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";

@@ -231,7 +231,7 @@ class AccountModel extends \Main\Model {
 			$name = explode(".",$filename);
 			$ext = array_pop($name);
 
-			$length = 50;
+			$length = 20;
 			$new_name = '';
 			$chars = range(0, 9);
 
@@ -261,7 +261,7 @@ class AccountModel extends \Main\Model {
 		if ($handle->uploaded) {
 
 			$handle->allowed = array('image/*');
-			$handle->forbidden = array('application/*');
+			$handle->forbidden = array('application/*', 'text/javascript', 'application/x-javascript');
 
 			$handle->file_safe_name 	= true;
 			$handle->image_resize         = true;

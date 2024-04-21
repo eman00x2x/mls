@@ -37,7 +37,7 @@ $(document).on('click','.btn-save', function(e) {
 
 	$('.response').html("<div class='bg-white p-3 mt-3 rounded'><div class='d-flex gap-3 align-items-center'><div class='loader'></div><p class='mb-0'>Processing, Please wait...</p></div></div>");
 	$('html, body').animate({ scrollTop: 0 }, 'slow');
-	
+	console.log($('#form').serialize());
 	$.post($('#save_url').val(), $('#form').serialize(), function (data, status) {
 		
 		let response;
@@ -53,7 +53,7 @@ $(document).on('click','.btn-save', function(e) {
 
 		$('.btn-save').show();
 		$('.response').html(response.message);
-		$("#form :input").attr('readonly', false);
+		$("#form :input").removeAttr('readonly');
 
 		if (response.status == 1) {
 			if ($('#reference_url').val() !== undefined) {

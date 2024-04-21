@@ -106,10 +106,10 @@ class KYCController extends \Main\Controller {
 				$account->column['account_id'] = $account_id;
 				$data = $account->getById();
 
-				if(isset($_REQUEST['step']) && $_REQUEST['step'] == 2) {
+				if(isset($_GET['step']) && $_GET['step'] == 2) {
 					$this->setTemplate("kyc/identity.php");
-				}else if(isset($_REQUEST['step']) && $_REQUEST['step'] == 3) {
-					$this->setTemplate("kyc/final.php");
+				}else if(isset($_GET['step']) && $_GET['step'] == 3) {
+					$this->setTemplate("kyc/status.php");
 				}else {
 					$this->setTemplate("kyc/step1.php");
 				}
@@ -122,38 +122,24 @@ class KYCController extends \Main\Controller {
 	}
 
 	function kycDocsUpload($id) {
-		$accounts = $this->getModel("Account");
-		return $accounts->uploadPhoto($_FILES['ImageBrowse'], "/public/kyc/$id");
+		$kyc = $this->getModel("KYC");
+		return $kyc->uploadPhoto($_FILES['ImageBrowse'], "/public/kyc/$id");
 	}
 
 	function saveNew($account_id) {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
 		
-		if(isset($_POST['documents'])) {
-
-			$kyc = $this->getModel("KYC");
-
-			if($_POST['documents']['kyc']['selfie']) {
-				$_POST['documents']['kyc']['selfie'] = $kyc->moveUploadedImage($_POST['documents']['kyc']['selfie'], "public/kyc/$account_id");
-			}
-			
-			if($_POST['documents']['kyc']['id']) {
-				$_POST['documents']['kyc']['id'] = $kyc->moveUploadedImage($_POST['documents']['kyc']['id'], "public/kyc/$account_id");
-			}
-
-		}
+		$kyc = $this->getModel("KYC");
 
 		$time = DATE_NOW;
-
+		$_POST['account_id'] = $account_id;
 		$_POST['kyc_status'] = 0;
 		$_POST['created_at'] = $time;
 		$_POST['created_at'] = $time;
 		
-		$kyc = $this->getModel("KYC");
 		/** DELETE OLD DOCS */
-		$kyc->deleteKYC($account_id, "account_id");
-
+		$this->removeOldKYCDocs($account_id);
 		$response = $kyc->saveNew($_POST);
 
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
@@ -177,18 +163,6 @@ class KYCController extends \Main\Controller {
 			$kyc->column['kyc_id'] = $kyc_id;
 			$data = $kyc->getById();
 			
-			if(isset($_POST['documents'])) {
-
-				if($_POST['documents']['kyc']['selfie']) {
-					$_POST['documents']['kyc']['selfie'] = $kyc->moveUploadedImage($_POST['documents']['kyc']['selfie'], "public/kyc/".$data['account_id']);
-				}
-				
-				if($_POST['documents']['kyc']['id']) {
-					$_POST['documents']['kyc']['id'] = $kyc->moveUploadedImage($_POST['documents']['kyc']['id'], "public/kyc/".$data['account_id']);
-				}
-				
-			}
-
 			switch($_POST['verification_details']) {
 				case "Expired ID": $_POST['kyc_status'] = 3; break;
 				case "Documents Accepted": $_POST['kyc_status'] = 1; break;
@@ -238,25 +212,68 @@ class KYCController extends \Main\Controller {
 		$kyc = $this->getModel("KYC");
 		$kyc->column['kyc_id'] = $kyc_id;
 
+		$kyc->join(" k JOIN #__accounts a ON a .account_id = k.account_id ");
 		$data = $kyc->getById();
 
-		foreach($data['documents']['kyc'] as $key => $route) {
-			$data['documents']['kyc'][$key] = str_replace(CDN, ROOT."/Cdn", $route);
+		if($data) {
+			if(isset($_REQUEST['delete'])) {
 
-			if(file_exists($data['documents']['kyc'][$key])) {
-				unlink($data['documents']['kyc'][$key]);
+				$this->removeOldKYCDocs($data['account_id'], $data['documents']['kyc']);
+				$kyc->deleteKYC($data['kyc_id']);
+
+				return json_encode(
+					array(
+						"status" => 1,
+						"type" => "success",
+						"message" => "Successfully Deleted"
+					)
+				);
+
 			}
+		}else {
+			$this->getLibrary("Factory")->setMsg("Article not found.","warning");
 		}
 
-		$kyc->deleteKYC($data['kyc_id']);
+		$this->setTemplate("kyc/delete.php");
+		return $this->getTemplate($data);
 
-		return json_encode(
-			array(
-				"status" => 1,
-				"type" => "success",
-				"message" => "Successfully Deleted"
-			)
-		);
+	}
+
+	function removeOldKYCDocs($account_id, array $docs = null) {
+
+		if(isset($docs) && $docs !== null) {
+
+			foreach($docs as $key => $route) {
+				$docs[$key] = str_replace(CDN, ROOT."/Cdn", $route);
+
+				if(file_exists($docs[$key])) {
+					unlink($docs[$key]);
+				}
+			}
+
+		}else {
+
+			$kyc = $this->getModel("KYC");
+			$kyc->column['account_id'] = $account_id;
+			$data = $kyc->getByAccountId();
+
+			if($data) {
+				for($i=0; $i<count($data); $i++) {
+
+					foreach($data[$i]['documents']['kyc'] as $key => $route) {
+						$file = ROOT."/Cdn/public/kyc/".$account_id."/".basename($route);
+
+						if(file_exists($file)) {
+							unlink($file);
+						}
+					}
+
+					$kyc->deleteKYC($data[$i]['kyc_id']);
+
+				}
+			}
+
+		}
 
 	}
 

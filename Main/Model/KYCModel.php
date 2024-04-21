@@ -2,6 +2,8 @@
 
 namespace Main\Model;
 
+use Verot\Upload\Upload as Upload;
+
 class KYCModel extends \Main\Model {
 
 	public $status_description = [
@@ -12,6 +14,7 @@ class KYCModel extends \Main\Model {
 	];
 
 	public $verification_explanation = [
+		"Personal information does not match in ID",
 		"Low-resolution selfie picture",
 		"Blurred selfie picture",
 		"Invalid selfie picture",
@@ -24,7 +27,7 @@ class KYCModel extends \Main\Model {
 		"ID details cannot be seen",
 		"ID too small",
 		"Low-resolution ID",
-		"Documents accepted"
+		"Documents Accepted"
 	];
 
 	function __construct() {
@@ -34,15 +37,8 @@ class KYCModel extends \Main\Model {
 	}
 
 	function getByAccountId() {
-		$query = "SELECT ".($this->select == "" ? "*" : $this->select)." FROM #__kyc k ".$this->join." WHERE k.account_id = '".$this->column['account_id']."' ".$this->and;
-		$result = $this->DBO->query($query);
-
-		$this->initiateFields($result);
-
-		if($this->DBO->numRows($result) > 0) {
-			$line = $this->DBO->fetchAssoc($result);
-			return $this->stripQuotes($line);
-		}else {return false;}
+		$this->where(" account_id = ". $this->column['account_id'] );
+		return $this->getList();
 	}
 
 	function saveNew($data) {
@@ -61,6 +57,9 @@ class KYCModel extends \Main\Model {
 			);
 		}else {
 
+			$data['documents']['kyc']['selfie'] = $this->moveUploadedImage($data['documents']['kyc']['selfie'], "public/kyc/{$data['account_id']}");
+			$data['documents']['kyc']['id'] = $this->moveUploadedImage($data['documents']['kyc']['id'], "public/kyc/{$data['account_id']}");
+			
 			$data['documents'] = json_encode($data['documents']);
 
 			foreach($data as $key => $val) {
@@ -122,14 +121,14 @@ class KYCModel extends \Main\Model {
 
 	function moveUploadedImage($filename, $path = "/images/accounts") {
 
-        $old_dir = ROOT."/Cdn/images/temporary/".$filename;
+        $old_dir = ROOT."/Cdn/public/temporary/".$filename;
 
 		if(file_exists($old_dir)) {
 
 			$name = explode(".",$filename);
 			$ext = array_pop($name);
 
-			$length = 50;
+			$length = 20;
 			$new_name = '';
 			$chars = range(0, 9);
 
@@ -137,7 +136,7 @@ class KYCModel extends \Main\Model {
 				$new_name .= $chars[array_rand($chars)];
 			}
 
-			$new_filename = $new_name."_".md5(time()).".".$ext;
+			$new_filename = base64_encode($new_name.md5(time())).".".$ext;
 		
 			$new_dir = ROOT."/Cdn/$path/";
 
@@ -153,26 +152,23 @@ class KYCModel extends \Main\Model {
 
 	function uploadPhoto($data, $path = "/images/accounts") {
 
-		$handle = new \Vendor\Upload\Upload($data);
+		$handle = new Upload($data);
 
 		if ($handle->uploaded) {
 
 			$handle->allowed = array('image/*');
-			$handle->forbidden = array('application/*');
+			$handle->forbidden = array('application/*', 'text/javascript', 'application/x-javascript');
 
 			$handle->file_safe_name 	= true;
-			$handle->image_resize         = true;
-			$handle->image_x              = 800;
-			$handle->image_ratio_y        = true;
-
-			$handle->Process(ROOT."/Cdn/images/temporary/");
+			
+			$handle->Process(ROOT."/Cdn/public/temporary/");
 
 			if ($handle->processed) {
 				return json_encode(array(
 					"status" => 1,
 					"message" => "Uploaded successfully",
 					"filename" => $handle->file_dst_name,
-					"temp_url" => CDN."images/temporary/".$handle->file_dst_name,
+					"temp_url" => CDN."public/temporary/".$handle->file_dst_name,
 					"url" => CDN."$path/".$handle->file_dst_name
 				));
 			}

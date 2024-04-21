@@ -65,7 +65,7 @@ $html[] = "<div class='page-body'>";
 									3 => "<span class='text-danger fw-bold'>Expired</span>"
 								];
 								
-								$html[] = "<tr>";
+								$html[] = "<tr class='row_article_".$data[$i]['kyc_id']."'>";
 									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
 									$html[] = "<td class='align-middle text-center'><a class='text-decoration-none' href='".url("KYCController@view",["id" => $data[$i]['kyc_id']])."'>".$data[$i]['account_id']."</a></td>";
 									$html[] = "<td class='align-middle'><a class='text-decoration-none' href='".url("KYCController@view",["id" => $data[$i]['kyc_id']])."' class='ajax text-inherit'>".$data[$i]['account_name']['prefix']." ".$data[$i]['account_name']['firstname']." ".$data[$i]['account_name']['middlename']." ".$data[$i]['account_name']['lastname']." ".$data[$i]['account_name']['suffix']."</a></td>";
@@ -76,9 +76,12 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<td class='align-middle'>".date("F d, Y", $data[$i]['created_at'])."</td>";
 									
 									$html[] = "<td class='text-center'>";
-										if($data[$i]['kyc_status'] == 0) {
-											$html[] = "<a class='btn btn-primary ajax' href='".url("KYCController@view",["id" => $data[$i]['kyc_id']])."'><i class='ti ti-lock me-1'></i> Verify</a>";
-										}
+										$html[] = "<div class='btn-list'>";
+											if($data[$i]['kyc_status'] == 0) {
+												$html[] = "<a class='btn btn-primary ' href='".url("KYCController@view",["id" => $data[$i]['kyc_id']])."'><i class='ti ti-lock me-1'></i> Verify</a>";
+											}
+											$html[] = "<span class='btn btn-delete btn-danger' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("KycController@delete",["id" => $data[$i]['kyc_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
+										$html[] = "</div>";
 									$html[] = "</td>";
 									
 								$html[] = "</tr>";

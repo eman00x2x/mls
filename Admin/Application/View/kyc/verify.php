@@ -95,20 +95,6 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<label for='id_expiration_date'>ID Expiration Date</label>";
 							$html[] = "</div>";
 
-						/* $html[] = "</div>";
-
-					$html[] = "</div>";
-				$html[] = "</div>";
-
-				$html[] = "<div class='col-lg-4 col-md-4 col-sm-12 col-12'>";
-
-					$html[] = "<div class='card mb-3'>";
-						$html[] = "<div class='card-header'>";
-							$html[] = "<h1 class='card-title'>Verification</h1>";
-						$html[] = "</div>";
-
-						$html[] = "<div class='card-body'>"; */
-
 							if($data['kyc_status'] == 0) {
 
 								$html[] = "<div class='form-floating mb-4'>";
@@ -129,8 +115,23 @@ $html[] = "<form id='form' action='' method='POST'>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 
-							}else {
+							}
 
+						$html[] = "</div>";
+
+					$html[] = "</div>";
+
+				$html[] = "</div>";
+				$html[] = "<div class='col-lg-4 col-md-6 col-sm-12 col-12'>";
+					
+					if($data['kyc_status'] > 0) {
+						$html[] = "<div class='card mb-3'>";
+							$html[] = "<div class='card-header'>";
+								$html[] = "<h1 class='card-title'>Verification Details</h1>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='card-body'>";
+								
 								$html[] = "<div class='form-floating mb-3'>";
 									$html[] = "<input type='text' id='status' value='".$data['kyc_status_description'][ $data['kyc_status'] ]."' class='form-control-plaintext fs-22' />";
 									$html[] = "<label for='status'>KYC Status</label>";
@@ -143,11 +144,19 @@ $html[] = "<form id='form' action='' method='POST'>";
 									$html[] = "</div>";
 								}
 
-							}
+								$html[] = "<div class='form-floating mb-3'>";
+									$html[] = "<input type='text' id='status' value='".$data['verified_by']."' class='form-control-plaintext fs-22' />";
+									$html[] = "<label for='status'>Verified By</label>";
+								$html[] = "</div>";
 
+								$html[] = "<div class='form-floating mb-3'>";
+									$html[] = "<input type='text' id='status' value='".date("d M Y", $data['verified_at'])."' class='form-control-plaintext fs-22' />";
+									$html[] = "<label for='status'>Verified at</label>";
+								$html[] = "</div>";
+
+							$html[] = "</div>";
 						$html[] = "</div>";
-
-					$html[] = "</div>";
+					}
 
 				$html[] = "</div>";
 			$html[] = "</div>";

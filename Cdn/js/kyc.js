@@ -45,7 +45,7 @@ $(document).on("change", "#ImageBrowse", function () {
 	$('.undefined').remove();
 	$('.response').html('');
 	
-	$('.response').html('<img src="' + CDN + 'images/loader.gif" /> Please wait photo is uploading...');
+	$('.response').html("<div class='bg-white p-3 mt-3 rounded'><div class='d-flex gap-3 align-items-center'><div class='loader'></div><p class='mb-0'>Processing, Please wait...</p></div></div>");
 	$("#imageUploadForm").submit();
 });
 
