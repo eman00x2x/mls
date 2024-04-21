@@ -445,7 +445,8 @@ class ListingsController extends \Main\Controller {
 							'userAgent': userClient.userAgent,
 							'geo': userClient.geo,
 							'browser': userClient.browser
-						}
+						},
+						'csrf_token': '".csrf_token()."'
 					});
 
 				});

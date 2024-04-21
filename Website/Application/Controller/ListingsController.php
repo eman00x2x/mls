@@ -70,7 +70,8 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 						'userAgent': userClient.userAgent,
 						'geo': userClient.geo,
 						'browser': userClient.browser
-					}
+					},
+					'csrf_token': '".csrf_token()."'
 				});
 			});
 
@@ -369,7 +370,8 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 							'userAgent': userClient.userAgent,
 							'geo': userClient.geo,
 							'browser': userClient.browser
-						}
+						},
+						'csrf_token': '".csrf_token()."'
 					});
 
 				});

@@ -7,6 +7,7 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 use Library\SessionHandler;
+use Library\CsrfVerifier;
 use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Request as Request;
 use Pecee\Http\Middleware\IMiddleware;
@@ -48,6 +49,9 @@ class Middleware implements IMiddleware {
 		Router::router()->reset();
 		SessionHandler::getInstance()->getUserClient();
 		SessionHandler::getInstance()->init();
+
+		$verifier = new CsrfVerifier();
+		Router::csrfVerifier($verifier);
 
 		require_once('routes.php');
 		$template = "Templates/template.php";
