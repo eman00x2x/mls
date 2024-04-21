@@ -1350,6 +1350,8 @@ class ListingsController extends \Main\Controller {
 
 	function getThumbnail() {
 
+		$url = "";
+
 		if(isset($_GET['url']) && $_GET['url'] != "") {
 			$filename = basename($_GET['url']);
 			$original_path = ROOT."/Cdn/images/listings";
@@ -1394,10 +1396,11 @@ class ListingsController extends \Main\Controller {
 				$url = CDN."images/listings_thumb/$filename";
 			}
 
-			echo json_encode([
-				"url" => $url
-			]);
 		}
+
+		echo json_encode([
+			"url" => $url
+		]);
 
 		exit();
 

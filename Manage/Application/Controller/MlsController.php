@@ -102,7 +102,8 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 						'userAgent': userClient.userAgent,
 						'geo': userClient.geo,
 						'browser': userClient.browser
-					}
+					},
+					'csrf_token': '".csrf_token()."'
 				});
 			});
 

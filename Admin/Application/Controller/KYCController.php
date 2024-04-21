@@ -178,10 +178,10 @@ class KYCController extends \Main\Controller {
 			$notification = $this->getModel("Notification");
 			$notification->saveNew([
 				"account_id" => $data['account_id'],
-				"content" => json_encode([
+				"content" => [
 					"title" => "KYC Verification ".$kyc->status_description[ $_POST['kyc_status'] ]." - ".$_POST['verification_details'],
 					"url" => url("/kyc"),
-				])
+				]
 			]);
 
 			

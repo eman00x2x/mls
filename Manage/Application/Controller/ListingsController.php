@@ -37,7 +37,6 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 								a.style.display = 'none';
 								a.href = url;
 
-								// the filename you want
 								a.download = response.filename;
 								document.body.appendChild(a);
 								a.click();
@@ -50,8 +49,6 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 							.catch(function() {
 								$('.response').html(\"<div class='alert alert-danger alert-dismissible bg-white p-3'><div class='d-flex align-items-center gap-3'><div class='loader'></div> <p class='mb-0'>File error downloading...</p></div> <button type='button' class='btn-close' data-bs-dismiss='alert'></button></div>\");
 							});
-
-					}else {
 
 					}
 						

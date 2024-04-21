@@ -366,18 +366,16 @@ class MessagesController extends \Main\Controller {
 
 		$recipient_account_id = implode("", $data['thread']['participants']);
 		$notification = $this->getModel("Notification");
-		$notification->saveNew(
-			array(
-				"account_id" => $recipient_account_id,
-				"status" => 1,
-				"created_at" => DATE_NOW,
-				"content" => array(
-					"title" => $this->session['name'],
-					"message" => "Sent you a message",
-					"url" => MANAGE."threads/".base64_encode($_POST['participants'])
-				)
-			)
-		);
+		$notification->saveNew([
+			"account_id" => $recipient_account_id,
+			"status" => 1,
+			"created_at" => DATE_NOW,
+			"content" => [
+				"title" => $this->session['name'],
+				"message" => "Sent you a message",
+				"url" => MANAGE."threads/".base64_encode($_POST['participants'])
+			]
+		]);
 
 		echo json_encode([
 			"status" => 1,
