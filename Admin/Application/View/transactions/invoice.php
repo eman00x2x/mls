@@ -84,7 +84,7 @@ $html[] = "<div class='row justify-content-center'>";
 									$html[] = "<td class='text-dark text-center'>".strtoupper($data['transaction']['payment_source'])."</td>";
 									$html[] = "<td class='text-dark text-center'>".$data['transaction']['payment_transaction_id']."</td>";
 									$html[] = "<td class='text-dark text-center'>".$data['transaction']['payment_status']."</td>";
-									$html[] = "<td class='text-dark text-center'>".date("F d, Y g:i a",strtotime($data['transaction']['transaction_details']['create_time']))."</td>";
+									$html[] = "<td class='text-dark text-center'>".date("F d, Y g:i a", $data['transaction']['created_at'])."</td>";
 								$html[] = "</tr>";
 								$html[] = "</table>";
 							$html[] = "</div>";
@@ -121,6 +121,14 @@ $html[] = "<div class='row justify-content-center'>";
 							$html[] = "</tr>";
 							$html[] = "</table>";
 						$html[] = "</div>";
+
+						if($data['transaction']['payment_status'] == "PENDING" && $data['transaction']['payment_source'] == "xendit") {
+							$html[] = "<div class='mt-5'>";
+								$html[] = "<p class='text-center'>";
+									$html[] = "<a href='".$data['transaction']['transaction_details']['links']['href']."' class='btn btn-primary'>Click here to pay</a>";
+								$html[] = "</p>";
+							$html[] = "</div>";
+						}
 
 					$html[] = "</div>";
 

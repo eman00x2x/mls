@@ -134,11 +134,9 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
         Router::get('/transactions/paymentStatus', 'TransactionsController@paymentStatus', ['as' => 'paymentStatus']);
         Router::post('/transactions/validateCheckOut', 'TransactionsController@validateCheckOut', ['as' => 'validateCheckOut']);
     
-    
         /** XENDIT */
         Router::post('/transactions/xenditCreateInvoce', 'TransactionsController@xenditCreateInvoce', ['as' => 'xenditCreateInvoce']);
-        Router::get('/transactions/xenditStatus', 'TransactionsController@xenditStatus', ['as' => 'xenditStatus']);
-
+        
     }
 
     /** INVOICE ROUTES */

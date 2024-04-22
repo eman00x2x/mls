@@ -52,6 +52,7 @@ class Middleware implements IMiddleware {
 
 		$verifier = new CsrfVerifier();
 		$verifier->setIgnore("/transactions/*");
+		$verifier->setIgnore("/xenditPaymentConfirmation");
 
 		Router::enableMultiRouteRendering(false);
 		Router::csrfVerifier($verifier);
@@ -74,7 +75,9 @@ class Middleware implements IMiddleware {
 			Router::post('/saveNewPassword', 'AuthenticatorController@saveNewPassword');
 			Router::post('/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
 			Router::post('/sendActivationLink', 'RegistrationController@sendActivationLink', ['as' => 'sendActivationLink']);
-		
+
+			Router::post('/xenditPaymentConfirmation', 'TransactionsController@xenditPaymentConfirmation', ['as' => 'xenditPaymentConfirmation']);
+			
 		});
 
 		$request->user = Authenticator::getInstance()->monitor();

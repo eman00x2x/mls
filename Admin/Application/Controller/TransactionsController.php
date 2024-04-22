@@ -211,8 +211,7 @@ class TransactionsController extends \Main\Controller {
 		$xendit = new XendIt();
 		$xendit->requestInvoice(
             $data,
-            url("TransactionsController@xenditStatus", ["account_id" => $account_id]),
-            url("TransactionsController@xenditStatus", ["account_id" => $account_id]),
+            url("TransactionsController@paymentStatus"),
         );
         
 		$data['cost'] = $_POST['cost'];
@@ -228,21 +227,76 @@ class TransactionsController extends \Main\Controller {
 		$xendit = new XendIt();
 		$response = $xendit->createInvoice($_POST);
 
+		$this->saveTransaction($response, $this->session['account_id']);
+		/* unset($response['processed_data']); */
+
 		echo json_encode($response);
 		exit();
 
 	}
 
-	function xenditStatus($account_id) {
+	function xenditPaymentConfirmation() {
+		/** XENDIT PAYOUT WEBHOOK */
 
-		debug($_REQUEST);
+		$response = json_decode(file_get_contents('php://input'), true);
 
+		if(isset($_SERVER['X_CALLBACK_TOKEN']) && $_SERVER['X_CALLBACK_TOKEN'] == "fU0NYRK7swFYG4vgaIJ90eUy0sVMkAO5Zho2Awno04gtVcie") {
+		
+			if(isset($response['status']) && $response['status'] == "PAID") {
+				
+				$transaction = $this->getModel("Transaction");
+				$transaction->column['payment_transaction_id'] = $response['external_id'];
+				$data = $transaction->getByPaymentTransactionId();
+
+				if($data) {
+
+					$data['transaction_details']['status'] = $response['status'];
+					$data['transaction_details']['create_time'] = strtotime($response['paid_at']);
+					$data['transaction_details']['update_time'] = strtotime($response['updated']);
+					$data['transaction_details']['payment_details'] = $response;
+
+					/* $transaction->save($data['transaction_id'], [
+						"payment_status" => "COMPLETED",
+						"payer" => json_encode($data['payer']),
+						"transaction_details" => json_encode($data['transaction_details']),
+					]);
+
+					$this->saveSubscription($data['account_id]'], [
+						"account_id" => $data['account_id'],
+						"transaction_id" => $data['transaction_id'],
+						"premium_id" => $data['premium_id'],
+						"subscription_date" => $response['paid_at'],
+						"subscription_start_at" => $response['paid_at'],
+						"subscription_end_at" => strtotime("+".$data['duration']." days", $response['paid_at']),
+						"payment_transaction_id" => $data['payment_transaction_id']
+					]); */
+
+					echo json_encode($data);
+					response()->httpCode(200);
+					exit();
+				}
+
+			}
+		}
+
+		response()->httpCode(404);
+		exit();
 	}
 
 	function checkoutValidate($account_id) {
 
 		$paypal = new PayPal();
 		$response = $paypal->validatePayment($_REQUEST['order_id']);
+
+		$this->saveTransaction($response, $account_id);
+		unset($response['processed_data']);
+
+		echo json_encode($response);
+		exit();
+
+	}
+
+	function saveTransaction($response, $account_id) {
 
 		if($response['status'] == 1) {
 
@@ -268,34 +322,44 @@ class TransactionsController extends \Main\Controller {
 				$processed_data = $transaction->saveNew($new_data);
 				$data['transaction']['transaction_id'] = $processed_data['id'];
 
-				$account_subscription = $this->getModel("AccountSubscription");
-
-				$account_subscription->saveNew([
-					"account_id" => $account_id,
-					"transaction_id" => $data['transaction']['transaction_id'],
-					"premium_id" => $premium_data['premium_id'],
-					"subscription_date" => $new_data['created_at'],
-					"subscription_start_at" => $new_data['created_at'],
-					"subscription_end_at" => strtotime("+".$new_data['duration']." days", $new_data['created_at'])
-				]);
-
-				$mail = new Mailer();
-				$mail
-					->build($this->mailInvoice($account_id, $data['transaction']['transaction_id']))
-						->send([
-							"to" => [
-								$this->session['email']
-							]
-						], CONFIG['site_name'] . " Premium Subscription Invoice - Transaction ID ". $new_data['payment_transaction_id']);
+				if(in_array($response['processed_data']['payment_status'], ["COMPLETED", "SUCCESS", "PAID"])) {
+					$this->saveSubscription($account_id, [
+						"account_id" => $account_id,
+						"transaction_id" => $data['transaction']['transaction_id'],
+						"premium_id" => $premium_data['premium_id'],
+						"subscription_date" => $new_data['created_at'],
+						"subscription_start_at" => $new_data['created_at'],
+						"subscription_end_at" => strtotime("+".$new_data['duration']." days", $new_data['created_at']),
+						"payment_transaction_id" => $new_data['payment_transaction_id']
+					]);
+				}
 
 			}
 
 		}
 
-		unset($response['processed_data']);
+	}
 
-		echo json_encode($response);
-		exit();
+	function saveSubscription($account_id, $data) {
+
+		$account_subscription = $this->getModel("AccountSubscription");
+		$account_subscription->saveNew([
+			"account_id" => $data['account_id'],
+			"transaction_id" => $data['transaction_id'],
+			"premium_id" => $data['premium_id'],
+			"subscription_date" => $data['subscription_date'],
+			"subscription_start_at" => $data['subscription_start_at'],
+			"subscription_end_at" => $data['subscription_end_at']
+		]);
+
+		$mail = new Mailer();
+		$mail
+			->build($this->mailInvoice($account_id, $data['transaction_id']))
+				->send([
+					"to" => [
+						$this->session['email']
+					]
+				], CONFIG['site_name'] . " Premium Subscription Invoice - Transaction ID ". $data['payment_transaction_id']);
 
 	}
 
@@ -306,7 +370,7 @@ class TransactionsController extends \Main\Controller {
 		// Check whether the payment ID is not empty 
 		if(!empty($_GET['checkout_ref_id'])) {
 			
-			$payment_transaction_id  = base64_decode($_GET['checkout_ref_id']); 
+			$payment_transaction_id  = $_GET['checkout_ref_id']; 
 			
 			$transaction = $this->getModel("Transaction");
 			$transaction->column['payment_transaction_id'] = $payment_transaction_id;
@@ -314,10 +378,8 @@ class TransactionsController extends \Main\Controller {
 		
 			if($data['transaction']){
 				$data['payment_status_message'] = '';
-				$data['transaction_status'] = true;
 			}else{ 
 				$data['payment_status_message'] = ""; 
-				$data['transaction_status'] = false;
 			}
 
 			$this->setTemplate("transactions/paymentStatus.php");
@@ -364,16 +426,21 @@ class TransactionsController extends \Main\Controller {
 		$transaction->column['transaction_id'] = $transaction_id;
 		$data['transaction'] = $transaction->getById();
 
-		if(VAT) {
-			$data['transaction']['premium_price'] = ($data['transaction']['premium_price'] / 1.12);
-			$data['vat'] = $data['transaction']['premium_price'] * 0.12;
-			$data['total'] = $data['transaction']['premium_price'] + $data['vat'];
-		}else {
-			$data['total'] = $data['transaction']['premium_price'];
-		}
+		if($data['transaction']) {
+			if(VAT) {
+				$data['transaction']['premium_price'] = ($data['transaction']['premium_price'] / 1.12);
+				$data['vat'] = $data['transaction']['premium_price'] * 0.12;
+				$data['total'] = $data['transaction']['premium_price'] + $data['vat'];
+			}else {
+				$data['total'] = $data['transaction']['premium_price'];
+			}
 
-		$this->setTemplate("transactions/invoice.php");
-		return $this->getTemplate($data,$transaction);
+			$this->setTemplate("transactions/invoice.php");
+			return $this->getTemplate($data,$transaction);
+		}
+		
+		$this->response(404);
+
 	}
 
 	function delete($id) {

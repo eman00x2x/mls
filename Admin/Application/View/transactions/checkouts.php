@@ -56,11 +56,18 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 
 					$html[] = "<div class='card-footer'>";
-						$html[] = "<span id='paypal-button-container'></span>";
+						$html[] = "<div class='d-flex gap-5 flex-wrap'>";
+							$html[] = "<div class='paypal-btn w-100 text-center'>";
+								$html[] = "<span class='text-dark fst-italic mb-2 d-block'>Pay with PayPal</span>";
+								$html[] = "<span id='paypal-button-container'></span>";
+							$html[] = "</div>";
 
-						$html[] = "<div class='xendit-btn mt-3'>";
-							$html[] = "<span class='btn btn-primary btn-xendit-checkout w-100'>Xendit</span>";
+							$html[] = "<div class='xendit-btn w-100 text-center'>";
+								$html[] = "<span class='text-dark fst-italic mb-2 d-block'>Pay with Xendit</span>";
+								$html[] = "<span class='btn btn-primary btn-xendit-checkout w-100 py-0'><img src='".CDN."images/04-xendit_logo_light.png' width='80' /></span>";
+							$html[] = "</div>";
 						$html[] = "</div>";
+						$html[] = "<p class='text-muted mt-4 fst-italic border rounded p-2' style='background-color:#f5f5f5;'><b>Xendit accepts</b> GCash, PayMAYA, ShopeePay, GrabPay, 7-Eleven, Cebuana Lhuillier, M Lhuiller, Palawan Express and many more</p>";
 					$html[] = "</div>";
 
 				$html[] = "</div>";

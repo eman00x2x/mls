@@ -21,7 +21,7 @@ class XendIt {
 		$this->session = $session->get('user_logged');
     }
 
-    function requestInvoice($data, $validation_url, $payment_status_url) {
+    function requestInvoice($data, $payment_status_url) {
 
 		switch($data['duration']) {
 			case '365': $quantity = 12;		break;
@@ -55,42 +55,47 @@ class XendIt {
 			"customer_notification_preference" => [
 				"invoice_paid" => ["email", "viber"]
 			],
-			"success_redirect_url" => "$validation_url",
+			"success_redirect_url" => "$payment_status_url",
 			"failure_redirect_url" => "$payment_status_url",
 			"items" => [
 				[
 					"name" => "".nicetrim("[".$data["name"]."] ".$data["details"],100)."",
 					"quantity" => $quantity,
-					"price" => ($data['total_amount'] / $quantity),
+					"price" => $data['cost'],
 					"category" => "Subscription"
 				]
 			],
-			"payment_methods" => ["CREDIT_CARD", "7ELEVEN", "CEBUANA", "DD_BPI", "DD_UBP", "DD_RCBC", "DD_BDO_EPAY", "DP_MLHUILLIER", "DP_PALAWAN", "DP_ECPAY_LOAN", "PAYMAYA", "GRABPAY", "GCASH", "SHOPEEPAY", "BILLEASE", "CASHALO", "BDO_ONLINE_BANKING", "BPI_ONLINE_BANKING", "UNIONBANK_ONILNE_BANKING", "BOC_ONLINE_BANKING", "CHINABANK_ONLINE_BANKING", "INSTAPAY_ONLINE_BANKING", "LANDBANK_ONLINE_BANKING", "MAYBANK_ONLINE_BANKING", "METROBANK_ONLINE_BANKING", "PNB_ONLINE_BANKING", "PSBANK_ONLINE_BANKING", "PESONET_ONLINE_BANKING", "RCBC_ONLINE_BANKING", "ROBINSONS_BANK_ONLINE_BANKING", "SECURITY_BANK_ONLINE_BANKING", "QRPH"],
+			"payment_methods" => ["7ELEVEN", "CEBUANA", "DD_BPI", "DD_UBP", "DD_RCBC", "DD_BDO_EPAY", "DP_MLHUILLIER", "DP_PALAWAN", "DP_ECPAY_LOAN", "PAYMAYA", "GRABPAY", "GCASH", "SHOPEEPAY", "BDO_ONLINE_BANKING", "BPI_ONLINE_BANKING", "UNIONBANK_ONILNE_BANKING", "BOC_ONLINE_BANKING", "CHINABANK_ONLINE_BANKING", "INSTAPAY_ONLINE_BANKING", "LANDBANK_ONLINE_BANKING", "MAYBANK_ONLINE_BANKING", "METROBANK_ONLINE_BANKING", "PNB_ONLINE_BANKING", "PSBANK_ONLINE_BANKING", "PESONET_ONLINE_BANKING", "RCBC_ONLINE_BANKING", "ROBINSONS_BANK_ONLINE_BANKING", "SECURITY_BANK_ONLINE_BANKING", "QRPH", "CREDIT_CARD"],
+			"fees" => [
+				[
+					"type" => "tax",
+					"value" => $data['tax_total']
+				]
+			],
 			"others" => [
 				"premium_id" => $data['premium_id'],
-				"premium_description" => $data['details']
+				"premium_description" => $data['details'],
+				"duration" => $data['duration']
 			]
 		]);
 
-        $this->doc->addScriptDeclaration("
-
+        $this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+			const postData = $post_data;
+			postData.external_id = rcg('0000000000000000');
+			postData.success_redirect_url = postData.success_redirect_url + '?checkout_ref_id=' + postData.external_id;
+			postData.failure_redirect_url = postData.failure_redirect_url + '?checkout_ref_id=' + postData.external_id;
 			$(document).on('click', '.btn-xendit-checkout', function() {
 				setProcessing(true);
-				
-				$.post('".url("TransactionsController@xenditCreateInvoce")."', $post_data,  function(data) {
+				$.post('".url("TransactionsController@xenditCreateInvoce")."', postData,  function(data) {
 					response = JSON.parse(data);
 					console.log(response);
-
-					/* if(response.data.id != '') {
-						window.location = 'https://checkout-staging.xendit.co/web/' + response.data.id;
-					} */
+					if(response.processed_data.transaction_details.id != '') {
+						window.location = 'https://checkout-staging.xendit.co/web/' + response.processed_data.transaction_details.id;
+					}
 
 				});
-
 			});
-
-
-		");
+		"));
 
     }
 
@@ -113,21 +118,21 @@ class XendIt {
 
 				$order_response = $order_response['data'];
 
-				$new_data['premium_id'] = $order_response['others']['premium_id'];
-				$new_data['premium_description'] = $order_response['others']['premium_description'];
+				$new_data['premium_id'] = $data['others']['premium_id'];
+				$new_data['premium_description'] = $data['others']['premium_description'];
 				$new_data['premium_price'] = $order_response['amount'];
-
-				switch($order_response['items'][0]['quantity']) {
-					case 1: $new_data['duration'] = 30; break;
-					case 6: $new_data['duration'] = 180; break;
-					case 12: $new_data['duration'] = 365; break;
-				}
+				$new_data['duration'] = $data['others']['duration'];
 
 				$new_data['created_at'] = strtotime($order_response['created']);
-				$new_data['payment_id'] = $order_response['id']; 
+				$new_data['payment_id'] = $data['external_id']; 
 				$new_data['payment_status'] = $order_response['status'];
 
-				$new_data['transaction_details'] = json_encode($order_response);
+				$new_data['transaction_details'] = $order_response;
+				$new_data['transaction_details']['links'] = [
+					"href" => "https://checkout-staging.xendit.co/web/".$order_response['id'],
+					"rel" => "self",
+					"method" => "GET"
+				];
 
 				$new_data['merchant_email'] = ""; 
 				$new_data['merchant_id'] = ""; 
@@ -166,7 +171,7 @@ class XendIt {
 
 	}
 
-	function request($method, $endpoint, $data = null, $headers) {
+	function request($method, $endpoint, $data = null, $headers = array()) {
 
 		$handle = curl_init($endpoint);
         curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);

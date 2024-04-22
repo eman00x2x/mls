@@ -38,8 +38,8 @@ class PayPal {
 		$data['total_without_tax'] = $data['cost'] * $quantity;
 		$data['total_with_tax'] = ($data['cost'] + $data['tax']) * $quantity;
 
-        $this->doc->addScript("https://www.paypal.com/sdk/js?client-id=".$this->client_id."&currency=".$this->currency."&intent=capture&commit=false&vault=false");
-		$this->doc->addScriptDeclaration("
+        $this->doc->addScript("https://www.paypal.com/sdk/js?client-id=".$this->client_id."&currency=".$this->currency."&intent=capture&commit=false&vault=false&disable-funding=card");
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
 			var paymentPageLink;
 			var order_id;
@@ -136,7 +136,7 @@ class PayPal {
 					form_data.append(key, data[key]);
 				}
 				return form_data;   
-			}
+			};
 
 			/* Show a loader on payment form processing */
 			const setProcessing = (isProcessing) => {
@@ -144,9 +144,9 @@ class PayPal {
 					$('.loader-container').removeClass('d-none');
 					$('.cart-container').addClass('d-none');
 				}
-			}  
+			};
 			
-		");
+		"));
 
     }
 
@@ -227,7 +227,7 @@ class PayPal {
 					$response = [
 						"status" => 1,
 						"msg" => 'Transaction Completed!',
-						"payment_id" => base64_encode($new_data['payment_id']),
+						"payment_id" => $new_data['payment_id'],
 						"processed_data" => $new_data
 					];
 
