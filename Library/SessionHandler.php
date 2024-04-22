@@ -2,8 +2,6 @@
 
 namespace Library;
 
-use Library\UserClient;
-
 class SessionHandler extends \Josantonius\Session\Session
 {
 
@@ -44,8 +42,8 @@ class SessionHandler extends \Josantonius\Session\Session
 		$this->replace([
 			"id" => $this->getId(),
 			"started" => $timestamp,
-			"end" => strtotime($this->lifetime, $timestamp),
-			"user_agent" => json_decode(UserClient::getInstance()->information(), true)
+			"end" => strtotime($this->lifetime, $timestamp)/* ,
+			"user_agent" => json_decode(UserClient::getInstance()->information(), true) */
 		]);
 		
 	}

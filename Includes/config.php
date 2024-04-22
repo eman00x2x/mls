@@ -25,12 +25,20 @@ define("VAT", CONFIG['show_vat']);
 
 define("PROPERTY_TAGS", CONFIG['property_tags']);
 
-$paypal_credential = require_once(ROOT . "/paypal.credentials");
+/** API CREDENTIALS */
 
-define("PAYPAL_CLIENT_ID", $paypal_credential['client_id']);
-define("PAYPAL_CLIENT_SECRET", $paypal_credential['client_secret']);
+$credential = require_once(ROOT . "/credentials");
+
+/** PAYPAL */
+define("PAYPAL_CLIENT_ID", $credential['PAYPAL']['client_id']);
+define("PAYPAL_CLIENT_SECRET", $credential['PAYPAL']['client_secret']);
 define("PAYPAL_ENVIRONMENT", "sandbox");
+
+/** XENDIT */
+define("XENDIT_API_KEY", $credential['XENDIT']['api_key']);
+
 define("CURRENCY", "PHP");
 
+/** ANALYTICS AND CUSTOM META TAGS */
 define("ANALYTICS", CONFIG['analytics']);
 define("HEADER_SCRIPT", CONFIG['header_script']);

@@ -126,11 +126,19 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
         /** TRANSACTIONS ROUTES */
         Router::get('/transactions', 'TransactionsController@transactions', ['as' => 'transactions']);
         Router::get('/transactions/cart/{premium_id}', 'TransactionsController@mycart', ['as' => 'cart'])->where([ 'premium_id' => '[0-9]+' ]);
-        Router::get('/transactions/paymentStatus', 'TransactionsController@paymentStatus', ['as' => 'paymentStatus']);
         Router::get('/transactions/{id}/invoice', 'TransactionsController@invoice', ['as' => 'invoice'])->where([ 'id' => '[0-9]+' ]);
 
         Router::post('/transactions/checkout/{premium_id}', 'TransactionsController@checkout', ['as' => 'checkout'])->where([ 'premium_id' => '[0-9]+' ]);
+
+        /** PAYPAL */
+        Router::get('/transactions/paymentStatus', 'TransactionsController@paymentStatus', ['as' => 'paymentStatus']);
         Router::post('/transactions/validateCheckOut', 'TransactionsController@validateCheckOut', ['as' => 'validateCheckOut']);
+    
+    
+        /** XENDIT */
+        Router::post('/transactions/xenditCreateInvoce', 'TransactionsController@xenditCreateInvoce', ['as' => 'xenditCreateInvoce']);
+        Router::get('/transactions/xenditStatus', 'TransactionsController@xenditStatus', ['as' => 'xenditStatus']);
+
     }
 
     /** INVOICE ROUTES */

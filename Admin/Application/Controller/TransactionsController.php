@@ -3,6 +3,7 @@
 namespace Admin\Application\Controller;
 
 Use Library\PayPal as PayPal;
+Use Library\XendIt as XendIt;
 use Library\Mailer;
 
 class TransactionsController extends \Main\Controller {
@@ -192,6 +193,10 @@ class TransactionsController extends \Main\Controller {
 		$premium->column['premium_id'] = $premium_id;
 		$data = $premium->getById();
 
+		$account = $this->getModel("Account");
+		$account->column['account_id'] = $account_id;
+		$data['account'] = $account->getById();
+
 		$data['duration'] = $_POST['duration'];
 
 		$this->doc->setTitle("Checkout Premiums");
@@ -202,12 +207,37 @@ class TransactionsController extends \Main\Controller {
 			($this->validation_url != "" ? $this->validation_url : url("TransactionsController@checkoutValidate", ["account_id" => $account_id])),
 			($this->payment_status_url != "" ? $this->payment_status_url : url("TransactionsController@paymentStatus"))
 		);
+
+		$xendit = new XendIt();
+		$xendit->requestInvoice(
+            $data,
+            url("TransactionsController@xenditStatus", ["account_id" => $account_id]),
+            url("TransactionsController@xenditStatus", ["account_id" => $account_id]),
+        );
         
 		$data['cost'] = $_POST['cost'];
         $this->setTemplate("transactions/checkouts.php");
 		return $this->getTemplate($data,$premium);
 
     }
+
+	function xenditCreateInvoce() {
+
+		parse_str(file_get_contents('php://input'), $_POST);
+
+		$xendit = new XendIt();
+		$response = $xendit->createInvoice($_POST);
+
+		echo json_encode($response);
+		exit();
+
+	}
+
+	function xenditStatus($account_id) {
+
+		debug($_REQUEST);
+
+	}
 
 	function checkoutValidate($account_id) {
 

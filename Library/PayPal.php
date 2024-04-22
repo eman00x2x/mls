@@ -253,7 +253,7 @@ class PayPal {
 
 	function request($method, $endpoint, $data = null, $headers = array()) {
 
-        $url = PAYPAL_ENVIRONMENT === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com";
+        $url = $this->environment === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com";
 
 		$handle = curl_init($url.$endpoint);
         curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
@@ -291,7 +291,7 @@ class PayPal {
 
 	function generateAccessToken() {
 		
-		$url = PAYPAL_ENVIRONMENT === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com";
+		$url = $this->environment === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com";
 
 		$handle = curl_init($url."/v1/oauth2/token");
 		curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);

@@ -57,6 +57,10 @@ $html[] = "<div class='page-body'>";
 
 					$html[] = "<div class='card-footer'>";
 						$html[] = "<span id='paypal-button-container'></span>";
+
+						$html[] = "<div class='xendit-btn mt-3'>";
+							$html[] = "<span class='btn btn-primary btn-xendit-checkout w-100'>Xendit</span>";
+						$html[] = "</div>";
 					$html[] = "</div>";
 
 				$html[] = "</div>";
