@@ -118,6 +118,17 @@ class XendIt {
 
 				$order_response = $order_response['data'];
 
+				unset($order_response['available_banks']);
+				unset($order_response['available_retail_outlets']);
+				unset($order_response['available_ewallets']);
+				unset($order_response['available_qr_codes']);
+				unset($order_response['available_direct_debits']);
+				unset($order_response['available_paylaters']);
+				unset($order_response['should_exclude_credit_card']);
+				unset($order_response['should_send_email']);
+				unset($order_response['success_redirect_url']);
+				unset($order_response['failure_redirect_url']);
+
 				$new_data['premium_id'] = $data['others']['premium_id'];
 				$new_data['premium_description'] = $data['others']['premium_description'];
 				$new_data['premium_price'] = $order_response['amount'];

@@ -8,7 +8,7 @@ class TransactionsController extends \Admin\Application\Controller\TransactionsC
 
 	function __construct() {
 		parent::__construct();
-		$this->account_id = $this->session['account_id'];
+		$this->account_id = isset($this->session['account_id']) ? $this->session['account_id'] : null;
 		
 		$this->validation_url = url("TransactionsController@validateCheckOut");
 		$this->payment_status_url = url("TransactionsController@paymentStatus");

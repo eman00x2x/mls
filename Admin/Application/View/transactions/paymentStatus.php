@@ -18,9 +18,9 @@ $html[] = "<div class='page-body'>";
 
 						$html[] = "<h2 class='text-center mb-5'>";
 							
-						if(in_array($data['transaction']['payment_status'], ["COMPLETED", "PAID"])) {
+						if(in_array($data['transaction']['payment_status'], ["COMPLETED", "PAID", "SUCCEEDED", "SUCCESS"])) {
 							$html[] = "<span class='d-block text-green'>";
-								$html[] = "<i class='ti ti-xbox-x' style='font-size:100px;'></i>";
+								$html[] = "<i class='ti ti-checks' style='font-size:100px;'></i>";
 							$html[] = "</span>";
 							$html[] = "<span class='text-green'>Your Payment has been Successful!</span>";
 						}else {
@@ -37,11 +37,11 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<span class='fs-22'>".$data['transaction']['payment_transaction_id']."</span>";
 						$html[] = "</p>";
 
-						if(in_array($data['transaction']['payment_status'], ["COMPLETED", "PAID"])) {
+						if(in_array($data['transaction']['payment_status'], ["COMPLETED", "PAID", "SUCCEEDED", "SUCCESS"])) {
 
 							$html[] = "<p class='text-center'>";
 								$html[] = "<span class='d-block text-muted'>Payment Date</span>";
-								$html[] = "<span class='fs-22'>".date("d F Y", strtotime($data['transaction']['transaction_details']['create_time']))."</span>";
+								$html[] = "<span class='fs-22'>".date("d F Y", ($data['transaction']['created_at']))."</span>";
 							$html[] = "</p>";
 
 							$html[] = "<p class='text-center'>";

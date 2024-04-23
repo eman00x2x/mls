@@ -18,15 +18,14 @@ class TransactionsController extends \Main\Controller {
 		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
+	}
+
+    function index() {
 
 		if(!isset($this->session['permissions']['transactions']['access'])) {
 			$this->getLibrary("Factory")->setMsg("You do not have enough permission to access the Transactions Report", "warning");
 			response()->redirect(url("DashboardController@index"));
 		}
-
-	}
-
-    function index() {
 
 		$this->doc->setTitle("Transactions");
 
@@ -130,6 +129,11 @@ class TransactionsController extends \Main\Controller {
 
 	function view($id) {
 
+		if(!isset($this->session['permissions']['transactions']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have enough permission to access the Transactions Report", "warning");
+			response()->redirect(url("DashboardController@index"));
+		}
+
 		$this->doc->setTitle("Transaction");
 
 		$transaction = $this->getModel("Transaction");
@@ -150,6 +154,11 @@ class TransactionsController extends \Main\Controller {
 	}
 
 	function cart($account_id, $premium_id) {
+
+		if(!isset($this->session['permissions']['transactions']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have enough permission to access the Transactions Report", "warning");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("Cart");
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
@@ -184,6 +193,11 @@ class TransactionsController extends \Main\Controller {
 
     function selectedPremium($account_id, $premium_id) {
 
+		if(!isset($this->session['permissions']['transactions']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have enough permission to access the Transactions Report", "warning");
+			response()->redirect(url("DashboardController@index"));
+		}
+
 		/* $paypal = new PayPal();
 		$response = $paypal->validatePayment("81Y91742TA749304S");
 		debug($response);
@@ -211,7 +225,7 @@ class TransactionsController extends \Main\Controller {
 		$xendit = new XendIt();
 		$xendit->requestInvoice(
             $data,
-            url("TransactionsController@paymentStatus"),
+            rtrim(MANAGE, "/").url("TransactionsController@paymentStatus"),
         );
         
 		$data['cost'] = $_POST['cost'];
@@ -238,11 +252,11 @@ class TransactionsController extends \Main\Controller {
 	function xenditPaymentConfirmation() {
 		/** XENDIT PAYOUT WEBHOOK */
 
-		$response = json_decode(file_get_contents('php://input'), true);
-
-		if(isset($_SERVER['X_CALLBACK_TOKEN']) && $_SERVER['X_CALLBACK_TOKEN'] == "fU0NYRK7swFYG4vgaIJ90eUy0sVMkAO5Zho2Awno04gtVcie") {
+		if(isset($_SERVER['HTTP_X_CALLBACK_TOKEN']) && $_SERVER['HTTP_X_CALLBACK_TOKEN'] == "fU0NYRK7swFYG4vgaIJ90eUy0sVMkAO5Zho2Awno04gtVcie") {
 		
-			if(isset($response['status']) && $response['status'] == "PAID") {
+			$response = json_decode(file_get_contents('php://input'), true);
+
+			if(isset($response['status']) && in_array($response['status'], ["PAID", "COMPLETED", "SUCCESS", "SUCCEEDED"])) {
 				
 				$transaction = $this->getModel("Transaction");
 				$transaction->column['payment_transaction_id'] = $response['external_id'];
@@ -250,31 +264,53 @@ class TransactionsController extends \Main\Controller {
 
 				if($data) {
 
+					unset($response['available_banks']);
+					unset($response['available_retail_outlets']);
+					unset($response['available_ewallets']);
+					unset($response['available_qr_codes']);
+					unset($response['available_direct_debits']);
+					unset($response['available_paylaters']);
+					unset($response['should_exclude_credit_card']);
+					unset($response['should_send_email']);
+					unset($response['success_redirect_url']);
+					unset($response['failure_redirect_url']);
+
 					$data['transaction_details']['status'] = $response['status'];
 					$data['transaction_details']['create_time'] = strtotime($response['paid_at']);
 					$data['transaction_details']['update_time'] = strtotime($response['updated']);
 					$data['transaction_details']['payment_details'] = $response;
 
-					/* $transaction->save($data['transaction_id'], [
+					$transaction->save($data['transaction_id'], [
 						"payment_status" => "COMPLETED",
 						"payer" => json_encode($data['payer']),
 						"transaction_details" => json_encode($data['transaction_details']),
 					]);
 
-					$this->saveSubscription($data['account_id]'], [
+					$this->saveSubscription($data['account_id'], [
 						"account_id" => $data['account_id'],
 						"transaction_id" => $data['transaction_id'],
 						"premium_id" => $data['premium_id'],
-						"subscription_date" => $response['paid_at'],
-						"subscription_start_at" => $response['paid_at'],
-						"subscription_end_at" => strtotime("+".$data['duration']." days", $response['paid_at']),
+						"subscription_date" => strtotime($response['paid_at']),
+						"subscription_start_at" => strtotime($response['paid_at']),
+						"subscription_end_at" => strtotime("+".$data['duration']." days", strtotime($response['paid_at'])),
 						"payment_transaction_id" => $data['payment_transaction_id']
-					]); */
+					]);
 
-					echo json_encode($data);
+					echo json_encode([
+						"message" => "Payment successfully recorded!"
+					]);
+
 					response()->httpCode(200);
 					exit();
+
 				}
+
+				echo json_encode([
+					"message" => "Invoice expired and has been removed from ".CONFIG['site_name']
+				]);
+
+				response()->httpCode(200);
+				exit();
 
 			}
 		}
@@ -352,18 +388,27 @@ class TransactionsController extends \Main\Controller {
 			"subscription_end_at" => $data['subscription_end_at']
 		]);
 
+		$account = $this->getModel("Account");
+		$account->column['account_id'] = $account_id;
+		$account_data = $account->getById();
+
 		$mail = new Mailer();
 		$mail
 			->build($this->mailInvoice($account_id, $data['transaction_id']))
 				->send([
 					"to" => [
-						$this->session['email']
+						$account_data['email']
 					]
 				], CONFIG['site_name'] . " Premium Subscription Invoice - Transaction ID ". $data['payment_transaction_id']);
 
 	}
 
 	function paymentStatus() {
+
+		if(!isset($this->session['permissions']['transactions']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have enough permission to access the Transactions Report", "warning");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("MLS - Payment Confirmation");
 
@@ -415,6 +460,11 @@ class TransactionsController extends \Main\Controller {
 	}
 
 	function invoices($account_id, $transaction_id) {
+
+		if(!isset($this->session['permissions']['transactions']['access'])) {
+			$this->getLibrary("Factory")->setMsg("You do not have enough permission to access the Transactions Report", "warning");
+			response()->redirect(url("DashboardController@index"));
+		}
 
 		$this->doc->setTitle("Invoice");
 
