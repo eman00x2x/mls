@@ -14,14 +14,14 @@ class PagesController extends \Main\Controller {
 	function about() {
 
 		$data['title'] = "About ".CONFIG['site_name'];
-		$data['description]'] = "MLS";
-		$data['image'] = "";
+		$data['description]'] = "PAREB Network proudly spearheads the Philippine real estate arena, commanding a robust presence through its 68 Local Member Boards. With a collective force of 5,000 skilled practitioners, PAREB Network stands as a cornerstone of excellence and integrity in the industry, driving forward innovation and shaping the future landscape of real estate across the nation";
+		$data['image'] = CDN."images/real-estate.jpg";
 
 		$this->doc->setTitle($data['title']);
 		$this->doc->setDescription($data['description]']);
 		$this->doc->setMetaData("keywords", $data['description]']);
 
-		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:url", DOMAIN . url());
 		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
 		$this->doc->setFacebookMetaData("og:image", $data['image']);
@@ -54,14 +54,14 @@ class PagesController extends \Main\Controller {
 	function contact() {
 
 		$data['title'] = "Contact ".CONFIG['site_name'];
-		$data['description'] = "MLS";
-		$data['image'] = "";
+		$data['description'] = CONFIG['contact_info']['contact_page_text'];
+		$data['image'] = CDN."images/real-estate.jpg";
 
 		$this->doc->setTitle($data['title']);
 		$this->doc->setDescription($data['description']);
 		$this->doc->setMetaData("keywords", $data['description']);
 
-		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:url", DOMAIN . url());
 		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
 		$this->doc->setFacebookMetaData("og:image", $data['image']);
@@ -94,14 +94,14 @@ class PagesController extends \Main\Controller {
 	function privacy() {
 
 		$data['title'] = "Data Privacy - " . CONFIG['site_name'];
-		$data['description'] = "MLS";
-		$data['image'] = "";
+		$data['description'] = "This Privacy Policy aims to provide information on how we collect, use, manage, and secure your personal information. Any information you provide to us indicates your express consent to our Privacy Policy.";
+		$data['image'] = CDN."images/pareb-privacy.jpg";
 
 		$this->doc->setTitle($data['title']);
 		$this->doc->setDescription($data['description']);
 		$this->doc->setMetaData("keywords", $data['description']);
 
-		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:url", DOMAIN . url());
 		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
 		$this->doc->setFacebookMetaData("og:image", $data['image']);
@@ -134,14 +134,14 @@ class PagesController extends \Main\Controller {
 	function terms() {
 
 		$data['title'] = "Terms and Conditions - " . CONFIG['site_name'];
-		$data['description'] = "MLS";
-		$data['image'] = "";
+		$data['description'] = "By using the Website, you are indicating your acceptance to be bound by these terms and conditions. The Website may revise these terms and conditions at any time by updating this page. You should visit this page periodically to review the terms and conditions, to which you are bound.";
+		$data['image'] = CDN."images/pareb-mls-terms.jpg";
 
 		$this->doc->setTitle($data['title']);
 		$this->doc->setDescription($data['description']);
 		$this->doc->setMetaData("keywords", $data['description']);
 
-		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:url", DOMAIN . url());
 		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
 		$this->doc->setFacebookMetaData("og:image", $data['image']);

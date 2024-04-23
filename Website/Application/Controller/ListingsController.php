@@ -15,12 +15,16 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 
 	function index($offer = "buy") {
 
-		$this->doc->setTitle("Property Listings");
+		$description = "PAREB Network proudly spearheads the Philippine real estate arena, commanding a robust presence through its 68 Local Member Boards. With a collective force of 5,000 skilled practitioners, PAREB Network stands as a cornerstone of excellence and integrity in the industry, driving forward innovation and shaping the future landscape of real estate across the nation";
 
-		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setTitle("Property Listings");
+		$this->doc->setDescription($description);
+		$this->doc->setMetaData("keywords", $description);
+
+		$this->doc->setFacebookMetaData("og:url", DOMAIN . url());
 		$this->doc->setFacebookMetaData("og:title", "");
 		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", "");
+		$this->doc->setFacebookMetaData("og:image", CDN."images/real-estate.jpg");
 		$this->doc->setFacebookMetaData("og:description", "");
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
@@ -406,7 +410,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			$this->doc->setDescription($data['page_description']);
 			$this->doc->setMetaData("keywords", $data['page_description']);
 
-			$this->doc->setFacebookMetaData("og:url", url());
+			$this->doc->setFacebookMetaData("og:url", DOMAIN . url());
 			$this->doc->setFacebookMetaData("og:title", $data['page_title']);
 			$this->doc->setFacebookMetaData("og:type", "website");
 			$this->doc->setFacebookMetaData("og:image", $data['page_image']);
@@ -425,6 +429,20 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 	}
 
 	function comparativeAnalysis($uri) {
+
+		$title = "Compartive Analysis Table ". CONFIG['site_name'];
+		$description = "";
+
+		$this->doc->setTitle($title);
+		$this->doc->setDescription($description);
+		$this->doc->setMetaData("keywords", $description);
+
+		$this->doc->setFacebookMetaData("og:url", DOMAIN . url());
+		$this->doc->setFacebookMetaData("og:title", $title);
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", $data['page_image']);
+		$this->doc->setFacebookMetaData("og:description", $description);
+		$this->doc->setFacebookMetaData("og:updated_time", date("Y-m-d" , DATE_NOW));
 
 		parse_str(urldecode(base64_decode($uri)), $_GET);
 		$this->doc->setTitle("MLS System - Comparative Analysis Table");

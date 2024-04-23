@@ -33,8 +33,8 @@ Router::group(['prefix' => WEB_ALIAS], function () {
     Router::get('/p-{name}', 'ListingsController@view')->where([ 'name' => '[\w\-]+' ]);
     Router::get('/related-properties', 'ListingsController@relatedProperties');
 
-    Router::post(WEB_ALIAS . '/validate-message', 'ListingsController@validateMessageInput');
-    Router::post(WEB_ALIAS . '/send-message-{id}', 'ListingsController@sendMessage')->where([ 'id' => '[0-9]+' ]);
+    Router::post('/validate-message', 'ListingsController@validateMessageInput');
+    Router::post('/send-message-{id}', 'ListingsController@sendMessage')->where([ 'id' => '[0-9]+' ]);
 
     /** MLS PUBLIC ROUTES */
     Router::get('/mls/{name}', 'ListingsController@view')->where([ 'name' => '[\w\-]+' ]);

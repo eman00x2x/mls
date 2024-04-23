@@ -46,6 +46,7 @@ if(DEVELOPMENT) {
 
 }
 
+define("DOMAIN",	"http://localhost");
 define("API",		"http://localhost/mls/Api/");
 define("API_DOCS",	"http://localhost/mls/Api/Documentation/");
 define("API_V1",	"http://localhost/mls/Api/v1/");
@@ -56,7 +57,7 @@ define("CS",		"http://localhost/mls/CS/");
 define("ADMIN",		"http://localhost/mls/Admin/");
 define("MANAGE",	"http://localhost/mls/Manage/");
 
-/* define("API",		"http://192.168.254.250/mls/api/");
+/* define("API",	"http://192.168.254.250/mls/api/");
 define("API_V1",	"http://localhost/mls/api/v1");
 define("CDN",		"http://192.168.254.250/mls/cdn/");
 define("WEBDOMAIN",	"http://192.168.254.250/mls/website/");

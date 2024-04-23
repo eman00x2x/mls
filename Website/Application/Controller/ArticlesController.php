@@ -17,13 +17,13 @@ class ArticlesController extends \Main\Controller {
 
 		$data['title'] = "Articles - " . CONFIG['site_name'];
 		$data['description'] = $data['title'];
-		$data['image'] = null;
+		$data['image'] = CDN."images/real-estate.jpg";
 		
 		$this->doc->setTitle($data['title']);
 		$this->doc->setDescription($data['description']);
 		$this->doc->setMetaData("Keywords", $data['description']);
 
-		$this->doc->setFacebookMetaData("og:url", WEBDOMAIN.url("ArticlesController@index"));
+		$this->doc->setFacebookMetaData("og:url", DOMAIN . url("ArticlesController@index"));
 		$this->doc->setFacebookMetaData("og:title", $data['title']);
 		$this->doc->setFacebookMetaData("og:type", "website");
 		$this->doc->setFacebookMetaData("og:image", $data['image']);
@@ -83,7 +83,7 @@ class ArticlesController extends \Main\Controller {
 		$this->doc->setDescription($description);
 		$this->doc->setMetaData("keywords", $description);
 
-		$data['url'] = rtrim(WEBDOMAIN, '/') . url("ArticlesController@view", ["name" => $name]);
+		$data['url'] = WEBDOMAIN . trim(url(), WEB_ALIAS);
 
 		$this->doc->setFacebookMetaData("og:url", $data['url']);
 		$this->doc->setFacebookMetaData("og:title", $data['title']);

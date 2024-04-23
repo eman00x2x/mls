@@ -14,8 +14,8 @@ class HomeController extends \Main\Controller {
 	function index() {
 
 		$title = CONFIG['site_name'];
-		$description = $title;
-		$image = "";
+		$description = "PAREB Network proudly spearheads the Philippine real estate arena, commanding a robust presence through its 68 Local Member Boards. With a collective force of 5,000 skilled practitioners, PAREB Network stands as a cornerstone of excellence and integrity in the industry, driving forward innovation and shaping the future landscape of real estate across the nation";
+		$image = CDN."images/real-estate.jpg";
 
 		$this->doc->addScript(CDN."philippines-addresses/table_combine_address.js");
 
@@ -26,7 +26,7 @@ class HomeController extends \Main\Controller {
 		$this->doc->setFacebookMetaData("og:url", url());
 		$this->doc->setFacebookMetaData("og:title", "");
 		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", "");
+		$this->doc->setFacebookMetaData("og:image", $image);
 		$this->doc->setFacebookMetaData("og:description", "");
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
