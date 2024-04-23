@@ -48,7 +48,7 @@ $html[] = "<br/><div style='color: #667382 !important; padding: 1.5rem !importan
 		$html[] = "<td style='color: #182433 !important; text-align: center;'>".strtoupper($data['transaction']['payment_source'])."</td>";
 		$html[] = "<td style='color: #182433 !important; text-align: center;'>".$data['transaction']['payment_transaction_id']."</td>";
 		$html[] = "<td style='color: #182433 !important; text-align: center;'>".$data['transaction']['payment_status']."</td>";
-		$html[] = "<td style='color: #182433 !important; text-align: center;'>".date("F d, Y g:i a",strtotime($data['transaction']['transaction_details']['create_time']))."</td>";
+		$html[] = "<td style='color: #182433 !important; text-align: center;'>".date("F d, Y g:i a", strtotime($data['transaction']['transaction_details']['create_time']))."</td>";
 	$html[] = "</tr>";
 	$html[] = "</table>";
 $html[] = "</div><br/>";

@@ -276,8 +276,8 @@ class TransactionsController extends \Main\Controller {
 					unset($response['failure_redirect_url']);
 
 					$data['transaction_details']['status'] = $response['status'];
-					$data['transaction_details']['create_time'] = strtotime($response['paid_at']);
-					$data['transaction_details']['update_time'] = strtotime($response['updated']);
+					$data['transaction_details']['create_time'] = $response['paid_at'];
+					$data['transaction_details']['update_time'] = $response['updated'];
 					$data['transaction_details']['payment_details'] = $response;
 
 					$transaction->save($data['transaction_id'], [

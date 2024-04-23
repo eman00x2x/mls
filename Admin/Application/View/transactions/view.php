@@ -96,6 +96,44 @@ $html[] = "<div class='page-body'>";
                                 }
                             }
 
+                            if(isset($data['transaction_details']['payment_details'])) {
+                                
+                                unset($data['transaction_details']['payment_details']['user_id']);
+                                unset($data['transaction_details']['payment_details']['merchant_name']);
+                                unset($data['transaction_details']['payment_details']['is_high']);
+
+                                foreach($data['transaction_details']['payment_details'] as $key => $arr) {
+
+                                    if($key == "external_id") {
+                                        $key = "invoice_id";
+                                    }
+
+                                    $html[] = "<tr>";
+                                        $html[] = "<td style='width:200px;'>".ucwords(str_replace("_"," ", $key))."</td>";
+                                        $html[] = "<td class='fw-bold align-middle p-0'>";
+
+                                            if(is_array($arr)) {
+                                                $html[] = "<table class='table'>";
+
+                                                    foreach($arr as $x => $val) {
+                                                        foreach($val as $y => $z) {
+                                                            $html[] = "<tr>";
+                                                                $html[] = "<td style='width:100px;'>".ucwords($y)."</td>";
+                                                                $html[] = "<td class='fw-normal align-middle'>$z</td>";
+                                                            $html[] = "</tr>";
+                                                        }
+                                                    }
+
+                                                $html[] = "</table>";
+                                            }else {
+                                                $html[] = $arr;
+                                            }
+
+                                        $html[] = "</td>";
+                                    $html[] = "</tr>";
+                                }
+                            }
+
                             if(isset($data['transaction_details']['transaction'])) {
                                 $html[] = "<tr>";
                                     $html[] = "<td style='width:200px;'>Processed By</td>";

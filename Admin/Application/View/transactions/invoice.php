@@ -84,7 +84,7 @@ $html[] = "<div class='row justify-content-center'>";
 									$html[] = "<td class='text-dark text-center'>".strtoupper($data['transaction']['payment_source'])."</td>";
 									$html[] = "<td class='text-dark text-center'>".$data['transaction']['payment_transaction_id']."</td>";
 									$html[] = "<td class='text-dark text-center'>".$data['transaction']['payment_status']."</td>";
-									$html[] = "<td class='text-dark text-center'>".date("F d, Y g:i a", $data['transaction']['created_at'])."</td>";
+									$html[] = "<td class='text-dark text-center'>".date("F d, Y g:i a", $data['transaction']['transaction_details']['create_time'])."</td>";
 								$html[] = "</tr>";
 								$html[] = "</table>";
 							$html[] = "</div>";
