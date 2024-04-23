@@ -149,7 +149,7 @@ $html[] = "<div class='container-fluid'>";
                         $html[] = "<code>";
                             $html[] = '{
   "message": "The requested resource could not be found. Please refer to the documentation",
-  "url": "http://localhost/mls/api/documentation"
+  "url": "'.API_DOCS.'"
 }';
                         $html[] = "</code>";
                     $html[] = "</pre>";
