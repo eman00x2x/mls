@@ -297,7 +297,7 @@ class TransactionsController extends \Main\Controller {
 					]);
 
 					echo json_encode([
-						"message" => "Payment successfully recorded!"
+						"message" => "Payment successfully recorded for external_id ".$response['external_id']." with id ".$response['id']."!"
 					]);
 
 					response()->httpCode(200);
