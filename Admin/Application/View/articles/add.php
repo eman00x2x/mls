@@ -49,7 +49,7 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 					
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-header'>";
-							$html[] = "<h3 class='card-title text-blue mb-0'>Update Article</h3>";
+							$html[] = "<h3 class='card-title text-blue mb-0'>Create Article</h3>";
 						$html[] = "</div>";
 
 						$html[] = "<div class='card-body'>";

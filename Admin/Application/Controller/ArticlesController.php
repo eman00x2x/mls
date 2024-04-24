@@ -46,7 +46,7 @@ class ArticlesController extends \Main\Controller {
 
 	function add() {
 		
-		$this->doc->setTitle("Update Article");
+		$this->doc->setTitle("New Article");
 		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
 		$this->doc->addScript(CDN."js/photo-uploader.js");
 
