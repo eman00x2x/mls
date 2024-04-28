@@ -258,9 +258,12 @@ class ListingsController extends \Main\Controller {
 		$listing->column['listing_id'] = $listing_id;
 		$listing->and(" account_id = $account_id ");
 
-		$listing->addresses = $this->getModel("Address");
+		$listing->address = $this->getModel("Address");
 
 		$data['listing'] = $listing->getById();
+		$data['listing']['documents'] = [
+			"Authority-to-negotiate.pdf","vicinity-map.pdf","land-title-copy.pdf"
+		];
 		
 		if($data['listing']) {
 
@@ -359,7 +362,7 @@ class ListingsController extends \Main\Controller {
 			}
 		}else {
 
-			$listing->addresses = $this->getModel("Address");
+			$listing->address = $this->getModel("Address");
 
 			$this->setTemplate("listings/add.php");
 			return $this->getTemplate($data, $listing);

@@ -69,6 +69,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 								$html[] = "<li class='nav-item' role='pressentation'><a href='#technical_description' 	class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-ruler me-2'></i> Technical Details</a></li>";
 								$html[] = "<li class='nav-item' role='pressentation'><a href='#payment_details' 		class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-cash me-2'></i> Payment Details</a></li>";
 								$html[] = "<li class='nav-item' role='pressentation'><a href='#images_list' 			class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-photo me-2'></i> Images</a></li>";
+								$html[] = "<li class='nav-item' role='pressentation'><a href='#docs_list' 				class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-photo me-2'></i> Documents</a></li>";
 								$html[] = "<li class='nav-item' role='pressentation'><a href='#settings'	 			class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-settings-cog me-2'></i> Settings</a></li>";
 							$html[] = "</ul>";
 						$html[] = "</div>";
@@ -247,7 +248,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 											$html[] = "<div class='form-group mb-3'>";
 												$html[] = "<label class='form-label text-muted'>Address</label>";
-												$html[] = $model->addresses->addressSelection($data['listing']['address']);
+												$html[] = $model->address->addressSelection($data['listing']['address']);
 											$html[] = "</div>";
 
 											$html[] = "<div class='mb-3 street-input'>";
@@ -459,6 +460,71 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 														$html[] = "<li class='list-group-item'><i class='ti ti-arrow-badge-right me-2 text-danger'></i>Images less than 2MB file sizes are allowed</li>";
 														$html[] = "<li class='list-group-item'><i class='ti ti-arrow-badge-right me-2 text-danger'></i>Resize your images before uploading</li>";
 														$html[] = "<li class='list-group-item'><i class='ti ti-arrow-badge-right me-2 text-danger'></i>For website compatibility, only upload landscape images</li>";
+													$html[] = "</ul>";
+												$html[] = "</div>";
+											$html[] = "</div>";
+
+										$html[] = "</div>";
+									$html[] = "</div>";
+
+								$html[] = "</div>";
+
+								$html[] = "<div id='docs_list' class='tab-pane '>";
+									/***** DOCUMENTS *****/
+									
+									$html[] = "<div class='row py-3'>";
+										$html[] = "<div class='col-lg-8 col-md-8 col-12'>";
+
+											$html[] = "<div class='card mb-3 bg-dark-lt'>";
+												$html[] = "<div class='card-body'>";
+													$html[] = "<div class='text-center'>";
+														$html[] = "<p style='' class='p-0 m-0'>";
+														$html[] = "<span class='photo-upload-loader'></span>";
+														$html[] = "<span class='btn btn-dark btn-photo-browse'><i class='ti ti-upload me-2'></i> Upload Documents</span></p>";
+													$html[] = "</div>";
+												$html[] = "</div>";
+											$html[] = "</div>";
+											
+											$html[] = "<div class='upload-response'></div>";
+											
+											$html[] = "<div class='' style='max-height:520px; overflow-y:auto;'>";
+												$html[] = "<ul class='list-group list-group-flush'>";
+													
+													if($data['listing']['documents']) {
+														for($i=0; $i<count($data['listing']['documents']); $i++) {
+															$html[] = "<li class='list-group-item d-flex gap-3 justify-content-between align-items-center py-1 file_$i'>";
+																$html[] = "<div class='flex-grow-1'>";
+																	$html[] = "<input type='hidden' name='documents[]' id='document_$i' value='".$data['listing']['documents'][$i]."' />";
+																	$html[] = "<span>".$data['listing']['documents'][$i]."</span>";
+																$html[] = "</div>";
+																$html[] = "<div class='btn-list'>";
+																	$html[] = "<span class='btn btn-danger' data-number='$i' data-filename='".$data['listing']['documents'][$i]."'><i class='ti ti-trash me-1'></i> Delete</span>";
+																$html[] = "</div>";
+															$html[] = "</li>";
+														}
+													}
+													
+												$html[] = "</ul>";
+											$html[] = "</div>";
+												
+										$html[] = "</div>";
+
+										$html[] = "<div class='col-lg-4 col-md-4 d-md-block d-none'>";
+
+											$html[] = "<div class='card mb-3'>";
+
+												$html[] = "<div class='card-status-top bg-azure'></div>";
+												$html[] = "<div class='card-stamp'>";
+													$html[] = "<div class='card-stamp-icon bg-azure'><i class='ti ti-info-circle'></i></div>";
+												$html[] = "</div>";
+
+												$html[] = "<div class='card-body'>";
+													$html[] = "<p>Please read the following before uploading images</p>";
+													$html[] = "<ul class='list-group'>";
+														$html[] = "<li class='list-group-item'><i class='ti ti-arrow-badge-right me-2 text-danger'></i>Only .pdf file is allowed</li>";
+														$html[] = "<li class='list-group-item'><i class='ti ti-arrow-badge-right me-2 text-danger'></i>Rename your pdf file before uploading</li>";
+														$html[] = "<li class='list-group-item'><i class='ti ti-arrow-badge-right me-2 text-danger'></i>Select 5 or less pdf file per upload</li>";
+														$html[] = "<li class='list-group-item'><i class='ti ti-arrow-badge-right me-2 text-danger'></i>Pdf files less than 3MB file sizes are allowed</li>";
 													$html[] = "</ul>";
 												$html[] = "</div>";
 											$html[] = "</div>";

@@ -25,10 +25,13 @@ function import($path,$data=null,$model=null) {
 
 function clean($str) {
 	$inye = array("Ñ","ñ");
-	$str = str_replace($inye,"&Ntilde;",$str);
-	$str = str_replace($inye,"&ntilde;",$str);
 
-	return stripslashes(trim($str));
+    if(!is_null($str)) {
+        $str = str_replace($inye,"&Ntilde;",$str);
+        $str = str_replace($inye,"&ntilde;",$str);
+
+        return stripslashes(trim($str));
+    }
 }
 
 function escape($str) {

@@ -233,7 +233,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 											$html[] = "<div class='form-group mb-3'>";
 												$html[] = "<label class='form-label text-muted'>Address</label>";
-												$html[] = $model->addresses->addressSelection();
+												$html[] = $model->address->addressSelection();
 											$html[] = "</div>";
 
 											$html[] = "<div class='mb-3 street-input'>";

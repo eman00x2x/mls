@@ -6,6 +6,8 @@ use Verot\Upload\Upload as Upload;
 
 class ListingModel extends \Main\Model {
 
+	public $address;
+
 	function __construct() {
 		$this->table = "listings";
 		$this->primary_key = "listing_id";
@@ -263,7 +265,7 @@ class ListingModel extends \Main\Model {
 			$html[] = "<optgroup label='$key'>";
 			foreach($mainCategory as $subCategory) {
 				$sel = $currentValue == $subCategory ? "selected" : "";
-				$html[] = "<option value='".utf8_encode("$subCategory")."' $sel>".utf8_encode("$subCategory")."</option>";
+				$html[] = "<option value='".mb_convert_encoding($subCategory, "UTF-8")."' $sel>".mb_convert_encoding($subCategory, "UTF-8")."</option>";
 			}
 			$html[] = "</optgroup>";
 		}

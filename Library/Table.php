@@ -106,10 +106,11 @@ class Table {
 
 		foreach($data as $key => $val) {
 			$val = clean($val);
-			
-			json_decode($val);
-			if(json_last_error() === JSON_ERROR_NONE) {
-				$val = json_decode($val, true);
+			if(!is_null($val)) {
+				json_decode($val);
+				if(json_last_error() === JSON_ERROR_NONE) {
+					$val = json_decode($val, true);
+				}
 			}
 			$this->column[$key] = $val;
 		}
