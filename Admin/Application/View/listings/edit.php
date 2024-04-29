@@ -8,6 +8,21 @@ $html[] = "</div>";
 
 $html[] = "<input type='hidden' id='save_url' value='".url("ListingsController@saveUpdate", ["id" => $data['listing']['listing_id']])."' />";
 
+$html[] = "<input type='hidden' id='photo_uploader' value='listings' />";
+$html[] = "<form action='".url("ListingsController@uploadImages", ["id" => $data['listing']['account_id']])."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
+	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
+	$html[] = "<center>";
+		$html[] = "<input type='file' name='ImageBrowse[]' id='ImageBrowse' multiple='multiple' accept='image/*' />";
+	$html[] = "</center>";
+$html[] = "</form>";
+
+$html[] = "<form action='".url("ListingsController@uploadDocuments")."' id='DocsUploadForm' method='POST' enctype='multipart/form-data'>";
+	$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
+	$html[] = "<center>";
+		$html[] = "<input type='file' name='DocsBrowse[]' id='DocsBrowse' multiple='multiple' accept='application/pdf' />";
+	$html[] = "</center>";
+$html[] = "</form>";
+
 $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 	$html[] = "<div class='col-lg-8 col-md-8 col-sm-12 col-12'>";
 
@@ -42,14 +57,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 		/** START PAGE BODY */
 		$html[] = "<div class='page-body'>";
 			$html[] = "<div class='container-xl'>";
-
-				$html[] = "<input type='hidden' id='photo_uploader' value='listings' />";
-				$html[] = "<form action='".url("ListingsController@uploadImages", ["id" => $data['listing']['account_id']])."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
-					$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
-					$html[] = "<center>";
-						$html[] = "<input type='file' name='ImageBrowse[]' id='ImageBrowse' multiple='multiple' accept='image/*' />";
-					$html[] = "</center>";
-				$html[] = "</form>";
 
 				$arr = explode("/",$data['listing']['thumb_img']);
 				$thumb_img = array_pop($arr);
@@ -105,7 +112,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<label class='form-label text-muted'>Title</label>";
 												$html[] = "<div class='input-icon mb-1'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-writing'></i></span>";
-													$html[] = "<input type='text' name='title' id='title' value='".($data['listing']['title'])."' class='form-control' placeholder='Title' />";
+													$html[] = "<input type='text' name='title' id='title' value='".clean($data['listing']['title'])."' class='form-control' placeholder='Title' />";
 													
 												$html[] = "</div>";
 												$html[] = "<p class='p-0 text-info'>Do not include \"For Sale\", \"RFO\", \"Re-Sale\" in your title.</p>";
@@ -479,16 +486,16 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<div class='card-body'>";
 													$html[] = "<div class='text-center'>";
 														$html[] = "<p style='' class='p-0 m-0'>";
-														$html[] = "<span class='photo-upload-loader'></span>";
-														$html[] = "<span class='btn btn-dark btn-photo-browse'><i class='ti ti-upload me-2'></i> Upload Documents</span></p>";
+														$html[] = "<span class='document-upload-loader'></span>";
+														$html[] = "<span class='btn btn-dark btn-document-browse'><i class='ti ti-upload me-2'></i> Upload Documents</span></p>";
 													$html[] = "</div>";
 												$html[] = "</div>";
 											$html[] = "</div>";
 											
-											$html[] = "<div class='upload-response'></div>";
+											$html[] = "<div class='upload-response mb-3'></div>";
 											
 											$html[] = "<div class='' style='max-height:520px; overflow-y:auto;'>";
-												$html[] = "<ul class='list-group list-group-flush'>";
+												$html[] = "<ul class='list-group list-group-flush document_list'>";
 													
 													if($data['listing']['documents']) {
 														for($i=0; $i<count($data['listing']['documents']); $i++) {
@@ -498,7 +505,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 																	$html[] = "<span>".$data['listing']['documents'][$i]."</span>";
 																$html[] = "</div>";
 																$html[] = "<div class='btn-list'>";
-																	$html[] = "<span class='btn btn-danger' data-number='$i' data-filename='".$data['listing']['documents'][$i]."'><i class='ti ti-trash me-1'></i> Delete</span>";
+																	$html[] = "<span class='btn btn-danger' data-number='$i' data-filename='".$data['listing']['documents'][$i]."' data-url='".url("ListingsController@removeDocument", $data['listing']['listing_id'], ["filename" => $data['listing']['documents'][$i]])."'><i class='ti ti-trash me-1'></i> Delete</span>";
 																$html[] = "</div>";
 															$html[] = "</li>";
 														}

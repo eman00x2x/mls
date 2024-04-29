@@ -127,6 +127,7 @@ class ListingModel extends \Main\Model {
 				if(!isset($data['address'])) { $data['address'] = json_encode($this->column['address']); }
 				if(!isset($data['payment_details'])) { $data['payment_details'] = json_encode($this->column['payment_details']); }
 				if(!isset($data['other_details'])) { $data['other_details'] = json_encode($this->column['other_details']); }
+				if(!isset($data['documents'])) { $data['documents'] = json_encode($this->column['documents']); }
 
 				foreach($data as $key => $val) {
 					$this->column[$key] = $val;
@@ -282,6 +283,96 @@ class ListingModel extends \Main\Model {
 			"Perimeter Fence","Centralized Water System","Eco-friendly and Energy-efficient Homes","24 Hours Security","Guard House","Gated Community","Working Waste Disposal System","Power Backup","Fire Alarms and Suppression System","CCTV Cameras",
 			"Proximity to Public Transport","Near Malls","Near Hospitals","Near Public Markets","Near in Churches","Near in Schools","Shuttles"
 		];
+	}
+
+	function uploadDocuments($data) {
+
+		if(count($data['name']) >= 6) {
+			
+			\Library\Factory::setMsg("Select 5 or less pdf files per upload!","wrong");
+			$uploadedDocuments[] = array(
+				"status" => 2,
+				"message" => getMsg()
+			);
+
+			return json_encode($uploadedDocuments);
+		}
+		
+		$files = array();
+		foreach ($data as $k => $l) {
+			foreach ($l as $i => $v) {
+				if (!array_key_exists($i, $files))
+					$files[$i] = array();
+					$files[$i][$k] = $v;
+			}
+		}
+		
+		foreach ($files as $file) {
+
+			$handle = new Upload($file); 
+
+			if ($handle->uploaded) {
+			
+				$handle->file_safe_name = true;
+
+				$handle->file_max_size = '3600000';
+				$handle->allowed = array('application/pdf');
+				$handle->forbidden = array('images/*', 'text/javascript', 'application/x-javascript');
+				
+				$handle->Process(ROOT."/Cdn/public/temporary/"); 
+				
+				if ($handle->processed) {
+
+					$uploadedDocuments[] = array(
+						"status" => 1,
+						"id" => rand(1000,10000).time(),
+						"filename" => $handle->file_dst_name,
+						"url" => CDN."public/temporary/".$handle->file_dst_name
+					);
+				
+				}else {
+
+					\Library\Factory::setMsg("There was an error uploading your file \"".$file['name']."\". Only PDF are allowed and less than 3MB file sizes are allowed, Please check your file size before uploading.","wrong");
+					
+					$uploadedDocuments[] = array(
+						"status" => 2,
+						"message" => getMsg()
+					);
+					
+				}
+			}else {
+				\Library\Factory::setMsg("There was an error uploading your file \"".$file['name']."\". Only PDF are allowed and less than 3MB file sizes are allowed, Please check your file size before uploading.","info");
+				$uploadedDocuments[] = array(
+					"status" => 2,
+					"message" => getMsg()
+				);
+			}
+
+			unset($handle);
+		}
+		
+		return json_encode($uploadedDocuments);
+		
+	}
+
+	function moveUploadedDocuments($filename, $container_id) {
+
+        $old_dir = ROOT."/Cdn/public/temporary/".$filename;
+
+		if(file_exists($old_dir)) {
+
+			$path = "public/listings/documents/$container_id";
+			$new_dir = ROOT."/Cdn/$path";
+
+			if(!is_dir($new_dir)) {
+				mkdir($new_dir, 0775, true);
+			}
+
+			rename($old_dir,$new_dir."/".$filename);
+
+			return CDN."$path/".$filename;
+		}
+
 	}
 
 }

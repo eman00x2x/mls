@@ -44,7 +44,7 @@ input {
 	border-radius: 3%;
 }
 
-#ImageBrowse, #PdfBrowse {
+#ImageBrowse, #PdfBrowse, #DocsBrowse {
 	position: absolute;
 	left: -100000px;
 	top: 0;

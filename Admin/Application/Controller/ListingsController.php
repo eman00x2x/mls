@@ -193,6 +193,7 @@ class ListingsController extends \Main\Controller {
 		$this->doc->setTitle("Update Property Listing");
 		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
 		$this->doc->addScript(CDN."js/photo-uploader.js");
+		$this->doc->addScript(CDN."js/document-uploader.js");
 		$this->doc->addScript(CDN."tabler/dist/libs/tom-select/dist/js/tom-select.base.min.js?1695847769");
 
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
@@ -289,6 +290,7 @@ class ListingsController extends \Main\Controller {
 		$this->doc->setTitle("New Property Listings");
 		$this->doc->addScript(CDN."tinymce/tinymce.min.js");
 		$this->doc->addScript(CDN."js/photo-uploader.js");
+		$this->doc->addScript(CDN."js/document-uploader.js");
 		$this->doc->addScript(CDN."tabler/dist/libs/tom-select/dist/js/tom-select.base.min.js?1695847769");
 
 		$this->doc->addScriptDeclaration("
@@ -544,6 +546,10 @@ class ListingsController extends \Main\Controller {
 				$data['listing']['images'] = [];
 			}
 
+			if(!$data['listing']['documents']) {
+				$data['listing']['documents'] = [];
+			}
+
 			$handshake = $this->getModel("Handshake");
 			$handshake->column['requestor_account_id'] = $_SESSION['user_logged']['account_id'];
 			$handshake->and(" listing_id = ".$listing_id." AND handshake_status NOT IN('done','cancel','denied')");
@@ -597,6 +603,9 @@ class ListingsController extends \Main\Controller {
 			"local_region" => isset($_POST['is_mls_option']['local_region']) ? 1 : 0,
 			"all" => isset($_POST['is_mls_option']['all']) ? 1 : 0
 		]);
+
+		$documents = $_POST['documents'];
+		unset($_POST['documents']);
 	
 		$listing = $this->getModel("Listing");
 		$response = $listing->saveNew($_POST);
@@ -613,8 +622,18 @@ class ListingsController extends \Main\Controller {
 			}
 
 			$_POST["post_score"] = $this->computeScore($_POST);
+
+			if(isset($documents) && !empty($documents)) {
+				for($i=0; $i<count($documents); $i++) {
+					$listing->moveUploadedDocuments($documents[$i], $id);
+				}
+
+				$documents = json_encode($documents);
+			}
+
 			$listing->save($response['id'], [
-				"post_score" => $_POST["post_score"]
+				"post_score" => $_POST["post_score"],
+				"documents" => $documents,
 			]);
 
 		}
@@ -686,12 +705,22 @@ class ListingsController extends \Main\Controller {
 
 		if(isset($_POST['listing_image_filename'])) {
 			$listingImage = $this->getModel("ListingImage");
-			$_POST['image_score'] = $listingImage->saveImages($id,$_POST['listing_image_filename']);
+			$_POST['image_score'] = $listingImage->saveImages($id, $_POST['listing_image_filename']);
 		}
 
 		$_POST['post_score'] = $this->computeScore($_POST);
 
+
 		$listing = $this->getModel("Listing");
+
+		if(isset($_POST['documents']) && !empty($_POST['documents'])) {
+			for($i=0; $i<count($_POST['documents']); $i++) {
+				$listing->moveUploadedDocuments($_POST['documents'][$i], $id);
+			}
+
+			$_POST['documents'] = json_encode($_POST['documents']);
+		}
+
 		unset($_POST['listing_image_filename']);
 		$response = $listing->save($id,$_POST);
 
@@ -716,6 +745,22 @@ class ListingsController extends \Main\Controller {
 				"message" => getMsg()
 			);
 			return json_encode($uploadedImages);
+		}
+		
+	}
+
+	function uploadDocuments() {
+
+		if(isset($_FILES['DocsBrowse'])) {
+			$listing = $this->getModel("Listing");
+			return $listing->uploadDocuments($_FILES['DocsBrowse']);
+		}else {
+			$this->getLibrary("Factory")->setMsg("There was something wrong, Please try selecting your document again.","info");
+			$uploadedDocuments[] = array(
+				"status" => 2,
+				"message" => getMsg()
+			);
+			return json_encode($uploadedDocuments);
 		}
 		
 	}
@@ -1406,6 +1451,28 @@ class ListingsController extends \Main\Controller {
 		]);
 
 		exit();
+
+	}
+
+	function removeDocument($Listing_id) {
+		
+		if(isset($_GET['filename'])) {
+
+			$filename = $_GET['filename'];
+			$path = ROOT."/Cdn/public/listings/documents/$Listing_id/$filename";
+			unlink($path);
+
+			return json_encode(array(
+                "status" => 1,
+                "message" => "File removed successfully."
+            ));
+
+		}
+
+		return json_encode(array(
+             "status" => 2,
+             "message" => "File not found!."
+         ));
 
 	}
 	

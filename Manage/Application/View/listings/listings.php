@@ -268,12 +268,15 @@ $html[] = "<div class='page-body'>";
 											$placement[] = "Public Website";
 										}
 
-										foreach($data['listings'][$i]['is_mls_option'] as $key => $value) {
-											if($value == 1) {
-												switch($key) {
-													case 'local_board': $placement[] = "Local Board MLS"; break;
-													case 'local_region': $placement[] = "Regional MLS"; break;
-													case 'all': $placement[] = "National MLS"; break;
+										$placement = [];
+										if(!is_null($data['listings'][$i]['is_mls_option'])) {
+											foreach($data['listings'][$i]['is_mls_option'] as $key => $value) {
+												if($value == 1) {
+													switch($key) {
+														case 'local_board': $placement[] = "Local Board MLS"; break;
+														case 'local_region': $placement[] = "Regional MLS"; break;
+														case 'all': $placement[] = "National MLS"; break;
+													}
 												}
 											}
 										}

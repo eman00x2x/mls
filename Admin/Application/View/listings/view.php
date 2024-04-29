@@ -196,6 +196,17 @@ $html[] = "<div class='page-body'>";
 							$html[] = "</div>";
 						$html[] = "</div>";
 					$html[] = "</div>";
+
+					$html[] = "<div class='card flex-fill'>";
+						$html[] = "<div class='card-body'>";
+							$html[] = "<div class='card-title'><i class='ti ti-file-description me-1'></i> Listing Documents</div>";
+								for($i=0; $i<count($data['listing']['documents']); $i++) {
+									$html[] = "<div class='mb-1'><a href=''><span class='text-muted me-1'><i class='ti ti-file-description me-1'></i><strong>".$data['listing']['documents'][$i]."</strong></a></div>";
+								}
+								
+							$html[] = "</div>";
+						$html[] = "</div>";
+					$html[] = "</div>";
 					
 				}
 

@@ -24,12 +24,12 @@ function import($path,$data=null,$model=null) {
 }
 
 function clean($str) {
-	$inye = array("Ñ","ñ");
+	$forbidden = ["Ñ", "ñ", "'"];
+	$replacement = ["N", "n", ""];
 
     if(!is_null($str)) {
-        $str = str_replace($inye,"&Ntilde;",$str);
-        $str = str_replace($inye,"&ntilde;",$str);
-
+        $str = str_replace($forbidden, $replacement, $str);
+        $str = str_replace($forbidden, $replacement, $str);
         return stripslashes(trim($str));
     }
 }
