@@ -311,10 +311,8 @@ $(document).on('click', '.btn-update_subscription_status', function (e) {
 });
 
 function timeSince(epoch) {
-
 	let date = new Date(0);
 	date.setUTCSeconds(epoch);
-
 	return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
