@@ -50,7 +50,8 @@ Router::group(['prefix' => ADMIN_ALIAS], function () {
     Router::get('/listings/{id}/featured', 'ListingsController@setFeatured', ['as' => 'listingsSetFeatured'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/listings/downloadPropertyListings', 'ListingsController@downloadPropertyListings', ['as' => 'downloadPropertyListings']);
     Router::get('/listings/getThumbnail', 'ListingsController@getThumbnail', ['as' => 'getThumbnail']);
-    
+    Router::get('/listings/removeDocument', 'ListingsController@removeDocument', ['as' => 'removeDocument']);
+
     Router::post('/listings/uploadDocuments', 'ListingsController@uploadDocuments', ['as' => 'uploadDocuments']);
     Router::post('/accounts/{id}/listings/uploadImages', 'ListingsController@uploadImages', ['as' => 'uploadImages'])->where([ 'id' => '[0-9]+' ]);
     Router::post('/accounts/{id}/listings/new/saveNew', 'ListingsController@saveNew', ['as' => 'listingsSaveNew'])->where([ 'id' => '[0-9]+' ]);

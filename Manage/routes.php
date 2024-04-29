@@ -52,6 +52,7 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
     Router::get('/listings/{id}/remove', 'ListingsController@remove', ['as' => 'listingsRemove'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/listings/downloadPropertyListings', 'ListingsController@downloadPropertyListings', ['as' => 'downloadPropertyListings']);
     Router::get('/listings/getThumbnail', 'ListingsController@getThumbnail', ['as' => 'getThumbnail']);
+    Router::get('/listings/removeDocument', 'ListingsController@removeDocument', ['as' => 'removeDocument']);
 
     Router::post('/listings/uploadDocuments', 'ListingsController@uploadDocuments', ['as' => 'uploadDocuments']);
     Router::post('/listings/{id}/setSold', 'ListingsController@setSold', ['as' => 'listingsSetSold'])->where([ 'id' => '[0-9]+' ]);

@@ -69,23 +69,26 @@ const docStorageData = storageData;
 		$('#DocsBrowse').click();
 	});
 	
-	function removeAttachment(container,attchment_id,filename) {
-		
-		if (sessionStorage.getItem('documents') !== null) {
-			storageData = JSON.parse(sessionStorage.getItem('documents'));
-			index = storageData.map(function(e) { return e.storageData; }).indexOf(attchment_id);
-			storageData.splice(index, 1);
-			sessionStorage.setItem('documents',JSON.stringify(storageData));
-		}
-		
-		$(container+" * ").css("color","#eee");
-		$(container+" * ").css("border-color","#eee");
-		
-		$.get("?request=mails&task=removeAttachment&filename="+filename,function(data,status) {
-			$(container).remove();
-		});
-		
+$(document).on('click', '.btn-remove-document', function () {
+
+	let id = $(this).data('id');
+	let url = $(this).data('url');
+	
+	if (sessionStorage.getItem('documents') !== null) {
+		storageData = JSON.parse(sessionStorage.getItem('documents'));
+		index = storageData.map(function(e) { return e.storageData; }).indexOf(id);
+		storageData.splice(index, 1);
+		sessionStorage.setItem('documents',JSON.stringify(storageData));
 	}
+	
+	$(".file_" + id + " * ").css("color","#eee");
+	$(".file_" + id + " * ").css("border-color","#eee");
+	
+	$.get(url, function(data,status) {
+		$(".file_" + id ).remove();
+	});
+		
+});
 	
 	function createAttachmentElements(response) {
 		html = "<li class='list-group-item d-flex gap-3 justify-content-between align-items-center py-1 file_" + response[i].id + "'>";
@@ -94,7 +97,7 @@ const docStorageData = storageData;
 				html += "<span>" + response[i].filename + "</span>";
 			html += "</div>";
 			html += "<div class='btn-list'>";
-				html += "<span class='btn btn-danger' data-number='" + response[i].id + "' data-filename='" + response[i].filename + "'><i class='ti ti-trash me-1'></i> Delete</span>";
+		html += "<span class='btn btn-danger btn-remove-document' data-id='" + response[i].id + "' data-filename='" + response[i].filename + "' data-url='" + DOMAIN + "listings/removeDocument?path=temporary/" + response[i].filename + "'><i class='ti ti-trash me-1'></i> Delete</span>";
 			html += "</div>";
 		html += "</li>";
 		return html;

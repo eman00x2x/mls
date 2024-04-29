@@ -497,7 +497,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 											$html[] = "<div class='' style='max-height:520px; overflow-y:auto;'>";
 												$html[] = "<ul class='list-group list-group-flush document_list'>";
 													
-													if($data['listing']['documents']) {
+													if(isset($data['listing']['documents'])) {
 														for($i=0; $i<count($data['listing']['documents']); $i++) {
 															$html[] = "<li class='list-group-item d-flex gap-3 justify-content-between align-items-center py-1 file_$i'>";
 																$html[] = "<div class='flex-grow-1'>";
@@ -505,7 +505,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 																	$html[] = "<span>".$data['listing']['documents'][$i]."</span>";
 																$html[] = "</div>";
 																$html[] = "<div class='btn-list'>";
-																	$html[] = "<span class='btn btn-danger' data-number='$i' data-filename='".$data['listing']['documents'][$i]."' data-url='".url("ListingsController@removeDocument", $data['listing']['listing_id'], ["filename" => $data['listing']['documents'][$i]])."'><i class='ti ti-trash me-1'></i> Delete</span>";
+																	$html[] = "<span class='btn btn-danger' data-id='$i' data-filename='".$data['listing']['documents'][$i]."' data-url='".url("ListingsController@removeDocument", $data['listing']['listing_id'], ["path" => "listings/documents/".$data['listing']['listing_id']."/".$data['listing']['documents'][$i]])."'><i class='ti ti-trash me-1'></i> Delete</span>";
 																$html[] = "</div>";
 															$html[] = "</li>";
 														}

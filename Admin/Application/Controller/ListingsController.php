@@ -262,9 +262,6 @@ class ListingsController extends \Main\Controller {
 		$listing->address = $this->getModel("Address");
 
 		$data['listing'] = $listing->getById();
-		$data['listing']['documents'] = [
-			"Authority-to-negotiate.pdf","vicinity-map.pdf","land-title-copy.pdf"
-		];
 		
 		if($data['listing']) {
 
@@ -1454,14 +1451,11 @@ class ListingsController extends \Main\Controller {
 
 	}
 
-	function removeDocument($Listing_id) {
+	function removeDocument($Listing_id = 0) {
 		
-		if(isset($_GET['filename'])) {
+		if(isset($_GET['path'])) {
 
-			$filename = $_GET['filename'];
-			$path = ROOT."/Cdn/public/listings/documents/$Listing_id/$filename";
-			unlink($path);
-
+			unlink(ROOT."/Cdn/public/".$_GET['path']);
 			return json_encode(array(
                 "status" => 1,
                 "message" => "File removed successfully."
