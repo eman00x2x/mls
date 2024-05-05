@@ -1,0 +1,13 @@
+Handshake
+Handshake listings will be posted in the requester's profile.
+Expired handshakes will also be removed from the requester's profile.
+If a listing has expired, handshake listings from the requester will also expire.
+
+Profile
+The profile will be displayed when the profile picture is clicked from the MLS and Public Website.
+Profiles include the following data:
+Contact Number, Email Address, Certifications, Websites, Social Media, Hobbies, Area of Expertise, Services
+
+Listings
+Create wanted to buy or looking for property posting
+
