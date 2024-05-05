@@ -211,6 +211,48 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 						html += \"</div>\";
 
 						break;
+
+					case 'hobbies':
+
+						html += \"<div class='mb-2 hobbies-container-\" + count + \"'>\";
+							html += \"<div class='input-group input-group-flat'>\";
+								html += \"<div class='form-floating'>\";
+									html += \"<input type='text' name='hobbies[\" + count + \"]' id='hobbies-\" + count + \"' class='form-control' value='' />\";
+									html += \"<label for='hobbies-\" + count + \"' class='fs-12'>Hobbies</label>\";
+								html += \"</div>\";
+								html += \"<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.hobbies-container-\" + count + \"'><i class='ti ti-trash fs-16'></i></span>\";
+							html += \"</div>\";
+						html += \"</div>\";
+
+						break;
+
+					case 'websites':
+
+						html += \"<div class='mb-2 websites-container-\" + count + \"'>\";
+							html += \"<div class='input-group input-group-flat'>\";
+								html += \"<div class='form-floating'>\";
+									html += \"<input type='text' name='websites[\" + count + \"]' id='websites-\" + count + \"' class='form-control' value='' />\";
+									html += \"<label for='websites-\" + count + \"' class='fs-12'>Websites</label>\";
+								html += \"</div>\";
+								html += \"<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.websites-container-\" + count + \"'><i class='ti ti-trash fs-16'></i></span>\";
+							html += \"</div>\";
+						html += \"</div>\";
+
+						break;
+
+					case 'socials':
+
+						html += \"<div class='mb-2 socials-container-\" + count + \"'>\";
+							html += \"<div class='input-group input-group-flat'>\";
+								html += \"<div class='form-floating'>\";
+									html += \"<input type='text' name='socials[\" + count + \"]' id='socials-\" + count + \"' class='form-control' value='' />\";
+									html += \"<label for='socials-\" + count + \"' class='fs-12'>Social Media Profiles</label>\";
+								html += \"</div>\";
+								html += \"<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.socials-container-\" + count + \"'><i class='ti ti-trash fs-16'></i></span>\";
+							html += \"</div>\";
+						html += \"</div>\";
+
+						break;
 				}
 
 				$('.' + container + '-container').append(html);

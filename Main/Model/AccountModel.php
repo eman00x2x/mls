@@ -6,6 +6,7 @@ use Verot\Upload\Upload as Upload;
 
 class AccountModel extends \Main\Model {
 
+	public $address;
 	public $profile = [
 		"about_me" =>  "",
 		"education" =>  [
