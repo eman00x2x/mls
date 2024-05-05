@@ -90,15 +90,15 @@ $(document).on('click', '.btn-remove-document', function () {
 		
 });
 	
-	function createAttachmentElements(response) {
-		html = "<li class='list-group-item d-flex gap-3 justify-content-between align-items-center py-1 file_" + response[i].id + "'>";
-			html += "<div class='flex-grow-1'>";
-				html += "<input type='hidden' name='documents[]' id='document_" + response[i].id + "' value='" + response[i].filename + "' />";
-				html += "<span>" + response[i].filename + "</span>";
-			html += "</div>";
-			html += "<div class='btn-list'>";
-		html += "<span class='btn btn-danger btn-remove-document' data-id='" + response[i].id + "' data-filename='" + response[i].filename + "' data-url='" + DOMAIN + "listings/removeDocument?path=temporary/" + response[i].filename + "'><i class='ti ti-trash me-1'></i> Delete</span>";
-			html += "</div>";
-		html += "</li>";
-		return html;
-	}
+function createAttachmentElements(response) {
+	html = "<li class='list-group-item d-flex gap-3 justify-content-between align-items-center py-1 file_" + response[i].id + "'>";
+		html += "<div class='flex-grow-1'>";
+			html += "<input type='hidden' name='documents[]' id='document_" + response[i].id + "' value='" + response[i].filename + "' />";
+			html += "<span>" + response[i].filename + "</span>";
+		html += "</div>";
+		html += "<div class='btn-list'>";
+	html += "<span class='btn btn-danger btn-remove-document' data-id='" + response[i].id + "' data-filename='" + response[i].filename + "' data-url='" + DOMAIN + "listings/removeDocument?path=temporary/" + response[i].filename + "'><i class='ti ti-trash me-1'></i> Delete</span>";
+		html += "</div>";
+	html += "</li>";
+	return html;
+}

@@ -25,7 +25,7 @@ $html[] = "<div class='overflow-y-auto'>";
 				$html[] = "<div class=''>";
 					$html[] = "<div class='mt-4 pt-3'></div>";
 					$html[] = "<div class='mt-5 pt-5'></div>";
-					$html[] = "<span class='btn btn-primary'><i class='ti ti-mail me-1'></i> Send Message</span>";
+					/* $html[] = "<span class='btn btn-primary'><i class='ti ti-mail me-1'></i> Send Message</span>"; */
 				$html[] = "</div>";
 			$html[] = "</div>";
 

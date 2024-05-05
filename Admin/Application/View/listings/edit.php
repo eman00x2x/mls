@@ -494,6 +494,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 											
 											$html[] = "<div class='upload-response mb-3'></div>";
 											
+											$html[] = "<span class='form-hint mb-3'>Note: If you delete a document, please ensure to save your work before navigating away from this page</span>";
 											$html[] = "<div class='' style='max-height:520px; overflow-y:auto;'>";
 												$html[] = "<ul class='list-group list-group-flush document_list'>";
 													
@@ -505,7 +506,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 																	$html[] = "<span>".$data['listing']['documents'][$i]."</span>";
 																$html[] = "</div>";
 																$html[] = "<div class='btn-list'>";
-																	$html[] = "<span class='btn btn-danger' data-id='$i' data-filename='".$data['listing']['documents'][$i]."' data-url='".url("ListingsController@removeDocument", $data['listing']['listing_id'], ["path" => "listings/documents/".$data['listing']['listing_id']."/".$data['listing']['documents'][$i]])."'><i class='ti ti-trash me-1'></i> Delete</span>";
+																	$html[] = "<span class='btn btn-danger btn-remove-document' data-id='$i' data-filename='".$data['listing']['documents'][$i]."' data-url='".url("ListingsController@removeDocument", $data['listing']['listing_id'], ["path" => "listings/documents/".$data['listing']['listing_id']."/".$data['listing']['documents'][$i]])."'><i class='ti ti-trash me-1'></i> Delete</span>";
 																$html[] = "</div>";
 															$html[] = "</li>";
 														}

@@ -539,11 +539,11 @@ class ListingsController extends \Main\Controller {
 			$listingImage->and(" filename != '".basename($data['listing']['thumb_img'])."' ");
 			$data['listing']['images'] = $listingImage->getByListingId();
 
-			if(!$data['listing']['images']) {
+			if($data['listing']['images'] === false) {
 				$data['listing']['images'] = [];
 			}
 
-			if(!$data['listing']['documents']) {
+			if(!isset($data['listing']['documents']) || $data['listing']['documents'] === false) {
 				$data['listing']['documents'] = [];
 			}
 

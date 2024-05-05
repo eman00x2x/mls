@@ -7,6 +7,8 @@ use Verot\Upload\Upload as Upload;
 class ListingModel extends \Main\Model {
 
 	public $address;
+	public $app;
+	public $list;
 
 	function __construct() {
 		$this->table = "listings";
