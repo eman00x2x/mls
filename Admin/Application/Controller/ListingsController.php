@@ -431,7 +431,7 @@ class ListingsController extends \Main\Controller {
 
 						$('.listings-table .avatar').each(function() {
 							thumb_image = $(this).attr('data-thumb-image');
-							$(this).css('background-image', 'url(".CDN."images/loader.gif)');
+							$(this).css('background-image', 'url(".CDN."images/item_default.jpg)');
 							getImage(thumb_image, $(this));
 						});
 					});
