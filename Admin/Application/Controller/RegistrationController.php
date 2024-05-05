@@ -5,6 +5,8 @@ namespace Admin\Application\Controller;
 use Library\Mailer;
 
 class RegistrationController extends AccountsController {
+
+	public $domain;
 	
 	function __construct() {
 		parent::__construct();
@@ -16,9 +18,8 @@ class RegistrationController extends AccountsController {
 		$this->doc->setTitle("Register Account - ".CONFIG['site_name']);
 
 		$this->doc->addScript(CDN."js/encryption.js");
-		$this->doc->addScript(CDN."philippines-addresses/json/table_address.js");
 
-		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+		/* $this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
 			let current_value = {};
 			
@@ -79,7 +80,7 @@ class RegistrationController extends AccountsController {
 				$('input[name=\"address[barangay]\"]').val($('#barangay option:selected').text());
 			});
 
-		"));
+		")); */
 
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 			$(document).ready(function() {
@@ -115,13 +116,7 @@ class RegistrationController extends AccountsController {
 						$('.registration_form').html(data);
 						$('.response').html('');
 
-						html = \"<option value=''></option>\";
-						for(let i = 0; i < region.length; i++) {
-							let obj = region[i];
-							name = obj.region_name;
-							html += \"<option value='\" + obj.region_id + \"'>\" + name.replace('ñ', 'n') + \"</option>\";
-						}
-						$('#region').html(html);
+						
 
 						$('.board-details label').css('color', '#FFF');
 
@@ -198,9 +193,6 @@ class RegistrationController extends AccountsController {
 			/* $response['data']['board_regions'] = BOARD_REGIONS; */
 			$response['data']['local_boards'] = LOCAL_BOARDS;
 			sort($response['data']['local_boards']);
-
-			$address = $this->getModel("Address");
-			$response['data']['address'] = $address->addressSelection();
 
 			$this->setTemplate("registration/register.php");
 			return $this->getTemplate($response['data']);

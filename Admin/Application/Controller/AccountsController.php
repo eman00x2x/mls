@@ -133,6 +133,12 @@ class AccountsController extends \Main\Controller {
 			
 			if($data = $accounts->getById()) {
 
+				if($data['reference_id'] > 0) {
+					$reference = $this->getModel("LicenseReference");
+					$reference->column['reference_id'] = $data['reference_id'];
+					$data['brokers'] = $reference->getById();
+				}
+				
 				$user->page['limit'] = 100;
 				$user->where(" account_id = ".$data['account_id']." ");
 				$user->orderBy(" created_at DESC ");

@@ -30,9 +30,14 @@ $html[] = "<div class='mb-4 p-3 bg-azure text-white board-details'>";
 	$html[] = "</div>";
 
 	$html[] = "<div class=''>";
-		$html[] = "<div class='d-flex gap-3'>";
-			$html[] = $data['address'];
-		$html[] = "</div>";
+		$html[] = "<label class='form-label'>Board Region</label>";
+		$html[] = "<select name='address[region]' class='form-select' id='region'>";
+			$html[] = "<option value='NCR'>NCR</option>";
+			$html[] = "<option value='North Luzon'>North Luzon</option>";
+			$html[] = "<option value='South Luzon'>South Luzon</option>";
+			$html[] = "<option value='Visayas'>Visayas</option>";
+			$html[] = "<option value='Mindanao'>Mindanao</option>";
+		$html[] = "</select>";
 	$html[] = "</div>";
 	
 $html[] = "</div>";

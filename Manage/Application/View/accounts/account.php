@@ -90,15 +90,15 @@ $html[] = "<div class='page-body'>";
 
                                         $html[] = "<div class='mb-4 p-3 board-details'>";
                                             $html[] = "<div class='row align-items-center'>";
-                                                $html[] = "<label class='col-sm-3 col-form-label'>Local Board Location</label>";
+                                                $html[] = "<label class='col-sm-3 col-form-label'>Local Board Region</label>";
                                                 $html[] = "<div class='col-sm-9'>";
-                                                    $html[] = "<div class='d-flex gap-3'>";
-                                                        foreach($data['board_region'] as $key => $val) {
+                                                    $html[] = "<div class='d-flex gap-3 align-items-center'>";
+                                                        
                                                             $html[] = "<div class=''>";
-                                                                $html[] = "<label class='text-muted fs-12'>".ucwords($key)."</label>";
-                                                                $html[] = "<p>$val</p>";
+                                                                $html[] = "<label class='text-muted fs-12'>Region</label>";
+                                                                $html[] = "<p>".ucwords($data['board_region']['region'])."</p>";
                                                             $html[] = "</div>";
-                                                        }
+                                                        
                                                     $html[] = "</div>";
                                                 $html[] = "</div>";
                                             $html[] = "</div>";
@@ -137,15 +137,15 @@ $html[] = "<div class='page-body'>";
                                             $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Name</label></div>";
                                             $html[] = "<div class='col-md-9 col-6'>";
                                                 $html[] = "<div class='row gy-2 gx-3 align-items-center'>";
-                                                     $html[] = "<div class='col-md-1 col-lg-2 col-12'>";
+                                                    /* $html[] = "<div class='col-md-1 col-lg-2 col-12'>";
                                                         $html[] = "<label class='form-label text-muted'>Prefix</label>";
                                                         $html[] = "<input type='text' name='prefix' id='prefix' value='".$data['account_name']['prefix']."' class='me-2 form-control' placeholder='Prefix' />";
-                                                    $html[] = "</div>";
+                                                    $html[] = "</div>"; */
                                                     $html[] = "<div class='col-md-1 col-lg-3 col-12'>";
                                                         $html[] = "<label class='form-label text-muted'>First Name</label>";
                                                         $html[] = "<input type='text' name='firstname' id='firstname' value='".$data['account_name']['firstname']."' class='me-2 form-control' placeholder='First name' />";
                                                     $html[] = "</div>";
-                                                    $html[] = "<div class='col-md-1 col-lg-2 col-12'>";
+                                                    $html[] = "<div class='col-md-1 col-lg-3 col-12'>";
                                                         $html[] = "<label class='form-label text-muted'>Middle Name</label>";
                                                         $html[] = "<input type='text' name='middlename' id='middlename' value='".$data['account_name']['middlename']."' class='me-2 form-control' placeholder='Middle name' />";
                                                     $html[] = "</div>";
