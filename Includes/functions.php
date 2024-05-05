@@ -66,14 +66,16 @@ function nicetrim($s, $MAX_LENGTH) {
 // It counts HTML char such as &aacute; as 1 char.
 //
 
-	$str_to_count = html_entity_decode($s);
-	if (strlen($str_to_count) <= $MAX_LENGTH) {
-		return $s;
-	}
+    if(!is_null($s)) {
+        $str_to_count = html_entity_decode($s, ENT_QUOTES );
+        if (strlen($str_to_count) <= $MAX_LENGTH) {
+            return $s;
+        }
 
-	$s2 = substr($str_to_count, 0, $MAX_LENGTH - 3);
-	$s2 .= "...";
-	return htmlentities($s2);
+        $s2 = substr($str_to_count, 0, $MAX_LENGTH - 3);
+        $s2 .= "...";
+        return htmlentities($s2);
+    }
 }
 
 /**
