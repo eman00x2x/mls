@@ -43,7 +43,7 @@ class AccountsController extends \Main\Controller {
 			$(document).ready(function() {
 				$('.listings-table .card-img-top').each(function() {
 					thumb_image = $(this).attr('data-thumb-image');
-					$(this).css('background-image', 'url(".CDN."images/loader.gif)');
+					$(this).css('background-image', 'url(".CDN."images/item_default.jpg)');
 					getImage(thumb_image, $(this));
 				});
 				$.post('".url("SessionController@saveTraffic")."', {
