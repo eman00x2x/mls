@@ -38,8 +38,35 @@ $html[] = "<div class='overflow-y-auto'>";
 				}
 			$html[] = "</ul>";
 
+			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Websites</h3>";
+			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
+				if(!empty($data['profile']['websites'])) {
+					for($i=0; $i<count($data['profile']['websites']); $i++) {
+						$html[] = "<li class='list-group-item p-0 m-0 border-0'>- <a href='https://".$data['profile']['websites'][$i]."' target='_blank'>".$data['profile']['websites'][$i]."</a></li>";
+					}
+				}
+			$html[] = "</ul>";
+
+			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Social Media Profiles</h3>";
+			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
+				if(!empty($data['profile']['socials'])) {
+					for($i=0; $i<count($data['profile']['socials']); $i++) {
+						$html[] = "<li class='list-group-item p-0 m-0 border-0'>- <a href='https://".$data['profile']['socials'][$i]."' target='_blank'>".$data['profile']['socials'][$i]."</a></li>";
+					}
+				}
+			$html[] = "</ul>";
+
 			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>About</h3>";
 			$html[] = "<p class='px-2 py-2 border-3 border-0 border-start border-azure'>".$data['profile']['about_me']."</p>";
+
+			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Skills</h3>";
+			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
+				if(!empty($data['profile']['skills'])) {
+					for($i=0; $i<count($data['profile']['skills']); $i++) {
+						$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['skills'][$i]."</li>";
+					}
+				}
+			$html[] = "</ul>";
 
 			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Affiliations</h3>";
 			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";

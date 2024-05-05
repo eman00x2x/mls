@@ -158,7 +158,7 @@ class AccountModel extends \Main\Model {
 
 	function save($id,$data) {
 
-		$this->{$this->primary_key} = $id;
+		$this->column[$this->primary_key] = $id;
 
 		if(($this->getById()) !== false) {
 

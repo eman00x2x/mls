@@ -231,7 +231,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 						html += \"<div class='mb-2 websites-container-\" + count + \"'>\";
 							html += \"<div class='input-group input-group-flat'>\";
 								html += \"<div class='form-floating'>\";
-									html += \"<input type='text' name='websites[\" + count + \"]' id='websites-\" + count + \"' class='form-control' value='' />\";
+									html += \"<input type='text' name='websites[\" + count + \"]' id='websites-\" + count + \"' class='form-control' value='your_website.com' />\";
 									html += \"<label for='websites-\" + count + \"' class='fs-12'>Websites</label>\";
 								html += \"</div>\";
 								html += \"<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.websites-container-\" + count + \"'><i class='ti ti-trash fs-16'></i></span>\";
@@ -245,7 +245,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 						html += \"<div class='mb-2 socials-container-\" + count + \"'>\";
 							html += \"<div class='input-group input-group-flat'>\";
 								html += \"<div class='form-floating'>\";
-									html += \"<input type='text' name='socials[\" + count + \"]' id='socials-\" + count + \"' class='form-control' value='' />\";
+									html += \"<input type='text' name='socials[\" + count + \"]' id='socials-\" + count + \"' class='form-control' value='social_media.com/your_profile' />\";
 									html += \"<label for='socials-\" + count + \"' class='fs-12'>Social Media Profiles</label>\";
 								html += \"</div>\";
 								html += \"<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.socials-container-\" + count + \"'><i class='ti ti-trash fs-16'></i></span>\";
