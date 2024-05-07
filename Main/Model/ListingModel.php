@@ -176,10 +176,11 @@ class ListingModel extends \Main\Model {
 
 			if ($handle->uploaded) {
 			
+				$handle->mime_check = true;
 				$handle->file_safe_name = true;
 
 				$handle->file_max_size = '2048000';
-				$handle->allowed = array('image/*');
+				$handle->allowed = array("image/jpg", "image/jpeg", "image/png", "image/webp");
 				$handle->forbidden = array('application/*', 'text/javascript', 'application/x-javascript');
 				
 				if($handle->image_src_x > 1024) {
@@ -315,11 +316,11 @@ class ListingModel extends \Main\Model {
 
 			if ($handle->uploaded) {
 			
+				$handle->mime_check = true;
 				$handle->file_safe_name = true;
 
 				$handle->file_max_size = '3600000';
 				$handle->allowed = array('application/pdf');
-				$handle->forbidden = array('images/*', 'text/javascript', 'application/x-javascript');
 				
 				$handle->Process(ROOT."/Cdn/public/temporary/"); 
 				

@@ -253,7 +253,9 @@ class UserModel extends \Main\Model {
 
 		if ($handle->uploaded) {
 
-			$handle->allowed = array('image/*');
+			$handle->mime_check = true;
+			$handle->file_max_size = '2048000';
+			$handle->allowed = array("image/jpg", "image/jpeg", "image/png", "image/webp");
 			$handle->forbidden = array('application/*');
 
 			$handle->file_safe_name 	= true;
