@@ -104,8 +104,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		$listings->page['limit'] = 20;
 		$listings->page['current'] = isset($_GET['page']) ? $_GET['page'] : 1;
 		$listings->page['target'] = url("ListingsController@$offer");
-		$listings->page['uri'] = (isset($uri) ? $uri : []);
-
+		
 		$listings->app = [
 			"handshaked" => false,
 			"comparative" => false,

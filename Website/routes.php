@@ -42,6 +42,8 @@ Router::group(['prefix' => WEB_ALIAS], function () {
 
     /** PROFILE ROUTES */
     Router::get('/profile/{id}/{name}', 'AccountsController@profile')->where([ 'id' => '[0-9]+', 'name' => '[\w\-]+' ]);
+    Router::get('/profile/{id}/{name}/listings', 'AccountsController@accountListings')->where([ 'id' => '[0-9]+', 'name' => '[\w\-]+' ]);
+    Router::get('/profile/{id}', 'AccountsController@profilePreview')->where([ 'id' => '[0-9]+' ]);
 
     /** ADS ROUTES */
     Router::get('/showAds/{placement}', 'PageAdsController@showAds')->where([ 'placement' => '[\w\-]+' ]);

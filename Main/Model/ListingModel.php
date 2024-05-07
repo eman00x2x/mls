@@ -16,6 +16,51 @@ class ListingModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getAllAndHandshakeByAccountId($account_id) {
+
+		$this->setPagina($this->page['current'], $this->page['limit']);
+		
+		// l.listing_id, is_website, name, title, category, address, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, status
+		$query = "
+			SELECT ".$this->select."
+			FROM `mls_listings` l
+			WHERE account_id = $account_id
+			".$this->and."
+
+			UNION
+
+			SELECT ".$this->select."
+			FROM `mls_handshakes` h
+			JOIN `mls_listings` l
+			ON h.listing_id = l.listing_id
+			WHERE h.requestor_account_id = $account_id
+			AND h.handshake_status = 'accepted'
+			".$this->and."
+		";
+
+		$result = $this->DBO->query($query . " LIMIT ". $this->page['starting_number'] .",". $this->page['limit']);
+
+		$this->initiateFields($result);
+
+		if($this->DBO->numRows($result) > 0) {
+
+			$query = str_replace("SELECT", " SELECT COUNT(l.listing_id) AS total_row, " , $query);
+			$query = $query . " LIMIT 1 ";
+			$line = $this->DBO->queryUniqueValue($query);
+			$this->rows = $line['total_row'];
+
+			while($line = $this->DBO->FetchAssoc($result)) {
+				$this->results[] = $this->stripQuotes($line);
+			} 
+
+			$this->total_pages = ceil($this->rows/$this->page['limit']);
+			$this->pagination = $this->pagina->build($this, $this->page['target'],$this->page['uri']);
+			
+			return $this->results;
+		}else {return false;}
+
+	}
+
 	function getByAccountId() {
 		$this->where(" account_id = ". $this->column['account_id'] );
 		return $this->getList();

@@ -11,3 +11,24 @@ Contact Number, Email Address, Certifications, Websites, Social Media, Hobbies, 
 Listings
 Create wanted to buy or looking for property posting
 
+
+- Include viber out
+- Link to BIR
+- Existing photo resize
+- Comparative market analysis - matching type
+
+- public website
+	- schedule of tripping
+	- Client Testimonials individual brokers
+	- Client Testimonials PAREB - Home page
+	- Directory of members
+		- search by name
+		- by board
+		- area of concentration
+		- skills
+		- General Address
+	
+- Agent broker license and name
+- Existing social media share buttons
+- Google Places Integration
+

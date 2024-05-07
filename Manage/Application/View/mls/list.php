@@ -69,7 +69,7 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<div class='mb-4'>";
 								$html[] = "<div class='form-label'>Offer</div>";
 								$html[] = "<select name='offer' id='offer' class='form-select'>";
-									foreach(["for sale", "for rent"] as $offer) {
+									foreach(["for sale", "for rent", "looking for"] as $offer) {
 										$sel = isset($model->page['uri']['offer']) && $model->page['uri']['offer'] == $offer ? "selected" : "";
 										$html[] = "<option value='".$offer."' $sel>".ucwords($offer)."</option>";
 									}

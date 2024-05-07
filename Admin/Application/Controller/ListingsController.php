@@ -990,7 +990,7 @@ class ListingsController extends \Main\Controller {
 		if(isset($_GET['price']) && $_GET['price'] != "") {
 			$model->page['uri']['price'] = $_GET['price'];
 
-			if(stripos($_GET['price'], "-") === true) {
+			if(stripos($_GET['price'], "-") !== false) {
 				$price = explode("-", $_GET['price']);
 				$filters[] = "price BETWEEN ".$price[0]." AND ".$price[1]."";
 			}else {
