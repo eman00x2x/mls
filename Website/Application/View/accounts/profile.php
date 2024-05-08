@@ -50,18 +50,85 @@ $html[] = "<div class='page-body mt-0 bg-white'>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
-							$html[] = "<h3 class='card-title m-0'>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</h3>";
-							$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
-								if(!empty($data['profile']['certification'])) {
-									for($i=0; $i<count($data['profile']['certification']); $i++) {
-										$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['certification'][$i]."</li>";
+							$html[] = "<div class='row justify-content-between '>";
+								$html[] = "<div class='col-md-8 col-lg-8 col-sm-12'>";
+									$html[] = "<h3 class='card-title m-0'>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</h3>";
+									$html[] = "<p class='fs-12'>PRC Real Estate License #".$data['real_estate_license_number']."<br/>".$data['local_board_name']."</p>";
+
+									$html[] = "<div class='border-3 border-0 border-start border-azure ps-2'>";
+										$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
+											$html[] = "<li class='list-group-item p-0 pb-1 m-0 border-0'><i class='ti ti-phone fs-14 me-1'></i> <a href='viber://chat/?number=".$data['mobile_number']."'>".$data['mobile_number']."</a></li>";
+											$html[] = "<li class='list-group-item p-0 pb-1 m-0 border-0'>Viber: <a href='viber://chat/?number=".$data['mobile_number']."'>".$data['mobile_number']."</a></li>";
+											$html[] = "<li class='list-group-item p-0 pb-1 m-0 border-0'><i class='ti ti-mail fs-14 me-1'></i><a href='mailto:".$data['email']."'>Send me an email</a></li>";
+										$html[] = "</ul>";
+									$html[] = "</div>";
+
+								$html[] = "</div>";
+								$html[] = "<div class='col-md-4 col-lg-4 col-sm-12'>";
+									$html[] = $data['social_media_buttons'];
+								$html[] = "</div>";
+							$html[] = "</div>";
+
+							if(isset($data['broker'])) {
+								$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Real Estate Broker</h3>";
+								$html[] = "<div class='border-3 border-0 border-start border-azure ps-2'>";
+									$html[] = "<p>".$data['broker']['account_name']['firstname']." ".$data['broker']['account_name']['middlename']." ".$data['broker']['account_name']['lastname']." ".$data['broker']['account_name']['suffix']."
+									<br/>PRC Real Estate License #".$data['broker']['real_estate_license_number']."</p>";
+								$html[] = "</div>";
+							}
+
+							$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Certificates</h3>";
+							$html[] = "<div class='border-3 border-0 border-start border-azure ps-2'>";
+								$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
+									if(!empty($data['profile']['certification'])) {
+										for($i=0; $i<count($data['profile']['certification']); $i++) {
+											$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['certification'][$i]."</li>";
+										}
 									}
-								}
-							$html[] = "</ul>";
+								$html[] = "</ul>";
+							$html[] = "</div>";
 
 							$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>About</h3>";
 							$html[] = "<p class='px-2 py-2 border-3 border-0 border-start border-azure'>".$data['profile']['about_me']."</p>";
 
+							$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Areas of Expertise</h3>";
+							$html[] = "<div class='border-3 border-0 border-start border-azure ps-2'>";
+								$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
+									if(!empty($data['profile']['areas'])) {
+										for($i=0; $i<count($data['profile']['areas']); $i++) {
+											$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['areas'][$i]."</li>";
+										}
+									}
+								$html[] = "</ul>";
+							$html[] = "</div>";
+
+							$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Services Offered</h3>";
+							$html[] = "<div class='border-3 border-0 border-start border-azure ps-2'>";
+								$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
+									if(!empty($data['profile']['services'])) {
+										for($i=0; $i<count($data['profile']['services']); $i++) {
+											$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['services'][$i]."</li>";
+										}
+									}
+								$html[] = "</ul>";
+							$html[] = "</div>";
+
+							if(!empty($data['profile']['skills']) && is_array($data['profile']['skills'])) {
+
+								if($data['profile']['skills'][0] != "") {
+									$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Skills</h3>";
+
+									$html[] = "<div class='border-3 border-0 border-start border-azure ps-2'>";
+										$html[] = "<ul class='list-group list-group-flush'>";
+										for($i=0; $i<count($data['profile']['skills']); $i++) {
+											$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['skills'][$i]."</li>";							
+										}
+										$html[] = "</ul>";
+									$html[] = "</div>";
+								}
+								
+							}
+							
 							$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Affiliations</h3>";
 							$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
 								
@@ -108,22 +175,14 @@ $html[] = "<div class='page-body mt-0 bg-white'>";
 						
 					$html[] = "<div class='py-4 px-2'>";
 
-						if(!empty($data['profile']['skills']) && is_array($data['profile']['skills'])) {
-
-							if($data['profile']['skills'][0] != "") {
-								$html[] = "<h3 class='card-title mb-1 text-muted'>Skills</h3>";
-
-								$html[] = "<div class='border-3 border-0 border-start border-azure ps-2'>";
-									$html[] = "<ul class='list-group list-group-flush'>";
-									for($i=0; $i<count($data['profile']['skills']); $i++) {
-										$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['skills'][$i]."</li>";							
-									}
-									$html[] = "</ul>";
-								$html[] = "</div>";
+						$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>My Links</h3>";
+						$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
+							if(!empty($data['profile']['socials'])) {
+								for($i=0; $i<count($data['profile']['socials']); $i++) {
+									$html[] = "<li class='list-group-item p-0 m-0 border-0'>- <a href='//".$data['profile']['socials'][$i]."' target='_blank'>".$data['profile']['socials'][$i]."</a></li>";
+								}
 							}
-							
-
-						}
+						$html[] = "</ul>";
 
 						/*** ADS CONTAINER */
 						$html[] = "<div class='d-none px-2 mt-4 PROFILE_SIDEBAR_TOP'>";

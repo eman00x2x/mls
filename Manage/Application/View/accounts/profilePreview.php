@@ -30,19 +30,13 @@ $html[] = "<div class='overflow-y-auto'>";
 			$html[] = "</div>";
 
 			$html[] = "<h3 class='card-title m-0'>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</h3>";
+			$html[] = "<p class='fs-12'>PRC Real Estate License #".$data['real_estate_license_number']."<br/>".$data['local_board_name']."</p>";
+
+			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Certificates</h3>";
 			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
 				if(!empty($data['profile']['certification'])) {
 					for($i=0; $i<count($data['profile']['certification']); $i++) {
 						$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['certification'][$i]."</li>";
-					}
-				}
-			$html[] = "</ul>";
-
-			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Websites</h3>";
-			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
-				if(!empty($data['profile']['websites'])) {
-					for($i=0; $i<count($data['profile']['websites']); $i++) {
-						$html[] = "<li class='list-group-item p-0 m-0 border-0'>- <a href='https://".$data['profile']['websites'][$i]."' target='_blank'>".$data['profile']['websites'][$i]."</a></li>";
 					}
 				}
 			$html[] = "</ul>";
@@ -59,6 +53,24 @@ $html[] = "<div class='overflow-y-auto'>";
 			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>About</h3>";
 			$html[] = "<p class='px-2 py-2 border-3 border-0 border-start border-azure'>".$data['profile']['about_me']."</p>";
 
+			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Areas of Expertise</h3>";
+			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
+				if(!empty($data['profile']['areas'])) {
+					for($i=0; $i<count($data['profile']['areas']); $i++) {
+						$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['areas'][$i]."</li>";
+					}
+				}
+			$html[] = "</ul>";
+
+			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Services Offered</h3>";
+			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
+				if(!empty($data['profile']['services'])) {
+					for($i=0; $i<count($data['profile']['services']); $i++) {
+						$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['services'][$i]."</li>";
+					}
+				}
+			$html[] = "</ul>";
+			
 			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Skills</h3>";
 			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
 				if(!empty($data['profile']['skills'])) {

@@ -212,29 +212,29 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 
 						break;
 
-					case 'hobbies':
+					case 'services':
 
-						html += \"<div class='mb-2 hobbies-container-\" + count + \"'>\";
+						html += \"<div class='mb-2 services-container-\" + count + \"'>\";
 							html += \"<div class='input-group input-group-flat'>\";
 								html += \"<div class='form-floating'>\";
-									html += \"<input type='text' name='hobbies[\" + count + \"]' id='hobbies-\" + count + \"' class='form-control' value='' />\";
-									html += \"<label for='hobbies-\" + count + \"' class='fs-12'>Hobbies</label>\";
+									html += \"<input type='text' name='services[\" + count + \"]' id='services-\" + count + \"' class='form-control' value='' />\";
+									html += \"<label for='services-\" + count + \"' class='fs-12'>Services Offered</label>\";
 								html += \"</div>\";
-								html += \"<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.hobbies-container-\" + count + \"'><i class='ti ti-trash fs-16'></i></span>\";
+								html += \"<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.services-container-\" + count + \"'><i class='ti ti-trash fs-16'></i></span>\";
 							html += \"</div>\";
 						html += \"</div>\";
 
 						break;
 
-					case 'websites':
+					case 'areas':
 
-						html += \"<div class='mb-2 websites-container-\" + count + \"'>\";
+						html += \"<div class='mb-2 areas-container-\" + count + \"'>\";
 							html += \"<div class='input-group input-group-flat'>\";
 								html += \"<div class='form-floating'>\";
-									html += \"<input type='text' name='websites[\" + count + \"]' id='websites-\" + count + \"' class='form-control' value='your_website.com' />\";
-									html += \"<label for='websites-\" + count + \"' class='fs-12'>Websites</label>\";
+									html += \"<input type='text' name='areas[\" + count + \"]' id='areas-\" + count + \"' class='form-control' value='Area or City' />\";
+									html += \"<label for='areas-\" + count + \"' class='fs-12'>Areas of Expertise</label>\";
 								html += \"</div>\";
-								html += \"<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.websites-container-\" + count + \"'><i class='ti ti-trash fs-16'></i></span>\";
+								html += \"<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.areas-container-\" + count + \"'><i class='ti ti-trash fs-16'></i></span>\";
 							html += \"</div>\";
 						html += \"</div>\";
 
@@ -246,7 +246,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 							html += \"<div class='input-group input-group-flat'>\";
 								html += \"<div class='form-floating'>\";
 									html += \"<input type='text' name='socials[\" + count + \"]' id='socials-\" + count + \"' class='form-control' value='social_media.com/your_profile' />\";
-									html += \"<label for='socials-\" + count + \"' class='fs-12'>Social Media Profiles</label>\";
+									html += \"<label for='socials-\" + count + \"' class='fs-12'>Website or Social Media Profile Links</label>\";
 								html += \"</div>\";
 								html += \"<span class='input-group-text text-secondary cursor-pointer btn-remove' data-container='.socials-container-\" + count + \"'><i class='ti ti-trash fs-16'></i></span>\";
 							html += \"</div>\";
@@ -284,6 +284,21 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
         $accounts = $this->getModel("Account");
 		$accounts->column['account_id'] = (is_null($id) ? $this->account_id : $id);
 		$data = $accounts->getById();
+
+		if($data['reference_id'] > 1) {
+
+			$reference = $this->getModel("LicenseReference");
+			$reference->column['reference_id'] = $data['reference_id'];
+			$reference->join("  ");
+			$data['reference'] = $reference->getById();
+
+			if($data['reference']) {
+				$broker_account = $this->getModel("Account");
+				$broker_account->column['real_estate_license_number'] = $data['reference']['broker_prc_license_id'];
+				$data['broker'] = $broker_account->getByLicenseId();
+			}
+
+		}
 
 		$this->setTemplate("accounts/profilePreview.php");
 		return $this->getTemplate($data);

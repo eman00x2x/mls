@@ -2,6 +2,8 @@
 
 namespace Website\Application\Controller;
 
+use Library\Helper as Helper;
+
 class AccountsController extends \Main\Controller {
 
     private $doc;
@@ -16,6 +18,34 @@ class AccountsController extends \Main\Controller {
         $accounts = $this->getModel("Account");
 		$accounts->column['account_id'] = $id;
 		$data = $accounts->getById();
+
+		$account_name = sanitize($data['account_name']['firstname']." ".$data['account_name']['lastname']);
+
+		if($account_name != $name) {
+			$this->response(404);
+		}
+
+		if($data['reference_id'] > 1) {
+
+			$reference = $this->getModel("LicenseReference");
+			$reference->column['reference_id'] = $data['reference_id'];
+			$reference->join("  ");
+			$data['reference'] = $reference->getById();
+
+			if($data['reference']) {
+				$broker_account = $this->getModel("Account");
+				$broker_account->column['real_estate_license_number'] = $data['reference']['broker_prc_license_id'];
+				$data['broker'] = $broker_account->getByLicenseId();
+			}
+
+		}
+
+		$data['social_media_buttons'] = Helper::socialMediadShareButtons([
+			"title" => $data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']." Profile - ".CONFIG['site_name'],
+            "url" => DOMAIN.url(),
+            "img" => CDN."images/accounts/".$data['logo'],
+			"description" => ""
+		]);
 
 		$this->setTemplate("accounts/profile.php");
 		return $this->getTemplate($data);

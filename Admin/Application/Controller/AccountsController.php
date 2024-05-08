@@ -363,9 +363,9 @@ class AccountsController extends \Main\Controller {
 
 			"certification" => (isset($_POST['certification']) ? $_POST['certification'] : [ "" ]),
 			"skills" => (isset($_POST['skills']) ? $_POST['skills'] : [ "" ]),
-			"hobbies" => (isset($_POST['hobbies']) ? $_POST['hobbies'] : [ "" ]),
+			"services" => (isset($_POST['services']) ? $_POST['services'] : [ "" ]),
 			"socials" => (isset($_POST['socials']) ? $_POST['socials'] : [ "" ]),
-			"websites" => (isset($_POST['websites']) ? $_POST['websites'] : [ "" ])
+			"areas" => (isset($_POST['areas']) ? $_POST['areas'] : [ "" ])
 		]);
 
 		if($_POST['broker_prc_license_id'] != 1) {
@@ -534,9 +534,9 @@ class AccountsController extends \Main\Controller {
 				"affiliation" => (isset($_POST['affiliation']) ? array_values($_POST['affiliation']) : $data['profile']['affiliation']),
 				"certification" => (isset($_POST['certification']) ? array_values($_POST['certification']) : $data['profile']['certification']),
 				"skills" => (isset($_POST['skills']) ? array_values($_POST['skills']) : $data['profile']['skills']),
-				"hobbies" => (isset($_POST['hobbies']) ? array_values($_POST['hobbies']) : $data['profile']['hobbies']),
+				"services" => (isset($_POST['services']) ? array_values($_POST['services']) : $data['profile']['services']),
 				"socials" => (isset($_POST['socials']) ? array_values($_POST['socials']) : $data['profile']['socials']),
-				"websites" => (isset($_POST['websites']) ? array_values($_POST['websites']) : $data['profile']['websites'])
+				"areas" => (isset($_POST['areas']) ? array_values($_POST['areas']) : $data['profile']['areas'])
 			]);
 
 			$_POST['board_region'] = json_encode([

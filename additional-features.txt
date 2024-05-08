@@ -8,11 +8,7 @@ The profile will be displayed when the profile picture is clicked from the MLS a
 Profiles include the following data:
 Contact Number, Email Address, Certifications, Websites, Social Media, Hobbies, Area of Expertise, Services
 
-Listings
-Create wanted to buy or looking for property posting
-
-
-- Include viber out
+- Link of mobile number to Viber call
 - Link to BIR
 - Existing photo resize
 - Comparative market analysis - matching type
@@ -31,4 +27,7 @@ Create wanted to buy or looking for property posting
 - Agent broker license and name
 - Existing social media share buttons
 - Google Places Integration
+
+
+
 

@@ -50,6 +50,23 @@ class AccountModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getByLicenseId() {
+
+		$query = "SELECT * FROM #__accounts WHERE real_estate_license_number = '".$this->column['real_estate_license_number']."'";
+		$result = $this->DBO->query($query);
+
+		$this->initiateFields($result);
+
+		if($this->DBO->numRows($result) > 0) {
+
+			$line = $this->DBO->queryUniqueValue($query);
+			$this->column['account_id'] = $line['account_id'];
+			return $this->getById();
+
+		}else {return false;}
+
+	}
+
 	function getByApiKey() {
 
 		$query = "SELECT * FROM #__accounts WHERE api_key = '".$this->column['api_key']."'";
