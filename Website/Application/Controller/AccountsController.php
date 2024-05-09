@@ -4,10 +4,8 @@ namespace Website\Application\Controller;
 
 use Library\Helper as Helper;
 
-class AccountsController extends \Main\Controller {
+class AccountsController extends \Admin\Application\Controller\AccountsController {
 
-    private $doc;
-	
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."/Website");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
@@ -318,6 +316,19 @@ class AccountsController extends \Main\Controller {
 		$this->setTempalteBasePath(ROOT."/Website");
 		$this->setTemplate("accounts/listings.php");
 		return $this->getTemplate($data, $listings);
+
+	}
+
+	function memberDirectory() {
+
+		$description = "The Philippine Association of Real Estate Boards Inc. (PAREB) is the foremost and largest national real estate service organization in the Philippines, encompassing 68 local member boards with a combined membership of 5,000 real estate practitioners.";
+
+		$this->doc->setTitle("Members Directory - ".CONFIG['site_name']);
+		$this->doc->setDescription($description);
+		$this->doc->setMetaData("keywords", $description);
+
+		$this->setTempalteBasePath(ROOT."/Admin");
+		return parent::memberDirectory();
 
 	}
 

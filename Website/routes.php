@@ -40,6 +40,9 @@ Router::group(['prefix' => WEB_ALIAS], function () {
     Router::get('/mls/{name}', 'ListingsController@view')->where([ 'name' => '[\w\-]+' ]);
     Router::get('/comparative-analysis/{uri}', 'ListingsController@comparativeAnalysis')->where([ 'uri' => '[\w\-\=]+' ]);
 
+    /** MEMBER ROUTES */
+    Router::get('/members', 'AccountsController@memberDirectory');
+
     /** PROFILE ROUTES */
     Router::get('/profile/{id}/{name}', 'AccountsController@profile')->where([ 'id' => '[0-9]+', 'name' => '[\w\-]+' ]);
     Router::get('/profile/{id}/{name}/listings', 'AccountsController@accountListings')->where([ 'id' => '[0-9]+', 'name' => '[\w\-]+' ]);

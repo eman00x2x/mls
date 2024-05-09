@@ -723,5 +723,133 @@ class AccountsController extends \Main\Controller {
 		return $this->getTemplate($data);
 
 	}
+
+	function memberDirectory() {
+
+		$accounts = $this->getModel("Account");
+
+		$this->doc->addScriptDeclaration("
+
+			$(document).on('click', '.btn-filter', function() {
+				formData = $('#filter-form').serialize();
+				window.location = '?' + formData;
+			});
+
+			$(document).on('show.bs.offcanvas', '#offcanvasEnd', function() {
+				let form = $('.filter-box');
+				$(this).addClass('px-4 pt-4 pb-1');
+				
+				$(this).append(\"<div class='d-flex justify-content-end'><span class='btn-close text-reset' data-bs-dismiss='offcanvas' aria-label='Close'></span></div>\");
+				$(this).append(form.clone());
+				form.remove();
+			});
+
+			$(document).on('hide.bs.offcanvas', '#offcanvasEnd', function() {
+				let form = $('#offcanvasEnd .filter-box');
+				$(this).removeClass('px-4 pt-4');
+				$('.sidebar').html(form.clone());
+				$(this).html('');
+			});
+
+			$(document).ready(function() {
+				$.post('".url("SessionController@saveTraffic")."', {
+					'type': 'page',
+					'name': 'Members Directory',
+					'id': 0,
+					'url': '".url()."',
+					'source': 'Website',
+					'client_info': {
+						'userAgent': userClient.userAgent,
+						'geo': userClient.geo,
+						'browser': userClient.browser
+					},
+					'csrf_token': '".csrf_token()."'
+				});
+			});
+
+		");
+
+		if(isset($_GET['local_board_name']) && $_GET['local_board_name'] != "") {
+			$filters[] = " local_board_name IN('".implode("','", $_GET['local_board_name'])."') ";
+			$uri['local_board_name'] = $_GET['local_board_name'];
+		}
+
+		if(isset($_GET['real_estate_license_number']) && $_GET['real_estate_license_number'] != "") {
+			$filters[] = " real_estate_license_number = '".$_GET['real_estate_license_number']."' ";
+			$uri['real_estate_license_number'] = $_GET['real_estate_license_number'];
+		}
+
+		if(isset($_GET['lastname']) && $_GET['lastname'] != "") {
+			$filters[] = " account_name LIKE '%".$_GET['lastname']."%' ";
+			$uri['lastname'] = $_GET['lastname'];
+		}
+
+		if(isset($_GET['services']) && $_GET['services'] != "") {
+			$filters[] = " profile LIKE '%".$_GET['services']."%' ";
+			$uri['services'] = $_GET['services'];
+		}
+
+		if(isset($_GET['certifications']) && $_GET['certifications'] != "") {
+			foreach($_GET['certifications'] as $certification) {
+				$selected[] = " profile LIKE '%$certification%' ";
+			}
+
+			$filters[] = " (".implode(" OR ", $selected).") ";
+
+			$uri['certifications'] = $_GET['certifications'];
+		}
+
+		$accounts->page['limit'] = 20;
+		$accounts->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+		$accounts->page['target'] = url("AccountsController@memberDirectory");
+		$accounts->page['uri'] = (isset($uri) ? $uri : []);
+
+		$accounts->where(" account_type = 'Real Estate Practitioner' ");
+		
+		if(isset($filters)) {
+			$accounts->and( implode(" AND ", $filters) );
+		}
+
+		if(isset($_GET['sort'])) {
+
+			switch($_GET['sort']) {
+				case 'lastname':
+					$sort = " JSON_EXTRACT(account_name, '$.lastname') ";
+					break;
+				default:
+					$sort = $_GET['sort'];
+			}
+
+			$accounts->orderBy(" $sort ".$_GET['order']." ");
+		}
+
+		$data['accounts'] = $accounts->getList();
+
+		$data['certifications'] = $this->getProfileCertifications();
+
+        $this->setTemplate("accounts/memberDirectory.php");
+        return $this->getTemplate($data, $accounts);
+
+	}
+
+	private function getProfileCertifications() {
+
+		$accounts = $this->getModel("Account");
+		$accounts->page['limit'] = 999999;
+		$data = $accounts->getList();
+
+		if($data) {
+			for($i=0; $i<count($data); $i++) {
+				if(isset($data[$i]['profile']['certification']) && count($data[$i]['profile']['certification']) > 0) {
+					for($x=0; $x<count($data[$i]['profile']['certification']); $x++) {
+						$certifications[] = $data[$i]['profile']['certification'][$x];
+					}
+				}
+			}
+		}
+
+		return array_unique($certifications);
+
+	}
 	
 }
