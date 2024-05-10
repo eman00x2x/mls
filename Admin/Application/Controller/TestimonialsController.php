@@ -17,15 +17,16 @@ class TestimonialsController extends \Main\Controller {
 
 		$this->doc->setTitle("Testimonials");
 
+		$filters = [];
+
 		if(isset($_REQUEST['search'])) {
-			$filters[] = " (title LIKE '%".$_REQUEST['search']."%'))";
+			$filters[] = " (name LIKE '%".$_REQUEST['search']."%')";
 			$uri['search'] = $_REQUEST['search'];
 		}
 
-		$filters[] = "";
-
 		$testimonials = $this->getModel("Testimonial");
-		$testimonials->where(" account_id = $account_id ");
+		$testimonials->where(" account_id = $account_id ")
+			->and( implode(" AND ", $filters) );
 		$data = $testimonials->getList();
 
 		$testimonials->page['limit'] = 20;
