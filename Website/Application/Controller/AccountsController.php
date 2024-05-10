@@ -17,11 +17,24 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$accounts->column['account_id'] = $id;
 		$data = $accounts->getById();
 
-		$account_name = sanitize($data['account_name']['firstname']." ".$data['account_name']['lastname']);
+		$account_name = sanitize($data['account_name']['firstname']."-".$data['account_name']['lastname']);
 
 		if($account_name != $name) {
 			$this->response(404);
 		}
+
+		$description = $account_name." - " . nicetrim($data['profile']['about_me'], 120) . " - " . CONFIG["site_name"];
+
+        $this->doc->setTitle($data['account_name']['firstname']." ".$data['account_name']['lastname']." Profile - ". CONFIG["site_name"]);
+		$this->doc->setDescription($description);
+		$this->doc->setMetaData("Keywords", $description);
+
+		$this->doc->setFacebookMetaData("og:url", DOMAIN. url("AccountsController@profile", ["id" => $data['account_id'], "name" => $account_name ] ));
+		$this->doc->setFacebookMetaData("og:title", $data['account_name']['firstname']." ".$data['account_name']['lastname']." Profile - ". CONFIG["site_name"]);
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", CDN."images/real-estate.jpg");
+		$this->doc->setFacebookMetaData("og:description", $description);
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
 		if($data['reference_id'] > 1) {
 
@@ -326,6 +339,13 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$this->doc->setTitle("Members Directory - ".CONFIG['site_name']);
 		$this->doc->setDescription($description);
 		$this->doc->setMetaData("keywords", $description);
+
+		$this->doc->setFacebookMetaData("og:url", DOMAIN. url("AccountsController@memberDirectory"));
+		$this->doc->setFacebookMetaData("og:title", "Members Directory - ". CONFIG["site_name"]);
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", CDN."images/real-estate.jpg");
+		$this->doc->setFacebookMetaData("og:description", $description);
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
 		$this->setTempalteBasePath(ROOT."/Admin");
 		return parent::memberDirectory();

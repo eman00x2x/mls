@@ -785,8 +785,13 @@ class AccountsController extends \Main\Controller {
 		}
 
 		if(isset($_GET['services']) && $_GET['services'] != "") {
-			$filters[] = " profile LIKE '%".$_GET['services']."%' ";
-			$uri['services'] = $_GET['services'];
+			foreach($_GET['services'] as $services) {
+				$selected[] = " profile LIKE '%$services%' ";
+			}
+
+			$filters[] = " (".implode(" OR ", $selected).") ";
+
+			$uri['certifications'] = $_GET['certifications'];
 		}
 
 		if(isset($_GET['certifications']) && $_GET['certifications'] != "") {
@@ -825,18 +830,23 @@ class AccountsController extends \Main\Controller {
 
 		$data['accounts'] = $accounts->getList();
 
-		$data['certifications'] = $this->getProfileCertifications();
+		$response = $this->getProfileMetaData();
+		$data['certifications'] = $response['certifications'];
+		$data['services'] = $response['services'];
 
         $this->setTemplate("accounts/memberDirectory.php");
         return $this->getTemplate($data, $accounts);
 
 	}
 
-	private function getProfileCertifications() {
+	private function getProfileMetaData() {
 
 		$accounts = $this->getModel("Account");
 		$accounts->page['limit'] = 999999;
 		$data = $accounts->getList();
+
+		$certifications = [];
+		$services = [];
 
 		if($data) {
 			for($i=0; $i<count($data); $i++) {
@@ -845,10 +855,19 @@ class AccountsController extends \Main\Controller {
 						$certifications[] = $data[$i]['profile']['certification'][$x];
 					}
 				}
+
+				if(isset($data[$i]['profile']['services']) && count($data[$i]['profile']['services']) > 0) {
+					for($x=0; $x<count($data[$i]['profile']['services']); $x++) {
+						$services[] = $data[$i]['profile']['services'][$x];
+					}
+				}
 			}
 		}
 
-		return array_unique($certifications);
+		return [
+			"certifications" => array_unique($certifications),
+            "services" => array_unique($services)
+		];
 
 	}
 	

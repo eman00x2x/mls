@@ -30,10 +30,20 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<input type='text' name='real_estate_license_number' id='real_estate_license_number' value='".(isset($_GET['real_estate_license_number']) ? $_GET['real_estate_license_number'] : "" )."' class='form-control' />";
 							$html[] = "</div>";
 
-							$html[] = "<div class='form-label'>Search By Services Offered</div>";
-							$html[] = "<div class='mb-4'>";
-									$html[] = "<input type='text' name='services' id='services' value='".(isset($_GET['services']) ? $_GET['services'] : "" )."' class='form-control' />";
-							$html[] = "</div>";
+							if(isset($data['services']) && count($data['services']) > 0) {
+								$html[] = "<div class='form-label'>Limit By Services</div>";
+								$html[] = "<div class='mb-4'>";
+									$html[] = "<div class='overflow-auto border p-3 bg-white' style='min-height:100px; max-height:200px;'>";
+										foreach($data['services'] as $services) {
+											$checked = isset($model->page['uri']['services']) && in_array($services, $model->page['uri']['services']) ? "checked" : "";										
+											$html[] = "<label class='form-check cursor-pointer $checked'>";
+												$html[] = "<input type='checkbox' class='form-check-input' name='services[]' value='$services' $checked />";
+												$html[] = "<span class='form-check-label'>$services</span>";
+											$html[] = "</label>";
+										}
+									$html[] = "</div>";
+								$html[] = "</div>";
+							}
 							
 							$html[] = "<div class='form-label'>Limit By Boards</div>";
 							$html[] = "<div class='mb-4'>";
