@@ -128,6 +128,15 @@ Router::group(['prefix' => ADMIN_ALIAS], function () {
     Router::get('/administration/deleteBackup', 'AdministrationController@deleteBackup', ['as' => 'administration-deleteBackup']);
 
     Router::post('/administration/queryResult', 'AdministrationController@queryResult', ['as' => 'administration-queryResult']);
+    
+    /** TESTIMONIALS ROUTES */
+    Router::get('/testimonials', 'TestimonialsController@index', ['as' => 'testimonials']);
+    Router::get('/testimonials/add', 'TestimonialsController@add', ['as' => 'testimonials-add']);
+    Router::get('/testimonials/{id}', 'TestimonialsController@edit', ['as' => 'testimonials-edit'])->where([ 'id' => '[0-9]+' ]);
+    Router::get('/testimonials/{id}/delete', 'TestimonialsController@delete', ['as' => 'testimonials-delete'])->where([ 'id' => '[0-9]+' ]);
+
+    Router::post('/testimonials/{id}/save', 'TestimonialsController@saveUpdate', ['as' => 'testimonialsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
+    Router::post('/testimonials/saveNew', 'TestimonialsController@saveNew', ['as' => 'testimonialsSaveNew']);
 
     /** DEBUGGING */
     Router::get('/debug', 'DebugController@debug', ['as' => 'debug']);

@@ -148,6 +148,15 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
     Router::get('/getCurrencyConverter', 'ListingsController@getCurrencyConverter');
     Router::post('/tracker', 'SessionController@saveTraffic', ['as' => 'saveTraffic']);
 
+    /** TESTIMONIALS ROUTES */
+    Router::get('/testimonials', 'TestimonialsController@index', ['as' => 'testimonials']);
+    Router::get('/testimonials/add', 'TestimonialsController@add', ['as' => 'testimonials-add']);
+    Router::get('/testimonials/{id}', 'TestimonialsController@edit', ['as' => 'testimonials-edit'])->where([ 'id' => '[0-9]+' ]);
+    Router::get('/testimonials/{id}/delete', 'TestimonialsController@delete', ['as' => 'testimonials-delete'])->where([ 'id' => '[0-9]+' ]);
+
+    Router::post('/testimonials/{id}/save', 'TestimonialsController@saveUpdate', ['as' => 'testimonialsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
+    Router::post('/testimonials/saveNew', 'TestimonialsController@saveNew', ['as' => 'testimonialsSaveNew']);
+
     /** DEBUGGING */
     Router::get('/debug', 'DebugController@debug', ['as' => 'debug']);
 

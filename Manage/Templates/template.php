@@ -117,6 +117,7 @@
 									<?php } ?>
 
 									<a href="<?php echo url("UsersController@changePassword", ["id" => $_SESSION['user_logged']['user_id']]); ?>" class="dropdown-item"><i class='ti ti-key me-2'></i> Change Password</a>
+									<a href="<?php echo url("TestimonialsController@index"); ?>" class="dropdown-item"><i class='ti ti-speakerphone me-2'></i> My Testimonials</a>
 									
 									<?php if(PREMIUM) { ?>
 										<a href="<?php echo url("AccountSubscriptionController@index"); ?>" class="dropdown-item"><i class='ti ti-layers-union me-2'></i> My Subscriptions</a>

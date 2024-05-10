@@ -88,6 +88,8 @@
 										<?php if(isset($_SESSION['user_logged']['permissions']['web_settings']['access'])) { ?>
 											<a href='<?php echo url("SettingsController@webSettings", ["page" => "common-settings"]); ?>' class='dropdown-item'><i class='ti ti-settings-cog me-1'></i> Website Settings</a>
 										<?php } ?>
+
+										<a href='<?php echo url("TestimonialsController@index"); ?>' class='dropdown-item'><i class='ti ti-speakerphone me-1'></i> Testimonials</a>
 									</div>
 								</li>
 								

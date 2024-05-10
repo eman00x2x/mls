@@ -177,6 +177,7 @@ class Table {
 		$query = "INSERT INTO #__".$this->table."(".$this->primary_key.",".implode(",",$fields).")
 		VALUES(null,'".implode("','",$data)."')";
 		$this->DBO->query($query);
+
 		return $this->DBO->insertId();
 
 	}

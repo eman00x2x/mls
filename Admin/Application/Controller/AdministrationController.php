@@ -6,6 +6,8 @@ use Ifsnop\Mysqldump as IMysqldump;
 use Library\Configuration;
 
 class AdministrationController extends \Main\Controller {
+
+	public $doc;
 	
 	function __construct() {
 		$this->setTempalteBasePath(ROOT."/Admin");
