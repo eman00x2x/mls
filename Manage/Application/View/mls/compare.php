@@ -99,7 +99,9 @@ $html[] = "<div class='page-body'>";
 
 						$html[] = "<tr>";
 							$html[] = "<td class='text-center col-avatar'>";
-								$html[] = "<div class='avatar avatar-xl' style='background-image: url(".CDN."images/listings_thumb/".basename($data['listing'][$i]['thumb_img']).")'></div>";
+								$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data['listing'][$i]['listing_id']])."'>";
+									$html[] = "<div class='avatar avatar-xl' style='background-image: url(".$data['listing'][$i]['thumb_img'].")'></div>";
+								$html[] = "</a>";
 							$html[] = "</td>";
 
 							foreach($columns as $col) {

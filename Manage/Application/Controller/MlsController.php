@@ -131,33 +131,12 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$region = str_replace("_", " ", trim($args['region']));
 			$filters[] = " JSON_EXTRACT(board_region, '$.region') = '".$region."' ";
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_region') = 1";
-
-			/* $_GET['address']['region'] = $this->session['board_region']['region']; */
-
-			/* $this->doc->addScriptDeclaration("
-				$(document).ready(function() {
-					$('#region').prop('disabled', 'disabled');
-				});
-			"); */
-
 		}
 		
 		if(!is_null($args) && isset($args['local_board'])) {
 			$local_board = str_replace("_", " ", trim($args['local_board']));
 			$filters[] = " a.local_board_name = '".$local_board."' ";
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_board') = 1";
-
-			/* $_GET['address']['region'] = $this->session['board_region']['region'];
-			$_GET['address']['province'] = $this->session['board_region']['province'];
-			$_GET['address']['municipality'] = $this->session['board_region']['municipality']; */
-
-			/* $this->doc->addScriptDeclaration("
-				$(document).ready(function() {
-					$('#region').prop('disabled', 'disabled');
-					$('#province').prop('disabled', 'disabled');
-					$('#municipality').prop('disabled', 'disabled');
-				});
-			"); */
 		}
 
 		if(is_null($args) && !isset($args['local_board']) && !isset($args['region'])) {
@@ -502,6 +481,85 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 				"message" => getMsg()
 			)
 		);
+
+	}
+
+	function marketComparisonForm() {
+
+		$this->doc->setTitle("MLS Market Comparison");
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+			$(document).on('click','.btn-filter',function() {
+				var formData = $('#filter-form').serialize();
+				window.location = '".url("MlsController@marketComparisonForm")."?filter=' + btoa(formData);
+			});
+
+			$(document).ready(function() {
+				
+				$('.listings-table .avatar').each(function() {
+					thumb_image = $(this).attr('data-thumb-image');
+					$(this).css('background-image', 'url(".CDN."images/item_default.jpg)');
+					getImage(thumb_image, $(this));
+				});
+
+				$.post('".url("SessionController@saveTraffic")."', {
+					'type': 'page',
+					'name': 'MLS Market Comparison',
+					'id': 0,
+					'url': '".url("MlsController@marketComparisonForm")."',
+					'source': 'MLS',
+					'client_info': {
+						'userAgent': userClient.userAgent,
+						'geo': userClient.geo,
+						'browser': userClient.browser
+					},
+					'csrf_token': '".csrf_token()."'
+				});
+			});
+
+		")); 
+
+		$address = $this->getModel("Address");
+		$listings = $this->getModel("Listing");
+
+		if(isset($_GET['filter'])) {
+			parse_str(urldecode(base64_decode($_GET['filter'])), $_GET);
+
+			$filters[] = " is_mls = 1 ";
+			$filters[] = " l.status = 1 ";
+			$filters[] = " display = 1";
+
+			/* $region = $this->session['board_region']['region'];
+			$filters[] = " JSON_EXTRACT(board_region, '$.region') = '".$region."' ";
+			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_region') = 1";
+			
+			$local_board = $this->session['local_board_name'];
+			$filters[] = " a.local_board_name = '".$local_board."' ";
+			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_board') = 1";
+			$filters[] = " JSON_EXTRACT(is_mls_option, '$.all') = 1"; */
+			
+			$listings->page['limit'] = 20;
+			$listings->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+			$listings->page['target'] = url("MlsController@marketComparisonForm");
+			$listings->page['uri'] = (isset($uri) ? $uri : []);
+
+			$response = $this->listProperties($listings, $filters);
+
+			if($response['data']) {
+				for($i=0; $i<count($response['data']); $i++) {
+					$_SESSION['compare']['listings'][$response['data'][$i]['listing_id']] = $response['data'][$i];
+				}
+
+				header("Location: ". url("MlsController@compareListings"));
+			}
+
+		}
+
+		$data['categories'] = $listings->categorySelection();
+		$data['amenities'] = $listings->amenities();
+		$data['address'] = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));
+
+		$this->setTemplate("mls/marketComparisonForm.php");
+		return $this->getTemplate($data);
 
 	}
 	

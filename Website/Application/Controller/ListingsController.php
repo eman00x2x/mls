@@ -439,7 +439,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		$this->doc->setFacebookMetaData("og:url", DOMAIN . url());
 		$this->doc->setFacebookMetaData("og:title", $title);
 		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", $data['page_image']);
+		$this->doc->setFacebookMetaData("og:image", CDN."images/real-estate.jpg");
 		$this->doc->setFacebookMetaData("og:description", $description);
 		$this->doc->setFacebookMetaData("og:updated_time", date("Y-m-d" , DATE_NOW));
 

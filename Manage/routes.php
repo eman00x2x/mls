@@ -82,6 +82,7 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
 
     Router::get('/mls/{id}', 'MlsController@viewListing', ['as' => 'viewListing'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/mls/{listing_id}/requestHandshake', 'MlsController@requestHandshake', ['as' => 'requestHandshake'])->where([ 'listing_id' => '[0-9]+' ]);
+    Router::get('/mls/marketComparisonForm', 'MlsController@marketComparisonForm', ['as' => 'marketComparisonForm']);
 
     Router::post('/mls/compare/add', 'MlsController@addToCompare', ['as' => 'addToCompare']);
     Router::post('/mls/compare/remove', 'MlsController@removeFromCompare', ['as' => 'removeFromCompare']);
