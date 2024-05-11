@@ -68,7 +68,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 					'type': 'page',
 					'name': '".ucwords($offer) . " Property',
 					'id': 0,
-					'url': '".url()."',
+					'url': '".url("ListingsController@$offer")."',
 					'source': 'Website',
 					'client_info': {
 						'userAgent': userClient.userAgent,

@@ -23,9 +23,10 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 			$this->response(404);
 		}
 
-		$description = $account_name." - " . nicetrim($data['profile']['about_me'], 120) . " - " . CONFIG["site_name"];
+		$page_name = $data['account_name']['firstname']." ".$data['account_name']['lastname'];
+		$description = $page_name." - " . nicetrim($data['profile']['about_me'], 120) . " - " . CONFIG["site_name"];
 
-        $this->doc->setTitle($data['account_name']['firstname']." ".$data['account_name']['lastname']." Profile - ". CONFIG["site_name"]);
+        $this->doc->setTitle($page_name." Profile - ". CONFIG["site_name"]);
 		$this->doc->setDescription($description);
 		$this->doc->setMetaData("Keywords", $description);
 
@@ -35,6 +36,27 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$this->doc->setFacebookMetaData("og:image", CDN."images/real-estate.jpg");
 		$this->doc->setFacebookMetaData("og:description", $description);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
+
+
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+
+			$(document).ready(function() {
+				$.post('".url("SessionController@saveTraffic")."', {
+					'type': 'page',
+					'name': '$page_name Profile',
+					'id': 0,
+					'url': '".url()."',
+					'source': 'Website',
+					'client_info': {
+						'userAgent': userClient.userAgent,
+						'geo': userClient.geo,
+						'browser': userClient.browser
+					},
+					'csrf_token': '".csrf_token()."'
+				});
+			});
+
+		"));
 
 		if($data['reference_id'] > 1) {
 
@@ -306,7 +328,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 				});
 				$.post('".url("SessionController@saveTraffic")."', {
 					'type': 'page',
-					'name': 'Profile Listings $id',
+					'name': '$name Listings',
 					'id': 0,
 					'url': '".url()."',
 					'source': 'Website',
@@ -350,6 +372,26 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$this->doc->setFacebookMetaData("og:image", CDN."images/real-estate.jpg");
 		$this->doc->setFacebookMetaData("og:description", $description);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
+
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+
+			$(document).ready(function() {
+				$.post('".url("SessionController@saveTraffic")."', {
+					'type': 'page',
+					'name': 'Pareb Members Directory',
+					'id': 0,
+					'url': '".url()."',
+					'source': 'Website',
+					'client_info': {
+						'userAgent': userClient.userAgent,
+						'geo': userClient.geo,
+						'browser': userClient.browser
+					},
+					'csrf_token': '".csrf_token()."'
+				});
+			});
+
+		"));
 
 		$this->setTempalteBasePath(ROOT."/Admin");
 		return parent::memberDirectory();
