@@ -12,15 +12,8 @@ class TestimonialModel extends \Main\Model {
 
 	function getByAccountId() {
 
-		$query = "SELECT * FROM #__testimonials WHERE account_id = '".$this->column['account_id']."' ".$this->and;
-		$result = $this->DBO->query($query);
-
-		$this->initiateFields($result);
-
-		if($this->DBO->numRows($result) > 0) {
-			$line = $this->DBO->fetchAssoc($result);
-			return $this->stripQuotes($line);
-		}else {return false;}
+		$this->where(" account_id = ".$this->column['account_id'] );
+		return $this->getList();
 
 	}
 

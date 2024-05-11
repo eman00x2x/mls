@@ -3,8 +3,8 @@
 $html[] = "<div class='overflow-y-auto'>";
 
 	$html[] = "<div class='p-2' style='position: absolute; top:0; left:0; z-index:9999;' >";
-			$html[] = "<button type='button' class='btn-close fs-14 text-white' data-bs-dismiss='offcanvas'></button> ";
-		$html[] = "</div>";
+		$html[] = "<button type='button' class='btn-close fs-14 text-white' data-bs-dismiss='offcanvas'></button> ";
+	$html[] = "</div>";
 
 	$html[] = "<div class='card mb-3 border-0'>";
 	
@@ -116,6 +116,22 @@ $html[] = "<div class='overflow-y-auto'>";
 			$html[] = "</ul>";
 
 		$html[] = "</div>";
+	$html[] = "</div>";
+
+	$html[] = "<div class='px-3'>";
+		if($data['testimonials']) {
+			$html[] = "<h3>Testimonials</h3>";
+			for($i=0; $i<count($data['testimonials']); $i++) {
+				$html[] = "<figure>";
+					$html[] = "<blockquote class='blockquote'>";
+						$html[] = "<p class='mb-0'>".$data['testimonials'][$i]['content']."</p>";
+					$html[] = "</blockquote>";
+					$html[] = "<figcaption class='blockquote-footer'>";
+						$html[] = "<span>".$data['testimonials'][$i]['name']."</span>";
+					$html[] = "</figcaption>";
+				$html[] = "</figure>";
+			}
+		}
 	$html[] = "</div>";
 
 $html[] = "</div>";

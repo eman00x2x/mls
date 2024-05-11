@@ -300,6 +300,10 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 
 		}
 
+		$testimonials = $this->getModel("Testimonial");
+		$testimonials->column['account_id'] = (is_null($id) ? $this->account_id : $id);
+		$data['testimonials'] = $testimonials->getByAccountId();
+
 		$this->setTemplate("accounts/profilePreview.php");
 		return $this->getTemplate($data);
 

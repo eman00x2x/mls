@@ -210,5 +210,21 @@ $html[] = "<div class='page-body mt-0 bg-white'>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 
+		$html[] = "<div class=''>";
+			if($data['testimonials']) {
+				$html[] = "<h3>Testimonials</h3>";
+				for($i=0; $i<count($data['testimonials']); $i++) {
+					$html[] = "<figure>";
+						$html[] = "<blockquote class='blockquote'>";
+							$html[] = "<p class='mb-0'>".$data['testimonials'][$i]['content']."</p>";
+						$html[] = "</blockquote>";
+						$html[] = "<figcaption class='blockquote-footer'>";
+							$html[] = "<span>".$data['testimonials'][$i]['name']."</span>";
+						$html[] = "</figcaption>";
+					$html[] = "</figure>";
+				}
+			}
+		$html[] = "</div>";
+
 	$html[] = "</div>";
 $html[] = "</div>";

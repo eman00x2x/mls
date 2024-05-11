@@ -58,6 +58,10 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 			"description" => ""
 		]);
 
+		$testimonials = $this->getModel("Testimonial");
+		$testimonials->column['account_id'] = $id;
+		$data['testimonials'] = $testimonials->getByAccountId();
+
 		$this->setTemplate("accounts/profile.php");
 		return $this->getTemplate($data);
 
