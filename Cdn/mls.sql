@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `mls_articles` (
   `created_by` text,
   `created_at` int NOT NULL COMMENT 'epoch of time',
   PRIMARY KEY (`article_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mls_articles`
@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `mls_kyc` (
   `verified_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   `created_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   PRIMARY KEY (`kyc_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mls_kyc`
@@ -222,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `mls_leads` (
   `inquire_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   PRIMARY KEY (`lead_id`),
   KEY `accounts_leads` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mls_leads`
@@ -5966,7 +5966,7 @@ CREATE TABLE IF NOT EXISTS `mls_notifications` (
   `created_at` int NOT NULL COMMENT 'epoch of time',
   PRIMARY KEY (`notification_id`),
   KEY `accounts_notification` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mls_notifications`
@@ -6004,7 +6004,7 @@ CREATE TABLE IF NOT EXISTS `mls_page_ads` (
   `ended_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   `created_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   PRIMARY KEY (`page_ads_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mls_page_ads`
@@ -6074,7 +6074,7 @@ CREATE TABLE IF NOT EXISTS `mls_settings` (
   `refund_policy` text COMMENT 'HTML Format value',
   `modified_at` int NOT NULL COMMENT 'epoch of time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mls_settings`
@@ -6394,7 +6394,7 @@ CREATE TABLE IF NOT EXISTS `mls_user_login` (
   `login_at` int NOT NULL DEFAULT '0' COMMENT 'epoch of time',
   PRIMARY KEY (`user_login_id`),
   KEY `users_user_login` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mls_user_login`

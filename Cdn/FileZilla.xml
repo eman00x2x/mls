@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileZilla3 version="3.48.1" platform="windows">
+	<Servers>
+		<Server>
+			<Host>ftp.1premiereland.com</Host>
+			<Port>21</Port>
+			<Protocol>0</Protocol>
+			<Type>0</Type>
+			<User>onepremi</User>
+			<Pass encoding="base64">MTIzNDUhQCMkJU1FVEFtb3JwaG9zaXM=</Pass>
+			<Logontype>1</Logontype>
+			<PasvMode>MODE_DEFAULT</PasvMode>
+			<EncodingType>Auto</EncodingType>
+			<BypassProxy>0</BypassProxy>
+			<Name>1PLMC</Name>
+			<SyncBrowsing>0</SyncBrowsing>
+			<DirectoryComparison>0</DirectoryComparison>
+		</Server>
+		<Server>
+			<Host>ftp.ewd.wvf.mybluehost.me</Host>
+			<Port>21</Port>
+			<Protocol>0</Protocol>
+			<Type>0</Type>
+			<User>mls@ewd.wvf.mybluehost.me</User>
+			<Pass encoding="base64">UC4wWjR4REloXiNs</Pass>
+			<Logontype>1</Logontype>
+			<PasvMode>MODE_DEFAULT</PasvMode>
+			<EncodingType>Auto</EncodingType>
+			<BypassProxy>0</BypassProxy>
+			<Name>PAREB</Name>
+			<SyncBrowsing>0</SyncBrowsing>
+			<DirectoryComparison>0</DirectoryComparison>
+		</Server>
+		<Server>
+			<Host>ftp.philippinerealestateforum.com</Host>
+			<Port>21</Port>
+			<Protocol>0</Protocol>
+			<Type>0</Type>
+			<User>philprop</User>
+			<Pass encoding="base64">UGghTHByMHAzcnQhMyQ=</Pass>
+			<Logontype>1</Logontype>
+			<PasvMode>MODE_DEFAULT</PasvMode>
+			<EncodingType>Auto</EncodingType>
+			<BypassProxy>0</BypassProxy>
+			<Name>PPIC</Name>
+			<Comments>Ph!Lpr0p3rt!3$</Comments>
+			<SyncBrowsing>0</SyncBrowsing>
+			<DirectoryComparison>0</DirectoryComparison>
+		</Server>
+	</Servers>
+</FileZilla3>
