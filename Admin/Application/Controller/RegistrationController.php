@@ -2,7 +2,7 @@
 
 namespace Admin\Application\Controller;
 
-use Library\Mailer;
+use Library\Mailer as Mailer;
 
 class RegistrationController extends AccountsController {
 
@@ -20,7 +20,7 @@ class RegistrationController extends AccountsController {
 		$this->doc->addScript(CDN."js/encryption.js");
 
 		$local_boards_json = json_encode(LOCAL_BOARDS);
-		
+
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
 			const local_boards = $local_boards_json;
@@ -64,6 +64,8 @@ class RegistrationController extends AccountsController {
 			});
 
 			$(document).on('click', '.btn-search-reference', function() {
+				$('.response').html(\"<div class='bg-white p-3 mt-3 rounded'><div class='d-flex gap-3 align-items-center'><div class='loader'></div><p class='mb-0'>Processing, Please wait...</p></div></div>\");
+
 				$.post($('#save_url').val(), $('#form').serialize(), function(data) {
 					
 					try {
@@ -97,6 +99,7 @@ class RegistrationController extends AccountsController {
 			});
 
 			$(document).on('click', '.btn-continue', function() {
+				$('.response').html(\"<div class='bg-white p-3 mt-3 rounded'><div class='d-flex gap-3 align-items-center'><div class='loader'></div><p class='mb-0'>Processing, Please wait...</p></div></div>\");
 				$.post($('#save_url').val(), $('#form').serialize(), function(data) {
 					$('.registration_form').html(data);
 					$('.response').html('');
@@ -105,7 +108,7 @@ class RegistrationController extends AccountsController {
 			});
 
 			$(document).on('click', '.btn-verify-membership', function() {
-
+				$('.response').html(\"<div class='bg-white p-3 mt-3 rounded'><div class='d-flex gap-3 align-items-center'><div class='loader'></div><p class='mb-0'>Processing, Please wait...</p></div></div>\");
 				$.post($('#save_url').val(), $('#form').serialize(), function(data) {
 					response = JSON.parse(data);
 
@@ -141,8 +144,8 @@ class RegistrationController extends AccountsController {
 			$v->addError("Email address not found in the list of members, Please contact the administrator");
 		}
 
-		$user->column['email'] = $_POST['email'];
-		$accounts->column['email'] = $_POST['email'];
+		$user->column['email'] = $_POST['email_address'];
+		$accounts->column['email'] = $_POST['email_address'];
 
 		if($accounts->getByEmail() || $user->getByEmail()) {
 			$v->addError("Email already registered");
@@ -360,6 +363,10 @@ class RegistrationController extends AccountsController {
 			"message" => "Email address not found"
 		];
 
+	}
+
+	function saveNew() {
+		return parent::saveNew();
 	}
 	
 }

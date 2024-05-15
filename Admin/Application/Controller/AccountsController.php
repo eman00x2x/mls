@@ -2,7 +2,7 @@
 
 namespace Admin\Application\Controller;
 
-use Library\Mailer;
+use Library\Mailer as Mailer;
 
 class AccountsController extends \Main\Controller {
 
@@ -417,10 +417,12 @@ class AccountsController extends \Main\Controller {
 					
 				if($send['status'] == 2) {
 					$this->delete($accountResponse['id']);
+					$user->delete($response['id']);
 				}
 
 			}else {
 				$this->delete($accountResponse['id']);
+				$user->delete($response['id']);
 			}
 
 			$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);

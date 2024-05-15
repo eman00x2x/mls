@@ -34,7 +34,7 @@ $html[] = "<div class='page page-center'>";
 								$html[] = "<input type='email' class='form-control' name='email_address' id='email_address'  placeholder='Enter email address' autocomplete='off' tabindex='1'>";
 								$html[] = "<span class='form-hint'>";
 									$html[] = "<ul>";
-										$html[] = "<li>The email address that you register during your membership registration in PAREB.</li>";
+										$html[] = "<li>The email address that you registered during your membership registration in PAREB.</li>";
 									$html[] = "</ul>";
 								$html[] = "</span>";
 							$html[] = "</div>";

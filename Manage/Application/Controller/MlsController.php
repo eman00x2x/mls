@@ -486,6 +486,11 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 	function marketComparisonForm() {
 
+		if((!isset($this->session['privileges']['comparative_analysis_access']) && in_array($this->session['account_type'], ["Customer Service"])) || $this->session['privileges']['comparative_analysis_access'] == 0) {
+			$this->getLibrary("Factory")->setMsg("Access to the MLS Comparative Analysis Table requires premium privileges. Upgrade your subscription or subscribe to a premium to gain access.", "warning");
+			response()->redirect(url("MlsController@MLSIndex"));
+		}
+
 		$this->doc->setTitle("MLS Market Comparison");
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 			$(document).on('click','.btn-filter',function() {
