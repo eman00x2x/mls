@@ -24,12 +24,13 @@
     var DOMAIN = '<?php echo MANAGE; ?>';
     var CDN = '<?php echo CDN; ?>';
 
-    
-    $(document).ready(function () {
-        $.get('<?php echo url("NotificationsController@getLatest"); ?>', function (data, status) {
-            $('.notifications-container').html(data);
+    <?php if(isset($_SESSION['account'])) { ?>
+        $(document).ready(function () {
+            $.get('<?php echo url("NotificationsController@getLatest"); ?>', function (data, status) {
+                $('.notifications-container').html(data);
+            });
         });
-    });
+    <?php } ?>
 
 </script>
 <?php

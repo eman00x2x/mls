@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FileZilla3 version="3.48.1" platform="windows">
+<FileZilla3 version="3.66.4" platform="windows">
 	<Servers>
 		<Server>
 			<Host>ftp.1premiereland.com</Host>
 			<Port>21</Port>
-			<Protocol>0</Protocol>
+			<Protocol>6</Protocol>
 			<Type>0</Type>
 			<User>onepremi</User>
 			<Pass encoding="base64">MTIzNDUhQCMkJU1FVEFtb3JwaG9zaXM=</Pass>
@@ -36,14 +36,73 @@
 			<Port>21</Port>
 			<Protocol>0</Protocol>
 			<Type>0</Type>
-			<User>philprop</User>
-			<Pass encoding="base64">UGghTHByMHAzcnQhMyQ=</Pass>
+			<User>ppicintern@beta.philproperties.ph</User>
+			<Pass encoding="base64">bW1PZVhbLVpud0VV</Pass>
 			<Logontype>1</Logontype>
 			<PasvMode>MODE_DEFAULT</PasvMode>
 			<EncodingType>Auto</EncodingType>
 			<BypassProxy>0</BypassProxy>
-			<Name>PPIC</Name>
-			<Comments>Ph!Lpr0p3rt!3$</Comments>
+			<Name>beta</Name>
+			<SyncBrowsing>0</SyncBrowsing>
+			<DirectoryComparison>0</DirectoryComparison>
+		</Server>
+		<Server>
+			<Host>ftp.saviloweb.com</Host>
+			<Port>21</Port>
+			<Protocol>6</Protocol>
+			<Type>0</Type>
+			<User>savilowe</User>
+			<Pass encoding="base64">MTIzNDUhQCMkJUVtYW4wMHgyeA==</Pass>
+			<Logontype>1</Logontype>
+			<PasvMode>MODE_DEFAULT</PasvMode>
+			<EncodingType>Auto</EncodingType>
+			<BypassProxy>0</BypassProxy>
+			<Name>FTP</Name>
+			<SyncBrowsing>0</SyncBrowsing>
+			<DirectoryComparison>0</DirectoryComparison>
+		</Server>
+		<Server>
+			<Host>ftp.philippinerealestateforum.com</Host>
+			<Port>21</Port>
+			<Protocol>6</Protocol>
+			<Type>0</Type>
+			<User>philipr3</User>
+			<Pass encoding="base64">MTIzNDUhQCMkJXBISUxQUk9QRVJUSUVT</Pass>
+			<Logontype>1</Logontype>
+			<PasvMode>MODE_DEFAULT</PasvMode>
+			<EncodingType>Auto</EncodingType>
+			<BypassProxy>0</BypassProxy>
+			<Name>New site</Name>
+			<SyncBrowsing>0</SyncBrowsing>
+			<DirectoryComparison>0</DirectoryComparison>
+		</Server>
+		<Server>
+			<Host>ftp.cthiedu.com</Host>
+			<Port>21</Port>
+			<Protocol>6</Protocol>
+			<Type>0</Type>
+			<User>webdev</User>
+			<Pass encoding="base64">TjMwZzMza3M=</Pass>
+			<Logontype>1</Logontype>
+			<PasvMode>MODE_DEFAULT</PasvMode>
+			<EncodingType>Auto</EncodingType>
+			<BypassProxy>0</BypassProxy>
+			<Name>New site 2</Name>
+			<SyncBrowsing>0</SyncBrowsing>
+			<DirectoryComparison>0</DirectoryComparison>
+		</Server>
+		<Server>
+			<Host>ftp.1premiereland.com</Host>
+			<Port>21</Port>
+			<Protocol>0</Protocol>
+			<Type>0</Type>
+			<User>publicFtp@1premiereland.ph</User>
+			<Pass encoding="base64">MVBsbWM3MjEx</Pass>
+			<Logontype>1</Logontype>
+			<PasvMode>MODE_DEFAULT</PasvMode>
+			<EncodingType>Auto</EncodingType>
+			<BypassProxy>0</BypassProxy>
+			<Name>server</Name>
 			<SyncBrowsing>0</SyncBrowsing>
 			<DirectoryComparison>0</DirectoryComparison>
 		</Server>

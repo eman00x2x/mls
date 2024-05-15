@@ -69,6 +69,7 @@ class Middleware implements IMiddleware {
 			
 			Router::post('/checkCredentials', 'AuthenticatorController@checkCredentials');
 			Router::post('/registerStep1', 'RegistrationController@register');
+			Router::post('/registerStep2', 'RegistrationController@agreeToDataPrivacy');
 			Router::post('/registerBroker', 'RegistrationController@registerBroker');
 			Router::post('/registerAccount', 'RegistrationController@registerAccount');
 			Router::post('/registerAccountSave', 'RegistrationController@saveNew');

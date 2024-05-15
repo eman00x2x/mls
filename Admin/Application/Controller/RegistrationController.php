@@ -19,70 +19,12 @@ class RegistrationController extends AccountsController {
 
 		$this->doc->addScript(CDN."js/encryption.js");
 
-		/* $this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
-
-			let current_value = {};
-			
-			$(document).on('change','#region',function() {
-				region_id = $(this).val();
-				$('input[name=\"address[region]\"]').val($('#region option:selected').text());
-
-				html = \"<option value=''></option>\";
-				for(let i = 0; i < province.length; i++) {
-					let obj = province[i];
-					if(obj.region_id == region_id) {
-						name = obj.province_name;
-						html += \"<option value='\" + obj.province_id + \"'>\" + name.replace('ñ', 'n') + \"</option>\";
-					}
-				}
-				$('#province').html(html);
-
-				$('#municipality').html('');
-				$('#barangay').html('');
-
-			});
-
-			$(document).on('change','#province',function() {
-				province_id = $(this).val();
-				$('input[name=\"address[province]\"]').val($('#province option:selected').text());
-
-				html = \"<option value=''></option>\";
-				for(let i = 0; i < municipality.length; i++) {
-					let obj = municipality[i];
-					if(obj.province_id == province_id) {
-						name = obj.municipality_name;
-						html += \"<option value='\" + obj.municipality_id + \"'>\" + name.replace('ñ', 'n') + \"</option>\";
-					}
-				}
-				$('#municipality').html(html);
-
-				$('#barangay').html('');
-
-			});
-
-			$(document).on('change','#municipality',function() {
-				municipality_id = $(this).val();
-				$('input[name=\"address[municipality]\"]').val($('#municipality option:selected').text());
-
-				html = \"<option value=''></option>\";
-				for(let i = 0; i < barangay.length; i++) {
-					let obj = barangay[i];
-					if(obj.municipality_id == municipality_id) {
-						name = obj.barangay_name;
-						html += \"<option value='\" + obj.barangay_id + \"'>\" + name.replace('ñ', 'n') + \"</option>\";
-					}
-				}
-				$('#barangay').html(html);
-
-			});
-
-			$(document).on('change','#barangay',function() {
-				$('input[name=\"address[barangay]\"]').val($('#barangay option:selected').text());
-			});
-
-		")); */
-
+		$local_boards_json = json_encode(LOCAL_BOARDS);
+		
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+
+			const local_boards = $local_boards_json;
+
 			$(document).ready(function() {
 				(async () => {
 					let keys = await generateKey();
@@ -91,6 +33,20 @@ class RegistrationController extends AccountsController {
 
 					$('#api_key').val(uuidv4());
 				})();
+			});
+
+			$(document).on('change', '#board_region', function() {
+
+				let region = $('#board_region option:selected').val();
+
+				html = '';
+				for(key in local_boards[region]) {
+					if (local_boards[region].hasOwnProperty(key)) {
+						html += \"<option value='\" + local_boards[region][key] + \"'>\" + local_boards[region][key] + \"</option>\";
+					}
+				}
+
+				$('#local_board_name').html(html);
 			});
 		"));
 		
@@ -116,12 +72,9 @@ class RegistrationController extends AccountsController {
 						$('.registration_form').html(data);
 						$('.response').html('');
 
-						
 
 						$('.board-details label').css('color', '#FFF');
-
 						$('.region-selection, .province-selection').addClass('flex-grow-1');
-
 						$('.municipality-selection').remove();
 						$('.barangay-selection').remove();
 						
@@ -150,13 +103,74 @@ class RegistrationController extends AccountsController {
 					return false;
 				});
 			});
+
+			$(document).on('click', '.btn-verify-membership', function() {
+
+				$.post($('#save_url').val(), $('#form').serialize(), function(data) {
+					response = JSON.parse(data);
+
+					if(response.status == 2) {
+						$('.response').html(response.message);
+					}else {
+						$('.registration_form').html(response.data);
+					}
+
+					return false;
+				});
+			});
 		");
 
+		$this->setTemplate("registration/membership_verification.php");
+		return $this->getTemplate();
+		
+	}
+
+	function agreeToDataPrivacy() {
+
+		parse_str(file_get_contents('php://input'), $_POST);
+
+		$accounts = $this->getModel("Account");
+		$user = $this->getModel("User");
+		$v = $this->getLibrary("Factory")->getValidator();
+
+		$v->validateEmail($_POST['email_address'], "Invalid email address");
+
+		$response = $this->verifyMembership($_POST['email_address']);
+
+		if($response['status'] == 2) {
+			$v->addError("Email address not found in the list of members, Please contact the administrator");
+		}
+
+		$user->column['email'] = $_POST['email'];
+		$accounts->column['email'] = $_POST['email'];
+
+		if($accounts->getByEmail() || $user->getByEmail()) {
+			$v->addError("Email already registered");
+		}
+		
+		if($v->foundErrors()) {
+
+			$mes = $v->listErrors();
+			$this->getLibrary("Factory")->setMsg($mes, "error");
+			return json_encode([
+				"status" => 2,
+				"type" => "error",
+                "message" => getMsg()
+			]);
+
+		}
+		
+		$data = $_POST;
+		$data['email'] = $response['data']['email'];
+		$data['broker_prc_license_id'] = $response['data']['broker_prc_license_id'];
 		$data['data_privacy'] = CONFIG['data_privacy'];
 
 		$this->setTemplate("registration/dataPrivacy.php");
-		return $this->getTemplate($data);
-		
+		return json_encode([
+			"status" => 1,
+			"data" => $this->getTemplate($data)
+		]);
+
 	}
 
 	function registerBroker() {
@@ -189,10 +203,10 @@ class RegistrationController extends AccountsController {
 
 			$response['data']['pin'] = $_POST['pin'];
 			$response['data']['api_key'] = $_POST['api_key'];
+			$response['data']['email_address'] = $_POST['email_address'];
 
-			/* $response['data']['board_regions'] = BOARD_REGIONS; */
-			$response['data']['local_boards'] = LOCAL_BOARDS;
-			sort($response['data']['local_boards']);
+			$response['data']['board_regions'] = array_keys(LOCAL_BOARDS);
+			sort($response['data']['board_regions']);
 
 			$this->setTemplate("registration/register.php");
 			return $this->getTemplate($response['data']);
@@ -319,6 +333,32 @@ class RegistrationController extends AccountsController {
 			"status" => $response['status'],
 			"message" => getMsg()
 		));
+
+	}
+
+	function verifyMembership($email) {
+
+		if (($handle = fopen(ROOT . "/Cdn/emails.csv", "r")) !== FALSE) {
+			while (($fields = fgetcsv($handle, 1000, ",")) !== FALSE) {
+
+				if($fields[0] == $email) {
+                    return [
+						"status" => 1,
+						"data" => [
+							"email" => $fields[0],
+							"broker_prc_license_id" => $fields[1]
+						]
+					];
+                }
+
+			}
+			fclose($handle);
+		}
+
+		return [
+			"status" => 2,
+			"message" => "Email address not found"
+		];
 
 	}
 	

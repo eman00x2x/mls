@@ -21,25 +21,22 @@ $html[] = "<label class='form-label'>Local Board Information</label>";
 $html[] = "<div class='mb-4 p-3 bg-azure text-white board-details'>";
 	
 	$html[] = "<div class=' mb-3'>";
-		$html[] = "<label class='form-label'>Local Board</label>";
-		$html[] = "<select name='local_board_name' class='form-select' id='local_board_name'>";
-			foreach ($data['local_boards'] as $name) {
-				$html[] = "<option value='".$name."' >$name</option>";
-			}
+		$html[] = "<label class='form-label'>Board Region</label>";
+		$html[] = "<select name='board_region[region]' class='form-select' id='board_region'>";
+			$html[] = "<option value='' ></option>";
+			foreach ($data['board_regions'] as $region) {
+                $html[] = "<option value='".$region."' >$region</option>";
+            }
 		$html[] = "</select>";
 	$html[] = "</div>";
 
-	$html[] = "<div class=''>";
-		$html[] = "<label class='form-label'>Board Region</label>";
-		$html[] = "<select name='address[region]' class='form-select' id='region'>";
-			$html[] = "<option value='NCR'>NCR</option>";
-			$html[] = "<option value='North Luzon'>North Luzon</option>";
-			$html[] = "<option value='South Luzon'>South Luzon</option>";
-			$html[] = "<option value='Visayas'>Visayas</option>";
-			$html[] = "<option value='Mindanao'>Mindanao</option>";
+	$html[] = "<div class=' mb-3'>";
+		$html[] = "<label class='form-label'>Local Board</label>";
+		$html[] = "<select name='local_board_name' class='form-select' id='local_board_name'>";
+			
 		$html[] = "</select>";
 	$html[] = "</div>";
-	
+
 $html[] = "</div>";
 
 $html[] = "<div class=' mb-3'>";
@@ -94,7 +91,7 @@ $html[] = "</div>";
 
 $html[] = "<div class='mb-3'>";
 	$html[] = "<label class='form-label'><i class='ti ti-email'></i> Email</label>";
-	$html[] = "<input type='email' class='form-control' name='email'  placeholder='Enter Email' autocomplete='off'>";
+	$html[] = "<input type='email' class='form-control' name='email' value='".$data['email_address']."'  placeholder='Enter Email' autocomplete='off' readonly='readonly'>";
 $html[] = "</div>";
 
 $html[] = "<div class='mb-3'>";
@@ -109,7 +106,7 @@ $html[] = "</div>";
 
 $html[] = "<div class='row align-items-center mt-5' style='height:40px;'>";
 	$html[] = "<div class='col-4'>";
-		$html[] = "<span class='d-block text-muted mb-1 fs-12'>Step 3 of 3</span>";
+		$html[] = "<span class='d-block text-muted mb-1 fs-12'>Step 4 of 4</span>";
 		$html[] = "<div class='progress'>";
 			$html[] = "<div class='progress-bar' style='width: 100%' role='progressbar' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100' aria-label='25% Complete'>";
 				$html[] = "<span class='visually-hidden'>100% Complete</span>";

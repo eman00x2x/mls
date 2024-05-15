@@ -384,12 +384,8 @@ class AccountsController extends \Main\Controller {
 		}
 
 		$_POST['board_region'] = json_encode([
-			"region" => (isset($_POST['address']['region']) ? $_POST['address']['region'] : ""),
-			"province" => (isset($_POST['address']['province']) ? $_POST['address']['province'] : ""),
-			"municipality" => (isset($_POST['address']['municipality']) ? $_POST['address']['municipality'] : "")
+			"region" => (isset($_POST['board_region']['region']) ? $_POST['board_region']['region'] : "")
 		]);
-
-		unset($_POST['address']);
 
 		$accountResponse = $accounts->saveNew($_POST);
 		
