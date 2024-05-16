@@ -147,7 +147,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$listings = $this->getModel("Listing");
 		$listings->address = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));
 
-		$uri['offer'] = "for sale";
+		$uri['offer'] = !isset($uri['offer']) ? "for sale" : $uri['offer'];
 		
 		$listings->page['limit'] = 20;
 		$listings->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;

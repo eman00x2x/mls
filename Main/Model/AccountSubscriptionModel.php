@@ -29,6 +29,7 @@ class AccountSubscriptionModel extends \Main\Model {
 					$privileges[$key] += $val;
 				}
 			}
+
 			return $privileges;
 		}
 

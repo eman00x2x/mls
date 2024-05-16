@@ -84,8 +84,15 @@ $html[] = "<div class='page-body mb-0'>";
 							$html[] = date("d M Y", $data['modified_at']);
 						$html[] = "</span>";
 					$html[] = "</div>";
+
+					$offer = [
+						"for sale" => "<span class='text-primary'>For Sale</span>",
+						"for rent" => "<span class='text-yellow'>For Rent</span>",
+						"looking for" => "<span class='text-orange'>Looking For</span>"
+					];
 						
 					$html[] = "<div class='mb-4'>";
+						$html[] = "".$offer[$data['offer']]."";
 						$html[] = "<h1>".$data['title']."</h1>";
 						$html[] = "<p><i class='ti ti-map-pin'></i> ".$data['address']['barangay']." ".$data['address']['municipality']." ".$data['address']['province']."</p>";
 						$html[] = "<p class='display-5 fw-bold text-highlight'>&#8369;".number_format($data['price'], 0)."</p>";

@@ -123,9 +123,11 @@ function properties($data, $model) {
 					if($model->app['handshaked'] && $model->app['comparative']) {
 						$html[] = "<div class='mt-4 '>";
 							$html[] = "<div class='btn-list'>";
-								
-								if($model->app['handshaked']) {
-									$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
+							
+								if($data['listing']['offer'] != "looking for") {
+									if($model->app['handshaked']) {
+										$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
+									}
 								}
 
 								if($model->app['comparative']) {

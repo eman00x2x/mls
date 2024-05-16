@@ -346,10 +346,15 @@ class ListingsController extends \Main\Controller {
 		$subscription->column['account_id'] = $account_id;
 		$privileges = $subscription->getSubscription();
 
-		if($privileges === false) {
-			$data['privileges'] = $data['privileges'];
-		}else {
-			$data['privileges'] = $privileges;
+		if($privileges) {
+			foreach($privileges as $key => $val) {
+
+				if(!isset($data['privileges'][$key])) {
+					$data['privileges'][$key] = $val;
+				}else {
+					$data['privileges'][$key] += $val;
+				}
+			}
 		}
 
 		if($data['privileges']['max_post'] <= $data['listings'][0]['total']) {
@@ -390,7 +395,7 @@ class ListingsController extends \Main\Controller {
 
 		if($data) {
 
-			$fields = explode(",", "listing_id,address,lot_area,price,category");
+			$fields = explode(",", "listing_id,offer,address,lot_area,price,category");
 			foreach($fields as $value) {
 				$uri[$value] = $data['listing'][ $value ];
 			}
@@ -979,6 +984,21 @@ class ListingsController extends \Main\Controller {
 		if(isset($_GET['offer']) && $_GET['offer'] == "rent") {
 			$filters[] = " offer = 'for rent'";
 			$model->page['uri']['offer'] = "for rent";
+		}
+
+		if(isset($_GET['offer']) && $_GET['offer'] == "for sale") {
+			$filters[] = " offer = 'for sale'";
+			$model->page['uri']['offer'] = "for sale";
+		}
+
+		if(isset($_GET['offer']) && $_GET['offer'] == "for rent") {
+			$filters[] = " offer = 'for rent'";
+			$model->page['uri']['offer'] = "for rent";
+		}
+
+		if(isset($_GET['offer']) && $_GET['offer'] == "looking for") {
+			$filters[] = " offer = 'looking for'";
+			$model->page['uri']['offer'] = "looking for";
 		}
 
 		if(isset($_GET['category']) && $_GET['category'] != "") {

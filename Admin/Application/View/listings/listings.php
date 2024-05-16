@@ -254,6 +254,12 @@ $html[] = "<div class='page-body'>";
 								$address = $data['listings'][$i]['address'];
 								unset($address['region']);
 
+								$offer = [
+									"for sale" => "<span class='text-primary'>For Sale</span>",
+									"for rent" => "<span class='text-yellow'>For Rent</span>",
+									"looking for" => "<span class='text-orange'>Looking For</span>"
+								];
+
 								$redirect = "onclick='window.location=\"".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."\"'";
 								
 								$html[] = "<tr class='row_listings_".$data['listings'][$i]['listing_id']." listings-table cursor-pointer'>";
@@ -267,7 +273,7 @@ $html[] = "<div class='page-body'>";
 
 									$html[] = "</span></td>";
 									$html[] = "<td $redirect class='align-middle'>";
-										$html[] = "<span class='fw-bold'>".$data['listings'][$i]['title']."</span>";
+										$html[] = "<span class='fw-bold'>".$offer[$data['listings'][$i]['offer']]." ".$data['listings'][$i]['title']."</span>";
 										$html[] = "<span class='d-block text-muted fs-12'><span class='fw-bold'>".$data['listings'][$i]['category']."</span> in ".(implode(" ",$address))."</span>";
 									$html[] = "</td>";
 									
@@ -303,23 +309,25 @@ $html[] = "<div class='page-body'>";
 									
 									$html[] = "<td class='text-center align-middle'>";
 									
-										$html[] = "<div class='item-action dropdown'>";
 										
-											$html[] = "<span class='btn btn-outline-primary btn-md' data-bs-toggle='dropdown'><i class='ti ti-dots-vertical'></i></span>";
+											$html[] = "<div class='item-action dropdown'>";
 											
-											$html[] = "<div class='dropdown-menu dropdown-menu-right'>";
-												$html[] = "<a class='ajax dropdown-item' href='".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-edit me-2'></i> Update Listing</a>";
-												$html[] = "<span class='dropdown-item btn-set-featured cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@setFeatured",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-rubber-stamp me-2'></i> Featured Settings</span>";
-												$html[] = "<span class='dropdown-item btn-sold cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@soldSettings",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-currency-peso me-2'></i> Sold Settings</span>";
+												$html[] = "<span class='btn btn-outline-primary btn-md' data-bs-toggle='dropdown'><i class='ti ti-dots-vertical'></i></span>";
 												
-												if(isset($_SESSION['user_logged']['permissions']['properties']['delete'])) {
-													$html[] = "<span class='dropdown-item text-light bg-secondary btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@remove",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-x me-2'></i> Remove</span>";
-													$html[] = "<span class='dropdown-item text-light bg-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@delete",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
-												}
+												$html[] = "<div class='dropdown-menu dropdown-menu-right'>";
+													$html[] = "<a class='ajax dropdown-item' href='".url("ListingsController@edit",["id" => $data['listings'][$i]['account_id'], "listing_id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-edit me-2'></i> Update Listing</a>";
+													$html[] = "<span class='dropdown-item btn-set-featured cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@setFeatured",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-rubber-stamp me-2'></i> Featured Settings</span>";
+													$html[] = "<span class='dropdown-item btn-sold cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@soldSettings",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-currency-peso me-2'></i> Sold Settings</span>";
+													
+													if(isset($_SESSION['user_logged']['permissions']['properties']['delete'])) {
+														$html[] = "<span class='dropdown-item text-light bg-secondary btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@remove",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-x me-2'></i> Remove</span>";
+														$html[] = "<span class='dropdown-item text-light bg-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("ListingsController@delete",["id" => $data['listings'][$i]['listing_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
+													}
 
+												$html[] = "</div>";
+												
 											$html[] = "</div>";
-											
-										$html[] = "</div>";
+										
 									
 									$html[] = "</td>";
 									
