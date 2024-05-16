@@ -90,7 +90,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 										$html[] = "<label class='text-muted form-label mt-2 text-end'>Email</label>";
 									$html[] = "</div>";
 									$html[] = "<div class='col-9'>";
-										$html[] = "<p class='form-control-plaintext'>".$data['email']."</p>";
+										$html[] = "<p class='form-control-plaintext'>".$data['user_email']."</p>";
 									$html[] = "</div>";
 								$html[] = "</div>";
 							$html[] = "</div>";

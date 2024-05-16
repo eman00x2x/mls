@@ -129,7 +129,7 @@ class UsersController extends \Main\Controller {
 			$table['user'] = $this->getModel("User");
 			$table['user']->column['user_id'] = $id;
 			$table['user']->join = " u JOIN #__accounts a ON u.account_id = a.account_id";
-			$table['user']->and(" u.account_id = $account_id ");
+			$table['user']->select(" *, u.email as user_email ")->and(" u.account_id = $account_id ");
 
 			if($data = $table['user']->getById()) {
 				$this->setTemplate("users/edit.php");
