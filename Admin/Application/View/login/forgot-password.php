@@ -3,9 +3,10 @@
 $html[] = "<div class='d-flex flex-column'>";
 	$html[] = "<div class='page page-center'>";
 		$html[] = "<div class='container container-tight py-4'>";
+
 			$html[] = "<div class='text-center mb-4 mt-5'>";
-				$html[] = "<a href='".WEBDOMAIN."' class='navbar-brand'><span class='d-block fs-30 fw-bold'><i class='ti ti-building-skyscraper'></i> MLS</span></a>";
-				$html[] = "<span class='d-block'><b>MLS Account Password Reset Link</b></span>";
+				$html[] = "<a href='".WEBDOMAIN."' class='navbar-brand'><span class='d-block fs-30 fw-bold'><img src='".CDN."images/logo.png' style='width:32px;' /> ".CONFIG['site_name']."</span></a>";
+				$html[] = "<span class='d-block'><b>Send Password Reset Link</b></span>";
 			$html[] = "</div>";
 
 			$html[] = "<input type='hidden' id='save_url' value='".url("AuthenticatorController@sendPasswordResetLink")."' />";

@@ -11,8 +11,8 @@ $html[] = "<div class='d-flex flex-column bg-white'>";
 
 					$html[] = "<div class='px-3'>";
 						$html[] = "<div class='text-center mb-4'>";
-							$html[] = "<a href='".WEBDOMAIN."' class='navbar-brand'><span class='d-block fs-30 fw-bold'><i class='ti ti-building-skyscraper'></i> MLS</span></a>";
-							$html[] = "<span class='d-block'><b>MLS Account Authentication</b></span>";
+							$html[] = "<a href='".WEBDOMAIN."' class='navbar-brand fs-32'><img src='".CDN."images/logo.png' style='width:32px;' /> ".CONFIG['site_name']."</a>";
+							$html[] = "<span class='d-block'><b>Account Authentication</b></span>";
 						$html[] = "</div>";
 
 						$html[] = "<form id='form' class='border-0' action='' method='POST'>";
