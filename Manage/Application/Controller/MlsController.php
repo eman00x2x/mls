@@ -321,7 +321,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		$data = $handshake->getById();
 
 		$handshake->save($id, array(
-			"handshake_status" => "active",
+			"handshake_status" => "accepted",
 			"handshake_status_at" => DATE_NOW
 		));
 

@@ -225,7 +225,7 @@ class TransactionsController extends \Main\Controller {
 		$xendit = new XendIt();
 		$xendit->requestInvoice(
             $data,
-            rtrim(MANAGE, "/").url("TransactionsController@paymentStatus"),
+            rtrim(MANAGE, "/Manage").url("TransactionsController@paymentStatus"),
         );
         
 		$data['cost'] = $_POST['cost'];

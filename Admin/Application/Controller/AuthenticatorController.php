@@ -489,8 +489,20 @@ class AuthenticatorController extends \Main\Controller
 			});
 		"));
 
-		$this->doc->setTitle("MLS Login");
+		$title = CONFIG['site_name']." Login";
+		$description = "Login to your PAREB MLS account";
 
+		$this->doc->setTitle($title);
+		$this->doc->setDescription($description);
+		$this->doc->setMetaData("keywords", $description);
+
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", $title);
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", CDN."/images/real-estate.jpg");
+		$this->doc->setFacebookMetaData("og:description", $description);
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
+		
 		$this->setTemplate("login/login.php");
 		return $this->getTemplate();
 		
@@ -498,7 +510,19 @@ class AuthenticatorController extends \Main\Controller
 
 	function getForgotPasswordForm() {
 
-		$this->doc->setTitle("Send Password Reset Link - MLS");
+		$title = "Send Password Reset Link - ".CONFIG['site_name'];
+		$description = "Get Password Reset Link";
+
+		$this->doc->setTitle($title);
+		$this->doc->setDescription($description);
+		$this->doc->setMetaData("keywords", $description);
+
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", $title);
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", CDN."/images/real-estate.jpg");
+		$this->doc->setFacebookMetaData("og:description", $description);
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
 		$this->setTemplate("login/forgot-password.php");
 		return $this->getTemplate();
@@ -506,7 +530,19 @@ class AuthenticatorController extends \Main\Controller
 
 	function getResetPasswordForm() {
 
-		$this->doc->setTitle("Password Reset - MLS");
+		$title = "Password Reset - ".CONFIG['site_name'];
+		$description = "Reset your PAREB MLS account password";
+
+		$this->doc->setTitle($title);
+		$this->doc->setDescription($description);
+		$this->doc->setMetaData("keywords", $description);
+
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", $title);
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", CDN."/images/real-estate.jpg");
+		$this->doc->setFacebookMetaData("og:description", $description);
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
 		if(!isset($_REQUEST['ref'])) {
 			response()->redirect(MANAGE . 'not-found');
@@ -538,6 +574,20 @@ class AuthenticatorController extends \Main\Controller
 	}
 
 	function getTwoStepVerificationCodeForm() {
+
+		$title = "Two Factor Authentication - ".CONFIG['site_name'];
+		$description = "Get code to login to your PAREB MLS account";
+
+		$this->doc->setTitle($title);
+		$this->doc->setDescription($description);
+		$this->doc->setMetaData("keywords", $description);
+
+		$this->doc->setFacebookMetaData("og:url", url());
+		$this->doc->setFacebookMetaData("og:title", $title);
+		$this->doc->setFacebookMetaData("og:type", "website");
+		$this->doc->setFacebookMetaData("og:image", CDN."/images/real-estate.jpg");
+		$this->doc->setFacebookMetaData("og:description", $description);
+		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
 		$this->doc->addScriptDeclaration("
 

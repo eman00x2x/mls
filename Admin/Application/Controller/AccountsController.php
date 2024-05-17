@@ -193,7 +193,12 @@ class AccountsController extends \Main\Controller {
 		$this->doc->addScript(CDN."js/photo-uploader.js");
 		$this->doc->addScript(CDN."js/encryption.js");
 
+		$local_boards_json = json_encode(LOCAL_BOARDS);
+
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+
+			$local_boards_json = json_encode(LOCAL_BOARDS);
+
 			$(document).ready(function() {
 				(async () => {
 					let keys = await generateKey();
@@ -204,23 +209,22 @@ class AccountsController extends \Main\Controller {
 					$('#pin').val(rcg());
 				})();
 
-				html = \"<option value=''></option>\";
-					for(let i = 0; i < region.length; i++) {
-						let obj = region[i];
-						name = obj.region_name;
-						html += \"<option value='\" + obj.region_id + \"'>\" + name.replace('ñ', 'n') + \"</option>\";
-					}
-					$('#region').html(html);
+				let region = $('#board_region option:selected').val();
 
-					$('.board-details label').addClass('text-muted');
-					$('.region-selection, .province-selection').addClass('flex-grow-1');
-					$('.barangay-selection').remove();
+				html = '';
+				for(key in local_boards[region]) {
+					if (local_boards[region].hasOwnProperty(key)) {
+						html += \"<option value='\" + local_boards[region][key] + \"'>\" + local_boards[region][key] + \"</option>\";
+					}
+				}
+
+				$('#local_board_name').html(html);
 					
 			});
 		"));
 
-		$data['local_boards'] = LOCAL_BOARDS;
-		sort($data['local_boards']);
+		$data['board_regions'] = array_keys(LOCAL_BOARDS);
+		sort($data['board_regions']);
 
 		$this->setTemplate("accounts/add.php");
 		return $this->getTemplate($data, $this->getModel("Address"));
@@ -240,26 +244,33 @@ class AccountsController extends \Main\Controller {
 
 			$this->doc->addScript(CDN."js/photo-uploader.js");
 
+			$local_boards_json = json_encode(LOCAL_BOARDS);
+
 			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+				const local_boards = $local_boards_json;
+
 				$(document).ready(function() {
 					(async () => {
 						$('#api_key').val(uuidv4());
 						$('#pin').val(rcg());
 					})();
 
-					html = \"<option value=''></option>\";
-					for(let i = 0; i < region.length; i++) {
-						let obj = region[i];
-						name = obj.region_name;
-						html += \"<option value='\" + obj.region_id + \"'>\" + name.replace('ñ', 'n') + \"</option>\";
-					}
-					$('#region').html(html);
-
 					$('.board-details label').addClass('text-muted');
-					$('.region-selection, .province-selection').addClass('flex-grow-1');
-					$('.barangay-selection').remove();
+					
+					let region = $('#board_region option:selected').val();
+
+					html = '';
+					for(key in local_boards[region]) {
+						if (local_boards[region].hasOwnProperty(key)) {
+							html += \"<option value='\" + local_boards[region][key] + \"'>\" + local_boards[region][key] + \"</option>\";
+						}
+					}
+
+					$('#local_board_name').html(html);
 
 				});
+
+
 			"));
 			
 			$accounts = $this->getModel("Account");
@@ -267,8 +278,8 @@ class AccountsController extends \Main\Controller {
 
 			if($data = $accounts->getById()) {
 
-				$data['local_boards'] = LOCAL_BOARDS;
-				sort($data['local_boards']);
+				$data['board_regions'] = array_keys(LOCAL_BOARDS);
+				sort($data['board_regions']);
 
 				if($data['reference_id'] != 0) {
 					$reference = $this->getModel("LicenseReference");
@@ -279,9 +290,6 @@ class AccountsController extends \Main\Controller {
 				}else {
 					$data['broker_prc_license_id'] = "";
 				}
-
-				$address = $this->getModel("Address");
-				$accounts->address = $address->addressSelection($data['board_region']);
 
 				$this->setTemplate("accounts/edit.php");
 				return $this->getTemplate($data, $accounts);

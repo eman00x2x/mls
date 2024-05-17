@@ -9,6 +9,8 @@ use Pecee\Http\Middleware\IMiddleware;
 use Pecee\Http\Middleware\BaseCsrfVerifier;
 use Admin\Application\Controller\AuthenticatorController as Authenticator;
 
+if (extension_loaded('zlib')) { ob_end_clean(); }
+
 if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start();
 
 if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {

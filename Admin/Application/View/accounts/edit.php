@@ -176,12 +176,16 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 							$html[] = "<div class='card-body'>";
 
 								$html[] = "<div class='mb-4 p-3 board-details'>";
-									$html[] = "<div class='row align-items-center'>";
-										$html[] = "<label class='col-sm-3 col-form-label text-end'>Local Board Location</label>";
+									$html[] = "<div class='row align-items-center mb-3'>";
+										$html[] = "<label class='col-sm-3 col-form-label text-end'>Local Board Region</label>";
 										$html[] = "<div class='col-sm-9'>";
-											$html[] = "<div class='d-flex gap-3'>";
-												$html[] = $model->address;
-											$html[] = "</div>";
+											$html[] = "<select name='board_region[region]' class='form-select' id='board_region'>";
+												$html[] = "<option value='' ></option>";
+												foreach ($data['board_regions'] as $region) {
+													$sel = $data['board_region']['region'] == $region ? "selected" : "";
+													$html[] = "<option value='".$region."' $sel>$region</option>";
+												}
+											$html[] = "</select>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 
@@ -189,11 +193,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 										$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Local Board Name</label>";
 										$html[] = "<div class='col-sm-9'>";
 											$html[] = "<select name='local_board_name' class='form-select' id='local_board_name'>";
-
-												foreach ($data['local_boards'] as $name) {
-													$sel = $data['local_board_name'] == $name ? "selected" : "";
-													$html[] = "<option value='".$name."' $sel>$name</option>";
-												}
 											$html[] = "</select>";
 										$html[] = "</div>";
 									$html[] = "</div>";

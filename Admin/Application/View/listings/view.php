@@ -232,6 +232,45 @@ $html[] = "<div class='page-body'>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 	}
+
+	if($data['handshake_list']) {
+		$html[] = "<div class='container-xl px-0 handshake-container'>";
+			$html[] = "<div class='mt-3 mb-0 pb-0 card px-3'>";
+				$html[] = "<div class='card-title mb-2 mt-5'><i class='ti ti-heart-handshake me-1'></i> Handshake Details</div>";
+
+					$html[] = "<table class='table'>";
+					$html[] = "<tr>";
+						$html[] = "<th>Requestor</th>";
+						$html[] = "<th>Contact</th>";
+						$html[] = "<th>Status</th>";
+						$html[] = "<th>Status Date</th>";
+					$html[] = "</tr>";
+					for($i=0; $i<count($data['handshake_list']); $i++) {
+
+						$profile = "";
+
+						$html[] = "<tr>";
+							$html[] = "<td class='cursor-pointer align-middle btn-view-profile' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountsController@profilePreview", ["id" => $data['handshake_list'][$i]['requestor_details']['account_id']])."' >";
+								$html[] = "<div class='p-0 lh-1 d-flex align-items-center'>";
+									$html[] = "<span class='avatar' style='background-image: url(".$data['handshake_list'][$i]['requestor_details']['logo'].")'></span>";
+									$html[] = "<div class='ps-2'>";
+										$html[] = "<span class='d-block mb-1'>".$data['handshake_list'][$i]['requestor_details']['account_name']['firstname']." ".$data['handshake_list'][$i]['requestor_details']['account_name']['lastname']." ".$data['handshake_list'][$i]['requestor_details']['account_name']['suffix']."</span>";
+										$html[] = "<span class='text-muted fs-12'>".$data['handshake_list'][$i]['requestor_details']['profession']."</span>";
+									$html[] = "</div>";
+								$html[] = "</div>";
+							$html[] = "</td>";
+							$html[] = "<td class='cursor-pointer align-middle btn-view-profile' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountsController@profilePreview", ["id" => $data['handshake_list'][$i]['requestor_details']['account_id']])."' >".$data['handshake_list'][$i]['requestor_details']['mobile']."<br/> ".$data['handshake_list'][$i]['requestor_details']['email']."</td>";
+							$html[] = "<td class='cursor-pointer align-middle btn-view-profile' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountsController@profilePreview", ["id" => $data['handshake_list'][$i]['requestor_details']['account_id']])."' >".$data['handshake_list'][$i]['handshake_status']."</td>";
+							$html[] = "<td class='cursor-pointer align-middle btn-view-profile' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountsController@profilePreview", ["id" => $data['handshake_list'][$i]['requestor_details']['account_id']])."' >".date("d F Y", $data['handshake_list'][$i]['handshake_status_at'])."</td>";
+						$html[] = "</tr>";
+					}
+					$html[] = "</table>";
+
+				$html[] = "</div>";
+			$html[] = "</div>";
+		$html[] = "</div>";
+	}
+
 	$html[] = "<div class='container-xl my-3 px-0'>";
 		$html[] = "<div class='row'>";
 			$html[] = "<div class='col-md-9 col-12'>";

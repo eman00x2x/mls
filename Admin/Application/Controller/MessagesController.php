@@ -475,7 +475,8 @@ class MessagesController extends \Main\Controller {
 			$data['thread']['created_by'] = $user->getById();
 
 			$message->page['limit'] = 1000000;
-			$message->select(" message_id, user_id, content, iv, created_at ");
+			$message->select(" message_id, user_id, content, iv, created_at ")
+			->where(" thread_id = $id ");
 			$data['thread']['messages'] = $message->getList();
 
 			if($data['thread']['messages']) {
@@ -497,13 +498,18 @@ class MessagesController extends \Main\Controller {
 
 				$this->doc->addScript(CDN."js/encryption.js");
 				$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
-					( async => {
+
+					$(document).ready(function() {
+
 						decryptThreadMessages()
 						.then(() => {
-							$('#encrypted_messages').val( btoa($('.downloadable-content-container').text()) );
-							$('.btn-save').removeClass('d-none');
+							setTimeout(function() {
+								$('#encrypted_messages').val( btoa($('.downloadable-content-container').text()) );
+								$('.btn-save').removeClass('d-none');
+							}, 100);
 						});
-					})();
+						
+					});
 
 					async function decryptThreadMessages() {
 						for (let key in messages) {
@@ -513,27 +519,28 @@ class MessagesController extends \Main\Controller {
 
 								$('.message-container-' + message_id).html(\"<img src='".CDN."images/loader.gif' /> decrypting... \");
 
-								await decrypt(messages[key], publicKey, privateKey)
-								.then( response => {
-									let text = '';
+								setTimeout(function() {
+									decrypt(messages[key], publicKey, privateKey)
+									.then( response => {
+										let text = '';
 
-									text += response.message;
+										text += response.message;
 
-									if(response.info.length > 0) {
-										for(let i = 0; i < response.info.length; i++) {
-											text += ' ' + response.info[i] + ' ';
+										if(response.info.length > 0) {
+											for(let i = 0; i < response.info.length; i++) {
+												text += ' ' + response.info[i] + ' ';
+											}
 										}
-									}
 
-									$('.message-container-' + message_id).text( text );
-								});
+										$('.message-container-' + message_id).text( text );
+									});
+								}, 20);
 							}
 						}
 					}
 				"));
 			
 			}
-
 
 			$this->setTemplate("messages/download.php");
 			return $this->getTemplate($data);

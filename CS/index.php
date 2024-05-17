@@ -13,6 +13,8 @@ use Pecee\SimpleRouter\SimpleRouter as Router;
 use Pecee\Http\Request as Request;
 use Pecee\Http\Middleware\IMiddleware;
 
+if (extension_loaded('zlib')) { ob_end_clean(); }
+
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start();
 
 if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {

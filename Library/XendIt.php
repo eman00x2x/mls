@@ -218,32 +218,4 @@ class XendIt {
 
     }
 
-	function generateAccessToken() {
-		
-		$url = PAYPAL_ENVIRONMENT === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com";
-
-		$handle = curl_init($url."/v1/oauth2/token");
-		curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($handle, CURLOPT_POST, true);
-		curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($handle, CURLOPT_USERPWD, $this->client_id.":".$this->client_secret);
-		curl_setopt($handle, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
-		
-		$response = json_decode(curl_exec($handle), true);
-		
-		$http_code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-		$header_info = curl_getinfo($handle, CURLINFO_HEADER_OUT);
-		curl_close($handle);
-
-		if ($http_code != 200 && !empty($response['error'])) {
-			throw new Exception('Error '.$response['error'].': '.$response['error_description']);
-        }
-
-		return array(
-			"headers" => $header_info,
-			"data" => $response
-		);
-
-	}
-
 }

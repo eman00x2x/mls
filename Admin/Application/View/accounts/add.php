@@ -157,7 +157,12 @@ $html[] = "<form id='form' action='' method='POST'>";
 									$html[] = "<label class='col-sm-3 col-form-label text-end'>Local Board Location</label>";
 									$html[] = "<div class='col-sm-9'>";
 										$html[] = "<div class='d-flex gap-3'>";
-											$html[] = $model->addressSelection();
+											$html[] = "<select name='board_region[region]' class='form-select' id='board_region'>";
+												$html[] = "<option value='' ></option>";
+												foreach ($data['board_regions'] as $region) {
+													$html[] = "<option value='".$region."' >$region</option>";
+												}
+											$html[] = "</select>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 								$html[] = "</div>";
@@ -166,9 +171,6 @@ $html[] = "<form id='form' action='' method='POST'>";
 									$html[] = "<label class='col-sm-3 col-form-label text-end'>Local Board Name</label>";
 									$html[] = "<div class='col-sm-9'>";
 										$html[] = "<select name='local_board_name' class='form-select' id='local_board_name'>";
-											foreach ($data['local_boards'] as $name) {
-												$html[] = "<option value='".$name."'>$name</option>";
-											}
 										$html[] = "</select>";
 									$html[] = "</div>";
 								$html[] = "</div>";

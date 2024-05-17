@@ -557,6 +557,14 @@ class ListingsController extends \Main\Controller {
 			$handshake->and(" listing_id = ".$listing_id." AND handshake_status NOT IN('done','cancel','denied')");
 			$data['handshake'] = $handshake->getByRequestorAccountId();
 
+			if($data['handshake'] === false) {
+
+				$handshake->column['requestee_account_id'] = $_SESSION['user_logged']['account_id'];
+				$handshake->where(" listing_id = ".$listing_id." ")->and(" handshake_status NOT IN('done','cancel','denied') ");
+				$data['handshake_list'] = $handshake->getList();
+
+			}
+
 			$this->setTemplate("listings/view.php");
 			return $this->getTemplate($data,$listing);
 		}
@@ -1424,7 +1432,7 @@ class ListingsController extends \Main\Controller {
 			$newwidth = 270;
 			$newheight = 210;
 			
-			if(!file_exists($destination_path."/".$filename)) {
+			if(file_exists($destination_path."/".$filename)) {
 				
 				list($width, $height) = getimagesize($original_path."/".$filename);
 				if (pathinfo($original_path."/".$filename, PATHINFO_EXTENSION) == 'jpg' || pathinfo($original_path."/".$filename,PATHINFO_EXTENSION) == 'jpeg') {
