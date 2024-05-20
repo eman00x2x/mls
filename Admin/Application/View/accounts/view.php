@@ -81,23 +81,25 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 				
-				$html[] = "<div class='card mb-3'>";
-					$html[] = "<div class='card-body'>";
-						$html[] = "<div class='card-title'>Real Estate Practitioner Info</div>";
+				if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+					$html[] = "<div class='card mb-3'>";
+						$html[] = "<div class='card-body'>";
+							$html[] = "<div class='card-title'>Real Estate Practitioner Info</div>";
 
-						if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
-							$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-desk me-1'></i> Profession:</span> <strong>".$data['profession']."</strong></div>";
-							$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-id me-1'></i> PRC License ID Number:</span> <strong>".$data['real_estate_license_number']."</strong></div>";
-							$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-binary me-1'></i> TIN:</span> <strong>".$data['tin']."</strong></div>";
-						}
+							if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+								$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-desk me-1'></i> Profession:</span> <strong>".$data['profession']."</strong></div>";
+								$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-id me-1'></i> PRC License ID Number:</span> <strong>".$data['real_estate_license_number']."</strong></div>";
+								$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-binary me-1'></i> TIN:</span> <strong>".$data['tin']."</strong></div>";
+							}
 
-						if($data['brokers']['broker_prc_license_id'] == $data['real_estate_license_number']) {
-							$html[] = "<div class='card-title mt-5'>Real Estate Broker License</div>";
-							$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-id me-1'></i></span> <strong>".$data['brokers']['broker_prc_license_id']."</strong></div>";
-						}
+							if($data['brokers']['broker_prc_license_id'] == $data['real_estate_license_number']) {
+								$html[] = "<div class='card-title mt-5'>Real Estate Broker License</div>";
+								$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-id me-1'></i></span> <strong>".$data['brokers']['broker_prc_license_id']."</strong></div>";
+							}
 
+						$html[] = "</div>";
 					$html[] = "</div>";
-				$html[] = "</div>";
+				}
 
 				$html[] = "<div class='card mb-3'>";
 					$html[] = "<div class='card-body'>";

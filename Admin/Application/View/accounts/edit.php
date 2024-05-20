@@ -1,6 +1,6 @@
 <?php
 
-$html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveUpdate",["id" => $data['account_id']])."' />";
+$html[] = "<input type='hidden' id='save_url' value='".url("AccountsController@saveUpdate", ["id" => $data['account_id']])."' />";
 
 $html[] = "<input type='hidden' id='photo_uploader' value='accounts' />";
 $html[] = "<form action='".url("AccountsController@uploadPhoto")."' id='imageUploadForm' method='POST' enctype='multipart/form-data'>";
@@ -146,7 +146,11 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 							$html[] = "<div class='row mb-3'>";
 								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Email Address</label>";
 								$html[] = "<div class='col-sm-9'>";
-									$html[] = "<input type='email' name='email' id='email' value='".$data['email']."' class='form-control-plaintext'  />";
+									if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+										$html[] = "<input type='email' name='email' id='email' value='".$data['email']."' class='form-control-plaintext'  />";
+									}else {
+										$html[] = "<input type='email' name='email' id='email' value='".$data['email']."' class='form-control'  />";
+									}
 								$html[] = "</div>";
 							$html[] = "</div>";
 

@@ -90,7 +90,11 @@ $html[] = "<form id='form' action='' method='POST'>";
 										$html[] = "<label class='text-muted form-label mt-2 text-end'>Email</label>";
 									$html[] = "</div>";
 									$html[] = "<div class='col-9'>";
-										$html[] = "<p class='form-control-plaintext'>".$data['user_email']."</p>";
+										if($data['account_type'] == "Administrator") {
+											$html[] = "<input type='email' name='email' id='email' value='".$data['user_email']."' class='form-control' autocomplete='off' />";
+										}else {
+											$html[] = "<p class='form-control-plaintext'>".$data['user_email']."</p>";
+										}
 									$html[] = "</div>";
 								$html[] = "</div>";
 							$html[] = "</div>";
