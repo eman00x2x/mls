@@ -1,53 +1,11 @@
 <?php
 
-$doc = \Library\Factory::getDocument();
-
-$doc->addScriptDeclaration("
-	$(document).on('click','.btn-submit-admin-form',function() {
-		if($('#query').val() == '') {
-			alert('Please enter your Sql Query');
-		}else {
-			$('.query_result').html(\"<div class='d-flex gap-3 align-items-center justify-content-center'><div class='loader'></div> <p class='p-0 m-0'>Loading results...</p></div>\");
-			$.post('".url("AdministrationController@queryResult")."',$('#form').serialize(), function(data,status) {
-				$('.query_result').html(data);
-			});
-		}
-	});
-
-	$(document).on('click','.btn-backup',function() {
-
-		$(this).addClass('d-none');
-
-		$('.response').addClass('bg-white p-4');
-		$('.response').html(\"<div class='d-flex gap-3 align-items-center'><div class='loader'></div> <p class='p-0 m-0'>Dumping database data to a file...</p></div>\");
-
-		$.get('".url("AdministrationController@backupDatabase")."',function(data,status) {
-			$('.response').html(data);
-			$('.btn-backup').removeClass('d-none');
-			$('.response').removeClass('bg-white p-4');
-		});
-	});
-
-	$(document).on('click','.btn-delete-backup',function() {
-		url = $(this).data('url');
-
-		c = confirm('Are you sure do you want to delete the selected backup?');
-		
-		if(c === true) {
-			$.get(url, function(data) {
-				$('.response').html(data);
-			});
-		}
-
-
-
-	});
-
-	$(document).on('click','.show_table',function() {
-		query = $(this).data('query');
-		$('#query').val(query);
-	});
-");
+$html[] = "<form action='".url("AdministrationController@uploadCSV")."' id='csvUploadForm' method='POST' enctype='multipart/form-data'>";
+	$html[] = "<center>";
+		$html[] = "<input type='file' name='csvBrowse' id='csvBrowse' />";
+		$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
+	$html[] = "</center>";
+$html[] = "</form>";
 
 $html[] = "<div class='container-xl'>";
 	$html[] = "<div class='response'>";
@@ -64,7 +22,10 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
-				
+				$html[] = "<div class='btn-list'>";
+					$html[] = "<span class='btn btn-dark btn-upload-csv'><i class='ti ti-upload me-1'></i> Upload Email CSV File</span>";
+					$html[] = "<a class='btn btn-dark btn-upload-csv'><i class='ti ti-download me-1'></i> Download Email CSV File</span>";
+				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 

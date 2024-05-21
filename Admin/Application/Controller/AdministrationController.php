@@ -4,6 +4,7 @@ namespace Admin\Application\Controller;
 
 use Ifsnop\Mysqldump as IMysqldump;
 use Library\Configuration;
+use Verot\Upload\Upload as Upload;
 
 class AdministrationController extends \Main\Controller {
 
@@ -17,6 +18,98 @@ class AdministrationController extends \Main\Controller {
 	function index() {
 
 		$this->doc->setTitle("Database Administration");
+
+		$this->doc->addStyleDeclaration("
+			#csvBrowse {
+				display:none;
+				position: absolute;
+				left:-100000px;
+			}
+		");
+
+		$this->doc->addScriptDeclaration("
+
+			$(document).on('click','.btn-submit-admin-form',function() {
+				if($('#query').val() == '') {
+					alert('Please enter your Sql Query');
+				}else {
+					$('.query_result').html(\"<div class='d-flex gap-3 align-items-center justify-content-center'><div class='loader'></div> <p class='p-0 m-0'>Loading results...</p></div>\");
+					$.post('".url("AdministrationController@queryResult")."',$('#form').serialize(), function(data,status) {
+						$('.query_result').html(data);
+					});
+				}
+			});
+
+			$(document).on('click','.btn-backup',function() {
+
+				$(this).addClass('d-none');
+
+				$('.response').addClass('bg-white p-4');
+				$('.response').html(\"<div class='d-flex gap-3 align-items-center'><div class='loader'></div> <p class='p-0 m-0'>Dumping database data to a file...</p></div>\");
+
+				$.get('".url("AdministrationController@backupDatabase")."',function(data,status) {
+					$('.response').html(data);
+					$('.btn-backup').removeClass('d-none');
+					$('.response').removeClass('bg-white p-4');
+				});
+			});
+
+			$(document).on('click','.btn-delete-backup',function() {
+				url = $(this).data('url');
+
+				c = confirm('Are you sure do you want to delete the selected backup?');
+				
+				if(c === true) {
+					$.get(url, function(data) {
+						$('.response').html(data);
+					});
+				}
+
+			});
+
+			$(document).on('click','.show_table',function() {
+				query = $(this).data('query');
+				$('#query').val(query);
+			});
+
+			$(document).on('submit', '#csvUploadForm', (function(e) {
+				
+				e.preventDefault();
+				var formData = new FormData(this);
+				
+				$('.btn-upload-csv').hide();
+
+				$.ajax({
+					type:'POST',
+					url: $(this).attr('action'),
+					data:formData,
+					cache:false,
+					contentType: false,
+					processData: false,
+					beforeSubmit:function(e) {},
+					error: function(data){
+						console.log('error');
+						console.log(data);
+					}
+				}).done(function(data) {
+					response = JSON.parse(data);
+					$('.response').html(response.message);
+					$('.btn-upload-csv').show();
+					$('#csvBrowse').val('');
+				});
+
+            }));
+
+			$(document).on('change', '#csvBrowse',function() {
+				$('.response').html(\"<div class='bg-white p-3 mt-3 rounded'><div class='d-flex gap-3 align-items-center'><div class='loader'></div><p class='mb-0'>Please wait file is attaching...</p></div></div>\");
+				$('#csvUploadForm').submit();
+			});
+			
+			$(document).on('click','.btn-upload-csv',function() {
+				$('#csvBrowse').click();
+			});
+
+		");
 		
 		$data['tables'] = [
 			"mls_accounts",
@@ -159,6 +252,69 @@ class AdministrationController extends \Main\Controller {
 		echo getMsg();
 		
 		exit();
+
+	}
+
+	function uploadCSV() {
+
+		$handle = new Upload($_FILES['csvBrowse']);
+
+		if ($handle->uploaded) {
+
+			$handle->mime_check = true;
+			$handle->file_safe_name = true;
+
+			$file = explode(".", $handle->file_src_name );
+			$ext = array_pop($file);
+
+			if($ext === "csv") {
+
+				$handle->Process(ROOT."/Cdn/images/temporary/");
+
+				if ($handle->processed) {
+
+					$the_file = ROOT."/Cdn/emails.csv";
+
+					if(file_exists($the_file)) {
+						unlink(ROOT."/Cdn/emails.csv");
+					}
+
+					rename(
+						ROOT."/Cdn/images/temporary/".$handle->file_dst_name,
+						ROOT."/Cdn/emails.csv"
+					);
+
+					$this->getLibrary("Factory")->setMsg("CSV uploaded successfully.", "success");
+
+					return json_encode([
+						"status" => 1,
+						"message" => getMsg()
+					]);
+					
+				}else {
+
+					$this->getLibrary("Factory")->setMsg("CSV uploaded failed! Please try again.", "error");
+					return json_encode([
+						"status" => 2,
+						"message" => getMsg()
+					]);
+				}
+
+			}else {
+				$this->getLibrary("Factory")->setMsg("Invalid file format", "error");
+				return json_encode([
+					"status" => 2,
+					"message" => getMsg()
+				]);
+			}
+
+		}
+
+		$this->getLibrary("Factory")->setMsg("CSV uploaded failed! Please try again.", "error");
+		return json_encode([
+			"status" => 2,
+			"message" => getMsg()
+		]);
 
 	}
 

@@ -128,6 +128,7 @@ Router::group(['prefix' => ADMIN_ALIAS], function () {
     Router::get('/administration/deleteBackup', 'AdministrationController@deleteBackup', ['as' => 'administration-deleteBackup']);
 
     Router::post('/administration/queryResult', 'AdministrationController@queryResult', ['as' => 'administration-queryResult']);
+    Router::post('/administration/uploadCSV', 'AdministrationController@uploadCSV', ['as' => 'administration-uploadCSV']);
     
     /** TESTIMONIALS ROUTES */
     Router::get('/testimonials', 'TestimonialsController@index', ['as' => 'testimonials']);
