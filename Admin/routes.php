@@ -125,6 +125,7 @@ Router::group(['prefix' => ADMIN_ALIAS], function () {
     Router::get('/administration', 'AdministrationController@index', ['as' => 'administration']);
     Router::get('/administration/dbBackup', 'AdministrationController@backupDatabase', ['as' => 'administration-backupDatabase']);
     Router::get('/administration/downloadBackup', 'AdministrationController@downloadBackup', ['as' => 'administration-downloadBackup']);
+    Router::get('/administration/downloadCsvEmail', 'AdministrationController@downloadCsvEmail', ['as' => 'administration-downloadCsvEmail']);
     Router::get('/administration/deleteBackup', 'AdministrationController@deleteBackup', ['as' => 'administration-deleteBackup']);
 
     Router::post('/administration/queryResult', 'AdministrationController@queryResult', ['as' => 'administration-queryResult']);

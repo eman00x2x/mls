@@ -318,4 +318,22 @@ class AdministrationController extends \Main\Controller {
 
 	}
 
+	function downloadCsvEmail() {
+
+		$filename = "emails.csv";
+		$local_path = ROOT."/Cdn";
+
+		header("Content-Description: File Transfer");
+		header('Content-Type: application/octet-stream');
+		header("Content-disposition: attachment; filename=\"" . $filename . "\""); 
+		header('Expires: 0');
+    	header('Cache-Control: must-revalidate');
+    	header('Pragma: public');
+		header("Content-length: ".filesize($local_path."/".$filename));
+
+		readfile($local_path."/".$filename); 
+		exit();
+
+	}
+
 }
