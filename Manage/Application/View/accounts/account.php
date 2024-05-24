@@ -288,7 +288,7 @@ $html[] = "<div class='page-body'>";
                                                 $html[] = "<p class='mb-1'><i class='ti ti-square-key'></i> <span class='api-key-container border px-2 py-1 text-muted fw-bold'>".preg_replace("/[^ \-]/", "x", $data['api_key'])."</span></p>";
                                                 $html[] = "<span class='text-muted fst-italic fs-13'>Do not share or store your API Key to any storage devices or applications.</span>";
 
-                                                $html[] = "<p class='my-2'><a href='".url("APIController@documentation", [ "version" => "v1" ])."'>Read our documentation</a> on how to use your API Key</p>";
+                                                $html[] = "<p class='my-2'><a href='https://account.mlspareb.com/Api/Documentation/'>Read our documentation</a> on how to use your API Key</p>";
                                             $html[] = "</div>";
 
                                             $html[] = "<span class='btn btn-outline-primary btn-reveal-api-key' data-key='".$data['api_key']."'>Reveal API Key</span>";

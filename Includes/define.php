@@ -49,7 +49,7 @@ if(DEVELOPMENT) {
 define("DOMAIN",	"http://localhost");
 define("API",		"http://localhost/mls/Api/");
 define("API_DOCS",	"http://localhost/mls/Api/Documentation/");
-define("API_V1",	"http://localhost/mls/Api/v1/");
+define("API_V1",	"http://localhost/mls/Api/V1/");
 define("CDN",		"http://localhost/mls/Cdn/");
 define("WEBDOMAIN",	"http://localhost/mls/Website/");
 define("WEBADMIN",	"http://localhost/mls/Webadmin/");

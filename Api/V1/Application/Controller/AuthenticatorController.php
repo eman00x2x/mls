@@ -21,7 +21,7 @@ class AuthenticatorController extends \Admin\Application\Controller\Authenticato
 		}
 
         $account = $this->getModel("Account");
-        $account->select(" logo, company_name, profession, real_estate_license_number, board_region as board_location, local_board_name, 
+        $account->select(" logo as photo, company_name, profession, real_estate_license_number, board_region as board_location, local_board_name, 
             account_name as name, birthdate, CONCAT(street, ' ', city, ' ', province) as address, mobile_number, email, tin, privileges,
             status, registered_at
         ");
