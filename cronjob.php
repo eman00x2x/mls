@@ -1,15 +1,13 @@
 <?php
 
-define("ROOT","D:/wamp64/www/mls/");
 define("BASE",dirname(__FILE__));
-define("DS",DIRECTORY_SEPARATOR);
 define("ACCESS", 1);
 
-require_once(ROOT."/Includes/definitions.php");
-require_once(ROOT."/Includes/define.php");
-require_once(ROOT."/Includes/functions.php");
-require_once(ROOT."/Vendor/autoload.php");
-require_once(ROOT."/Vendor/pecee/simple-router/helpers.php");
+require_once("Includes/definitions.php");
+require_once("Includes/define.php");
+require_once("Includes/functions.php");
+require_once("Vendor/autoload.php");
+require_once("Vendor/pecee/simple-router/helpers.php");
 
 function autoloader($class) {
 	if (file_exists($file = BASE.'/'.str_replace('\\', '/', $class).'.php')) {
@@ -21,5 +19,9 @@ function autoloader($class) {
 
 spl_autoload_register('autoloader');
 
+require_once("Includes/config.php");
+
 $cron = new \Library\CronJob;
 $cron->run();
+
+echo "<p>Cron Successfully ended.</p>";

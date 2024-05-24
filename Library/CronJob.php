@@ -2,8 +2,8 @@
 
 namespace Library;
 
-use Library\Mailer;
-use Admin\Application\Controller\AccountsController;
+use Library\Mailer as Mailer;
+use Admin\Application\Controller\AccountsController as AccountsController;
 
 class CronJob extends \Main\Controller {
 
@@ -15,7 +15,7 @@ class CronJob extends \Main\Controller {
 		$this->expiredSubscription();
 		$this->expiredKYC();
 		$this->expiredHandshake();
-		$this->expiredAutorityToSell();
+		/* $this->expiredAutorityToSell(); */
 
 		$this->expiringPosting();
 		$this->expiringSubscription();
@@ -139,9 +139,9 @@ class CronJob extends \Main\Controller {
 		$subscription->page['limit'] = 9999999999;
 
 		$subscription
-			->select(" account_subscription_id, s.account_id, email, name, details, subscription_end_date ")
+			->select(" account_subscription_id, s.account_id, email, name, details, subscription_end_at ")
 				->join(" s JOIN #__accounts a ON a.account_id = s.account_id JOIN #__premiums p ON p.premium_id = s.premium_id ")	
-					->where(" subscription_end_date <= '".DATE_NOW."' ");
+					->where(" subscription_end_at <= '".DATE_NOW."' ");
 
 		$data = $subscription->getList();
 
@@ -154,7 +154,7 @@ class CronJob extends \Main\Controller {
 				$result[$data[$i]['email']][] = [
 					"name" => $data[$i]['name'],
                     "details" => $data[$i]['details'],
-                    "end_at" => date("d M Y", $data[$i]['subscription_end_date'])
+                    "end_at" => date("d M Y", $data[$i]['subscription_end_at'])
 				];
 
 				$account->limitWithExpiredPrivileges($data[$i]['account_id']);
@@ -182,7 +182,7 @@ class CronJob extends \Main\Controller {
 					$mail
 						->build(implode(",", $html))
 							->send([
-								"to" => $email
+								"to" => [$email]
 							], "Expired Subscription - " . CONFIG['site_name']);
 					
 					unset($html);
@@ -201,9 +201,9 @@ class CronJob extends \Main\Controller {
 		$subscription->page['limit'] = 9999999999;
 
 		$subscription
-			->select(" account_subscription_id, s.account_id, email, name, details, subscription_end_date ")
+			->select(" account_subscription_id, s.account_id, email, name, details, subscription_end_at ")
 				->join(" s JOIN #__accounts a ON a.account_id = s.account_id JOIN #__premiums p ON p.premium_id = s.premium_id ")	
-					->where(" DATE_SUB(DATE_FORMAT(FROM_UNIXTIME(subscription_end_date), '%Y-%m-%d'), INTERVAL 7 DAY) = CURDATE() ");
+					->where(" DATE_SUB(DATE_FORMAT(FROM_UNIXTIME(subscription_end_at), '%Y-%m-%d'), INTERVAL 7 DAY) = CURDATE() ");
 
 		$data = $subscription->getList();
 
@@ -214,7 +214,7 @@ class CronJob extends \Main\Controller {
 				$result[$data[$i]['email']][] = [
 					"name" => $data[$i]['name'],
                     "details" => $data[$i]['details'],
-                    "end_at" => date("d M Y", $data[$i]['subscription_end_date'])
+                    "end_at" => date("d M Y", $data[$i]['subscription_end_at'])
 				];
 			}
 			
@@ -238,7 +238,7 @@ class CronJob extends \Main\Controller {
 					$mail
 						->build(implode(",", $html))
 							->send([
-								"to" => $email
+								"to" => [$email]
 							], "Expired Subscription - " . CONFIG['site_name']);
 					
 					unset($html);
