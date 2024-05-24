@@ -244,39 +244,40 @@ class AccountsController extends \Main\Controller {
 
 			$this->doc->addScript(CDN."js/photo-uploader.js");
 
-			$local_boards_json = json_encode(LOCAL_BOARDS);
-
-			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
-				const local_boards = $local_boards_json;
-
-				$(document).ready(function() {
-					(async () => {
-						$('#api_key').val(uuidv4());
-						$('#pin').val(rcg());
-					})();
-
-					$('.board-details label').addClass('text-muted');
-					
-					let region = $('#board_region option:selected').val();
-
-					html = '';
-					for(key in local_boards[region]) {
-						if (local_boards[region].hasOwnProperty(key)) {
-							html += \"<option value='\" + local_boards[region][key] + \"'>\" + local_boards[region][key] + \"</option>\";
-						}
-					}
-
-					$('#local_board_name').html(html);
-
-				});
-
-
-			"));
-			
 			$accounts = $this->getModel("Account");
 			$accounts->column['account_id'] = $account_id;
 
 			if($data = $accounts->getById()) {
+
+				$local_boards_json = json_encode(LOCAL_BOARDS);
+
+				$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+					const local_boards = $local_boards_json;
+
+					$(document).ready(function() {
+						(async () => {
+							$('#api_key').val(uuidv4());
+							$('#pin').val(rcg());
+						})();
+
+						$('.board-details label').addClass('text-muted');
+						
+						let region = $('#board_region option:selected').val();
+
+						html = '';
+						for(key in local_boards[region]) {
+							if (local_boards[region].hasOwnProperty(key)) {
+								sel = local_boards[region][key] == '".$data['local_board_name']."' ? 'selected' : '';
+								html += \"<option value='\" + local_boards[region][key] + \"' \" + sel + \">\" + local_boards[region][key] + \"</option>\";
+							}
+						}
+
+						$('#local_board_name').html(html);
+
+					});
+
+
+				"));
 
 				$data['board_regions'] = array_keys(LOCAL_BOARDS);
 				sort($data['board_regions']);
@@ -547,12 +548,10 @@ class AccountsController extends \Main\Controller {
 			]);
 
 			$_POST['board_region'] = json_encode([
-				"region" => isset($_POST['address']['region']) ? $_POST['address']['region'] : (isset($data['board_region']['region']) ? $data['board_region']['region'] : ""),
-				"province" => isset($_POST['address']['province']) ? $_POST['address']['province'] : (isset($data['board_region']['province']) ? $data['board_region']['province'] : ""),
-				"municipality" => isset($_POST['address']['municipality']) ? $_POST['address']['municipality'] : (isset($data['board_region']['municipality']) ? $data['board_region']['municipality'] : "")
+				"region" => isset($_POST['address']['region']) ? $_POST['address']['region'] : (isset($data['board_region']['region']) ? $data['board_region']['region'] : "")
 			]);
 
-			$response = $accounts->save($account_id,$_POST);
+			$response = $accounts->save($account_id, $_POST);
 			
 			$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 

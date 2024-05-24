@@ -25,35 +25,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
         $this->doc->setTitle("My Accounts");
         $this->doc->addScript(CDN."js/photo-uploader.js");
 
-        if(!isset($this->session['permissions']['accounts']['access'])) {
-            $this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
-                $(document).ready(function() {
-                    $('input').removeClass('form-control');
-                    $('input').addClass('form-control-plaintext');
-                    $('input').attr('readonly', true);
-
-                    $('select').attr('disabled', true);
-
-                    $('#api_key').val(uuidv4());
-                    $('#pin').val(rcg());
-                });
-
-            "));
-        }
-
-        $this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
-
-            $(document).on('click', '.btn-reveal-api-key', function() {
-                key = $(this).data('key');
-                $('.api-key-container').removeClass('text-muted');
-                $('.api-key-container').text(key);
-                
-                $(this).remove();
-            });
-
-        "));
-
-        $account = $this->getModel("Account");
+		$account = $this->getModel("Account");
 		$account->column['account_id'] = $this->account_id;
 		$data = $account->getById();
 
@@ -71,12 +43,68 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$data['local_boards'] = LOCAL_BOARDS;
 		sort($data['local_boards']);
 
-		$address = $this->getModel("Address");
+		$data['board_regions'] = array_keys(LOCAL_BOARDS);
+		sort($data['board_regions']);
+
+		$local_boards_json = json_encode(LOCAL_BOARDS);
+
+        if(!isset($this->session['permissions']['accounts']['access'])) {
+            $this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+                $(document).ready(function() {
+                    $('input').removeClass('form-control');
+                    $('input').addClass('form-control-plaintext');
+                    $('input').attr('readonly', true);
+
+                    $('select').attr('disabled', true);
+
+                    $('#api_key').val(uuidv4());
+                    $('#pin').val(rcg());
+
+					$('#board_region').val('".$data['board_region']['region']."').trigger('change');
+
+                });
+            "));
+        }
+
+        $this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+
+			const local_boards = $local_boards_json;
+
+            $(document).on('click', '.btn-reveal-api-key', function() {
+                key = $(this).data('key');
+                $('.api-key-container').removeClass('text-muted');
+                $('.api-key-container').text(key);
+                
+                $(this).remove();
+            });
+
+			$(document).on('change', '#board_region', function() {
+
+				current_val = \"$data[local_board_name]\";
+				let region = $('#board_region option:selected').val();
+
+				html = '';
+				for(key in local_boards[region]) {
+					if (local_boards[region].hasOwnProperty(key)) {
+						sel = '';
+						if(local_boards[region][key] == current_val) {
+							sel = 'selected';
+						}
+						html += \"<option value='\" + local_boards[region][key] + \"' \" + sel + \">\" + local_boards[region][key] + \"</option>\";
+					}
+				}
+
+				$('#local_board_name').html(html);
+			});
+
+        "));
+
+		/* $address = $this->getModel("Address");
 		$account->address = $address->addressSelection([
 			"region" => isset($data['board_region']['region']) ? $data['board_region']['region'] : "",
 			"province" => isset($data['board_region']['province']) ? $data['board_region']['province'] : "",
 			"municipality" => isset($data['board_region']['municipality']) ? $data['board_region']['municipality'] : ""
-		]);
+		]); */
 
 		$this->setTemplate("accounts/account.php");
 		return $this->getTemplate($data,$account);

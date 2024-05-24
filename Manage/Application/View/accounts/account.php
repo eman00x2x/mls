@@ -94,6 +94,15 @@ $html[] = "<div class='page-body'>";
                                                 $html[] = "<div class='col-sm-9'>";
                                                     $html[] = "<div class='d-flex gap-3 align-items-center'>";
                                                         
+                                                        /* $html[] = "<div class=' mb-3'>";
+                                                            $html[] = "<select name='board_region[region]' class='form-select' id='board_region'>";
+                                                                foreach ($data['board_regions'] as $region) {
+                                                                    $sel = $data['board_region']['region'] == $region ? "selected" : "";
+                                                                    $html[] = "<option value='".$region."' $sel>$region</option>";
+                                                                }
+                                                            $html[] = "</select>";
+                                                        $html[] = "</div>"; */
+
                                                             $html[] = "<div class=''>";
                                                                 $html[] = "<label class='text-muted fs-12'>Region</label>";
                                                                 $html[] = "<p>".ucwords($data['board_region']['region'])."</p>";
@@ -107,6 +116,10 @@ $html[] = "<div class='page-body'>";
                                                 $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Local Board Name</label></div>";
                                                 $html[] = "<div class='col-sm-9'>";
                                                     $html[] = "<p class='fw-bold'>".$data['local_board_name']."</p>";
+                                                   /*  $html[] = "<div class=' mb-3'>";
+                                                        $html[] = "<select name='local_board_name' class='form-select' id='local_board_name'></select>";
+                                                    $html[] = "</div>"; */
+
                                                 $html[] = "</div>";
                                             $html[] = "</div>";
                                             
