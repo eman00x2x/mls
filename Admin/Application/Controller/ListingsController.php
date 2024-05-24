@@ -1308,7 +1308,7 @@ class ListingsController extends \Main\Controller {
 
 					$file = fopen($currency_converter_results_file, "w");
 					fwrite($file, $txt);
-					fclose($myfile);
+					fclose($file);
 
 					$data = json_decode($response, true);
 				}

@@ -196,7 +196,7 @@ class HomeController extends \Main\Controller {
 		$listings->page['limit'] = 10;
 		$listings
 			->select(" COUNT(JSON_EXTRACT(address, '$.municipality')) as total, JSON_EXTRACT(address, '$.municipality') as city, JSON_EXTRACT(address, '$.region') as region, JSON_EXTRACT(address, '$.province') as province ")
-				->where(" is_website = 1 ")
+				->where(" is_website = 1 AND status = 1 AND display = 1 ")
 					->groupBy(" city ")
 						->orderBy(" total DESC");
 						
@@ -223,7 +223,7 @@ class HomeController extends \Main\Controller {
 		$listings->page['limit'] = 8;
 		$listings
 			->join(" l JOIN #__accounts a ON a.account_id = l.account_id")
-				->where(" is_website = 1 ")
+				->where(" is_website = 1 AND status = 1 AND display = 1 ")
 					->and(" featured = 1 ")
 						->orderBy(" post_score DESC, modified_at DESC ");
 		$data['listings'] = $listings->getList();

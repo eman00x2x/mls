@@ -46,8 +46,8 @@ class CronJob extends \Main\Controller {
 
 			$listings->DBO->query(" UPDATE #__listings SET status = 0 WHERE listing_id IN(".implode(",", $ids).") ");
 
-			if($result) {
-
+			if($result) { 
+			
 				$mail = new Mailer();
 
 				foreach($result as $email => $list) {
@@ -66,7 +66,7 @@ class CronJob extends \Main\Controller {
 					$mail
 						->build(implode(",", $html))
 							->send([
-								"to" => $email
+								"to" => [$email]
 							], "Posting Expired - " . CONFIG['site_name']);
 
 					unset($html);
@@ -120,7 +120,7 @@ class CronJob extends \Main\Controller {
 					$mail
 						->build(implode(",", $html))
 							->send([
-								"to" => $email
+								"to" => [$email]
 							], "Approaching expiration - " . CONFIG['site_name']);
 					
 					unset($html);
