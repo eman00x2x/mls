@@ -65,7 +65,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 					$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";
 					$html[] = "<input name='thumb_img' id='thumb_img' type='hidden' value='".$thumb_img."' />";
 					$html[] = "<input name='account_id' id='account_id' type='hidden' value='".$data['listing']['account_id']."' />";
-					$html[] = "<input name='duration' id='duration' type='hidden' value='".$data['listing']['duration']."' />";
 					$html[] = "<input name='modified_at' id='modified_at' type='hidden' value='".date("Y-m-d H:i:s",DATE_NOW)."' />";
 					$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 
@@ -548,21 +547,28 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 									$html[] = "<div class='row justify-content-center py-3'>";
 										$html[] = "<div class='col-md-8 col-lg-8 col-12'>";
 
-											/* $html[] = "<div class='mb-3'>";
-												$html[] = "<label class='form-label text-muted'>Posting Duration</label>";
-												$html[] = "<div class='input-icon '>";
-													$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
-													$html[] = "<select name='duration' id='duration' class='form-select'>";
-														$durations = array(15, 30, 60, 90);
-														foreach($durations as $days) {
-															$sel = $days == $data['listing']['duration'] ? "selected" : "";
-															$html[] = "<option value='".strtotime("+".$days, DATE_NOW)."' $sel>$days days</option>";
-														}
-													$html[] = "</select>";
-													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
-												$html[] = "</div>";
-											$html[] = "</div>"; */
+											if($data['listing']['status'] == 0) {
 
+												$html[] = "<input name='status' id='status' type='hidden' value='1' />";
+
+												$html[] = "<div class='mb-3'>";
+													$html[] = "<label class='form-label text-muted'>Posting Duration</label>";
+													$html[] = "<div class='input-icon '>";
+														$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
+														$html[] = "<select name='duration' id='duration' class='form-select'>";
+															$durations = array(15, 30, 60, 90);
+															foreach($durations as $days) {
+																$sel = $days == $data['listing']['duration'] ? "selected" : "";
+																$html[] = "<option value='".strtotime("+".$days." days", DATE_NOW)."' $sel>$days days</option>";
+															}
+														$html[] = "</select>";
+														$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+													$html[] = "</div>";
+												$html[] = "</div>";
+											}else {
+												$html[] = "<input name='duration' id='duration' type='hidden' value='".$data['listing']['duration']."' />";
+											}
+											
 											$html[] = "<div class='mb-5'>";		
 												$html[] = "<label class='form-label text-muted'>Video (Youtube Url)</label>";
 												$html[] = "<div class='input-group mb-3'>";
@@ -572,7 +578,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<span class='form-hint'>Sample Youtube Url: <span class='p-2 border border-red fst-italic ms-2'>https://www.youtube.com/watch?v=uiZVssPtPr4</span></span>";
 											$html[] = "</div>";
 
-											$html[] = "<div class='mb-4'>";
+											/* $html[] = "<div class='mb-4'>";
 												$html[] = "<label class='form-label text-muted'>Property Status</label>";
 												$html[] = "<div class='input-icon '>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-status-change'></i></span>";
@@ -587,16 +593,15 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "</div>";
 											$html[] = "</div>";
 											
-												$html[] = "<div class='px-4 py-3 bg-yellow-lt border mb-5 sold-price-input d-none'>";
-													$html[] = "<label class='form-label text-muted'>Sold Price</label>";
-													$html[] = "<div class='input-icon mb-2'>";
-														$html[] = "<span class='input-icon-addon'><i class='ti ti-currency-peso'></i></span>";
-														$html[] = "<input type='number' name='sold_price' id='sold_price' value='".($data['listing']['sold_price'] == 0 ? $data['listing']['price'] : $data['listing']['sold_price'])."' class='form-control' placeholder='Sold Price' />";
-													$html[] = "</div>";
-													$html[] = "<span class='form-hint'>Please specify the amount at which the property was sold.</span>";
+											$html[] = "<div class='px-4 py-3 bg-yellow-lt border mb-5 sold-price-input d-none'>";
+												$html[] = "<label class='form-label text-muted'>Sold Price</label>";
+												$html[] = "<div class='input-icon mb-2'>";
+													$html[] = "<span class='input-icon-addon'><i class='ti ti-currency-peso'></i></span>";
+													$html[] = "<input type='number' name='sold_price' id='sold_price' value='".($data['listing']['sold_price'] == 0 ? $data['listing']['price'] : $data['listing']['sold_price'])."' class='form-control' placeholder='Sold Price' />";
 												$html[] = "</div>";
+												$html[] = "<span class='form-hint'>Please specify the amount at which the property was sold.</span>";
+											$html[] = "</div>"; */
 											
-
 											$html[] = "<div class='form-group mb-3'>";
 												$html[] = "<label class='form-check form-switch cursor-pointer'>";
 													$html[] = "<input class='form-check-input' type='checkbox' name='foreclosed' value='1' id='foreclosure' ".($data['listing']['foreclosed'] == 1 ? "checked" : "")." />";

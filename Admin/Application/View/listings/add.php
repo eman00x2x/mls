@@ -490,7 +490,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 													$html[] = "<select name='duration' id='duration' class='form-select'>";
 														$durations = array(15, 30, 60, 90);
 														foreach($durations as $days) {
-															$html[] = "<option value='".strtotime("+".$days, DATE_NOW)."'>$days days</option>";
+															$html[] = "<option value='".strtotime("+".$days." days", DATE_NOW)."'>$days days</option>";
 														}
 													$html[] = "</select>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
