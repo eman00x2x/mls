@@ -42,7 +42,11 @@
 						
 						<div class='col-lg-4 col-md-4 col-sm-12'>
 							<div class='mb-4'>
-								<h3>Social</h3>
+								<h3>Useful Links</h3>
+								<ul class='list-group list-group-flush m-0 p-0'>
+									<li class='list-group-item px-0 py-0 border-0'><a href='https://www.bir.gov.ph/index.php/zonal-values.html' class='text-decoration-none' target="_blank"><i class='ti ti-chevron-right me-1'></i> BIR Zonal Values</a></li>
+									<li class='list-group-item px-0 py-0 border-0'><a href='https://www.phivolcs.dost.gov.ph/index.php/information-tool/the-phivolcs-faultfinder' class='text-decoration-none' target="_blank"><i class='ti ti-chevron-right me-1'></i> PHIVOLCS FaultFinder </a></li>
+								</ul>
 							</div>
 						</div>
 					</div>

@@ -223,7 +223,7 @@ class HomeController extends \Main\Controller {
 		$listings->page['limit'] = 8;
 		$listings
 			->join(" l JOIN #__accounts a ON a.account_id = l.account_id")
-				->where(" is_website = 1 AND status = 1 AND display = 1 ")
+				->where(" is_website = 1 AND l.status = 1 AND display = 1 ")
 					->and(" featured = 1 ")
 						->orderBy(" post_score DESC, modified_at DESC ");
 		$data['listings'] = $listings->getList();
@@ -246,15 +246,19 @@ class HomeController extends \Main\Controller {
 				}
 			}
 
+			$this->setTemplate("home/featuredPost.php");
+			$data = $this->getTemplate($data, $listings);
+
+			echo json_encode([
+				"status" => "success",
+				"content" => $data
+			]);
+		}else {
+			echo json_encode([
+				"status" => "success",
+				"content" => " "
+			]);
 		}
-
-		$this->setTemplate("home/featuredPost.php");
-		$data = $this->getTemplate($data, $listings);
-
-		echo json_encode([
-			"status" => "success",
-			"content" => $data
-		]);
 
 		exit();
 
@@ -271,12 +275,18 @@ class HomeController extends \Main\Controller {
 		if($data) {
 			$this->setTemplate("home/latestArticles.php");
 			$data = $this->getTemplate($data, $articles);
-		}
+		
+			echo json_encode([
+				"status" => "success",
+				"content" => $data
+			]);
 
-		echo json_encode([
-			"status" => "success",
-			"content" => $data
-		]);
+		}else {
+			echo json_encode([
+				"status" => "success",
+				"content" => ""
+			]);
+		}
 
 		exit();
 
