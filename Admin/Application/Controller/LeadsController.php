@@ -268,6 +268,12 @@ class LeadsController extends \Main\Controller {
 						});
 				})();
 
+				$(document).ready(function() {
+					$.get('".url("LeadNotesController@index", ["lead_id" => $id])."', function(data) {
+						$('.notes-wrapper').html(data);
+					});
+				});
+
 			"));
 
 			$listing = $this->getModel("Listing");
