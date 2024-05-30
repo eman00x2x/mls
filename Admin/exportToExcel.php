@@ -1,12 +1,13 @@
 <?php
 
+ini_set('session.save_path', "../sessions");
+
 session_start();
 
 $filename = time() . ".xls";
 
 header("Content-Disposition: attachment; filename=\"$filename\"");
 header("Content-Type: application/vnd.ms-excel");
-
 
 array_walk($_SESSION['export'], 'cleanData');
 print_r(implode("\r",str_replace("|","\t",$_SESSION['export'])));

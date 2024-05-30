@@ -1,0 +1,76 @@
+msg|N;user_logged|a:38:{s:5:"email";s:24:"vangie@motherofearth.com";s:8:"password";s:32:"25d55ad283aa400af464c76d713c07ad";s:7:"user_id";i:41;s:10:"account_id";i:1137;s:4:"name";s:14:"Vangie  Manaig";s:5:"photo";N;s:10:"user_level";i:1;s:11:"user_status";s:6:"active";s:11:"permissions";a:7:{s:8:"accounts";a:1:{s:6:"access";b:1;}s:5:"users";a:2:{s:6:"access";b:1;s:6:"delete";b:1;}s:5:"leads";a:2:{s:6:"access";b:1;s:6:"delete";b:1;}s:10:"properties";a:2:{s:6:"access";b:1;s:6:"delete";b:1;}s:3:"kyc";a:1:{s:6:"access";b:1;}s:8:"premiums";a:1:{s:20:"process_subscription";b:1;}s:12:"transactions";a:1:{s:6:"access";b:1;}}s:25:"two_factor_authentication";i:0;s:29:"two_factor_authentication_aps";N;s:10:"created_at";i:1713341955;s:12:"reference_id";i:0;s:12:"account_type";s:24:"Real Estate Practitioner";s:4:"logo";N;s:12:"company_name";N;s:10:"profession";s:18:"Real Estate Broker";s:26:"real_estate_license_number";i:17421;s:12:"board_region";a:3:{s:6:"region";s:3:"NCR";s:8:"province";s:12:"Metro Manila";s:12:"municipality";s:6:"Manila";}s:16:"local_board_name";s:34:"PMRB PASAY-MAKATI REALTY BOARD INC";s:12:"account_name";a:2:{s:9:"firstname";s:6:"Vangie";s:8:"lastname";s:6:"Manaig";}s:9:"birthdate";s:10:"2024-04-17";s:6:"street";s:9:"Greenpark";s:4:"city";s:6:"Cainta";s:8:"province";s:5:"Rizal";s:13:"mobile_number";s:11:"09175223499";s:3:"tin";N;s:7:"profile";a:5:{s:8:"about_me";N;s:9:"education";a:1:{i:0;a:3:{s:6:"school";s:0:"";s:6:"degree";s:0:"";s:4:"date";a:2:{s:4:"from";s:0:"";s:2:"to";s:0:"";}}}s:11:"affiliation";a:1:{i:0;a:4:{s:12:"organization";s:0:"";s:5:"title";s:0:"";s:11:"description";s:0:"";s:4:"date";a:2:{s:4:"from";i:0;s:2:"to";i:0;}}}s:13:"certification";a:1:{i:0;s:0:"";}s:6:"skills";a:1:{i:0;s:0:"";}}s:7:"uploads";N;s:11:"preferences";N;s:10:"privileges";a:7:{s:8:"max_post";s:3:"200";s:9:"max_users";s:1:"1";s:10:"mls_access";s:1:"1";s:11:"chat_access";s:1:"1";s:12:"featured_ads";s:1:"1";s:15:"handshake_limit";s:1:"1";s:27:"comparative_analysis_access";s:1:"1";}s:12:"message_keys";a:2:{s:9:"publicKey";a:6:{s:3:"crv";s:5:"P-256";s:3:"ext";b:1;s:7:"key_ops";a:0:{}s:3:"kty";s:2:"EC";s:1:"x";s:43:"5CmmYmeGN3KvfbrY5tTt8WmMVuEOTJUlKN-40QcuDnM";s:1:"y";s:43:"ek73fidvug0g0vUogbbHfOJSQHt8ZCb4eGcfxdpRYCY";}s:10:"privateKey";a:7:{s:3:"crv";s:5:"P-256";s:1:"d";s:43:"cvbKvTShVuxw0qSmZn8A_p52p_RfzyeGjaOwCahH3vU";s:3:"ext";b:1;s:7:"key_ops";a:2:{i:0;s:9:"deriveKey";i:1;s:10:"deriveBits";}s:3:"kty";s:2:"EC";s:1:"x";s:43:"5CmmYmeGN3KvfbrY5tTt8WmMVuEOTJUlKN-40QcuDnM";s:1:"y";s:43:"ek73fidvug0g0vUogbbHfOJSQHt8ZCb4eGcfxdpRYCY";}}s:7:"api_key";s:33:"32cf5cd18ddc1de3-b408a65f96135045";s:3:"pin";s:6:"3be57c";s:6:"status";s:6:"active";s:13:"registered_at";i:1713341955;s:10:"user_agent";a:3:{s:9:"userAgent";s:125:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0";s:3:"geo";a:9:{s:2:"ip";s:13:"158.62.42.125";s:4:"city";s:11:"Quezon City";s:6:"region";s:12:"Metro Manila";s:7:"country";s:2:"PH";s:3:"loc";s:16:"14.6488,121.0509";s:3:"org";s:27:"AS132199 Globe Telecom Inc.";s:6:"postal";s:4:"1100";s:8:"timezone";s:11:"Asia/Manila";s:6:"readme";s:29:"https://ipinfo.io/missingauth";}s:7:"browser";s:15:"Unknown Browser";}s:16:"login_session_id";s:26:"brbs9dubb055aprs7rjtip84cr";}domain|s:28:"http://localhost/mls/Manage/";logged|b:1;id|s:26:"k65ig6bh89ej9cihgb5ffn5a9s";started|i:1717082890;end|i:1717084690;compare|a:1:{s:8:"listings";a:2:{i:13;a:36:{s:10:"listing_id";i:13;s:10:"account_id";i:1138;s:6:"is_mls";i:1;s:13:"is_mls_option";a:3:{s:11:"local_board";i:1;s:12:"local_region";i:1;s:3:"all";i:1;}s:10:"is_website";i:1;s:8:"featured";i:1;s:5:"offer";s:8:"for sale";s:4:"type";s:11:"Residential";s:10:"foreclosed";i:0;s:4:"name";s:72:"2br-condo-unit-in-bagong-pag-asa-quezon-city-at-city-north-tower-4485sqm";s:5:"title";s:76:"2BR Condo Unit in Bagong Pag-Asa, Quezon City at City North Tower | 44.85sqm";s:4:"tags";a:1:{i:0;s:0:"";}s:9:"long_desc";s:1447:"<div id="listing-description" class="Listing-description initialized closed">
+<div class="ViewMore-text">
+<div class="row collapse">
+<div class="ViewMore-text-description">
+<p><strong>City North Tower</strong></p>
+<p>A 50-storey condominium rising within Quezon Citys center point on transportation, BPO and commerce centers, and commercial complex.</p>
+<p>&nbsp;</p>
+<p><strong>Amenities:</strong></p>
+<ul>
+<li>Reception / Information Areas</li>
+<li>Swimming Pool / Pool Deck</li>
+<li>Viewing Deck</li>
+<li>Jogging Path</li>
+<li>Multipurpose Function Room with Movable Childrens Playset</li>
+<li>Four (4) High-Speed Elevators</li>
+<li>24-hr Security</li>
+<li>CCTV</li>
+<li>Automatic Fire Sprinkler System</li>
+<li>Central Fire Alarm System</li>
+<li>Automatic Emergency Power Backup System for common areas and selected outlet and lights of units.</li>
+<li>Fire Exit Stairs equipped with Pressurization Blowers</li>
+<li>Overhead Water Tank System</li>
+<li>Fully Automated 24-hrs. Car Ramp Signaling System</li>
+<li>Material Recovery Facility</li>
+<li>Rainwater Harvesting Tank</li>
+<li>Individual Self-service Mailbox</li>
+<li>Sewage Treatment Plant</li>
+</ul>
+<p>&nbsp;</p>
+<p>Address: 35 North Avenue, Brgy. Bagong Pag-Asa, Quezon City, Metro Manila</p>
+<p>DHSUD LS No. 0000121</p>
+<p>Status: Pre-selling</p>
+</div>
+</div>
+</div>
+</div>
+<section id="listing-details" class="listing-section details"></section>";s:8:"category";s:11:"Condominium";s:7:"address";a:6:{s:8:"barangay";s:14:"Bagong Pag-asa";s:12:"municipality";s:11:"Quezon City";s:8:"province";s:12:"Metro Manila";s:6:"region";s:3:"NCR";s:6:"street";s:0:"";s:7:"village";s:0:"";}s:5:"price";i:5500003;s:11:"reservation";d:0;s:15:"payment_details";a:6:{s:21:"option_money_duration";s:2:"30";s:12:"payment_mode";s:4:"Cash";s:14:"tax_allocation";s:66:"Seller Agrees to Pay Capital Gains Tax and Buyer Pays Transfer Tax";s:9:"bank_loan";i:1;s:12:"pagibig_loan";i:0;s:14:"assume_balance";i:0;}s:10:"floor_area";i:45;s:8:"lot_area";i:0;s:9:"unit_area";i:0;s:7:"bedroom";i:2;s:8:"bathroom";i:2;s:7:"parking";i:0;s:9:"thumb_img";s:89:"https://mls.rosimulator.website/Cdn/images/listings/932346e80b4711dad8b97cd118f5a374.jpeg";s:5:"video";N;s:9:"amenities";s:198:"Swimming Pool,Lobby,Club House,Function Halls,Fitness Center,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools";s:13:"other_details";a:3:{s:14:"authority_type";s:3:"N/A";s:28:"authority_to_sell_expiration";i:1735574400;s:9:"com_share";s:2:"50";}s:10:"created_at";i:1713356347;s:11:"modified_at";i:1713356616;s:6:"status";i:1;s:10:"sold_price";i:0;s:8:"duration";i:1713331399;s:10:"post_score";d:4.872;s:9:"documents";N;s:7:"display";i:1;}i:1302;a:36:{s:10:"listing_id";i:1302;s:10:"account_id";i:1146;s:6:"is_mls";i:1;s:13:"is_mls_option";a:3:{s:11:"local_board";i:1;s:12:"local_region";i:1;s:3:"all";i:1;}s:10:"is_website";i:1;s:8:"featured";i:0;s:5:"offer";s:8:"for sale";s:4:"type";s:11:"Residential";s:10:"foreclosed";i:0;s:4:"name";s:85:"buy-me-pre-owned-fully-furnished-house-and-lot-for-sale-in-parang-marikina-1713602614";s:5:"title";s:75:"Buy me: Pre-owned Fully Furnished House and Lot For Sale in Parang Marikina";s:4:"tags";a:1:{i:0;s:9:"Pre-Owned";}s:9:"long_desc";s:1699:"<p><strong>SPACIOUS HOUSE AND LOT FOR SALE IN PARANG MARIKINA CITY.</strong></p>
+<p><strong>ADVANTAGES:</strong></p>
+<ul>
+<li><strong>PRE-OWNED YET WELL MAINTAINED HOUSE &amp; LOT</strong></li>
+<li><strong>FULLY FURNISHED (with furniture and appliances)</strong></li>
+<li>Guaranteed Flood free!!!</li>
+<li>Nice and safe Neighborhood</li>
+<li>Along the road</li>
+</ul>
+<p>------------------------------------------------</p>
+<p><strong>ACCESSIBILITY:</strong></p>
+<p>2 MIN. DRIVE TO NGI MARKET</p>
+<p>6 MIN. DRIVE TO AYALA MALLS MARIKINA HEIGHTS</p>
+<p>-----------------------------------------------</p>
+<p><strong>SPECIFICATIONS:</strong></p>
+<p>Well-maintained House and lot</p>
+<p>Lot area: 400 sqm</p>
+<p>Floor area: 422 sqm</p>
+<p><strong>1ST FLOOR:</strong></p>
+<p>&gt; Garden</p>
+<p>&gt; Gazebo</p>
+<p>&gt; 6 Car garage</p>
+<p>&gt; spacious living area &amp; dining area</p>
+<p>&gt; indoor and outdoor kitchen</p>
+<p>&gt;Toilet &amp; Bath</p>
+<p>&gt; masters bedroom with walk-in closet &amp; Toilet &amp; bath</p>
+<p>&gt;storage room or small entertainment room or maids room</p>
+<p><strong>2ND FLOOR:</strong></p>
+<p>&gt; 2 common bedrooms</p>
+<p>&gt; 2 separate maids room</p>
+<p>&gt; 2 Toilet &amp; bath</p>
+<p>&gt; family area</p>
+<p>&gt; balcony</p>
+<p>&gt; spacious covered terrace perfect for family gatherings</p>
+<p>also with STORAGE attic</p>
+<p><strong>--------------------------------------------------</strong></p>
+<p>Should you need any further information, please do not hesitate to call/text me.</p>
+<p><strong>Connie Gorgonia</strong></p>
+<p><strong>Licensed Real Estate Broker</strong></p>
+<p><strong>PRC Lic. no. 0027786</strong></p>";s:8:"category";s:13:"House and Lot";s:7:"address";a:6:{s:8:"barangay";s:0:"";s:12:"municipality";s:13:"Marikina City";s:8:"province";s:12:"Metro Manila";s:6:"region";s:3:"NCR";s:6:"street";s:0:"";s:7:"village";s:0:"";}s:5:"price";i:1;s:11:"reservation";d:0;s:15:"payment_details";a:6:{s:21:"option_money_duration";s:2:"30";s:12:"payment_mode";s:4:"Cash";s:14:"tax_allocation";s:66:"Seller Agrees to Pay Capital Gains Tax and Buyer Pays Transfer Tax";s:9:"bank_loan";i:1;s:12:"pagibig_loan";i:0;s:14:"assume_balance";i:0;}s:10:"floor_area";i:422;s:8:"lot_area";i:400;s:9:"unit_area";i:0;s:7:"bedroom";i:6;s:8:"bathroom";i:4;s:7:"parking";i:6;s:9:"thumb_img";s:89:"https://mls.rosimulator.website/Cdn/images/listings/3f7346c37efba284be8785d5925937b2.webp";s:5:"video";N;s:9:"amenities";s:148:"Club House,24 Hours Security,Guard House,Gated Community,CCTV Cameras,Near Malls,Near Hospitals,Near Public Markets,Near in Churches,Near in Schools";s:13:"other_details";a:3:{s:14:"authority_type";s:3:"N/A";s:28:"authority_to_sell_expiration";i:1721404800;s:9:"com_share";s:2:"50";}s:10:"created_at";i:1713602614;s:11:"modified_at";i:1713603128;s:6:"status";i:1;s:10:"sold_price";i:0;s:8:"duration";i:1713577061;s:10:"post_score";d:5.825;s:9:"documents";N;s:7:"display";i:1;}}}c|i:10;export|a:3:{i:0;s:135:"Image|Listing Id|Offer|Category|Lot Area|Floor Area|Bedroom|Bathroom|Parking|street|village|barangay|municipality|province|region|Price";i:1;s:178:"https://mls.rosimulator.website/Cdn/images/listings/932346e80b4711dad8b97cd118f5a374.jpeg|13|for sale|Condominium|0|45|2|2|0|||Bagong Pag-asa|Quezon City|Metro Manila|NCR|5500003";i:2;s:167:"https://mls.rosimulator.website/Cdn/images/listings/3f7346c37efba284be8785d5925937b2.webp|1302|for sale|House and Lot|400|422|6|4|6||||Marikina City|Metro Manila|NCR|1";}

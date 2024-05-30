@@ -4,6 +4,9 @@ namespace Admin\Application\Controller;
 
 class ReportsController extends \Main\Controller {
 
+	public $doc;
+	public $session;
+
     function __construct() {
 		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
@@ -136,7 +139,7 @@ class ReportsController extends \Main\Controller {
 				$('.barangay-selection').hide();
 			});
 
-			$(document).on('click', '.btn-create-report', function() {
+			$(document).on('click', '.btn-download-report', function() {
 
 				$.get('".url("ReportsController@downloadListingsReport")."', function(data) {
 					

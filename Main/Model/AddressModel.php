@@ -3,6 +3,9 @@
 namespace Main\Model;
 
 class AddressModel extends \Main\Model {
+
+	public $address;
+	public $selection;
 	
 	function addresses() {
 	

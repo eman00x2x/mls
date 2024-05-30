@@ -20,7 +20,7 @@ $html[] = "<div class='row justify-content-center'>";
 
                     $html[] = "<div class='col-auto ms-auto d-print-none'>";
                         $html[] = "<div class='btn-list'>";
-                            $html[] = "<a class='ajax btn btn-dark' href='".MANAGE."exportToExcel.php'><i class='ti ti-download me-2'></i> Download</a>";
+                            $html[] = "<a class='ajax btn btn-dark' href='".ADMIN."exportToExcel.php'><i class='ti ti-download me-2'></i> Download</a>";
 
                             $html[] = "<div class='dropdown dropstart'>";
                                 $html[] = "<span class='btn btn-dark dropdown-toggle' id='year-selection' data-bs-toggle='dropdown' aria-expanded='false'>Year</span>";
@@ -161,5 +161,5 @@ $html[] = "<div class='row justify-content-center'>";
 $html[] = "</div>";
 
 if(isset($export)) {
-    $_SESSION['export'] = $export;   
+    $_SESSION['export'] = $export;
 }

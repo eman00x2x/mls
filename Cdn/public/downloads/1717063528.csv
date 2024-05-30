@@ -1,0 +1,49 @@
+CATEGORY,TOTAL
+House and Lot,251
+Residential Lot,814
+Commercial Lot,107
+Townhouse,42
+Warehouse,17
+Condominium,64
+Office/Building,25
+Parking Space,1
+Agriculture Lot,6
+Memorial Lot,2
+Retail Space,2
+Apartment,2
+Condotel,2
+
+
+PRICE RANGE,TOTAL
+,10
+0 - 3M,161
+100M - 120M,25
+10M - 15M,149
+120M - 140M,15
+140M - 160M,12
+15M - 25M,173
+160M - 180M,21
+180M - 200M,8
+200M - 230M,17
+230M - 260M,15
+25M - 35M,104
+260M - 290M,11
+290M - 310M,7
+310M - 350M,9
+350M - Above,50
+35M - 45M,51
+3M - 6M,166
+45M - 50M,21
+50M - 80M,62
+
+
+REGION,TOTAL
+Region III,13
+Region IV-A,429
+Region I,73
+NCR,574
+CAR,202
+Region II,42
+Region XI,1
+Region VII,1
+

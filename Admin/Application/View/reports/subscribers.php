@@ -17,7 +17,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='btn-list'>";
-					$html[] = "<a class='ajax btn btn-dark' href='".MANAGE."exportToExcel.php'><i class='ti ti-download me-2'></i> Download</a>";
+					$html[] = "<a class='ajax btn btn-dark' href='".ADMIN."exportToExcel.php'><i class='ti ti-download me-2'></i> Download</a>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";
@@ -51,6 +51,11 @@ $html[] = "<div class='page-body'>";
                                 $html[] = "</thead>";
 
                                 for($i=0; $i<count($region_data); $i++) {
+
+                                    if(is_null($region_data[$i]['net_earnings'])) {
+                                        $region_data[$i]['net_earnings'] = 0;
+                                    }
+
                                     $html[] = "<tbody>";
                                         $html[] = "<tr>";
                                             $html[] = "<td class='w-50'><span class='text-muted fs-12 d-block'>Board Name</span> ".$region_data[$i]['board']."</td>";

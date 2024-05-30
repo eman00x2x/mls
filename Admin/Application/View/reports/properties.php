@@ -17,7 +17,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='btn-list'>";
-					$html[] = "<span class='ajax btn btn-dark btn-create-report' href='".url("ReportsController@downloadListingsReport")."'><i class='ti ti-download me-2'></i> Download</span>";
+					$html[] = "<span class='ajax btn btn-dark btn-download-report' href='".url("ReportsController@downloadListingsReport")."'><i class='ti ti-download me-2'></i> Download</span>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";

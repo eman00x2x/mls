@@ -112,7 +112,9 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-user me-1'></i> Name:</span> <strong>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</strong></div>";
 						
 						if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
-							$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-calendar me-1'></i> Birth Date:</span> <strong>".date("d M Y",strtotime($data['birthdate']))."</strong></div>";
+							if($data['birthdate']) {
+								$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-calendar me-1'></i> Birth Date:</span> <strong>".date("d M Y",strtotime($data['birthdate']))."</strong></div>";
+							}
 							$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-phone me-1'></i> Mobile Number:</span> <strong>".$data['mobile_number']."</strong></div>";
 						}
 
