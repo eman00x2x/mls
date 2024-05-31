@@ -98,9 +98,10 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
     Router::post('/leads/{id}/saveUpdate', 'LeadsController@saveUpdate', ['as' => 'leadSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
 
     /** LEAD NOTES ROUTES */
-    Router::get('/leads/{lead_id}/notes', 'LeadNotesController@index', ['as' => 'notes'])->where([ 'lead_id' => '[0-9]+' ]);
+    Router::get('/leads/{lead_id}/notes', 'LeadNotesController@index', ['as' => 'lead-notes'])->where([ 'lead_id' => '[0-9]+' ]);
+    Router::get('/leads/{lead_id}/notes/{id}/delete', 'LeadNotesController@delete', ['as' => 'delete-notes'])->where([ 'lead_id' => '[0-9]+', 'id' => '[0-9]+' ]);
 
-    Router::get('/leads/{lead_id}/notes/save', 'LeadNotesController@saveNew', ['as' => 'save-notes'])->where([ 'lead_id' => '[0-9]+' ]);
+    Router::get('/leads/{lead_id}/notes/save', 'LeadNotesController@saveNew', ['as' => 'saveNew-notes'])->where([ 'lead_id' => '[0-9]+' ]);
 
     /** THREADS ROUTES */
     Router::get('/threads', 'MessagesController@index', ['as' => 'messages']);

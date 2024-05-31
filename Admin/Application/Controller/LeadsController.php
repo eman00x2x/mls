@@ -269,10 +269,47 @@ class LeadsController extends \Main\Controller {
 				})();
 
 				$(document).ready(function() {
+					loadNotes();
+				});
+
+				$(document).on('submit', '#form', function() {
+					$('.response').html(\"<div class='bg-white p-3 mt-3 rounded'><div class='d-flex gap-3 align-items-center'><div class='loader'></div><p class='mb-0'>Processing, Please wait...</p></div></div>\");
+
+					$.get($('#save_url').val(), $('#form').serialize(), function (data, status) {
+
+						let response = JSON.parse(data);
+						$('.response').html(response.message);
+						$('#content').val('');
+						loadNotes();
+					});
+
+				});
+
+				$(document).on('click', '.btn-delete-note', function() {
+					id = $(this).data('id');
+
+					r = confirm('Are you sure do you want to delte the selected note?');
+
+					if(r === true) {
+						$.get('notes/' + id + '/delete', function(data, status) {
+							let response = JSON.parse(data);
+							$('.response').html(response.message);
+							$('.row_'+id).remove();
+						});
+					}
+
+				});
+
+				$(document).on('click', '.btn-save-note', function() {
+					$('#form').submit();
+				});
+
+				function loadNotes() {
+					$('.notes-wrapper').html(\"<div class='bg-white p-3 mt-3 rounded'><div class='d-flex gap-3 align-items-center'><div class='loader'></div><p class='mb-0'>Processing, Please wait...</p></div></div>\");
 					$.get('".url("LeadNotesController@index", ["lead_id" => $id])."', function(data) {
 						$('.notes-wrapper').html(data);
 					});
-				});
+				}
 
 			"));
 

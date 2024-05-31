@@ -20,41 +20,36 @@ class LeadNotesController extends \Main\Controller {
 		$notes = $this->getModel("LeadNote");
 		$notes->page['limit'] = 1000;
 
-		$notes->column['lead_id'] = $lead_id;
-		$data = $notes->getByLeadId();
+		$notes->orderBy(" created_at DESC ");
+		$data = $notes->getByLeadId($lead_id);
 
-		if($data['leads']) {
+		if($data) {
 			$this->setTemplate("leadNotes/notes.php");
 			return $this->getTemplate($data, $notes);
 		}
 
 	}
 
-	function saveNew($id) {
+	function saveNew() {
 
-		parse_str(file_get_contents('php://input'), $_POST);
+		/* parse_str(file_get_contents('php://input'), $_POST); */
 
-		$_POST['created_at'] = DATE_NOW;
-		$_POST['lead_id'] = $id;
-		$_POST['account_id'] = $this->account_id;
+		$_GET['created_at'] = DATE_NOW;
+		$_GET['account_id'] = $this->account_id;
 
 		$notes = $this->getModel("LeadNote");
-		$response = $leads->saveNew($_POST);
+		$response = $notes->saveNew($_GET);
 
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 
-		$notes->note_id = $response['id'];
-		$data = $notes->getById();
-
 		return json_encode(array(
 			"status" => $response['status'],
-			"message" => getMsg(),
-			"data" => $data
+			"message" => getMsg()
 		));
 
 	}
 
-	function delete($id) {
+	function delete($lead_id, $id) {
 
 		$notes = $this->getModel("LeadNote");
 		$notes->column['note_id'] = $id;
@@ -62,36 +57,25 @@ class LeadNotesController extends \Main\Controller {
 		
 		if($data) {
 
-			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
-				var id = ".$data['note_id'].";
+			$notes->deleteNote($id);
 
-				var detail = $('.row_leads_' + id + ' .btn-delete').data('content');
-				$('.delete-name-container').text( detail.name );
-				$('.delete-email-container').text( detail.email );
-				$('.delete-mobile-number-container').text( detail.mobile_no );
-
-			"));
-
-			if(isset($_REQUEST['delete'])) {
-
-				$notes->deleteLead($id);
-
-				$this->getLibrary("Factory")->setMsg("Note deleted!","success");
-				return json_encode(
-					array(
-						"status" => 1,
-						"message" => getMsg()
-					)
-				);
-
-			}
+			$this->getLibrary("Factory")->setMsg("Note deleted!","success");
+			return json_encode(
+				array(
+					"status" => 1,
+					"message" => getMsg()
+				)
+			);
 
 		}else {
 			$this->getLibrary("Factory")->setMsg("Note not found.","warning");
+			return json_encode(
+				array(
+					"status" => 2,
+					"message" => getMsg()
+				)
+			);
 		}
-
-		$this->setTemplate("leads/delete.php");
-		return $this->getTemplate($data);
 
 	}
 	

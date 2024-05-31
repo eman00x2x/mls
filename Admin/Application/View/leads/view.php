@@ -65,27 +65,19 @@ $html[] = "<div class='page-body'>";
                             $html[] = "<div class='listing_wrap my-5'>";
 
                                 $html[] = "<h3>Subject Listing</h3>";
-
-                                $html[] = "<table class='table'>";
-                                $html[] = "<tr>";
-                                    $html[] = "<td class='align-middle'>";
-                                        $html[] = "<div class='d-flex'>";
-                                            $html[] = "<div class=''>";
-                                                $html[] = "<span class='avatar avatar-xl' style='background-image: url(".$data['listing']['thumb_img'].")'></span>";
-                                            $html[] = "</div>";
-                                            $html[] = "<div class='ps-2'>";
-                                                $html[] = "<span class='d-block'>".$data['listing']['title']."</span>";
-                                                $html[] = "<span class='d-block'>".$data['listing']['category']."</span>";
-                                                $html[] = "<span class='d-block'>".$data['listing']['address']['municipality']." ".$data['listing']['address']['province']."</span>";
-                                            $html[] = "</div>";
-                                        $html[] = "</div>";
-                                    $html[] = "</td>";
-                                    $html[] = "<td class='align-middle'>";
-                                        $html[] = "<a href='".url("ListingsController@view",["id" => $data['listing']['listing_id']])."' class='btn btn-primary'>View Listing</a>";
-                                    $html[] = "</td>";
-                                $html[] = "</tr>";
-                                $html[] = "</table>";
-
+   
+                                $html[] = "<div class='d-flex'>";
+                                    $html[] = "<div class=''>";
+                                        $html[] = "<span class='avatar avatar-xl' style='background-image: url(".$data['listing']['thumb_img'].")'></span>";
+                                    $html[] = "</div>";
+                                    $html[] = "<div class='ps-2'>";
+                                        $html[] = "<span class='d-block'>".$data['listing']['title']."</span>";
+                                        $html[] = "<span class='d-block'>".$data['listing']['category']."</span>";
+                                        $html[] = "<span class='d-block'>".$data['listing']['address']['municipality']." ".$data['listing']['address']['province']."</span>";
+                                        $html[] = "<a href='".url("ListingsController@view",["id" => $data['listing']['listing_id']])."' class='btn btn-primary mt-2'>View Listing</a>";
+                                    $html[] = "</div>";
+                                $html[] = "</div>";
+                                
                             $html[] = "</div>";
                         }
                     $html[] = "</div>";
@@ -96,21 +88,23 @@ $html[] = "<div class='page-body'>";
             $html[] = "<div class='col-md-8 col-12'>";
                  $html[] = "<div class='card mb-3'>";
                     $html[] = "<div class='card-header'>";
-                        $html[] = "<h3 class='card-title text-blue mb-0'>Lead Information</h3>";
+                        $html[] = "<h3 class='card-title text-blue mb-0'>Notes</h3>";
                     $html[] = "</div>";
 
                     $html[] = "<div class='card-body'>";
-                        $html[] = "<div class='notes-wrapper' style='height:100px; overflow: y-auto;'></div>";
+                        $html[] = "<div class='notes-wrapper' style='height:300px; overflow-x: auto;'></div>";
                     $html[] = "</div>";
                     $html[] = "<div class='card-footer'>";
                         $html[] = "<input type='hidden' name='save_url' id='save_url' value='".url("LeadNotesController@saveNew", ["lead_id" => $data['lead_id']])."' />";
-                        $html[] = "<form id='form' action='' method='POST'>";
+                        $html[] = "<form id='form' method='GET'>";
                             $html[] = "<input type='hidden' name='user_id' id='user_id' value='".$_SESSION['user_logged']['user_id']."' />";
-                            $html[] = "<input type='hidden' name='iv' id='iv' value='' />";
-                            $html[] = "<input type='hidden' name='content' id='content' value='' />";
+                            $html[] = "<input type='hidden' name='lead_id' id='lead_id' value='".$data['lead_id']."' />";
+                            /* $html[] = "<input type='hidden' name='iv' id='iv' value='' />";
+                            $html[] = "<input type='hidden' name='content' id='content' value='' />"; */
                             
                             $html[] = "<div class='form-floating mb-3'>";
-                                $html[] = "<input type='text' name='note' id='note' value='' class='form-control' />";
+                                /* $html[] = "<input type='text' name='note' id='note' value='' class='form-control' />"; */
+                                $html[] = "<input type='text' name='content' id='content' value='' class='form-control' />";
                                 $html[] = "<label for='note'>Note</label>";
                             $html[] = "</div>";
                             $html[] = "<span class='btn btn-primary btn-save-note'>Save Note</span>";
