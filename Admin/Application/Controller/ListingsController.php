@@ -12,7 +12,6 @@ class ListingsController extends \Main\Controller {
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
-
 	}
 
 	function index($account_id) {
@@ -226,7 +225,20 @@ class ListingsController extends \Main\Controller {
 				if($('#is_mls_local_board').prop('checked') == false && this.checked == true) {
 					$('#is_mls_local_board').prop('checked', true);
 				}
+			});
 
+			$(document).on('change', '#listing_type', function() {
+				selected = $('#listing_type option:selected').val();
+				if(selected == 'project selling') {
+					$('#is_mls').prop('checked', false);
+					$('#is_mls').trigger('change');
+					$('.mls-options').hide();
+				}else {
+					$('#is_mls').prop('checked', true);
+					$('#is_mls_local_board').prop('checked', true);
+					$('#is_mls').trigger('change');
+					$('.mls-options').hide();
+				}
 			});
 
 			$(document).on('change', '#status', function() {
@@ -1136,7 +1148,13 @@ class ListingsController extends \Main\Controller {
 				")->orderby(" post_score DESC, $sort ");
 		}
 		
-		$model->join(" l JOIN #__accounts a ON a.account_id = l.account_id ");
+		if(KYC == 1) {
+			$filters[] = " kyc_status = 1 ";
+			$model->join(" l JOIN #__accounts a ON a.account_id = l.account_id JOIN #__kyc k ON k.account_id=a.account_id ");
+		}else {
+			$model->join(" l JOIN #__accounts a ON a.account_id = l.account_id ");
+		}
+
 		$model->where((isset($filters) ? implode(" AND ",$filters) : null));
 		$data = $model->getList();
 

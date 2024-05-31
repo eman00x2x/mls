@@ -14,6 +14,13 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			$this->getLibrary("Factory")->setMsg("You do not have permissions to access this content.", "warning");
 			response()->redirect(url("DashboardController@index"));
 		}
+
+		if($this->session['kyc'] === false) {
+            if(KYC == 1) {
+                $this->getLibrary("Factory")->setMsg("Your property listings have been hidden from the public website and MLS. You must complete the KYC process before your listings can be viewed. <a href='".url("KYCController@kycVerificationForm")."'>Proceed to KYC</a>", "warning");
+            }
+        }
+		
 	}
 	
 	function index($account_id = null) {

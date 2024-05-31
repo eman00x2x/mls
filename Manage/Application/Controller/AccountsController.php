@@ -11,6 +11,12 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
         $this->setTempalteBasePath(ROOT."/Manage");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->account_id = $this->session['account_id'];
+
+		if($this->session['kyc'] === false) {
+            if(KYC == 1) {
+                $this->getLibrary("Factory")->setMsg("Your property listings have been hidden from the public website and MLS. You must complete the KYC process before your listings can be viewed. <a href='".url("KYCController@kycVerificationForm")."'>Proceed to KYC</a>", "warning");
+            }
+        }
 	}
 	
 	function index() {
