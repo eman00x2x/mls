@@ -30,7 +30,6 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 				$html[] = "<div class='d-sm-block'>";
 					$html[] = "<div class='btn-list'>";
 						
-						$html[] = "<a class='ajax btn btn-dark' href='".url("MlsController@handshakedIndex")."'><i class='ti ti-heart-handshake me-2'></i> Handshaked</a>";
 						$html[] = "<a class='ajax btn btn-dark' href='".MANAGE."exportToExcel.php'><i class='ti ti-download me-2'></i> Download</a>";
 
 						$html[] = "<div class='btn-group'>";
@@ -49,6 +48,17 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 							$html[] = "</ul>";
 						$html[] = "</div>";
 
+						$html[] = "<div class=''>";
+							$html[] = "<span class='btn dropdown-toggle btn-dark' data-bs-toggle='dropdown'><i class='ti ti-table-down me-2'></i> <span class='d-none d-sm-block'>Rows</span></span>";
+							$html[] = "<div class='dropdown-menu'>";
+								$limit = $model->page['uri'];
+								foreach([20, 50, 80, 100, 200, 500, 1000] as $rows_to_show) {                        
+									$limit["rows"] = $rows_to_show;
+									$html[] = "<a class='dropdown-item d-flex justify-content-between' href='".url('MlsController@compareListings', null, $limit)."'><span>Show $rows_to_show rows</span></a>";
+								}
+							$html[] = "</div>";
+						$html[] = "</div>";
+
 					$html[] = "</div>";
 				$html[] = "</div>";
 			$html[] = "</div>";
@@ -60,9 +70,13 @@ $html[] = "</div>";
 $html[] = "<div class='page-body'>";
 	$html[] = "<div class='container-xl'>";
 
-		$columns = explode(",","listing_id,offer,category,lot_area,floor_area,bedroom,bathroom,parking,address,price");
+		$columns = explode(",","offer,category,lot_area,floor_area,bedroom,bathroom,parking,address,price");
 
-		$html[] = "<h1 class='d-none d-print-block'>MLS System - Comparative Analysis Table</h1>";
+		$html[] = "<div class='alert alert-info bg-white alert-dismissible fade show'>";
+			$html[] = "To download all results, click on \"Rows\" and select \"Show 1000 rows.\" This will display all 1000 results, which you can then download. ";
+			$html[] = "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+		$html[] = "</div>";
+		
 		$html[] = "<div class='card'>";
 			$html[] = "<div class='table-responsive'>";
 				$html[] = "<table class='table table-vcenter table-bordered card-table caption-top'>";
@@ -70,20 +84,17 @@ $html[] = "<div class='page-body'>";
 
 					$html[] = "<tr>";
 						$html[] = "<th class='text-center col-avatar'>Image</th>";
-						$export['header'][] = "Image";
 						foreach($columns as $col) {
-							$html[] = "<th class='text-center col-$col'>".ucwords(str_replace("_"," ",$col))."</th>";
+							
 
 							if($col == "address") {
-								foreach(explode(",", "street,village,barangay,municipality,province,region") as $address) {
-									$export['header'][] = $address;
+								foreach(explode(",", "street,village,barangay,municipality,province") as $address) {
+									$html[] = "<th class='text-center col-$col'>".ucwords(str_replace("_"," ",$address))."</th>";
 								}
 							}else {
-								$export['header'][] = ucwords(str_replace("_"," ",$col));
+								$html[] = "<th class='text-center col-$col'>".ucwords(str_replace("_"," ",$col))."</th>";
 							}
 						}
-
-						$rows[] = implode("|", $export['header']);
 
 					$html[] = "<tr>";
 					
@@ -92,11 +103,7 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<tbody>";
 
 					for($i=0; $i<count($data['listing']); $i++) {
-						$export['rows'] = [];
-						$cData = [];
-
-						$cData[$i][] = $data['listing'][$i]['thumb_img'];
-
+						
 						$html[] = "<tr>";
 							$html[] = "<td class='text-center col-avatar'>";
 								$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data['listing'][$i]['listing_id']])."'>";
@@ -107,49 +114,17 @@ $html[] = "<div class='page-body'>";
 							foreach($columns as $col) {
 								switch($col) {
 									case 'address':
-
-										$address = [];
-
-										if(isset($data['listing'][$i]["address"]['street'])) {
-											$address[] = $data['listing'][$i]["address"]['street'];
-											$cData[$i][] = $data['listing'][$i]["address"]['street'];
-										}else { $cData[$i][] = ""; }
-
-										if(isset($data['listing'][$i]["address"]['village'])) {
-											$address[] = $data['listing'][$i]["address"]['village'];
-											$cData[$i][] = $data['listing'][$i]["address"]['village'];
-										}else { $cData[$i][] = ""; }
-
-										if(isset($data['listing'][$i]["address"]['barangay'])) {
-											$address[] = $data['listing'][$i]["address"]['barangay'];
-											$cData[$i][] = $data['listing'][$i]["address"]['barangay'];
-										}else { $cData[$i][] = ""; }
-
-										if(isset($data['listing'][$i]["address"]['municipality'])) {
-											$address[] = $data['listing'][$i]["address"]['municipality'];
-											$cData[$i][] = $data['listing'][$i]["address"]['municipality'];
-										}else { $cData[$i][] = ""; }
-
-										if(isset($data['listing'][$i]["address"]['province'])) {
-											$address[] = $data['listing'][$i]["address"]['province'];
-											$cData[$i][] = $data['listing'][$i]["address"]['province'];
-										}else { $cData[$i][] = ""; }
-
-										if(isset($data['listing'][$i]["address"]['province'])) {
-											$cData[$i][] = $data['listing'][$i]["address"]['region'];
-										}else { $cData[$i][] = ""; }
-
-										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data['listing'][$i]["address"]['municipality']." ".$data['listing'][$i]["address"]['province']."</td>";
+										foreach(explode(",", "street,village,barangay,municipality,province") as $address) {
+											$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data['listing'][$i]["address"][$address]."</td>";
+										}
 										break;
 									
 									case 'price':
-										$cData[$i][] = $data['listing'][$i]['price'];
 										$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>&#8369;".number_format($data['listing'][$i]['price'],0)."</td>";
 										break;
 
 									default:
 										if(isset($data['listing'][$i][$col])) {
-											$cData[$i][] = $data['listing'][$i][$col];
 											$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'>".$data['listing'][$i][$col]."</td>";
 										}else {
 											$html[] = "<td class='text-center text-wrap col-$col' style='width:150px;'></td>";
@@ -159,15 +134,16 @@ $html[] = "<div class='page-body'>";
 							}
 						$html[] = "</tr>";
 
-						$export['rows'] = implode("|", $cData[$i]);
-						$rows[] = $export['rows'];
-
 					}
 
 				$html[] = "</tbody>";
 				$html[] = "</table>";
 			$html[] = "</div>";
 		$html[] = "</div>";
+
+		if(!empty($model)) {
+			$html[] = $model->pagination;
+		}
 
 		$html[] = "<div class='mt-4 text-center'>";
 
@@ -216,5 +192,3 @@ $html[] = "<div class='page-body'>";
 
 	$html[] = "</div>";
 $html[] = "</div>";
-
-$_SESSION['export'] = $rows;

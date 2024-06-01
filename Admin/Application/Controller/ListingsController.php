@@ -1162,7 +1162,7 @@ class ListingsController extends \Main\Controller {
 			$model->page['uri']['address'] = $_GET['address'];
 
 			if(isset($_GET['address']['region']) && $_GET['address']['region'] != "") {
-				$filters[] = " JSON_EXTRACT(l.address, '$.region') = '".str_replace("+", " ", $_GET['address']['region'])."'  ";
+				$filters[] = " JSON_EXTRACT(l.address, '$.region') = '".str_replace("+", " ", $_GET['address']['region'])."'  "; 
 				$search[] = str_replace("+", " ", $_GET['address']['region']);
 			}
 

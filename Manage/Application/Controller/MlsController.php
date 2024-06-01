@@ -550,14 +550,17 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.local_board') = 1";
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.all') = 1"; */
 			
-			$listings->page['limit'] = 20;
+			$listings->page['limit'] = 1000;
 			$listings->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
 			$listings->page['target'] = url("MlsController@marketComparisonForm");
 			$listings->page['uri'] = (isset($uri) ? $uri : []);
 
 			$response = $this->listProperties($listings, $filters);
-
+			
 			if($response['data']) {
+				
+				unset($_SESSION['compare']['listings']);
+
 				for($i=0; $i<count($response['data']); $i++) {
 					$_SESSION['compare']['listings'][$response['data'][$i]['listing_id']] = $response['data'][$i];
 				}
@@ -649,8 +652,19 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 	
 			$ids = array_keys($_SESSION['compare']['listings']);
 
+			$rows = 20;
+			if(isset($_GET['rows'])) {
+				$rows = $_GET['rows'];
+				$uri['rows'] = $rows;
+			}
+
 			$listing = $this->getModel("Listing");
-			$listing->page['limit'] = 20;
+			$listing->page['limit'] = $rows;
+
+			$listing->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+			$listing->page['target'] = url("MlsController@compareListings");
+			$listing->page['uri'] = (isset($uri) ? $uri : []);
+
 			$data['listing'] = $listing->where(" listing_id IN(".implode(",", $ids).") ")->getList();
 
 			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
@@ -687,9 +701,77 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 				});
 
 			"));
-			
+
+			unset($_SESSION['export']);
+
+			$columns = explode(",","offer,category,lot_area,floor_area,bedroom,bathroom,parking,address,price");
+			foreach($columns as $col) {
+				if($col == "address") {
+					foreach(explode(",", "street,village,barangay,municipality,province,region") as $address) {
+						$export['header'][] = $address;
+					}
+				}else {
+					$export['header'][] = ucwords(str_replace("_"," ",$col));
+				}
+			}
+
+			$_SESSION['export'][] = implode("|", $export['header']);
+
+			for($i=0; $i<count($data['listing']); $i++) {
+
+				$export['rows'] = [];
+				$cData = [];
+
+				foreach($columns as $col) {
+					switch($col) {
+						case 'address':
+
+							if(isset($data['listing'][$i]["address"]['street'])) {
+								$cData[$i][] = $data['listing'][$i]["address"]['street'];
+							}else { $cData[$i][] = ""; }
+
+							if(isset($data['listing'][$i]["address"]['village'])) {
+								$cData[$i][] = $data['listing'][$i]["address"]['village'];
+							}else { $cData[$i][] = ""; }
+
+							if(isset($data['listing'][$i]["address"]['barangay'])) {
+								$cData[$i][] = $data['listing'][$i]["address"]['barangay'];
+							}else { $cData[$i][] = ""; }
+
+							if(isset($data['listing'][$i]["address"]['municipality'])) {
+								$cData[$i][] = $data['listing'][$i]["address"]['municipality'];
+							}else { $cData[$i][] = ""; }
+
+							if(isset($data['listing'][$i]["address"]['province'])) {
+								$cData[$i][] = $data['listing'][$i]["address"]['province'];
+							}else { $cData[$i][] = ""; }
+
+							if(isset($data['listing'][$i]["address"]['province'])) {
+								$cData[$i][] = $data['listing'][$i]["address"]['region'];
+							}else { $cData[$i][] = ""; }
+
+							break;
+						
+						case 'price':
+							$cData[$i][] = $data['listing'][$i]['price'];
+							break;
+
+						default:
+							if(isset($data['listing'][$i][$col])) {
+								$cData[$i][] = $data['listing'][$i][$col];
+								
+							}
+					}
+
+				}
+
+				$export['rows'] = implode("|", $cData[$i]);
+				$_SESSION['export'][] = $export['rows'];
+
+			}
+
 			$this->setTemplate("mls/compare.php");
-			return $this->getTemplate($data,$listing);
+			return $this->getTemplate($data, $listing);
 
 		}
 

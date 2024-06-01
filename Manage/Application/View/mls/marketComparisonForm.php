@@ -31,7 +31,7 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<form id='filter-form'>";
 							$html[] = "<p class='text-muted fst-italic'>The market comparison results include listings posted in your MLS Regional Board, MLS Local Board, and the MLS National</p>";
 
-							$html[] = "<div class='d-flex align-items-center gap-3'>";
+							$html[] = "<div class='d-flex align-items-top gap-3'>";
 
 								$html[] = "<div class='w-50 mb-3'>";
 									$html[] = "<span class='fs-12 form-label'>Address</span>";
@@ -41,16 +41,7 @@ $html[] = "<div class='page-body'>";
 								$html[] = "</div>";
 
 								$html[] = "<div class='w-100'>";
-									$html[] = "<div class='mb-3'>";
-										$html[] = "<span class='fs-12 form-label'>Listing Type</span>";
-										$html[] = "<select name='listing_type' id='listing_type' class='form-select'>";
-											foreach(["project selling", "general brokerage"] as $listing_type) {
-												$sel = $listing_type == "general brokerage" ? "selected" : "";
-												$html[] = "<option value='".$listing_type."' $sel>".ucwords($listing_type)."</option>";
-											}
-										$html[] = "</select>";
-									$html[] = "</div>";
-
+									
 									$html[] = "<div class='row'>";
 										$html[] = "<div class='col-lg-6 col-md-6 col-sm-12 col-12'>";
 											$html[] = "<div class='mb-3'>";
