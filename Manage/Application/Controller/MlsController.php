@@ -539,7 +539,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 			$filters[] = " is_mls = 1 ";
 			$filters[] = " l.status = 1 ";
-			$filters[] = " display = 1";
+			$filters[] = " display = 1 ";
 
 			/* $region = $this->session['board_region']['region'];
 			$filters[] = " JSON_EXTRACT(board_region, '$.region') = '".$region."' ";
