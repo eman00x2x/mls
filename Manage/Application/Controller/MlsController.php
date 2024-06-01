@@ -149,6 +149,8 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			$filters[] = " JSON_EXTRACT(is_mls_option, '$.all') = 1";
 		}
 
+		$filters[] = " listing_type = 'general brokerage' ";
+
 		$address = $this->getModel("Address");
 		$listings = $this->getModel("Listing");
 		$listings->address = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));

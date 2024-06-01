@@ -40,6 +40,19 @@ $html[] = "<div class='row justify-content-center'>";
 				
 					$html[] = "<div class='card-body'>";
 
+						$html[] = "<div class='mb-5'>";
+							$html[] = "<div class='d-flex gap-3 align-content-center'>";
+								$html[] = "<div class=''>";
+									$html[] = "<img src='".CDN."images/logo.png' style='width:78px;' />";
+								$html[] = "</div>";
+								$html[] = "<div class=''>";
+									$html[] = "<h2 class='display-6 fw-bold mb-0'>Philippine Real Estate Board Inc.</h2>";
+									$html[] = "<span class='d-block'>The PAREB Centre, P.E. Antonio Brgy. Ugong, Pasig City</span>";
+									$html[] = "<span class='d-block'><i class='ti ti-phone fs-14'></i> ".CONFIG['contact_info']['mobile_number']."</span>";
+								$html[] = "</div>";
+							$html[] = "</div>";
+						$html[] = "</div>";
+
 						$html[] = "<h1 class='mb-5'>Invoice</h1>";
 
 						$html[] = "<div class='d-flex gap-2 justify-content-between'>";
@@ -84,7 +97,7 @@ $html[] = "<div class='row justify-content-center'>";
 									$html[] = "<td class='text-dark text-center'>".strtoupper($data['transaction']['payment_source'])."</td>";
 									$html[] = "<td class='text-dark text-center'>".$data['transaction']['payment_transaction_id']."</td>";
 									$html[] = "<td class='text-dark text-center'>".$data['transaction']['payment_status']."</td>";
-									$html[] = "<td class='text-dark text-center'>".date("F d, Y g:i a", $data['transaction']['transaction_details']['create_time'])."</td>";
+									$html[] = "<td class='text-dark text-center'>".date("F d, Y g:i a", strtotime($data['transaction']['transaction_details']['create_time']))."</td>";
 								$html[] = "</tr>";
 								$html[] = "</table>";
 							$html[] = "</div>";

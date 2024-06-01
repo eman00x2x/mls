@@ -74,8 +74,8 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 								$html[] = "<li class='nav-item' role='pressentation'><a href='#property_description' 	class='pb-3 fw-bold text-blue nav-link active' data-bs-toggle='tab' aria-selected='true'><i class='ti ti-file-description me-2'></i> Property Description</a></li>";
 								$html[] = "<li class='nav-item' role='pressentation'><a href='#technical_description' 	class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-ruler me-2'></i> Technical Details</a></li>";
 								$html[] = "<li class='nav-item' role='pressentation'><a href='#payment_details' 		class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-cash me-2'></i> Payment Details</a></li>";
-								$html[] = "<li class='nav-item' role='pressentation'><a href='#images_list' 			class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-photo me-2'></i> Images</a></li>";
-								$html[] = "<li class='nav-item' role='pressentation'><a href='#docs_list' 				class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-photo me-2'></i> Documents</a></li>";
+								$html[] = "<li class='nav-item hide_looking_for' role='pressentation'><a href='#images_list' 			class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-photo me-2'></i> Images</a></li>";
+								$html[] = "<li class='nav-item hide_looking_for' role='pressentation'><a href='#docs_list' 				class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-photo me-2'></i> Documents</a></li>";
 								$html[] = "<li class='nav-item' role='pressentation'><a href='#settings'	 			class='pb-3 fw-bold text-blue nav-link' data-bs-toggle='tab' aria-selected='false'><i class='ti ti-settings-cog me-2'></i> Settings</a></li>";
 							$html[] = "</ul>";
 						$html[] = "</div>";
@@ -90,6 +90,19 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 									$html[] = "<div class='row justify-content-center py-3'>";
 										$html[] = "<div class='col-md-8 col-lg-8 col-12'>";
 
+										$html[] = "<div class='mb-3'>";
+											$html[] = "<label class='form-label text-muted'>Listing Type</label>";
+											$html[] = "<div class='input-icon '>";
+												$html[] = "<span class='input-icon-addon'><i class='ti ti-building-skyscraper'></i></span>";
+												$html[] = "<select name='listing_type' id='listing_type' class='form-select'>";
+													foreach(["project selling", "general brokerage"] as $listing_type) {
+														$sel = $listing_type == $data['listing']['listing_type'] ? "selected" : "";
+														$html[] = "<option value='".$listing_type."' $sel>".ucwords($listing_type)."</option>";
+													}
+												$html[] = "</select>";
+												$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+											$html[] = "</div>";
+										$html[] = "</div>";
 
 										$html[] = "<div class='d-flex gap-2 mb-3'>";
 											$html[] = "<div class='form-group '>";
@@ -263,7 +276,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 											$html[] = "</div>";
 
 											$html[] = "<div class='mb-3 village-input'>";
-												$html[] = "<label class='form-label text-muted'>Village / Building</label>";
+												$html[] = "<label class='form-label text-muted'>Village / Building / Communities</label>";
 												$html[] = "<input type='text' name='address[village]' id='address_village' value='".$data['listing']['address']['village']."' class='form-control' />";
 											$html[] = "</div>";
 
@@ -306,7 +319,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 										$html[] = "<div class='col-md-8 col-lg-8 col-12'>";
 
 											$html[] = "<div class='form-group mb-3'>";
-												$html[] = "<label class='form-label text-muted'>Price</label>";
+												$html[] = "<label class='form-label text-muted'>Selling Price / TCP</label>";
 												$html[] = "<div class='input-icon mb-1'>";
 													$html[] = "<span class='input-icon-addon'><i class='ti ti-currency-peso'></i></span>";
 													$html[] = "<input type='number' name='price' id='price' value='".$data['listing']['price']."' step='0.05' class='form-control' placeholder='Price' />";
@@ -322,7 +335,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<span class='form-hint'>Option money is a payment made by a buyer to secure the exclusive right to purchase a property within a set timeframe</span>";
 											$html[] = "</div>";
 
-											$html[] = "<div class='form-group mb-4'>";
+											$html[] = "<div class='form-group mb-4 brokerage-options'>";
 												$html[] = "<label class='form-label text-muted'>Option Money Days Durations</label>";
 												$html[] = "<select name='payment_details[option_money_duration]' id='option_money_duration' class='form-select'>";
 												    foreach(range(15, 90, 15) as $duration) {
@@ -333,7 +346,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<span class='form-hint'>Duration of exclusive right to purchase</span>";
 											$html[] = "</div>";
 
-											$html[] = "<div class='form-group mb-4'>";
+											$html[] = "<div class='form-group mb-4 brokerage-options'>";
 												$html[] = "<label class='form-label text-muted'>Mode of Payment</label>";
 												$html[] = "<select name='payment_details[payment_mode]' id='payment_mode' class='form-select'>";
 												    foreach(["Installment", "Cash"] as $mode) {
@@ -344,7 +357,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<span class='form-hint'>The mode of payment refers to the method or manner in which a financial transaction is completed, such as cash or installment payment.</span>";
 											$html[] = "</div>";
 
-											$html[] = "<div class='form-group mb-5'>";
+											$html[] = "<div class='form-group mb-5 brokerage-options'>";
 												$html[] = "<label class='form-label text-muted'>Allocation of Taxes</label>";
 												$html[] = "<select name='payment_details[tax_allocation]' id='tax_allocation' class='form-select'>";
 													foreach(["Seller Agrees to Pay Capital Gains Tax and Buyer Pays Transfer Tax", "Buyer Pays Capital Gains Tax, Transfer Tax and Broker Commission"] as $schedule) {
@@ -369,7 +382,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "</label>";
 											$html[] = "</div>";
 
-											$html[] = "<div class='form-group mb-4'>";
+											$html[] = "<div class='form-group mb-4 brokerage-options'>";
 												$html[] = "<label class='form-check form-switch cursor-pointer'>";
 													$html[] = "<input class='form-check-input' type='checkbox' name='payment_details[assume_balance]' value='1' id='assume_balance' ".((isset($data['listing']['payment_details']['assume_balance']) ? $data['listing']['payment_details']['assume_balance'] : 0) == 1 ? "checked" : "")." />";
 													$html[] = "<span class='form-check-label' for='assume_balance'>Will the buyer assume the remaining loan balance? \"Assume Balance\"</span>";
@@ -547,20 +560,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 									$html[] = "<div class='row justify-content-center py-3'>";
 										$html[] = "<div class='col-md-8 col-lg-8 col-12'>";
 
-											$html[] = "<div class='mb-3'>";
-												$html[] = "<label class='form-label text-muted'>Listing Type</label>";
-												$html[] = "<div class='input-icon '>";
-													$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
-													$html[] = "<select name='listing_type' id='listing_type' class='form-select'>";
-														foreach(["project selling", "general brokerage"] as $listing_type) {
-															$sel = $listing_type == $data['listing']['listing_type'] ? "selected" : "";
-															$html[] = "<option value='".$listing_type."' $sel>".ucwords($listing_type)."</option>";
-														}
-													$html[] = "</select>";
-													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
-												$html[] = "</div>";
-											$html[] = "</div>";
-
 											if($data['listing']['status'] == 0) {
 
 												$html[] = "<input name='status' id='status' type='hidden' value='1' />";
@@ -581,9 +580,10 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "</div>";
 											}else {
 												$html[] = "<input name='duration' id='duration' type='hidden' value='".$data['listing']['duration']."' />";
+												$html[] = "<input name='status' id='status' type='hidden' value='".$data['listing']['status']."' />";
 											}
 											
-											$html[] = "<div class='mb-5'>";		
+											$html[] = "<div class='mb-5 hide_looking_for'>";		
 												$html[] = "<label class='form-label text-muted'>Video (Youtube Url)</label>";
 												$html[] = "<div class='input-group mb-3'>";
 													$html[] = "<span class='input-group-text' id='basic-addon1'><i class='ti ti-brand-youtube'></i></span>";
@@ -616,14 +616,14 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "<span class='form-hint'>Please specify the amount at which the property was sold.</span>";
 											$html[] = "</div>"; */
 											
-											$html[] = "<div class='form-group mb-3'>";
+											$html[] = "<div class='form-group mb-3 brokerage-options hide_looking_for'>";
 												$html[] = "<label class='form-check form-switch cursor-pointer'>";
 													$html[] = "<input class='form-check-input' type='checkbox' name='foreclosed' value='1' id='foreclosure' ".($data['listing']['foreclosed'] == 1 ? "checked" : "")." />";
 													$html[] = "<span class='form-check-label' for='foreclosure'>Is this property a foreclosure?</span>";
 												$html[] = "</label>";
 											$html[] = "</div>";
 													
-											$html[] = "<div class='form-group mb-4'>";
+											$html[] = "<div class='form-group mb-4 hide_looking_for'>";
 												$html[] = "<label class='form-check form-switch cursor-pointer'>";
 													$html[] = "<input class='form-check-input cursor-pointer' name='is_website' type='checkbox' value='1' id='is_website' ".($data['listing']['is_website'] == 1 ? "checked" : "")."  />";
 													$html[] = "<span class='form-check-label cursor-pointer' for='is_website'>Publish this property listing on the website.</span>";
@@ -666,43 +666,56 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 												$html[] = "</div>";
 											}
 
-											$html[] = "<div class='mb-4'>";
-												$html[] = "<label class='form-label text-muted'>Commission Sharing Details</label>";
-												$html[] = "<div class='input-group mb-2'>";
-													$html[] = "<span class='input-group-text'><i class='ti ti-percentage'></i></span>";
-													/* $html[] = "<input type='number' name='com_share' id='com_share' value='".$data['listing']['other_details']["com_share"]."' step='0.5' class='form-control' placeholder='Commission Share' />"; */
-													$html[] = "<select name='com_share' id='com_share' class='form-select'>";
-														foreach(["25", "50", "75"] as $sharing) {
-															$sel = $sharing == $data['listing']['other_details']["com_share"] ? "selected" : "";
-															$html[] = "<option value='$sharing' $sel>$sharing</option>";
-														}
-													$html[] = "</select>";
+											$html[] = "<div class='brokerage-options'>";
+												$html[] = "<div class='mb-4'>";
+													$html[] = "<label class='form-label text-muted'>Commission Sharing Details</label>";
+													$html[] = "<div class='input-group mb-2'>";
+														$html[] = "<span class='input-group-text'><i class='ti ti-percentage'></i></span>";
+														/* $html[] = "<input type='number' name='com_share' id='com_share' value='".$data['listing']['other_details']["com_share"]."' step='0.5' class='form-control' placeholder='Commission Share' />"; */
+														$html[] = "<select name='com_share' id='com_share' class='form-select'>";
+															foreach(["25", "50", "75"] as $sharing) {
+																$sel = $sharing == $data['listing']['other_details']["com_share"] ? "selected" : "";
+																$html[] = "<option value='$sharing' $sel>$sharing</option>";
+															}
+														$html[] = "</select>";
+													$html[] = "</div>";
+													$html[] = "<span class='form-hint'>Please specify the percentage of commission you are prepared to distribute.</span>";
 												$html[] = "</div>";
-												$html[] = "<span class='form-hint'>Please specify the percentage of commission you are prepared to distribute.</span>";
-											$html[] = "</div>";
 
-											$html[] = "<div class='mb-4'>";
-												$html[] = "<label class='form-label text-muted'>What type of authority do you hold for this property?</label>";
-												$html[] = "<div class='input-icon mb-3'>";
-													$html[] = "<span class='input-icon-addon'><i class='ti ti-certificate'></i></span>";
-													$html[] = "<select class='form-select' name='authority_type' id='authority_type'>";
-														foreach(["N/A","Non-Exclusive Authority To Sell", "Exclusive Authority To Sell"] as $authority) {
-															$sel = $data['listing']['other_details']["authority_type"] == $authority ? "selected" : "";
-															$html[] = "<option value='$authority' $sel>".$authority."</option>";
-														}
-													$html[] = "</select>";
-													$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+												$html[] = "<div class='mb-4'>";
+													$html[] = "<label class='form-label text-muted'>What type of Authority to Negotiate do you hold for this property?</label>";
+													$html[] = "<div class='input-icon mb-3'>";
+														$html[] = "<span class='input-icon-addon'><i class='ti ti-certificate'></i></span>";
+														$html[] = "<select class='form-select' name='authority_type' id='authority_type'>";
+															foreach(["N/A","Non-Exclusive Authority To Sell", "Exclusive Authority To Sell"] as $authority) {
+																$sel = $data['listing']['other_details']["authority_type"] == $authority ? "selected" : "";
+																$html[] = "<option value='$authority' $sel>".str_replace("Sell", "Negotiate", $authority)."</option>";
+															}
+														$html[] = "</select>";
+														$html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
+													$html[] = "</div>";
+													$html[] = "<span class='form-hint'>The legal permission granted to an individual or entity to negotiate a property on behalf of the owner(s)</span>";
 												$html[] = "</div>";
-												$html[] = "<span class='form-hint'>The legal permission granted to an individual or entity to sell a property on behalf of the owner(s)</span>";
-											$html[] = "</div>";
 
-											$html[] = "<div class='mb-3'>";
-												$html[] = "<label class='form-label text-muted'>Authority to Sell Expiration Date</label>";
-												$html[] = "<div class='input-icon mb-2'>";
-													$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
-													$html[] = "<input type='date' name='authority_to_sell_expiration' id='authority_to_sell_expiration' value='".(isset($data['listing']['other_details']["authority_to_sell_expiration"]) ? date("Y-m-d", $data['listing']['other_details']["authority_to_sell_expiration"]) : null)."' step='0.5' class='form-control' placeholder='Authority to Sell Expiration Date' />";
+												if($data['listing']['other_details']["authority_type"] == "N/A") {
+													$authority_expiration_label = "";
+													$authority_to_sell_expiration['value'] = "2038-01-01";
+													$authority_to_sell_expiration['class'] = "d-none";
+												}else {
+													$authority_expiration_label = "d-none";
+													$authority_to_sell_expiration['value'] = $data['listing']['other_details']["authority_to_sell_expiration"];
+													$authority_to_sell_expiration['class'] = "";
+												}
+
+												$html[] = "<div class='mb-3'>";
+													$html[] = "<label class='form-label text-muted'>Authority to Negotiate Expiration Date</label>";
+													$html[] = "<div class='input-icon mb-2'>";
+														$html[] = "<span class='input-icon-addon'><i class='ti ti-calendar'></i></span>";
+														$html[] = "<input type='date' name='authority_to_sell_expiration' id='authority_to_sell_expiration' value='".(isset($authority_to_sell_expiration['value']) ? date("Y-m-d", $authority_to_sell_expiration['value']) : null)."' step='0.5' class='form-control ".$authority_to_sell_expiration['class']."' placeholder='Authority to Sell Expiration Date' />";
+														$html[] = "<input type='text' id='authority_expiration_label' value='Never Expires' class='form-control ".$authority_expiration_label."' placeholder='Authority to Sell Expiration Date' readonly />";
+													$html[] = "</div>";
+													$html[] = "<span class='form-hint'>Please specify the expiration date of your Authority to Negotiate for this property.</span>";
 												$html[] = "</div>";
-												$html[] = "<span class='form-hint'>Please specify the expiration date of your Authority to Sell for this property.</span>";
 											$html[] = "</div>";
 
 										$html[] = "</div>";

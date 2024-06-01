@@ -49,35 +49,39 @@ function properties($data, $model) {
 
 	$html[] = "<div class='card row_listings_".$data['listing_id']." listings-table'>";
 		$html[] = "<div class='row g-0'>";
-			$html[] = "<div class='col-sm-4 col-md-5 col-lg-4'>";
+			
+			if($data['offer'] != 'looking for') {
+				$html[] = "<div class='col-sm-4 col-md-5 col-lg-4'>";
 
-				$html[] = "<a href='".
-					url(
-						$model->app['url_path']['class_hint'], [
-							$model->app['url_path']['path'] => $data[ $model->app['url_path']['value'] ] 
-						]
-					)."'>";
+					$html[] = "<a href='".
+						url(
+							$model->app['url_path']['class_hint'], [
+								$model->app['url_path']['path'] => $data[ $model->app['url_path']['value'] ] 
+							]
+						)."'>";
 
-					$html[] = "<div class='avatar avatar-xxxl w-100 rounded-0 border-0' data-thumb-image='".$data['thumb_img']."'>";
-						
-						$html[] = "<div class='black-gradient'>";
-						
-							if($data['total_images'] > 0) {
-								$html[] = "<div class='bottom-right text-white'>";
-									$html[] = "<span class=''><i class='ti ti-photo '></i> ".$data['total_images']."</span>";
+						$html[] = "<div class='avatar avatar-xxxl w-100 rounded-0 border-0' data-thumb-image='".$data['thumb_img']."'>";
+							
+							$html[] = "<div class='black-gradient'>";
+							
+								if($data['total_images'] > 0) {
+									$html[] = "<div class='bottom-right text-white'>";
+										$html[] = "<span class=''><i class='ti ti-photo '></i> ".$data['total_images']."</span>";
+									$html[] = "</div>";
+								}
+
+								$html[] = "<div class='bottom-left text-white'>";
+									$html[] = "<span class='d-block fw-normal'><i class='ti ti-map-pin me-1'></i> ".$data['address']['municipality'].", ".$data['address']['province']."</span>";
 								$html[] = "</div>";
-							}
 
-							$html[] = "<div class='bottom-left text-white'>";
-								$html[] = "<span class='d-block fw-normal'><i class='ti ti-map-pin me-1'></i> ".$data['address']['municipality'].", ".$data['address']['province']."</span>";
 							$html[] = "</div>";
 
 						$html[] = "</div>";
+						
+					$html[] = "</a>";
+				$html[] = "</div>";
+			}
 
-					$html[] = "</div>";
-					
-				$html[] = "</a>";
-			$html[] = "</div>";
 			$html[] = "<div class='col-sm-8 col-md-7 col-lg-8'>";
 				$html[] = "<div class='card-body'>";
 					$html[] = "<div class='row'>";
@@ -120,24 +124,37 @@ function properties($data, $model) {
 						}
 					$html[] = "</div>";
 
-					if($model->app['handshaked'] && $model->app['comparative']) {
-						$html[] = "<div class='mt-4 '>";
-							$html[] = "<div class='btn-list'>";
-							
-								if($data['offer'] != "looking for") {
-									if($model->app['handshaked']) {
-										$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
-									}
-								}
+					$html[] = "<div class='d-flex gap-2 mt-4'>";
 
-								if($model->app['comparative']) {
-									if(!in_array($data['listing_id'],(isset($_SESSION['compare']['listings']) ? array_keys($_SESSION['compare']['listings']) : []))) {
-										$html[] = "<span class='btn btn-md btn-light btn-add-to-compare btn-add-to-compare_".$data['listing_id']."' data-url='".url("MlsController@addToCompare")."' data-id='".$data['listing_id']."' data-csrf='".csrf_token()."'><i class='ti ti-layers-difference me-2'></i> Compare</span>";
-									}
-								}
-							$html[] = "</div>";
+						$html[] = "<div class='listing-agent flex-grow-1'>";
+							$html[] = "<a href='#' class='d-flex lh-1 text-reset p-0 text-decoration-none'>";
+								$html[] = "<span class='avatar avatar-sm' style='background-image: url(".$data['logo'].")'></span>";
+								$html[] = "<div class='ps-2'>";
+									$html[] = "<div>".$data['agent_name']."</div>";
+									$html[] = "<div class='mt-1 small text-muted'>".$data['profession']."</div>";
+								$html[] = "</div>";
+							$html[] = "</a>";
 						$html[] = "</div>";
-					}
+
+						if($data['listing_type'] == 'general brokerage' && $data['offer'] != 'looking for') {
+							if($model->app['handshaked'] && $model->app['comparative']) {
+								$html[] = "<div class='btn-list'>";
+									if($data['offer'] != "looking for") {
+										if($model->app['handshaked']) {
+											$html[] = "<span class='btn btn-md btn-primary btn-requestHandshake btn-requestHandshake_".$data['listing_id']."' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MlsController@requestHandshake",["listing_id" => $data['listing_id']])."'><i class='ti ti-mail-fast me-2'></i> Request Handshake</span>";
+										}
+									}
+
+									if($model->app['comparative']) {
+										if(!in_array($data['listing_id'],(isset($_SESSION['compare']['listings']) ? array_keys($_SESSION['compare']['listings']) : []))) {
+											$html[] = "<span class='btn btn-md btn-light btn-add-to-compare btn-add-to-compare_".$data['listing_id']."' data-url='".url("MlsController@addToCompare")."' data-id='".$data['listing_id']."' data-csrf='".csrf_token()."'><i class='ti ti-layers-difference me-2'></i> Compare</span>";
+										}
+									}
+								$html[] = "</div>";
+							}
+						}
+
+					$html[] = "</div>";
 
 				$html[] = "</div>";
 			$html[] = "</div>";

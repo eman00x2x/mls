@@ -232,12 +232,50 @@ class ListingsController extends \Main\Controller {
 				if(selected == 'project selling') {
 					$('#is_mls').prop('checked', false);
 					$('#is_mls').trigger('change');
-					$('.mls-options').hide();
+					$('.mls-options, .brokerage-options').hide();
 				}else {
 					$('#is_mls').prop('checked', true);
 					$('#is_mls_local_board').prop('checked', true);
 					$('#is_mls').trigger('change');
-					$('.mls-options').hide();
+					$('.mls-options, .brokerage-options').show();
+				}
+			});
+
+			$(document).on('change', '#authority_type', function() {
+				selected = $('#authority_type option:selected').val();
+
+				if(selected == 'N/A') {
+					$('#authority_to_sell_expiration').addClass('d-none');
+					$('#authority_expiration_label').removeClass('d-none');
+					$('#authority_to_sell_expiration').val('2038-01-01');
+				}else {
+					$('#authority_to_sell_expiration').removeClass('d-none');
+					$('#authority_expiration_label').addClass('d-none');
+					$('#authority_to_sell_expiration').val('');
+				}
+			});
+
+			$(document).on('change', '#offer', function() {
+				selected = $('#offer option:selected').val();
+				if(selected == 'looking for') {
+					$('#listing_type').val('general brokerage');
+					$('#is_mls').prop('checked', true);
+					$('#authority_type').val('N/A');
+					$('#authority_type, #is_mls').trigger('change');
+
+					$('#listing_type').css({
+						'cursor': 'not-allowed',
+						'pointer-events': 'none'
+					});
+
+					$('#is_website').prop('checked', false);
+					$('.hide_looking_for').hide();
+				}else {
+					$('.hide_looking_for').show();
+					$('#listing_type').css({
+						'cursor': 'pointer',
+						'pointer-events': 'auto'
+					});
 				}
 			});
 
@@ -309,6 +347,34 @@ class ListingsController extends \Main\Controller {
 				}
 			});
 
+			$(document).on('change', '#listing_type', function() {
+				selected = $('#listing_type option:selected').val();
+				if(selected == 'project selling') {
+					$('#is_mls').prop('checked', false);
+					$('#is_mls').trigger('change');
+					$('.mls-options, .brokerage-options').hide();
+				}else {
+					$('#is_mls').prop('checked', true);
+					$('#is_mls_local_board').prop('checked', true);
+					$('#is_mls').trigger('change');
+					$('.mls-options, .brokerage-options').show();
+				}
+			});
+
+			$(document).on('change', '#authority_type', function() {
+				selected = $('#authority_type option:selected').val();
+
+				if(selected == 'N/A') {
+					$('#authority_to_sell_expiration').addClass('d-none');
+					$('#authority_expiration_label').removeClass('d-none');
+					$('#authority_to_sell_expiration').val('2038-01-01');
+				}else {
+					$('#authority_to_sell_expiration').removeClass('d-none');
+					$('#authority_expiration_label').addClass('d-none');
+					$('#authority_to_sell_expiration').val('');
+				}
+			});
+
 			$(document).on('change', '#is_mls_local_board, #is_mls_local_region, #is_mls_all', function() {
 				if(this.checked) {
 					$('#is_mls').prop('checked', true);
@@ -321,7 +387,6 @@ class ListingsController extends \Main\Controller {
 				) {
 					$('#is_mls').prop('checked', false);
 				}
-
 			});
 
 			$(document).on('change', '#is_mls', function() {
@@ -332,7 +397,30 @@ class ListingsController extends \Main\Controller {
 				if($('#is_mls_local_board').prop('checked') == false && this.checked == true) {
 					$('#is_mls_local_board').prop('checked', true);
 				}
+			});
 
+			$(document).on('change', '#offer', function() {
+				selected = $('#offer option:selected').val();
+				if(selected == 'looking for') {
+					$('#listing_type').val('general brokerage');
+					$('#is_mls').prop('checked', true);
+					$('#authority_type').val('N/A');
+					$('#authority_type, #is_mls').trigger('change');
+
+					$('#listing_type').css({
+						'cursor': 'not-allowed',
+						'pointer-events': 'none'
+					});
+
+					$('#is_website').prop('checked', false);
+					$('.hide_looking_for').hide();
+				}else {
+					$('.hide_looking_for').show();
+					$('#listing_type').css({
+						'cursor': 'pointer',
+						'pointer-events': 'auto'
+					});
+				}
 			});
 
 			$(document).on('input', '#price', function() {
@@ -1135,7 +1223,8 @@ class ListingsController extends \Main\Controller {
 
 		if(isset($search)) {
 			$model->select("
-				listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
+				listing_id, l.account_id, is_website, is_mls, is_mls_option, listing_type, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
+				logo, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.firstname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.lastname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.suffix'))) as agent_name, profession,
 				CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END,
 				MATCH( type, title, tags, long_desc, category, l.address, amenities )
 				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
@@ -1143,7 +1232,8 @@ class ListingsController extends \Main\Controller {
 		}else {
 			$model
 				->select(" 
-					listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
+					listing_id, l.account_id, is_website, is_mls, is_mls_option, listing_type, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
+					logo, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.firstname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.lastname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.suffix'))) as agent_name, profession,
 					CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END 
 				")->orderby(" post_score DESC, $sort ");
 		}
