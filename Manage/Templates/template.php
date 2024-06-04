@@ -92,6 +92,20 @@
 									<?php } ?>
 								<?php } ?>
 
+								<li class="nav-item <?php echo (url()->contains("/policy")) ? "active" : ""; ?> dropdown">
+									<a class="nav-link dropdown-toggle" href="#extra-link" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-file-certificate'></i></span>
+										<span class="nav-link-title">Guidelines and Policies</span>
+									</a>
+									<div class='dropdown-menu'>
+										<a href='<?php echo url("PoliciesController@index", ["name" => "terms"]); ?>' class='dropdown-item'>Terms of Service</a>
+										<a href='<?php echo url("PoliciesController@index", ["name" => "data-privacy"]); ?>' class='dropdown-item'>Data Privacy</a>
+										<a href='<?php echo url("PoliciesController@index", ["name" => "community-guidelines"]); ?>' class='dropdown-item'>Community Guidelines</a>
+										<a href='<?php echo url("PoliciesController@index", ["name" => "mls-policy"]); ?>' class='dropdown-item'>MLS Policy</a>
+										<a href='<?php echo url("PoliciesController@index", ["name" => "refund-policy"]); ?>' class='dropdown-item'>Refund Policy</a>
+									</div>
+                				</li>
+
 							</ul>
 						</div>
 					</div>
