@@ -90,12 +90,20 @@ class TransactionsController extends \Main\Controller {
 		$transaction->join(" t JOIN #__accounts a ON a.account_id = t.account_id ");
 		$transaction->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" created_at DESC ");
 
-		$transaction->page['limit'] = 10;
+		$rows = 20;
+		if(isset($_GET['rows'])) {
+			$rows = $_GET['rows'];
+			$uri['rows'] = $rows;
+		}
+
+		$transaction->page['limit'] = $rows;
 		$transaction->page['current'] = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
 		$transaction->page['target'] = url("TransactionsController@index");
 		$transaction->page['uri'] = (isset($uri) ? $uri : []);
 
 		$data['transactions'] = $transaction->getList();
+
+		unset($_SESSION['export']);
 
 		if($data['transactions']) {
 
@@ -104,21 +112,47 @@ class TransactionsController extends \Main\Controller {
 			$data['reports']['total_tax_amount'] = 0;
 			$data['reports']['total_net_amount'] = 0;
 
+			$export[] = implode("|",[
+				"ACCOUNT_ID|NAME|PREMIUM|PRICE|SOURCE|TRANSACTION_ID|PAYMENT_STATUS|PAID_GROSS_AMOUNT|TAX_AMOUNT|DATE"
+			]);
+
 			for($i=0; $i<count($data['transactions']); $i++) {
 				$data['reports']['total']++;
 				
 				$data['reports']['total_gross_amount'] += $data['transactions'][$i]['premium_price'];
 
-				$data['reports']['total_tax_amount'] += (isset($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['tax_amount']['value']) ? 
-					isset($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['tax_amount']['value']) :
-					0
-				);
+				if(isset($data['transactions'][$i]['transaction_details']['fees'])) {
 
-				$data['reports']['total_net_amount'] += (isset($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['net_amount']['value']) ? 
-					$data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['net_amount']['value'] :
-					0
-				);
+					$key = array_search("tax", $data['transactions'][$i]['transaction_details']['fees']);
+					if($key) {
+						$tax_amount = $data['transactions'][$i]['transaction_details']['fees'][$key]['value'];
+					}else {
+						$tax_amount = 0;
+					}
+
+				}else {
+					$tax_amount = $data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['net_amount']['value'] * 0.12;
+				}
+
+				$data['reports']['total_tax_amount'] += $tax_amount;
+				$data['reports']['total_net_amount'] += $data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['gross_amount']['value'] - $tax_amount;
+
+				$export[] = implode("|", [
+					$data['transactions'][$i]['account_id'],
+					$data['transactions'][$i]['account_name']['firstname']." ".$data['transactions'][$i]['account_name']['lastname']." ".$data['transactions'][$i]['account_name']['suffix'],
+					$data['transactions'][$i]['premium_description'],
+					$data['transactions'][$i]['premium_price'],
+					$data['transactions'][$i]['payment_source'],
+					$data['transactions'][$i]['payment_transaction_id'],
+					$data['transactions'][$i]['payment_status'],
+					$data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['gross_amount']['value'],
+					$tax_amount,
+					date("Y-m-d", $data['transactions'][$i]['created_at'])
+				]);
+
 			}
+
+			$_SESSION['export'] = $export;
 
 		}
 		

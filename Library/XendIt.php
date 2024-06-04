@@ -145,6 +145,16 @@ class XendIt {
 					"method" => "GET"
 				];
 
+				$new_data['transaction_details']['seller_receivable_breakdown']['gross_amount'] = [
+					"currency_code" => $order_response['payment_details']['currency'],
+					"value" => $order_response['payment_details']['amount']
+				];
+
+				$new_data['transaction_details']['seller_receivable_breakdown']['net_amount'] = [
+					"currency_code" => $order_response['payment_details']['currency'],
+					"value" => ($order_response['payment_details']['amount'] - $order_response['payment_details']['fees']['value'])
+				];
+
 				$new_data['merchant_email'] = ""; 
 				$new_data['merchant_id'] = ""; 
 

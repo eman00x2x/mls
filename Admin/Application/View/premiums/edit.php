@@ -76,7 +76,7 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<label class='col-sm-3 col-form-label'>Category</label>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<select class='form-select' name='category'>";
-										foreach(["package"/* ,"add-on" */] as $value) {
+										foreach(["package","add-on"] as $value) {
 											$sel = $value == $data['category'] ? "selected" : "";
 											$html[] = "<option value='$value' $sel>".ucwords(str_replace("_"," ",$value))."</option>";
 										}

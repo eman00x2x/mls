@@ -21,6 +21,19 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
                     $html[] = "<div class='col-auto ms-auto d-print-none'>";
 
                         $html[] = "<div class='btn-list'>";
+
+                            $html[] = "<a class='ajax btn btn-dark' href='".ADMIN."exportToExcel.php'><i class='ti ti-download me-2'></i> Download</a>";
+
+                            $html[] = "<div class=''>";
+                                $html[] = "<span class='btn dropdown-toggle btn-dark' data-bs-toggle='dropdown'><i class='ti ti-table-down me-2'></i> <span class='d-none d-sm-block'>Rows</span></span>";
+                                $html[] = "<div class='dropdown-menu'>";
+                                    $limit = $model->page['uri'];
+                                    foreach([20, 50, 80, 100, 200, 500, 1000] as $rows_to_show) {                        
+                                        $limit["rows"] = $rows_to_show;
+                                        $html[] = "<a class='dropdown-item d-flex justify-content-between' href='".url('TransactionsController@index', null, $limit)."'><span>Show $rows_to_show rows</span></a>";
+                                    }
+                                $html[] = "</div>";
+                            $html[] = "</div>";
                           
                             $html[] = "<div class='btn-group dropstart'>";
                                 $html[] = "<span class='btn btn-dark dropdown-toggle' id='transactionDropdownFilter' data-bs-toggle='dropdown' aria-expanded='false'><i class='ti ti-filter me-2'></i> Filter Result </span>";
@@ -126,10 +139,12 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
                             for($i=0; $i<count($data['transactions']); $i++) {
                                 $html[] = "<tr>";
                                     $html[] = "<td><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transactions'][$i]['transaction_id']])."'><span class='d-block text-muted fs-12'>Transaction Date</span>".date("F d, Y",$data['transactions'][$i]['created_at'])."</a></td>";
+                                    $html[] = "<td><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transactions'][$i]['transaction_id']])."'><span class='d-block text-muted fs-12'>Premium</span>".nicetrim($data['transactions'][$i]['premium_description'], 50)."</a></td>";
+                                    $html[] = "<td><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transactions'][$i]['transaction_id']])."'><span class='d-block text-muted fs-12'>Price</span>&#8369;".number_format($data['transactions'][$i]['premium_price'],2)."</a></td>";
                                     $html[] = "<td><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transactions'][$i]['transaction_id']])."'><span class='d-block text-muted fs-12'>Payment Source</span>".strtoupper($data['transactions'][$i]['payment_source'])."</a></td>";
                                     $html[] = "<td><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transactions'][$i]['transaction_id']])."'><span class='d-block text-muted fs-12'>Invoice ID</span>".$data['transactions'][$i]['payment_transaction_id']."</a></td>";
-                                    $html[] = "<td><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transactions'][$i]['transaction_id']])."'><span class='d-block text-muted fs-12'>Premium</span>".$data['transactions'][$i]['premium_description']."</a></td>";
-                                    $html[] = "<td><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transactions'][$i]['transaction_id']])."'><span class='d-block text-muted fs-12'>Price</span>&#8369;".number_format($data['transactions'][$i]['premium_price'],2)."</a></td>";
+                                    $html[] = "<td><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transactions'][$i]['transaction_id']])."'><span class='d-block text-muted fs-12'>Status</span>".$data['transactions'][$i]['payment_status']."</a></td>";
+                                    $html[] = "<td><a class='d-block text-dark' style='text-decoration: none' href='".url("TransactionsController@view", ["id" => $data['transactions'][$i]['transaction_id']])."'><span class='d-block text-muted fs-12'>Gross Amount</span>&#8369;".number_format($data['transactions'][$i]['transaction_details']['seller_receivable_breakdown']['gross_amount']['value'],2)."</a></td>";
                                    /*  $html[] = "<td>";
 										$html[] = "<span class='btn btn-outline-danger btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("TransactionsController@delete",["id" => $data['transactions'][$i]['transaction_id']])."'><i class='ti ti-trash me-1'></i> Delete</span>";
 									$html[] = "</td>"; */
