@@ -50,8 +50,11 @@ $html[] = "<div class='page-body'>";
 
                             $html[] = "<div class='mb-3'>";
                                 foreach([1 => "available", 0 => "expired", 2=> "sold"] as $key => $status) {
+
+                                    $checked = isset($_GET['status']) && in_array($key, $_GET['status']) ? "checked" : "";
+
                                     $html[] = "<div class='form-check'>";
-                                        $html[] = "<input type='checkbox' name='status[]' value='$key' class='form-check-input' id='statusCheckBox_$status' />";
+                                        $html[] = "<input type='checkbox' name='status[]' value='$key' class='form-check-input' id='statusCheckBox_$status' $checked />";
                                         $html[] = "<label class='form-label' for='statusCheckBox_$status'>".ucwords($status)."</label>";
                                     $html[] = "</div>";
                                 }

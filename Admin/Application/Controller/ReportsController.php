@@ -121,7 +121,7 @@ class ReportsController extends \Main\Controller {
 	}
 
 	function propertiesReport() {
-		
+
 		unset($_SESSION['export']['properties']);
 
 		$this->doc->setTitle("Properties Report");
@@ -137,6 +137,15 @@ class ReportsController extends \Main\Controller {
 
 			$(document).ready(function() {
 				$('.barangay-selection').hide();
+			});
+
+			$(document).on('click', '.btn-create-report', function() {
+				$('#create_report').submit();
+			});
+
+			$(document).on('submit', '#create_report', function() {
+				var formData = $('#filter-form').serialize();
+				window.location = '".url("ReportsController@propertiesReport")."?' + formData;
 			});
 
 			$(document).on('click', '.btn-download-report', function() {
