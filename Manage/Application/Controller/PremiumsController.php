@@ -15,6 +15,11 @@ class PremiumsController extends \Admin\Application\Controller\PremiumsControlle
 			$this->response(404);
 		}
 
+		if($this->session['mobile_number'] == "") {
+			$this->getLibrary("Factory")->setMsg("Please complete your Account Info, including your mobile number, before you can subscribe to a premium service.", "error");
+			response()->redirect(url("AccountsController@index"));
+		}
+
         $this->doc->setTitle("Premiums");
         
         $premium = $this->getModel("Premium");

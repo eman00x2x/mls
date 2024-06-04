@@ -50,7 +50,7 @@ class XendIt {
 				"given_names" => "".$data['account']['account_name']['firstname']."",
 				"surname" => "".$data['account']['account_name']['lastname']."",
 				"email" => "".$data['account']['email']."",
-				"mobile_number" => "".$data['account']['mobile_number']."",
+				"mobile_number" => "".$data['account']['mobile_number'].""
 			],
 			"customer_notification_preference" => [
 				"invoice_paid" => ["email", "viber"]
