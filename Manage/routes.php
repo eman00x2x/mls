@@ -164,6 +164,9 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
     Router::post('/testimonials/{id}/save', 'TestimonialsController@saveUpdate', ['as' => 'testimonialsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
     Router::post('/testimonials/saveNew', 'TestimonialsController@saveNew', ['as' => 'testimonialsSaveNew']);
 
+    /** POLICY AND GUIDELINES ROUTES */
+    Router::get('/policy/{name}', 'PoliciesController@mlsPolicy', ['as' => 'policy'])->where([ 'name' => '[\w\-\=]+' ]);
+
     /** DEBUGGING */
     Router::get('/debug', 'DebugController@debug', ['as' => 'debug']);
 

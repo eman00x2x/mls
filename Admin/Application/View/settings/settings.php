@@ -38,10 +38,12 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
                     $html[] = "<div class='card-body'>";
                         $html[] = "<h4 class='subheader'>Settings</h4>";
                         $html[] = "<div class='list-group list-group-transparent'>";
-                            $html[] = "<a href='".url("SettingsController@index", ["page" => "system-settings"])."' class='list-group-item list-group-item-action d-flex align-items-center ".(url()->contains("/system-settings") 	? "active" : "")."'><i class='ti ti-settings-cog me-2'></i> System Settings</a>";
-                            $html[] = "<a href='".url("SettingsController@index", ["page" => "data-privacy"])."' class='list-group-item list-group-item-action d-flex align-items-center 	".(url()->contains("/data-privacy") 	? "active" : "")."'><i class='ti ti-lock-square me-2'></i> Data Privacy Content</a>";
-                            $html[] = "<a href='".url("SettingsController@index", ["page" => "terms"])."' class='list-group-item list-group-item-action d-flex align-items-center 			".(url()->contains("/terms") 			? "active" : "")."'><i class='ti ti-script me-2'></i> Terms of Service Content</a>";
-                            $html[] = "<a href='".url("SettingsController@index", ["page" => "refund-policy"])."' class='list-group-item list-group-item-action d-flex align-items-center 	".(url()->contains("/refund-policy") 	? "active" : "")."'><i class='ti ti-receipt-refund me-2'></i> Refund Policy Content</a>";
+                            $html[] = "<a href='".url("SettingsController@index", ["page" => "system-settings"])."' class='list-group-item list-group-item-action d-flex align-items-center 		".(url()->contains("/system-settings") 			? "active" : "")."'><i class='ti ti-settings-cog me-2'></i> System Settings</a>";
+                            $html[] = "<a href='".url("SettingsController@index", ["page" => "data-privacy"])."' class='list-group-item list-group-item-action d-flex align-items-center 			".(url()->contains("/data-privacy") 			? "active" : "")."'><i class='ti ti-lock-square me-2'></i> Data Privacy Content</a>";
+                            $html[] = "<a href='".url("SettingsController@index", ["page" => "terms"])."' class='list-group-item list-group-item-action d-flex align-items-center 					".(url()->contains("/terms") 					? "active" : "")."'><i class='ti ti-script me-2'></i> Terms of Service Content</a>";
+                            $html[] = "<a href='".url("SettingsController@index", ["page" => "refund-policy"])."' class='list-group-item list-group-item-action d-flex align-items-center 			".(url()->contains("/refund-policy") 			? "active" : "")."'><i class='ti ti-receipt-refund me-2'></i> Refund Policy Content</a>";
+                            $html[] = "<a href='".url("SettingsController@index", ["page" => "mls-policy"])."' class='list-group-item list-group-item-action d-flex align-items-center 				".(url()->contains("/mls-policy") 				? "active" : "")."'><i class='ti ti-script me-2'></i> MLS Policy</a>";
+                            $html[] = "<a href='".url("SettingsController@index", ["page" => "community-guidelines"])."' class='list-group-item list-group-item-action d-flex align-items-center 	".(url()->contains("/community-guidelines") 	? "active" : "")."'><i class='ti ti-script me-2'></i> Community Guidelines</a>";
                         $html[] = "</div>";
                     $html[] = "</div>";
                 $html[] = "</div>";
@@ -243,6 +245,37 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											$html[] = "<textarea id='snow-container' name='refund_policy' class='form-control'>".$data['refund_policy']."</textarea>";
 										$html[] = "</div>";
 									}
+
+									if(url()->contains("/mls-policy")) {
+
+										$html[] = "<input name='enable_kyc_verification' id='enable_kyc_verification' type='hidden' value='".$data['enable_kyc_verification']."' />";
+										$html[] = "<input name='enable_premium' id='enable_premium' type='hidden' value='".$data['enable_premium']."' />";
+										$html[] = "<input name='show_vat' id='show_vat' type='hidden' value='".$data['show_vat']."' />";
+										$html[] = "<input name='enable_pin_access' id='enable_pin_access' type='hidden' value='".$data['enable_pin_access']."' />";
+										$html[] = "<input name='chat_is_websocket' id='chat_is_websocket' type='hidden' value='".$data['chat_is_websocket']."' />";
+
+										$html[] = "<h2 class='mb-4'>MLS Policy Content</h2>";
+										$html[] = "<div class='mb-5'>";
+											$html[] = "<p class='card-subtitle mb-2'>Please include your MLS policy content, specifying the terms and conditions governing the use of the MLS service.</p>";
+											$html[] = "<textarea id='snow-container' name='mls_policy' class='form-control'>".$data['mls_policy']."</textarea>";
+										$html[] = "</div>";
+									}
+
+									if(url()->contains("/community-guidelines")) {
+
+										$html[] = "<input name='enable_kyc_verification' id='enable_kyc_verification' type='hidden' value='".$data['enable_kyc_verification']."' />";
+										$html[] = "<input name='enable_premium' id='enable_premium' type='hidden' value='".$data['enable_premium']."' />";
+										$html[] = "<input name='show_vat' id='show_vat' type='hidden' value='".$data['show_vat']."' />";
+										$html[] = "<input name='enable_pin_access' id='enable_pin_access' type='hidden' value='".$data['enable_pin_access']."' />";
+										$html[] = "<input name='chat_is_websocket' id='chat_is_websocket' type='hidden' value='".$data['chat_is_websocket']."' />";
+
+										$html[] = "<h2 class='mb-4'>Community Guidelines Content</h2>";
+										$html[] = "<div class='mb-5'>";
+											$html[] = "<p class='card-subtitle mb-2'>Please provide your community guidelines content, detailing both the recommended behaviors (do's) and behaviors to avoid (dont's).</p>";
+											$html[] = "<textarea id='snow-container' name='community_guidelines' class='form-control'>".$data['community_guidelines']."</textarea>";
+										$html[] = "</div>";
+									}
+									
 
 								$html[] = "</form>";
 
