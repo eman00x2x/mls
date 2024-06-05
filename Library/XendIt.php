@@ -146,13 +146,13 @@ class XendIt {
 				];
 
 				$new_data['transaction_details']['seller_receivable_breakdown']['gross_amount'] = [
-					"currency_code" => $order_response['payment_details']['currency'],
-					"value" => $order_response['payment_details']['amount']
+					"currency_code" => $order_response['currency'],
+					"value" => $order_response['amount']
 				];
 
 				$new_data['transaction_details']['seller_receivable_breakdown']['net_amount'] = [
-					"currency_code" => $order_response['payment_details']['currency'],
-					"value" => ($order_response['payment_details']['amount'] - $order_response['payment_details']['fees']['value'])
+					"currency_code" => $order_response['currency'],
+					"value" => ($order_response['amount'] - $order_response['fees'][0]['value'])
 				];
 
 				$new_data['merchant_email'] = ""; 

@@ -115,6 +115,22 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 										$html[] = "</div>";
 
 										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+											
+											$html[] = "<label class='form-check form-switch cursor-pointer mb-3'>";
+												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>Payment Gateway</h3>";
+												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>If you choose to activate the premium feature, users will have the option to purchase premium privileges to augment their account functionality.</p>";
+											
+												$html[] = "<input type='checkbox' name='payment_gateway[xendit]' class='form-check-input' value='1' ".($data['payment_gateway']['xendit'] == 1 ? "checked" : "")." />";
+												$html[] = "<span class='form-check-label'>Enable Xendit</span>";
+											$html[] = "</label>";
+
+											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";
+												$html[] = "<input type='checkbox' name='payment_gateway[paypal]' class='form-check-input' value='1' ".($data['payment_gateway']['paypal'] == 1 ? "checked" : "")." />";
+												$html[] = "<span class='form-check-label'>Enable PayPal</span>";
+											$html[] = "</label>";
+										$html[] = "</div>";
+
+										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
 											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";
 												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>VAT Computation</h3>";
 												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>Include Value Added Tax (VAT) on all purchases.</p>";

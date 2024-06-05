@@ -79,6 +79,13 @@ class SettingsController extends \Main\Controller {
 		$_POST['enable_premium'] = isset($_POST['enable_premium']) ? $_POST['enable_premium'] : 0;
 		$_POST['enable_pin_access'] = isset($_POST['enable_pin_access']) ? $_POST['enable_pin_access'] : 0;
 
+		if(isset($_POST['payment_gateway'])) {
+			$_POST['payment_gateway'] =  json_encode([
+				"paypal" => isset($_POST['payment_gateway']['paypal']) ? $_POST['payment_gateway']['paypal'] : 0,
+				"xendit" => isset($_POST['payment_gateway']['xendit']) ? $_POST['payment_gateway']['xendit'] : 0
+			]);
+		}
+
 		if(isset($_POST['websocket'])) {
 			$_POST['websocket'] = json_encode($_POST['websocket']);
 		}

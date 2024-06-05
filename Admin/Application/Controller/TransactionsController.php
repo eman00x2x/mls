@@ -248,19 +248,35 @@ class TransactionsController extends \Main\Controller {
 		$data['duration'] = $_POST['duration'];
 
 		$this->doc->setTitle("Checkout Premiums");
-        
-		$paypal = new PayPal();
-		$paypal->createOrder(
-			$data,
-			($this->validation_url != "" ? $this->validation_url : url("TransactionsController@checkoutValidate", ["account_id" => $account_id])),
-			($this->payment_status_url != "" ? $this->payment_status_url : url("TransactionsController@paymentStatus"))
-		);
 
-		$xendit = new XendIt();
-		$xendit->requestInvoice(
-            $data,
-            rtrim(MANAGE, "/Manage").url("TransactionsController@paymentStatus"),
-        );
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+
+			/* Show a loader on payment form processing */
+			const setProcessing = (isProcessing) => {
+				if (isProcessing) {
+					$('.loader-container').removeClass('d-none');
+					$('.cart-container').addClass('d-none');
+				}
+			};
+
+		"));
+        
+		if(CONFIG['payment_gateway']['paypal'] == 1) {
+			$paypal = new PayPal();
+			$paypal->createOrder(
+				$data,
+				($this->validation_url != "" ? $this->validation_url : url("TransactionsController@checkoutValidate", ["account_id" => $account_id])),
+				($this->payment_status_url != "" ? $this->payment_status_url : url("TransactionsController@paymentStatus"))
+			);
+		}
+
+		if(CONFIG['payment_gateway']['xendit'] == 1) {
+			$xendit = new XendIt();
+			$xendit->requestInvoice(
+				$data,
+				rtrim(MANAGE, "/Manage").url("TransactionsController@paymentStatus"),
+			);
+		}
         
 		$data['cost'] = $_POST['cost'];
         $this->setTemplate("transactions/checkouts.php");
@@ -377,7 +393,7 @@ class TransactionsController extends \Main\Controller {
 			$transaction->column['payment_transaction_id'] = $new_data['payment_id'];
 			$data['transaction'] = $transaction->getByPaymentTransactionId();
 
-			if($data['transaction'] === false) {
+			if($data['transaction'] === false) { $data['transaction'] = [];
 
 				$premium = $this->getModel("Premium");
 				$premium->column['premium_id'] = $new_data['premium_id'];
