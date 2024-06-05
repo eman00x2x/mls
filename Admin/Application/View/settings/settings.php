@@ -118,7 +118,7 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 											
 											$html[] = "<label class='form-check form-switch cursor-pointer mb-3'>";
 												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>Payment Gateway</h3>";
-												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>If you choose to activate the premium feature, users will have the option to purchase premium privileges to augment their account functionality.</p>";
+												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>If you choose to activate the premium feature, you also need to enable the payment gateway.</p>";
 											
 												$html[] = "<input type='checkbox' name='payment_gateway[xendit]' class='form-check-input' value='1' ".($data['payment_gateway']['xendit'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable Xendit</span>";

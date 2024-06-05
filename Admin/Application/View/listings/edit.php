@@ -699,7 +699,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 												if($data['listing']['other_details']["authority_type"] == "N/A") {
 													$authority_expiration_label = "";
-													$authority_to_sell_expiration['value'] = "2038-01-01";
+													$authority_to_sell_expiration['value'] = strtotime("2038-01-01");
 													$authority_to_sell_expiration['class'] = "d-none";
 												}else {
 													$authority_expiration_label = "d-none";
