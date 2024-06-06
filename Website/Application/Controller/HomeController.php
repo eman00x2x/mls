@@ -128,6 +128,11 @@ class HomeController extends \Main\Controller {
 				return response.json();
 			};
 
+			const latestPost = async () => {
+				const response = await fetch('".url("HomeController@latestPost")."');
+				return response.json();
+			};
+
 			const latestArticles = async () => {
 				const response = await fetch('".url("HomeController@latestArticles")."');
 				return response.json();
@@ -135,6 +140,10 @@ class HomeController extends \Main\Controller {
 
 			featuredPost().then( response => {
 				$('.featured-post-container').html(response.content);
+			});
+
+			latestPost().then( response => {
+				$('.latest-post-container').html(response.content);
 			});
 
 			latestArticles().then( response => {
@@ -246,6 +255,54 @@ class HomeController extends \Main\Controller {
 			}
 
 			$this->setTemplate("home/featuredPost.php");
+			$data = $this->getTemplate($data, $listings);
+
+			echo json_encode([
+				"status" => "success",
+				"content" => $data
+			]);
+		}else {
+			echo json_encode([
+				"status" => "success",
+				"content" => " "
+			]);
+		}
+
+		exit();
+
+	}
+
+	function latestPost() {
+
+		$data = null;
+
+		$listings = $this->getModel("Listing");
+		$listings->page['limit'] = 8;
+		$listings
+			->join(" l JOIN #__accounts a ON a.account_id = l.account_id")
+				->where(" is_website = 1 AND l.status = 1 AND display = 1 ")
+						->orderBy(" modified_at DESC ");
+		$data['listings'] = $listings->getList();
+
+		if($data['listings']) {
+			$total_listing = count($data['listings']);
+
+			for($i=0; $i<$total_listing; $i++) {
+
+				$images = $this->getModel("ListingImage");
+				$images->page['limit'] = 50;
+
+				$images->column['listing_id'] = $data['listings'][$i]['listing_id'];
+				$total_image = $images->getByListingId();
+				
+				$data['listings'][$i]['total_images'] = 0;
+
+				if($total_image) {
+					$data['listings'][$i]['total_images'] = count($total_image);
+				}
+			}
+
+			$this->setTemplate("home/latestPost.php");
 			$data = $this->getTemplate($data, $listings);
 
 			echo json_encode([

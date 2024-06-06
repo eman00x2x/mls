@@ -45,10 +45,13 @@ $html[] = "<div class='pb-5 my-5'>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 							$html[] = "<div class='card-footer py-2 mt-0'>";
+
+								if($data['listings'][$i]['logo'] != "") { $logo = $data['listings'][$i]['logo'];
+								}else { $logo = CDN."images/blank-profile.png"; }
 									
 								$html[] = "<div class='d-flex gap-2 align-items-center justify-content-between'>";
 									$html[] = "<div class='d-flex gap-2 align-items-center small'>";
-										$html[] = "<span class='avatar avatar-sm rounded-circle' style='background-image: url(".$data['listings'][$i]['logo'].")'></span>";
+										$html[] = "<span class='avatar avatar-sm rounded-circle' style='background-image: url(".$logo.")'></span>";
 										$html[] = "<div class=''>";
 											$html[] = "<span class='d-block'>".$data['listings'][$i]['account_name']['firstname']." ".$data['listings'][$i]['account_name']['lastname']." ".$data['listings'][$i]['account_name']['suffix']."</span>";
 											$html[] = "<span class='d-block text-muted'>".$data['listings'][$i]['profession']."</span>";

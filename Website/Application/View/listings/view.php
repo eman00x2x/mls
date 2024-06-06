@@ -319,11 +319,14 @@ $html[] = "<div class='page-body mb-0'>";
 									$html[] = "<div class='inquiry-form-container'>";
 										$html[] = "<h2 class='card-title text-center'><i class='ti ti-message'></i> Send Message</h2>";
 
+										if($data['account']['logo'] != "") { $logo = $data['account']['logo'];
+										}else { $logo = CDN."images/blank-profile.png"; }
+
 										$html[] = "<div class='row justify-content-center'>";
-											$html[] = "<div class='col-lg-8 col-sm-12'>";
+											$html[] = "<div class='col-lg-12 col-md-12 col-sm-12'>";
 												$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['account']['account_id'], "name" => sanitize($data['account']['account_name']['firstname']."-".$data['account']['account_name']['lastname']) ])."' class='text-decoration-none'>";
 													$html[] = "<div class='d-flex py-1 mb-4 align-items-center'>";
-														$html[] = "<span class='avatar avatar-xl me-2 rounded-circle' style='background-image: url(".$data['account']['logo'].")'></span>";
+														$html[] = "<span class='avatar avatar-xl me-3 rounded-circle' style='background-image: url(".$logo.")'></span>";
 														$html[] = "<div class='flex-fill'>";
 															$html[] = "<div class='font-weight-medium'>";
 																$html[] = $data['account']['account_name']['prefix']." ".$data['account']['account_name']['firstname']." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix'];

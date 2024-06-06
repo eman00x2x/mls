@@ -677,7 +677,7 @@ class ListingsController extends \Main\Controller {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
 		
-		$_POST['title'] = str_replace(["'","\"",","], ["","",""], $_POST['title']);
+		$_POST['title'] = str_replace(["for rent","for sale","'","\"",","], ["","","","",""], $_POST['title']);
 		$_POST['name'] = sanitize($_POST['title'])."-".DATE_NOW;
 		$_POST['created_at'] = DATE_NOW;
 		$_POST['modified_at'] = DATE_NOW;
@@ -780,7 +780,7 @@ class ListingsController extends \Main\Controller {
 			}
 		}
 		
-		$_POST['title'] = str_replace(["'","\"",","], ["","",""], $_POST['title']);
+		$_POST['title'] = str_replace(["for rent","for sale","'","\"",","], ["","","","",""], $_POST['title']);
 		$_POST['modified_at'] = DATE_NOW;
 		$_POST['thumb_img'] = $_POST['thumb_img'] != "" ? CDN."images/listings/".$_POST['thumb_img'] : null;
 		$_POST['foreclosed'] = isset($_POST['foreclosed']) ? 1 : 0;

@@ -734,11 +734,21 @@ class AccountsController extends \Main\Controller {
 
 		$accounts = $this->getModel("Account");
 
-		$this->doc->addScriptDeclaration("
+		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
-			$(document).on('click', '.btn-filter', function() {
+			function formSubmit() {
 				formData = $('#filter-form').serialize();
 				window.location = '?' + formData;
+			}
+
+			$(document).on('click', '.btn-filter', function() {
+				formSubmit();
+			});
+
+			$(document).on('keypress', '#name, #real_estate_license_number', function(e) {
+				if(e.which == 13 || e.keycode == 13) {
+					formSubmit();
+				}
 			});
 
 			$(document).on('show.bs.offcanvas', '#offcanvasEnd', function() {
@@ -773,7 +783,7 @@ class AccountsController extends \Main\Controller {
 				});
 			});
 
-		");
+		"));
 
 		if(isset($_GET['local_board_name']) && $_GET['local_board_name'] != "") {
 			$filters[] = " local_board_name IN('".implode("','", $_GET['local_board_name'])."') ";
@@ -785,9 +795,9 @@ class AccountsController extends \Main\Controller {
 			$uri['real_estate_license_number'] = $_GET['real_estate_license_number'];
 		}
 
-		if(isset($_GET['lastname']) && $_GET['lastname'] != "") {
-			$filters[] = " account_name LIKE '%".$_GET['lastname']."%' ";
-			$uri['lastname'] = $_GET['lastname'];
+		if(isset($_GET['name']) && $_GET['name'] != "") {
+			$filters[] = " account_name LIKE '%".$_GET['name']."%' ";
+			$uri['name'] = $_GET['name'];
 		}
 
 		if(isset($_GET['services']) && $_GET['services'] != "") {
@@ -832,6 +842,8 @@ class AccountsController extends \Main\Controller {
 			}
 
 			$accounts->orderBy(" $sort ".$_GET['order']." ");
+		}else {
+			$accounts->orderBy(" JSON_EXTRACT(account_name, '$.lastname') ASC ");
 		}
 
 		$data['accounts'] = $accounts->getList();
@@ -869,6 +881,9 @@ class AccountsController extends \Main\Controller {
 				}
 			}
 		}
+
+		asort($certifications);
+		asort($services);
 
 		return [
 			"certifications" => array_unique($certifications),

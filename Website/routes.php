@@ -14,6 +14,7 @@ Router::group(['prefix' => WEB_ALIAS], function () {
     Router::get('/terms', 'PagesController@terms');
 
     Router::get('/featuredPost', 'HomeController@featuredPost');
+    Router::get('/latestPost', 'HomeController@latestPost');
     Router::get('/latestArticles', 'HomeController@latestArticles');
     Router::get('/popularLocations', 'HomeController@popularLocations');
 

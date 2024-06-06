@@ -67,6 +67,10 @@ $html[] = "<div class=''>";
 
 								$html[] = "</li>";
 
+								$html[] = "<li class='nav-item'>";
+									$html[] = "<a class='nav-link text-white' href='".url("AccountsController@memberDirectory")."'>Find Broker</a>";
+								$html[] = "</li>";
+
 							$html[] = "</ul>";
 						$html[] = "</div>";
 					$html[] = "</div>";
@@ -93,8 +97,8 @@ $html[] = "<div class=''>";
 									/** SPACER */
 
 									$html[] = "<div class=''>";
-										$html[] = "<h1 class='d-inline display-4 text-white fw-bold'>Find the best investment! </h1>";
-										$html[] = "<p class='d-block fs-16 text-white'>Only @ PAREB MLS</p>";
+										$html[] = "<h1 class='d-inline display-4 text-white fw-bold'>Multiple Listing Service</h1>";
+										$html[] = "<p class='d-block fs-16 text-white'>By Philippine Association of Real Estate Board (PAREB)</p>";
 									$html[] = "</div>";
 
 									$html[] = "<div class=''>";
@@ -319,6 +323,14 @@ $html[] = "<div class=''>";
 		$html[] = "<div class='my-3 py-5 px-3'>";
 			$html[] = "<div class='featured-post-container'>";
 				$html[] = "<p class='text-center mb-0'><img src='".CDN."images/loader.gif' /> loading featured properties, please wait...</p>";
+			$html[] = "</div>";
+		$html[] = "</div>";
+	$html[] = "</div>";
+
+	$html[] = "<div class='container-xl'>";
+		$html[] = "<div class='my-3 py-5 px-3'>";
+			$html[] = "<div class='latest-post-container'>";
+				$html[] = "<p class='text-center mb-0'><img src='".CDN."images/loader.gif' /> loading recent properties, please wait...</p>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 	$html[] = "</div>";

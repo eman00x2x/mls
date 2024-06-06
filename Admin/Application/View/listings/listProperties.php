@@ -131,7 +131,10 @@ function properties($data, $model) {
 								$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['account_id'], "name" => str_replace(" ", "-", strtolower($data['agent_name']))])."' class='d-flex lh-1 text-reset p-0 text-decoration-none'>";
 									
 									if(isset($data['logo'])) {
-										$html[] = "<span class='avatar avatar-sm' data-thumb-image='".$data['logo']."'></span>";
+										if($data['logo'] != "") { $logo = $data['logo'];
+										}else { $logo = CDN."images/blank-profile.png"; }
+
+										$html[] = "<span class='avatar avatar-sm' data-thumb-image='".$logo."'></span>";
 									}
 
 									$html[] = "<div class='ps-2'>";

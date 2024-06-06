@@ -20,9 +20,9 @@ $html[] = "<div class='page-body'>";
 
 						$html[] = "<form id='filter-form' action='' method='POST'>";
 
-							$html[] = "<div class='form-label'>Search By Last Name</div>";
+							$html[] = "<div class='form-label'>Search By Last Name or First Name</div>";
 							$html[] = "<div class='mb-4'>";
-									$html[] = "<input type='text' name='lastname' id='lastname' value='".(isset($_GET['lastname']) ? $_GET['lastname'] : "" )."' class='form-control' />";
+									$html[] = "<input type='text' name='name' id='name' value='".(isset($_GET['name']) ? $_GET['name'] : "" )."' class='form-control' />";
 							$html[] = "</div>";
 
 							$html[] = "<div class='form-label'>Search By License #</div>";
@@ -53,10 +53,13 @@ $html[] = "<div class='page-body'>";
 									foreach(LOCAL_BOARDS as $region => $local_boards) {
 										$html[] = "<div class='fw-bold mb-3'>".str_replace("_", " ", $region)."</div>";
 										foreach($local_boards as $name) {
+
+											$board = str_replace('\\',"", preg_replace('/u([\da-fA-F]{4})/', '&#x\1;', ($name)));
+
 											$checked = isset($model->page['uri']['local_board_name']) && in_array($name, $model->page['uri']['local_board_name']) ? "checked" : "";	
 											$html[] = "<label class='form-check cursor-pointer $checked mb-3'>";
 												$html[] = "<input type='checkbox' class='form-check-input' name='local_board_name[]' value='$name' $checked />";
-												$html[] = "<span class='form-check-label'>$name</span>";
+												$html[] = "<span class='form-check-label'>$board</span>";
 											$html[] = "</label>";
 										}
 									}
@@ -170,7 +173,11 @@ $html[] = "<div class='page-body'>";
 										$html[] = "</div>";
 										$html[] = "<div class='d-flex'>";
 											$html[] = "<a href='mailto:".$data['accounts'][$i]['email']."' class='card-btn'><svg xmlns='http://www.w3.org/2000/svg' class='icon me-2 text-muted' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'></path><path d='M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z'></path><path d='M3 7l9 6l9 -6'></path></svg> Email</a>";
-											$html[] = "<a href='viber://chat/?number=".str_replace("+","%2B", (!is_null($data['accounts'][$i]['mobile_number']) ? $data['accounts'][$i]['mobile_number'] : ""))."' class='card-btn'><svg xmlns='http://www.w3.org/2000/svg' class='icon me-2 text-muted' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'></path><path d='M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2'></path></svg> Call</a>";
+											
+											if($data['accounts'][$i]['mobile_number'] != "") {
+												$html[] = "<a href='viber://chat/?number=".str_replace(["+"],["%2B"], $data['accounts'][$i]['mobile_number'])."' class='card-btn'><svg xmlns='http://www.w3.org/2000/svg' class='icon me-2 text-muted' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'></path><path d='M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2'></path></svg> Call</a>";
+											}
+
 										$html[] = "</div>";
 									$html[] = "</div>";
 								$html[] = "</div>";

@@ -58,8 +58,7 @@ $html[] = "<div class='page-body mt-0 bg-white'>";
 
 										$html[] = "<div class='border-3 border-0 border-start border-azure ps-2'>";
 											$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
-												$html[] = "<li class='list-group-item p-0 pb-1 m-0 border-0'><i class='ti ti-phone fs-14 me-1'></i> <a href='viber://chat/?number=".$data['mobile_number']."'>".$data['mobile_number']."</a></li>";
-												$html[] = "<li class='list-group-item p-0 pb-1 m-0 border-0'>Viber: <a href='viber://chat/?number=".$data['mobile_number']."'>".$data['mobile_number']."</a></li>";
+												$html[] = "<li class='list-group-item p-0 pb-1 m-0 border-0'>Viber: <a href='viber://chat/?number=".$data['mobile_number']."'>Viber Me</a></li>";
 												$html[] = "<li class='list-group-item p-0 pb-1 m-0 border-0'><i class='ti ti-mail fs-14 me-1'></i><a href='mailto:".$data['email']."'>Send me an email</a></li>";
 											$html[] = "</ul>";
 										$html[] = "</div>";
@@ -188,7 +187,7 @@ $html[] = "<div class='page-body mt-0 bg-white'>";
 						$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
 							if(!empty($data['profile']['socials'])) {
 								for($i=0; $i<count($data['profile']['socials']); $i++) {
-									$html[] = "<li class='list-group-item p-0 m-0 border-0'>- <a href='//".$data['profile']['socials'][$i]."' target='_blank'>".$data['profile']['socials'][$i]."</a></li>";
+									$html[] = "<li class='list-group-item p-0 m-0 border-0'>- <a href='//".str_replace("https://", "", $data['profile']['socials'][$i])."' target='_blank'>".$data['profile']['socials'][$i]."</a></li>";
 								}
 							}
 						$html[] = "</ul>";
