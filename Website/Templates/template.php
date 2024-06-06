@@ -51,7 +51,7 @@
 						</div>
 					</div>
 
-					<p class='text-center'>&copy; <?=WEBDOMAIN;?> All Rights reserved.</p>
+					<p class='text-center'>&copy; <?php echo date("Y"); ?> <?=WEBDOMAIN;?> All Rights reserved.</p>
 				</div>
 			</div>
 

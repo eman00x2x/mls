@@ -68,7 +68,7 @@ $html[] = "<div class=''>";
 								$html[] = "</li>";
 
 								$html[] = "<li class='nav-item'>";
-									$html[] = "<a class='nav-link text-white' href='".url("AccountsController@memberDirectory")."'>Find Broker</a>";
+									$html[] = "<a class='nav-link text-white' href='".url("AccountsController@memberDirectory")."'>Find a Real Estate Broker</a>";
 								$html[] = "</li>";
 
 							$html[] = "</ul>";

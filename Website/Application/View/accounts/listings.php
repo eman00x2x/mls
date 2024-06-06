@@ -9,10 +9,13 @@ $html[] = "<div class='page-body mt-0'>";
 
 		$html[] = "<div class='pb-5 my-4'>";
 
+            if($data['logo'] != "") { $logo = $data['logo'];
+			}else { $logo = CDN."images/blank-profile.png"; }
+
             $html[] = "<div class='card mb-3 d-md-none d-block'>";
                 $html[] = "<div class='card-body text-center'>";
                     $html[] = "<div class='mb-3 ' >";
-                        $html[] = "<span class='avatar avatar-xxl rounded' style='background-image: url(".$data['logo'].")'></span>";
+                        $html[] = "<span class='avatar avatar-xxl rounded' style='background-image: url(".$logo.")'></span>";
                     $html[] = "</div>";
                     $html[] = "<div class='card-title mb-0'>".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</div>";
                     $html[] = "<div class='text-secondary'>".$data['profession']."</div>";
@@ -27,7 +30,7 @@ $html[] = "<div class='page-body mt-0'>";
                     $html[] = "<div class='card mb-3'>";
                         $html[] = "<div class='card-body text-center'>";
                             $html[] = "<div class='mb-3 '>";
-                                $html[] = "<span class='avatar avatar-xxl rounded' style='background-image: url(".$data['logo'].")'></span>";
+                                $html[] = "<span class='avatar avatar-xxl rounded' style='background-image: url(".$logo.")'></span>";
                             $html[] = "</div>";
                             $html[] = "<div class='card-title mb-0'>".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</div>";
                             $html[] = "<div class='text-secondary'>".$data['profession']."</div>";
