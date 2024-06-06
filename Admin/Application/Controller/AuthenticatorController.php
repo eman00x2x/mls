@@ -206,7 +206,7 @@ class AuthenticatorController extends \Main\Controller
 			}
 
 			/** everything is alright, update current session */
-			$this->updateSession();
+			/* $this->updateSession(); */
 			return true;
 
 		}else {
@@ -229,10 +229,12 @@ class AuthenticatorController extends \Main\Controller
 
 		$data = $this->setPrivileges( array_merge($accountData, $userData) );
 
-		$kyc = $this->getModel("KYC");
-		$kyc->column['account_id'] = $session['account_id'];
-		$kyc->and(" kyc_status = 1 ");
-		$data['kyc'] = $kyc->getByAccountId();
+		if(KYC == 1) {
+			$kyc = $this->getModel("KYC");
+			$kyc->column['account_id'] = $session['account_id'];
+			$kyc->and(" kyc_status = 1 ");
+			$data['kyc'] = $kyc->getByAccountId();
+		}
 
 		unset($data['account_name']['prefix']);
 		unset($data['account_name']['suffix']);
@@ -260,8 +262,8 @@ class AuthenticatorController extends \Main\Controller
 			}
 		}
 
-		$account = new Account();
-		$account->limitWithExpiredPrivileges($data['account_id']);
+		/* $account = new Account();
+		$account->limitWithExpiredPrivileges($data['account_id']); */
 
 		return $data;
 	}
@@ -365,7 +367,7 @@ class AuthenticatorController extends \Main\Controller
 				$html[] = "<p>You request a password reset link through our system, Please click the link below to reset your password now.</p>";
 				
 				$ref = base64_encode("user_id=".$data['user_id']."&email=".$data['email']."&expires=".date("Y-m-d H:i:s",strtotime("+24 hours")));
-				$link = MANAGE.url("AuthenticatorController@getResetPasswordForm",null,['ref' => $ref]);
+				$link = str_replace("/Manage/", "", MANAGE).url("AuthenticatorController@getResetPasswordForm",null,['ref' => $ref]);
 				
 				$html[] = "<p>This link will be available for the next 24 hours</p>";
 				$html[] = "<p style='padding:10px;'><a href='$link'>Reset your password</a></p>";

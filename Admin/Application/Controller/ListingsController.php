@@ -714,9 +714,11 @@ class ListingsController extends \Main\Controller {
 			"all" => isset($_POST['is_mls_option']['all']) ? 1 : 0
 		]);
 
-		$documents = $_POST['documents'];
-		unset($_POST['documents']);
-	
+		if(isset($_POST['documents'])) {
+			$documents = $_POST['documents'];
+			unset($_POST['documents']);
+		}
+
 		$listing = $this->getModel("Listing");
 		$response = $listing->saveNew($_POST);
 
@@ -1221,9 +1223,12 @@ class ListingsController extends \Main\Controller {
 			$sort = " post_score DESC ";
 		}
 
+		$filters[] = " a.status = 'active' ";
+		$filters[] = " l.status = 1 ";
+
 		if(isset($search)) {
 			$model->select("
-				listing_id, l.account_id, is_website, is_mls, is_mls_option, listing_type, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
+				listing_id, l.account_id as account_id, is_website, is_mls, is_mls_option, listing_type, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
 				logo, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.firstname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.lastname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.suffix'))) as agent_name, profession,
 				CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END,
 				MATCH( type, title, tags, long_desc, category, l.address, amenities )
@@ -1232,7 +1237,7 @@ class ListingsController extends \Main\Controller {
 		}else {
 			$model
 				->select(" 
-					listing_id, l.account_id, is_website, is_mls, is_mls_option, listing_type, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
+					listing_id, l.account_id as account_id, is_website, is_mls, is_mls_option, listing_type, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
 					logo, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.firstname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.lastname')), ' ', JSON_UNQUOTE(JSON_EXTRACT(account_name, '$.suffix'))) as agent_name, profession,
 					CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END 
 				")->orderby(" post_score DESC, $sort ");
@@ -1531,9 +1536,9 @@ class ListingsController extends \Main\Controller {
 
 	function getThumbnail() {
 
-		$url = "";
+		$url = $_GET['url'];
 
-		if(isset($_GET['url']) && $_GET['url'] != "") {
+		/* if(isset($_GET['url']) && $_GET['url'] != "") {
 			$filename = basename($_GET['url']);
 			$original_path = ROOT."/Cdn/images/listings";
 			$destination_path = ROOT."/Cdn/images/listings_thumb";
@@ -1577,7 +1582,7 @@ class ListingsController extends \Main\Controller {
 				$url = CDN."images/listings_thumb/$filename";
 			}
 
-		}
+		} */
 
 		echo json_encode([
 			"url" => $url

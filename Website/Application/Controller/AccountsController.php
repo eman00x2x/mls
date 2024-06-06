@@ -220,13 +220,15 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 			$sort = " post_score DESC ";
 		}
 
-		$filters[] = " status = 1 ";
+		/* $filters[] = " a.status = 'active' "; */
+		$filters[] = " l.status = 1 ";
 		$filters[] = " display = 1 ";
 		$filters[] = " is_website = 1 ";
 
 		if(isset($search)) {
 			$listings->select("
 				l.listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
+				
 				CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END,
 				MATCH( type, title, tags, long_desc, category, l.address, amenities )
 				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
@@ -235,8 +237,16 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 			$listings
 				->select(" 
 					l.listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
+					
 					CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END 
 				")->orderby(" post_score DESC, $sort ");
+		}
+
+		if(KYC == 1) {
+			$filters[] = " kyc_status = 1 ";
+			$listings->join(" JOIN mls_accounts a ON a.account_id = l.account_id JOIN mls_kyc k ON k.account_id=a.account_id ");
+		}else {
+			$listings->join(" JOIN mls_accounts a ON a.account_id = l.account_id ");
 		}
 
 		$listings->and((isset($filters) ? implode(" AND ",$filters) : null));
@@ -321,7 +331,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 			});
 			
 			$(document).ready(function() {
-				$('.listings-table .card-img-top').each(function() {
+				$('.listings-table .avatar').each(function() {
 					thumb_image = $(this).attr('data-thumb-image');
 					$(this).css('background-image', 'url(".CDN."images/item_default.jpg)');
 					getImage(thumb_image, $(this));
@@ -345,6 +355,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 				await fetch('".url("ListingsController@getThumbnail")."?url=' + thumb_image)
 					.then( response => response.json() )
 					.then(  (data) => {
+						console.log(data);
 						element.css('background-image', 'url('+data.url+')');
 					});
 				

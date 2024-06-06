@@ -240,7 +240,7 @@ class AccountModel extends \Main\Model {
 
 	}
 
-	function moveUploadedImage($filename, $path = "/images/accounts") {
+	function moveUploadedImage($filename, $path = "images/accounts") {
 
         $old_dir = ROOT."/Cdn/images/temporary/".$filename;
 
@@ -272,7 +272,7 @@ class AccountModel extends \Main\Model {
 
 	}
 
-	function uploadPhoto($data, $path = "/images/accounts") {
+	function uploadPhoto($data, $path = "images/accounts") {
 
 		$handle = new Upload($data);
 

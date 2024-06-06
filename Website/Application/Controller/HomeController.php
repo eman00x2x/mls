@@ -74,12 +74,11 @@ class HomeController extends \Main\Controller {
 					timer = setTimeout(function() {
 						result = searchFor(search).reverse();
 						for(key in result) {
-							text += \"<option 
-								data-barangay='\" + result[key].barangay + \"'
-								data-municipality='\" + result[key].municipality + \"'
-								data-province='\" + result[key].province + \"'
-								data-region='\" + result[key].region + \"'
-								value='\" + result[key].barangay + \" \" + result[key].municipality + \" \" + result[key].province + \"'> \";
+							text += \"<option data-barangay='\" + result[key].barangay + 
+								\"'data-municipality='\" + result[key].municipality + 
+								\"'data-province='\" + result[key].province + 
+								\"'data-region='\" + result[key].region +
+								\"'value='\" + result[key].barangay + \" \" + result[key].municipality + \" \" + result[key].province + \"'> \";
 						}
 						$('#address_result').html(text);
 					},200);

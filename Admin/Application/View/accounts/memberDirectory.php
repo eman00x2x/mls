@@ -35,11 +35,13 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<div class='mb-4'>";
 									$html[] = "<div class='overflow-auto border p-3 bg-white' style='min-height:100px; max-height:200px;'>";
 										foreach($data['services'] as $services) {
-											$checked = isset($model->page['uri']['services']) && in_array($services, $model->page['uri']['services']) ? "checked" : "";										
-											$html[] = "<label class='form-check cursor-pointer $checked'>";
-												$html[] = "<input type='checkbox' class='form-check-input' name='services[]' value='$services' $checked />";
-												$html[] = "<span class='form-check-label'>$services</span>";
-											$html[] = "</label>";
+											if($services != "") {
+												$checked = isset($model->page['uri']['services']) && in_array($services, $model->page['uri']['services']) ? "checked" : "";										
+												$html[] = "<label class='form-check cursor-pointer $checked'>";
+													$html[] = "<input type='checkbox' class='form-check-input' name='services[]' value='$services' $checked />";
+													$html[] = "<span class='form-check-label'>$services</span>";
+												$html[] = "</label>";
+											}
 										}
 									$html[] = "</div>";
 								$html[] = "</div>";
@@ -48,12 +50,15 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<div class='form-label'>Limit By Boards</div>";
 							$html[] = "<div class='mb-4'>";
 								$html[] = "<div class='overflow-auto border p-3 bg-white' style='min-height:100px; max-height:200px;'>";
-									foreach(LOCAL_BOARDS as $local_board_name) {
-										$checked = isset($model->page['uri']['local_board_name']) && in_array($local_board_name, $model->page['uri']['local_board_name']) ? "checked" : "";										
-										$html[] = "<label class='form-check cursor-pointer $checked'>";
-											$html[] = "<input type='checkbox' class='form-check-input' name='local_board_name[]' value='$local_board_name' $checked />";
-											$html[] = "<span class='form-check-label'>$local_board_name</span>";
-										$html[] = "</label>";
+									foreach(LOCAL_BOARDS as $region => $local_boards) {
+										$html[] = "<div class='fw-bold mb-3'>".str_replace("_", " ", $region)."</div>";
+										foreach($local_boards as $name) {
+											$checked = isset($model->page['uri']['local_board_name']) && in_array($name, $model->page['uri']['local_board_name']) ? "checked" : "";	
+											$html[] = "<label class='form-check cursor-pointer $checked mb-3'>";
+												$html[] = "<input type='checkbox' class='form-check-input' name='local_board_name[]' value='$name' $checked />";
+												$html[] = "<span class='form-check-label'>$name</span>";
+											$html[] = "</label>";
+										}
 									}
 								$html[] = "</div>";
 							$html[] = "</div>";
@@ -63,11 +68,13 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<div class='mb-4'>";
 									$html[] = "<div class='overflow-auto border p-3 bg-white' style='min-height:100px; max-height:200px;'>";
 										foreach($data['certifications'] as $certifications) {
-											$checked = isset($model->page['uri']['certifications']) && in_array($certifications, $model->page['uri']['certifications']) ? "checked" : "";										
-											$html[] = "<label class='form-check cursor-pointer $checked'>";
-												$html[] = "<input type='checkbox' class='form-check-input' name='certifications[]' value='$certifications' $checked />";
-												$html[] = "<span class='form-check-label'>$certifications</span>";
-											$html[] = "</label>";
+											if($certifications != "") {
+												$checked = isset($model->page['uri']['certifications']) && in_array($certifications, $model->page['uri']['certifications']) ? "checked" : "";										
+												$html[] = "<label class='form-check cursor-pointer $checked'>";
+													$html[] = "<input type='checkbox' class='form-check-input' name='certifications[]' value='$certifications' $checked />";
+													$html[] = "<span class='form-check-label'>$certifications</span>";
+												$html[] = "</label>";
+											}
 										}
 									$html[] = "</div>";
 								$html[] = "</div>";
@@ -138,12 +145,19 @@ $html[] = "<div class='page-body'>";
 					$html[] = "<div class='row row-deck row-cards'>";
 						if($data['accounts']) {
 							for($i=0; $i<count($data['accounts']); $i++) {
+
+								if($data['accounts'][$i]['logo'] == "") {
+									$image = CDN."images/blank-profile.png";
+								}else {
+									$image = $data['accounts'][$i]['logo'];
+								}
+
 								$html[] = "<div class='col-md-6 col-lg-3'>";
 									$html[] = "<div class='card'>";
 										$html[] = "<div class='card-body p-4 text-center'>";
-											$html[] = "<span class='avatar avatar-xl mb-3 rounded' style='background-image: url(".CDN."/images/accounts/".$data['accounts'][$i]['logo'].")'></span>";
+											$html[] = "<span class='avatar avatar-xl mb-3 rounded' style='background-image: url(".$image.")'></span>";
 											$html[] = "<h3 class='m-0 mb-1'>";
-												$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['accounts'][$i]['account_id'], "name" => sanitize($data['accounts'][$i]['account_name']['firstname']."-".$data['accounts'][$i]['account_name']['lastname'])])."' class='stretched-link text-decoration-none'>".$data['accounts'][$i]['account_name']['firstname']." ".$data['accounts'][$i]['account_name']['middlename']." ".$data['accounts'][$i]['account_name']['lastname']." ".$data['accounts'][$i]['account_name']['suffix']."</a>";
+												$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['accounts'][$i]['account_id'], "name" => sanitize($data['accounts'][$i]['account_name']['firstname']."-".$data['accounts'][$i]['account_name']['lastname'])])."' class='stretched-link text-decoration-none'>".ucwords(strtolower($data['accounts'][$i]['account_name']['firstname']." ".$data['accounts'][$i]['account_name']['middlename']." ".$data['accounts'][$i]['account_name']['lastname']." ".$data['accounts'][$i]['account_name']['suffix']))."</a>";
 											$html[] = "</h3>";
 											$html[] = "<span class='d-block'>".$data['accounts'][$i]['profession']."</span>";
 											$html[] = "<span class='d-block fs-12 text-muted'>PRC License #".$data['accounts'][$i]['real_estate_license_number']."</span>";

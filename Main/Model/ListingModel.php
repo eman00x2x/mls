@@ -24,7 +24,8 @@ class ListingModel extends \Main\Model {
 		$query = "
 			SELECT ".$this->select."
 			FROM `mls_listings` l
-			WHERE account_id = $account_id
+			".$this->join."
+			WHERE a.account_id = $account_id
 			".$this->and."
 
 			UNION

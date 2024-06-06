@@ -56,10 +56,13 @@
 							$html[] = "<div class='dropdown'>";
 								$html[] = "<span class='nav-link dropdown-toggle cursor-pointer' id='menuForPopularLocation' data-bs-toggle='dropdown' aria-expanded='false'><span class='nav-link-title'>Popular Locations</span></span>";
 								$html[] = "<div class='dropdown-menu locationContainer' aria-labelledby='menuForPopularLocation'>";
-									
 								$html[] = "</div>";
 							$html[] = "</div>";
 
+						$html[] = "</li>";
+
+						$html[] = "<li class='nav-item'>";
+							$html[] = "<a class='nav-link' href='".url("AccountsController@memberDirectory")."'>Find Broker</a>";
 						$html[] = "</li>";
 
 						echo implode("", $html);
