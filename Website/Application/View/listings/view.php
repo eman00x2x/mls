@@ -125,7 +125,7 @@ $html[] = "<div class='page-body mb-0'>";
 							"title" => $data['page_title'],
 							"description" => $data['page_description'],
 							"img" => $data['page_image'],
-							"url" => url(),
+							"url" => DOMAIN.url(),
 						]);
 
 					$html[] = "</div>";

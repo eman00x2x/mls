@@ -78,9 +78,24 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 												$html[] = "<input type='checkbox' name='enable_kyc_verification' class='form-check-input' value='1' ".($data['enable_kyc_verification'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable KYC Verification</span>";
 											$html[] = "</label>";
+
+
+											$html[] = "<label class='form-check form-switch cursor-pointer mb-3 mt-5'>";
+												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>Options</h3>";
+												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>Select some restriction to enable if KYC is enabled</p>";
+											
+												$html[] = "<input type='checkbox' name='kyc_options[prevent_purchase_of_premium]' class='form-check-input' value='1' ".($data['kyc_options']['prevent_purchase_of_premium'] == 1 ? "checked" : "")." />";
+												$html[] = "<span class='form-check-label'>Prevent Purchase of Premium</span>";
+											$html[] = "</label>";
+
+											$html[] = "<label class='form-check form-switch cursor-pointer mb-3'>";
+												$html[] = "<input type='checkbox' name='kyc_options[hide_listings_if_kyc_expired]' class='form-check-input' value='1' ".($data['kyc_options']['hide_listings_if_kyc_expired'] == 1 ? "checked" : "")." />";
+												$html[] = "<span class='form-check-label'>Hide Posted Property Listings if KYC is Expired</span>";
+											$html[] = "</label>";
+
 										$html[] = "</div>";
 
-										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+										$html[] = "<div class='mb-5 border rounded-3 p-5 d-none'>";
 											$html[] = "<label class='form-check form-switch cursor-pointer mb-0'>";
 												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>Enable WebSocket Chat Based</h3>";
 												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>If WebSocket chat functionality is activated, users gain the ability to engage in real-time communication via chat while seamlessly receiving messages as they are transmitted.</p>";
@@ -112,11 +127,9 @@ $html[] = "<div class='page-body mb-5 pb-5'>";
 												$html[] = "<input type='checkbox' name='enable_premium' class='form-check-input' value='1' ".($data['enable_premium'] == 1 ? "checked" : "")." />";
 												$html[] = "<span class='form-check-label'>Enable Premium Purchase</span>";
 											$html[] = "</label>";
-										$html[] = "</div>";
-
-										$html[] = "<div class='mb-5 border rounded-3 p-5'>";
+										
 											
-											$html[] = "<label class='form-check form-switch cursor-pointer mb-3'>";
+											$html[] = "<label class='form-check form-switch cursor-pointer mb-3 mt-5'>";
 												$html[] = "<h3 class='card-title' style='margin-left:-40px;'>Payment Gateway</h3>";
 												$html[] = "<p class='card-subtitle' style='margin-left:-40px;'>If you choose to activate the premium feature, you also need to enable the payment gateway.</p>";
 											

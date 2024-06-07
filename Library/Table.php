@@ -105,7 +105,13 @@ class Table {
 	function stripQuotes($data) {
 
 		foreach($data as $key => $val) {
-			$val = html_entity_decode(str_replace('\\',"", preg_replace('/u([\da-fA-F]{4})/', '&#x\1;', ($val))));
+
+			if(!is_null($val)) {
+				$val = html_entity_decode(str_replace('\\',"", preg_replace('/u([\da-fA-F]{4})/', '&#x\1;', ($val))));
+			}else {
+				$val = $val;
+			}
+
 			if(!is_null($val)) {
 				json_decode($val);
 				if(json_last_error() === JSON_ERROR_NONE) {

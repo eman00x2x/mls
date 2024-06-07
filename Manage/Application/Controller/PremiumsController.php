@@ -20,6 +20,15 @@ class PremiumsController extends \Admin\Application\Controller\PremiumsControlle
 			response()->redirect(url("AccountsController@index"));
 		}
 
+		if(KYC == 1) {
+            if($this->session['kyc'] === false) {
+				if(CONFIG['kyc_options']['prevent_purchase_of_premium'] == 1) {
+					$this->getLibrary("Factory")->setMsg("You must complete the KYC process before you can purchase a premium. <a href='".url("KYCController@kycVerificationForm")."'>Proceed to KYC</a>", "warning");	
+					response()->redirect(url("KYCController@kycVerificationForm"));
+				}
+            }
+        }
+
         $this->doc->setTitle("Premiums");
         
         $premium = $this->getModel("Premium");

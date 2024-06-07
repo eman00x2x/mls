@@ -33,6 +33,7 @@ class SettingModel extends \Main\Model {
 				if(!isset($data['paypal_credentials'])) { $this->column['paypal_credentials'] = json_encode($this->column['paypal_credentials']); }
 				if(!isset($data['email_address_responder'])) { $this->column['email_address_responder'] = json_encode($this->column['email_address_responder']); }
 				if(!isset($data['payment_gateway'])) { $this->column['payment_gateway'] = json_encode($this->column['payment_gateway']); }
+				if(!isset($data['kyc_options'])) { $this->column['kyc_options'] = json_encode($this->column['kyc_options']); }
 
 				foreach($data as $key => $val) {
 					$this->column[$key] = $val;

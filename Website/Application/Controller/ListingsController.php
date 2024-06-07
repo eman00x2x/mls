@@ -335,8 +335,23 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			}
 
 			$account = $this->getModel("Account");
-			$account->column['account_id'] = $data['account_id'];
-			$account_data = $account->getById();
+
+			/** HANDSHAKED LISTINGS SHOW REQUESTOR DATA */
+			if(isset($_GET['ref'])) {
+				$ref_id = base64_decode($_GET['ref']);
+				$account->column['account_id'] = $ref_id;
+				$account_data = $account->getById();
+
+				/** INVALID REQUESTOR ID */
+				if($account_data === false) {
+					$account->column['account_id'] = $data['account_id'];
+					$account_data = $account->getById();
+				}
+
+			}else {
+				$account->column['account_id'] = $data['account_id'];
+				$account_data = $account->getById();
+			}
 
 			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 

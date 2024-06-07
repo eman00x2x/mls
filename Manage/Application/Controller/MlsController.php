@@ -25,9 +25,11 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			response()->redirect(url("DashboardController@index"));
 		}
 
-		if($this->session['kyc'] === false) {
-            if(KYC == 1) {
-                $this->getLibrary("Factory")->setMsg("Your property listings have been hidden from the public website and MLS. You must complete the KYC process before your listings can be viewed. <a href='".url("KYCController@kycVerificationForm")."'>Proceed to KYC</a>", "warning");
+		if(KYC == 1) {
+            if($this->session['kyc'] === false) {
+				if(CONFIG['kyc_options']['hide_listings_if_kyc_expired'] == 1) {
+					$this->getLibrary("Factory")->setMsg("Your property listings have been hidden from the public website and MLS. You must complete the KYC process before your listings can be viewed. <a href='".url("KYCController@kycVerificationForm")."'>Proceed to KYC</a>", "warning");	
+				}
             }
         }
 

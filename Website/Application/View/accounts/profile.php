@@ -77,7 +77,7 @@ $html[] = "<div class='page-body mt-0 bg-white'>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
-							if(isset($data['broker'])) {
+							if(isset($data['broker']) && !empty($data['broker'])) {
 								$html[] = "<h3 class='card-title mb-1 text-muted'>Real Estate Broker</h3>";
 								$html[] = "<div class='border-3 border-0 border-start border-azure ps-2'>";
 									$html[] = "<p>".$data['broker']['account_name']['firstname']." ".$data['broker']['account_name']['middlename']." ".$data['broker']['account_name']['lastname']." ".$data['broker']['account_name']['suffix']."

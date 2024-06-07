@@ -5,11 +5,14 @@ namespace Library;
 class Helper {
 
 	static function socialMediadShareButtons(array $data = []) {
+
+		$html[] = "<div id='fb-root'></div>
+<script async defer crossorigin='anonymous' src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v20.0&appId=174075125990383' nonce='rSAy2fWE'></script>";
 		
 		$html[] = "<div class='social-medi-share-buttons'>";
 			$html[] = "<span class='text-muted fs-12'>Share this post</span>";
 			$html[] = "<div class='mt-1 d-flex gap-1'>";
-				$html[] = "<a class='share-fb' target='_blank' href='https://www.facebook.com/sharer/sharer.php?u=".$data['url']."'><img src='".CDN."images/social/facebook.png' /></a>";
+				$html[] = "<div class='fb-share-button' data-href='".$data['url']."' data-layout='' data-size=''><a target='_blank' href='https://www.facebook.com/sharer/sharer.php?u=".$data['url']."&amp;src=sdkpreparse' class='fb-xfbml-parse-ignore'>Share</a></div>";
 				$html[] = "<a class='share-twitter' target='_blank' href='https://twitter.com/intent/tweet?text=".$data['title']."&url=".$data['url']."&via=TWITTER-HANDLE'><img src='".CDN."images/social/twitter.png' /></a>";
 				$html[] = "<a class='share-linkedin' target='_blank' href='https://www.linkedin.com/shareArticle?mini=true&url=".$data['url']."&title=".$data['title']."&summary=".$data['description']."&source=".$data['url']."'><img src='".CDN."images/social/linkedin.png' /></a>";
 				$html[] = "<a class='share-pinterest' target='_blank' href='https://pinterest.com/pin/create/button/?url=".$data['url']."&description=".$data['description']."&media=".$data['img']."'><img src='".CDN."images/social/pinterest.png' /></a>";

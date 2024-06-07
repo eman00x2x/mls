@@ -57,7 +57,7 @@ function properties($data, $model) {
 						url(
 							$model->app['url_path']['class_hint'], [
 								$model->app['url_path']['path'] => $data[ $model->app['url_path']['value'] ] 
-							]
+							], (isset($model->app['uri']) ? $model->app['uri'] : null)
 						)."'>";
 
 						$html[] = "<div class='avatar avatar-xxxl w-100 rounded-0 border-0' data-thumb-image='".$data['thumb_img']."'>";

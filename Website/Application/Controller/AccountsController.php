@@ -17,7 +17,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$accounts->column['account_id'] = $id;
 		$data = $accounts->getById();
 
-		$account_name = sanitize($data['account_name']['firstname']."-".$data['account_name']['lastname']);
+		$account_name = strtolower(sanitize($data['account_name']['firstname']."-".$data['account_name']['lastname']));
 
 		if($account_name != $name) {
 			$this->response(404);
@@ -36,7 +36,6 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$this->doc->setFacebookMetaData("og:image", CDN."images/real-estate.jpg");
 		$this->doc->setFacebookMetaData("og:description", $description);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
-
 
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
@@ -227,7 +226,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 
 		if(isset($search)) {
 			$listings->select("
-				l.listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
+				l.listing_id, l.account_id, is_website, is_mls, is_mls_option, listing_type, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
 				
 				CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END,
 				MATCH( type, title, tags, long_desc, category, l.address, amenities )
@@ -236,7 +235,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		}else {
 			$listings
 				->select(" 
-					l.listing_id, l.account_id, is_website, is_mls, is_mls_option, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
+					l.listing_id, l.account_id, is_website, is_mls, is_mls_option, listing_type, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
 					
 					CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END 
 				")->orderby(" post_score DESC, $sort ");
@@ -286,6 +285,9 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 				"path" => "name",
 				"value" => "name",
 				"class_hint" => "ListingsController@view"
+			],
+			"uri" => [
+				"ref" => base64_encode($data['account_id'])
 			]
 		];
 

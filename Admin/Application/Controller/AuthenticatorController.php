@@ -229,13 +229,6 @@ class AuthenticatorController extends \Main\Controller
 
 		$data = $this->setPrivileges( array_merge($accountData, $userData) );
 
-		if(KYC == 1) {
-			$kyc = $this->getModel("KYC");
-			$kyc->column['account_id'] = $session['account_id'];
-			$kyc->and(" kyc_status = 1 ");
-			$data['kyc'] = $kyc->getByAccountId();
-		}
-
 		unset($data['account_name']['prefix']);
 		unset($data['account_name']['suffix']);
 		unset($data['account_name']['middlename']);
@@ -262,8 +255,15 @@ class AuthenticatorController extends \Main\Controller
 			}
 		}
 
-		/* $account = new Account();
-		$account->limitWithExpiredPrivileges($data['account_id']); */
+		if(KYC == 1) {
+			$kyc = $this->getModel("KYC");
+			$kyc->column['account_id'] = $data['account_id'];
+			$kyc->and(" kyc_status = 1 ");
+			$data['kyc'] = $kyc->getByAccountId();
+		}
+
+		$account = new Account();
+		$account->limitWithExpiredPrivileges($data['account_id']);
 
 		return $data;
 	}

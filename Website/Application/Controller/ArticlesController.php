@@ -93,7 +93,7 @@ class ArticlesController extends \Main\Controller {
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
 		$data['share_buttons'] = Helper::socialMediadShareButtons([
-			"url" => $data['url'],
+			"url" => DOMAIN . $data['url'],
 			"title" => $data['title'],
 			"description" => $description,
 			"img" => $data['banner'],
