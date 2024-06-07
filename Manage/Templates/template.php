@@ -143,6 +143,11 @@
 										<?php } ?>
 									<?php } ?>
 
+									
+										<a href="<?php echo url("OpenHouseAnnouncementsController@index"); ?>" class="dropdown-item"><i class='ti ti-speakerphone me-2'></i> My Open House</a>
+										
+									
+
 									<?php if(KYC) { ?>
 										<a href="<?php echo url("KYCController@kycVerificationForm"); ?>" class="dropdown-item"><i class='ti ti-user-circle me-2'></i> KYC Verification</a>
 									<?php } ?>

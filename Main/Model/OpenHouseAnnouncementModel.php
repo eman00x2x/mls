@@ -22,7 +22,10 @@ class OpenHouseAnnouncementModel extends \Main\Model {
 		$v = $this->getValidator();
 
 		$v->validateGeneral($data['subject'], "Subject is required");
-		$v->validateDate($data['started_at'], "Start is not a date");
+		$v->validateGeneral($data['content']['address'], "Address is required");
+		$v->validateGeneral($data['content']['date'], "Open House Date is required");
+		$v->validateGeneral($data['listing_id'], "Attach Listing in your open house");
+		$v->validateGeneral($data['started_at'], "Publish date is required");
 
 		if($v->foundErrors()) {
 			return array(
@@ -31,6 +34,8 @@ class OpenHouseAnnouncementModel extends \Main\Model {
 				"message" => "<br /> *".$v->listErrors('<br/> * ')
 			);
 		}else {
+
+			$data['content'] = json_encode($data['content']);
 
 			foreach($data as $key => $val) {
 				$this->column[$key] = $val;
@@ -63,6 +68,8 @@ class OpenHouseAnnouncementModel extends \Main\Model {
 					"message" => "Please correct the following: ".$v->listErrors(', ')
 				);
 			}else {
+
+				$data['content'] = json_encode($data['content']);
 
 				foreach($data as $key => $val) {
 					$this->column[$key] = $val;

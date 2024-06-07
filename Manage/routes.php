@@ -155,6 +155,16 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
     Router::get('/getCurrencyConverter', 'ListingsController@getCurrencyConverter');
     Router::post('/tracker', 'SessionController@saveTraffic', ['as' => 'saveTraffic']);
 
+    /** OPEN HOUSE ANNOUNCEMENTS ROUTES */
+    Router::get('/openHouseAnnouncements', 'OpenHouseAnnouncementsController@index', ['as' => 'openHouseAnnouncements']);
+    Router::get('/openHouseAnnouncements/add', 'OpenHouseAnnouncementsController@add', ['as' => 'openHouseAnnouncements-add']);
+    Router::get('/openHouseAnnouncements/{id}', 'OpenHouseAnnouncementsController@edit', ['as' => 'openHouseAnnouncements-edit'])->where([ 'id' => '[0-9]+' ]);
+    Router::get('/openHouseAnnouncements/{id}/delete', 'OpenHouseAnnouncementsController@delete', ['as' => 'openHouseAnnouncements-delete'])->where([ 'id' => '[0-9]+' ]);
+    Router::get('/openHouseAnnouncements/searchListings', 'OpenHouseAnnouncementsController@searchListings', ['as' => 'openHouseAnnouncements-searchListings'])->where([ 'id' => '[0-9]+' ]);
+
+    Router::post('/openHouseAnnouncements/{id}/save', 'OpenHouseAnnouncementsController@saveUpdate', ['as' => 'openHouseAnnouncementsSaveUpdate'])->where([ 'id' => '[0-9]+' ]);
+    Router::post('/openHouseAnnouncements/saveNew', 'OpenHouseAnnouncementsController@saveNew', ['as' => 'openHouseAnnouncementsSaveNew']);
+
     /** TESTIMONIALS ROUTES */
     Router::get('/testimonials', 'TestimonialsController@index', ['as' => 'testimonials']);
     Router::get('/testimonials/add', 'TestimonialsController@add', ['as' => 'testimonials-add']);

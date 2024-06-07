@@ -14,13 +14,17 @@ class PoliciesController extends \Main\Controller
         $policies = [
             "community-guidelines" => "community_guidelines",
             "mls-policy" => "mls_policy",
-            "refund-policy" => "refund_policy"
+            "refund-policy" => "refund_policy",
+            "data-privacy" => "data_privacy",
+            "terms" => "terms"
         ];
 
         if(in_array($name, [
             "community-guidelines", 
             "mls-policy", 
-            "refund-policy"
+            "refund-policy",
+            "data-privacy",
+            "terms"
         ])) {
 
             $data = CONFIG[$policies[$name]];

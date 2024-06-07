@@ -23,7 +23,7 @@ class ArticlesController extends \Main\Controller {
 		$this->doc->setTitle("Articles");
 
 		if(isset($_REQUEST['search'])) {
-			$filters[] = " (title LIKE '%".$_REQUEST['search']."%'))";
+			$filters[] = " (title LIKE '%".$_REQUEST['search']."%')";
 			$uri['search'] = $_REQUEST['search'];
 		}
 
