@@ -83,6 +83,35 @@ $html[] = "<div class='page-body'>";
                     $html[] = "</div>";
                 
                 $html[] = "</div>";
+
+                $html[] = "<div class='card mb-3'>";
+                    $html[] = "<div class='card-header'>";
+                        $html[] = "<h3 class='card-title text-blue mb-0'>Lead Preferences</h3>";
+                    $html[] = "</div>";
+
+                    $html[] = "<div class='card-body'>";
+                        $html[] = "<div class='d-flex gap-2 align-items-center flex-wrap'>";
+                        foreach($data['preferences'] as $key => $val) {
+                            if(is_array($val)) {
+                                foreach($val as $x => $v) {
+                                    if($v != "") {
+                                        $html[] = "<div class=''>";
+                                            $html[] = "<label class='fs-11 text-muted'>".ucwords(str_replace("_"," ", $x))."</label>";
+                                            $html[] = "<p>$v</p>";
+                                        $html[] = "</div>";
+                                    }
+                                }
+                            }else {
+                                $html[] = "<div class=''>";
+                                    $html[] = "<label class='fs-11 text-muted'>".ucwords(str_replace("_"," ", $key))."</label>";
+                                    $html[] = "<p>$val</p>";
+                                $html[] = "</div>";
+                            }
+                        }
+                        $html[] = "</div>";
+                    $html[] = "</div>";
+                $html[] = "</div>";
+
             $html[] = "</div>";
 
             $html[] = "<div class='col-md-8 col-12'>";

@@ -31,7 +31,7 @@ class LeadsController extends \Main\Controller {
 		$filters[] = " account_id = ".$data['account_id'];
 		
 		$lead = $this->getModel("Lead");
-		$lead->select(" lead_id, listing_id, account_id, content as user_message, iv, inquire_at ");
+		$lead->select(" lead_id, listing_id, account_id, content as user_message, iv, inquire_at, preferences ");
 		$lead->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" inquire_at DESC ");
 		
 		$lead->page['limit'] = 20;
