@@ -360,6 +360,7 @@ $html[] = "<div class='page-body mb-0'>";
 											$html[] = "<input type='hidden' name='preferences[parking]' value='".$data['parking']."' />";
 											$html[] = "<input type='hidden' name='preferences[lot_area]' value='".$data['lot_area']."' />";
 											$html[] = "<input type='hidden' name='preferences[category]' value='".$data['category']."' />";
+											$html[] = "<input type='hidden' name='preferences[price]' value='".$data['price']."' />";
 											$html[] = "<input type='hidden' name='preferences[address][barangay]' value='".$data['address']['barangay']."' />";
 											$html[] = "<input type='hidden' name='preferences[address][municipality]' value='".$data['address']['municipality']."' />";
 											$html[] = "<input type='hidden' name='preferences[address][province]' value='".$data['address']['province']."' />";
