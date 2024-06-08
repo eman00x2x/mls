@@ -334,10 +334,20 @@ $html[] = "<div class=''>";
 			$html[] = "</div>";
 		$html[] = "</div>";
 	$html[] = "</div>";
+
+	$html[] = "<div class='bg-white'>";
+		$html[] = "<div class='container-xl py-5'>";
+			$html[] = "<div class='py-5 px-3  fs-16'>";
+				$html[] = "<div class='open-houses-container'>";
+					$html[] = "<p class='text-center mb-0'><img src='".CDN."images/loader.gif' /> loading open houses, please wait...</p>";
+				$html[] = "</div>";
+			$html[] = "</div>";
+		$html[] = "</div>";
+	$html[] = "</div>";
 				
 	$html[] = "<div class='bg-white'>";
 		$html[] = "<div class='container-xl'>";
-			$html[] = "<div class='my-3 py-5 px-3 fs-16'>";
+			$html[] = "<div class='py-5 px-3 fs-16'>";
 				
 				$html[] = "<div class='row justify-content-center my-5 py-5'>";
 					$html[] = "<div class='col-lg-10 col-md-10 col-sm-12'>";

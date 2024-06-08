@@ -138,6 +138,11 @@ class HomeController extends \Main\Controller {
 				return response.json();
 			};
 
+			const openHouses = async () => {
+				const response = await fetch('".url("HomeController@openHouses")."');
+				return response.json();
+			};
+
 			featuredPost().then( response => {
 				$('.featured-post-container').html(response.content);
 			});
@@ -148,6 +153,10 @@ class HomeController extends \Main\Controller {
 
 			latestArticles().then( response => {
 				$('.latest-articles-container').html(response.content);
+			});
+
+			openHouses().then( response => {
+				$('.open-houses-container').html(response.content);
 			});
 
 			function trimString(s) {
@@ -313,6 +322,35 @@ class HomeController extends \Main\Controller {
 			echo json_encode([
 				"status" => "success",
 				"content" => " "
+			]);
+		}
+
+		exit();
+
+	}
+
+	function openHouses() {
+		
+		$open_house = $this->getModel("OpenHouseAnnouncement");
+		$open_house->orderby(" DATE(JSON_EXTRACT(content, '$.date')) DESC ");
+
+		$filters[] = " ended_at > ".DATE_NOW." ";
+		
+		$open_house->where((isset($filters) ? implode(" AND ",$filters) : null));
+		$data = $open_house->getList();
+
+		if($data) {
+			$this->setTemplate("home/openHouse.php");
+			$response = $this->getTemplate($data, $open_house);
+
+			echo json_encode([
+				"status" => "success",
+				"content" => $response
+			]);
+		}else {
+			echo json_encode([
+				"status" => "success",
+				"content" => ""
 			]);
 		}
 
