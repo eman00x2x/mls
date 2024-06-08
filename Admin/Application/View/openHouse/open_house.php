@@ -14,7 +14,9 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "</div>";
 			$html[] = "<div class='col-auto ms-auto '>";
 				$html[] = "<div class='btn-list text-end'>";
-					$html[] = "<a class='ajax btn btn-dark' href='".url("OpenHouseAnnouncementsController@add")."'><i class='ti ti-speakerphone me-2'></i> Create Announcement</a>";
+					if(!in_array($_SESSION['user_logged']['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+						$html[] = "<a class='ajax btn btn-dark' href='".url("OpenHouseAnnouncementsController@add")."'><i class='ti ti-speakerphone me-2'></i> Create Announcement</a>";
+					}
 				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";
@@ -49,6 +51,13 @@ $html[] = "<div class='page-body'>";
 										}
 
 										$html[] = "<li class='list-group-item p-2'><i class='ti ti-calendar fs-14'></i> ".date("d M Y h:iA", strtotime($data[$i]['content']['date']))."</li>";
+										$html[] = "<li class='list-group-item p-2'><i class='ti ti-calendar fs-14'></i> End at ".date("d M Y", $data[$i]['ended_at'])."</li>";
+										$html[] = "<li class='list-group-item p-2'></li>";
+
+										if(in_array($_SESSION['user_logged']['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+											$html[] = "<li class='list-group-item p-2'><i class='ti ti-speakerphone fs-14'></i> Announce by ".$data[$i]['account_name']['firstname']." ".$data[$i]['account_name']['middlename']." ".$data[$i]['account_name']['lastname']." ".$data[$i]['account_name']['suffix']."</li>";
+										}
+
 									$html[] = "</ul>";
 								$html[] = "</div>";
 

@@ -126,24 +126,23 @@ function properties($data, $model) {
 
 					$html[] = "<div class='d-flex gap-2 mt-4'>";
 
-						if(isset($data['logo']) && isset($data['agent_name'])) {
-							$html[] = "<div class='listing-agent flex-grow-1'>";
-								$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['account_id'], "name" => str_replace(" ", "-", strtolower($data['agent_name']))])."' class='d-flex lh-1 text-reset p-0 text-decoration-none'>";
-									
-									if(isset($data['logo'])) {
-										if($data['logo'] != "") { $logo = $data['logo'];
-										}else { $logo = CDN."images/blank-profile.png"; }
+						
+						$html[] = "<div class='listing-agent flex-grow-1'>";
+							$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['account_id'], "name" => str_replace(" ", "-", strtolower($data['agent_name']))])."' class='d-flex lh-1 text-reset p-0 text-decoration-none'>";
+								
+								if($data['logo'] != "") { $logo = $data['logo'];
+								}else { $logo = CDN."images/blank-profile.png"; }
 
-										$html[] = "<span class='avatar avatar-sm' data-thumb-image='".$logo."'></span>";
-									}
+								$html[] = "<span class='avatar avatar-sm' data-thumb-image='".$logo."'></span>";
+								
 
-									$html[] = "<div class='ps-2'>";
-										$html[] = "<div>".ucwords(strtolower($data['agent_name']))."</div>";
-										$html[] = "<div class='mt-1 small text-muted'>".$data['profession']."</div>";
-									$html[] = "</div>";
-								$html[] = "</a>";
-							$html[] = "</div>";
-						}
+								$html[] = "<div class='ps-2'>";
+									$html[] = "<div>".ucwords(strtolower($data['agent_name']))."</div>";
+									$html[] = "<div class='mt-1 small text-muted'>".$data['profession']."</div>";
+								$html[] = "</div>";
+							$html[] = "</a>";
+						$html[] = "</div>";
+						
 						
 
 						if($data['listing_type'] == 'general brokerage' && $data['offer'] != 'looking for') {

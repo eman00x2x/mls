@@ -15,11 +15,13 @@ namespace Library {
 			$user 	= $this->db_user;
 			$pass 	= $this->db_pass;
 
-			// Connect to the database
 			$this->link = mysqli_connect($host, $user, $pass);
+
+			// Connect to the database
 			$this->selectDb($db);
 			register_shutdown_function(array(&$this, 'close'));
-
+			
+			
 			/* unset($this->db_host); */
 			unset($this->db_name);
 			unset($this->db_user);

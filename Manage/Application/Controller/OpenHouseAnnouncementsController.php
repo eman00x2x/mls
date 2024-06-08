@@ -7,6 +7,12 @@ class OpenHouseAnnouncementsController extends \Admin\Application\Controller\Ope
     function __construct() {
         parent::__construct();
         $this->account_id = $this->session['account_id'];
+
+        if(!isset($this->session['privileges']['max_open_house_announcement']) || $this->session['privileges']['max_open_house_announcement'] == 0) {
+			$this->getLibrary("Factory")->setMsg("You do not have enough privileges to access open house announcement","warning");
+			response()->redirect(url("DashboardController@index"));
+		}
+        
     }
 
     function index($account_id = null) {

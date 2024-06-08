@@ -47,6 +47,23 @@ $html[] = "<div class='container-xl'>";
 
 						$html[] = "<div class='card-body'>";
 
+							if(in_array($_SESSION['user_logged']['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+								
+								$html[] = "<div class='row mb-4'>";
+									$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Posted By</label>";
+									$html[] = "<div class='col-sm-9'>";
+										$html[] = "<div class='d-flex text-reset gap-2'>";
+											$html[] = "<span class='avatar avatar' style='background-image: url(".$data['account']['logo'].")'></span>";
+											$html[] = "<div class=''>";
+												$html[] = "<span class='d-block'>".$data['account']['account_name']['firstname']." ".$data['account']['account_name']['middlename']." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix']."</span>";
+												$html[] = "<span class='d-block text-muted fs-12'>".$data['account']['profession']."</span>";
+											$html[] = "</div>";
+										$html[] = "</div>";
+									$html[] = "</div>";
+								$html[] = "</div>";
+
+							}
+
 							$html[] = "<div class='row mb-3'>";
 								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Subject</label>";
 								$html[] = "<div class='col-sm-9'>";
@@ -93,12 +110,25 @@ $html[] = "<div class='container-xl'>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
-							$html[] = "<div class='row mb-3'>";
-								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Announcement End</label>";
-								$html[] = "<div class='col-sm-9'>";
-									$html[] = "<span class='d-block p-2'>".date("d M Y", $data['ended_at'])."</span>";
+							if(in_array($_SESSION['user_logged']['account_type'], ["Administrator"])) {
+
+								$html[] = "<div class='row mb-3'>";
+									$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Announcement End at</label>";
+									$html[] = "<div class='col-sm-9'>";
+										$html[] = "<input type='date' name='ended_at' id='ended_at' value='".date("Y-m-d", $data['ended_at'])."' class='form-control' />";
+									$html[] = "</div>";
 								$html[] = "</div>";
-							$html[] = "</div>";
+
+							}else {
+
+								$html[] = "<div class='row mb-3'>";
+									$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Announcement End</label>";
+									$html[] = "<div class='col-sm-9'>";
+										$html[] = "<span class='d-block p-2'>".date("d M Y", $data['ended_at'])."</span>";
+									$html[] = "</div>";
+								$html[] = "</div>";
+
+							}
 
 						$html[] = "</div>";
 					$html[] = "</div>";

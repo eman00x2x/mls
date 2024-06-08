@@ -313,7 +313,6 @@ $html[] = "<div class='page-body mb-0'>";
 					$html[] = "<div class='sticky-top'>";
 						$html[] = "<div class='sidebar d-none d-md-block d-print-none'>";
 							$html[] = "<div class='card'>";
-
 								$html[] = "<div class='card-body agent-form'>";
 
 									$html[] = "<div class='inquiry-form-container'>";

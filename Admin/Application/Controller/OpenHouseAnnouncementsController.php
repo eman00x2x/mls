@@ -12,11 +12,6 @@ class OpenHouseAnnouncementsController extends \Main\Controller {
 		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->doc = $this->getLibrary("Factory")->getDocument();
 		$this->session = $this->getLibrary("SessionHandler")->get("user_logged");
-
-		/* if(!$this->session['privileges']['open_house_announcement']) {
-			$this->getLibrary("Factory")->setMsg("You do not have enough privileges to access open house announcement","warning");
-			response()->redirect(url("DashboardController@index"));
-		} */
 	}
 
 	function index($account_id = null) {
@@ -42,12 +37,26 @@ class OpenHouseAnnouncementsController extends \Main\Controller {
 		
 		$data = $open_house->getList();
 
+		if($data) {
+			$account = $this->getModel("Account");
+			
+			for($i=0; $i<count($data); $i++) {
+				$account->column['account_id'] = $data[$i]['account_id'];
+				$data[$i] = $account->getById();
+			}
+		}
+
 		$this->setTemplate("openHouse/open_house.php");
 		return $this->getTemplate($data, $open_house);
 		
 	}
 
-	function add() {
+	function add($account_id = 0) {
+
+		if(in_array($this->session['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+			$this->getLibrary("Factory")->setMsg("Administrator cannot create open house announcement", "warning");
+			response()->redirect(url("OpenHouseAnnouncementsController@index"));
+		}
 		
 		$this->doc->setTitle("New Open House Announcements");
 
@@ -75,6 +84,15 @@ class OpenHouseAnnouncementsController extends \Main\Controller {
 		");
 
 		$open_house = $this->getModel("OpenHouseAnnouncement");
+		$open_house->column['account_id'] = $account_id;
+		$open_house->select(" COUNT(announcement_id) as total_announcement ");
+		$data = $open_house->getByAccountId();
+
+		if($data['total_announcement'] >= $this->session['privileges']['max_open_house_announcement']) {
+			$this->getLibrary("Factory")->setMsg("Max open house announcement has been reached","warning");
+			response()->redirect(url("OpenHouseAnnouncementsController@index"));
+		}
+
 		$this->setTemplate("openHouse/add.php");
 		return $this->getTemplate(null, $open_house);
 		
@@ -84,12 +102,25 @@ class OpenHouseAnnouncementsController extends \Main\Controller {
 	
 	function edit($id) {
 
+		$open_house = $this->getModel("OpenHouseAnnouncement");
+		$open_house->column['announcement_id'] = $id;
+		$data = $open_house->getById();
+
+		$account_id = null;
+		if(in_array($this->session['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
+			$account = $this->getModel("Account");
+			$account->column['account_id'] = $data['account_id'];
+			$data['account'] = $account->getById();
+
+			$account_id = $data['account_id'];
+		}
+
 		$this->doc->setTitle("Update Open House Announcement");
 
 		$this->doc->addScriptDeclaration("
 			$(document).ready(function() {
 				$('#offcanvasEnd').on('shown.bs.offcanvas', function() {
-					$.get('".url("OpenHouseAnnouncementsController@searchListings")."', function(data) {
+					$.get('".url("OpenHouseAnnouncementsController@searchListings", ["account_id" => $account_id])."', function(data) {
 						$('#offcanvasEnd').html(data);
 					});
 				});
@@ -108,10 +139,6 @@ class OpenHouseAnnouncementsController extends \Main\Controller {
 				$('#offcanvasEnd .btn-close').trigger('click');
 			});
 		");
-
-		$open_house = $this->getModel("OpenHouseAnnouncement");
-		$open_house->column['announcement_id'] = $id;
-		$data = $open_house->getById();
 
 		if($data) {
 
@@ -132,6 +159,7 @@ class OpenHouseAnnouncementsController extends \Main\Controller {
 			$listings->column['account_id'] = $account_id;
 		}
 
+		$listings->and(" status = 1 ");
 		$data = $listings->getByAccountId();
 
 		$this->setTemplate("openHouse/searchListings.php");
@@ -164,6 +192,10 @@ class OpenHouseAnnouncementsController extends \Main\Controller {
 	function saveUpdate($id) {
 		
 		parse_str(file_get_contents('php://input'), $_POST);
+
+		if(isset($_POST['ended_at'])) {
+			$_POST['ended_at'] = strtotime($_POST['ended_at']);
+		}
 
 		$open_house = $this->getModel("OpenHouseAnnouncement");
 		$open_house->column['announcement_id'] = $id;

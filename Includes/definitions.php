@@ -33,6 +33,7 @@ define("DEFINITION", [
     "featured_ads" => "Total number of featured ad this account can create.",
     "handshake_limit" => "Maximum number of handshake can initiate.",
     "comparative_analysis_access" => "Allow this user to access comparative analysis table.",
+    "max_open_house_announcement" => "Total number of Open House this account can add.",
 
     /** USER PERMISSIONS */
     "ADMIN" => [

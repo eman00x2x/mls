@@ -73,6 +73,8 @@
 											<a href='<?php echo url("ArticlesController@index"); ?>' class='dropdown-item'><i class='ti ti-edit me-1'></i> Articles</a>
 										<?php } ?>
 
+										<a href='<?php echo url("OpenHouseAnnouncementsController@index"); ?>' class='dropdown-item'><i class='ti ti-speakerphone me-1'></i> Open House Announcements</a>
+
 									</div>
 								</li>
 
