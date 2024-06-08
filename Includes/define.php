@@ -267,8 +267,8 @@ define("PREMIUM_SCRIPTS",[
     "max_users" => 1,
 	"mls_access" => 0,
     "chat_access" => 0,
-    /* "display_ads" => 0, */
     "featured_ads" => 0,
 	"handshake_limit" => 1,
-	"comparative_analysis_access" => 0
+	"comparative_analysis_access" => 0,
+	"max_open_house_announcement" => (int) 1
 ]);

@@ -42,7 +42,9 @@ class OpenHouseAnnouncementsController extends \Main\Controller {
 			
 			for($i=0; $i<count($data); $i++) {
 				$account->column['account_id'] = $data[$i]['account_id'];
-				$data[$i] = $account->getById();
+				$account_data = $account->getById();
+
+				$data[$i] = array_merge($data[$i], $account_data);
 			}
 		}
 

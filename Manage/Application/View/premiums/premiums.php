@@ -109,10 +109,10 @@ $html[] = "<div class='page-body'>";
 			if((isset($data['premiums']['package']) && $data['premiums']['package']) && $data['subscription'] === false) {
 				$html[] = "<h3 class='text-center text-white'>Available Package</h3>";
 				$html[] = "<div class='mb-5' style='overflow:auto; white-space: nowrap;'>";
-					$html[] = "<div class='d-flex flex-row flex-nowrap justify-content-center '>";
+					$html[] = "<div class='d-flex flex-row flex-wrap justify-content-center '>";
 						for($i=0; $i<count($data['premiums']['package']); $i++) {
 							
-							$html[] = "<div class='mx-2' style='width:300px; white-space: wrap;'>";
+							$html[] = "<div class='mx-2 mb-3' style='width:300px; white-space: wrap;'>";
 								$html[] = "<div class='card card-md text-dark ".($data['premiums']['package'][$i]['name'] == "Silver Package" ? "bg-success-lt" : "")."'>";
 
 									if($data['premiums']['package'][$i]['name'] == "Silver Package") {
@@ -122,7 +122,7 @@ $html[] = "<div class='page-body'>";
 									}
 
 									$html[] = "<div class='card-body text-center'>";
-										$html[] = "<div class='mb-3' style='min-height:250px; height:250px;'>";
+										$html[] = "<div class='mb-3' style='min-height:250px; height:350px;'>";
 											$html[] = "<div class='text-muted fw-medium'>".$data['premiums']['package'][$i]['name']."</div>";
 											$html[] = "<div class='display-5 fw-bold my-3'>&#8369;".$data['premiums']['package'][$i]['cost']."</div>";
 											$html[] = "<ul class='list-unstyled lh-lg'>";

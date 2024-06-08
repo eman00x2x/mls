@@ -1538,6 +1538,22 @@ class ListingsController extends \Main\Controller {
 
 		$url = $_GET['url'];
 
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		// don't download content
+		curl_setopt($ch, CURLOPT_NOBODY, 1);
+		curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+		$result = curl_exec($ch);
+		curl_close($ch);
+
+		if($result !== false){
+			$url = $_GET['url'];
+		}else {
+			$url = CDN."images/item_default.jpg";
+		}
+
 		/* if(isset($_GET['url']) && $_GET['url'] != "") {
 			$filename = basename($_GET['url']);
 			$original_path = ROOT."/Cdn/images/listings";

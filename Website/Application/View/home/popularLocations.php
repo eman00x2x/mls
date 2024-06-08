@@ -15,9 +15,11 @@ $html[] = "<div class='pb-5 my-5'>";
 				$html[] = "<div class='card' title='".$data[$i]['city']."'>";
 					$html[] = "<div class='card-body p-3'>";
 
-						if(!file_exists(ROOT."CDN/images/popular-locations/popular-location-image-$c.jpg")) { $c = 1; }
-
-						$image = CDN."images/popular-locations/popular-location-image-$c.jpg";
+						if(!file_exists(ROOT."/Cdn/images/popular-locations/popular-location-image-$c.jpg")) { 
+							$image = CDN."images/popular-locations/popular-location-image-1.jpg";
+						}else {
+							$image = CDN."images/popular-locations/popular-location-image-$c.jpg";
+						}
 
 						$html[] = "<div class='d-flex gap-3'>";
 							$html[] = "<div class='avatar bg-blue' style='background-image: url(".$image.")'></div>";

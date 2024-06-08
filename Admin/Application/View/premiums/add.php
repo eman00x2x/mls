@@ -130,9 +130,9 @@ $html[] = "<form id='form' action='' method='POST'>";
 					
 						$html[] = "<div class='card-body'>";
 							
-							foreach(PREMIUM_SCRIPTS as $premium => $val) {
+							foreach(ACCOUNT_PRIVILEGES as $premium => $val) {
 								$html[] = "<div class='mb-3 row'>";
-									$html[] = "<label class='col-sm-3 col-form-label'>$premium</label>";
+									$html[] = "<label class='col-sm-3 col-form-label'>".ucwords(str_replace("_"," ", $premium))."</label>";
 									$html[] = "<div class='col-sm-9'>";
 										$html[] = "<input type='text' name='script[$premium]' value='$val' class='form-control' />";
 									$html[] = "</div>";
