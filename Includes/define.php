@@ -259,7 +259,8 @@ define("ACCOUNT_PRIVILEGES",[
     "featured_ads" => (int) 0,
     "handshake_limit" => (int) 1,
 	"comparative_analysis_access" => (int) 0,
-	"max_open_house_announcement" => (int) 1
+	"max_open_house_announcement" => (int) 1,
+	"api_access" => (int) 1
 ]);
 
 define("PREMIUM_SCRIPTS",[
@@ -270,5 +271,6 @@ define("PREMIUM_SCRIPTS",[
     "featured_ads" => 0,
 	"handshake_limit" => 1,
 	"comparative_analysis_access" => 0,
-	"max_open_house_announcement" => (int) 1
+	"max_open_house_announcement" => (int) 1,
+	"api_access" => (int) 1
 ]);
