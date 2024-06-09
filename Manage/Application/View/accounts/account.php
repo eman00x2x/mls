@@ -135,9 +135,7 @@ $html[] = "<div class='page-body'>";
 
                                         $html[] = "<div class='row g-3 align-items-center mb-3'>";
 											$html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Profession</label></div>";
-											$html[] = "<div class='col-md-9 col-6'>";
-												$html[] = "<input type='text' name='profession' id='profession' value='".$data['profession']."' class='form-control-plaintext' />";
-											$html[] = "</div>";
+                                            $html[] = "<div class='col-md-9 col-6'>".$data['profession']."</div>";
 										$html[] = "</div>";
 
 										$html[] = "<div class='row g-3 align-items-center mb-3'>";

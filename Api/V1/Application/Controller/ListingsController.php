@@ -54,25 +54,23 @@ class ListingsController extends \Api\V1\Application\Controller\AuthenticatorCon
         $listings = $this->getModel("Listing");
         $listings->column['listing_id'] = $id;
         $listings
-            ->select(" listing_id as id, thumb_img, title, foreclosed, category, offer, floor_area, lot_area, bedroom, bathroom, parking, address,
+            ->select(" listing_id as id, thumb_img, title, listing_type, foreclosed, category, offer, floor_area, lot_area, bedroom, bathroom, parking as car_spaces, address,
                 price, reservation, payment_details, video, tags, amenities, 
                 CASE 
                     WHEN status = 0 THEN 'Expired'
-                    WHEN status = 1 THEN 'Active'
+                    WHEN status = 1 THEN 'Available'
                     WHEN status = 2 THEN 'Sold'
                     WHEN status = 3 THEN 'Removed'
                 END as status, long_desc, 
                 JSON_EXTRACT(other_details, '$.authority_type') as authority_type, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(other_details, '$.com_share')), '%') as com_share,
                 post_score, modified_at, created_at
             ")
-                ->and(" account_id  = ". $this->account['account_id']);
+                ->and(" account_id  = ". $this->account['account_id']." AND status IN(0, 1, 2)");
 
         $data = $listings->getById();
         
         if($data) {
 
-            $data['car_spaces'] = isset($data['parking']) ? $data['parking'] : [];
-            
             $images = $this->getModel("ListingImage");
             $images->column['listing_id'] = $id;
             $images->select(" url ");
