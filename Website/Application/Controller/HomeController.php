@@ -350,7 +350,7 @@ class HomeController extends \Main\Controller {
 		}else {
 			echo json_encode([
 				"status" => "success",
-				"content" => ""
+				"content" => " "
 			]);
 		}
 
@@ -366,19 +366,20 @@ class HomeController extends \Main\Controller {
 		$articles->page['limit'] = 4;
 		$data['articles'] = $articles->getList();
 
-		if($data) {
-			$this->setTemplate("home/latestArticles.php");
-			$data = $this->getTemplate($data, $articles);
-		
+		$this->setTemplate("home/latestArticles.php");
+		$html = $this->getTemplate($data, $articles);
+
+		if($data['articles']) {
+			
 			echo json_encode([
 				"status" => "success",
-				"content" => $data
+				"content" => $html
 			]);
 
 		}else {
 			echo json_encode([
 				"status" => "success",
-				"content" => ""
+				"content" => " "
 			]);
 		}
 

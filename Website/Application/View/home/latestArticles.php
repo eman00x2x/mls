@@ -1,15 +1,17 @@
 <?php
 
-$html[] = "<div class='pb-5 my-5'>";
+$html[] = "";
 
-	$html[] = "<div class='text-center pb-3'>";
-		$html[] = "<h2 class='mb-0 display-5 text-highlight'>Insightful Articles</h2>";
-		$html[] = "<p>Navigating Real Estate with Informed Knowledge</p>";
-	$html[] = "</div>";
+if($data['articles']) {
+	$html[] = "<div class='pb-5 my-5'>";
 
-	$html[] = "<div class='mt-3'>";
-		
-		if($data['articles']) {
+		$html[] = "<div class='text-center pb-3'>";
+			$html[] = "<h2 class='mb-0 display-5 text-highlight'>Insightful Articles</h2>";
+			$html[] = "<p>Navigating Real Estate with Informed Knowledge</p>";
+		$html[] = "</div>";
+
+		$html[] = "<div class='mt-3'>";
+			
 			$html[] = "<div class='row'>";
 			for($i=0; $i<count($data['articles']); $i++) {
 				$html[] = "<div class='col-lg-3 col-md-3 col-sm-12 '>";
@@ -28,13 +30,12 @@ $html[] = "<div class='pb-5 my-5'>";
 				$html[] = "</div>";
 			}
 			$html[] = "</div>";
-		}else {
-			$html[] = "<p>No article posted.</p>";
-		}
+			
 
-		$html[] = "<div class='text-center mt-4'>";
-			$html[] = "<a href='".url("ArticlesController@index")."' class='btn btn-primary'>View all articles</a>";
+			$html[] = "<div class='text-center mt-4'>";
+				$html[] = "<a href='".url("ArticlesController@index")."' class='btn btn-primary'>View all articles</a>";
+			$html[] = "</div>";
+			
 		$html[] = "</div>";
-		
 	$html[] = "</div>";
-$html[] = "</div>";
+}

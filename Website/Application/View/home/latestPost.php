@@ -1,16 +1,15 @@
 <?php
+if($data['listings']) {
+	$html[] = "<div class='pb-5 my-5'>";
 
-$html[] = "<div class='pb-5 my-5'>";
+		$html[] = "<div class='text-center pb-3'>";
+			$html[] = "<h2 class='mb-0 display-5 text-blue'>Latest Postings</h2>";
+			$html[] = "<p>Stay Updated with Our Recent Properties</p>";
+		$html[] = "</div>";
 
-	$html[] = "<div class='text-center pb-3'>";
-		$html[] = "<h2 class='mb-0 display-5 text-blue'>Latest Postings</h2>";
-		$html[] = "<p>Stay Updated with Our Recent Properties</p>";
-	$html[] = "</div>";
-
-	$html[] = "<div class='p-featured mt-3'>";
-		$html[] = "<div class='row row-deck row-cards'>";
-			if($data['listings']) {
-
+		$html[] = "<div class='p-featured mt-3'>";
+			$html[] = "<div class='row row-deck row-cards'>";
+				
 				for($i=0; $i<count($data['listings']); $i++) {
 					$html[] = "<div class='col-md-5 col-lg-3 col-auto '>";
 						$html[] = "<div class='card property-container mb-3' title='".$data['listings'][$i]['title']."'>";
@@ -67,7 +66,8 @@ $html[] = "<div class='pb-5 my-5'>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 				}
-			}
+				
+			$html[] = "</div>";
 		$html[] = "</div>";
 	$html[] = "</div>";
-$html[] = "</div>";
+}

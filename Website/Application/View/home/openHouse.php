@@ -1,15 +1,15 @@
 <?php
 
-$html[] = "<div class='pb-5 my-5'>";
+if($data) {
+	$html[] = "<div class='pb-5 my-5'>";
 
-	$html[] = "<div class='text-center pb-3'>";
-		$html[] = "<h2 class='mb-0 display-5 text-highlight'>Open House</h2>";
-		$html[] = "<p>Exploring Homes: Inside Open House</p>";
-	$html[] = "</div>";
+		$html[] = "<div class='text-center pb-3'>";
+			$html[] = "<h2 class='mb-0 display-5 text-highlight'>Open House</h2>";
+			$html[] = "<p>Exploring Homes: Inside Open House</p>";
+		$html[] = "</div>";
 
-	$html[] = "<div class='mt-3'>";
-		
-		if($data) {
+		$html[] = "<div class='mt-3'>";
+			
 			$html[] = "<div class='row'>";
 			for($i=0; $i<count($data); $i++) {
 				$html[] = "<div class='col-lg-3 col-md-3 col-sm-12 '>";
@@ -37,13 +37,11 @@ $html[] = "<div class='pb-5 my-5'>";
 				$html[] = "</div>";
 			}
 			$html[] = "</div>";
-		}else {
-			$html[] = "<p>No article posted.</p>";
-		}
-
-		$html[] = "<div class='text-center mt-4'>";
-			$html[] = "<a href='".url("OpenHouseAnnouncementsController@index")."' class='btn btn-primary'>View all Open Houses</a>";
+			
+			$html[] = "<div class='text-center mt-4'>";
+				$html[] = "<a href='".url("OpenHouseAnnouncementsController@index")."' class='btn btn-primary'>View all Open Houses</a>";
+			$html[] = "</div>";
+			
 		$html[] = "</div>";
-		
 	$html[] = "</div>";
-$html[] = "</div>";
+}
