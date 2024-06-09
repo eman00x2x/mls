@@ -53,6 +53,7 @@ $html[] = "<div class='page-body'>";
 			}
 
             $html[] = "<input type='hidden' name='broker_prc_license_id' value='".$data['broker_prc_license_id']."' />";
+            $html[] = "<input type='hidden' name='email' value='".$data['email']."' />";
 
             $html[] = "<div class='row'>";
                 $html[] = "<div class='col-md-12 col-12 mb-5'>";

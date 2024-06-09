@@ -197,7 +197,7 @@ class AccountsController extends \Main\Controller {
 
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
-			$local_boards_json = json_encode(LOCAL_BOARDS);
+			const local_boards = ".$local_boards_json.";
 
 			$(document).ready(function() {
 				(async () => {
@@ -208,6 +208,9 @@ class AccountsController extends \Main\Controller {
 					$('#api_key').val(uuidv4());
 					$('#pin').val(rcg());
 				})();
+			});
+
+			$(document).on('change', '#board_region', function() {
 
 				let region = $('#board_region option:selected').val();
 
@@ -502,8 +505,7 @@ class AccountsController extends \Main\Controller {
 
 				$user->save($data['user']['user_id'],array(
 					"photo" => $_POST['logo'],
-					"name" => $_POST['firstname']." ".$_POST['lastname'],
-					"email" => $_POST['email']
+					"name" => $_POST['firstname']." ".$_POST['lastname']
 				));
 			}
 
@@ -784,6 +786,8 @@ class AccountsController extends \Main\Controller {
 			});
 
 		"));
+
+		$filters[] = " status = 'active' ";
 
 		if(isset($_GET['local_board_name']) && $_GET['local_board_name'] != "") {
 			$filters[] = " local_board_name IN('".implode("','", $_GET['local_board_name'])."') ";

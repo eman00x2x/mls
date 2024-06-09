@@ -312,16 +312,18 @@ $html[] = "<div class='page-body'>";
 					$html[] = "</div>";
 					/** AMENITIES END */
 
+					switch($data['listing']['offer']) {
+						case "for sale": $offer_price_label = "Selling Price"; break;
+						case "for rent": $offer_price_label = "Lease Price"; break;
+						case "looking for": $offer_price_label = "Client Budget"; break;
+					}
+
 					/** PAYMENT DETAILS */
 					$html[] = "<div class='price mt-5'>";
 						$html[] = "<h3 id='payment_details'><i class='ti ti-wallet me-1'></i> Payment Details</h3>";
 						$html[] = "<table class='table'>";
 						$html[] = "<tr>";
-							if($data['listing']['offer'] != "looking for") {
-								$html[] = "<td class='w-50'>Selling Price</td>";
-							}else {
-								$html[] = "<td class='w-50'>Buyers Budget</td>";
-							}
+							$html[] = "<td class='w-50'>$offer_price_label</td>";
 							$html[] = "<td>&#8369;".number_format($data['listing']['price'],0)."</td>";
 						$html[] = "</tr>";
 

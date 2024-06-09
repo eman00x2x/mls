@@ -177,12 +177,18 @@ $html[] = "<div class='page-body mb-0'>";
 						$html[] = "</div>";
 						/** AMENITIES END */
 
+						switch($data['offer']) {
+							case "for sale": $offer_price_label = "Selling Price"; break;
+							case "for rent": $offer_price_label = "Lease Price"; break;
+							case "looking for": $offer_price_label = "Client Budget"; break;
+						}
+
 						/** PAYMENT DETAILS */
 						$html[] = "<div class='price mt-5'>";
 							$html[] = "<h3 id='payment_details'><i class='ti ti-wallet me-1'></i> Payment Details</h3>";
 							$html[] = "<table class='table'>";
 							$html[] = "<tr>";
-								$html[] = "<td class='w-50'>Selling Price</td>";
+								$html[] = "<td class='w-50'>".$offer_price_label."</td>";
 								$html[] = "<td>&#8369;".number_format($data['price'],0)."</td>";
 							$html[] = "</tr>";
 							$html[] = "<tr>";
