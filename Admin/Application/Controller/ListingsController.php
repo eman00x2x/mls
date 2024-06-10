@@ -1089,6 +1089,7 @@ class ListingsController extends \Main\Controller {
 		if(isset($_GET['search'])) {
 			$this->getKeywordSearchFilters($_GET['search']);
 			$search[] = $_GET['search'];
+			$model->page['uri']['search'] = $_GET['search'];
 		}
 
 		if(isset($_GET['offer']) && $_GET['offer'] == "buy") {
