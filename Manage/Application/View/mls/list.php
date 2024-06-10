@@ -47,6 +47,13 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<h3>Filter Results</h3>";
 								$html[] = "<a href='".url("MlsController@MLSIndex")."' class='text-decoration-none'><i class='ti ti-trash'></i> Clear filter</a>";
 							$html[] = "</div>";
+
+							$html[] = "<div class='mb-4'>";
+								$html[] = "<div class='mb-3'>";
+									$html[] = "<label class='form-label text-muted'>Keyword Search</label>";
+									$html[] = "<input type='text' name='search' id='search' value='' class='form-control' />";
+								$html[] = "</div>";
+							$html[] = "</div>";
 						
 							$html[] = "<div class='mb-4'>";
 								$html[] = "<div class='border p-3'>";

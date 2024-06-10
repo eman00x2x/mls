@@ -341,6 +341,7 @@ class AccountsController extends \Main\Controller {
 		$_POST['status'] = "pending_activation";
 
 		$_POST['account_name'] = json_encode([
+			"nickname" => (isset($_POST['nickname']) ? $_POST['nickname'] : ''),
 			"prefix" => (isset($_POST['prefix']) ? $_POST['prefix'] : ''),
 			"firstname" => $_POST['firstname'],
 			"middlename" => (isset($_POST['middlename']) ? $_POST['middlename'] : ''),
@@ -531,6 +532,7 @@ class AccountsController extends \Main\Controller {
 			}
 
 			$_POST['account_name'] = json_encode([
+				"nickname" => (isset($_POST['nickname']) ? $_POST['nickname'] : $data['account_name']['nickname']),
 				"prefix" => (isset($_POST['prefix']) ? $_POST['prefix'] : $data['account_name']['prefix']),
 				"firstname" => (isset($_POST['firstname']) ? $_POST['firstname'] : $data['account_name']['firstname']),
 				"middlename" => (isset($_POST['middlename']) ? $_POST['middlename'] : $data['account_name']['middlename']),

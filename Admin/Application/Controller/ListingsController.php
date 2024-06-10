@@ -1627,4 +1627,16 @@ class ListingsController extends \Main\Controller {
 
 	}
 	
+	protected function getKeywordSearchFilters($keywords) {
+		
+		$listings = $this->getModel("Listing");
+		$categories = $listings->categories;
+
+		foreach($categories as $key => $val) {
+			if(stripos($keywords, $val) !== false) {
+				
+			}
+		}
+
+	}
 }

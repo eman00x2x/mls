@@ -56,18 +56,20 @@ $html[] = "</div>";
 
 $html[] = "<div class='mb-4'>";
 	$html[] = "<label class='form-label'>Name</label>";
-	$html[] = "<div class='mb-3 d-none'>";
-		$html[] = "<div class='form-floating mb-3 '>";
-			$html[] = "<input type='text' name='prefix' id='prefix' value='' class='form-control'  />";
-			$html[] = "<label for='prefix'>Prefix</label>";
-		$html[] = "</div>";
-	$html[] = "</div>";
 	$html[] = "<div class='mb-3'>";
 		$html[] = "<div class='form-floating mb-3'>";
 			$html[] = "<input type='text' name='firstname' id='firstname' value='' class='form-control'  />";
 			$html[] = "<label for='firstname'>First Name</label>";
 		$html[] = "</div>";
 	$html[] = "</div>";
+
+	$html[] = "<div class='mb-3 d-none'>";
+		$html[] = "<div class='form-floating mb-3 '>";
+			$html[] = "<input type='text' name='nickname' id='nickname' value='' class='form-control'  />";
+			$html[] = "<label for='nickname'>Nick Name</label>";
+		$html[] = "</div>";
+	$html[] = "</div>";
+
 	$html[] = "<div class='mb-3'>";
 		$html[] = "<div class='form-floating mb-3  d-none'>";
 			$html[] = "<input type='text' name='middlename' id='middlename' value='' class='form-control'  />";

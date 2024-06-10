@@ -240,8 +240,8 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<div class='mb-3'>";
 										$html[] = "<div class='form-floating mb-3 '>";
-											$html[] = "<input type='text' name='prefix' id='prefix' value='".$data['account_name']['prefix']."' class='form-control'  />";
-											$html[] = "<label for='prefix'>Prefix</label>";
+											$html[] = "<input type='text' name='nickname' id='nickname' value='".$data['account_name']['nickname']."' class='form-control'  />";
+											$html[] = "<label for='nickname'>Nick Name</label>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 

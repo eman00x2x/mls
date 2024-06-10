@@ -212,8 +212,8 @@ $html[] = "<form id='form' action='' method='POST'>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<div class='mb-3'>";
 										$html[] = "<div class='form-floating mb-3 '>";
-											$html[] = "<input type='text' name='prefix' id='prefix' value='' class='form-control'  />";
-											$html[] = "<label for='prefix'>Prefix</label>";
+											$html[] = "<input type='text' name='nickname' id='nickname' value='' class='form-control'  />";
+											$html[] = "<label for='nickname'>Nick Name</label>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 

@@ -149,14 +149,16 @@ $html[] = "<div class='page-body'>";
                                             $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Name</label></div>";
                                             $html[] = "<div class='col-md-9 col-6'>";
                                                 $html[] = "<div class='row gy-2 gx-3 align-items-center'>";
-                                                    /* $html[] = "<div class='col-md-1 col-lg-2 col-12'>";
-                                                        $html[] = "<label class='form-label text-muted'>Prefix</label>";
-                                                        $html[] = "<input type='text' name='prefix' id='prefix' value='".$data['account_name']['prefix']."' class='me-2 form-control' placeholder='Prefix' />";
-                                                    $html[] = "</div>"; */
                                                     $html[] = "<div class='col-md-1 col-lg-3 col-12'>";
                                                         $html[] = "<label class='form-label text-muted'>First Name</label>";
                                                         $html[] = "<input type='text' name='firstname' id='firstname' value='".$data['account_name']['firstname']."' class='me-2 form-control' placeholder='First name' />";
                                                     $html[] = "</div>";
+
+                                                    $html[] = "<div class='col-md-1 col-lg-2 col-12'>";
+                                                        $html[] = "<label class='form-label text-muted'>Nick Name</label>";
+                                                        $html[] = "<input type='text' name='nickname' id='nickname' value='".$data['account_name']['nickname']."' class='me-2 form-control' placeholder='Prefix' />";
+                                                    $html[] = "</div>";
+
                                                     $html[] = "<div class='col-md-1 col-lg-3 col-12'>";
                                                         $html[] = "<label class='form-label text-muted'>Middle Name</label>";
                                                         $html[] = "<input type='text' name='middlename' id='middlename' value='".$data['account_name']['middlename']."' class='me-2 form-control' placeholder='Middle name' />";
