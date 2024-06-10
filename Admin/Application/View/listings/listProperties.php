@@ -133,9 +133,8 @@ function properties($data, $model) {
 								if($data['logo'] != "") { $logo = $data['logo'];
 								}else { $logo = CDN."images/blank-profile.png"; }
 
-								$html[] = "<span class='avatar avatar-sm' data-thumb-image='".$logo."'></span>";
+								$html[] = "<span class='avatar avatar-sm' data-thumb-image='".$logo."' ></span>";
 								
-
 								$html[] = "<div class='ps-2'>";
 									$html[] = "<div>".ucwords(strtolower($data['agent_name']))."</div>";
 									$html[] = "<div class='mt-1 small text-muted'>".$data['profession']."</div>";

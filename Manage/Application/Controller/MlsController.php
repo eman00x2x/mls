@@ -72,6 +72,12 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 				window.location = '".$target."?filter=' + btoa(formData);
 			});
 
+			$(document).on('keypress', '#keyword_search', function(e) {
+				if(e.keycode == 13 || e.which == 13) {
+					$('.btn-filter').trigger('click');
+				}
+			});
+
 			$(document).on('click','.btn-filter-form',function() {
 				
 				$('.offcanvas-end').html('');
@@ -155,8 +161,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 
 		$address = $this->getModel("Address");
 		$listings = $this->getModel("Listing");
-		$listings->address = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));
-
+		
 		$uri['offer'] = !isset($uri['offer']) ? "for sale" : $uri['offer'];
 		
 		$listings->page['limit'] = 20;
@@ -176,6 +181,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		];
 
 		$response = $this->listProperties($listings, $filters);
+		$listings->address = $address->addressSelection((isset($_GET['address']) ? $_GET['address'] : null));
 
 		$this->setTempalteBasePath(ROOT."/Admin");
 		$this->setTemplate("listings/listProperties.php");

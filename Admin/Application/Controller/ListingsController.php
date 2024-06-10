@@ -1086,6 +1086,11 @@ class ListingsController extends \Main\Controller {
 
 	function listProperties(\Main\Model\ListingModel $model, $filters = []) {
 
+		if(isset($_GET['search'])) {
+			$this->getKeywordSearchFilters($_GET['search']);
+			$search[] = $_GET['search'];
+		}
+
 		if(isset($_GET['offer']) && $_GET['offer'] == "buy") {
 			$filters[] = " offer = 'for sale'";
 			$model->page['uri']['offer'] = "for sale";
@@ -1630,18 +1635,77 @@ class ListingsController extends \Main\Controller {
 	protected function getKeywordSearchFilters($keywords) {
 		
 		$listings = $this->getModel("Listing");
-		$categories = $listings->categories;
+		$categories = $listings->categories();
 
-		foreach($categories as $key => $val) {
-			if(stripos($keywords, $val) !== false) {
-				$page['uri']['category'] = $val;
-				break;
+		foreach($categories as $key => $collections) {
+			foreach($collections as $x) {
+				if(stripos($keywords, $x) !== false) {
+					$_GET['category'] = $x; 
+					break;
+				}
 			}
 		}
 
-		
+		$new_collections = [
+			"condo" => "Condominium",
+			"house" => "House and Lot",
+			"lot" => "Residential Lot"
+		];
 
-		return $page;
+		foreach($new_collections as $x => $category) {
+			if(stripos($keywords, $x) !== false) {
+				$_GET['category'] = $category;
+			}
+		}
+
+		$offers = [
+			"for sale" => "for sale",
+			"for rent" => "for rent",
+			"looking for" => "looking for",
+			"for lease" => "for rent",
+			"rental" => "for rent",
+			"renting" => "for rent",
+			"sale" => "for sale",
+			"wanted to buy" => "looking for",
+			"want to buy" => "looking for"
+		];
+
+		foreach($offers as $x => $offer) {
+			if(stripos($keywords, $x) !== false) {
+				$_GET['offer'] = $offer;
+			}
+		}
+
+		$locations = [
+			"bgc" => [
+				"region" => "NCR",
+				"province" => "Metro Manila",
+				"municipality" => "Taguig City",
+				"barangay" => "Fort Bonifacio"
+			],
+			"qc" => [
+				"region" => "NCR",
+				"province" => "Metro Manila",
+				"municipality" => "Quezon City"
+			],
+			"pasig" => [
+				"region" => "NCR",
+				"province" => "Metro Manila",
+				"municipality" => "Pasig City"
+			],
+			"tiger city" => [
+				"region" => "NCR",
+				"province" => "Metro Manila",
+				"municipality" => "Mandaluyong City"
+			]
+		];
+		
+		foreach($locations as $x => $address) {
+			if(stripos($keywords, $x) !== false) {
+				$_GET['address'] = $address;
+			}
+		}
 
 	}
+
 }

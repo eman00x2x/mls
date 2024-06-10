@@ -51,7 +51,7 @@ $html[] = "<div class='page-body'>";
 							$html[] = "<div class='mb-4'>";
 								$html[] = "<div class='mb-3'>";
 									$html[] = "<label class='form-label text-muted'>Keyword Search</label>";
-									$html[] = "<input type='text' name='search' id='search' value='' class='form-control' />";
+									$html[] = "<input type='text' name='search' id='keyword_search' value='' class='form-control' />";
 								$html[] = "</div>";
 							$html[] = "</div>";
 						
