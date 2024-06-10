@@ -292,7 +292,7 @@ $html[] = "<div class='page-body'>";
 						$html[] = "</div>";
 					$html[] = "</div>";
 
-                    $html[] = "<div class='mb-2 description ' style='max-height: 300px; overflow: hidden;'>";
+                    $html[] = "<div class='mb-2 description ' style='max-height: 300px; overflow: auto;'>";
 						$html[] = "<h3 id='description'><i class='ti ti-file-description me-1'></i> Description</h3>";
 						$html[] = $data['listing']['long_desc'];
 					$html[] = "</div>";

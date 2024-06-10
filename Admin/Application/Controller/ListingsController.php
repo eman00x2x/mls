@@ -638,6 +638,14 @@ class ListingsController extends \Main\Controller {
 			$account->column['account_id'] = $data['listing']['account_id'];
 			$data['account'] = $account->getById();
 
+			/** REMOVE CONTACT INFO AND NAME FROM DESCRIPTION OF LISTING OWNER */
+			$data['listing']['long_desc'] = removePhoneNumberFromString($data['listing']['long_desc'], "");
+			$data['listing']['long_desc'] = removeEmailFromString($data['listing']['long_desc'], "");
+			$data['listing']['long_desc'] = removeUrlFromString($data['listing']['long_desc'], "");
+			$data['listing']['long_desc'] = str_ireplace($data['account']['account_name'], "", $data['listing']['long_desc']);
+			$data['listing']['long_desc'] = str_ireplace($data['account']['real_estate_license_number'], "", $data['listing']['long_desc']);
+			/** END REMOVAL */
+
 			$listingImage = $this->getModel("ListingImage");
 			$listingImage->page['limit'] = 100;
 			$listingImage->column['listing_id'] = $listing_id;
@@ -666,7 +674,7 @@ class ListingsController extends \Main\Controller {
 			}
 
 			$this->setTemplate("listings/view.php");
-			return $this->getTemplate($data,$listing);
+			return $this->getTemplate($data, $listing);
 		}
 
 		$this->response(404);

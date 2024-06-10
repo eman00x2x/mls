@@ -189,3 +189,18 @@ function checkRemoteFile($url) {
     }
     
 }
+
+function removePhoneNumberFromString($string, $replacement){
+    $pattern = "/([0-9]+[\- ]?[0-9]+){4,}/";
+    return preg_replace($pattern, $replacement, $string);
+}
+
+function removeEmailFromString($string, $replacement) {
+    $pattern = "/[^@\s]*@[^@\s]*\.[^@\s]*/";
+    return preg_replace($pattern, $replacement, $string);
+}
+
+function removeUrlFromString($string, $replacement) {
+    $pattern = "/[a-zA-Z]*[:\/\/]*[A-Za-z0-9\-_]+\.+[A-Za-z0-9\.\/%&=\?\-_]+/i";
+    return preg_replace($pattern, $replacement, $string);
+}

@@ -325,6 +325,7 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 		}else {
 			$listing->and(" display = 1 AND is_website = 1 ");
 		}
+
 		$data = $listing->getByName();
 
 		if($data) {
@@ -335,23 +336,23 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			}
 
 			$account = $this->getModel("Account");
+			$account->column['account_id'] = $data['account_id'];
+			$account_data = $account->getById();
+			$data['listing_owner'] = $account_data;
 
 			/** HANDSHAKED LISTINGS SHOW REQUESTOR DATA */
 			if(isset($_GET['ref'])) {
 				$ref_id = base64_decode($_GET['ref']);
 				$account->column['account_id'] = $ref_id;
 				$account_data = $account->getById();
-
-				/** INVALID REQUESTOR ID */
-				if($account_data === false) {
-					$account->column['account_id'] = $data['account_id'];
-					$account_data = $account->getById();
-				}
-
-			}else {
-				$account->column['account_id'] = $data['account_id'];
-				$account_data = $account->getById();
 			}
+
+			/** REMOVE CONTACT INFO AND NAME FROM DESCRIPTION OF LISTING OWNER */
+			$data['long_desc'] = removePhoneNumberFromString($data['long_desc'], "");
+			$data['long_desc'] = removeEmailFromString($data['long_desc'], "");
+			$data['long_desc'] = removeUrlFromString($data['long_desc'], "");
+			$data['long_desc'] = str_ireplace($data['listing_owner']['account_name'], "", $data['long_desc']);
+			$data['long_desc'] = str_ireplace($data['listing_owner']['real_estate_license_number'], "", $data['long_desc']);
 
 			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 

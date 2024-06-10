@@ -123,6 +123,7 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 											$html[] = "<div class='form-group mb-3'>";
 												$html[] = "<label class='form-label text-muted'>Description</label>";
 												$html[] = "<textarea id='snow-container' name='long_desc' class='form-control'></textarea>";
+												$html[] = "<span class='form-hint mt-3'>Please note that contact numbers, email addresses, names, and links are automatically removed.</span>";
 											$html[] = "</div>";
 
 										$html[] = "</div>";
@@ -687,11 +688,11 @@ $html[] = "<script type='text/javascript'>";
 			height: 500,
 			menubar: false,
 			plugins: [
-				'advlist autolink lists link charmap print preview anchor',
+				'advlist lists charmap print preview anchor',
 				'searchreplace visualblocks code fullscreen',
 				'insertdatetime media table paste code wordcount'
 			],
-			toolbar: 'link | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat code ',
+			toolbar: 'bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat code ',
 			content_css: [
 				'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
 				'".CDN."tabler/dist/css/tabler.min.css',
