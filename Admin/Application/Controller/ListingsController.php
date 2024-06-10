@@ -1634,9 +1634,14 @@ class ListingsController extends \Main\Controller {
 
 		foreach($categories as $key => $val) {
 			if(stripos($keywords, $val) !== false) {
-				
+				$page['uri']['category'] = $val;
+				break;
 			}
 		}
+
+		
+
+		return $page;
 
 	}
 }
