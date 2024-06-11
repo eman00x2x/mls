@@ -7,6 +7,7 @@ class PoliciesController extends \Main\Controller
 
     function __construct() {
 		$this->setTempalteBasePath(ROOT."/Admin");
+        $this->doc = $this->getLibrary("Factory")->getDocument();
 	}
 
     function index($name) {
@@ -26,6 +27,8 @@ class PoliciesController extends \Main\Controller
             "data-privacy",
             "terms"
         ])) {
+
+            $this->doc->setTitle(ucwords(str_replace("-", " ", $name)));
 
             $data = CONFIG[$policies[$name]];
 

@@ -129,13 +129,18 @@
 									<?php if(isset($_SESSION['user_logged']['permissions']['accounts']['access'])) { ?>
 										<a href="<?php echo url("AccountsController@index",["id" => $_SESSION['user_logged']['account_id']]); ?>" class="dropdown-item"><i class='ti ti-user-circle me-2'></i> My Account</a>
 									<?php } ?>
+									<a href="<?php echo url("UsersController@changePassword", ["id" => $_SESSION['user_logged']['user_id']]); ?>" class="dropdown-item"><i class='ti ti-key me-2'></i> Change Password</a>
+
+									<?php if(KYC) { ?>
+										<a href="<?php echo url("KYCController@kycVerificationForm"); ?>" class="dropdown-item"><i class='ti ti-user-circle me-2'></i> KYC Verification</a>
+									<?php } ?>
+
+									<li><hr class="dropdown-divider"></li>
+
 									<?php if(isset($_SESSION['user_logged']['permissions']['users']['access'])) { ?>
 										<a href="<?php echo url("UsersController@index"); ?>" class="dropdown-item"><i class='ti ti-users me-2'></i> Manage Users</a>
 									<?php } ?>
 
-									<a href="<?php echo url("UsersController@changePassword", ["id" => $_SESSION['user_logged']['user_id']]); ?>" class="dropdown-item"><i class='ti ti-key me-2'></i> Change Password</a>
-									<a href="<?php echo url("TestimonialsController@index"); ?>" class="dropdown-item"><i class='ti ti-speakerphone me-2'></i> My Testimonials</a>
-									
 									<?php if(PREMIUM) { ?>
 										<a href="<?php echo url("AccountSubscriptionController@index"); ?>" class="dropdown-item"><i class='ti ti-layers-union me-2'></i> My Subscriptions</a>
 										<?php if(isset($_SESSION['user_logged']['permissions']['transactions']['access'])) { ?>
@@ -143,15 +148,17 @@
 										<?php } ?>
 									<?php } ?>
 
-									
-										<a href="<?php echo url("OpenHouseAnnouncementsController@index"); ?>" class="dropdown-item"><i class='ti ti-speakerphone me-2'></i> My Open House</a>
-										
-									
+									<li><hr class="dropdown-divider"></li>
 
-									<?php if(KYC) { ?>
-										<a href="<?php echo url("KYCController@kycVerificationForm"); ?>" class="dropdown-item"><i class='ti ti-user-circle me-2'></i> KYC Verification</a>
+									<a href="<?php echo url("TestimonialsController@index"); ?>" class="dropdown-item"><i class='ti ti-speakerphone me-2'></i> My Testimonials</a>
+									
+									<?php if(isset($_SESSION['user_logged']['privileges']['open_house_announcement'])) { ?>
+										<a href="<?php echo url("OpenHouseAnnouncementsController@index"); ?>" class="dropdown-item"><i class='ti ti-speakerphone me-2'></i> My Open House</a>
 									<?php } ?>
 
+									<li><hr class="dropdown-divider"></li>
+
+									<a href="<?php echo CDN."PAREB-MLS-User-Manual.pdf"; ?>" class="dropdown-item"><i class='ti ti-pdf me-2'></i> System User Manual</a>
 									<a href="<?php echo MANAGE; ?>?logout" class="dropdown-item"><i class='ti ti-logout-2 me-2'></i> Logout</a>
 								</div>
 							</div>
