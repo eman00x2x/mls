@@ -6,7 +6,7 @@
 		</button>
 		<h1 class="navbar-brand d-none-navbar-horizontal pe-0 pe-md-3">
 			<a href="<?php echo WEBDOMAIN; ?>" class='text-decoration-none'>
-				<img src="<?php echo CDN."images/logo.png"; ?>" width="50" class="navbar-brand-image"> PAREB MLS
+				<img src="<?php echo CDN."images/logo.png"; ?>" width="50" class="navbar-brand-image"> <?php echo CONFIG['site_name']; ?>
 			</a>
 		</h1>
 

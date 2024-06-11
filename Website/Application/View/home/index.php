@@ -12,7 +12,7 @@ $html[] = "<div class=''>";
 					$html[] = "<button class='navbar-toggler  text-white' type='button' data-bs-toggle='collapse' data-bs-target='#navbar-menu' aria-controls='navbar-menu' aria-expanded='false' aria-label='Toggle navigation'><span class='navbar-toggler-icon'></span></button>";
 					$html[] = "<h1 class='navbar-brand d-none-navbar-horizontal pe-0 pe-md-3'>";
 						$html[] = "<a href='".WEBDOMAIN."' class=' text-white text-decoration-none'>";
-							$html[] = "<img src='".CDN."images/logo.png' width='50' class='navbar-brand-image'> PAREB MLS";
+							$html[] = "<img src='".CDN."images/logo.png' width='50' class='navbar-brand-image'> ".CONFIG['site_name'];
 						$html[] = "</a>";
 					$html[] = "</h1>";
 
@@ -98,7 +98,7 @@ $html[] = "<div class=''>";
 
 									$html[] = "<div class=''>";
 										$html[] = "<h1 class='d-inline display-4 text-white fw-bold'>Multiple Listing Service</h1>";
-										$html[] = "<p class='d-block fs-16 text-white'>By Philippine Association of Real Estate Board (PAREB)</p>";
+										$html[] = "<p class='d-block fs-16 text-white'>By the Philippine Association of Real Estate Boards</p>";
 									$html[] = "</div>";
 
 									$html[] = "<div class=''>";
