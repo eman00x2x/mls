@@ -61,6 +61,14 @@ function properties($data, $model) {
 						)."'>";
 
 						$html[] = "<div class='avatar avatar-xxxl w-100 rounded-0 border-0' data-thumb-image='".$data['thumb_img']."'>";
+
+							if($data['foreclosed'] == 1) {
+								$offer = "Foreclosure";
+							}else {
+								$offer = $data['offer'];
+							}
+
+							$html[] = "<span class='fix-offer text-capitalize fs-12 fw-bold' style='position: absolute; top:10px; left:0; background-color:#FEFF9D; color:#555; padding:5px;'>".ucwords(strtolower($offer))."</span>";
 							
 							$html[] = "<div class='black-gradient'>";
 							
