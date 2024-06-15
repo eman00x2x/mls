@@ -2,8 +2,6 @@
 
 namespace Admin\Application\Controller;
 
-use Library\Mailer;
-
 class DebugController extends \Main\Controller {
 	
 	function __construct() {
@@ -12,33 +10,29 @@ class DebugController extends \Main\Controller {
 	
 	function debug() {
 
-		debug($_SESSION);
+		for($i=1; $i<=90; $i++) {
 
-		$mail = new Mailer();
+			$i += 9;
 
-		$transaction = new \Admin\Application\Controller\TransactionsController();
-		$message = $transaction->mailInvoice(1, 8);
-		$mail->build($message);
+			for($x=0; $x<=15; $x++) {
+			
+				$balance = 100 - $i;
 
-		echo $mail->getMessage();
-		exit();
-		
+				if($x > 0) {
+					$with_discount = " WITH " . $x . "% DISCOUNT";
+				}else { $with_discount = ""; }
+			
+				$terms[ $i . "-" . $x . "-payment" ] = [
+					"dp" => $i,
+					"discount" => $x,
+					"terms" => $i . "% DP" . $with_discount . " AND " .$balance . "% BALANCE"
+				];
+				
+			}	
+			
+		}
 
-		$subject = "";
-		$message = "";
-
-		$mail = new Mailer();
-		$response = $mail
-			->build($message)
-				->send([
-					"to" => [
-						"eman.olivas@gmail.com"
-					]
-				], $subject);
-
-		echo $response['message'];
-		
-		exit();
+		debug(json_encode($terms, JSON_PRETTY_PRINT));
 
 	}
 	
