@@ -908,8 +908,8 @@ class AccountsController extends \Main\Controller {
 			return false;
 		}
 
-		$now = new DateTime(date("Y-m-d", DATE_NOW));
-		$end = new DateTime("2024-12-31");
+		$now = new \DateTime(date("Y-m-d", DATE_NOW));
+		$end = new \DateTime("2024-12-31");
 
 		$days = $end->diff($now)->format("%a");
 
