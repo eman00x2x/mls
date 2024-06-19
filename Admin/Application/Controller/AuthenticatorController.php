@@ -241,6 +241,11 @@ class AuthenticatorController extends \Main\Controller
 
 	function setPrivileges($data) {
 
+		if(strtotime("2024-12-31") > DATE_NOW) {
+			$accounts = new Account();
+			$accounts->freePremium($data['account_id']);
+		}
+
 		$subscription = $this->getModel("AccountSubscription");
 		$subscription->column['account_id'] = $data['account_id'];
 		$privileges = $subscription->getSubscription();

@@ -10,6 +10,19 @@ class AccountSubscriptionModel extends \Main\Model {
 		$this->init();
 	}
 
+	function getByPremiumId($account_id, $premium_id) {
+
+		$this->where(" premium_id = $premium_id AND account_id = $account_id AND account_id NOT IN(1, 13, 14)");
+		$data = $this->getList();
+
+		if($data) {
+			return $data;
+		}
+
+		return false;
+
+	}
+
 	function getSubscription() {
 
 		$this->page["limit"] = 999999;

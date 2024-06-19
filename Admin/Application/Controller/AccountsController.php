@@ -897,5 +897,83 @@ class AccountsController extends \Main\Controller {
 		];
 
 	}
+
+	function freePremium($account_id) {
+
+		$premium_id = 23;
+
+		$subscription = $this->getModel("AccountSubscription");
+		if($subscription->getByPremiumId($account_id, $premium_id)) {
+			/* NOTE ELIGIBLE FOR FREE PREMIUM */
+			return false;
+		}
+
+		$now = new DateTime(date("Y-m-d", DATE_NOW));
+		$end = new DateTime("2024-12-31");
+
+		$days = $end->diff($now)->format("%a");
+
+		$transaction = $this->getModel("Transaction");
+		$processed_data = $transaction->saveNew([
+			"account_id" => $account_id,
+			"premium_id" => $premium_id,
+			"premium_description" => "+300 Max Post of Listings Free",
+			"duration" => $days,
+			"premium_price" => 0,
+			"payer" => json_encode([
+				"name" => [
+					"give_name" => "Administrator",
+					"surname" => ""
+				],
+				"email_address" => "no-reply@mlspareb.com",
+				"transaction_number" => "",
+				"payment_source" => "Free"
+			]),
+			"payment_transaction_id" => 0,
+			"payment_source" => "Free",
+			"payment_status" => "COMPLETED",
+			"transaction_details" => json_encode([
+				"status" => "COMPLETED", 
+				"seller_receivable_breakdown" => [
+					"gross_amount" => [
+						"currency_code" => "PHP", 
+						"value" => 0 
+					], 
+					"tax_amount" => [
+						"currency_code" => "PHP", 
+						"value" => 0 
+						], 
+					"platform_fee" => [
+							"currency_code" => "PHP", 
+							"value" => 0 
+						], 
+					"net_amount" => [
+						"currency_code" => "PHP", 
+						"value" => 0 
+					] 
+				], 
+				"transaction" => [
+					"account_id" => 1, 
+					"account_type" => "Administrator", 
+					"account_permissions" => [],
+					"name" => "Administrator", 
+					"created_at" => DATE_NOW 
+				], 
+				"create_time" => date("Y-m-d H:i:s", DATE_NOW) 
+			]),
+			"created_at" => DATE_NOW
+		]);
+
+		$account_subscription = $this->getModel("AccountSubscription");
+		$account_subscription->saveNew([
+			"account_id" => $account_id,
+			"transaction_id" => $processed_data['id'],
+			"premium_id" => $premium_id,
+			"subscription_date" => DATE_NOW,
+			"subscription_start_at" => DATE_NOW,
+			"subscription_end_at" => strtotime("2024-12-31")
+		]);
+
+	}
 	
 }
