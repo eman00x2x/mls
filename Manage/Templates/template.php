@@ -153,9 +153,9 @@
 
 									<a href="<?php echo url("TestimonialsController@index"); ?>" class="dropdown-item"><i class='ti ti-speakerphone me-2'></i> My Testimonials</a>
 									
-									<?php if(isset($_SESSION['user_logged']['privileges']['open_house_announcement'])) { ?>
+									<?php /* if(isset($_SESSION['user_logged']['privileges']['open_house_announcement'])) { */ ?>
 										<a href="<?php echo url("OpenHouseAnnouncementsController@index"); ?>" class="dropdown-item"><i class='ti ti-speakerphone me-2'></i> My Open House</a>
-									<?php } ?>
+									<?php /* } */ ?>
 
 									<li><hr class="dropdown-divider"></li>
 

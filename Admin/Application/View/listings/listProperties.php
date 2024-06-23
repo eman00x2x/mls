@@ -136,8 +136,12 @@ function properties($data, $model) {
 
 						
 						$html[] = "<div class='listing-agent flex-grow-1'>";
-							$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['account_id'], "name" => str_replace(" ", "-", strtolower($data['agent_name']))])."' class='d-flex lh-1 text-reset p-0 text-decoration-none'>";
-								
+							if($model->app['is_mls_platform']) {
+								$html[] = "<span data-url='".url("AccountsController@profilePreview", ["id" => $data['account_id']])."' class='cursor-pointer d-flex lh-1 text-reset p-0 text-decoration-none btn-view-profile' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd'>";
+							}else {
+								$html[] = "<span>";
+								$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['account_id'], "name" => str_replace(" ", "-", strtolower($data['agent_name']))])."' class='d-flex lh-1 text-reset p-0 text-decoration-none'>";
+							}
 								if($data['logo'] != "") { $logo = $data['logo'];
 								}else { $logo = CDN."images/blank-profile.png"; }
 
@@ -148,6 +152,7 @@ function properties($data, $model) {
 									$html[] = "<div class='mt-1 small text-muted'>".$data['profession']."</div>";
 								$html[] = "</div>";
 							$html[] = "</a>";
+							$html[] = "</span>";
 						$html[] = "</div>";
 						
 						

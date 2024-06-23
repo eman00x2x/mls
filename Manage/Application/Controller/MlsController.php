@@ -177,7 +177,8 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 				"path" => "id",
 				"value" => "listing_id",
 				"class_hint" => "MlsController@viewListing"
-			]
+			],
+			"is_mls_platform" => true
 		];
 
 		$response = $this->listProperties($listings, $filters);

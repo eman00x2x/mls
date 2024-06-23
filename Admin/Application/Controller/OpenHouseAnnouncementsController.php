@@ -90,9 +90,11 @@ class OpenHouseAnnouncementsController extends \Main\Controller {
 		$open_house->select(" COUNT(announcement_id) as total_announcement ");
 		$data = $open_house->getByAccountId();
 
-		if($data['total_announcement'] >= $this->session['privileges']['max_open_house_announcement']) {
-			$this->getLibrary("Factory")->setMsg("Max open house announcement has been reached","warning");
-			response()->redirect(url("OpenHouseAnnouncementsController@index"));
+		if(DATE_NOW > strtotime("2024-12-31")) {
+			if($data['total_announcement'] >= $this->session['privileges']['max_open_house_announcement']) {
+				$this->getLibrary("Factory")->setMsg("Max open house announcement has been reached","warning");
+				response()->redirect(url("OpenHouseAnnouncementsController@index"));
+			}
 		}
 
 		$this->setTemplate("openHouse/add.php");

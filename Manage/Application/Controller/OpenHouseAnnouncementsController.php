@@ -8,10 +8,12 @@ class OpenHouseAnnouncementsController extends \Admin\Application\Controller\Ope
         parent::__construct();
         $this->account_id = $this->session['account_id'];
 
-        if(!isset($this->session['privileges']['max_open_house_announcement']) || $this->session['privileges']['max_open_house_announcement'] == 0) {
-			$this->getLibrary("Factory")->setMsg("You do not have enough privileges to access open house announcement","warning");
-			response()->redirect(url("DashboardController@index"));
-		}
+        if(DATE_NOW > strtotime("2024-12-31")) {
+            if(!isset($this->session['privileges']['max_open_house_announcement']) || $this->session['privileges']['max_open_house_announcement'] == 0) {
+                $this->getLibrary("Factory")->setMsg("You do not have enough privileges to access open house announcement","warning");
+                response()->redirect(url("DashboardController@index"));
+            }
+        }
         
     }
 

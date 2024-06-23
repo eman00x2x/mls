@@ -156,7 +156,7 @@ $html[] = "<div class='page-body'>";
 
                                                     $html[] = "<div class='col-md-1 col-lg-2 col-12'>";
                                                         $html[] = "<label class='form-label text-muted'>Nick Name</label>";
-                                                        $html[] = "<input type='text' name='nickname' id='nickname' value='".$data['account_name']['nickname']."' class='me-2 form-control' placeholder='Prefix' />";
+                                                        $html[] = "<input type='text' name='nickname' id='nickname' value='".($data['account_name']['nickname'] ?? "")."' class='me-2 form-control' placeholder='Prefix' />";
                                                     $html[] = "</div>";
 
                                                     $html[] = "<div class='col-md-1 col-lg-3 col-12'>";

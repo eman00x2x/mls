@@ -233,7 +233,7 @@ $html[] = "<div class='page-body'>";
 		$html[] = "</div>";
 	}
 
-	if($data['handshake_list']) {
+	if(isset($data['handshake_list'])) {
 		$html[] = "<div class='container-xl px-0 handshake-container'>";
 			$html[] = "<div class='mt-3 mb-0 pb-0 card px-3'>";
 				$html[] = "<div class='card-title mb-2 mt-5'><i class='ti ti-heart-handshake me-1'></i> Handshake Details</div>";
