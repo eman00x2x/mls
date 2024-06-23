@@ -146,9 +146,11 @@ function properties($data, $model) {
 								}else { $logo = CDN."images/blank-profile.png"; }
 
 								$html[] = "<span class='avatar avatar-sm' data-thumb-image='".$logo."' ></span>";
+
+								$name = ($data['account_name']['nickname'] ?? $data['account_name']['firstname']). " " . $data['account_name']['lastname']. " ".$data['account_name']['suffix'];
 								
 								$html[] = "<div class='ps-2'>";
-									$html[] = "<div>".ucwords(strtolower($data['agent_name']))."</div>";
+									$html[] = "<div>".ucwords(strtolower($name))."</div>";
 									$html[] = "<div class='mt-1 small text-muted'>".$data['profession']."</div>";
 								$html[] = "</div>";
 							$html[] = "</a>";

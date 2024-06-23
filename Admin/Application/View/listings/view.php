@@ -233,7 +233,7 @@ $html[] = "<div class='page-body'>";
 		$html[] = "</div>";
 	}
 
-	if(isset($data['handshake_list'])) {
+	if(isset($data['handshake_list']) && $data['handshake_list']) {
 		$html[] = "<div class='container-xl px-0 handshake-container'>";
 			$html[] = "<div class='mt-3 mb-0 pb-0 card px-3'>";
 				$html[] = "<div class='card-title mb-2 mt-5'><i class='ti ti-heart-handshake me-1'></i> Handshake Details</div>";
@@ -254,7 +254,7 @@ $html[] = "<div class='page-body'>";
 								$html[] = "<div class='p-0 lh-1 d-flex align-items-center'>";
 									$html[] = "<span class='avatar' style='background-image: url(".$data['handshake_list'][$i]['requestor_details']['logo'].")'></span>";
 									$html[] = "<div class='ps-2'>";
-										$html[] = "<span class='d-block mb-1'>".$data['handshake_list'][$i]['requestor_details']['account_name']['firstname']." ".$data['handshake_list'][$i]['requestor_details']['account_name']['lastname']." ".$data['handshake_list'][$i]['requestor_details']['account_name']['suffix']."</span>";
+										$html[] = "<span class='d-block mb-1'>".($data['handshake_list'][$i]['requestor_details']['account_name']['nickname'] ?? $data['handshake_list'][$i]['requestor_details']['account_name']['firstname'])." ".$data['handshake_list'][$i]['requestor_details']['account_name']['lastname']." ".$data['handshake_list'][$i]['requestor_details']['account_name']['suffix']."</span>";
 										$html[] = "<span class='text-muted fs-12'>".$data['handshake_list'][$i]['requestor_details']['profession']."</span>";
 									$html[] = "</div>";
 								$html[] = "</div>";

@@ -160,7 +160,7 @@ $html[] = "<div class='page-body'>";
 										$html[] = "<div class='card-body p-4 text-center'>";
 											$html[] = "<span class='avatar avatar-xl mb-3 rounded' style='background-image: url(".$image.")'></span>";
 											$html[] = "<h3 class='m-0 mb-1'>";
-												$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['accounts'][$i]['account_id'], "name" => sanitize($data['accounts'][$i]['account_name']['firstname']."-".$data['accounts'][$i]['account_name']['lastname'])])."' class='stretched-link text-decoration-none'>".ucwords(strtolower($data['accounts'][$i]['account_name']['firstname']." ".$data['accounts'][$i]['account_name']['middlename']." ".$data['accounts'][$i]['account_name']['lastname']." ".$data['accounts'][$i]['account_name']['suffix']))."</a>";
+												$html[] = "<a href='".url("AccountsController@profile", ["id" => $data['accounts'][$i]['account_id'], "name" => sanitize($data['accounts'][$i]['account_name']['firstname']."-".$data['accounts'][$i]['account_name']['lastname'])])."' class='stretched-link text-decoration-none'>".ucwords(strtolower(($data['accounts'][$i]['account_name']['nickname'] ?? $data['accounts'][$i]['account_name']['firstname'])." ".$data['accounts'][$i]['account_name']['middlename']." ".$data['accounts'][$i]['account_name']['lastname']." ".$data['accounts'][$i]['account_name']['suffix']))."</a>";
 											$html[] = "</h3>";
 											$html[] = "<span class='d-block'>".$data['accounts'][$i]['profession']."</span>";
 											$html[] = "<span class='d-block fs-12 text-muted'>PRC License #".$data['accounts'][$i]['real_estate_license_number']."</span>";
