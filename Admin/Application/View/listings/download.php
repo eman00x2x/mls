@@ -47,7 +47,7 @@ $html[] = "<page style=''>";
 			$html[] = "</div>";
 
 		$html[] = "</div>";
-		$html[] = "<span style=' margin-bottom:20px; color:#aaa; font-style: italic; font-size: 12px;'><img src='".CDN."images/icons/world.png' style='width:12px; color: #aaa;' /> ".WEBDOMAIN."".$data['listing']['name']."?mls=1</span>";
+		$html[] = "<span style=' margin-bottom:20px; color:#aaa; font-style: italic; font-size: 12px;'><img src='".CDN."images/icons/world.png' style='width:12px; color: #aaa;' /> ".WEBDOMAIN."p-".$data['listing']['name']."?mls=1</span>";
 		
 		$html[] = "<h1 style='margin:0; padding:0; font-size:18px;'>[Id: ".$data['listing']['listing_id']."] ".$data['listing']['title']."</h1>";
 		$html[] = "<p style='margin:0; padding:0;'><span><img src='".CDN."images/icons/map-pin.png' style='width:24px;' /> ".$data['listing']['address']['municipality'].", ".$data['listing']['address']['province']."</span></p>";
