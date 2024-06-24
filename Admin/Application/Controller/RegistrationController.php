@@ -138,11 +138,10 @@ class RegistrationController extends AccountsController {
 
 		$v->validateEmail($_POST['email_address'], "Invalid email address");
 
-		$response = $this->verifyMembership($_POST['email_address']);
-
+		/* $response = $this->verifyMembership($_POST['email_address']);
 		if($response['status'] == 2) {
 			$v->addError("Email address not found in the list of members, Please contact the administrator");
-		}
+		} */
 
 		$user->column['email'] = $_POST['email_address'];
 		$accounts->column['email'] = $_POST['email_address'];
@@ -164,8 +163,8 @@ class RegistrationController extends AccountsController {
 		}
 		
 		$data = $_POST;
-		$data['email'] = $response['data']['email'];
-		$data['broker_prc_license_id'] = $response['data']['broker_prc_license_id'];
+		/* $data['email'] = $response['data']['email'];
+		$data['broker_prc_license_id'] = $response['data']['broker_prc_license_id']; */
 		$data['data_privacy'] = CONFIG['data_privacy'];
 
 		$this->setTemplate("registration/dataPrivacy.php");

@@ -13,6 +13,10 @@ $html[] = "<input type='hidden' name='api_key' id='api_key' value='".$data['api_
 $html[] = "<input type='hidden' name='reference_id' value='".$data['reference_id']."' />";
 $html[] = "<input type='hidden' name='broker_prc_license_id' value='".$data['broker_prc_license_id']."' />";
 
+$html[] = "<input type='hidden' name='membership_type' id='membership_type' value='".$data['membership_type']."' />";
+$html[] = "<input type='hidden' name='membership_position' id='membership_position' value='".$data['membership_position']."' />";
+$html[] = "<input type='hidden' name='membership_status' id='membership_status' value='".$data['membership_status']."' />";
+
 $html[] = "<div class='response'></div>";
 
 $html[] = "<h1 class='mb-5 '>Create Account</h1>";
@@ -93,7 +97,7 @@ $html[] = "</div>";
 
 $html[] = "<div class='mb-3'>";
 	$html[] = "<label class='form-label'><i class='ti ti-email'></i> Email</label>";
-	$html[] = "<input type='email' class='form-control' name='email' value='".$data['email_address']."'  placeholder='Enter Email' autocomplete='off' readonly='readonly'>";
+	$html[] = "<input type='email' class='form-control-plaintext' name='email' value='".$data['email_address']."'  placeholder='Enter Email' autocomplete='off' readonly='readonly'>";
 $html[] = "</div>";
 
 $html[] = "<div class='mb-3'>";

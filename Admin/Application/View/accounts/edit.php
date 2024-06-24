@@ -204,6 +204,51 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 							$html[] = "</div>";
 						$html[] = "</div>";
+
+						$html[] = "<div class='mb-3 pb-3 border-bottom'>";
+                            $html[] = "<h2 class='text-blue mb-1 fw-bold'>Membership Details</h6>";
+                            $html[] = "<div class='row g-3 align-items-center mb-3'>";
+                                $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Membership Type</label></div>";
+                                $html[] = "<div class='col-md-9 col-6'>";
+                                   
+                                    $html[] = "<select name='membership_type' class='form-select'>";
+                                    foreach(["Lifetime Exempt", "Lifetime Paid", "Regular"] as $type) {
+										$sel = $data['membership_type'] == $type ? "selected" : "";
+                                        $html[] = "<option value='".$type."' $sel>".$type."</option>";
+                                    }
+                                    $html[] = "</select>";
+                                    
+                                $html[] = "</div>";
+                            $html[] = "</div>";
+
+                            $html[] = "<div class='row g-3 align-items-center mb-3'>";
+                                $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Membership Standing</label></div>";
+                                $html[] = "<div class='col-md-9 col-6'>";
+                                    
+                                    $html[] = "<select name='membership_position' class='form-select'>";
+                                    foreach(["Past National President", "Past National Director", "National Director", "Past President", "Regular Member", "Associate Member"] as $position) {
+										$sel = $data['membership_position'] == $type ? "selected" : "";
+                                        $html[] = "<option value='".$position."' $sel>".$position."</option>";
+                                    }
+                                    $html[] = "</select>";
+                                    
+                                $html[] = "</div>";
+                            $html[] = "</div>";
+
+                            $html[] = "<div class='row g-3 align-items-center mb-3'>";
+                                $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Membership Status</label></div>";
+                                $html[] = "<div class='col-md-9 col-6'>";
+                                    
+                                    $html[] = "<select name='membership_status' class='form-select'>";
+                                    foreach(["Regular", "New", "Re-Activated"] as $status) {
+										$sel = $data['membership_status'] == $type ? "selected" : "";
+                                        $html[] = "<option value='".$status."' $sel>".$status."</option>";
+                                    }
+                                    $html[] = "</select>";
+                                   
+                                $html[] = "</div>";
+                            $html[] = "</div>";
+                        $html[] = "</div>";
 					}
 				
 					$html[] = "<div class='card mb-3'>";

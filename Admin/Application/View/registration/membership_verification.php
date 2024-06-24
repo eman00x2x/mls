@@ -30,7 +30,7 @@ $html[] = "<div class='page page-center'>";
 
 							$html[] = "<input type='hidden' id='save_url' value='".url("RegistrationController@agreeToDataPrivacy")."' />";
 
-							$html[] = "<div class='mb-4'>";
+							/* $html[] = "<div class='mb-4'>";
 								$html[] = "<h2 class='card-title'><i class='ti ti-email'></i> Enter your Membership Email Address</h2>";
 								$html[] = "<input type='email' class='form-control' name='email_address' id='email_address'  placeholder='Enter email address' autocomplete='off' tabindex='1'>";
 								$html[] = "<span class='form-hint'>";
@@ -38,6 +38,43 @@ $html[] = "<div class='page page-center'>";
 										$html[] = "<li>The email address that you registered during your membership registration in PAREB.</li>";
 									$html[] = "</ul>";
 								$html[] = "</span>";
+							$html[] = "</div>"; */
+
+							$html[] = "<div class='mb-4'>";
+								$html[] = "<h2 class='card-title'><i class='ti ti-email'></i> Enter a valid and working Email Address</h2>";
+								$html[] = "<input type='email' class='form-control' name='email_address' id='email_address'  placeholder='Enter email address' autocomplete='off' tabindex='1'>";
+								$html[] = "<span class='form-hint'>";
+									$html[] = "<ul>";
+										$html[] = "<li>The email address will be used as your membership official email address.</li>";
+									$html[] = "</ul>";
+								$html[] = "</span>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='mb-4'>";
+								$html[] = "<h2 class='card-title'><i class='ti ti-email'></i> Choose your Membership Type</h2>";
+								$html[] = "<select name='membership_type' class='form-select'>";
+								foreach(["Lifetime Exempt", "Lifetime Paid", "Regular"] as $type) {
+									$html[] = "<option value='".$type."'>".$type."</option>";
+								}
+								$html[] = "</select>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='mb-4'>";
+								$html[] = "<h2 class='card-title'><i class='ti ti-email'></i> Choose your Membership Standing</h2>";
+								$html[] = "<select name='membership_position' class='form-select'>";
+                                foreach(["Past National President", "Past National Director", "National Director", "Past President", "Regular Member", "Associate Member"] as $position) {
+                                    $html[] = "<option value='".$position."'>".$position."</option>";
+                                }
+                                $html[] = "</select>";
+							$html[] = "</div>";
+
+							$html[] = "<div class='mb-4'>";
+								$html[] = "<h2 class='card-title'><i class='ti ti-email'></i> Are you a Regular, New or Re-activated Member?</h2>";
+								$html[] = "<select name='membership_status' class='form-select'>";
+                                foreach(["Regular", "New", "Re-Activated"] as $status) {
+                                    $html[] = "<option value='".$status."'>".$status."</option>";
+                                }
+                                $html[] = "</select>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='row align-items-center mt-5' style='height:40px;'>";

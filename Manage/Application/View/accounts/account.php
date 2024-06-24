@@ -86,6 +86,54 @@ $html[] = "<div class='page-body'>";
 										$html[] = "<span class='photo-upload-loader d-block'></span>";
                                     $html[] = "</div>";
 
+                                    $html[] = "<div class='mb-3 pb-3 border-bottom'>";
+                                        $html[] = "<h2 class='text-blue mb-1 fw-bold'>Membership Details</h6>";
+                                        $html[] = "<div class='row g-3 align-items-center mb-3'>";
+                                            $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Membership Type</label></div>";
+                                            $html[] = "<div class='col-md-9 col-6'>";
+                                                if(!is_null($data['membership_type'])) {
+                                                    $html[] = "<input type='text' value='".$data['membership_type']."' class='form-control-plaintext' />";
+                                                }else {
+                                                    $html[] = "<select name='membership_type' class='form-select'>";
+                                                    foreach(["Lifetime Exempt", "Lifetime Paid", "Regular"] as $type) {
+                                                        $html[] = "<option value='".$type."'>".$type."</option>";
+                                                    }
+                                                    $html[] = "</select>";
+                                                }
+                                            $html[] = "</div>";
+                                        $html[] = "</div>";
+
+                                        $html[] = "<div class='row g-3 align-items-center mb-3'>";
+                                            $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Membership Standing</label></div>";
+                                            $html[] = "<div class='col-md-9 col-6'>";
+                                                if(!is_null($data['membership_position'])) {
+                                                    $html[] = "<input type='text' value='".$data['membership_position']."' class='form-control-plaintext' />";
+                                                }else {
+                                                    $html[] = "<select name='membership_position' class='form-select'>";
+                                                    foreach(["Past National President", "Past National Director", "National Director", "Past President", "Regular Member", "Associate Member"] as $position) {
+                                                        $html[] = "<option value='".$position."'>".$position."</option>";
+                                                    }
+                                                    $html[] = "</select>";
+                                                }
+                                            $html[] = "</div>";
+                                        $html[] = "</div>";
+
+                                        $html[] = "<div class='row g-3 align-items-center mb-3'>";
+                                            $html[] = "<div class='col-md-3 col-6'><label class='col-form-label'>Membership Status</label></div>";
+                                            $html[] = "<div class='col-md-9 col-6'>";
+                                                if(!is_null($data['membership_position'])) {
+                                                    $html[] = "<input type='text' value='".$data['membership_status']."' class='form-control-plaintext' />";
+                                                }else {
+                                                    $html[] = "<select name='membership_status' class='form-select'>";
+                                                    foreach(["Regular", "New", "Re-Activated"] as $status) {
+                                                        $html[] = "<option value='".$status."'>".$status."</option>";
+                                                    }
+                                                    $html[] = "</select>";
+                                                }
+                                            $html[] = "</div>";
+                                        $html[] = "</div>";
+                                    $html[] = "</div>";
+
                                     $html[] = "<div class='mb-3 pb-3 border-bottom mt-5'>";
                                         $html[] = "<h2 class='text-blue mb-1 fw-bold'>Local Board Details</h6>";
 

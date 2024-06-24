@@ -5,6 +5,10 @@ $html[] = "<input type='hidden' id='save_url' value='".url("RegistrationControll
 $html[] = "<input type='hidden' name='message_keys[publicKey]' id='publicKey' value='".$data['message_keys']['publicKey']."' />";
 $html[] = "<input type='hidden' name='message_keys[privateKey]' id='privateKey' value='".$data['message_keys']['privateKey']."' />";
 
+$html[] = "<input type='hidden' name='membership_type' id='membership_type' value='".$data['membership_type']."' />";
+$html[] = "<input type='hidden' name='membership_position' id='membership_position' value='".$data['membership_position']."' />";
+$html[] = "<input type='hidden' name='membership_status' id='membership_status' value='".$data['membership_status']."' />";
+
 $html[] = "<input type='hidden' name='broker_prc_license_id' id='broker_prc_license_id' value='".$data['broker_prc_license_id']."' />";
 $html[] = "<input type='hidden' name='email_address' id='email_address' value='".$data['email_address']."' />";
 $html[] = "<input type='hidden' name='pin' id='pin' value='".$data['pin']."' />";
