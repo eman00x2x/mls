@@ -26,24 +26,31 @@ $html[] = "<div class='page-body bg-white' style='margin: 0;'>";
 								$html[] = "</ul>";
 
 								$html[] = "<h3 class='mt-3'><a href='".url("ListingsController@view", ["name" => $data['listing']['name']])."' class='text-decoration-none'><i class='ti ti-link'></i> ".$data['listing_title']."</a></h3>";
-								$html[] = "<div class='row'>";
-									$html[] = "<div class='col-lg-6 col-md-6 col-sm-12 col-12'>";
-										$html[] = "<a href='".$data['attachment']."' data-fslightbox data-type='image'>";
-											$html[] = "<span class='avatar w-100 mb-3' style='height:340px !important; background-image: url(".$data['attachment'].")'></span>";
-										$html[] = "</a>";
-									$html[] = "</div>";
-									$html[] = "<div class='col-lg-6 col-md-6 col-sm-12 col-12'>";
-										$html[] = "<div class='row g-2'>";
-											for($i=0; $i<count($data['images']); $i++) {
-												$html[] = "<div class='col-lg-6 col-md-6 col-sm-6 col-6'>";
-													$html[] = "<a href='".$data['images'][$i]['url']."' data-fslightbox data-type='image'>";
-														$html[] = "<span class='avatar avatar-xxl w-100' style='background-image: url(".$data['images'][$i]['url'].")'></span>";
-													$html[] = "</a>";
-												$html[] = "</div>";
-											}
+								
+								if($data['images']) {
+									$html[] = "<div class='row'>";
+										$html[] = "<div class='col-lg-6 col-md-6 col-sm-12 col-12'>";
+											$html[] = "<a href='".$data['attachment']."' data-fslightbox data-type='image'>";
+												$html[] = "<span class='avatar w-100 mb-3' style='height:340px !important; background-image: url(".$data['attachment'].")'></span>";
+											$html[] = "</a>";
+										$html[] = "</div>";
+										$html[] = "<div class='col-lg-6 col-md-6 col-sm-12 col-12'>";
+											$html[] = "<div class='row g-2'>";
+												
+												for($i=0; $i<count($data['images']); $i++) {
+													if($data['images'][$i]['url'] != $data['attachment']) {
+														$html[] = "<div class='col-lg-6 col-md-6 col-sm-6 col-6'>";
+															$html[] = "<a href='".$data['images'][$i]['url']."' data-fslightbox data-type='image'>";
+																$html[] = "<span class='avatar avatar-xxl w-100' style='background-image: url(".$data['images'][$i]['url'].")'></span>";
+															$html[] = "</a>";
+														$html[] = "</div>";
+													}
+												}
+												
+											$html[] = "</div>";
 										$html[] = "</div>";
 									$html[] = "</div>";
-								$html[] = "</div>";
+								}
 
 								if($data['listing']['video'] != "") {
 									$video_id = str_replace("https://www.youtube.com/watch?v=", "", $data['listing']['video']);
@@ -79,9 +86,9 @@ $html[] = "<div class='page-body bg-white' style='margin: 0;'>";
 														$html[] = "<span class='avatar avatar-xl me-3 rounded-circle' style='background-image: url(".$logo.")'></span>";
 														$html[] = "<div class='flex-fill'>";
 															$html[] = "<div class='font-weight-medium'>";
-																$html[] = $data['account']['account_name']['prefix']." ".$data['account']['account_name']['firstname']." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix'];
+																$html[] = ($data['account']['account_name']['nickname'] ?? $data['account']['account_name']['firstname'])." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix'];
 															$html[] = "</div>";
-															$html[] = "<div class='text-muted'>".$data['account']['profession']."</div>";
+															$html[] = "<div class='text-muted'>".($data['account']['account_name']['titles'] ?? $data['account']['profession'])."</div>";
 															if($data['account']['company_name'] != "") { $html[] = "<div class='text-muted'>".$data['account']['company_name']."</div>"; }
 															$html[] = "<div class='text-muted'>Member Since ".date("Y", $data['account']['registered_at'])."</div>";
 														$html[] = "</div>";

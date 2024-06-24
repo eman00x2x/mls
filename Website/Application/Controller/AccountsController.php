@@ -26,6 +26,11 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$page_name = $data['account_name']['firstname']." ".$data['account_name']['lastname'];
 		$description = $page_name." - " . nicetrim($data['profile']['about_me'], 120) . " - " . CONFIG["site_name"];
 
+		$image = CDN."images/real-estate.jpg";
+		if($data['logo'] != "") {
+			$image = $data['logo'];
+		}
+
         $this->doc->setTitle($page_name." Profile - ". CONFIG["site_name"]);
 		$this->doc->setDescription($description);
 		$this->doc->setMetaData("Keywords", $description);
@@ -33,7 +38,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$this->doc->setFacebookMetaData("og:url", DOMAIN. url("AccountsController@profile", ["id" => $data['account_id'], "name" => $account_name ] ));
 		$this->doc->setFacebookMetaData("og:title", $data['account_name']['firstname']." ".$data['account_name']['lastname']." Profile - ". CONFIG["site_name"]);
 		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", CDN."images/real-estate.jpg");
+		$this->doc->setFacebookMetaData("og:image", $image);
 		$this->doc->setFacebookMetaData("og:description", $description);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 
@@ -227,7 +232,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		if(isset($search)) {
 			$listings->select("
 				l.listing_id, l.account_id, is_website, is_mls, is_mls_option, listing_type, offer, foreclosed, name, price, floor_area, lot_area, bedroom, bathroom, parking, thumb_img, modified_at, l.status, display, type, title, tags, long_desc, category, l.address, amenities, post_score,
-				
+				agent_name,
 				CASE WHEN DATE(from_unixtime(modified_at)) >= DATE(NOW() - INTERVAL 7 DAY) THEN post_score + (1/14) END,
 				MATCH( type, title, tags, long_desc, category, l.address, amenities )
 				AGAINST( '" . implode(" ", $search) . "' IN BOOLEAN MODE ) AS match_score
@@ -295,8 +300,13 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$this->setTemplate("listings/listProperties.php");
 		$listings->list = $this->getTemplate($data['listings'], $listings);
 
-        $name = $data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix'];
+        $name = ($data['account_name']['nickname'] ?? $data['account_name']['firstname'])." ".$data['account_name']['lastname']." ".$data['account_name']['suffix'];
         $description = $name." - " . nicetrim($data['profile']['about_me'], 120) . " - " . CONFIG["site_name"];
+
+		$image = CDN."images/real-estate.jpg";
+		if($data['logo'] != "") {
+			$image = $data['logo'];
+		}
 
         $this->doc->setTitle($name." Listings - ". CONFIG["site_name"]);
 		$this->doc->setDescription($description);
@@ -305,7 +315,7 @@ class AccountsController extends \Admin\Application\Controller\AccountsControlle
 		$this->doc->setFacebookMetaData("og:url", DOMAIN. url("AccountsController@accountListings", ["id" => $data['account_id'], "name" => sanitize($data['account_name']['firstname']."-".$data['account_name']['lastname']) ] ));
 		$this->doc->setFacebookMetaData("og:title", $name." Listings - ". CONFIG["site_name"]);
 		$this->doc->setFacebookMetaData("og:type", "website");
-		$this->doc->setFacebookMetaData("og:image", CDN."images/real-estate.jpg");
+		$this->doc->setFacebookMetaData("og:image", $image);
 		$this->doc->setFacebookMetaData("og:description", $description);
 		$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
 

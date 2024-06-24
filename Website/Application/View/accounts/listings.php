@@ -1,7 +1,7 @@
 <?php
 
 function currentUrl($data, array $uri = []) {
-	return url("AccountsController@profile", ["id" => $data['account_id'], "name" => sanitize($data['account_name']['firstname']."-".$data['account_name']['lastname']) ], $uri);
+	return url("AccountsController@accountListings", ["id" => $data['account_id'], "name" => sanitize($data['account_name']['firstname']."-".$data['account_name']['lastname']) ], $uri);
 }
 
 $html[] = "<div class='page-body mt-0'>";
@@ -17,8 +17,8 @@ $html[] = "<div class='page-body mt-0'>";
                     $html[] = "<div class='mb-3 ' >";
                         $html[] = "<span class='avatar avatar-xxl rounded' style='background-image: url(".$logo.")'></span>";
                     $html[] = "</div>";
-                    $html[] = "<div class='card-title mb-0'>".$data['account_name']['firstname']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</div>";
-                    $html[] = "<div class='text-secondary'>".$data['profession']."</div>";
+                    $html[] = "<div class='card-title mb-0'>".($data['account_name']['nickname'] ?? $data['account_name']['firstname'])." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</div>";
+                    $html[] = "<div class='text-secondary'>".($data['account_name']['titles'] ?? $data['profession'])."</div>";
 
                     $html[] = "<a href='".currentUrl($data)."' class='stretched-link'></a>";
                 $html[] = "</div>";

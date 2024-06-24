@@ -159,6 +159,7 @@
 
 									<li><hr class="dropdown-divider"></li>
 
+									<a href="<?php echo WEBDOMAIN; ?>" class="dropdown-item"><i class='ti ti-world-www me-2'></i> PAREB Website</a>
 									<a href="<?php echo CDN."PAREB-MLS-User-Manual.pdf"; ?>" class="dropdown-item"><i class='ti ti-pdf me-2'></i> System User Manual</a>
 									<a href="<?php echo MANAGE; ?>?logout" class="dropdown-item"><i class='ti ti-logout-2 me-2'></i> Logout</a>
 								</div>

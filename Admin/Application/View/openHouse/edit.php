@@ -36,7 +36,7 @@ $html[] = "<div class='container-xl'>";
 				$html[] = "<form id='form' action='' method='POST'>";
 					$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";
 					$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
-					$html[] = "<input type='hidden' name='listing_id' id='listing_id' value='0' />";
+					$html[] = "<input type='hidden' name='listing_id' id='listing_id' value='".$data['listing_id']."' />";
 					$html[] = "<input type='hidden' name='listing_title' id='listing_title' value='".$data['listing_title']."' />";
 					$html[] = "<input type='hidden' name='attachment' id='attachment' value='".$data['attachment']."' />";
 					

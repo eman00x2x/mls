@@ -58,8 +58,11 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 		$html[] = "<div class='page-body'>";
 			$html[] = "<div class='container-xl'>";
 
-				$arr = explode("/",$data['listing']['thumb_img']);
-				$thumb_img = array_pop($arr);
+				$thumb_img = "";
+				if($data['listing']['thumb_img'] != "") {
+					$arr = explode("/", $data['listing']['thumb_img']);
+					$thumb_img = array_pop($arr);
+				}
 
 				$html[] = "<form id='form' action='' method='POST'>";
 					$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";

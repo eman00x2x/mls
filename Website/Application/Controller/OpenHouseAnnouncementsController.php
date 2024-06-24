@@ -101,7 +101,7 @@ class OpenHouseAnnouncementsController extends \Admin\Application\Controller\Ope
 			$this->doc->setFacebookMetaData("og:type", "website");
 			$this->doc->setFacebookMetaData("og:image", $data['attachment']);
 			$this->doc->setFacebookMetaData("og:description", $description);
-			$this->doc->setFacebookMetaData("og:updated_time", DATE_NOW);
+			$this->doc->setFacebookMetaData("og:created_at", DATE_NOW);
 
 			$data['share_buttons'] = Helper::socialMediadShareButtons([
 				"url" => DOMAIN . $data['url'],
