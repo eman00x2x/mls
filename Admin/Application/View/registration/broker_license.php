@@ -17,7 +17,7 @@ $html[] = "<input type='hidden' name='membership_status' id='membership_status' 
 $html[] = "<div class='response'></div>";
 $html[] = "<div class='mb-4'>";
 	$html[] = "<h2 class='card-title'><i class='ti ti-email'></i> Enter your Real Estate Broker PRC License Number</h2>";
-	$html[] = "<input type='number' class='form-control' name='broker_prc_license_id' id='broker_prc_license_id' value='".$data['broker_prc_license_id']."' placeholder='Enter Real Estate Broker PRC License Number' autocomplete='off' tabindex='1'>";
+	$html[] = "<input type='number' class='form-control' name='broker_prc_license_id' id='broker_prc_license_id' value='' placeholder='Enter Real Estate Broker PRC License Number' autocomplete='off' tabindex='1'>";
 	$html[] = "<span class='form-hint'>If you are a Real Estate Broker, Enter your PRC License number instead.</span>";
 $html[] = "</div>";
 

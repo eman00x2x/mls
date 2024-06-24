@@ -284,16 +284,16 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 								$html[] = "<label class='text-muted col-sm-3 col-form-label text-end'>Name</label>";
 								$html[] = "<div class='col-sm-9'>";
 									$html[] = "<div class='mb-3'>";
-										$html[] = "<div class='form-floating mb-3 '>";
-											$html[] = "<input type='text' name='nickname' id='nickname' value='".$data['account_name']['nickname']."' class='form-control'  />";
-											$html[] = "<label for='nickname'>Nick Name</label>";
+										$html[] = "<div class='form-floating mb-3'>";
+											$html[] = "<input type='text' name='firstname' id='firstname' value='".$data['account_name']['firstname']."' class='form-control'  />";
+											$html[] = "<label for='firstname'>First Name</label>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 
 									$html[] = "<div class='mb-3'>";
-										$html[] = "<div class='form-floating mb-3'>";
-											$html[] = "<input type='text' name='firstname' id='firstname' value='".$data['account_name']['firstname']."' class='form-control'  />";
-											$html[] = "<label for='firstname'>First Name</label>";
+										$html[] = "<div class='form-floating mb-3 '>";
+											$html[] = "<input type='text' name='nickname' id='nickname' value='".($data['account_name']['nickname'] ?? "")."' class='form-control'  />";
+											$html[] = "<label for='nickname'>Nick Name</label>";
 										$html[] = "</div>";
 									$html[] = "</div>";
 
@@ -317,6 +317,14 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 											$html[] = "<label for='mb-3'>Suffix</label>";
 										$html[] = "</div>";
 									$html[] = "</div>";
+
+									$html[] = "<div class='mb-3'>";
+										$html[] = "<div class='form-floating mb-3'>";
+											$html[] = "<input type='text' name='titles' id='titles' value='".($data['account_name']['titles'] ?? "")."' class='form-control'  />";
+											$html[] = "<label for='mb-3'>Abreviation of your professions <small class='text-muted'>(Separated by coma)</small></label>";
+										$html[] = "</div>";
+									$html[] = "</div>";
+
 								$html[] = "</div>";
 
 							$html[] = "</div>";

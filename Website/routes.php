@@ -25,8 +25,8 @@ Router::group(['prefix' => WEB_ALIAS], function () {
     Router::get('/articles/{name}', 'ArticlesController@view')->where([ 'name' => '[\w\-]+' ]);
 
     /** OPEN HOUSE ROUTES */
-    Router::get('/openHouses', 'OpenHouseAnnouncementsController@index', ['as' => 'openHouses'])->where([ 'id' => '[0-9]+' ]);
-    Router::get('/openHouses/{id}', 'OpenHouseAnnouncementsController@view', ['as' => 'openHouseAnnouncements-view'])->where([ 'id' => '[0-9]+' ]);
+    Router::get('/openHouses', 'OpenHouseAnnouncementsController@index', ['as' => 'openHouses']);
+    Router::get('/openHouses/{id}', 'OpenHouseAnnouncementsController@view', ['as' => 'openHouseAnnouncements.view'])->where([ 'id' => '[0-9]+' ]);
 
     /** LISTINGS ROUTES */
     Router::get('/buy', 'ListingsController@buy');

@@ -538,6 +538,7 @@ class AccountsController extends \Main\Controller {
 				"middlename" => (isset($_POST['middlename']) ? $_POST['middlename'] : $data['account_name']['middlename']),
 				"lastname" => (isset($_POST['lastname']) ? $_POST['lastname'] : $data['account_name']['lastname']),
 				"suffix" => (isset($_POST['suffix']) ? $_POST['suffix'] : $data['account_name']['suffix']),
+				"titles" => (isset($_POST['titles']) ? $_POST['titles'] : $data['account_name']['titles'])
 			]);
 
 			$_POST['profile'] = json_encode([

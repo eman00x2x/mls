@@ -29,8 +29,8 @@ $html[] = "<div class='overflow-y-auto'>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 
-			$html[] = "<h3 class='card-title m-0'>".$data['account_name']['prefix']." ".$data['account_name']['firstname']." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</h3>";
-			$html[] = "<p class='fs-12'>PRC Real Estate License #".$data['real_estate_license_number']."<br/>".$data['local_board_name']."</p>";
+			$html[] = "<h3 class='card-title m-0'>".($data['account_name']['nickname'] ?? $data['account_name']['firstname'])." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']." ".($data['account_name']['titles'] ?? "")."</h3>";
+			$html[] = "<p class='fs-12'>PRC Real Estate Broker License #".$data['real_estate_license_number']."<br/>".$data['local_board_name']."</p>";
 
 			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Certificates</h3>";
 			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";

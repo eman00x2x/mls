@@ -20,10 +20,16 @@ class RegistrationController extends AccountsController {
 		$this->doc->addScript(CDN."js/encryption.js");
 
 		$local_boards_json = json_encode(LOCAL_BOARDS);
+		$membership_json = json_encode([
+			"Lifetime Exempt" => ["Past National President"],
+			"Lifetime Paid" => ["Past National Director", "National Director", "Past President", "Regular Member", "Associate Member"],
+			"Regular" => ["Past National Director", "National Director", "Past President", "Regular Member", "Associate Member"]
+		]);
 
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
 			const local_boards = $local_boards_json;
+			const membership = $membership_json;;
 
 			$(document).ready(function() {
 				(async () => {
@@ -47,6 +53,20 @@ class RegistrationController extends AccountsController {
 				}
 
 				$('#local_board_name').html(html);
+			});
+
+			$(document).on('change', '#membership_type', function() {
+
+				let membership_type = $('#membership_type option:selected').val();
+
+				html = '';
+				for(key in membership[membership_type]) {
+					if (membership[membership_type].hasOwnProperty(key)) {
+						html += \"<option value='\" + membership[membership_type][key] + \"'>\" + membership[membership_type][key] + \"</option>\";
+					}
+				}
+
+				$('#membership_position').html(html);
 			});
 		"));
 		
@@ -149,6 +169,14 @@ class RegistrationController extends AccountsController {
 		if($accounts->getByEmail() || $user->getByEmail()) {
 			$v->addError("Email already registered");
 		}
+
+		if(!isset($_POST['membership_type']) || $_POST['membership_type'] == "") {
+			$v->addError("Select membership type");
+		}
+
+		if(!isset($_POST['membership_position']) || $_POST['membership_position'] == "") {
+			$v->addError("Select membership standing");
+		}
 		
 		if($v->foundErrors()) {
 
@@ -202,6 +230,10 @@ class RegistrationController extends AccountsController {
 
 			$response['data']['message_keys']['publicKey'] = $_POST['message_keys']['publicKey'];
 			$response['data']['message_keys']['privateKey'] = $_POST['message_keys']['privateKey'];
+
+			$response['data']['membership_type'] = $_POST['membership_type'];
+			$response['data']['membership_position'] = $_POST['membership_position'];
+			$response['data']['membership_status'] = $_POST['membership_status'];
 
 			$response['data']['pin'] = $_POST['pin'];
 			$response['data']['api_key'] = $_POST['api_key'];

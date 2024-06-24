@@ -44,32 +44,30 @@ $html[] = "<div class='page page-center'>";
 								$html[] = "<h2 class='card-title'><i class='ti ti-email'></i> Enter a valid and working Email Address</h2>";
 								$html[] = "<input type='email' class='form-control' name='email_address' id='email_address'  placeholder='Enter email address' autocomplete='off' tabindex='1'>";
 								$html[] = "<span class='form-hint'>";
-									$html[] = "<ul>";
-										$html[] = "<li>The email address will be used as your membership official email address.</li>";
-									$html[] = "</ul>";
+									$html[] = "The email address will be used as your membership official email address.";
 								$html[] = "</span>";
 							$html[] = "</div>";
 
+							$html[] = "<p>Note that this form is not for registering for PAREB membership; it is intended to identify the membership type you chose during your initial registration.</p>";
+							$html[] = "<p>Please select the type of membership you obtained in PAREB. </p>";
+							
 							$html[] = "<div class='mb-4'>";
-								$html[] = "<h2 class='card-title'><i class='ti ti-email'></i> Choose your Membership Type</h2>";
-								$html[] = "<select name='membership_type' class='form-select'>";
-								foreach(["Lifetime Exempt", "Lifetime Paid", "Regular"] as $type) {
+								$html[] = "<h2 class='card-title'>Membership Type</h2>";
+								$html[] = "<select name='membership_type' id='membership_type' class='form-select'>";
+								foreach(["", "Lifetime Exempt", "Lifetime Paid", "Regular"] as $type) {
 									$html[] = "<option value='".$type."'>".$type."</option>";
 								}
 								$html[] = "</select>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='mb-4'>";
-								$html[] = "<h2 class='card-title'><i class='ti ti-email'></i> Choose your Membership Standing</h2>";
-								$html[] = "<select name='membership_position' class='form-select'>";
-                                foreach(["Past National President", "Past National Director", "National Director", "Past President", "Regular Member", "Associate Member"] as $position) {
-                                    $html[] = "<option value='".$position."'>".$position."</option>";
-                                }
+								$html[] = "<h2 class='card-title'>Membership Standing</h2>";
+								$html[] = "<select name='membership_position' id='membership_position' class='form-select'>";
                                 $html[] = "</select>";
 							$html[] = "</div>";
 
 							$html[] = "<div class='mb-4'>";
-								$html[] = "<h2 class='card-title'><i class='ti ti-email'></i> Are you a Regular, New or Re-activated Member?</h2>";
+								$html[] = "<h2 class='card-title'>Are you a Regular, New or Re-activated Member?</h2>";
 								$html[] = "<select name='membership_status' class='form-select'>";
                                 foreach(["Regular", "New", "Re-Activated"] as $status) {
                                     $html[] = "<option value='".$status."'>".$status."</option>";
