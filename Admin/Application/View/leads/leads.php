@@ -40,7 +40,10 @@ $html[] = "<div class='page-body'>";
 	$html[] = "<div class='container-xl'>";
 
 		$html[] = "<div class='row'>";
-			$html[] = "<div class='col-12'>";
+			$html[] = "<div class='col-md-3 col-lg-3 col-3'>";
+
+			$html[] = "</div>";
+			$html[] = "<div class='col-sm-12 col-md-9 col-lg-9 col-9'>";
 				$html[] = "<div class='box-container mb-3'>";
 				
 					$html[] = "<div class='search-box'>";

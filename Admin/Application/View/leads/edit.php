@@ -70,6 +70,7 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
                                 $html[] = "</div>";
                             $html[] = "</div>";
                         $html[] = "</div>";
+                        
                     $html[] = "</div>";
 
                     $html[] = "<div class='card mb-3'>";
