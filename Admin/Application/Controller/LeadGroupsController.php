@@ -20,14 +20,12 @@ class LeadGroupsController extends \Main\Controller {
 		$groups = $this->getModel("LeadGroup");
 		$groups->page['limit'] = 1000;
 
-		$groups->orderBy(" created_at DESC ");
-		$data = $groups->getByAccountId($this->account_id);
+		$groups->where(" account_id = ".$this->account_id." ")->orderby(" created_at DESC ");
+		$data = $groups->getList();
 
-		if($data) {
-			$this->setTemplate("leadGroups/index.php");
-			return $this->getTemplate($data, $groups);
-		}
-
+		$this->setTemplate("leadGroups/index.php");
+		return $this->getTemplate($data, $groups);
+		
 	}
 
 	function saveNew() {

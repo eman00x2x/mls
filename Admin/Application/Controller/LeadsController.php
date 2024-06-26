@@ -29,6 +29,10 @@ class LeadsController extends \Main\Controller {
 		$data = $account->getById();
 
 		$filters[] = " account_id = ".$data['account_id'];
+
+		if(isset($_GET['id'])) {
+			$filters[] = " lead_group_id = ".$_GET['id'];
+		}
 		
 		$lead = $this->getModel("Lead");
 		$lead->select(" lead_id, listing_id, account_id, content as user_message, iv, inquire_at, preferences ");
@@ -63,32 +67,48 @@ class LeadsController extends \Main\Controller {
 				const content = ".json_encode($encrypted_content).";
 				const publicKey = ".json_encode($this->session['message_keys']['publicKey']).";
 				const privateKey = ".json_encode($this->session['message_keys']['privateKey']).";
-
 			"));
 
+		}else {
+			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
+				const content = {};
+				const publicKey = {};
+				const privateKey = {};
+			"));
 		}
 
 		$this->doc->addScript(CDN."js/encryption.js");
 		$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 			
 			( async => {
-				for (let key in content) {
-					if (content.hasOwnProperty(key)) {
-						let lead_id = content[key].lead_id;
-						
-						decrypt(content[key], publicKey, privateKey)
-							.then(  response => {
-								$('.row_leads_' + lead_id + ' .name-container').html( (response.name).substring(0, 47) + '...' );
-								$('.row_leads_' + lead_id + ' .email-container').html( (response.email).substring(0, 47) + '...' );
-								$('.row_leads_' + lead_id + ' .mobile-number-container').html( (response.mobile_no).substring(0, 47) + '...' );
+			 	if(content != undefined) {
+					for (let key in content) {
+						if (content.hasOwnProperty(key)) {
+							let lead_id = content[key].lead_id;
+							
+							decrypt(content[key], publicKey, privateKey)
+								.then(  response => {
+									$('.row_leads_' + lead_id + ' .name-container').html( (response.name).substring(0, 47) + '...' );
+									$('.row_leads_' + lead_id + ' .email-container').html( (response.email).substring(0, 47) + '...' );
+									$('.row_leads_' + lead_id + ' .mobile-number-container').html( (response.mobile_no).substring(0, 47) + '...' );
 
-								let content = {name: response.name, email: response.email, mobile_no: response.mobile_no };
-								$('.row_leads_' + lead_id + ' .btn-delete').attr('data-content', JSON.stringify(content));
-							});
-						
+									let content = {name: response.name, email: response.email, mobile_no: response.mobile_no };
+									$('.row_leads_' + lead_id + ' .btn-delete').attr('data-content', JSON.stringify(content));
+								});
+							
+						}
 					}
 				}
 			})();
+
+			$(document).ready(function() {
+				$.get('".url("LeadGroupsController@index")."', function(data) {
+
+					console.log(data);
+
+					$('.sidebar-list-group').html(data);
+				});
+			});
 
 		"));
 
@@ -142,11 +162,12 @@ class LeadsController extends \Main\Controller {
 		$data['listing'] = $listing->getList();
 
 		$lead = $this->getModel("Lead");
-		$lead->addresses = $this->getModel("Address");
-		$lead->categorySelection = $listing->categorySelection();
+
+		$data['addresses'] = $this->getModel("Address");
+		$data['categorySelection'] = $listing->categorySelection();
 		
 		$this->setTemplate("leads/add.php");
-		return $this->getTemplate($data,$lead);
+		return $this->getTemplate($data, $lead);
 		
 	}
 	

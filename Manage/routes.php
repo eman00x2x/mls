@@ -103,6 +103,10 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
 
     Router::get('/leads/{lead_id}/notes/save', 'LeadNotesController@saveNew', ['as' => 'saveNew-notes'])->where([ 'lead_id' => '[0-9]+' ]);
 
+    /** LEADS GROUPS ROUTES */
+    Router::get('/leadgroups', 'LeadGroupsController@index', ['as' => 'leadGroups']);
+
+
     /** THREADS ROUTES */
     Router::get('/threads', 'MessagesController@index', ['as' => 'messages']);
     Router::get('/threads/{id}/downloadThreadMessages', 'MessagesController@downloadThreadMessages', ['as' => 'downloadThreadMessages'])->where([ 'id' => '[0-9]+' ]);

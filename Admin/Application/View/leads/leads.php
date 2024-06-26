@@ -41,7 +41,8 @@ $html[] = "<div class='page-body'>";
 
 		$html[] = "<div class='row'>";
 			$html[] = "<div class='col-md-3 col-lg-3 col-3'>";
-
+				$html[] = "<div class='sidebar-list-group bg-white rounded'>";
+				$html[] = "</div>";
 			$html[] = "</div>";
 			$html[] = "<div class='col-sm-12 col-md-9 col-lg-9 col-9'>";
 				$html[] = "<div class='box-container mb-3'>";

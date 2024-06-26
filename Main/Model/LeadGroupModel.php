@@ -80,7 +80,7 @@ class LeadGroupModel extends \Main\Model {
 
 	}
 
-	function deleteLead($id,$column = "lead_group_id") {
+	function deleteLeadGroup($id,$column = "lead_group_id") {
 
 		$this->delete($id,$column);
 

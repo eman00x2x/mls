@@ -100,7 +100,7 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
                                         $html[] = "<label class='form-label text-muted'>Category</label>";
                                         $html[] = "<div class='input-icon mb-3'>";
                                             $html[] = "<span class='input-icon-addon'><i class='ti ti-building-store'></i></span>";
-                                            $html[] = $model->categorySelection;
+                                            $html[] = $data['categorySelection'];
                                             $html[] = "<span class='input-icon-addon'><i class='ti ti-caret-down-filled'></i></span>";
                                         $html[] = "</div>";
                                     $html[] = "</div>";
@@ -165,7 +165,7 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 
                             $html[] = "<div class='form-group mb-3'>";
                                 $html[] = "<label class='form-label text-muted'>Address</label>";
-                                $html[] = $model->addresses->addressSelection();
+                                $html[] = $data['addresses']->addressSelection();
                             $html[] = "</div>";
 
                         $html[] = "</div>";
