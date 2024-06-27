@@ -6,7 +6,7 @@ $html[] = "<div class='p-3'>";
     $html[] = "<div class='d-flex justify-content-between'>";
         $html[] = "<h3>Lead Groups</h3>";
         $html[] = "<div class=''>";
-            $html[] = "<span class='btn btn-sm btn-primary'><i class='ti ti-plus fs-12 me-1'></i> New</span>";
+            $html[] = "<a href='".url("LeadGroupsController@add")."' class='btn btn-sm btn-primary'><i class='ti ti-plus fs-12 me-1'></i> New</a>";
         $html[] = "</div>";
     $html[] = "</div>";
 

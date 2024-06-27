@@ -255,7 +255,9 @@ class AuthenticatorController extends \Main\Controller
 				if(isset($data['privileges'][$key])) {
 					$data['privileges'][$key] += $value;
 				}else {
-					$data['privileges'][$key] = $value;
+					if(isset($data['privileges'][$key])) {
+						$data['privileges'][$key] = $value;
+					}
 				}
 			}
 		}

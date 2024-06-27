@@ -484,7 +484,7 @@ class AccountsController extends \Main\Controller {
 
 			}else { $_POST['logo'] = null; }
 
-			if(isset($_POST['broker_prc_license_id'])) {
+			if(isset($_POST['broker_prc_license_id']) && $_POST['broker_prc_license_id'] != "") {
 
 				$reference = $this->getModel("LicenseReference");
 				$response =	$reference->getByLicenseId($_POST['broker_prc_license_id']);
@@ -656,6 +656,10 @@ class AccountsController extends \Main\Controller {
 		$accounts = $this->getModel("Account");
 		$accounts->column['account_id'] = $account_id;
 		$data['account'] = $accounts->getById();
+
+		if(in_array($data['account']['account_type'], ["Administrator", "Web Admin", "Customer Service"])) {
+			return;
+		}
 
 		$subscriptions = $this->getModel("AccountSubscription");
 		$subscriptions->column['account_id'] = $account_id;

@@ -105,7 +105,14 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
 
     /** LEADS GROUPS ROUTES */
     Router::get('/leadgroups', 'LeadGroupsController@index', ['as' => 'leadGroups']);
+    Router::get('/leadgroups/add', 'LeadGroupsController@add', ['as' => 'leadGroups-add']);
+    Router::get('/leadgroups/search', 'LeadGroupsController@searchGroup', ['as' => 'leadGroups-searchGroup']);
+    Router::get('/leadgroups/groupSelection', 'LeadGroupsController@groupSelection', ['as' => 'leadGroups-groupSelection']);
+    Router::get('/leadgroups/{id}/edit', 'LeadGroupsController@edit', ['as' => 'leadGroups-edit'])->where([ 'id' => '[0-9]+' ]);
+    Router::get('/leadgroups/{id}/delete', 'LeadGroupsController@delete', ['as' => 'leadGroups-delete'])->where([ 'id' => '[0-9]+' ]);
 
+    Router::post('/leadgroups/saveNew', 'LeadGroupsController@saveNew', ['as' => 'leadGroups-savenew']);
+    Router::post('/leadgroups/{id}/saveUpdate', 'LeadGroupsController@saveUpdate', ['as' => 'leadGroups-saveupdate'])->where([ 'id' => '[0-9]+' ]);
 
     /** THREADS ROUTES */
     Router::get('/threads', 'MessagesController@index', ['as' => 'messages']);

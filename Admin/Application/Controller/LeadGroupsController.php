@@ -20,7 +20,7 @@ class LeadGroupsController extends \Main\Controller {
 		$groups = $this->getModel("LeadGroup");
 		$groups->page['limit'] = 1000;
 
-		$groups->where(" account_id = ".$this->account_id." ")->orderby(" created_at DESC ");
+		$groups->where(" account_id = ".$this->account_id." ")->orderby(" name DESC ");
 		$data = $groups->getList();
 
 		$this->setTemplate("leadGroups/index.php");
@@ -28,15 +28,71 @@ class LeadGroupsController extends \Main\Controller {
 		
 	}
 
+	function groupSelection() {
+
+		$filters[] = " account_id = ".$this->account_id." ";
+
+		$groups = $this->getModel("LeadGroup");
+		$groups->page['limit'] = 1000;
+
+		$groups->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" name DESC ");
+		$data = $groups->getList();
+
+		$this->setTemplate("leadGroups/groupSelection.php");
+		return $this->getTemplate($data, $groups);
+
+	}
+
+	function searchGroup() {
+
+		if(isset($_REQUEST['search'])) {
+			$filters[] = " (name LIKE '%".$_REQUEST['search']."%') ";
+		}
+
+		$filters[] = " account_id = ".$this->account_id." ";
+
+		$groups = $this->getModel("LeadGroup");
+		$groups->page['limit'] = 1000;
+
+		$groups->where((isset($filters) ? implode(" AND ",$filters) : null))->orderby(" name DESC ");
+		$data = $groups->getList();
+
+		$this->setTemplate("leadGroups/searchGroup.php");
+		return $this->getTemplate($data, $groups);
+
+	}
+
+	function add() {
+
+		$this->doc->setTitle("New Lead Group");
+
+		$this->setTemplate("leadGroups/add.php");
+		return $this->getTemplate();
+
+	}
+
+	function edit($id) {
+
+		$this->doc->setTitle("Update Lead Group");
+
+		$groups = $this->getModel("LeadGroup");
+		$groups->column['lead_group_id'] = $id;
+		$data = $groups->getById();
+
+		$this->setTemplate("leadGroups/edit.php");
+		return $this->getTemplate($data, $groups);
+
+	}
+
 	function saveNew() {
 
-		/* parse_str(file_get_contents('php://input'), $_POST); */
+		parse_str(file_get_contents('php://input'), $_POST);
 
-		$_GET['created_at'] = DATE_NOW;
-		$_GET['account_id'] = $this->account_id;
+		$_POST['created_at'] = DATE_NOW;
+		$_POST['account_id'] = $this->account_id;
 
-		$notes = $this->getModel("LeadNote");
-		$response = $notes->saveNew($_GET);
+		$groups = $this->getModel("LeadGroup");
+		$response = $groups->saveNew($_POST);
 
 		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
 
@@ -47,17 +103,33 @@ class LeadGroupsController extends \Main\Controller {
 
 	}
 
-	function delete($lead_id, $id) {
+	function saveUpdate($id) {
+		
+		parse_str(file_get_contents('php://input'), $_POST);
 
-		$notes = $this->getModel("LeadNote");
-		$notes->column['note_id'] = $id;
-		$data = $notes->getById();
+		$groups = $this->getModel("LeadGroup");
+		$response = $groups->save($id, $_POST);
+		
+		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
+
+		return json_encode(array(
+			"status" => $response['status'],
+			"message" => getMsg()
+		));
+		
+	}
+
+	function delete($id) {
+
+		$groups = $this->getModel("LeadGroup");
+		$groups->column['lead_group_id'] = $id;
+		$data = $groups->getById();
 		
 		if($data) {
 
-			$notes->deleteNote($id);
+			$groups->deleteLeadGroup($id);
 
-			$this->getLibrary("Factory")->setMsg("Note deleted!","success");
+			$this->getLibrary("Factory")->setMsg("Group deleted!","success");
 			return json_encode(
 				array(
 					"status" => 1,
@@ -66,7 +138,7 @@ class LeadGroupsController extends \Main\Controller {
 			);
 
 		}else {
-			$this->getLibrary("Factory")->setMsg("Note not found.","warning");
+			$this->getLibrary("Factory")->setMsg("Group not found.","warning");
 			return json_encode(
 				array(
 					"status" => 2,

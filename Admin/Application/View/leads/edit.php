@@ -37,6 +37,7 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 
                 $html[] = "<form id='form' action='' method='POST'>";
 					$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";
+					$html[] = "<input name='lead_group_id' id='lead_group_id' type='hidden' value='' />";
 					$html[] = "<input name='content' id='content' type='hidden' value='' />";
 					$html[] = "<input name='iv' id='iv' type='hidden' value='' />";
 					$html[] = "<input name='message' id='message' type='hidden' value='' />";
@@ -49,6 +50,14 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
                         $html[] = "</div>";
 
                         $html[] = "<div class='card-body'>";
+
+                            $html[] = "<div class='row mb-2'>";
+                                $html[] = "<label class='text-muted col-sm-3 col-form-label'>Group</label>";
+                                $html[] = "<div class='col-sm-9'>";
+                                    $html[] = "<p class='btn-group-selection border rounded p-2 cursor-pointer btn-delete' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("LeadGroupsController@groupSelection")."'>&nbsp;</p>";
+                                $html[] = "</div>";
+                            $html[] = "</div>";
+
                             $html[] = "<div class='row mb-3'>";
                                 $html[] = "<label class='text-muted col-sm-3 col-form-label'>Name</label>";
                                 $html[] = "<div class='col-sm-9'>";

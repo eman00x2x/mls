@@ -156,6 +156,37 @@ class LeadsController extends \Main\Controller {
 				publicKey = ".json_encode($this->session['message_keys']['publicKey']).";
 			}
 
+			$(document).on('click', '.btn-selected', function() {
+				let id = $(this).data('id');
+				let name = $(this).data('name');
+
+				$('#lead_group_id').val(id);
+				$('.btn-group-selection').text(name);
+
+				$('.btn-close').trigger('click');
+			});
+
+			$(document).on('click', '#btn-searchgroup', function(e) {
+				searchGroup();
+			});
+
+			$(document).on('keypress', '#btn-searchgroup', function(e) {
+				searchGroup();
+			});
+
+			function searchGroup() {
+				
+				keyword = $('#searchgroup').val();
+				if(keyword != '') {
+					if(e.keyCode == 13 || e.which == 13) {
+						$.get('".url("LeadGroupsController@searchGroup")."?search=' + keyword, function(data) {
+							$('.response-body').htm(data);
+						});
+					}
+				}
+
+			}
+
 		"));
 
 		$listing = $this->getModel("Listing");
@@ -237,6 +268,38 @@ class LeadsController extends \Main\Controller {
 					publicKey = ".json_encode($this->session['message_keys']['publicKey']).";
 				}
 
+				$(document).on('click', '.btn-selected', function() {
+					let id = $(this).data('id');
+					let name = $(this).data('name');
+
+					$('#lead_group_id').val(id);
+					$('.btn-group-selection').text(name);
+
+					$('.btn-close').trigger('click');
+				});
+
+				$(document).on('click', '#btn-searchgroup', function(e) {
+					searchGroup(e);
+				});
+
+				$(document).on('keypress', '#searchgroup', function(e) {
+					searchGroup(e);
+				});
+
+				function searchGroup(e) {
+					
+					keyword = $('#searchgroup').val();
+					if(keyword != '') {
+						if(e.keyCode == 13 || e.which == 13) {
+							$('.response-body').html(\"<img src='".CDN."images/loader.gif' /> searching groups \");
+							$.get('".url("LeadGroupsController@searchGroup")."?search=' + keyword, function(data) {
+								$('.response-body').html(data);
+							});
+						}
+					}
+
+				}
+
 			"));
 
 			$listing = $this->getModel("Listing");
@@ -247,8 +310,8 @@ class LeadsController extends \Main\Controller {
 				$data['preferences'] = $lead->preferences;
 			}
 
-			$lead->addresses = $this->getModel("Address");
-			$lead->categorySelection = $listing->categorySelection($data['preferences']['category']);
+			$data['addresses'] = $this->getModel("Address");
+			$data['categorySelection'] = $listing->categorySelection($data['preferences']['category']);
 			
 			$this->setTemplate("leads/edit.php");
 			return $this->getTemplate($data,$lead);

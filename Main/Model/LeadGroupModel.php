@@ -19,7 +19,7 @@ class LeadGroupModel extends \Main\Model {
 
 		$v = $this->getValidator();
 
-		$v->validateGeneral($data['name'],"Name is required");
+		$v->validateGeneral($data['name'],"Group Name is required");
 
 		if($v->foundErrors()) {
 			return array(
@@ -53,7 +53,7 @@ class LeadGroupModel extends \Main\Model {
 
 			$v = $this->getValidator();
 
-			$v->validateGeneral($data['name'],"Name is required");
+			$v->validateGeneral($data['name'],"Group Name is required");
 
 			if($v->foundErrors()) {
 				return array(
