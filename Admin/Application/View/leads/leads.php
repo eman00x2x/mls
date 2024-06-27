@@ -20,6 +20,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 					$html[] = "<div class='btn-list'>";
 
 						if(isset($_GET['id']) && $_GET['id'] != 0) {
+							$html[] = "<span class='btn btn-danger btn-delete' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("LeadGroupsController@delete", ["id" => $_GET['id']])."' data-content=''><i class='ti ti-trash me-2'></i> Delete Group</span>";
 							$html[] = "<a class='ajax btn btn-dark' href='".url("LeadGroupsController@edit", ["id" => $_GET['id']])."'><i class='ti ti-edit me-2'></i> Update Group Details</a>";
 						}
 
