@@ -46,11 +46,11 @@ $html[] = "<div class='page-body'>";
 
 		$html[] = "<div class='row'>";
 			$html[] = "<div class='col-md-3 col-lg-3 col-3'>";
-				$html[] = "<div class='sidebar-list-group bg-white rounded'>";
+				$html[] = "<div class='sidebar-list-group bg-white rounded d-md-block d-none'>";
 					$html[] = "<img src='".CDN."images/loader.gif' /> loading groups...";
 				$html[] = "</div>";
 			$html[] = "</div>";
-			$html[] = "<div class='col-sm-12 col-md-9 col-lg-9 col-9'>";
+			$html[] = "<div class='col-sm-12 col-md-9 col-lg-9'>";
 				$html[] = "<div class='box-container mb-3'>";
 				
 					$html[] = "<div class='search-box'>";
@@ -62,20 +62,20 @@ $html[] = "<div class='page-body'>";
 
 						for($i=0; $i<count($data['leads']); $i++) { $c++;
 							$html[] = "<div class='row row_leads_".$data['leads'][$i]['lead_id']." justify-content-center my-3 '>";
-								$html[] = "<div class='col-md-3 col-lg-3'>";
+								$html[] = "<div class='col-md-3 col-lg-3 mb-2'>";
 									$html[] = "<label class='text-muted fs-12 d-block'>Name</label>";
 									$html[] = "<a href='".url("LeadsController@view", ["id" => $data['leads'][$i]['lead_id']])."' class='text-decoration-none text-dark'>";
 										$html[] = "<span class='name-container'><img src='".CDN."images/loader.gif' /> decrypting</span>";
 									$html[] = "</a>";
 								$html[] = "</div>";
 
-								$html[] = "<div class='col-md-3 col-lg-3'>";
+								$html[] = "<div class='col-md-3 col-lg-3 mb-2'>";
 									$html[] = "<label class='text-muted fs-12 d-block'>Contact Info</label>";
 									$html[] = "<span class='d-block email-container'><img src='".CDN."images/loader.gif' /> decrypting</span>";
 									$html[] = "<span class='d-block mobile-number-container'><img src='".CDN."images/loader.gif' /> decrypting</span>";
 								$html[] = "</div>";
 
-								$html[] = "<div class='col-md-3 col-lg-3'>";
+								$html[] = "<div class='col-md-3 col-lg-3 mb-2'>";
 									$html[] = "<label class='text-muted fs-12 d-block'>Preferences</label>";
 									$html[] = "<div class=''>".$data['leads'][$i]['preferences']['type']."</div>";
 									$html[] = "<div class=''>".$data['leads'][$i]['preferences']['category']."</div>";
@@ -83,7 +83,7 @@ $html[] = "<div class='page-body'>";
 									$html[] = "<div class=''>".implode(" ", $data['leads'][$i]['preferences']['address'])."</div>";
 								$html[] = "</div>";
 
-								$html[] = "<div class='col-md-3 col-lg-3'>";
+								$html[] = "<div class='col-md-3 col-lg-3 mb-2'>";
 									$html[] = "<a class='btn btn-primary me-2' href='".url("LeadsController@view",["id" => $data['leads'][$i]['lead_id']])."'>View</a>";
 									if($_SESSION['user_logged']['permissions']['leads']['delete']) {
 										$html[] = "<span class='btn btn-danger btn-delete' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("LeadsController@delete",["id" => $data['leads'][$i]['lead_id']])."' data-content=''><i class='ti ti-trash me-2'></i> Delete</span>";
@@ -157,5 +157,15 @@ $html[] = "<div class='page-body'>";
 			$html[] = $model->pagination;
 		}
 
+	$html[] = "</div>";
+$html[] = "</div>";
+
+$html[] = "<div class='btn-save-container fixed-bottom bg-white border-top d-block d-md-none'>";
+    $html[] = "<div class='btn-show-groups text-center cursor-pointer bg-primary py-3 text-white'>";
+		$html[] = "<span class='fw-bold'>Lead Groups <i class='ti ti-caret-up'></i></span>";
+    $html[] = "</div>";
+
+	$html[] = "<div class='list-group-bottom bg-white rounded' style='height:0;'>";
+		$html[] = "<img src='".CDN."images/loader.gif' /> loading groups...";
 	$html[] = "</div>";
 $html[] = "</div>";

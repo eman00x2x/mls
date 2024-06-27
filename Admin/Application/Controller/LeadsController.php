@@ -103,11 +103,14 @@ class LeadsController extends \Main\Controller {
 
 			$(document).ready(function() {
 				$.get('".url("LeadGroupsController@index")."', function(data) {
-
-					console.log(data);
-
 					$('.sidebar-list-group').html(data);
+					$('.list-group-bottom').html(data);
 				});
+			});
+
+			$(document).on('click', '.btn-show-groups', function() {
+				$('.list-group-bottom').height('auto');
+				$('.list-group-bottom').css('overflow-y', 'auto');
 			});
 
 		"));
