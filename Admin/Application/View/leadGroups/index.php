@@ -13,7 +13,7 @@ $html[] = "<div class='p-3'>";
     $html[] = "<div class='' style='height:auto; overflow-y: auto;'>";
 
         $html[] = "<div class='list-group'>";
-            $html[] = "<a href='".url("LeadsController@index", null, ["id" => 0])."' class='list-group-item text-decoration-none'><i class='ti ti-raquo'></i> Ungroup</a>";
+            $html[] = "<a href='".url("LeadsController@index", null, ["id" => 0])."' class='list-group-item text-decoration-none'><i class='ti ti-raquo'></i> Ungrouped</a>";
             if($data) {
                 for($i=0; $i<count($data); $i++) {
                     $html[] = "<a href='".url("LeadsController@index", null, ["id" => $data[$i]['lead_group_id']])."' class='list-group-item text-decoration-none'>".$data[$i]['name']."</a>";

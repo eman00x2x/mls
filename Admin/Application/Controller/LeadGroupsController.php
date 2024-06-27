@@ -127,15 +127,23 @@ class LeadGroupsController extends \Main\Controller {
 		
 		if($data) {
 
-			$groups->deleteLeadGroup($id);
+			if(isset($_REQUEST['delete'])) {
 
-			$this->getLibrary("Factory")->setMsg("Group deleted!","success");
-			return json_encode(
-				array(
-					"status" => 1,
-					"message" => getMsg()
-				)
-			);
+				$leads = $this->getModel("Lead");
+				$leads->DBO->query("
+					UPDATE mls_leads SET lead_group_id = 0 WHERE lead_group_id = $id
+				");
+
+				$groups->deleteLeadGroup($id);
+
+				$this->getLibrary("Factory")->setMsg("Group deleted!","success");
+				return json_encode(
+					array(
+						"status" => 1,
+						"message" => getMsg()
+					)
+				);
+			}
 
 		}else {
 			$this->getLibrary("Factory")->setMsg("Group not found.","warning");
@@ -146,6 +154,9 @@ class LeadGroupsController extends \Main\Controller {
 				)
 			);
 		}
+
+		$this->setTemplate("leadGroups/delete.php");
+		return $this->getTemplate($data);
 
 	}
 	

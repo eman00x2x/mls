@@ -46,6 +46,7 @@ $html[] = "<div class='page-body'>";
 		$html[] = "<div class='row'>";
 			$html[] = "<div class='col-md-3 col-lg-3 col-3'>";
 				$html[] = "<div class='sidebar-list-group bg-white rounded'>";
+					$html[] = "<img src='".CDN."images/loader.gif' /> loading groups...";
 				$html[] = "</div>";
 			$html[] = "</div>";
 			$html[] = "<div class='col-sm-12 col-md-9 col-lg-9 col-9'>";
@@ -74,7 +75,7 @@ $html[] = "<div class='page-body'>";
 								$html[] = "</div>";
 
 								$html[] = "<div class='col-md-3 col-lg-3'>";
-									$html[] = "<label class='text-muted fs-12 d-block'>Preference</label>";
+									$html[] = "<label class='text-muted fs-12 d-block'>Preferences</label>";
 									$html[] = "<div class=''>".$data['leads'][$i]['preferences']['type']."</div>";
 									$html[] = "<div class=''>".$data['leads'][$i]['preferences']['category']."</div>";
 									$html[] = "<div class=''>".$data['leads'][$i]['preferences']['lot_area']."</div>";

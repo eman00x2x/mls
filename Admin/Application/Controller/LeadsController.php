@@ -88,9 +88,9 @@ class LeadsController extends \Main\Controller {
 							
 							decrypt(content[key], publicKey, privateKey)
 								.then(  response => {
-									$('.row_leads_' + lead_id + ' .name-container').html( (response.name).substring(0, 47) + '...' );
-									$('.row_leads_' + lead_id + ' .email-container').html( (response.email).substring(0, 47) + '...' );
-									$('.row_leads_' + lead_id + ' .mobile-number-container').html( (response.mobile_no).substring(0, 47) + '...' );
+									$('.row_leads_' + lead_id + ' .name-container').html( (response.name).substring(0, 47) );
+									$('.row_leads_' + lead_id + ' .email-container').html( (response.email).substring(0, 47) );
+									$('.row_leads_' + lead_id + ' .mobile-number-container').html( (response.mobile_no).substring(0, 47) );
 
 									let content = {name: response.name, email: response.email, mobile_no: response.mobile_no };
 									$('.row_leads_' + lead_id + ' .btn-delete').attr('data-content', JSON.stringify(content));
@@ -215,6 +215,15 @@ class LeadsController extends \Main\Controller {
 
 		if($data) {
 
+			$groups = $this->getModel("LeadGroup");
+			$groups->column['lead_group_id'] = $data['lead_group_id'];
+			$data['groups'] = $groups->getById();
+
+			if($data['groups'] === false) {
+				$data['groups'] = [];
+				$data['groups']['name'] = "Ungrouped";
+			}
+
 			$this->doc->addScript(CDN."js/encryption.js");
 			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
@@ -334,6 +343,15 @@ class LeadsController extends \Main\Controller {
 
 		if($data) {
 
+			$groups = $this->getModel("LeadGroup");
+			$groups->column['lead_group_id'] = $data['lead_group_id'];
+			$data['groups'] = $groups->getById();
+
+			if($data['groups'] === false) {
+				$data['groups'] = [];
+				$data['groups']['name'] = "Ungrouped";
+			}
+
 			$this->doc->addScript(CDN."js/encryption.js");
 			$this->doc->addScriptDeclaration(str_replace([PHP_EOL,"\t"], ["",""], "
 
@@ -394,6 +412,13 @@ class LeadsController extends \Main\Controller {
 						$('.notes-wrapper').html(data);
 					});
 				}
+
+				$(document).on('click', '.btn-add-note', function() {
+					let form = $('.note-form');
+					$('.btn-add-note-wrapper').remove();
+					$('.note-wrapper').html(form.clone());
+					$('.note-form-wrapper').html('');
+				});
 
 			"));
 

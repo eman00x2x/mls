@@ -4,16 +4,15 @@ $html[] = "<div class='container-xl'>";
 	$html[] = "<div class='response'>";
 		$html[] = getMsg();
 	$html[] = "</div>";
-$html[] = "</div>";
 
-$html[] = "<input type='hidden' id='save_url' value='".url("LeadGroupsController@saveNew")."' />";
 
-$html[] = "<div class='row justify-content-center mb-5 pb-5'>";
-	$html[] = "<div class='col-md-6 col-12'>";
+	$html[] = "<input type='hidden' id='save_url' value='".url("LeadGroupsController@saveNew")."' />";
 
-		$html[] = "<div class='page-header d-print-none text-white'>";
-			$html[] = "<div class='container-xl'>";
+	$html[] = "<div class='row justify-content-center mb-5 pb-5'>";
+		$html[] = "<div class='col-md-6 col-12'>";
 
+			$html[] = "<div class='page-header d-print-none text-white'>";
+				
 				$html[] = "<div class='row g-2 '>";
 					$html[] = "<div class='col'>";
 						$html[] = "<div class='page-pretitle'>Lead Groups</div>";
@@ -30,18 +29,16 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 				$html[] = "</div>";
 
 			$html[] = "</div>";
-		$html[] = "</div>";
 
-		$html[] = "<div class='page-body'>";
-			$html[] = "<div class='container-xl'>";
-
+			$html[] = "<div class='page-body'>";
+				
 				$html[] = "<form id='form' action='' method='POST'>";
 					$html[] = "<input name='_method' id='_method' type='hidden' value='post' />";
 					$html[] = "<input type='hidden' name='csrf_token' value='".csrf_token()."' />";
 					
 					$html[] = "<div class='card mb-3'>";
 						$html[] = "<div class='card-header'>";
-							$html[] = "<h3 class='card-title text-blue mb-0'>Create Group</h3>";
+							$html[] = "<h3 class='card-title text-blue mb-0'>Group Details</h3>";
 						$html[] = "</div>";
 
 						$html[] = "<div class='card-body'>";
@@ -53,6 +50,10 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 								$html[] = "</div>";
 							$html[] = "</div>";
 
+							$html[] = "<div class='text-end'>";
+								$html[] = "<span class='btn btn-outline-primary btn-save'><i class='ti ti-device-floppy me-2'></i> Save Group</span>";
+							$html[] = "</div>";
+
 						$html[] = "</div>";
 					$html[] = "</div>";
 
@@ -61,20 +62,6 @@ $html[] = "<div class='row justify-content-center mb-5 pb-5'>";
 			$html[] = "</div>";
 
 		$html[] = "</div>";
-
 	$html[] = "</div>";
-$html[] = "</div>";
 
-$html[] = "<div class='btn-save-container fixed-bottom bg-white py-3 border-top'>";
-	$html[] = "<div class='row g-0 justify-content-center'>";
-		$html[] = "<div class='col-lg-6 col-md-6 col-sm-12 col-12'>";
-
-			$html[] = "<div class='container-xl'>";
-				$html[] = "<div class='text-end'>";
-					$html[] = "<span class='btn btn-outline-primary btn-save'><i class='ti ti-device-floppy me-2'></i> Save Group</span>";
-				$html[] = "</div>";
-			$html[] = "</div>";
-
-		$html[] = "</div>";
-	$html[] = "</div>";
 $html[] = "</div>";

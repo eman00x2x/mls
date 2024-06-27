@@ -17,11 +17,14 @@ if($data) {
 				
 				$html[] = "<p>Are you sure do you want to delete this Lead Group?</p>";
 				
-				$html[] = "<div class='border mb-3 p-4 rounded'>";
+				$html[] = "<div class=''>";
 					$html[] = "<p>Group Name: <b>".$data['name']."</b></p>";
 				$html[] = "</div>";
 
 				$html[] = "<p>Lead Group will be permanently deleted this action is not reversible. <br/><br/> Are you sure do you want to continue?</p>";
+
+				$html[] = "<p class=''>Leads associated in this group will be transfered to Ungrouped.</p>";
+
 			$html[] = "</div>";
 
 			$html[] = "<div class='deletion-response'></div>";
@@ -29,7 +32,7 @@ if($data) {
 			$html[] = "<div class='btn-delete-controls'>";
 				$html[] = "<div class='btn-list'>";
 					$html[] = "<span class='btn text-dark bg-transparent' data-bs-dismiss='offcanvas'><i class='ti ti-x me-2'></i> Cancel</span>";
-					$html[] = "<span data-url='".url("LeadGroupsController@delete",["id" => $data['lead_group_id']], ["delete" => "true"])."' data-row='row_open_house_".$data['lead_group_id']."' class='btn btn-danger btn-continue-delete'><i class='ti ti-trash me-2'></i> Continue Deletion</span>";
+					$html[] = "<span data-url-proceed='".url("LeadsController@index")."' data-url='".url("LeadGroupsController@delete",["id" => $data['lead_group_id']], ["delete" => "true"])."' data-row='row_open_house_".$data['lead_group_id']."' class='btn btn-danger btn-continue-delete'><i class='ti ti-trash me-2'></i> Continue Deletion</span>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 

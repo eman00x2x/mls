@@ -24,9 +24,7 @@ $html[] = "<div class='page-header d-print-none text-white'>";
     $html[] = "</div>";
 $html[] = "</div>";
 
-
-
-$html[] = "<div class='page-body'>";
+$html[] = "<div class='page-body mb-5 pb-5'>";
     $html[] = "<div class='container-xl'>";
 
         $html[] = "<div class='row justify-content-center'>";
@@ -40,8 +38,12 @@ $html[] = "<div class='page-body'>";
                     $html[] = "<div class='card-body'>";
                         $html[] = "<table class='table'>";
                         $html[] = "<tr>";
-                            $html[] = "<td class='pt-0 w-20'>Name</td>";
-                            $html[] = "<td class='pt-0'><span class='name-container'><img src='".CDN."images/loader.gif' /> decrypting</span></td>";
+                            $html[] = "<td class='pt-0 w-20'>Group</td>";
+                            $html[] = "<td class='pt-0'>".$data['groups']['name']."</td>";
+                        $html[] = "</tr>";
+                        $html[] = "<tr>";
+                            $html[] = "<td class=' w-20'>Name</td>";
+                            $html[] = "<td class=''><span class='name-container'><img src='".CDN."images/loader.gif' /> decrypting</span></td>";
                         $html[] = "</tr>";
                         $html[] = "<tr>";
                             $html[] = "<td>Mobile Number</td>";
@@ -125,27 +127,39 @@ $html[] = "<div class='page-body'>";
                     $html[] = "</div>";
                     $html[] = "<div class='card-footer'>";
                         $html[] = "<input type='hidden' name='save_url' id='save_url' value='".url("LeadNotesController@saveNew", ["lead_id" => $data['lead_id']])."' />";
-                        $html[] = "<form id='form' method='GET'>";
-                            $html[] = "<input type='hidden' name='user_id' id='user_id' value='".$_SESSION['user_logged']['user_id']."' />";
-                            $html[] = "<input type='hidden' name='lead_id' id='lead_id' value='".$data['lead_id']."' />";
-                            /* $html[] = "<input type='hidden' name='iv' id='iv' value='' />";
-                            $html[] = "<input type='hidden' name='content' id='content' value='' />"; */
-                            
-                            $html[] = "<div class='form-floating mb-3'>";
-                                /* $html[] = "<input type='text' name='note' id='note' value='' class='form-control' />"; */
-                                $html[] = "<input type='text' name='content' id='content' value='' class='form-control' />";
-                                $html[] = "<label for='note'>Note</label>";
+                        
+                        $html[] = "<div class='note-form-wrapper d-none d-md-block'>";
+                            $html[] = "<div class='note-form'>";
+                                $html[] = "<form id='form' method='GET'>";
+                                    $html[] = "<input type='hidden' name='user_id' id='user_id' value='".$_SESSION['user_logged']['user_id']."' />";
+                                    $html[] = "<input type='hidden' name='lead_id' id='lead_id' value='".$data['lead_id']."' />";
+                                    /* $html[] = "<input type='hidden' name='iv' id='iv' value='' />";
+                                    $html[] = "<input type='hidden' name='content' id='content' value='' />"; */
+                                    
+                                    $html[] = "<div class='input-group'>";
+                                        $html[] = "<input type='text' name='content' id='content' value='' class='form-control' placeholder='Your Note' />";
+                                        $html[] = "<span class='btn btn-primary btn-save-note'>Save Note</span>";
+                                    $html[] = "</div>";
+                                $html[] = "</form>";
                             $html[] = "</div>";
-                            $html[] = "<span class='btn btn-primary btn-save-note'>Save Note</span>";
-                        $html[] = "</form>";
+                        $html[] = "</div>";
                     $html[] = "</div>";
                 $html[] = "</div>";
 
-
-                
             $html[] = "</div>";
 
         $html[] = "</div>";
 
     $html[] = "</div>";
+$html[] = "</div>";
+
+
+$html[] = "<div class='btn-save-container fixed-bottom bg-white py-3 border-top d-md-none d-block'>";
+	$html[] = "<div class='container-xl'>";
+		$html[] = "<div class='note-wrapper'>";
+            $html[] = "<div class='text-center btn-add-note-wrapper'>";
+                $html[] = "<span class='btn btn-primary btn-add-note'>Add Note</span";
+            $html[] = "</div>";
+        $html[] = "</div>";
+	$html[] = "</div>";
 $html[] = "</div>";
