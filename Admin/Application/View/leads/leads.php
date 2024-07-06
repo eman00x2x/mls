@@ -53,10 +53,10 @@ $html[] = "<div class='page-body'>";
 			$html[] = "<div class='col-sm-12 col-md-9 col-lg-9'>";
 				$html[] = "<div class='box-container mb-3'>";
 				
-					$html[] = "<div class='search-box'>";
+					/* $html[] = "<div class='search-box'>";
 						$html[] = "<input type='text' name='search' id='search' value='' placeholder='Search' data-url='".url("LeadsController@index", ["id" => $data['account_id']])."' />";
 						$html[] = "<a href='".url("LeadsController@index", ["id" => $data['account_id']])."' class='clearFilter'>CLEAR FILTER</a>";
-					$html[] = "</div>";
+					$html[] = "</div>"; */
 
 					if($data['leads']) { $c=$model->page['starting_number'];
 
@@ -92,51 +92,6 @@ $html[] = "<div class='page-body'>";
 							$html[] = "</div>";
 						}
 
-						/* $html[] = "<div class='table-responsive'>";
-							
-							$html[] = "<table class='table table-hover table-outline'>";
-							$html[] = "<thead>";
-								$html[] = "<tr>";
-									$html[] = "<th class='text-center w-1'>#</th>";
-									$html[] = "<th>Lead Name</th>";
-									$html[] = "<th>Email Address</th>";
-									$html[] = "<th>Mobile Number</th>";
-									$html[] = "<th>Preference Type</th>";
-									$html[] = "<th>Preference Category</th>";
-									$html[] = "<th>Preference Lot Area</th>";
-									$html[] = "<th>Preference Location</th>";
-									$html[] = "<th class='text-center'><i class='icon-settings'></i></th>";
-								$html[] = "</tr>";
-							$html[] = "</thead>";
-							
-							$html[] = "<tbody>";
-							for($i=0; $i<count($data['leads']); $i++) { $c++;
-
-								$html[] = "<tr class='row_leads_".$data['leads'][$i]['lead_id']."'>";
-									$html[] = "<td class='align-middle text-center w-1 text-muted'>$c</td>";
-									
-									$html[] = "<td class='align-middle'><span class='name-container'><img src='".CDN."images/loader.gif' /> decrypting...</span></td>";
-									$html[] = "<td class='align-middle'><span class='email-container'><img src='".CDN."images/loader.gif' /> decrypting...</span></td>";
-									$html[] = "<td class='align-middle'><span class='mobile-number-container'><img src='".CDN."images/loader.gif' /> decrypting...</span></td>";
-									$html[] = "<td class='align-middle'><span class=''>".$data['leads'][$i]['preferences']['type']."</span></td>";
-									$html[] = "<td class='align-middle'><span class=''>".$data['leads'][$i]['preferences']['category']."</span></td>";
-									$html[] = "<td class='align-middle'><span class=''>".$data['leads'][$i]['preferences']['lot_area']."</span></td>";
-									$html[] = "<td class='align-middle'><span class=''>".implode(" ", $data['leads'][$i]['preferences']['address'])."</span></td>";
-									$html[] = "<td class='text-center'>";
-										$html[] = "<a class='btn btn-primary me-2' href='".url("LeadsController@view",["id" => $data['leads'][$i]['lead_id']])."'>View</a>";
-										if($_SESSION['user_logged']['permissions']['leads']['delete']) {
-											$html[] = "<span class='btn btn-danger btn-delete' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("LeadsController@delete",["id" => $data['leads'][$i]['lead_id']])."' data-content=''><i class='ti ti-trash me-2'></i> Delete</span>";
-										}
-									$html[] = "</td>";
-									
-								$html[] = "</tr>";
-								
-							}
-							$html[] = "</tbody>";
-							$html[] = "</table>";
-							
-						$html[] = "</div>"; */
-						
 					}else {
 						$html[] = "<div class=''>";
                             $html[] = "<div class='empty'>";
@@ -161,7 +116,7 @@ $html[] = "<div class='page-body'>";
 $html[] = "</div>";
 
 $html[] = "<div class='btn-save-container fixed-bottom bg-white border-top d-block d-md-none'>";
-    $html[] = "<div class='btn-show-groups text-center cursor-pointer bg-primary py-3 text-white'>";
+    $html[] = "<div class='btn-delete text-center cursor-pointer bg-primary py-3 text-white' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("LeadGroupsController@index")."' data-content=''>";
 		$html[] = "<span class='fw-bold'>Lead Groups <i class='ti ti-caret-up'></i></span>";
     $html[] = "</div>";
 

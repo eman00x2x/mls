@@ -19,10 +19,10 @@ class LeadsController extends \Main\Controller {
 
 		$this->doc->setTitle("Leads");
 	
-		if(isset($_REQUEST['search'])) {
+		/* if(isset($_REQUEST['search'])) {
 			$filters[] = " (name LIKE '%".$_REQUEST['search']."%') OR (email LIKE '%".$_REQUEST['search']."%') OR (mobile_no LIKE '%".$_REQUEST['search']."%')";
 			$uri['search'] = $_REQUEST['search'];
-		}
+		} */
 
 		$account = $this->getModel("Account");
 		$account->column['account_id'] = $this->account_id;
@@ -106,11 +106,6 @@ class LeadsController extends \Main\Controller {
 					$('.sidebar-list-group').html(data);
 					$('.list-group-bottom').html(data);
 				});
-			});
-
-			$(document).on('click', '.btn-show-groups', function() {
-				$('.list-group-bottom').height('auto');
-				$('.list-group-bottom').css('overflow-y', 'auto');
 			});
 
 		"));

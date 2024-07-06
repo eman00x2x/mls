@@ -1,6 +1,5 @@
 <?php
 
-
 $html[] = "<div class='p-3'>";
 
     $html[] = "<div class='d-flex justify-content-between'>";
@@ -10,7 +9,7 @@ $html[] = "<div class='p-3'>";
         $html[] = "</div>";
     $html[] = "</div>";
 
-    $html[] = "<div class='' style='height:auto; overflow-y: auto;'>";
+    $html[] = "<div class='' style='max-height: 800px; overflow-y: auto;'>";
 
         $html[] = "<div class='list-group'>";
             $html[] = "<a href='".url("LeadsController@index", null, ["id" => 0])."' class='list-group-item text-decoration-none'><i class='ti ti-raquo'></i> Ungrouped</a>";
