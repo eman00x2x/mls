@@ -14,7 +14,7 @@ if($data['listings']) {
 				for($i=0; $i<count($data['listings']); $i++) {
 					$html[] = "<div class='col-md-5 col-lg-3 col-auto '>";
 						$html[] = "<div class='card property-container mb-3' title='".$data['listings'][$i]['title']."'>";
-							$html[] = "<div class='p-image img-responsive img-responsive-21x9 card-img-top' style='background-image: url(".$data['listings'][$i]['thumb_img'].");'>";
+							$html[] = "<div class='p-image img-responsive img-responsive-21x9 card-img-top' data-thumb-image='".$data['listings'][$i]['thumb_img']."' data-id='".$data['listings'][$i]['listing_id']."'>";
 							
 								$html[] = "<div class='black-gradient'>";
 					

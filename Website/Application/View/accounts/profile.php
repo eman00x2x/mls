@@ -53,9 +53,9 @@ $html[] = "<div class='page-body mt-0 bg-white'>";
 							$html[] = "<div class='row justify-content-center'>";
 								$html[] = "<div class='col-md-4 col-lg-4 col-sm-12'>";
 									$html[] = "<div class='mb-3'>";
-										$html[] = "<h3 class='card-title m-0'>".($data['account_name']['nickname'] ?? $data['account_name']['firstname'])." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</h3>";
+										$html[] = "<h3 class='card-title m-0'>".($data['account_name']['nickname'] != "" ? $data['account_name']['nickname'] : $data['account_name']['firstname'])." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']."</h3>";
 										$html[] = "<p class='fs-12'>";
-											$html[] = ($data['account_name']['titles'] ?? $data['profession']);
+											$html[] = ($data['account_name']['titles'] != "" ? $data['account_name']['titles'] : $data['profession']);
 											$html[] = "<br/> PRC Real Estate Broker License #".$data['real_estate_license_number']."<br/>".$data['local_board_name']."";
 										$html[] = "</p>";
 

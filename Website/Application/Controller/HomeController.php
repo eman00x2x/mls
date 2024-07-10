@@ -145,10 +145,12 @@ class HomeController extends \Main\Controller {
 
 			featuredPost().then( response => {
 				$('.featured-post-container').html(response.content);
+				requestThumbImage();
 			});
 
 			latestPost().then( response => {
 				$('.latest-post-container').html(response.content);
+				requestThumbImage();
 			});
 
 			latestArticles().then( response => {
@@ -190,6 +192,27 @@ class HomeController extends \Main\Controller {
 				}
 				return results.slice(-20);
 			}
+
+
+				function requestThumbImage() {
+					$('.p-featured .p-image').each(function() {
+						thumb_image = $(this).attr('data-thumb-image');
+						$(this).css('background-image', 'url(".CDN."images/item_default.jpg)');
+						getImage(thumb_image, $(this));
+					});
+				}
+
+				async function getImage(thumb_image, element) {
+
+					listing_id = element.attr('data-id');
+
+					await fetch('".url("ListingsController@getThumbnail")."?url=' + thumb_image + '&id=' + listing_id)
+						.then( response => response.json() )
+						.then(  (data) => {
+							element.css('background-image', 'url('+data.url+')');
+						});
+					
+				}
 			
 		
 		"));

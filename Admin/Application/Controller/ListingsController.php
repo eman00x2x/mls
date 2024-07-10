@@ -1565,7 +1565,33 @@ class ListingsController extends \Main\Controller {
 		if($result !== false){
 			$url = $_GET['url'];
 		}else {
+
 			$url = CDN."images/item_default.jpg";
+
+			if(isset($_GET['id'])) {
+
+				$images = $this->getModel("ListingImage");
+				$images->column['listing_id'] = $_GET['id'];
+				$data = $images->getByListingId();
+
+				if($data) {
+
+					$count = 0;
+					if(count($data) >= 1) {
+						$count = 1;
+					}
+
+					$listings = $this->getModel("Listing");
+					$listings->save($_GET['id'], [
+						"thumb_image" => $data[$count]['url']
+					]);
+
+					$url = $data[$count]['url'];
+
+				}
+
+			}
+
 		}
 
 		/* if(isset($_GET['url']) && $_GET['url'] != "") {

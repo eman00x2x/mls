@@ -80,7 +80,10 @@ class ListingsController extends \Admin\Application\Controller\ListingsControlle
 			});
 
 			async function getImage(thumb_image, element) {
-				await fetch('".url("ListingsController@getThumbnail")."?url=' + thumb_image)
+
+				listing_id = element.attr('data-id');
+
+				await fetch('".url("ListingsController@getThumbnail")."?url=' + thumb_image + '&id=' + listing_id)
 					.then( response => response.json() )
 					.then(  (data) => {
 						element.css('background-image', 'url('+data.url+')');

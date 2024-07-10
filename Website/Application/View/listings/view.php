@@ -334,9 +334,9 @@ $html[] = "<div class='page-body mb-0'>";
 														$html[] = "<span class='avatar avatar-xl me-3 rounded-circle' style='background-image: url(".$logo.")'></span>";
 														$html[] = "<div class='flex-fill'>";
 															$html[] = "<div class='font-weight-medium'>";
-																$html[] = ($data['account']['account_name']['nickname'] ?? $data['account']['account_name']['firstname'])." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix'];
+																$html[] = ($data['account']['account_name']['nickname'] != "" ? $data['account']['account_name']['nickname'] : $data['account']['account_name']['firstname'])." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix'];
 															$html[] = "</div>";
-															$html[] = "<div class='text-muted'>".$data['account']['profession']."</div>";
+															$html[] = "<div class='text-muted'>".($data['account']['account_name']['titles'] != "" ? $data['account']['account_name']['titles'] : $data['profession'])."</div>";
 															if($data['account']['company_name'] != "") { $html[] = "<div class='text-muted'>".$data['account']['company_name']."</div>"; }
 															$html[] = "<div class='text-muted'>Member Since ".date("Y", $data['account']['registered_at'])."</div>";
 														$html[] = "</div>";

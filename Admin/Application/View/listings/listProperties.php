@@ -60,7 +60,7 @@ function properties($data, $model) {
 							], (isset($model->app['uri']) ? $model->app['uri'] : null)
 						)."'>";
 
-						$html[] = "<div class='avatar avatar-xxxl w-100 rounded-0 border-0' data-thumb-image='".$data['thumb_img']."'>";
+						$html[] = "<div class='avatar avatar-xxxl w-100 rounded-0 border-0' data-thumb-image='".$data['thumb_img']."' data-id='".$data['listing_id']."'>";
 
 							if($data['foreclosed'] == 1) {
 								$offer = "Foreclosure";
@@ -147,11 +147,11 @@ function properties($data, $model) {
 
 									$html[] = "<span class='avatar avatar-sm' data-thumb-image='".$logo."' ></span>";
 
-									$name = ($data['account_name']['nickname'] ?? $data['account_name']['firstname']). " " . $data['account_name']['lastname']. " ".$data['account_name']['suffix'];
+									$name = ($data['account_name']['nickname'] != "" ? $data['account_name']['nickname'] : $data['account_name']['firstname']). " " . $data['account_name']['lastname']. " ".$data['account_name']['suffix'];
 									
 									$html[] = "<div class='ps-2'>";
 										$html[] = "<div>".ucwords(strtolower($name))."</div>";
-										$html[] = "<div class='mt-1 small text-muted'>".$data['profession']."</div>";
+										$html[] = "<div class='mt-1 small text-muted'>".($data['account_name']['titles'] != "" ? $data['account_name']['titles'] : $data['profession'])."</div>";
 									$html[] = "</div>";
 								$html[] = "</a>";
 								$html[] = "</span>";
