@@ -1,0 +1,14 @@
+v1.0 6/3/2024
+Stable Version
+
+v1.1 6/15/2024
+- Added Nickname and Title in names
+    - Firstname will be hidden if nickname has a value
+    - Middlename was hidden to member profile
+    - Titles will be shown below the name if has a value
+- Added Lead Groups
+- Revised leads UX Design
+
+v1.1.2 7/10/2024
+- Set default thumbnail image of listing images if the listing does not have a thumbnail
+- Fixed nicknames that does'nt show even has a value
