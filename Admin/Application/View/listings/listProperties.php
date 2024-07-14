@@ -147,11 +147,16 @@ function properties($data, $model) {
 
 									$html[] = "<span class='avatar avatar-sm' data-thumb-image='".$logo."' ></span>";
 
-									$name = ($data['account_name']['nickname'] != "" ? $data['account_name']['nickname'] : $data['account_name']['firstname']). " " . $data['account_name']['lastname']. " ".$data['account_name']['suffix'];
+									$nickname = $data['account_name']['firstname'];
+									if(isset($data['account_name']['nickname'])) {
+										$nickname = ($data['account_name']['nickname'] != "" ? $data['account_name']['nickname'] : $data['account_name']['firstname']);
+									}
+
+									$name = $nickname. " " . $data['account_name']['lastname']. " ".$data['account_name']['suffix'];
 									
 									$html[] = "<div class='ps-2'>";
 										$html[] = "<div>".ucwords(strtolower($name))."</div>";
-										$html[] = "<div class='mt-1 small text-muted'>".($data['account_name']['titles'] != "" ? $data['account_name']['titles'] : $data['profession'])."</div>";
+										$html[] = "<div class='mt-1 small text-muted'>".((isset($data['account_name']['titles']) && $data['account_name']['titles'] != "") ? $data['account_name']['titles'] : $data['profession'])."</div>";
 									$html[] = "</div>";
 								$html[] = "</a>";
 								$html[] = "</span>";
