@@ -58,7 +58,7 @@ $html[] = "<div class='d-flex flex-column bg-white'>";
 			$html[] = "</div>";
 
 			$html[] = "<div class='col-12 col-lg-6 col-xl-8 d-none d-lg-block'>";
-				$html[] = "<div class='bg-cover h-100 min-vh-100' style='background-image: url(".CDN."images/finances-us-dollars-and-bitcoins-currency-money-2.jpg)'></div>";
+				$html[] = "<div class='bg-cover h-100 min-vh-100' style='background-image: url(".CDN."images/real-estate.jpg); background-size: 110%;'></div>";
 			$html[] = "</div>";
 
 		$html[] = "</div>";
