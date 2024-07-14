@@ -1,5 +1,5 @@
 v1.0 6/3/2024
-Stable Version
+- Stable Version
 
 v1.1 6/15/2024
 - Added Nickname and Title in names
@@ -12,3 +12,9 @@ v1.1 6/15/2024
 v1.1.2 7/10/2024
 - Set default thumbnail image of listing images if the listing does not have a thumbnail
 - Fixed nicknames that does'nt show even has a value
+
+v1.1.3 7/14/2024
+- Fix the issue when registration was interrupted, it will now continue the registration where the registration was interrupted
+- Fix the issue where registered user cannot login because of pending_activation status
+- Fix listing document issue
+- Fix Nickaname and title does not show up in the property list
