@@ -167,7 +167,29 @@ class RegistrationController extends AccountsController {
 		$accounts->column['email'] = $_POST['email_address'];
 
 		if($accounts->getByEmail() || $user->getByEmail()) {
+
 			$v->addError("Email already registered");
+
+			/** 
+			 * REGISTRATION INTERUPTED AND USER ACCOUNT DID NOT CREATE
+			*/
+			if($user->getByEmail() === false) {
+				/** CREATE USER ACCOUNT */
+				return $this->createUserForm($accounts->column['email']);
+			}
+
+			if($accounts->column['status'] == "pending_activation") {
+
+				$mes = "Account pending activation. Please check your email for the activation link. or <a href='".url("RegistrationController@resendActivationLinkForm")."'>Resend Activation Link</a>";
+				$this->getLibrary("Factory")->setMsg($mes, "error");
+
+				return json_encode([
+					"status" => 2,
+					"message" => getMsg()
+				]);
+
+			}
+
 		}
 
 		if(!isset($_POST['membership_type']) || $_POST['membership_type'] == "") {
@@ -301,6 +323,64 @@ class RegistrationController extends AccountsController {
 
 		$this->setTemplate("registration/successPage.php");
 		return $this->getTemplate();
+	}
+
+	function createUserForm($email) {
+
+		$this->doc = $this->getLibrary("Factory")->getDocument();
+		$this->doc->setTitle("Account Registration - ".CONFIG['site_name']);
+
+		$accounts = $this->getModel("Account");
+		$accounts->column['email'] = $email;
+		$data = $accounts->getByEmail();
+
+		$this->setTemplate("registration/createPassword.php");
+		return json_encode([
+			"status" => 1,
+			"data" => $this->getTemplate($data)
+		]);
+
+	}
+
+	function saveUser() {
+
+		parse_str(file_get_contents('php://input'), $_POST);
+
+		$user = $this->getModel("User");
+		$response = $user->saveNew([
+			"account_id" => $_POST['account_id'],
+			"name" => $_POST['name'],
+			"email" => $_POST['email'],
+			"password" => $_POST['password'],
+			"cpassword" => $_POST['cpassword'],
+			"userlevel" => 1,
+			"user_status" => "active",
+			"permissions" => json_encode(USER_PERMISSIONS),
+			"privileges" => json_encode(CONFIG['privileges']),
+			"created_at" => DATE_NOW
+		]);
+
+		$this->getLibrary("Factory")->setMsg($response['message'],$response['type']);
+
+		if($response['status'] == 1) {
+
+			/** SEND EMAIL ACTIVATION LINK */
+			$mail = new Mailer();
+			$send = $mail
+				->build( $this->mailActivationUrl($_POST) )
+					->send([
+						"to" => [
+							$_POST['email']
+						]
+					], CONFIG['site_name'] . " Account activation ");
+
+		}
+
+		return json_encode([
+			"status" => $response['status'],
+			"message" => getMsg()
+		]);
+		
 	}
 
 	function resendActivationLinkForm() {

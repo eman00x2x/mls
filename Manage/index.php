@@ -78,6 +78,7 @@ class Middleware implements IMiddleware {
 			Router::post('/saveNewPassword', 'AuthenticatorController@saveNewPassword');
 			Router::post('/forgotPassword', 'AuthenticatorController@sendPasswordResetLink');
 			Router::post('/sendActivationLink', 'RegistrationController@sendActivationLink', ['as' => 'sendActivationLink']);
+			Router::post('/saveUser', 'RegistrationController@saveUser', ['as' => 'saveUser']);
 
 			Router::match(['get', 'post'], '/xenditPaymentConfirmation', 'TransactionsController@xenditPaymentConfirmation', ['as' => 'xenditPaymentConfirmation']);
 			
