@@ -753,7 +753,7 @@ class ListingsController extends \Main\Controller {
 
 			$listing->save($response['id'], [
 				"post_score" => $_POST["post_score"],
-				"documents" => $documents,
+				"documents" => ($documents ?? $documents)
 			]);
 
 		}
