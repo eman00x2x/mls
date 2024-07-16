@@ -29,14 +29,14 @@ $html[] = "<div class='overflow-y-auto'>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 
-			$html[] = "<h3 class='card-title m-0'>".($data['account_name']['nickname'] ?? $data['account_name']['firstname'])." ".$data['account_name']['middlename']." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']." ".($data['account_name']['titles'] ?? "")."</h3>";
+			$html[] = "<h3 class='card-title m-0'>".((isset($data['account_name']['nickname']) && $data['account_name']['nickname'] != "") ? $data['account_name']['nickname'] : $data['account_name']['firstname'])." ".$data['account_name']['lastname']." ".$data['account_name']['suffix']." ".((isset($data['account_name']['titles']) && $data['account_name']['titles'] != "") ? $data['account_name']['titles'] : "")."</h3>";
 			$html[] = "<p class='fs-12'>PRC Real Estate Broker License #".$data['real_estate_license_number']."<br/>".$data['local_board_name']."</p>";
 
 			$html[] = "<h3 class='card-title mt-4 mb-1 text-muted'>Certificates</h3>";
 			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
 				if(!empty($data['profile']['certification'])) {
 					for($i=0; $i<count($data['profile']['certification']); $i++) {
-						$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['certification'][$i]."</li>";
+						$html[] = "<li class='list-group-item p-0 m-0 border-0'><i class='ti ti-certificate'></i> ".$data['profile']['certification'][$i]."</li>";
 					}
 				}
 			$html[] = "</ul>";
@@ -45,7 +45,7 @@ $html[] = "<div class='overflow-y-auto'>";
 			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
 				if(!empty($data['profile']['socials'])) {
 					for($i=0; $i<count($data['profile']['socials']); $i++) {
-						$html[] = "<li class='list-group-item p-0 m-0 border-0'>- <a href='https://".$data['profile']['socials'][$i]."' target='_blank'>".$data['profile']['socials'][$i]."</a></li>";
+						$html[] = "<li class='list-group-item p-0 m-0 border-0'><i class='ti ti-link'></i> <a href='https://".$data['profile']['socials'][$i]."' target='_blank'>".$data['profile']['socials'][$i]."</a></li>";
 					}
 				}
 			$html[] = "</ul>";
@@ -57,7 +57,7 @@ $html[] = "<div class='overflow-y-auto'>";
 			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
 				if(!empty($data['profile']['areas'])) {
 					for($i=0; $i<count($data['profile']['areas']); $i++) {
-						$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['areas'][$i]."</li>";
+						$html[] = "<li class='list-group-item p-0 m-0 border-0'><i class='ti ti-map-pin'></i> ".$data['profile']['areas'][$i]."</li>";
 					}
 				}
 			$html[] = "</ul>";
@@ -66,7 +66,7 @@ $html[] = "<div class='overflow-y-auto'>";
 			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
 				if(!empty($data['profile']['services'])) {
 					for($i=0; $i<count($data['profile']['services']); $i++) {
-						$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['services'][$i]."</li>";
+						$html[] = "<li class='list-group-item p-0 m-0 border-0'><i class='ti ti-cube-send'></i> ".$data['profile']['services'][$i]."</li>";
 					}
 				}
 			$html[] = "</ul>";
@@ -75,7 +75,7 @@ $html[] = "<div class='overflow-y-auto'>";
 			$html[] = "<ul class='list-group list-group-flush m-0 p-0'>";
 				if(!empty($data['profile']['skills'])) {
 					for($i=0; $i<count($data['profile']['skills']); $i++) {
-						$html[] = "<li class='list-group-item p-0 m-0 border-0'>- ".$data['profile']['skills'][$i]."</li>";
+						$html[] = "<li class='list-group-item p-0 m-0 border-0'><i class='ti ti-affiliate'></i> ".$data['profile']['skills'][$i]."</li>";
 					}
 				}
 			$html[] = "</ul>";

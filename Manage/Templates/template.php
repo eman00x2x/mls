@@ -46,10 +46,14 @@
 									</a>
                 				</li>
 								<li class="nav-item <?php echo (url()->contains("/listings")) ? "active" : ""; ?>">
-									<a class="nav-link" href="<?php echo url("ListingsController@index"); ?>">
+									<a class="nav-link dropdown-toggle" href="#extra-link" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
 										<span class="nav-link-icon d-md-none d-lg-inline-block"><i class='ti ti-building-estate'></i></span>
-										<span class="nav-link-title">Listings</span>
+										<span class="nav-link-title">Properties</span>
 									</a>
+									<div class='dropdown-menu'>
+										<a href='<?php echo url("ListingsController@index"); ?>' class='dropdown-item'>Listings</a>
+										<a href='<?php echo url("MlsController@handshakedIndex"); ?>' class='dropdown-item'>Handshakes</a>
+									</div>
                 				</li>
 
 								<li class="nav-item <?php echo (url()->contains("/mls")) ? "active" : ""; ?> dropdown">
@@ -62,7 +66,7 @@
 										<a href='<?php echo url("MlsController@MLSRegional", [ "region" => str_replace(" ","_", $_SESSION['user_logged']['board_region']['region']) ]); ?>' class='dropdown-item'>Regional MLS (<?php echo $_SESSION['user_logged']['board_region']['region']; ?>)</a>
 										<a href='<?php echo url("MlsController@MLSIndex"); ?>' class='dropdown-item'>PAREB National MLS</a>
 										<a href='<?php echo url("MlsController@MLSIndex", null, ["filter" => base64_encode("offer=looking+for")]); ?>' class='dropdown-item'>Looking for/Wanted to Buy Properties</a>
-										<?php if((isset($_SESSION['user_logged']['privileges']['comparative_analysis_access']) && $_SESSION['user_logged']['privileges']['comparative_analysis_access'] == 1)) { ?>
+										<?php if((isset($_SESSION['user_logged']['privileges']['comparative_analysis_access']) && $_SESSION['user_logged']['privileges']['comparative_analysis_access'] >= 1)) { ?>
 											<a href='<?php echo url("MlsController@marketComparisonForm"); ?>' class='dropdown-item'>Comparative Market Analysis</a>
 										<?php } ?>
 									</div>
