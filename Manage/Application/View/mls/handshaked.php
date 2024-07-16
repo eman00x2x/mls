@@ -43,6 +43,41 @@ $html[] = "<div class='page-body'>";
 				$html[] = "<table class='table mt-3'>";
 				
 				for($i=0; $i<count($data); $i++) { $c++;
+
+					if($data[$i]['requestee_account_id'] != $_SESSION['user_logged']['account_id']) {
+						/** Requestee account */
+
+						$n = $data[$i]['requestee_account']['account_name']['firstname'];
+						if(isset($data[$i]['requestee_account']['account_name']['nickname']) && $data[$i]['requestee_account']['account_name']['nickname'] != "") {
+							$n = $data[$i]['requestee_account']['account_name']['nickname'];
+						}
+
+						$name = "<span class='d-block text-muted fs-12'>Requestee</span>".$n. " " .$data[$i]['requestee_account']['account_name']['lastname'];
+						$profession = $data[$i]['requestee_account']['profession'];
+						$license = $data[$i]['requestee_account']['real_estate_license_number'];
+						$mobile_number = $data[$i]['requestee_account']['mobile_number'];
+						$email = $data[$i]['requestee_account']['email'];
+						$registered_at = $data[$i]['requestee_account']['registered_at'];
+
+					}else {
+						/** Requestor account */
+
+						$n = $data[$i]['requestor_details']['account_name']['firstname'];
+						if(isset($data[$i]['requestor_details']['account_name']['nickname']) && $data[$i]['requestor_details']['account_name']['nickname'] != "") {
+							$n = $data[$i]['requestor_details']['account_name']['nickname'];
+						}
+
+						$name = "<span class='d-block text-muted fs-12'>Requestor</span>".$n." ".$data[$i]['requestor_details']['account_name']['lastname'];
+						$profession = $data[$i]['requestor_details']['profession'];
+						$license = $data[$i]['requestor_details']['real_estate_license_number'];
+						$mobile_number = $data[$i]['requestor_details']['mobile_number'];
+						$email = $data[$i]['requestor_details']['email'];
+						$registered_at = $data[$i]['requestor_details']['registered_at'];
+
+					}
+
+
+
 					$html[] = "<tr class='row_listings_".$data[$i]['handshake_id']."'>";
 						$html[] = "<td class='align-middle w-1 bg-dark text-white'>";
 							$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-white text-decoration-none'><span class='avatar avatar-lg' style='background-image: url(".$data[$i]['listing']['thumb_img'].")'></span></a>";
@@ -55,16 +90,16 @@ $html[] = "<div class='page-body'>";
 					    $html[] = "</td>";
 						
 					    $html[] = "<td class='align-middle'>";
-							$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Requestor</span> ".$data[$i]['requestor_details']['account_name']['firstname']." ".$data[$i]['requestor_details']['account_name']['lastname']." <span class='d-block text-muted fs-11'>".$data[$i]['requestor_details']['profession']." - ".$data[$i]['requestor_details']['real_estate_license_number']."</span></a>";
+							$html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'>".$name." <span class='d-block text-muted fs-11'>".$profession." - ".$license."</span></a>";
 					    $html[] = "</td>";
 					    $html[] = "<td class='align-middle'>";
-					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Mobile Number</span> ".$data[$i]['requestor_details']['mobile_number']."</a>";
+					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Mobile Number</span> ".$mobile_number."</a>";
 					    $html[] = "</td>";
 					    $html[] = "<td class='align-middle'>";
-					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Email</span> ".$data[$i]['requestor_details']['email']."</a>";
+					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Email</span> ".$email."</a>";
 					    $html[] = "</td>";
 					    $html[] = "<td class='align-middle'>";
-					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Registered Since</span> ".date("F d, Y", $data[$i]['requestor_details']['registered_at'])."</a>";
+					        $html[] = "<a href='".url("MlsController@viewListing", ["id" => $data[$i]['listing']['listing_id']])."' class='text-dark text-decoration-none'><span class='d-block text-muted fs-12'>Registered Since</span> ".date("F d, Y", $registered_at)."</a>";
 					    $html[] = "</td>";
 					$html[] = "</tr>";
 					$html[] = "<tr class='row_listings_".$data[$i]['handshake_id']."'>";

@@ -71,11 +71,14 @@ Router::group(['prefix' => MANAGE_ALIAS], function () {
     Router::get('/mls/handshaked', 'MlsController@handshakedIndex', ['as' => 'handshakedIndex']);
     Router::get('/mls/compare', 'MlsController@compareListings', ['as' => 'compareListings']);
     Router::get('/mls/comparePreview', 'MlsController@comparePreview', ['as' => 'comparePreview']);
+    Router::get('/mls/handshaked/{id}/{account_id}/edit', 'HandshakesController@edit', ['as' => 'handshake-edit'])->where([ 'id' => '[0-9]+', 'account_id' => '[0-9]+' ]);
     Router::get('/mls/handshaked/{id}/acceptRequest', 'MlsController@acceptRequest', ['as' => 'acceptRequest'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/mls/handshaked/{id}/deniedRequest', 'MlsController@deniedRequest', ['as' => 'deniedRequest'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/mls/handshaked/{id}/doneHandshake', 'MlsController@doneHandshake', ['as' => 'doneHandshake'])->where([ 'id' => '[0-9]+' ]);
     Router::get('/mls/handshaked/{listing_id}/cancelHandshake', 'MlsController@cancelHandshake', ['as' => 'cancelHandshake'])->where([ 'listing_id' => '[0-9]+' ]);
     Router::get('/mls/related-properties', 'MlsController@relatedProperties', ['as' => 'relatedProperties']);
+
+    Router::post('/mls/handshaked/{id}/saveUpdate', 'HandshakesController@saveUpdate', ['as' => 'handshake-saveUpdate'])->where([ 'id' => '[0-9]+' ]);
 
     /** DOWNLOAD MLS LISTING URL */
     Router::get('/mls/{id}/download', 'MlsController@downloadPDFFormat', ['as' => 'listingsView'])->where([ 'id' => '[0-9]+' ]);

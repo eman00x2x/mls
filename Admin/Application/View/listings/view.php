@@ -294,7 +294,7 @@ $html[] = "<div class='page-body'>";
 
                     $html[] = "<div class='mb-2 description ' style='max-height: 300px; overflow: auto;'>";
 						$html[] = "<h3 id='description'><i class='ti ti-file-description me-1'></i> Description</h3>";
-						$html[] = strip_tags($data['listing']['long_desc']);
+						$html[] = strip_tags($data['listing']['long_desc'], ["br", "p", "h1", "h2", "h3", "h4", "h5", "h6"]);
 					$html[] = "</div>";
 					$html[] = "<span class='btn btn-description-toggle d-none'>Show more...</span>";
 

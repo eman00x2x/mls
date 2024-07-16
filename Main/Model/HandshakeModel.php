@@ -102,9 +102,15 @@ class HandshakeModel extends \Main\Model {
 
 				if(isset($data['requestor_details'])) {
 					$data['requestor_details'] = json_encode($data['requestor_details'], JSON_PRETTY_PRINT);
+				}else {
+					$this->column['requestor_details'] = json_encode($this->column['requestor_details'], JSON_PRETTY_PRINT);
 				}
 
-				$this->column['requestor_details'] = json_encode($this->column['requestor_details'], JSON_PRETTY_PRINT);
+				if(isset($data['requestor_listing_details'])) {
+					$data['requestor_listing_details'] = json_encode($data['requestor_listing_details'], JSON_PRETTY_PRINT);
+				}else {
+					$this->column['requestor_listing_details'] = json_encode($this->column['requestor_listing_details'], JSON_PRETTY_PRINT);
+				}
 
 				foreach($data as $key => $val) {
 					$this->column[$key] = $val;

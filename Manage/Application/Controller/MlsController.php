@@ -204,6 +204,7 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 		}
 
 		$listing = $this->getModel("Listing");
+		$account = $this->getModel("Account");
 
 		$handshake = $this->getModel("Handshake");
 		$handshake->where(" requestor_account_id = ".$this->session['account_id']." OR requestee_account_id = ".$this->session['account_id'])
@@ -221,6 +222,9 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 			for($i=0; $i<count($data); $i++) {
 				$listing->column['listing_id'] = $data[$i]['listing_id'];
 				$data[$i]['listing'] = $listing->getById();
+
+				$account->column['account_id'] = $data[$i]['requestee_account_id'];
+				$data[$i]['requestee_account'] = $account->getById();
 
 				if(!$data[$i]['listing']) {
 					$handshake->deleteHandshake($data[$i]['handshake_id']);
@@ -293,6 +297,11 @@ class MlsController extends \Admin\Application\Controller\ListingsController {
 						"listing_id" => $data['listing_id'],
 						"handshake_status" => "pending",
 						"handshake_status_at" => DATE_NOW,
+						"requestor_listing_details" => json_encode([
+							"long_desc" => $data['long_desc'],
+							"price" => $data['price'],
+							"reservation" => $data['reservation']
+						]),
 						"requested_at" => DATE_NOW
 					));
 
