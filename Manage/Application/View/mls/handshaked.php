@@ -115,7 +115,8 @@ $html[] = "<div class='page-body'>";
                                         $html[] = "<span class='btn btn-light '>Active since: ".date("F d, Y",$data[$i]['handshake_status_at'])."</span>";
 										$html[] = "<span class='btn btn-success btn-done-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@doneHandshake", ["id" => $data[$i]['handshake_id']])."'><i class='ti ti-discount-check-filled me-2'></i> Done Handshake</span>";
 											/* $html[] = "<span class='btn btn-md btn-danger btn-cancel-handshake' data-row='row_listings_".$data[$i]['handshake_id']."' data-url='".url("MlsController@cancelHandshake",["listing_id" => $data[$i]['listing_id']])."'><i class='ti ti-circle-letter-x me-2'></i> Cancel Handshake</span>"; */
-                                        break;
+										$html[] = "<a href='".url("HandshakesController@edit", [ "id" => $data[$i]['handshake_id'] ])."' class='btn btn-primary'>Edit Listing Details</a>";
+										break;
 									case 'done':
                                         $html[] = "<span class='btn btn-light '>Done since: ".date("F d, Y",$data[$i]['handshake_status_at'])."</span>";
                                         break;
@@ -124,7 +125,7 @@ $html[] = "<div class='page-body'>";
                                         break;
                                 }
                             }
-
+							
                             if($data[$i]['requestee_account_id'] == $_SESSION['user_logged']['account_id']) {
                                 switch($data[$i]['handshake_status']) {
                                     case 'pending':

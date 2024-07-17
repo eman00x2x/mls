@@ -20,7 +20,7 @@ class HandshakesController extends \Main\Controller {
 
 		$handshake = $this->getModel("Handshake");
 		$handshake->column['handshake_id'] = $id;
-		$handshake->column['requestor_account_id'] = $account_id;
+		$handshake->and(" requestor_account_id  = " . $account_id . " AND handshake_status_at = 'accepted'" );
 		$data = $handshake->getById();
 
 		if($data) {

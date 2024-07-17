@@ -78,7 +78,6 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 														$html[] = "<input type='text' value='".clean($data['listing']['title'])."' class='form-control' placeholder='Title' readonly />";
 														
 													$html[] = "</div>";
-													$html[] = "<p class='p-0 text-info'>Do not include \"For Sale\", \"RFO\", \"Re-Sale\" in your title.</p>";
 												$html[] = "</div>";
 												
 											$html[] = "</div>";
