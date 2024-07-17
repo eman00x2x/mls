@@ -464,8 +464,8 @@ $html[] = "<div class='page-body'>";
 						$html[] = "<div class='mb-3 btn-view-profile' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("AccountsController@profilePreview", ["id" => $data['account']['account_id']])."'>";
 							$html[] = "<span class='avatar avatar-xxl rounded' style='background-image: url(".$data['account']['logo'].")'></span>";
 						$html[] = "</div>";
-						$html[] = "<div class='card-title mb-0'>".($data['account']['account_name']['nickname'] != "" ? $data['account']['account_name']['nickname'] : $data['account']['account_name']['firstname'])." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix']."</div>";
-						$html[] = "<div class='text-secondary'>".($data['account']['account_name']['titles'] != "" ? $data['account']['account_name']['titles'] : $data['account']['profession'])."</div>";
+						$html[] = "<div class='card-title mb-0'>".((isset($data['account']['account_name']['nickname']) && $data['account']['account_name']['nickname'] != "") ? $data['account']['account_name']['nickname'] : $data['account']['account_name']['firstname'])." ".$data['account']['account_name']['lastname']." ".$data['account']['account_name']['suffix']."</div>";
+						$html[] = "<div class='text-secondary'>".((isset($data['account']['account_name']['titles']) && $data['account']['account_name']['titles'] != "") ? $data['account']['account_name']['titles'] : $data['account']['profession'])."</div>";
 					$html[] = "</div>";
 
 					if($data['account']['account_id'] != $_SESSION['user_logged']['account_id']) {

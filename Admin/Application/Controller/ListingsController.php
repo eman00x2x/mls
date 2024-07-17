@@ -722,6 +722,7 @@ class ListingsController extends \Main\Controller {
 			"all" => isset($_POST['is_mls_option']['all']) ? 1 : 0
 		]);
 
+		$documents = "";
 		if(isset($_POST['documents'])) {
 			$documents = $_POST['documents'];
 			unset($_POST['documents']);
@@ -753,7 +754,7 @@ class ListingsController extends \Main\Controller {
 
 			$listing->save($response['id'], [
 				"post_score" => $_POST["post_score"],
-				"documents" => ($documents ?? $documents)
+				"documents" => $documents
 			]);
 
 		}
