@@ -77,8 +77,12 @@ $html[] = "<div class='row justify-content-center'>";
 						}
 					}
 
-					$html[] = "<div class=''>";
-						$html[] = "<span class=''><i class='ti ti-dots-vertical'></i></span>";
+					$html[] = "<div class='dropdown'>";
+						$html[] = "<span class='btn btn-dark dropdown-toggle' id='dropdownToggle' data-bs-toggle='dropdown' aria-expanded='false'><i class='ti ti-dots-vertical'></i></span>";
+						$html[] = "<div class='dropdown-menu' aria-labelledby='dropdownToggle'>";
+							$html[] = "<a href='".url("MessagesController@downloadThreadMessages", ["id" => $data['thread']['thread_id']])."' class='dropdown-item'><i class='ti ti-download me-2'></i> Download</a>";
+							$html[] = "<span class='dropdown-item btn-delete cursor-pointer' data-bs-toggle='offcanvas' data-bs-target='#offcanvasEnd' aria-controls='offcanvasEnd' data-url='".url("MessagesController@saveDeletedThread",["thread_id" => $data['thread']['thread_id']])."'><i class='ti ti-trash me-2'></i> Delete</span>";
+						$html[] = "</div>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 
