@@ -23,8 +23,9 @@ $html[] = "<form action='".url("ListingsController@uploadDocuments")."' id='Docs
 	$html[] = "</center>";
 $html[] = "</form>";
 
-$html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
-	$html[] = "<div class='col-lg-8 col-md-8 col-sm-12 col-12'>";
+$html[] = "<div class='container-xl'>";
+$html[] = "<div class='row g-0 justify-content-center mb-5'>";
+	$html[] = "<div class='col-lg-9 col-md-8 col-sm-12 col-12'>";
 
 		$html[] = "<div class='page-header d-print-none text-white'>";
 			$html[] = "<div class='container-xl'>";
@@ -276,12 +277,12 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 
 											$html[] = "<div class='mb-3 street-input'>";
 												$html[] = "<label class='form-label text-muted'>Street</label>";
-												$html[] = "<input type='text' name='address[street]' id='address_street' value='".$data['listing']['address']['street']."' class='form-control' />";
+												$html[] = "<input type='text' name='address[street]' id='address_street' value='".($data['listing']['address']['street'] ?? "")."' class='form-control' />";
 											$html[] = "</div>";
 
 											$html[] = "<div class='mb-3 village-input'>";
 												$html[] = "<label class='form-label text-muted'>Village / Building / Communities</label>";
-												$html[] = "<input type='text' name='address[village]' id='address_village' value='".$data['listing']['address']['village']."' class='form-control' />";
+												$html[] = "<input type='text' name='address[village]' id='address_village' value='".($data['listing']['address']['village'] ?? "")."' class='form-control' />";
 											$html[] = "</div>";
 
 										$html[] = "</div>";
@@ -737,6 +738,24 @@ $html[] = "<div class='row g-0 justify-content-center mb-5 pb-5'>";
 		$html[] = "</div>";
 
 	$html[] = "</div>";
+	$html[] = "<div class='col-lg-3 col-md-8 d-sm-block d-none'>";
+		$html[] = "<div class='mt-5 pt-5'>";
+			$html[] = "<div class='card mt-4'>";
+                $html[] = "<div class='card-body'>";
+					$html[] = "<h5 class='card-title'>How to make your postings rank higher in the list.</h5>";
+					$html[] = "<ul>";
+						$html[] = "<li>Your posting will remain active for a specified duration. Choose the duration based on your listings or Authority to Sell period: 15, 30, 60, or 90 days.</li>";
+						$html[] = "<li>Your posting can be shared with others using the handshake feature. Be sure to include all necessary information, but do not include your name or contact numbers in the descriptions.</li>";
+						$html[] = "<li>Select the appropriate tags and choose multiple features and amenities.</li>";
+						$html[] = "<li>Upload more than 10 high-resolution photos of the property, ensuring they are at least 1024px in width and height, but not exceeding 3000px in any dimension.</li>";
+						$html[] = "<li>For a larger audience and more impressions, enable the 'Publish on Public Website' option, share your posting on social media sites, and visit your posting on the public website to click the share button.</li>";
+						$html[] = "<li>Choosing to publish in MLS is also a good idea, as the listing can be shared with other real estate brokers. However, remember that the MLS is a private portal, and only members of PAREB are allowed to view the postings.</li>";
+					$html[] = "</ul>";
+                $html[] = "</div>";
+            $html[] = "</div>";
+		$html[] = "</div>";
+	$html[] = "</div>";
+$html[] = "</div>";
 $html[] = "</div>";
 
 $html[] = "<div class='btn-save-container fixed-bottom bg-white py-3 border-top'>";
