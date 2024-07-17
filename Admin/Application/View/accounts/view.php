@@ -133,8 +133,8 @@ $html[] = "<div class='page-body'>";
 						foreach($data['privileges'] as $privilege => $val) {
 							$html[] = "<div class='d-flex justify-content-between border-bottom p-2'>";
 								$html[] = "<div class='me-3'><label class='text-muted'>".ucwords(str_replace("_"," ",$privilege))."</label></div>";
-								if(in_array($privilege, ["comparative_analysis_access", "chat_access", "mls_access"])) {
-									$html[] = "<div class='text-center' style='width:30px;'><span>".($data['privileges'][$privilege] == 1 ? "<span class='text-success'><i class='ti ti-check'></i></span>" : "<span class='text-danger'><i class='ti ti-ban'></i></span>")."</span></div>";
+								if(in_array($privilege, ["comparative_analysis_access", "chat_access", "mls_access", "api_access"])) {
+									$html[] = "<div class='text-center' style='width:30px;'><span>".($data['privileges'][$privilege] >= 1 ? "<span class='text-success'><i class='ti ti-check'></i></span>" : "<span class='text-danger'><i class='ti ti-ban'></i></span>")."</span></div>";
 								}else {
 									$html[] = "<div class='text-center' style='width:30px;'><span class='fw-bold'>".$val."</span></div>";
 								}
