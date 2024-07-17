@@ -123,6 +123,15 @@ $html[] = "<div class='page-body'>";
 						if(!in_array($data['account_type'], ["Administrator", "Customer Service", "Web Admin"])) {
 							$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-address-book me-1'></i> Address:</span> <strong>".$data['street']." ".$data['city']." ".$data['province']."</strong></div>";
 						}
+
+					$html[] = "</div>";
+				$html[] = "</div>";
+
+				$html[] = "<div class='card mb-3'>";
+					$html[] = "<div class='card-body'>";
+						$html[] = "<div class='card-title'>PAREB Membership Status</div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-user me-1'></i> Membership Type:</span> <strong>".$data['membership_type']."</strong></div>";
+						$html[] = "<div class='mb-2'><span class='text-muted me-1 fs-12'><i class='ti ti-user me-1'></i> Membership Standing:</span> <strong>".$data['membership_position']."</strong></div>";
 					$html[] = "</div>";
 				$html[] = "</div>";
 				
