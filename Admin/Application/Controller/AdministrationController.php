@@ -112,26 +112,30 @@ class AdministrationController extends \Main\Controller {
 		");
 		
 		$data['tables'] = [
-			"mls_accounts",
 			"mls_account_subscriptions",
+			"mls_accounts",
 			"mls_articles",
 			"mls_deleted_threads",
 			"mls_handshakes",
 			"mls_kyc",
+			"mls_lead_groups",
+			"mls_lead_notes",
 			"mls_leads",
 			"mls_license_reference",
-			"mls_listings",
 			"mls_listing_images",
+			"mls_listings",
 			"mls_messages",
 			"mls_notifications",
+			"mls_open_house_announcements",
 			"mls_page_ads",
 			"mls_premiums",
 			"mls_settings",
+			"mls_testimonials",
 			"mls_threads",
 			"mls_traffics",
 			"mls_transactions",
-			"mls_users",
-			"mls_user_login"
+			"mls_user_login",
+			"mls_users"
 		];
 
 		$path = ROOT."/Admin/DATABASE_BACKUP";
