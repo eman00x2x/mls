@@ -23,8 +23,8 @@ $html[] = "<div class='page-header d-print-none text-white'>";
 
 			$html[] = "<div class='col-auto ms-auto d-print-none'>";
 				$html[] = "<div class='btn-list'>";
-					/* $html[] = "<span class='btn btn-dark btn-upload-csv'><i class='ti ti-upload me-1'></i> Upload Email CSV File</span>";
-					$html[] = "<a class='btn btn-dark' href='".url("AdministrationController@downloadCsvEmail")."'><i class='ti ti-download me-1'></i> Download Email CSV File</a>"; */
+					$html[] = "<span class='btn btn-dark btn-upload-csv'><i class='ti ti-upload me-1'></i> Upload Email CSV File</span>";
+					$html[] = "<a class='btn btn-dark' href='".url("AdministrationController@downloadCsvEmail")."'><i class='ti ti-download me-1'></i> Download Email CSV File</a>";
 				$html[] = "</div>";
 			$html[] = "</div>";
 		$html[] = "</div>";
