@@ -29,7 +29,7 @@ class DashboardController extends \Admin\Application\Controller\DashboardControl
 
         $data['premium'] = $this->getActivePremium();
         
-        $data['max_post'] = $this->session['privileges']['max_post'];
+        $data['max_post'] = ($this->session['account_type'] != "Administrator" ? $this->session['privileges']['max_post'] : 0);
         $data['handshake_participants'] = $this->getHandshakeParticipants($this->session['account_id']);
         $data['total_active_handshake'] = $this->getTotalActiveHandshake($this->session['account_id']);
         $data['total_listings'] = $this->getTotalListings($this->session['account_id']);

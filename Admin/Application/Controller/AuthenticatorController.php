@@ -116,7 +116,7 @@ class AuthenticatorController extends \Main\Controller
 					];
 				}
 
-				if($url == rtrim(str_replace(["https://", "http://"], ["", ""], MANAGE), "/") && !in_array($data['account_type'], ["Real Estate Practitioner", "Administrator"]) ) {
+				if($url == rtrim(str_replace(["https://", "http://"], ["", ""], MANAGE), "/") && !in_array($data['account_type'], ["Real Estate Practitioner"]) ) {
 					$this->getLibrary("Factory")->setMsg("Only Real Estate Practitioner can login here.","error");
 					$response = [
 						"status" => 2,
