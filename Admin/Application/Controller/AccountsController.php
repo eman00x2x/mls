@@ -153,7 +153,7 @@ class AccountsController extends \Main\Controller {
 
 				$data['subscriptions'] = $subscription->getList();
 
-				if($data['subscriptions']) {
+				if($data['subscriptions'] && $data['account_id'] != 1) {
 					for($i=0; $i<count($data['subscriptions']); $i++) {
 						if($data['subscriptions'][$i]['subscription_status'] == 1) {
 							foreach($data['subscriptions'][$i]['script'] as $privilege => $val) {
